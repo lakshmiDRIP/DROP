@@ -9,33 +9,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,23 +71,32 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * NOKIRSAttribution generates the Historical PnL Attribution for NOK IRS.
+ * &lt;i&gt;NOKIRSAttribution&lt;/i&gt; generates the Historical PnL Attribution for NOK IRS.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fixfloatpnl/README.md&quot;&gt;Fix Float Swap Historical Series PnL&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L60">public class NOKIRSAttribution {</span>
+<span class="nc" id="L88">public class NOKIRSAttribution {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L66">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L94">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L68">		String strCurrency = &quot;NOK&quot;;</span>
-<span class="nc" id="L69">		String strClosesLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\FundingStateMarks\\&quot; + strCurrency + &quot;ShapePreservingReconstitutor.csv&quot;;</span>
+<span class="nc" id="L96">		String strCurrency = &quot;NOK&quot;;</span>
+<span class="nc" id="L97">		String strClosesLocation = &quot;C:\\DROP\\Daemons\\Transforms\\FundingStateMarks\\&quot; + strCurrency + &quot;ShapePreservingReconstitutor.csv&quot;;</span>
 
-<span class="nc" id="L71">		String[] astrFundingDepositTenor = new String[] {</span>
+<span class="nc" id="L99">		String[] astrFundingDepositTenor = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;2M&quot;,
 			&quot;3M&quot;,
@@ -77,7 +105,7 @@ import org.drip.service.env.EnvManager;
 			&quot;6M&quot;
 		};
 
-<span class="nc" id="L80">		int[] aiFundingDepositColumn = new int[] {</span>
+<span class="nc" id="L108">		int[] aiFundingDepositColumn = new int[] {</span>
 			1,
 			2,
 			3,
@@ -86,7 +114,7 @@ import org.drip.service.env.EnvManager;
 			6
 		};
 
-<span class="nc" id="L89">		String[] astrFundingFixFloatTenor = new String[] {</span>
+<span class="nc" id="L117">		String[] astrFundingFixFloatTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -107,7 +135,7 @@ import org.drip.service.env.EnvManager;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L110">		int[] aiFundingFixFloatColumn = new int[] {</span>
+<span class="nc" id="L138">		int[] aiFundingFixFloatColumn = new int[] {</span>
 			 7,
 			 8,
 			 9,
@@ -128,7 +156,7 @@ import org.drip.service.env.EnvManager;
 			24
 		};
 
-<span class="nc" id="L131">		String[] astrMaturityTenor = new String[] {</span>
+<span class="nc" id="L159">		String[] astrMaturityTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -146,18 +174,18 @@ import org.drip.service.env.EnvManager;
 			&quot;25Y&quot;
 		};
 
-<span class="nc" id="L149">		int[] aiHorizonGap = new int[] {</span>
+<span class="nc" id="L177">		int[] aiHorizonGap = new int[] {</span>
 			1,
 			// 22,
 			// 67
 		};
 
-<span class="nc" id="L155">		String[] astrRollDownHorizonMap = new String[] {</span>
+<span class="nc" id="L183">		String[] astrRollDownHorizonMap = new String[] {</span>
 			&quot;1M&quot;,
 			&quot;3M&quot;
 		};
 
-<span class="nc" id="L160">		FixFloatPnLAttributor.TenorHorizonExplainComponents (</span>
+<span class="nc" id="L188">		FixFloatPnLAttributor.TenorHorizonExplainComponents (</span>
 			strCurrency,
 			astrMaturityTenor,
 			aiHorizonGap,
@@ -168,6 +196,8 @@ import org.drip.service.env.EnvManager;
 			aiFundingFixFloatColumn,
 			astrRollDownHorizonMap
 		);
-<span class="nc" id="L171">	}</span>
+
+<span class="nc" id="L200">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L201">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

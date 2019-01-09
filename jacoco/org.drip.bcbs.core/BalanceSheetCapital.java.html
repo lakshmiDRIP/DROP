@@ -232,6 +232,17 @@ public class BalanceSheetCapital
 	}
 
 	/**
+	 * Retrieve the Tier 1 Ratio
+	 * 
+	 * @return The Tier 1 Ratio
+	 */
+
+	public double tier1Ratio()
+	{
+<span class="nc" id="L242">		return (_cet1 + _at1) / _rwa;</span>
+	}
+
+	/**
 	 * Retrieve the Total Capital Ratio
 	 * 
 	 * @return The Total Capital Ratio
@@ -239,7 +250,7 @@ public class BalanceSheetCapital
 
 	public double totalCapitalRatio()
 	{
-<span class="nc" id="L242">		return (_cet1 + _at1 + _additionalCapital) / _rwa;</span>
+<span class="nc" id="L253">		return (_cet1 + _at1 + _additionalCapital) / _rwa;</span>
 	}
 
 	/**
@@ -250,7 +261,7 @@ public class BalanceSheetCapital
 
 	public double leverageRatio()
 	{
-<span class="nc" id="L253">		return (_cet1 + _at1) / _totalExposure;</span>
+<span class="nc" id="L264">		return (_cet1 + _at1) / _totalExposure;</span>
 	}
 
 	/**
@@ -261,12 +272,12 @@ public class BalanceSheetCapital
 
 	public org.drip.bcbs.core.CapitalMetrics capitalMetrics()
 	{
-<span class="nc" id="L264">		double commonEquityCapitalRatio = _cet1 / _rwa;</span>
-<span class="nc" id="L265">		double totalCapitalRatio = (_cet1 + _at1 + _additionalCapital) / _rwa;</span>
+<span class="nc" id="L275">		double commonEquityCapitalRatio = _cet1 / _rwa;</span>
+<span class="nc" id="L276">		double totalCapitalRatio = (_cet1 + _at1 + _additionalCapital) / _rwa;</span>
 
 		try
 		{
-<span class="nc" id="L269">			return new org.drip.bcbs.core.CapitalMetrics (</span>
+<span class="nc" id="L280">			return new org.drip.bcbs.core.CapitalMetrics (</span>
 				(_cet1 + _at1) / _totalExposure,
 				commonEquityCapitalRatio,
 				commonEquityCapitalRatio,
@@ -275,12 +286,12 @@ public class BalanceSheetCapital
 				totalCapitalRatio
 			);
 		}
-<span class="nc" id="L278">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L289">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L280">			e.printStackTrace();</span>
+<span class="nc" id="L291">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L283">		return null;</span>
+<span class="nc" id="L294">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

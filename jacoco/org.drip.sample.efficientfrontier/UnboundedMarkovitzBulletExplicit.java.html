@@ -14,33 +14,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -57,134 +76,145 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * UnboundedMarkovitzBulletExplicit demonstrates the Explicit Construction of the Efficient Frontier.
+ * &lt;i&gt;UnboundedMarkovitzBulletExplicit&lt;/i&gt; demonstrates the Explicit Construction of the Efficient Frontier.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationLibrary.md&quot;&gt;Asset Allocation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/efficientfrontier/README.md&quot;&gt;Markovitz Efficient Frontier&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L65">public class UnboundedMarkovitzBulletExplicit {</span>
+<span class="nc" id="L93">public class UnboundedMarkovitzBulletExplicit {</span>
 
 	private static double DisplayPortfolioMetrics (
 		final OptimizationOutput optPort)
 		throws Exception
 	{
-<span class="nc" id="L71">		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();</span>
+<span class="nc" id="L99">		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();</span>
 
-<span class="nc" id="L73">		String strDump = &quot;\t|&quot; +</span>
-<span class="nc" id="L74">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + &quot;% |&quot; +</span>
-<span class="nc" id="L75">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + &quot; |&quot;;</span>
+<span class="nc" id="L101">		String strDump = &quot;\t|&quot; +</span>
+<span class="nc" id="L102">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + &quot;% |&quot; +</span>
+<span class="nc" id="L103">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + &quot; |&quot;;</span>
 
-<span class="nc bnc" id="L77" title="All 2 branches missed.">		for (AssetComponent ac : aACGlobalMinimum)</span>
-<span class="nc" id="L78">			strDump += &quot; &quot; + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + &quot;% |&quot;;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (AssetComponent ac : aACGlobalMinimum)</span>
+<span class="nc" id="L106">			strDump += &quot; &quot; + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + &quot;% |&quot;;</span>
 
-<span class="nc" id="L80">		System.out.println (strDump + &quot;|&quot;);</span>
+<span class="nc" id="L108">		System.out.println (strDump + &quot;|&quot;);</span>
 
-<span class="nc" id="L82">		return optPort.optimalMetrics().excessReturnsMean();</span>
+<span class="nc" id="L110">		return optPort.optimalMetrics().excessReturnsMean();</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L89">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L117">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L91">		int iRiskReturnGranularity = 40;</span>
-<span class="nc" id="L92">		double dblRiskToleranceFactor = 0.;</span>
-<span class="nc" id="L93">		String strSeriesLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
+<span class="nc" id="L119">		int iRiskReturnGranularity = 40;</span>
+<span class="nc" id="L120">		double dblRiskToleranceFactor = 0.;</span>
+<span class="nc" id="L121">		String strSeriesLocation = &quot;C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
 
-<span class="nc" id="L95">		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);</span>
+<span class="nc" id="L123">		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);</span>
 
-<span class="nc" id="L97">		String[] astrVariateHeader = csvGrid.headers();</span>
+<span class="nc" id="L125">		String[] astrVariateHeader = csvGrid.headers();</span>
 
-<span class="nc" id="L99">		String[] astrAsset = new String[astrVariateHeader.length - 1];</span>
-<span class="nc" id="L100">		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];</span>
+<span class="nc" id="L127">		String[] astrAsset = new String[astrVariateHeader.length - 1];</span>
+<span class="nc" id="L128">		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];</span>
 
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i) {</span>
-<span class="nc" id="L103">			astrAsset[i] = astrVariateHeader[i + 1];</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i) {</span>
+<span class="nc" id="L131">			astrAsset[i] = astrVariateHeader[i + 1];</span>
 
-<span class="nc" id="L105">			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);</span>
+<span class="nc" id="L133">			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);</span>
 		}
 
-<span class="nc" id="L108">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="nc" id="L109">			MultivariateMoments.Standard (</span>
+<span class="nc" id="L136">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L137">			MultivariateMoments.Standard (</span>
 				astrAsset,
 				aadblVariateSample
 			)
 		);
 
-<span class="nc" id="L115">		PortfolioConstructionParameters pcp = new PortfolioConstructionParameters (</span>
+<span class="nc" id="L143">		PortfolioConstructionParameters pcp = new PortfolioConstructionParameters (</span>
 			astrAsset,
-<span class="nc" id="L117">			CustomRiskUtilitySettings.RiskTolerant (dblRiskToleranceFactor),</span>
+<span class="nc" id="L145">			CustomRiskUtilitySettings.RiskTolerant (dblRiskToleranceFactor),</span>
 			new PortfolioEqualityConstraintSettings (
 				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 				Double.NaN
 			)
 		);
 
-<span class="nc" id="L124">		MeanVarianceOptimizer mvo = new QuadraticMeanVarianceOptimizer();</span>
+<span class="nc" id="L152">		MeanVarianceOptimizer mvo = new QuadraticMeanVarianceOptimizer();</span>
 
-<span class="nc" id="L126">		System.out.println (&quot;\n\n\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L154">		System.out.println (&quot;\n\n\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L128">		System.out.println (&quot;\t|                     GLOBAL MINIMUM VARIANCE AND MAXIMUM RETURNS PORTFOLIOS                    ||&quot;);</span>
+<span class="nc" id="L156">		System.out.println (&quot;\t|                     GLOBAL MINIMUM VARIANCE AND MAXIMUM RETURNS PORTFOLIOS                    ||&quot;);</span>
 
-<span class="nc" id="L130">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L158">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L132">		String strHeader = &quot;\t| RETURNS | RISK % |&quot;;</span>
+<span class="nc" id="L160">		String strHeader = &quot;\t| RETURNS | RISK % |&quot;;</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i)</span>
-<span class="nc" id="L135">			strHeader += &quot;   &quot; + astrAsset[i] + &quot;    |&quot;;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i)</span>
+<span class="nc" id="L163">			strHeader += &quot;   &quot; + astrAsset[i] + &quot;    |&quot;;</span>
 
-<span class="nc" id="L137">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="nc" id="L165">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="nc" id="L139">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L167">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L141">		double dblGMVReturns = DisplayPortfolioMetrics (</span>
-<span class="nc" id="L142">			mvo.globalMinimumVarianceAllocate (</span>
+<span class="nc" id="L169">		double dblGMVReturns = DisplayPortfolioMetrics (</span>
+<span class="nc" id="L170">			mvo.globalMinimumVarianceAllocate (</span>
 				pcp,
 				ausp
 			)
 		);
 
-<span class="nc" id="L148">		double dblMaximumReturns = DisplayPortfolioMetrics (</span>
-<span class="nc" id="L149">			mvo.longOnlyMaximumReturnsAllocate (</span>
+<span class="nc" id="L176">		double dblMaximumReturns = DisplayPortfolioMetrics (</span>
+<span class="nc" id="L177">			mvo.longOnlyMaximumReturnsAllocate (</span>
 				pcp,
 				ausp
 			)
 		);
 
-<span class="nc" id="L155">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
+<span class="nc" id="L183">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
 
-<span class="nc" id="L157">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L185">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L159">		System.out.println (&quot;\t|         EFFICIENT FRONTIER: PORTFOLIO RISK &amp; RETURNS + CORRESPONDING ASSET ALLOCATION         ||&quot;);</span>
+<span class="nc" id="L187">		System.out.println (&quot;\t|         EFFICIENT FRONTIER: PORTFOLIO RISK &amp; RETURNS + CORRESPONDING ASSET ALLOCATION         ||&quot;);</span>
 
-<span class="nc" id="L161">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L189">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L163">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="nc" id="L191">		System.out.println (strHeader + &quot;|&quot;);</span>
 
-<span class="nc" id="L165">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L193">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L167">		double dblReturnsGrain = (dblMaximumReturns - dblGMVReturns) / iRiskReturnGranularity;</span>
+<span class="nc" id="L195">		double dblReturnsGrain = (dblMaximumReturns - dblGMVReturns) / iRiskReturnGranularity;</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		for (int i = 0; i &lt;= iRiskReturnGranularity; ++i) {</span>
-<span class="nc" id="L170">			PortfolioConstructionParameters pcpReturnsConstrained = new PortfolioConstructionParameters (</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (int i = 0; i &lt;= iRiskReturnGranularity; ++i) {</span>
+<span class="nc" id="L198">			PortfolioConstructionParameters pcpReturnsConstrained = new PortfolioConstructionParameters (</span>
 				astrAsset,
-<span class="nc" id="L172">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+<span class="nc" id="L200">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 				new PortfolioEqualityConstraintSettings (
 					PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
 					dblGMVReturns + i * dblReturnsGrain
 				)
 			);
 
-<span class="nc" id="L179">			DisplayPortfolioMetrics (</span>
-<span class="nc" id="L180">				mvo.allocate (</span>
+<span class="nc" id="L207">			DisplayPortfolioMetrics (</span>
+<span class="nc" id="L208">				mvo.allocate (</span>
 					pcpReturnsConstrained,
 					ausp
 				)
 			);
 		}
 
-<span class="nc" id="L187">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n&quot;);</span>
-<span class="nc" id="L188">	}</span>
+<span class="nc" id="L215">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+
+<span class="nc" id="L217">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L218">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

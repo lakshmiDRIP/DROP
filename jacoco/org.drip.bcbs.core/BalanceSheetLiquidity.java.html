@@ -111,6 +111,88 @@ public class BalanceSheetLiquidity
 <span class="nc" id="L111">	private org.drip.bcbs.core.HighQualityLiquidAsset _highQualityLiquidAsset = null;</span>
 
 	/**
+	 * Construct the Basel III Standard Version of Balance Sheet Liquidity
+	 * 
+	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
+	 * @param netCashOutflowAmount Net Cash Outflow Amount
+	 * @param usePeakCumulative TRUE - The Net Outflow is to be determined off of the Peak Cumulative Period
+	 * 
+	 * @return Basel III Standard Version of Balance Sheet Liquidity
+	 */
+
+	public static final BalanceSheetLiquidity Basel_III (
+		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
+		final double netCashOutflowAmount,
+		final boolean usePeakCumulative)
+	{
+		try
+		{
+<span class="nc" id="L130">			return new BalanceSheetLiquidity (</span>
+				highQualityLiquidAsset,
+				netCashOutflowAmount,
+				&quot;30D&quot;,
+				usePeakCumulative
+			);
+		}
+<span class="nc" id="L137">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L139">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L142">		return null;</span>
+	}
+
+	/**
+	 * Construct the Basel III Standard Version of Balance Sheet Liquidity for Large BHC's
+	 * 
+	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
+	 * @param netCashOutflowAmount Net Cash Outflow Amount
+	 * 
+	 * @return Basel III Standard Version of Balance Sheet Liquidity for Large BHC's
+	 */
+
+	public static final BalanceSheetLiquidity LargeBHC (
+		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
+		final double netCashOutflowAmount)
+	{
+<span class="nc" id="L158">		return Basel_III (</span>
+			highQualityLiquidAsset,
+			netCashOutflowAmount,
+			true
+		);
+	}
+
+	/**
+	 * Construct the Basel III Standard Version of Balance Sheet Liquidity for Regional BHC's
+	 * 
+	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
+	 * @param netCashOutflowAmount Net Cash Outflow Amount
+	 * 
+	 * @return Basel III Standard Version of Balance Sheet Liquidity for Regional BHC's
+	 */
+
+	public static final BalanceSheetLiquidity RegionalBHC (
+		final org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset,
+		final double netCashOutflowAmount)
+	{
+		try
+		{
+<span class="nc" id="L180">			return new BalanceSheetLiquidity (</span>
+				highQualityLiquidAsset,
+				netCashOutflowAmount,
+				&quot;21D&quot;,
+				false
+			);
+		}
+<span class="nc" id="L187">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L189">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L192">		return null;</span>
+	}
+
+	/**
 	 * BalanceSheetLiquidity Constructor
 	 * 
 	 * @param highQualityLiquidAsset High Quality Liquid Asset Instance
@@ -127,17 +209,17 @@ public class BalanceSheetLiquidity
 		final java.lang.String netCashOutflowPeriod,
 		final boolean usePeakCumulative)
 		throws java.lang.Exception
-<span class="nc" id="L130">	{</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == (_highQualityLiquidAsset = highQualityLiquidAsset) ||</span>
-<span class="nc bnc" id="L132" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_netCashOutflowAmount = netCashOutflowAmount) ||</span>
+<span class="nc" id="L212">	{</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == (_highQualityLiquidAsset = highQualityLiquidAsset) ||</span>
+<span class="nc bnc" id="L214" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_netCashOutflowAmount = netCashOutflowAmount) ||</span>
 				0. &gt; _netCashOutflowAmount ||
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			null == (_netCashOutflowPeriod = netCashOutflowPeriod) || _netCashOutflowPeriod.isEmpty())</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			null == (_netCashOutflowPeriod = netCashOutflowPeriod) || _netCashOutflowPeriod.isEmpty())</span>
 		{
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;BalanceSheetLiquidity Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L218">			throw new java.lang.Exception (&quot;BalanceSheetLiquidity Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L139">		_usePeakCumulative = usePeakCumulative;</span>
-<span class="nc" id="L140">	}</span>
+<span class="nc" id="L221">		_usePeakCumulative = usePeakCumulative;</span>
+<span class="nc" id="L222">	}</span>
 
 	/**
 	 * Retrieve the High Quality Liquid Asset Instance
@@ -147,7 +229,7 @@ public class BalanceSheetLiquidity
 
 	public org.drip.bcbs.core.HighQualityLiquidAsset highQualityLiquidAsset()
 	{
-<span class="nc" id="L150">		return _highQualityLiquidAsset;</span>
+<span class="nc" id="L232">		return _highQualityLiquidAsset;</span>
 	}
 
 	/**
@@ -158,7 +240,7 @@ public class BalanceSheetLiquidity
 
 	public double netCashOutflowAmount()
 	{
-<span class="nc" id="L161">		return _netCashOutflowAmount;</span>
+<span class="nc" id="L243">		return _netCashOutflowAmount;</span>
 	}
 
 	/**
@@ -169,7 +251,7 @@ public class BalanceSheetLiquidity
 
 	public java.lang.String netCashOutflowPeriod()
 	{
-<span class="nc" id="L172">		return _netCashOutflowPeriod;</span>
+<span class="nc" id="L254">		return _netCashOutflowPeriod;</span>
 	}
 
 	/**
@@ -180,7 +262,7 @@ public class BalanceSheetLiquidity
 
 	public boolean usePeakCumulative()
 	{
-<span class="nc" id="L183">		return _usePeakCumulative;</span>
+<span class="nc" id="L265">		return _usePeakCumulative;</span>
 	}
 
 	/**
@@ -197,7 +279,7 @@ public class BalanceSheetLiquidity
 		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L200">		return _highQualityLiquidAsset.totalRiskWeightAndHaircut (hqlaSettings) / _netCashOutflowAmount;</span>
+<span class="nc" id="L282">		return _highQualityLiquidAsset.totalRiskWeightAndHaircut (hqlaSettings) / _netCashOutflowAmount;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

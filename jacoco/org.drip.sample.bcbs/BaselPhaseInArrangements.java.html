@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaselPhaseInArrangements.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bcbs</a> &gt; <span class="el_source">BaselPhaseInArrangements.java</span></div><h1>BaselPhaseInArrangements.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bcbs;
+
+import org.drip.bcbs.core.CapitalMetricsStandard;
+import org.drip.bcbs.core.LiquidityMetrics;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;BaselPhaseInArrangements&lt;/i&gt; illustrates the Basel III Capital/Liquidity Phase-in Arrangement Schedule.
+ * The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure
+ * 				Requirements https://www.bis.org/publ/bcbs270.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Central Banking (2013): Fed and FDIC agree 6% Leverage Ratio for US SIFIs
+ * 				https://www.centralbanking.com/central-banking/news/2280726/fed-and-fdic-agree-6-leverage-ratio-for-us-sifis
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package
+ * 				https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and
+ * 				Monitoring
+ * 				https://web.archive.org/web/20131102074614/http:/www.federalreserve.gov/FR_notice_lcr_20131024.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/bcbs/README.md&quot;&gt;BCBS&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L111">public class BaselPhaseInArrangements</span>
+{
+
+	private static final void DisplayLeverageRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L117">		String leverageRatio =</span>
+			&quot;\t| Leverage                                                  =&gt; &quot;;
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L122">			leverageRatio = leverageRatio +</span>
+<span class="nc" id="L123">				FormatUtil.FormatDouble (capitalMetricsStandard.leverageRatio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L126">		System.out.println (leverageRatio + &quot;|&quot;);</span>
+<span class="nc" id="L127">	}</span>
+
+	private static final void MinimumCommonEquityCapitalRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L132">		String minimumCommonEquityCapitalRatio =</span>
+			&quot;\t| Minimum Common Equity Capital Ratio                       =&gt; &quot;;
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L137">			minimumCommonEquityCapitalRatio = minimumCommonEquityCapitalRatio +</span>
+<span class="nc" id="L138">				FormatUtil.FormatDouble (capitalMetricsStandard.commonEquityRatio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L141">		System.out.println (minimumCommonEquityCapitalRatio + &quot;|&quot;);</span>
+<span class="nc" id="L142">	}</span>
+
+	private static final void CapitalConservationBufferRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L147">		String capitalConservationBufferRatio =</span>
+			&quot;\t| Capital Conservation Ratio                                =&gt; &quot;;
+
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L152">			capitalConservationBufferRatio = capitalConservationBufferRatio +</span>
+<span class="nc" id="L153">				FormatUtil.FormatDouble (capitalMetricsStandard.conservationBufferRatio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L156">		System.out.println (capitalConservationBufferRatio + &quot;|&quot;);</span>
+<span class="nc" id="L157">	}</span>
+
+	private static final void MinimumCommonEquityPlusCapitalConservationBufferRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L162">		String minimumCommonEquityPlusCapitalConservationBufferRatio =</span>
+			&quot;\t| Minimum Common Equity + Capital Conservation Buffer Ratio =&gt; &quot;;
+
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L167">			minimumCommonEquityPlusCapitalConservationBufferRatio =</span>
+				minimumCommonEquityPlusCapitalConservationBufferRatio + FormatUtil.FormatDouble
+<span class="nc" id="L169">					(capitalMetricsStandard.commonEquityPlusConservationBufferRatio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L172">		System.out.println (minimumCommonEquityPlusCapitalConservationBufferRatio + &quot;|&quot;);</span>
+<span class="nc" id="L173">	}</span>
+
+	private static final void PhaseInOfDeductionsFromCET1 (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L178">		String phaseInOfDeductionsFromCET1 =</span>
+			&quot;\t| Phase-in of Deductions from CET1                          =&gt; &quot;;
+
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L183">			phaseInOfDeductionsFromCET1 = phaseInOfDeductionsFromCET1 +</span>
+<span class="nc" id="L184">				FormatUtil.FormatDouble (capitalMetricsStandard.cet1DeductionsPhaseIn(), 3, 1, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L187">		System.out.println (phaseInOfDeductionsFromCET1 + &quot;|&quot;);</span>
+<span class="nc" id="L188">	}</span>
+
+	private static final void MinimumTier1CapitalRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L193">		String minimumTier1CapitalRatio =</span>
+			&quot;\t| Minimum Tier 1 Capital Ratio                              =&gt; &quot;;
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L198">			minimumTier1CapitalRatio = minimumTier1CapitalRatio +</span>
+<span class="nc" id="L199">				FormatUtil.FormatDouble (capitalMetricsStandard.tier1Ratio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L202">		System.out.println (minimumTier1CapitalRatio + &quot;|&quot;);</span>
+<span class="nc" id="L203">	}</span>
+
+	private static final void MinimumTotalCapitalRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L208">		String minimumTotalCapitalRatio =</span>
+			&quot;\t| Minimum Total Capital Ratio                               =&gt; &quot;;
+
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L213">			minimumTotalCapitalRatio = minimumTotalCapitalRatio +</span>
+<span class="nc" id="L214">				FormatUtil.FormatDouble (capitalMetricsStandard.totalRatio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L217">		System.out.println (minimumTotalCapitalRatio + &quot;|&quot;);</span>
+<span class="nc" id="L218">	}</span>
+
+	private static final void MinimumTotalCapitalPlusConservationBufferRatio (
+		final CapitalMetricsStandard[] capitalMetricsStandardArray)
+	{
+<span class="nc" id="L223">		String minimumTotalCapitalPlusConservationBufferRatio =</span>
+			&quot;\t| Minimum Total Capital Plus Conservation Buffer Ratio      =&gt; &quot;;
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		for (CapitalMetricsStandard capitalMetricsStandard : capitalMetricsStandardArray)</span>
+		{
+<span class="nc" id="L228">			minimumTotalCapitalPlusConservationBufferRatio = minimumTotalCapitalPlusConservationBufferRatio +</span>
+<span class="nc" id="L229">				FormatUtil.FormatDouble (capitalMetricsStandard.totalPlusConservationBufferRatio(), 1, 3, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L232">		System.out.println (minimumTotalCapitalPlusConservationBufferRatio + &quot;|&quot;);</span>
+<span class="nc" id="L233">	}</span>
+
+	private static final void LiquidityCoverageRatioMinimumRequirement (
+		final LiquidityMetrics[] liquidityMetricsArray)
+	{
+<span class="nc" id="L238">		String liquidityCoverageRatioMinimumRequirement =</span>
+			&quot;\t| Liquidity Coverage Ratio - Minimum Requirement =&gt; &quot;;
+
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		for (LiquidityMetrics liquidityMetrics : liquidityMetricsArray)</span>
+		{
+<span class="nc" id="L243">			liquidityCoverageRatioMinimumRequirement = liquidityCoverageRatioMinimumRequirement +</span>
+<span class="nc" id="L244">				FormatUtil.FormatDouble (liquidityMetrics.liquidityCoverageRatio(), 3, 1, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L247">		System.out.println (liquidityCoverageRatioMinimumRequirement + &quot;|&quot;);</span>
+<span class="nc" id="L248">	}</span>
+
+	private static final void NetStableFundingRatio (
+		final LiquidityMetrics[] liquidityMetricsArray)
+	{
+<span class="nc" id="L253">		String netStableFundingRatio = &quot;\t| Net Stable Funding Ratio                       =&gt; &quot;;</span>
+
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		for (LiquidityMetrics liquidityMetrics : liquidityMetricsArray)</span>
+		{
+<span class="nc" id="L257">			netStableFundingRatio = netStableFundingRatio +</span>
+<span class="nc" id="L258">				FormatUtil.FormatDouble (liquidityMetrics.netStableFundingRatio(), 3, 1, 100.) + &quot;% |&quot;;</span>
+		}
+
+<span class="nc" id="L261">		System.out.println (netStableFundingRatio + &quot;|&quot;);</span>
+<span class="nc" id="L262">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L268">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L270">		CapitalMetricsStandard[] capitalMetricsStandardArray = {</span>
+<span class="nc" id="L271">			CapitalMetricsStandard.Basel_III_2013(),</span>
+<span class="nc" id="L272">			CapitalMetricsStandard.Basel_III_2014(),</span>
+<span class="nc" id="L273">			CapitalMetricsStandard.Basel_III_2015(),</span>
+<span class="nc" id="L274">			CapitalMetricsStandard.Basel_III_2016(),</span>
+<span class="nc" id="L275">			CapitalMetricsStandard.Basel_III_2017(),</span>
+<span class="nc" id="L276">			CapitalMetricsStandard.Basel_III_2018(),</span>
+<span class="nc" id="L277">			CapitalMetricsStandard.Basel_III_2019(),</span>
+<span class="nc" id="L278">			CapitalMetricsStandard.US_SIFI(),</span>
+<span class="nc" id="L279">			CapitalMetricsStandard.US_SIFI_BHC()</span>
+		};
+
+<span class="nc" id="L282">		LiquidityMetrics[] liquidityMetricsArray = {</span>
+<span class="nc" id="L283">			LiquidityMetrics.Basel_III_2015(),</span>
+<span class="nc" id="L284">			LiquidityMetrics.Basel_III_2016(),</span>
+<span class="nc" id="L285">			LiquidityMetrics.Basel_III_2017(),</span>
+<span class="nc" id="L286">			LiquidityMetrics.Basel_III_2018(),</span>
+<span class="nc" id="L287">			LiquidityMetrics.Basel_III_2019()</span>
+		};
+
+<span class="nc" id="L290">		System.out.println</span>
+<span class="nc" id="L291">			(&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L293">		System.out.println</span>
+<span class="nc" id="L294">			(&quot;\t|                                                            BASEL III Phase-in Arrangements - Capital                                         ||&quot;);</span>
+
+<span class="nc" id="L296">		System.out.println</span>
+<span class="nc" id="L297">			(&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L299">		System.out.println (</span>
+			&quot;\t|                           Year                            =&gt;   2013  |  2014  |  2015  |  2016  |  2017  |  2018  |  2019  |  SIFI  |  BHC   ||&quot;
+		);
+
+<span class="nc" id="L303">		System.out.println</span>
+<span class="nc" id="L304">			(&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L306">		DisplayLeverageRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L308">		MinimumCommonEquityCapitalRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L310">		CapitalConservationBufferRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L312">		MinimumCommonEquityPlusCapitalConservationBufferRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L314">		PhaseInOfDeductionsFromCET1 (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L316">		MinimumTier1CapitalRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L318">		MinimumTotalCapitalRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L320">		MinimumTotalCapitalPlusConservationBufferRatio (capitalMetricsStandardArray);</span>
+
+<span class="nc" id="L322">		System.out.println</span>
+<span class="nc" id="L323">			(&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L325">		System.out.println();</span>
+
+<span class="nc" id="L327">		System.out.println</span>
+<span class="nc" id="L328">			(&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L330">		System.out.println</span>
+<span class="nc" id="L331">			(&quot;\t|                          BASEL III Phase-in Arrangements - Liquidity                          ||&quot;);</span>
+
+<span class="nc" id="L333">		System.out.println</span>
+<span class="nc" id="L334">			(&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L336">		System.out.println (</span>
+			&quot;\t|                      Year                      =&gt;   2015  |  2016  |  2017  |  2018  |  2019  ||&quot;
+		);
+
+<span class="nc" id="L340">		System.out.println</span>
+<span class="nc" id="L341">			(&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L343">		LiquidityCoverageRatioMinimumRequirement (liquidityMetricsArray);</span>
+
+<span class="nc" id="L345">		NetStableFundingRatio (liquidityMetricsArray);</span>
+
+<span class="nc" id="L347">		System.out.println</span>
+<span class="nc" id="L348">			(&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L350">		System.out.println();</span>
+
+<span class="nc" id="L352">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L353">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -29,34 +29,53 @@ import org.drip.state.inference.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -73,13 +92,22 @@ import org.drip.state.inference.*;
  */
 
 /**
- * JurisdictionOTCIndexSwaps contains curve construction and valuation of the common Jurisdiction-specific
- *  OTC IRS.
+ * &lt;i&gt;JurisdictionOTCIndexSwaps&lt;/i&gt; contains curve construction and valuation of the common
+ * Jurisdiction-specific OTC IRS.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fixfloat/README.md&quot;&gt;Fix Float Swap Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class JurisdictionOTCIndexSwaps {</span>
+<span class="nc" id="L110">public class JurisdictionOTCIndexSwaps {</span>
 
 	private static final FixFloatComponent OTCIRS (
 		final JulianDate dtSpot,
@@ -89,14 +117,14 @@ import org.drip.state.inference.*;
 		final String strIndex,
 		final double dblCoupon)
 	{
-<span class="fc" id="L92">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L120">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			strLocation,
 			strMaturityTenor,
 			strIndex
 		);
 
-<span class="fc" id="L99">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L127">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -117,13 +145,13 @@ import org.drip.state.inference.*;
 		final int[] aiDay)
 		throws Exception
 	{
-<span class="fc" id="L120">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
+<span class="fc" id="L148">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];</span>
 
-<span class="fc" id="L122">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L150">		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (</span>
 			&quot;3M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-<span class="fc" id="L126">			ForwardLabel.Create (</span>
+<span class="fc" id="L154">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;3M&quot;
 			),
@@ -131,7 +159,7 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="fc" id="L134">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
+<span class="fc" id="L162">		CompositePeriodSetting cps = new CompositePeriodSetting (</span>
 			4,
 			&quot;3M&quot;,
 			strCurrency,
@@ -143,20 +171,20 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L146">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="fc" id="L174">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
-<span class="fc" id="L153">			aDeposit[i] = new SingleStreamComponent (</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i) {</span>
+<span class="fc" id="L181">			aDeposit[i] = new SingleStreamComponent (</span>
 				&quot;DEPOSIT_&quot; + aiDay[i],
 				new Stream (
-<span class="fc" id="L156">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
-<span class="fc" id="L157">						CompositePeriodBuilder.EdgePair (</span>
+<span class="fc" id="L184">					CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L185">						CompositePeriodBuilder.EdgePair (</span>
 							dtEffective,
-<span class="fc" id="L159">							dtEffective.addBusDays (</span>
+<span class="fc" id="L187">							dtEffective.addBusDays (</span>
 								aiDay[i],
 								strCurrency
 							)
@@ -168,10 +196,10 @@ import org.drip.state.inference.*;
 				csp
 			);
 
-<span class="fc" id="L171">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
+<span class="fc" id="L199">			aDeposit[i].setPrimaryCode (aiDay[i] + &quot;D&quot;);</span>
 		}
 
-<span class="fc" id="L174">		return aDeposit;</span>
+<span class="fc" id="L202">		return aDeposit;</span>
 	}
 
 	/*
@@ -188,10 +216,10 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="fc" id="L191">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L219">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L193" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L194">			aIRS[i] = OTCIRS (</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L222">			aIRS[i] = OTCIRS (</span>
 				dtSpot,
 				strCurrency,
 				strLocation,
@@ -200,7 +228,7 @@ import org.drip.state.inference.*;
 				0.
 			);
 
-<span class="fc" id="L203">		return aIRS;</span>
+<span class="fc" id="L231">		return aIRS;</span>
 	}
 
 	/*
@@ -229,7 +257,7 @@ import org.drip.state.inference.*;
 		final String strIndex)
 		throws Exception
 	{
-<span class="fc" id="L232">		JulianDate dtSpot = dtToday.addTenorAndAdjust (</span>
+<span class="fc" id="L260">		JulianDate dtSpot = dtToday.addTenorAndAdjust (</span>
 			&quot;0D&quot;,
 			strCurrency
 		);
@@ -238,7 +266,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L241">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L269">		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			strCurrency,
 			new int[] {
@@ -246,7 +274,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="fc" id="L249">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L277">		double[] adblDepositQuote = new double[] {</span>
 			0.0013, 0.0017, 0.0018, 0.0020, 0.0023
 		};
 
@@ -254,7 +282,7 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L257">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L285">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDepositComp,
 			&quot;ForwardRate&quot;,
@@ -265,13 +293,13 @@ import org.drip.state.inference.*;
 		 * Construct the Array of EDF Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L268">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L296">		SingleStreamComponent[] aEDFComp = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtSpot,
 			4,
 			strCurrency
 		);
 
-<span class="fc" id="L274">		double[] adblEDFQuote = new double[] {</span>
+<span class="fc" id="L302">		double[] adblEDFQuote = new double[] {</span>
 			0.0027, 0.0032, 0.0041, 0.0054, 0.0077, 0.0104, 0.0134, 0.0160
 		};
 
@@ -279,7 +307,7 @@ import org.drip.state.inference.*;
 		 * Construct the EDF Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L282">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L310">		LatentStateStretchSpec edfStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;EDF&quot;,
 			aEDFComp,
 			&quot;ForwardRate&quot;,
@@ -290,7 +318,7 @@ import org.drip.state.inference.*;
 		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L293">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L321">		FixFloatComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			strLocation,
@@ -300,7 +328,7 @@ import org.drip.state.inference.*;
 			}
 		);
 
-<span class="fc" id="L303">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L331">		double[] adblSwapQuote = new double[] {</span>
 			0.0166, 0.0206, 0.0241, 0.0269, 0.0292, 0.0311, 0.0326, 0.0340, 0.0351, 0.0375, 0.0393, 0.0402, 0.0407, 0.0409, 0.0409
 		};
 
@@ -308,14 +336,14 @@ import org.drip.state.inference.*;
 		 * Construct the Swap Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L311">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
+<span class="fc" id="L339">		LatentStateStretchSpec swapStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (</span>
 			&quot;SWAP&quot;,
 			aSwapComp,
 			&quot;SwapRate&quot;,
 			adblSwapQuote
 		);
 
-<span class="fc" id="L318">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L346">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			edfStretch,
 			swapStretch
@@ -329,11 +357,11 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="fc" id="L332">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L360">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="fc" id="L336">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L364">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -343,13 +371,13 @@ import org.drip.state.inference.*;
 				),
 				null
 			),
-<span class="fc" id="L346">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L374">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="fc" id="L352">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L380">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -360,7 +388,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit, Futures, and Swap Stretches.
 		 */
 
-<span class="fc" id="L363">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
+<span class="fc" id="L391">		MergedDiscountForwardCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (</span>
 			strCurrency,
 			lcc,
 			aStretchSpec,
@@ -371,7 +399,7 @@ import org.drip.state.inference.*;
 			1.
 		);
 
-<span class="fc" id="L374">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L402">		CurveSurfaceQuoteContainer csqs = MarketParamsBuilder.Create (</span>
 			dc,
 			null,
 			null,
@@ -381,10 +409,10 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="fc" id="L384">		System.out.print (&quot;\t[&quot; + strCurrency + &quot; | &quot; + strLocation + &quot;] = &quot;);</span>
+<span class="fc" id="L412">		System.out.print (&quot;\t[&quot; + strCurrency + &quot; | &quot; + strLocation + &quot;] = &quot;);</span>
 
-<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (int i = 0; i &lt; astrOTCMaturityTenor.length; ++i) {</span>
-<span class="fc" id="L387">			FixFloatComponent swap = OTCIRS (</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">		for (int i = 0; i &lt; astrOTCMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L415">			FixFloatComponent swap = OTCIRS (</span>
 				dtSpot,
 				strCurrency,
 				strLocation,
@@ -393,21 +421,21 @@ import org.drip.state.inference.*;
 				0.
 			);
 
-<span class="fc" id="L396">			Map&lt;String, Double&gt; mapOutput = swap.value (</span>
+<span class="fc" id="L424">			Map&lt;String, Double&gt; mapOutput = swap.value (</span>
 				valParams,
 				null,
 				csqs,
 				null
 			);
 
-<span class="fc" id="L403">			System.out.print (</span>
-<span class="fc" id="L404">				FormatUtil.FormatDouble (mapOutput.get (&quot;CalibSwapRate&quot;), 1, 4, 100.) + &quot;% (&quot; +</span>
-<span class="fc" id="L405">				FormatUtil.FormatDouble (mapOutput.get (&quot;FairPremium&quot;), 1, 4, 100.) + &quot;%) || &quot;</span>
+<span class="fc" id="L431">			System.out.print (</span>
+<span class="fc" id="L432">				FormatUtil.FormatDouble (mapOutput.get (&quot;CalibSwapRate&quot;), 1, 4, 100.) + &quot;% (&quot; +</span>
+<span class="fc" id="L433">				FormatUtil.FormatDouble (mapOutput.get (&quot;FairPremium&quot;), 1, 4, 100.) + &quot;%) || &quot;</span>
 			);
 		}
 
-<span class="fc" id="L409">		System.out.println();</span>
-<span class="fc" id="L410">	}</span>
+<span class="fc" id="L437">		System.out.println();</span>
+<span class="fc" id="L438">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -417,11 +445,11 @@ import org.drip.state.inference.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L420">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L448">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L422">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L450">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="fc" id="L424">		String[] astrOTCMaturityTenor = new String[] {</span>
+<span class="fc" id="L452">		String[] astrOTCMaturityTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;3Y&quot;,
 			&quot;5Y&quot;,
@@ -429,59 +457,61 @@ import org.drip.state.inference.*;
 			&quot;10Y&quot;
 		};
 
-<span class="fc" id="L432">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L460">		System.out.println (&quot;\n\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L434">		System.out.println (&quot;\t JURISDICTION             1Y      ||          3Y         ||          5Y         ||          7Y         ||         10Y         ||&quot;);</span>
+<span class="fc" id="L462">		System.out.println (&quot;\t JURISDICTION             1Y      ||          3Y         ||          5Y         ||          7Y         ||         10Y         ||&quot;);</span>
 
-<span class="fc" id="L436">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L464">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L438">		OTCRun (dtToday, &quot;AUD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L466">		OTCRun (dtToday, &quot;AUD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L440">		OTCRun (dtToday, &quot;CAD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L468">		OTCRun (dtToday, &quot;CAD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L442">		OTCRun (dtToday, &quot;CHF&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L470">		OTCRun (dtToday, &quot;CHF&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L444">		OTCRun (dtToday, &quot;CNY&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L472">		OTCRun (dtToday, &quot;CNY&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L446">		OTCRun (dtToday, &quot;DKK&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L474">		OTCRun (dtToday, &quot;DKK&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L448">		OTCRun (dtToday, &quot;EUR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L476">		OTCRun (dtToday, &quot;EUR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L450">		OTCRun (dtToday, &quot;GBP&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L478">		OTCRun (dtToday, &quot;GBP&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L452">		OTCRun (dtToday, &quot;HKD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L480">		OTCRun (dtToday, &quot;HKD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L454">		OTCRun (dtToday, &quot;INR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L482">		OTCRun (dtToday, &quot;INR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L456">		OTCRun (dtToday, &quot;JPY&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L484">		OTCRun (dtToday, &quot;JPY&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L458">		OTCRun (dtToday, &quot;JPY&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;TIBOR&quot;);</span>
+<span class="fc" id="L486">		OTCRun (dtToday, &quot;JPY&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;TIBOR&quot;);</span>
 
-<span class="fc" id="L460">		OTCRun (dtToday, &quot;KRW&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L488">		OTCRun (dtToday, &quot;KRW&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L462">		OTCRun (dtToday, &quot;MYR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L490">		OTCRun (dtToday, &quot;MYR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L464">		OTCRun (dtToday, &quot;NOK&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L492">		OTCRun (dtToday, &quot;NOK&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L466">		OTCRun (dtToday, &quot;NZD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L494">		OTCRun (dtToday, &quot;NZD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L468">		OTCRun (dtToday, &quot;PLN&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L496">		OTCRun (dtToday, &quot;PLN&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L470">		OTCRun (dtToday, &quot;SEK&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L498">		OTCRun (dtToday, &quot;SEK&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L472">		OTCRun (dtToday, &quot;SGD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L500">		OTCRun (dtToday, &quot;SGD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L474">		OTCRun (dtToday, &quot;THB&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L502">		OTCRun (dtToday, &quot;THB&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L476">		OTCRun (dtToday, &quot;TWD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L504">		OTCRun (dtToday, &quot;TWD&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L478">		OTCRun (dtToday, &quot;USD&quot;, &quot;LON&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L506">		OTCRun (dtToday, &quot;USD&quot;, &quot;LON&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L480">		OTCRun (dtToday, &quot;USD&quot;, &quot;NYC&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L508">		OTCRun (dtToday, &quot;USD&quot;, &quot;NYC&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L482">		OTCRun (dtToday, &quot;ZAR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
+<span class="fc" id="L510">		OTCRun (dtToday, &quot;ZAR&quot;, &quot;ALL&quot;, astrOTCMaturityTenor, &quot;MAIN&quot;);</span>
 
-<span class="fc" id="L484">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
-<span class="fc" id="L485">	}</span>
+<span class="fc" id="L512">		System.out.println (&quot;\t--------------------------------------------------------------------------------------------------------------------------------&quot;);</span>
+
+<span class="fc" id="L514">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L515">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

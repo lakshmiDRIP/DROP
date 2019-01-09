@@ -17,35 +17,54 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -62,42 +81,51 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * JPY3M6MUSD3M6M demonstrates the setup and construction of the USD 3M Forward Curve from JPY3M6MUSD3M6M
- * 	CCBS, JPY 3M, JPY 6M, and USD 6M Quotes.
+ * &lt;i&gt;JPY3M6MUSD3M6M&lt;/i&gt; demonstrates the setup and construction of the USD 3M Forward Curve from
+ * JPY3M6MUSD3M6M CCBS, JPY 3M, JPY 6M, and USD 6M Quotes.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/dual/README.md&quot;&gt;Dual Currency OTC Swap&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L71">public class JPY3M6MUSD3M6M {</span>
+<span class="nc" id="L99">public class JPY3M6MUSD3M6M {</span>
 	private static final double _dblFXJPYUSD = 0.009753;
 
-<span class="fc" id="L74">	private static final int[] s_aiUSDOISDepositMaturityDays = new int[] {</span>
+<span class="fc" id="L102">	private static final int[] s_aiUSDOISDepositMaturityDays = new int[] {</span>
 		1,
 		2,
 		3
 	};
 
-<span class="fc" id="L80">	private static final double[] s_adblUSDOISDepositQuote = new double[] {</span>
+<span class="fc" id="L108">	private static final double[] s_adblUSDOISDepositQuote = new double[] {</span>
 		0.0004,	// 1D
 		0.0004,	// 2D
 		0.0004	// 3D
 	};
 
-<span class="fc" id="L86">	private static final String[] s_astrUSDShortEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L114">	private static final String[] s_astrUSDShortEndOISMaturityTenor = new String[] {</span>
 		&quot;1W&quot;,
 		&quot;2W&quot;,
 		&quot;3W&quot;,
 		&quot;1M&quot;
 	};
 
-<span class="fc" id="L93">	private static final double[] s_adblUSDShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L121">	private static final double[] s_adblUSDShortEndOISQuote = new double[] {</span>
 		0.00070,    //   1W
 		0.00069,    //   2W
 		0.00078,    //   3W
 		0.00074     //   1M
 	};
 
-<span class="fc" id="L100">	private static final String[] s_astrUSDOISFutureTenor = new String[] {</span>
+<span class="fc" id="L128">	private static final String[] s_astrUSDOISFutureTenor = new String[] {</span>
 		&quot;1M&quot;,
 		&quot;1M&quot;,
 		&quot;1M&quot;,
@@ -105,7 +133,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;1M&quot;
 	};
 
-<span class="fc" id="L108">	private static final String[] s_astrUSDOISFutureMaturityTenor = new String[] {</span>
+<span class="fc" id="L136">	private static final String[] s_astrUSDOISFutureMaturityTenor = new String[] {</span>
 		&quot;1M&quot;,
 		&quot;2M&quot;,
 		&quot;3M&quot;,
@@ -113,7 +141,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;5M&quot;
 	};
 
-<span class="fc" id="L116">	private static final double[] s_adblUSDOISFutureQuote = new double[] {</span>
+<span class="fc" id="L144">	private static final double[] s_adblUSDOISFutureQuote = new double[] {</span>
 		 0.00046,    //   1M x 1M
 		 0.00016,    //   2M x 1M
 		-0.00007,    //   3M x 1M
@@ -121,7 +149,7 @@ import org.drip.state.identifier.ForwardLabel;
 		-0.00014     //   5M x 1M
 	};
 
-<span class="fc" id="L124">	private static final String[] s_astrUSDLongEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L152">	private static final String[] s_astrUSDLongEndOISMaturityTenor = new String[] {</span>
 		&quot;15M&quot;,
 		&quot;18M&quot;,
 		&quot;21M&quot;,
@@ -142,7 +170,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;30Y&quot;
 	};
 
-<span class="fc" id="L145">	private static final double[] s_adblUSDLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L173">	private static final double[] s_adblUSDLongEndOISQuote = new double[] {</span>
 		0.00002,    //  15M
 		0.00008,    //  18M
 		0.00021,    //  21M
@@ -163,33 +191,33 @@ import org.drip.state.identifier.ForwardLabel;
 		0.02038     //  30Y
 	};
 
-<span class="fc" id="L166">	private static final int[] s_aiJPYOISDepositMaturityDays = new int[] {</span>
+<span class="fc" id="L194">	private static final int[] s_aiJPYOISDepositMaturityDays = new int[] {</span>
 		1,
 		2,
 		3
 	};
 
-<span class="fc" id="L172">	private static final double[] s_adblJPYOISDepositQuote = new double[] {</span>
+<span class="fc" id="L200">	private static final double[] s_adblJPYOISDepositQuote = new double[] {</span>
 		0.0004,	// 1D
 		0.0004,	// 2D
 		0.0004	// 3D
 	};
 
-<span class="fc" id="L178">	private static final String[] s_astrJPYShortEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L206">	private static final String[] s_astrJPYShortEndOISMaturityTenor = new String[] {</span>
 		&quot;1W&quot;,
 		&quot;2W&quot;,
 		&quot;3W&quot;,
 		&quot;1M&quot;
 	};
 
-<span class="fc" id="L185">	private static final double[] s_adblJPYShortEndOISQuote = new double[] {</span>
+<span class="fc" id="L213">	private static final double[] s_adblJPYShortEndOISQuote = new double[] {</span>
 		0.00070,    //   1W
 		0.00069,    //   2W
 		0.00078,    //   3W
 		0.00074     //   1M
 	};
 
-<span class="fc" id="L192">	private static final String[] s_astrJPYOISFutureTenor = new String[] {</span>
+<span class="fc" id="L220">	private static final String[] s_astrJPYOISFutureTenor = new String[] {</span>
 		&quot;1M&quot;,
 		&quot;1M&quot;,
 		&quot;1M&quot;,
@@ -197,7 +225,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;1M&quot;
 	};
 
-<span class="fc" id="L200">	private static final String[] s_astrJPYOISFutureMaturityTenor = new String[] {</span>
+<span class="fc" id="L228">	private static final String[] s_astrJPYOISFutureMaturityTenor = new String[] {</span>
 		&quot;1M&quot;,
 		&quot;2M&quot;,
 		&quot;3M&quot;,
@@ -205,7 +233,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;5M&quot;
 	};
 
-<span class="fc" id="L208">	private static final double[] s_adblJPYOISFutureQuote = new double[] {</span>
+<span class="fc" id="L236">	private static final double[] s_adblJPYOISFutureQuote = new double[] {</span>
 		 0.00046,    //   1M x 1M
 		 0.00016,    //   2M x 1M
 		-0.00007,    //   3M x 1M
@@ -213,7 +241,7 @@ import org.drip.state.identifier.ForwardLabel;
 		-0.00014     //   5M x 1M
 	};
 
-<span class="fc" id="L216">	private static final String[] s_astrJPYLongEndOISMaturityTenor = new String[] {</span>
+<span class="fc" id="L244">	private static final String[] s_astrJPYLongEndOISMaturityTenor = new String[] {</span>
 		&quot;15M&quot;,
 		&quot;18M&quot;,
 		&quot;21M&quot;,
@@ -234,7 +262,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;30Y&quot;
 	};
 
-<span class="fc" id="L237">	private static final double[] s_adblJPYLongEndOISQuote = new double[] {</span>
+<span class="fc" id="L265">	private static final double[] s_adblJPYLongEndOISQuote = new double[] {</span>
 		0.00002,    //  15M
 		0.00008,    //  18M
 		0.00021,    //  21M
@@ -255,7 +283,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.02038     //  30Y
 	};
 
-<span class="fc" id="L258">	private static final String[] s_astrUSD6MDepositTenor = new String[] {</span>
+<span class="fc" id="L286">	private static final String[] s_astrUSD6MDepositTenor = new String[] {</span>
 		&quot;1D&quot;,
 		&quot;1W&quot;,
 		&quot;2W&quot;,
@@ -267,7 +295,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;5M&quot;
 	};
 
-<span class="fc" id="L270">	private static final double[] s_adblUSD6MDepositQuote = new double[] {</span>
+<span class="fc" id="L298">	private static final double[] s_adblUSD6MDepositQuote = new double[] {</span>
 		0.003565,	// 1D
 		0.003858,	// 1W
 		0.003840,	// 2W
@@ -279,7 +307,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.003225	// 5M
 	};
 
-<span class="fc" id="L282">	private static final String[] s_astrUSD6MFRATenor = new String[] {</span>
+<span class="fc" id="L310">	private static final String[] s_astrUSD6MFRATenor = new String[] {</span>
 		 &quot;0D&quot;,
 		 &quot;1M&quot;,
 		 &quot;2M&quot;,
@@ -301,7 +329,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;18M&quot;
 	};
 
-<span class="fc" id="L304">	private static final double[] s_adblUSD6MFRAQuote = new double[] {</span>
+<span class="fc" id="L332">	private static final double[] s_adblUSD6MFRAQuote = new double[] {</span>
 		0.003120,	//  0D
 		0.002930,	//  1M
 		0.002720,	//  2M
@@ -323,7 +351,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.004090	// 18M
 	};
 
-<span class="fc" id="L326">	private static final String[] s_astrUSD6MFixFloatTenor = new String[] {</span>
+<span class="fc" id="L354">	private static final String[] s_astrUSD6MFixFloatTenor = new String[] {</span>
 		 &quot;3Y&quot;,
 		 &quot;4Y&quot;,
 		 &quot;5Y&quot;,
@@ -343,7 +371,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;60Y&quot;
 	};
 
-<span class="fc" id="L346">	private static final double[] s_adblUSD6MFixFloatQuote = new double[] {</span>
+<span class="fc" id="L374">	private static final double[] s_adblUSD6MFixFloatQuote = new double[] {</span>
 		0.004240,	//  3Y
 		0.005760,	//  4Y			
 		0.007620,	//  5Y
@@ -363,21 +391,21 @@ import org.drip.state.identifier.ForwardLabel;
 		0.024630	// 60Y
 	};
 
-<span class="fc" id="L366">	private static final String[] s_astrUSD3MDepositTenor = new String[] {</span>
+<span class="fc" id="L394">	private static final String[] s_astrUSD3MDepositTenor = new String[] {</span>
 		&quot;2W&quot;,
 		&quot;3W&quot;,
 		&quot;1M&quot;,
 		&quot;2M&quot;
 	};
 
-<span class="fc" id="L373">	private static final double[] s_adblUSD3MDepositQuote = new double[] {</span>
+<span class="fc" id="L401">	private static final double[] s_adblUSD3MDepositQuote = new double[] {</span>
 		0.001865,
 		0.001969,
 		0.001951,
 		0.001874
 	};
 
-<span class="fc" id="L380">	private static final String[] s_astrUSD3MFRATenor = new String[] {</span>
+<span class="fc" id="L408">	private static final String[] s_astrUSD3MFRATenor = new String[] {</span>
 		 &quot;0D&quot;,
 		 &quot;1M&quot;,
 		 &quot;3M&quot;,
@@ -389,7 +417,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;21M&quot;
 	};
 
-<span class="fc" id="L392">	private static final double[] s_adblUSD3MFRAQuote = new double[] {</span>
+<span class="fc" id="L420">	private static final double[] s_adblUSD3MFRAQuote = new double[] {</span>
 		0.001790,
 		0.001775,
 		0.001274,
@@ -401,7 +429,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.003101
 	};
 
-<span class="fc" id="L404">	private static final String[] s_astrUSD3MFixFloatTenor = new String[] {</span>
+<span class="fc" id="L432">	private static final String[] s_astrUSD3MFixFloatTenor = new String[] {</span>
 		 &quot;3Y&quot;,
 		 &quot;4Y&quot;,
 		 &quot;5Y&quot;,
@@ -417,7 +445,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;30Y&quot;
 	};
 
-<span class="fc" id="L420">	private static final double[] s_adblUSD3MFixFloatQuote = new double[] {</span>
+<span class="fc" id="L448">	private static final double[] s_adblUSD3MFixFloatQuote = new double[] {</span>
 		0.002850,	//  3Y
 		0.004370,	//  4Y
 		0.006230,	//  5Y
@@ -433,21 +461,21 @@ import org.drip.state.identifier.ForwardLabel;
 		0.021860 	// 30Y
 	};
 
-<span class="fc" id="L436">	private static final String[] s_astrUSD3MSyntheticFloatFloatTenor = new String[] {</span>
+<span class="fc" id="L464">	private static final String[] s_astrUSD3MSyntheticFloatFloatTenor = new String[] {</span>
 		&quot;35Y&quot;,
 		&quot;40Y&quot;,
 		&quot;50Y&quot;,
 		&quot;60Y&quot;
 	};
 
-<span class="fc" id="L443">	private static final double[] s_adblUSD3MSyntheticFloatFloatQuote = new double[] {</span>
+<span class="fc" id="L471">	private static final double[] s_adblUSD3MSyntheticFloatFloatQuote = new double[] {</span>
 		0.00065,
 		0.00060,
 		0.00054,
 		0.00050
 	};
 
-<span class="fc" id="L450">	private static final String[] s_astrJPY6MDepositTenor = new String[] {</span>
+<span class="fc" id="L478">	private static final String[] s_astrJPY6MDepositTenor = new String[] {</span>
 		&quot;1D&quot;,
 		&quot;1W&quot;,
 		&quot;2W&quot;,
@@ -459,7 +487,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;5M&quot;
 	};
 
-<span class="fc" id="L462">	private static final double[] s_adblJPY6MDepositQuote = new double[] {</span>
+<span class="fc" id="L490">	private static final double[] s_adblJPY6MDepositQuote = new double[] {</span>
 		0.003565,	// 1D
 		0.003858,	// 1W
 		0.003840,	// 2W
@@ -471,7 +499,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.003225	// 5M
 	};
 
-<span class="fc" id="L474">	private static final String[] s_astrJPY6MFRATenor = new String[] {</span>
+<span class="fc" id="L502">	private static final String[] s_astrJPY6MFRATenor = new String[] {</span>
 		 &quot;0D&quot;,
 		 &quot;1M&quot;,
 		 &quot;2M&quot;,
@@ -493,7 +521,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;18M&quot;
 	};
 
-<span class="fc" id="L496">	private static final double[] s_adblJPY6MFRAQuote = new double[] {</span>
+<span class="fc" id="L524">	private static final double[] s_adblJPY6MFRAQuote = new double[] {</span>
 		0.003120,	//  0D
 		0.002930,	//  1M
 		0.002720,	//  2M
@@ -515,7 +543,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.004090	// 18M
 	};
 
-<span class="fc" id="L518">	private static final String[] s_astrJPY6MFixFloatTenor = new String[] {</span>
+<span class="fc" id="L546">	private static final String[] s_astrJPY6MFixFloatTenor = new String[] {</span>
 		 &quot;3Y&quot;,
 		 &quot;4Y&quot;,
 		 &quot;5Y&quot;,
@@ -535,7 +563,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;60Y&quot;
 	};
 
-<span class="fc" id="L538">	private static final double[] s_adblJPY6MFixFloatQuote = new double[] {</span>
+<span class="fc" id="L566">	private static final double[] s_adblJPY6MFixFloatQuote = new double[] {</span>
 		0.004240,	//  3Y
 		0.005760,	//  4Y			
 		0.007620,	//  5Y
@@ -555,7 +583,7 @@ import org.drip.state.identifier.ForwardLabel;
 		0.024630	// 60Y
 	};
 
-<span class="fc" id="L558">	private static final String[] s_astrCCBSTenor = new String[] {</span>
+<span class="fc" id="L586">	private static final String[] s_astrCCBSTenor = new String[] {</span>
 		&quot;1Y&quot;,
 		&quot;2Y&quot;,
 		&quot;3Y&quot;,
@@ -568,7 +596,7 @@ import org.drip.state.identifier.ForwardLabel;
 		&quot;30Y&quot;
 	};
 
-<span class="fc" id="L571">	private static final double[] s_adblCCBSQuote = new double[] {</span>
+<span class="fc" id="L599">	private static final double[] s_adblCCBSQuote = new double[] {</span>
 		-0.000350, //  1Y
 		-0.000350, //  2Y
 		-0.000325, //  3Y
@@ -581,7 +609,7 @@ import org.drip.state.identifier.ForwardLabel;
 		-0.002475  // 30Y
 	};
 
-<span class="fc" id="L584">	private static final double[] s_adblIRSQuote = new double[] {</span>
+<span class="fc" id="L612">	private static final double[] s_adblIRSQuote = new double[] {</span>
 		0.00325, //  1Y
 		0.00325, //  2Y
 		0.00350, //  3Y
@@ -602,21 +630,21 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L605">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L633">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L607">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L635">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
 			2012,
 			DateUtil.DECEMBER,
 			11
 		);
 
-<span class="fc" id="L613">		String strReferenceCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L614">		String strDerivedCurrency = &quot;JPY&quot;;</span>
+<span class="fc" id="L641">		String strReferenceCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L642">		String strDerivedCurrency = &quot;JPY&quot;;</span>
 
-<span class="fc" id="L616">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L644">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-<span class="fc" id="L619">			SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L647">			SegmentInelasticDesignControl.Create (</span>
 				2,
 				2
 			),
@@ -627,7 +655,7 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="fc" id="L630">		MergedDiscountForwardCurve dcReference = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L658">		MergedDiscountForwardCurve dcReference = OvernightIndexCurve.MakeDC (</span>
 			strReferenceCurrency,
 			dtValue,
 			s_aiUSDOISDepositMaturityDays,
@@ -643,10 +671,10 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="fc" id="L646">		ForwardCurve fc6MReference = IBORCurve.CustomIBORBuilderSample (</span>
+<span class="fc" id="L674">		ForwardCurve fc6MReference = IBORCurve.CustomIBORBuilderSample (</span>
 			dcReference,
 			null,
-<span class="fc" id="L649">			ForwardLabel.Create (</span>
+<span class="fc" id="L677">			ForwardLabel.Create (</span>
 				strReferenceCurrency,
 				&quot;6M&quot;
 			),
@@ -670,10 +698,10 @@ import org.drip.state.identifier.ForwardLabel;
 			false
 		);
 
-<span class="fc" id="L673">		ForwardCurve fc3MReference = IBORCurve.CustomIBORBuilderSample (</span>
+<span class="fc" id="L701">		ForwardCurve fc3MReference = IBORCurve.CustomIBORBuilderSample (</span>
 			dcReference,
 			fc6MReference,
-<span class="fc" id="L676">			ForwardLabel.Create (</span>
+<span class="fc" id="L704">			ForwardLabel.Create (</span>
 				strReferenceCurrency,
 				&quot;3M&quot;
 			),
@@ -697,7 +725,7 @@ import org.drip.state.identifier.ForwardLabel;
 			false
 		);
 
-<span class="fc" id="L700">		MergedDiscountForwardCurve dcDerived = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L728">		MergedDiscountForwardCurve dcDerived = OvernightIndexCurve.MakeDC (</span>
 			strDerivedCurrency,
 			dtValue,
 			s_aiJPYOISDepositMaturityDays,
@@ -713,10 +741,10 @@ import org.drip.state.identifier.ForwardLabel;
 			null
 		);
 
-<span class="fc" id="L716">		ForwardCurve fc6MDerived = IBORCurve.CustomIBORBuilderSample (</span>
+<span class="fc" id="L744">		ForwardCurve fc6MDerived = IBORCurve.CustomIBORBuilderSample (</span>
 			dcDerived,
 			null,
-<span class="fc" id="L719">			ForwardLabel.Create (</span>
+<span class="fc" id="L747">			ForwardLabel.Create (</span>
 				strDerivedCurrency,
 				&quot;6M&quot;
 			),
@@ -740,7 +768,7 @@ import org.drip.state.identifier.ForwardLabel;
 			false
 		);
 
-<span class="fc" id="L743">		CCBSForwardCurve.ForwardCurveReferenceComponentBasis (</span>
+<span class="fc" id="L771">		CCBSForwardCurve.ForwardCurveReferenceComponentBasis (</span>
 			strReferenceCurrency,
 			strDerivedCurrency,
 			dtValue,
@@ -756,7 +784,7 @@ import org.drip.state.identifier.ForwardLabel;
 			true
 		);
 
-<span class="fc" id="L759">		CCBSForwardCurve.ForwardCurveReferenceComponentBasis (</span>
+<span class="fc" id="L787">		CCBSForwardCurve.ForwardCurveReferenceComponentBasis (</span>
 			strReferenceCurrency,
 			strDerivedCurrency,
 			dtValue,
@@ -772,7 +800,7 @@ import org.drip.state.identifier.ForwardLabel;
 			false
 		);
 
-<span class="fc" id="L775">		CCBSDiscountCurve.MakeDiscountCurve (</span>
+<span class="fc" id="L803">		CCBSDiscountCurve.MakeDiscountCurve (</span>
 			strReferenceCurrency,
 			strDerivedCurrency,
 			dtValue,
@@ -787,7 +815,7 @@ import org.drip.state.identifier.ForwardLabel;
 			true
 		);
 
-<span class="fc" id="L790">		CCBSDiscountCurve.MakeDiscountCurve (</span>
+<span class="fc" id="L818">		CCBSDiscountCurve.MakeDiscountCurve (</span>
 			strReferenceCurrency,
 			strDerivedCurrency,
 			dtValue,
@@ -801,6 +829,8 @@ import org.drip.state.identifier.ForwardLabel;
 			s_adblIRSQuote,
 			false
 		);
-<span class="fc" id="L804">	}</span>
+
+<span class="fc" id="L833">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L834">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

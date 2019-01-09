@@ -29,35 +29,54 @@ import org.drip.state.inference.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -74,12 +93,21 @@ import org.drip.state.inference.*;
  */
 
 /**
- * CCBSForwardCurve demonstrates the setup and construction of the Forward Curve from the CCBS Quotes.
+ * &lt;i&gt;CCBSForwardCurve&lt;/i&gt; demonstrates the setup and construction of the Forward Curve from the CCBS Quotes.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/dual/README.md&quot;&gt;Dual Currency OTC Swap&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class CCBSForwardCurve {</span>
+<span class="nc" id="L110">public class CCBSForwardCurve {</span>
 
 	/*
 	 * Construct an array of float-float swaps from the corresponding reference (6M) and the derived legs.
@@ -96,13 +124,13 @@ import org.drip.state.inference.*;
 		final int iTenorInMonths)
 		throws Exception
 	{
-<span class="fc" id="L99">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L127">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc" id="L101">		ComposableFloatingUnitSetting cfusReference = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L129">		ComposableFloatingUnitSetting cfusReference = new ComposableFloatingUnitSetting (</span>
 			&quot;6M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-<span class="fc" id="L105">			ForwardLabel.Create (</span>
+<span class="fc" id="L133">			ForwardLabel.Create (</span>
 				strCouponCurrency,
 				&quot;6M&quot;
 			),
@@ -110,11 +138,11 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="fc" id="L113">		ComposableFloatingUnitSetting cfusDerived = new ComposableFloatingUnitSetting (</span>
+<span class="fc" id="L141">		ComposableFloatingUnitSetting cfusDerived = new ComposableFloatingUnitSetting (</span>
 			iTenorInMonths + &quot;M&quot;,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-<span class="fc" id="L117">			ForwardLabel.Create (</span>
+<span class="fc" id="L145">			ForwardLabel.Create (</span>
 				strCouponCurrency,
 				iTenorInMonths + &quot;M&quot;
 			),
@@ -122,7 +150,7 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="fc" id="L125">		CompositePeriodSetting cpsReference = new CompositePeriodSetting (</span>
+<span class="fc" id="L153">		CompositePeriodSetting cpsReference = new CompositePeriodSetting (</span>
 			2,
 			&quot;6M&quot;,
 			strPayCurrency,
@@ -130,16 +158,16 @@ import org.drip.state.inference.*;
 			-1. * dblNotional,
 			null,
 			null,
-<span class="fc bfc" id="L133" title="All 2 branches covered.">			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :</span>
 				new FixingSetting (
 					FixingSetting.FIXING_PRESET_STATIC,
 					null,
-<span class="fc" id="L137">					dtEffective.julian()</span>
+<span class="fc" id="L165">					dtEffective.julian()</span>
 				),
 			null
 		);
 
-<span class="fc" id="L142">		CompositePeriodSetting cpsDerived = new CompositePeriodSetting (</span>
+<span class="fc" id="L170">		CompositePeriodSetting cpsDerived = new CompositePeriodSetting (</span>
 			12 / iTenorInMonths,
 			iTenorInMonths + &quot;M&quot;,
 			strPayCurrency,
@@ -147,40 +175,40 @@ import org.drip.state.inference.*;
 			1. * dblNotional,
 			null,
 			null,
-<span class="fc bfc" id="L150" title="All 2 branches covered.">			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :</span>
 				new FixingSetting (
 					FixingSetting.FIXING_PRESET_STATIC,
 					null,
-<span class="fc" id="L154">					dtEffective.julian()</span>
+<span class="fc" id="L182">					dtEffective.julian()</span>
 				),
 			null
 		);
 
-<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="fc" id="L160">			List&lt;Integer&gt; lsReferenceStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="fc" id="L188">			List&lt;Integer&gt; lsReferenceStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				&quot;6M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L167">			List&lt;Integer&gt; lsDerivedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="fc" id="L195">			List&lt;Integer&gt; lsDerivedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
 				iTenorInMonths + &quot;M&quot;,
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="fc" id="L174">			Stream referenceStream = new Stream (</span>
-<span class="fc" id="L175">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L202">			Stream referenceStream = new Stream (</span>
+<span class="fc" id="L203">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsReferenceStreamEdgeDate,
 					cpsReference,
 					cfusReference
 				)
 			);
 
-<span class="fc" id="L182">			Stream derivedStream = new Stream (</span>
-<span class="fc" id="L183">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L210">			Stream derivedStream = new Stream (</span>
+<span class="fc" id="L211">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsDerivedStreamEdgeDate,
 					cpsDerived,
 					cfusDerived
@@ -191,7 +219,7 @@ import org.drip.state.inference.*;
 			 * The float-float swap instance
 			 */
 
-<span class="fc" id="L194">			aFFC[i] = new FloatFloatComponent (</span>
+<span class="fc" id="L222">			aFFC[i] = new FloatFloatComponent (</span>
 				referenceStream,
 				derivedStream,
 				new CashSettleParams (
@@ -201,10 +229,10 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="fc" id="L204">			aFFC[i].setPrimaryCode (referenceStream.name() + &quot;||&quot; + derivedStream.name());</span>
+<span class="fc" id="L232">			aFFC[i].setPrimaryCode (referenceStream.name() + &quot;||&quot; + derivedStream.name());</span>
 		}
 
-<span class="fc" id="L207">		return aFFC;</span>
+<span class="fc" id="L235">		return aFFC;</span>
 	}
 
 	private static final ComponentPair[] MakeCCSP (
@@ -216,7 +244,7 @@ import org.drip.state.inference.*;
 		final double dblRefDerFX)
 		throws Exception
 	{
-<span class="fc" id="L219">		FloatFloatComponent[] aFFCReference = MakexM6MBasisSwap (</span>
+<span class="fc" id="L247">		FloatFloatComponent[] aFFCReference = MakexM6MBasisSwap (</span>
 			dtValue,
 			strDerivedCurrency,
 			strReferenceCurrency,
@@ -225,7 +253,7 @@ import org.drip.state.inference.*;
 			3
 		);
 
-<span class="fc" id="L228">		FloatFloatComponent[] aFFCDerived = MakexM6MBasisSwap (</span>
+<span class="fc" id="L256">		FloatFloatComponent[] aFFCDerived = MakexM6MBasisSwap (</span>
 			dtValue,
 			strDerivedCurrency,
 			strDerivedCurrency,
@@ -234,17 +262,17 @@ import org.drip.state.inference.*;
 			3
 		);
 
-<span class="fc" id="L237">		ComponentPair[] aCCSP = new ComponentPair[astrTenor.length];</span>
+<span class="fc" id="L265">		ComponentPair[] aCCSP = new ComponentPair[astrTenor.length];</span>
 
-<span class="fc bfc" id="L239" title="All 2 branches covered.">		for (int i = 0; i &lt; aCCSP.length; ++i)</span>
-<span class="fc" id="L240">			aCCSP[i] = new ComponentPair (</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">		for (int i = 0; i &lt; aCCSP.length; ++i)</span>
+<span class="fc" id="L268">			aCCSP[i] = new ComponentPair (</span>
 				strDerivedCurrency + strReferenceCurrency + &quot;_&quot; + astrTenor[i],
 				aFFCReference[i],
 				aFFCDerived[i],
 				null
 			);
 
-<span class="fc" id="L247">		return aCCSP;</span>
+<span class="fc" id="L275">		return aCCSP;</span>
 	}
 
 	public static final void ForwardCurveReferenceComponentBasis (
@@ -263,7 +291,7 @@ import org.drip.state.inference.*;
 		final boolean bBasisOnDerivedLeg)
 		throws Exception
 	{
-<span class="fc" id="L266">		ComponentPair[] aCCSP = MakeCCSP (</span>
+<span class="fc" id="L294">		ComponentPair[] aCCSP = MakeCCSP (</span>
 			dtValue,
 			strReferenceCurrency,
 			strDerivedCurrency,
@@ -272,25 +300,25 @@ import org.drip.state.inference.*;
 			dblRefDerFX
 		);
 
-<span class="fc" id="L275">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
+<span class="fc" id="L303">		CurveSurfaceQuoteContainer mktParams = new CurveSurfaceQuoteContainer();</span>
 
-<span class="fc" id="L277">		mktParams.setFundingState (dcReference);</span>
+<span class="fc" id="L305">		mktParams.setFundingState (dcReference);</span>
 
-<span class="fc" id="L279">		mktParams.setFundingState (dcDerived);</span>
+<span class="fc" id="L307">		mktParams.setFundingState (dcDerived);</span>
 
-<span class="fc" id="L281">		mktParams.setForwardState (fc3MReference);</span>
+<span class="fc" id="L309">		mktParams.setForwardState (fc3MReference);</span>
 
-<span class="fc" id="L283">		mktParams.setForwardState (fc6MReference);</span>
+<span class="fc" id="L311">		mktParams.setForwardState (fc6MReference);</span>
 
-<span class="fc" id="L285">		mktParams.setForwardState (fc6MDerived);</span>
+<span class="fc" id="L313">		mktParams.setForwardState (fc6MDerived);</span>
 
-<span class="fc" id="L287">		CurrencyPair cp = CurrencyPair.FromCode (strDerivedCurrency + &quot;/&quot; + strReferenceCurrency);</span>
+<span class="fc" id="L315">		CurrencyPair cp = CurrencyPair.FromCode (strDerivedCurrency + &quot;/&quot; + strReferenceCurrency);</span>
 
-<span class="fc" id="L289">		FXLabel fxLabelBase = FXLabel.Standard (cp);</span>
+<span class="fc" id="L317">		FXLabel fxLabelBase = FXLabel.Standard (cp);</span>
 
-<span class="fc" id="L291">		mktParams.setFXState (</span>
-<span class="fc" id="L292">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
-<span class="fc" id="L293">				fxLabelBase.fullyQualifiedName(),</span>
+<span class="fc" id="L319">		mktParams.setFXState (</span>
+<span class="fc" id="L320">			ScenarioFXCurveBuilder.CubicPolynomialCurve (</span>
+<span class="fc" id="L321">				fxLabelBase.fullyQualifiedName(),</span>
 				dtValue,
 				cp,
 				new String[] {&quot;10Y&quot;},
@@ -299,27 +327,27 @@ import org.drip.state.inference.*;
 			)
 		);
 
-<span class="fc" id="L302">		mktParams.setFixing (</span>
-<span class="fc" id="L303">			aCCSP[0].effective(),</span>
+<span class="fc" id="L330">		mktParams.setFixing (</span>
+<span class="fc" id="L331">			aCCSP[0].effective(),</span>
 			fxLabelBase,
 			dblRefDerFX
 		);
 
-<span class="fc" id="L308">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L336">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtValue,
 			strReferenceCurrency
 		);
 
-<span class="fc" id="L314">		LinearLatentStateCalibrator llsc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L342">		LinearLatentStateCalibrator llsc = new LinearLatentStateCalibrator (</span>
 			scbc,
-<span class="fc" id="L316">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L344">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="fc" id="L322">		LatentStateStretchSpec stretchSpec = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
+<span class="fc" id="L350">		LatentStateStretchSpec stretchSpec = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
 			&quot;FLOATFLOAT&quot;,
 			aCCSP,
 			valParams,
@@ -329,16 +357,16 @@ import org.drip.state.inference.*;
 			bBasisOnDerivedLeg
 		);
 
-<span class="fc" id="L332">		ForwardCurve fc3MDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+<span class="fc" id="L360">		ForwardCurve fc3MDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
 			llsc,
 			new LatentStateStretchSpec[] {stretchSpec},
-<span class="fc" id="L335">			ForwardLabel.Create (</span>
+<span class="fc" id="L363">			ForwardLabel.Create (</span>
 				strDerivedCurrency,
 				&quot;3M&quot;
 			),
 			valParams,
 			null,
-<span class="fc" id="L341">			MarketParamsBuilder.Create (</span>
+<span class="fc" id="L369">			MarketParamsBuilder.Create (</span>
 				dcDerived,
 				fc6MDerived,
 				null,
@@ -349,45 +377,45 @@ import org.drip.state.inference.*;
 				null
 			),
 			null,
-<span class="fc" id="L352">			dcDerived.forward (</span>
-<span class="fc" id="L353">				dtValue.julian(),</span>
-<span class="fc" id="L354">				dtValue.addTenor (&quot;3M&quot;).julian()</span>
+<span class="fc" id="L380">			dcDerived.forward (</span>
+<span class="fc" id="L381">				dtValue.julian(),</span>
+<span class="fc" id="L382">				dtValue.addTenor (&quot;3M&quot;).julian()</span>
 			)
 		);
 
-<span class="fc" id="L358">		mktParams.setForwardState (fc3MDerived);</span>
+<span class="fc" id="L386">		mktParams.setForwardState (fc3MDerived);</span>
 
-<span class="fc" id="L360">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L388">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L362" title="All 2 branches covered.">		if (bBasisOnDerivedLeg)</span>
-<span class="fc" id="L363">			System.out.println (&quot;\t     RECOVERY OF THE CCBS REFERENCE COMPONENT DERIVED BASIS&quot;);</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		if (bBasisOnDerivedLeg)</span>
+<span class="fc" id="L391">			System.out.println (&quot;\t     RECOVERY OF THE CCBS REFERENCE COMPONENT DERIVED BASIS&quot;);</span>
 		else
-<span class="fc" id="L365">			System.out.println (&quot;\t     RECOVERY OF THE CCBS REFERENCE COMPONENT REFERENCE BASIS&quot;);</span>
+<span class="fc" id="L393">			System.out.println (&quot;\t     RECOVERY OF THE CCBS REFERENCE COMPONENT REFERENCE BASIS&quot;);</span>
 
-<span class="fc" id="L367">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L395">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L369" title="All 2 branches covered.">		for (int i = 0; i &lt; aCCSP.length; ++i) {</span>
-<span class="fc" id="L370">			CalibratableComponent rc = aCCSP[i].derivedComponent();</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">		for (int i = 0; i &lt; aCCSP.length; ++i) {</span>
+<span class="fc" id="L398">			CalibratableComponent rc = aCCSP[i].derivedComponent();</span>
 
-<span class="fc" id="L372">			CaseInsensitiveTreeMap&lt;Double&gt; mapOP = aCCSP[i].value (</span>
+<span class="fc" id="L400">			CaseInsensitiveTreeMap&lt;Double&gt; mapOP = aCCSP[i].value (</span>
 				valParams,
 				null,
 				mktParams,
 				null
 			);
 
-<span class="fc bfc" id="L379" title="All 2 branches covered.">			System.out.println (&quot;\t[&quot; + rc.effectiveDate() + &quot; - &quot; + rc.maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L380">				FormatUtil.FormatDouble (mapOP.get (bBasisOnDerivedLeg ? &quot;ReferenceCompDerivedBasis&quot; : &quot;ReferenceCompReferenceBasis&quot;), 1, 3, 1.) +</span>
-<span class="fc" id="L381">					&quot; | &quot; + FormatUtil.FormatDouble (adblCrossCurrencyBasis[i], 1, 3, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L382">						FormatUtil.FormatDouble (fc3MDerived.forward (rc.maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">			System.out.println (&quot;\t[&quot; + rc.effectiveDate() + &quot; - &quot; + rc.maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L408">				FormatUtil.FormatDouble (mapOP.get (bBasisOnDerivedLeg ? &quot;ReferenceCompDerivedBasis&quot; : &quot;ReferenceCompReferenceBasis&quot;), 1, 3, 1.) +</span>
+<span class="fc" id="L409">					&quot; | &quot; + FormatUtil.FormatDouble (adblCrossCurrencyBasis[i], 1, 3, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L410">						FormatUtil.FormatDouble (fc3MDerived.forward (rc.maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 		}
 
-<span class="fc" id="L385">		IBORCurve.ForwardJack (</span>
+<span class="fc" id="L413">		IBORCurve.ForwardJack (</span>
 			dtValue,
 			&quot;---- CCBS DERIVED QUOTE FORWARD CURVE SENSITIVITY ---&quot;,
 			fc3MDerived,
 			&quot;PV&quot;
 		);
-<span class="fc" id="L391">	}</span>
+<span class="fc" id="L419">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

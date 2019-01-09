@@ -110,6 +110,36 @@ public class BalanceSheetFunding
 <span class="nc" id="L110">	private double _extendedStressFundingAmount = java.lang.Double.NaN;</span>
 
 	/**
+	 * Construct the Basel III Version of BalanceSheetFunding
+	 * 
+	 * @param stableFundingAmount Stable Funding Amount
+	 * @param extendedStressFundingAmount Funding Amount Required Over the Specified Period of Extended
+	 * 		Stress
+	 * 
+	 * @return The Basel III Version of BalanceSheetFunding
+	 */
+
+	public static final BalanceSheetFunding Basel_III (
+		final double stableFundingAmount,
+		final double extendedStressFundingAmount)
+	{
+		try
+		{
+<span class="nc" id="L128">			return new BalanceSheetFunding (</span>
+				stableFundingAmount,
+				extendedStressFundingAmount,
+				&quot;1Y&quot;
+			);
+		}
+<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L136">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L139">		return null;</span>
+	}
+
+	/**
 	 * BalanceSheetFunding Constructor
 	 * 
 	 * @param stableFundingAmount Stable Funding Amount
@@ -125,16 +155,16 @@ public class BalanceSheetFunding
 		final double extendedStressFundingAmount,
 		final java.lang.String stressPeriod)
 		throws java.lang.Exception
-<span class="nc" id="L128">	{</span>
-<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_stableFundingAmount = stableFundingAmount) ||</span>
+<span class="nc" id="L158">	{</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_stableFundingAmount = stableFundingAmount) ||</span>
 				0. &gt; _stableFundingAmount ||
-<span class="nc bnc" id="L131" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extendedStressFundingAmount =</span>
+<span class="nc bnc" id="L161" title="All 6 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_extendedStressFundingAmount =</span>
 				extendedStressFundingAmount) || 0. &gt; _extendedStressFundingAmount ||
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			null == (_stressPeriod = stressPeriod) || _stressPeriod.isEmpty())</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			null == (_stressPeriod = stressPeriod) || _stressPeriod.isEmpty())</span>
 		{
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;BalanceSheetFunding Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L165">			throw new java.lang.Exception (&quot;BalanceSheetFunding Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L137">	}</span>
+<span class="nc" id="L167">	}</span>
 
 	/**
 	 * Retrieve the Stable Funding Amount
@@ -144,7 +174,7 @@ public class BalanceSheetFunding
 
 	public double stableFundingAmount()
 	{
-<span class="nc" id="L147">		return _stableFundingAmount;</span>
+<span class="nc" id="L177">		return _stableFundingAmount;</span>
 	}
 
 	/**
@@ -155,7 +185,7 @@ public class BalanceSheetFunding
 
 	public double extendedStressFundingAmount()
 	{
-<span class="nc" id="L158">		return _extendedStressFundingAmount;</span>
+<span class="nc" id="L188">		return _extendedStressFundingAmount;</span>
 	}
 
 	/**
@@ -166,7 +196,7 @@ public class BalanceSheetFunding
 
 	public java.lang.String stressPeriod()
 	{
-<span class="nc" id="L169">		return _stressPeriod;</span>
+<span class="nc" id="L199">		return _stressPeriod;</span>
 	}
 
 	/**
@@ -177,7 +207,7 @@ public class BalanceSheetFunding
 
 	public double netStableFundingRatio()
 	{
-<span class="nc" id="L180">		return _stableFundingAmount / _extendedStressFundingAmount;</span>
+<span class="nc" id="L210">		return _stableFundingAmount / _extendedStressFundingAmount;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

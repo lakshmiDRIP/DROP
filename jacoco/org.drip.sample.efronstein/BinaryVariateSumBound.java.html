@@ -13,34 +13,53 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -57,29 +76,38 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * BinaryVariateSumBound demonstrates the Computation of the Probabilistic Bounds for the Realization of the
- *  Values of a Multivariate Function over Random Sequence Values (in this case, sum of the independent
- *  Random Variates) using Variants of the Efron-Stein Methodology.
+ * &lt;i&gt;BinaryVariateSumBound&lt;/i&gt; demonstrates the Computation of the Probabilistic Bounds for the Realization
+ * of the Values of a Multivariate Function over Random Sequence Values (in this case, sum of the independent
+ * Random Variates) using Variants of the Efron-Stein Methodology.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/efronstein/README.md&quot;&gt;Efron-Stein Semi-Agnostic Sequence Bounds&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L67">public class BinaryVariateSumBound {</span>
+<span class="nc" id="L95">public class BinaryVariateSumBound {</span>
 
 	private static final SingleSequenceAgnosticMetrics[] IIDDraw (
 		final UnivariateSequenceGenerator rsg,
 		final int iNumSample)
 		throws Exception
 	{
-<span class="fc" id="L74">		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];</span>
+<span class="fc" id="L102">		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];</span>
 
-<span class="fc bfc" id="L76" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="fc" id="L77">			aSSAM[i] = rsg.sequence (</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="fc" id="L105">			aSSAM[i] = rsg.sequence (</span>
 				iNumSample,
 				null
 			);
 
-<span class="fc" id="L82">		return aSSAM;</span>
+<span class="fc" id="L110">		return aSSAM;</span>
 	}
 
 	private static final GlivenkoCantelliUniformDeviation BinarySumFunction (
@@ -87,17 +115,17 @@ import org.drip.service.env.EnvManager;
 		final int iNumVariate)
 		throws Exception
 	{
-<span class="fc" id="L90">		double[] adblWeight = new double[iNumVariate];</span>
+<span class="fc" id="L118">		double[] adblWeight = new double[iNumVariate];</span>
 
-<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L93">			adblWeight[i] = 1. / iNumVariate;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="fc" id="L121">			adblWeight[i] = 1. / iNumVariate;</span>
 
-<span class="fc" id="L95">		return new GlivenkoCantelliUniformDeviation (</span>
+<span class="fc" id="L123">		return new GlivenkoCantelliUniformDeviation (</span>
 			new BinaryIdempotentUnivariateRandom (
 				0.,
 				null,
 				1.,
-<span class="fc" id="L100">				binarySequenceGenerator.positiveProbability()</span>
+<span class="fc" id="L128">				binarySequenceGenerator.positiveProbability()</span>
 			),
 			adblWeight
 		);
@@ -109,29 +137,29 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="fc" id="L112">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L140">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="fc" id="L115">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L143">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc" id="L120">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="fc" id="L121">				BinarySumFunction (</span>
+<span class="fc" id="L148">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L149">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="fc" id="L130">			strDump += FormatUtil.FormatDouble (esam.martingaleVarianceUpperBound(), 1, 3, 1.);</span>
+<span class="fc" id="L158">			strDump += FormatUtil.FormatDouble (esam.martingaleVarianceUpperBound(), 1, 3, 1.);</span>
 		}
 
-<span class="fc" id="L133">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L161">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L162">	}</span>
 
 	private static final void GhostVariateVarianceRun (
 		final Binary binarySequenceGenerator,
@@ -139,34 +167,34 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="fc" id="L142">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L170">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="fc" id="L145">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L173">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc" id="L150">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="fc" id="L151">				BinarySumFunction (</span>
+<span class="fc" id="L178">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L179">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="fc" id="L158">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="fc" id="L186">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="fc" id="L165">			strDump += FormatUtil.FormatDouble (esam.ghostVarianceUpperBound (aSSAMGhost), 1, 3, 1.);</span>
+<span class="fc" id="L193">			strDump += FormatUtil.FormatDouble (esam.ghostVarianceUpperBound (aSSAMGhost), 1, 3, 1.);</span>
 		}
 
-<span class="fc" id="L168">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="fc" id="L169">	}</span>
+<span class="fc" id="L196">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L197">	}</span>
 
 	private static final void EfronSteinSteeleRun (
 		final Binary binarySequenceGenerator,
@@ -174,34 +202,34 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="fc" id="L177">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L205">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="fc" id="L180">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L208">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc" id="L185">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="fc" id="L186">				BinarySumFunction (</span>
+<span class="fc" id="L213">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L214">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="fc" id="L193">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
+<span class="fc" id="L221">			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc bfc" id="L198" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="fc" id="L200">			strDump += FormatUtil.FormatDouble (esam.efronSteinSteeleBound (aSSAMGhost), 1, 3, 1.);</span>
+<span class="fc" id="L228">			strDump += FormatUtil.FormatDouble (esam.efronSteinSteeleBound (aSSAMGhost), 1, 3, 1.);</span>
 		}
 
-<span class="fc" id="L203">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="fc" id="L204">	}</span>
+<span class="fc" id="L231">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L232">	}</span>
 
 	private static final void PivotDifferencesRun (
 		final Binary binarySequenceGenerator,
@@ -209,31 +237,31 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="fc" id="L212">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L240">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="fc" id="L215">			MultivariateRandom func = BinarySumFunction (</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L243">			MultivariateRandom func = BinarySumFunction (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc" id="L220">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc" id="L248">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc" id="L225">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L253">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
 				func,
 				aSSAM
 			);
 
-<span class="fc bfc" id="L230" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="fc" id="L232">			strDump += FormatUtil.FormatDouble (esam.pivotVarianceUpperBound (new FlatMultivariateRandom (0.)), 1, 3, 1.);</span>
+<span class="fc" id="L260">			strDump += FormatUtil.FormatDouble (esam.pivotVarianceUpperBound (new FlatMultivariateRandom (0.)), 1, 3, 1.);</span>
 		}
 
-<span class="fc" id="L235">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="fc" id="L236">	}</span>
+<span class="fc" id="L263">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L264">	}</span>
 
 	private static final void BoundedDifferencesRun (
 		final Binary binarySequenceGenerator,
@@ -241,122 +269,124 @@ import org.drip.service.env.EnvManager;
 		final int iNumSet)
 		throws Exception
 	{
-<span class="fc" id="L244">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L272">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (iNumSample, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L246" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
-<span class="fc" id="L247">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">		for (int j = 0; j &lt; iNumSet; ++j) {</span>
+<span class="fc" id="L275">			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (</span>
 				binarySequenceGenerator,
 				iNumSample
 			);
 
-<span class="fc" id="L252">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
-<span class="fc" id="L253">				BinarySumFunction (</span>
+<span class="fc" id="L280">			EfronSteinMetrics esam = new EfronSteinMetrics (</span>
+<span class="fc" id="L281">				BinarySumFunction (</span>
 					binarySequenceGenerator,
 					iNumSample
 				),
 				aSSAM
 			);
 
-<span class="fc bfc" id="L260" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">			if (0 != j) strDump += &quot; |&quot;;</span>
 
-<span class="fc" id="L262">			strDump += FormatUtil.FormatDouble (esam.boundedVarianceUpperBound(), 1, 3, 1.);</span>
+<span class="fc" id="L290">			strDump += FormatUtil.FormatDouble (esam.boundedVarianceUpperBound(), 1, 3, 1.);</span>
 		}
 
-<span class="fc" id="L265">		System.out.println (strDump + &quot; |&quot;);</span>
-<span class="fc" id="L266">	}</span>
+<span class="fc" id="L293">		System.out.println (strDump + &quot; |&quot;);</span>
+<span class="fc" id="L294">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L272">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L300">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L274">		int iNumSet = 5;</span>
+<span class="fc" id="L302">		int iNumSet = 5;</span>
 
-<span class="fc" id="L276">		int[] aiSampleSize = new int[] {</span>
+<span class="fc" id="L304">		int[] aiSampleSize = new int[] {</span>
 			3, 10, 25, 50
 		};
 
-<span class="fc" id="L280">		Binary bin = new Binary (0.7);</span>
+<span class="fc" id="L308">		Binary bin = new Binary (0.7);</span>
 
-<span class="fc" id="L282">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L310">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L284">		System.out.println (&quot;\t|  Martingale Differences Variance Upper Bound  |&quot;);</span>
+<span class="fc" id="L312">		System.out.println (&quot;\t|  Martingale Differences Variance Upper Bound  |&quot;);</span>
 
-<span class="fc" id="L286">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L314">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc bfc" id="L288" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="fc" id="L289">			MartingaleDifferencesRun (</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L317">			MartingaleDifferencesRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="fc" id="L295">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L323">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L297">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L325">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L299">		System.out.println (&quot;\t|   Symmetrized Variate Variance Upper Bound    |&quot;);</span>
-
-<span class="fc" id="L301">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
-
-<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="fc" id="L304">			GhostVariateVarianceRun (</span>
-				bin,
-				iSampleSize,
-				iNumSet
-			);
-
-<span class="fc" id="L310">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
-
-<span class="fc" id="L312">		aiSampleSize = new int[] {</span>
-			3, 10, 25, 50, 75, 99
-		};
-
-<span class="fc" id="L316">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
-
-<span class="fc" id="L318">		System.out.println (&quot;\t|    Efron-Stein-Steele Variance Upper Bound    |&quot;);</span>
-
-<span class="fc" id="L320">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
-
-<span class="fc bfc" id="L322" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="fc" id="L323">			EfronSteinSteeleRun (</span>
-				bin,
-				iSampleSize,
-				iNumSet
-			);
+<span class="fc" id="L327">		System.out.println (&quot;\t|   Symmetrized Variate Variance Upper Bound    |&quot;);</span>
 
 <span class="fc" id="L329">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L331">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
-
-<span class="fc" id="L333">		System.out.println (&quot;\t|    Pivoted Differences Variance Upper Bound   |&quot;);</span>
-
-<span class="fc" id="L335">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
-
-<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="fc" id="L338">			PivotDifferencesRun (</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L332">			GhostVariateVarianceRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="fc" id="L344">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L338">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L346">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L340">		aiSampleSize = new int[] {</span>
+			3, 10, 25, 50, 75, 99
+		};
 
-<span class="fc" id="L348">		System.out.println (&quot;\t|   Bounded Differences Variance Upper Bound    |&quot;);</span>
+<span class="fc" id="L344">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L350">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+<span class="fc" id="L346">		System.out.println (&quot;\t|    Efron-Stein-Steele Variance Upper Bound    |&quot;);</span>
 
-<span class="fc bfc" id="L352" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
-<span class="fc" id="L353">			BoundedDifferencesRun (</span>
+<span class="fc" id="L348">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc bfc" id="L350" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L351">			EfronSteinSteeleRun (</span>
 				bin,
 				iSampleSize,
 				iNumSet
 			);
 
-<span class="fc" id="L359">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
-<span class="fc" id="L360">	}</span>
+<span class="fc" id="L357">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L359">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L361">		System.out.println (&quot;\t|    Pivoted Differences Variance Upper Bound   |&quot;);</span>
+
+<span class="fc" id="L363">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc bfc" id="L365" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L366">			PivotDifferencesRun (</span>
+				bin,
+				iSampleSize,
+				iNumSet
+			);
+
+<span class="fc" id="L372">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L374">		System.out.println (&quot;\n\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L376">		System.out.println (&quot;\t|   Bounded Differences Variance Upper Bound    |&quot;);</span>
+
+<span class="fc" id="L378">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc bfc" id="L380" title="All 2 branches covered.">		for (int iSampleSize : aiSampleSize)</span>
+<span class="fc" id="L381">			BoundedDifferencesRun (</span>
+				bin,
+				iSampleSize,
+				iNumSet
+			);
+
+<span class="fc" id="L387">		System.out.println (&quot;\t|-----------------------------------------------|&quot;);</span>
+
+<span class="fc" id="L389">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L390">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
