@@ -1,9 +1,11 @@
 
-package org.drip.sample.forward;
+package org.drip.sample.algo;
 
-import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.market.definition.*;
+import java.util.Map;
+import java.util.Set;
+
 import org.drip.service.env.EnvManager;
+import org.drip.spaces.big.AnagramMapSet;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -15,7 +17,6 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
@@ -74,100 +75,41 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>JurisdictionIBORIndexDefinition</i> demonstrates the functionality to retrieve the IBOR settings for
- * the various Jurisdictions.
- *  
+ * <i>C1ArrayAnagramGenerator</i> demonstrates the Functionality to generate Anagrams inside of a Word List
+ * (i.e., Sentence).
+ * 
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forward/README.md">Forward Rate Curve Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md">"Big" Algorithm Support</a></li>
  *  </ul>
  * <br><br>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class JurisdictionIBORIndexDefinition {
-	private static final String AccrualType (
-		final int iAccrualCompounding)
-	{
-		return CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompounding ? "ARITHMETIC" : " GEOMETRIC";
-	}
-
-	private static final void DisplayNameOvernightSetting (
-		final String strName)
-	{
-		IBORIndex index = IBORIndexContainer.IndexFromName (strName);
-
-		String strLongestMaturity = index.longestMaturity();
-
-		String strShortestMaturity = index.shortestMaturity();
-
-		System.out.println ("\t[" +
-			index.currency() + "] => " +
-			index.dayCount() + " | " +
-			index.spotLag() + " | " +
-			AccrualType (index.accrualCompoundingRule()) + " | " +
-			(strShortestMaturity.isEmpty() ? "  " : strShortestMaturity) + " | " +
-			(strLongestMaturity.isEmpty() ? "   " : strLongestMaturity) + " | " +
-			index.name()
-		);
-	}
-
+public class C1ArrayAnagramGenerator
+{
 	public static final void main (
-		String[] args)
+		final String[] argumentArray)
+		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		System.out.println ("\n\t---------------\n\t---------------\n");
+		String sentence = "Dan Sims this shit cat act is hits and miss";
 
-		DisplayNameOvernightSetting ("CHF-LIBOR");
+		AnagramMapSet anagramMapSet = AnagramMapSet.FromSentence (sentence);
 
-		DisplayNameOvernightSetting ("EUR-EURIBOR");
+		Map<String, Set<String>> anagramMap = anagramMapSet.anagramMap();
 
-		DisplayNameOvernightSetting ("EUR-LIBOR");
+		System.out.println ("\tSource => " + sentence);
 
-		DisplayNameOvernightSetting ("GBP-LIBOR");
-
-		DisplayNameOvernightSetting ("JPY-LIBOR");
-
-		DisplayNameOvernightSetting ("USD-LIBOR");
-
-		System.out.println ("\n\t---------------\n\t---------------\n");
-
-		DisplayNameOvernightSetting ("AUD-LIBOR");
-
-		DisplayNameOvernightSetting ("CAD-LIBOR");
-
-		DisplayNameOvernightSetting ("CZK-LIBOR");
-
-		DisplayNameOvernightSetting ("DKK-LIBOR");
-
-		DisplayNameOvernightSetting ("HKD-LIBOR");
-
-		DisplayNameOvernightSetting ("HUF-LIBOR");
-
-		DisplayNameOvernightSetting ("IDR-LIBOR");
-
-		DisplayNameOvernightSetting ("INR-LIBOR");
-
-		DisplayNameOvernightSetting ("NOK-LIBOR");
-
-		DisplayNameOvernightSetting ("NZD-LIBOR");
-
-		DisplayNameOvernightSetting ("PLN-LIBOR");
-
-		DisplayNameOvernightSetting ("RMB-LIBOR");
-
-		DisplayNameOvernightSetting ("SGD-LIBOR");
-
-		DisplayNameOvernightSetting ("SEK-LIBOR");
-
-		DisplayNameOvernightSetting ("SKK-LIBOR");
-
-		DisplayNameOvernightSetting ("ZAR-LIBOR");
+		for (Map.Entry<String, Set<String>> anagramSetEntry : anagramMap.entrySet())
+		{
+			System.out.println ("\tAnagram Set => " + anagramSetEntry.getValue());
+		}
 
 		EnvManager.TerminateEnv();
 	}

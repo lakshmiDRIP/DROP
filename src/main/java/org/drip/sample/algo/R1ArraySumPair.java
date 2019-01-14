@@ -1,8 +1,10 @@
 
-package org.drip.sample.forward;
+package org.drip.sample.algo;
 
-import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.market.definition.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.drip.service.env.EnvManager;
 
 /*
@@ -15,7 +17,6 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
@@ -74,100 +75,91 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>JurisdictionIBORIndexDefinition</i> demonstrates the functionality to retrieve the IBOR settings for
- * the various Jurisdictions.
- *  
+ * <i>R1ArraySumPair</i> demonstrates the Functionality to identify the Pair of Numbers in the Array that add
+ * up to the specified Total.
+ * 
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forward/README.md">Forward Rate Curve Construction</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/algo/README.md">"Big" Algorithm Support</a></li>
  *  </ul>
  * <br><br>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class JurisdictionIBORIndexDefinition {
-	private static final String AccrualType (
-		final int iAccrualCompounding)
+public class R1ArraySumPair
+{
+
+	private static final void GenerateSumPair (
+		final int[] integerArray,
+		final int sumConstraint)
 	{
-		return CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_ARITHMETIC == iAccrualCompounding ? "ARITHMETIC" : " GEOMETRIC";
-	}
+		int leftIndex = 0;
+		int rightIndex = integerArray.length - 1;
 
-	private static final void DisplayNameOvernightSetting (
-		final String strName)
-	{
-		IBORIndex index = IBORIndexContainer.IndexFromName (strName);
+		Map<Integer, Integer> sumPairMap = new TreeMap<Integer, Integer>();
 
-		String strLongestMaturity = index.longestMaturity();
+		Arrays.sort (integerArray);
 
-		String strShortestMaturity = index.shortestMaturity();
+		while (leftIndex < rightIndex)
+		{
+			int sumComplement = sumConstraint - integerArray[leftIndex];
 
-		System.out.println ("\t[" +
-			index.currency() + "] => " +
-			index.dayCount() + " | " +
-			index.spotLag() + " | " +
-			AccrualType (index.accrualCompoundingRule()) + " | " +
-			(strShortestMaturity.isEmpty() ? "  " : strShortestMaturity) + " | " +
-			(strLongestMaturity.isEmpty() ? "   " : strLongestMaturity) + " | " +
-			index.name()
-		);
+			while (sumComplement < integerArray[rightIndex] && leftIndex < rightIndex)
+			{
+				--rightIndex;
+			}
+
+			if (sumComplement == integerArray[rightIndex] && leftIndex != rightIndex)
+			{
+				sumPairMap.put (
+					integerArray[leftIndex],
+					integerArray[rightIndex]
+				);
+			}
+
+			++leftIndex;
+		}
+
+		for (Map.Entry<Integer, Integer> sumPairMapEntry : sumPairMap.entrySet())
+		{
+			System.out.println ("\t[" + sumPairMapEntry.getKey() + ", " + sumPairMapEntry.getValue() + "]");
+		}
 	}
 
 	public static final void main (
-		String[] args)
+		final String[] argumentArray)
+		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		System.out.println ("\n\t---------------\n\t---------------\n");
+		int sum = 6;
+		/* int[] integerArray = {
+			 2,
+			 9,
+			-7,
+			-2,
+			 5
+		}; */
+		int[] integerArray = {
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6
+		};
 
-		DisplayNameOvernightSetting ("CHF-LIBOR");
-
-		DisplayNameOvernightSetting ("EUR-EURIBOR");
-
-		DisplayNameOvernightSetting ("EUR-LIBOR");
-
-		DisplayNameOvernightSetting ("GBP-LIBOR");
-
-		DisplayNameOvernightSetting ("JPY-LIBOR");
-
-		DisplayNameOvernightSetting ("USD-LIBOR");
-
-		System.out.println ("\n\t---------------\n\t---------------\n");
-
-		DisplayNameOvernightSetting ("AUD-LIBOR");
-
-		DisplayNameOvernightSetting ("CAD-LIBOR");
-
-		DisplayNameOvernightSetting ("CZK-LIBOR");
-
-		DisplayNameOvernightSetting ("DKK-LIBOR");
-
-		DisplayNameOvernightSetting ("HKD-LIBOR");
-
-		DisplayNameOvernightSetting ("HUF-LIBOR");
-
-		DisplayNameOvernightSetting ("IDR-LIBOR");
-
-		DisplayNameOvernightSetting ("INR-LIBOR");
-
-		DisplayNameOvernightSetting ("NOK-LIBOR");
-
-		DisplayNameOvernightSetting ("NZD-LIBOR");
-
-		DisplayNameOvernightSetting ("PLN-LIBOR");
-
-		DisplayNameOvernightSetting ("RMB-LIBOR");
-
-		DisplayNameOvernightSetting ("SGD-LIBOR");
-
-		DisplayNameOvernightSetting ("SEK-LIBOR");
-
-		DisplayNameOvernightSetting ("SKK-LIBOR");
-
-		DisplayNameOvernightSetting ("ZAR-LIBOR");
+		GenerateSumPair (integerArray, sum);
 
 		EnvManager.TerminateEnv();
 	}
