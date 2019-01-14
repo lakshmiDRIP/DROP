@@ -292,6 +292,8 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = _stream.value
 			(valParams, pricerParams, csqs, quotingParams);
 
+		if (null == mapResult) return null;
+
 		mapResult.put ("ForwardRate", mapResult.get ("Rate"));
 
 		return mapResult;

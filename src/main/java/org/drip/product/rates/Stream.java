@@ -587,6 +587,8 @@ public class Stream {
 		double dblFundingFXConvexityAdjustedDirtyPV = 0.;
 		double dblFundingFXConvexityAdjustedDirtyDV01 = 0.;
 
+		if (iValueDate >= maturity().julian()) return null;
+
 		for (org.drip.analytics.cashflow.CompositePeriod period : _lsPeriod) {
 			double dblPeriodFX = java.lang.Double.NaN;
 			double dblPeriodNotional = java.lang.Double.NaN;
