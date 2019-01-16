@@ -27,35 +27,54 @@ import org.drip.state.inference.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     => https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        => https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           => https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    => https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   => https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *   	you may not use this file except in compliance with the License.
@@ -72,40 +91,112 @@ import org.drip.state.inference.*;
  */
 
 /**
- * ShapePreservingZeroSmooth demonstrates the usage of different shape preserving and smoothing techniques
- *  involved in the funding curve creation. It shows the following:
- * 	- Construct the Array of Cash/Swap Instruments and their Quotes from the given set of parameters.
- * 	- Construct the Cash/Swap Instrument Set Stretch Builder.
- * 	- Set up the Linear Curve Calibrator using the following parameters:
- * 		- Cubic Exponential Mixture Basis Spline Set
- * 		- Ck = 2, Segment Curvature Penalty = 2
- * 		- Quadratic Rational Shape Controller
- * 		- Natural Boundary Setting
- * 	- Set up the Global Curve Control parameters as follows:
- * 		- Zero Rate Quantification Metric
- * 		- Cubic Polynomial Basis Spline Set
- * 		- Ck = 2, Segment Curvature Penalty = 2
- * 		- Quadratic Rational Shape Controller
- * 		- Natural Boundary Setting
- * 	- Set up the Local Curve Control parameters as follows:
- * 		- C1 Bessel Monotone Smoothener with no spurious extrema elimination and no monotone filter
- * 		- Zero Rate Quantification Metric
- * 		- Cubic Polynomial Basis Spline Set
- * 		- Ck = 2, Segment Curvature Penalty = 2
- * 		- Quadratic Rational Shape Controller
- * 		- Natural Boundary Setting
- * 	- Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array of
- * 		Cash and Swap Stretches.
- * 	- Construct the Globally Smoothened Discount Curve by applying the linear curve calibrator and the Global
- * 		Curve Control parameters to the array of Cash and Swap Stretches and the shape preserving discount
- * 		curve.
- * 	- Construct the Locally Smoothened Discount Curve by applying the linear curve calibrator and the Local
- * 		Curve Control parameters to the array of Cash and Swap Stretches and the shape preserving discount
- *  	curve.
- * 	- Cross-Comparison of the Cash/Swap Calibration Instrument "Rate" metric across the different curve
- * 		construction methodologies.
- *  - Cross-Comparison of the Swap Calibration Instrument "Rate" metric across the different curve
- *  	construction methodologies for a sequence of bespoke swap instruments.
+ * <i>ShapePreservingZeroSmooth</i> demonstrates the usage of different shape preserving and smoothing
+ * techniques involved in the funding curve creation. It shows the following:
+ *  
+ * <br><br>
+ *  <ul>
+ *  	<li>
+ * 			Construct the Array of Cash/Swap Instruments and their Quotes from the given set of parameters.
+ *  	</li>
+ *  	<li>
+ * 			Construct the Cash/Swap Instrument Set Stretch Builder.
+ *  	</li>
+ *  	<li>
+ * 			Set up the Linear Curve Calibrator using the following parameters:
+ *  		<ul>
+ *  			<li>
+ * 					Cubic Exponential Mixture Basis Spline Set
+ *  			</li>
+ *  			<li>
+ * 					C<sub>k</sub> = 2
+ * 					Segment Curvature Penalty = 2
+ *  			</li>
+ *  			<li>
+ * 					Quadratic Rational Shape Controller
+ *  			</li>
+ *  			<li>
+ * 					Natural Boundary Setting
+ *  			</li>
+ *  		</ul>
+ *  	</li>
+ *  	<li>
+ * 			Set up the Global Curve Control parameters as follows:
+ *  		<ul>
+ *  			<li>
+ * 					Zero Rate Quantification Metric
+ *  			</li>
+ *  			<li>
+ * 					Cubic Polynomial Basis Spline Set
+ *  			</li>
+ *  			<li>
+ * 					C<sub>k</sub> = 2
+ * 					Segment Curvature Penalty = 2
+ *  			</li>
+ *  			<li>
+ * 					Quadratic Rational Shape Controller
+ *  			</li>
+ *  			<li>
+ * 					Natural Boundary Setting
+ *  			</li>
+ *  		</ul>
+ *  	</li>
+ *  	<li>
+ * 			Set up the Local Curve Control parameters as follows:
+ *  		<ul>
+ *  			<li>
+ * 					C1 Bessel Monotone Smoothener with no spurious extrema elimination and no monotone filter
+ *  			</li>
+ *  			<li>
+ * 					Zero Rate Quantification Metric
+ *  			</li>
+ *  			<li>
+ * 					Cubic Polynomial Basis Spline Set
+ *  			</li>
+ *  			<li>
+ * 					C<sub>k</sub> = 2
+ * 					Segment Curvature Penalty = 2
+ *  			</li>
+ *  			<li>
+ * 					Quadratic Rational Shape Controller
+ *  			</li>
+ *  			<li>
+ * 					Natural Boundary Setting
+ *  			</li>
+ *  		</ul>
+ *  	</li>
+ *  	<li>
+ * 			Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the
+ * 				array of Cash and Swap Stretches.
+ *  	</li>
+ *  	<li>
+ * 			Construct the Globally Smoothened Discount Curve by applying the linear curve calibrator and the
+ * 				Global Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 				preserving discount curve.
+ *  	</li>
+ *  	<li>
+ * 			Construct the Locally Smoothened Discount Curve by applying the linear curve calibrator and the
+ * 				Local Curve Control parameters to the array of Cash and Swap Stretches and the shape
+ * 				preserving discount curve.
+ *  	</li>
+ *  	<li>
+ * 			Cross-Comparison of the Cash/Swap Calibration Instrument "Rate" metric across the different curve
+ * 				construction methodologies.
+ *  	</li>
+ *  	<li>
+ *  		Cross-Comparison of the Swap Calibration Instrument "Rate" metric across the different curve
+ *  			construction methodologies for a sequence of bespoke swap instruments.
+ *  	</li>
+ *  </ul>
+ *  
+ * <br><br>
+ *  <ul>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/funding/README.md">Funding Curve Builder</a></li>
+ *  </ul>
+ * <br><br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -658,5 +749,7 @@ public class ShapePreservingZeroSmooth {
 			dtSpot,
 			strCurrency
 		);
+
+		EnvManager.TerminateEnv();
 	}
 }
