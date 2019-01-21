@@ -16,33 +16,52 @@ import org.drip.service.template.LatentMarketStateBuilder;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -59,26 +78,35 @@ import org.drip.service.template.LatentMarketStateBuilder;
  */
 
 /**
- * CADShapePreserving1YStart Generates the Historical CAD Shape Preserving Funding Curve Native Compounded
- *  Forward Rate starting at 1Y Tenor.
+ * &lt;i&gt;CADShapePreserving1YStart&lt;/i&gt; Generates the Historical CAD Shape Preserving Funding Curve Native
+ * Compounded Forward Rate starting at 1Y Tenor.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fundinghistorical/README.md&quot;&gt;Multi-Mode Funding Curve Historical Forwards&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L68">public class CADShapePreserving1YStart {</span>
+<span class="nc" id="L96">public class CADShapePreserving1YStart {</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L74">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L102">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L76">		String strCurrency = &quot;CAD&quot;;</span>
-<span class="nc" id="L77">		String strClosesLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Transforms\\FundingStateMarks\\&quot; + strCurrency + &quot;ShapePreservingReconstitutor.csv&quot;;</span>
-<span class="nc" id="L78">		String[] astrInTenor = new String[] {</span>
+<span class="nc" id="L104">		String strCurrency = &quot;CAD&quot;;</span>
+<span class="nc" id="L105">		String strClosesLocation = &quot;C:\\DROP\\Daemons\\Transforms\\FundingStateMarks\\&quot; + strCurrency + &quot;ShapePreservingReconstitutor.csv&quot;;</span>
+<span class="nc" id="L106">		String[] astrInTenor = new String[] {</span>
 			&quot;1Y&quot;
 		};
-<span class="nc" id="L81">		String[] astrForTenor = new String[] {</span>
+<span class="nc" id="L109">		String[] astrForTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -95,7 +123,7 @@ import org.drip.service.template.LatentMarketStateBuilder;
 			&quot;20Y&quot;,
 			&quot;25Y&quot;,
 		};
-<span class="nc" id="L98">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="nc" id="L126">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -116,85 +144,85 @@ import org.drip.service.template.LatentMarketStateBuilder;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L119">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
+<span class="nc" id="L147">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
 			strClosesLocation,
 			true
 		);
 
-<span class="nc" id="L124">		JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
+<span class="nc" id="L152">		JulianDate[] adtClose = csvGrid.dateArrayAtColumn (0);</span>
 
-<span class="nc" id="L126">		double[] adblFixFloatQuote1Y = csvGrid.doubleArrayAtColumn (1);</span>
+<span class="nc" id="L154">		double[] adblFixFloatQuote1Y = csvGrid.doubleArrayAtColumn (1);</span>
 
-<span class="nc" id="L128">		double[] adblFixFloatQuote2Y = csvGrid.doubleArrayAtColumn (2);</span>
+<span class="nc" id="L156">		double[] adblFixFloatQuote2Y = csvGrid.doubleArrayAtColumn (2);</span>
 
-<span class="nc" id="L130">		double[] adblFixFloatQuote3Y = csvGrid.doubleArrayAtColumn (3);</span>
+<span class="nc" id="L158">		double[] adblFixFloatQuote3Y = csvGrid.doubleArrayAtColumn (3);</span>
 
-<span class="nc" id="L132">		double[] adblFixFloatQuote4Y = csvGrid.doubleArrayAtColumn (4);</span>
+<span class="nc" id="L160">		double[] adblFixFloatQuote4Y = csvGrid.doubleArrayAtColumn (4);</span>
 
-<span class="nc" id="L134">		double[] adblFixFloatQuote5Y = csvGrid.doubleArrayAtColumn (5);</span>
+<span class="nc" id="L162">		double[] adblFixFloatQuote5Y = csvGrid.doubleArrayAtColumn (5);</span>
 
-<span class="nc" id="L136">		double[] adblFixFloatQuote6Y = csvGrid.doubleArrayAtColumn (6);</span>
+<span class="nc" id="L164">		double[] adblFixFloatQuote6Y = csvGrid.doubleArrayAtColumn (6);</span>
 
-<span class="nc" id="L138">		double[] adblFixFloatQuote7Y = csvGrid.doubleArrayAtColumn (7);</span>
+<span class="nc" id="L166">		double[] adblFixFloatQuote7Y = csvGrid.doubleArrayAtColumn (7);</span>
 
-<span class="nc" id="L140">		double[] adblFixFloatQuote8Y = csvGrid.doubleArrayAtColumn (8);</span>
+<span class="nc" id="L168">		double[] adblFixFloatQuote8Y = csvGrid.doubleArrayAtColumn (8);</span>
 
-<span class="nc" id="L142">		double[] adblFixFloatQuote9Y = csvGrid.doubleArrayAtColumn (9);</span>
+<span class="nc" id="L170">		double[] adblFixFloatQuote9Y = csvGrid.doubleArrayAtColumn (9);</span>
 
-<span class="nc" id="L144">		double[] adblFixFloatQuote10Y = csvGrid.doubleArrayAtColumn (10);</span>
+<span class="nc" id="L172">		double[] adblFixFloatQuote10Y = csvGrid.doubleArrayAtColumn (10);</span>
 
-<span class="nc" id="L146">		double[] adblFixFloatQuote11Y = csvGrid.doubleArrayAtColumn (11);</span>
+<span class="nc" id="L174">		double[] adblFixFloatQuote11Y = csvGrid.doubleArrayAtColumn (11);</span>
 
-<span class="nc" id="L148">		double[] adblFixFloatQuote12Y = csvGrid.doubleArrayAtColumn (12);</span>
+<span class="nc" id="L176">		double[] adblFixFloatQuote12Y = csvGrid.doubleArrayAtColumn (12);</span>
 
-<span class="nc" id="L150">		double[] adblFixFloatQuote15Y = csvGrid.doubleArrayAtColumn (13);</span>
+<span class="nc" id="L178">		double[] adblFixFloatQuote15Y = csvGrid.doubleArrayAtColumn (13);</span>
 
-<span class="nc" id="L152">		double[] adblFixFloatQuote20Y = csvGrid.doubleArrayAtColumn (14);</span>
+<span class="nc" id="L180">		double[] adblFixFloatQuote20Y = csvGrid.doubleArrayAtColumn (14);</span>
 
-<span class="nc" id="L154">		double[] adblFixFloatQuote25Y = csvGrid.doubleArrayAtColumn (15);</span>
+<span class="nc" id="L182">		double[] adblFixFloatQuote25Y = csvGrid.doubleArrayAtColumn (15);</span>
 
-<span class="nc" id="L156">		double[] adblFixFloatQuote30Y = csvGrid.doubleArrayAtColumn (16);</span>
+<span class="nc" id="L184">		double[] adblFixFloatQuote30Y = csvGrid.doubleArrayAtColumn (16);</span>
 
-<span class="nc" id="L158">		double[] adblFixFloatQuote40Y = csvGrid.doubleArrayAtColumn (17);</span>
+<span class="nc" id="L186">		double[] adblFixFloatQuote40Y = csvGrid.doubleArrayAtColumn (17);</span>
 
-<span class="nc" id="L160">		double[] adblFixFloatQuote50Y = csvGrid.doubleArrayAtColumn (18);</span>
+<span class="nc" id="L188">		double[] adblFixFloatQuote50Y = csvGrid.doubleArrayAtColumn (18);</span>
 
-<span class="nc" id="L162">		int iNumClose = adtClose.length;</span>
-<span class="nc" id="L163">		JulianDate[] adtSpot = new JulianDate[iNumClose];</span>
-<span class="nc" id="L164">		double[][] aadblFixFloatQuote = new double[iNumClose][18];</span>
+<span class="nc" id="L190">		int iNumClose = adtClose.length;</span>
+<span class="nc" id="L191">		JulianDate[] adtSpot = new JulianDate[iNumClose];</span>
+<span class="nc" id="L192">		double[][] aadblFixFloatQuote = new double[iNumClose][18];</span>
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L167">			adtSpot[i] = adtClose[i];</span>
-<span class="nc" id="L168">			aadblFixFloatQuote[i][0] = adblFixFloatQuote1Y[i];</span>
-<span class="nc" id="L169">			aadblFixFloatQuote[i][1] = adblFixFloatQuote2Y[i];</span>
-<span class="nc" id="L170">			aadblFixFloatQuote[i][2] = adblFixFloatQuote3Y[i];</span>
-<span class="nc" id="L171">			aadblFixFloatQuote[i][3] = adblFixFloatQuote4Y[i];</span>
-<span class="nc" id="L172">			aadblFixFloatQuote[i][4] = adblFixFloatQuote5Y[i];</span>
-<span class="nc" id="L173">			aadblFixFloatQuote[i][5] = adblFixFloatQuote6Y[i];</span>
-<span class="nc" id="L174">			aadblFixFloatQuote[i][6] = adblFixFloatQuote7Y[i];</span>
-<span class="nc" id="L175">			aadblFixFloatQuote[i][7] = adblFixFloatQuote8Y[i];</span>
-<span class="nc" id="L176">			aadblFixFloatQuote[i][8] = adblFixFloatQuote9Y[i];</span>
-<span class="nc" id="L177">			aadblFixFloatQuote[i][9] = adblFixFloatQuote10Y[i];</span>
-<span class="nc" id="L178">			aadblFixFloatQuote[i][10] = adblFixFloatQuote11Y[i];</span>
-<span class="nc" id="L179">			aadblFixFloatQuote[i][11] = adblFixFloatQuote12Y[i];</span>
-<span class="nc" id="L180">			aadblFixFloatQuote[i][12] = adblFixFloatQuote15Y[i];</span>
-<span class="nc" id="L181">			aadblFixFloatQuote[i][13] = adblFixFloatQuote20Y[i];</span>
-<span class="nc" id="L182">			aadblFixFloatQuote[i][14] = adblFixFloatQuote25Y[i];</span>
-<span class="nc" id="L183">			aadblFixFloatQuote[i][15] = adblFixFloatQuote30Y[i];</span>
-<span class="nc" id="L184">			aadblFixFloatQuote[i][16] = adblFixFloatQuote40Y[i];</span>
-<span class="nc" id="L185">			aadblFixFloatQuote[i][17] = adblFixFloatQuote50Y[i];</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L195">			adtSpot[i] = adtClose[i];</span>
+<span class="nc" id="L196">			aadblFixFloatQuote[i][0] = adblFixFloatQuote1Y[i];</span>
+<span class="nc" id="L197">			aadblFixFloatQuote[i][1] = adblFixFloatQuote2Y[i];</span>
+<span class="nc" id="L198">			aadblFixFloatQuote[i][2] = adblFixFloatQuote3Y[i];</span>
+<span class="nc" id="L199">			aadblFixFloatQuote[i][3] = adblFixFloatQuote4Y[i];</span>
+<span class="nc" id="L200">			aadblFixFloatQuote[i][4] = adblFixFloatQuote5Y[i];</span>
+<span class="nc" id="L201">			aadblFixFloatQuote[i][5] = adblFixFloatQuote6Y[i];</span>
+<span class="nc" id="L202">			aadblFixFloatQuote[i][6] = adblFixFloatQuote7Y[i];</span>
+<span class="nc" id="L203">			aadblFixFloatQuote[i][7] = adblFixFloatQuote8Y[i];</span>
+<span class="nc" id="L204">			aadblFixFloatQuote[i][8] = adblFixFloatQuote9Y[i];</span>
+<span class="nc" id="L205">			aadblFixFloatQuote[i][9] = adblFixFloatQuote10Y[i];</span>
+<span class="nc" id="L206">			aadblFixFloatQuote[i][10] = adblFixFloatQuote11Y[i];</span>
+<span class="nc" id="L207">			aadblFixFloatQuote[i][11] = adblFixFloatQuote12Y[i];</span>
+<span class="nc" id="L208">			aadblFixFloatQuote[i][12] = adblFixFloatQuote15Y[i];</span>
+<span class="nc" id="L209">			aadblFixFloatQuote[i][13] = adblFixFloatQuote20Y[i];</span>
+<span class="nc" id="L210">			aadblFixFloatQuote[i][14] = adblFixFloatQuote25Y[i];</span>
+<span class="nc" id="L211">			aadblFixFloatQuote[i][15] = adblFixFloatQuote30Y[i];</span>
+<span class="nc" id="L212">			aadblFixFloatQuote[i][16] = adblFixFloatQuote40Y[i];</span>
+<span class="nc" id="L213">			aadblFixFloatQuote[i][17] = adblFixFloatQuote50Y[i];</span>
 		}
 
-<span class="nc" id="L188">		String strDump = &quot;Date&quot;;</span>
+<span class="nc" id="L216">		String strDump = &quot;Date&quot;;</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (String strInTenor : astrInTenor) {</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">			for (String strForTenor : astrForTenor)</span>
-<span class="nc" id="L192">				strDump += &quot;,&quot; + strInTenor + strForTenor;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (String strInTenor : astrInTenor) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L220">				strDump += &quot;,&quot; + strInTenor + strForTenor;</span>
 		}
 
-<span class="nc" id="L195">		System.out.println (strDump);</span>
+<span class="nc" id="L223">		System.out.println (strDump);</span>
 
-<span class="nc" id="L197">		Map&lt;JulianDate, FundingCurveMetrics&gt; mapFCM = FundingCurveAPI.HorizonMetrics (</span>
+<span class="nc" id="L225">		Map&lt;JulianDate, FundingCurveMetrics&gt; mapFCM = FundingCurveAPI.HorizonMetrics (</span>
 			adtSpot,
 			astrFixFloatMaturityTenor,
 			aadblFixFloatQuote,
@@ -204,23 +232,25 @@ import org.drip.service.template.LatentMarketStateBuilder;
 			LatentMarketStateBuilder.SHAPE_PRESERVING
 		);
 
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L208">			FundingCurveMetrics fcm = mapFCM.get (adtSpot[i]);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L236">			FundingCurveMetrics fcm = mapFCM.get (adtSpot[i]);</span>
 
-<span class="nc" id="L210">			strDump = adtSpot[i].toString();</span>
+<span class="nc" id="L238">			strDump = adtSpot[i].toString();</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">			for (String strInTenor : astrInTenor) {</span>
-<span class="nc bnc" id="L213" title="All 2 branches missed.">				for (String strForTenor : astrForTenor)</span>
-<span class="nc" id="L214">					strDump += &quot;,&quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L215">						fcm.nativeForwardRate (</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			for (String strInTenor : astrInTenor) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">				for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L242">					strDump += &quot;,&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L243">						fcm.nativeForwardRate (</span>
 							strInTenor,
 							strForTenor
 						), 1, 5, 100.
 					);
 			}
 
-<span class="nc" id="L222">			System.out.println (strDump);</span>
+<span class="nc" id="L250">			System.out.println (strDump);</span>
 		}
-<span class="nc" id="L224">	}</span>
+
+<span class="nc" id="L253">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L254">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

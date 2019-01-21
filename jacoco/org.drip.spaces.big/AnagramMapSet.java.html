@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnagramMapSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.spaces.big</a> &gt; <span class="el_source">AnagramMapSet.java</span></div><h1>AnagramMapSet.java</h1><pre class="source lang-java linenums">
+package org.drip.spaces.big;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;AnagramMapSet&lt;/i&gt; makes a Set of all the Anagram Groups in the Word Group.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class AnagramMapSet
+{
+<span class="nc" id="L83">	private java.util.Map&lt;java.lang.String, java.util.Set&lt;java.lang.String&gt;&gt; _anagramMap = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Set&lt;java.lang.String&gt;&gt;();
+
+	/**
+	 * Construct an AnagramMapSet Instance from the specified Sentence
+	 * 
+	 * @param sentence The Sentence
+	 * 
+	 * @return The AnagramMapSet Instance
+	 */
+
+	public static final AnagramMapSet FromSentence (
+		final java.lang.String sentence)
+	{
+<span class="nc" id="L97">		java.lang.String[] wordArray = sentence.split (&quot; &quot;);</span>
+
+<span class="nc bnc" id="L99" title="All 4 branches missed.">		if (null == wordArray || 0 == wordArray.length)</span>
+		{
+<span class="nc" id="L101">			return null;</span>
+		}
+
+<span class="nc" id="L104">		AnagramMapSet anagramMapSet = new AnagramMapSet();</span>
+
+<span class="nc bnc" id="L106" title="All 2 branches missed.">		for (java.lang.String word : wordArray)</span>
+		{
+<span class="nc bnc" id="L108" title="All 2 branches missed.">			if (!anagramMapSet.update (word))</span>
+			{
+<span class="nc" id="L110">				return null;</span>
+			}
+		}
+
+<span class="nc" id="L114">		return anagramMapSet;</span>
+	}
+
+	/**
+	 * Empty AnagramMapSet Constructor
+	 */
+
+	public AnagramMapSet()
+<span class="nc" id="L122">	{</span>
+<span class="nc" id="L123">	}</span>
+
+	/**
+	 * Update the Anagram Map Set One Word at a Time
+	 * 
+	 * @param word The Word to Update
+	 * 
+	 * @return TRUE - Update Successful
+	 */
+
+	public boolean update (
+		final java.lang.String word)
+	{
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == word || word.isEmpty())</span>
+		{
+<span class="nc" id="L138">			return false;</span>
+		}
+
+<span class="nc" id="L141">		char[] anagramCharArray = word.toLowerCase().toCharArray();</span>
+
+<span class="nc" id="L143">		java.util.Arrays.sort (anagramCharArray);</span>
+
+<span class="nc" id="L145">		java.lang.String anagramKey = new java.lang.String (anagramCharArray);</span>
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (_anagramMap.containsKey (anagramKey))</span>
+		{
+<span class="nc" id="L149">			_anagramMap.get (anagramKey).add (word);</span>
+		}
+		else
+		{
+<span class="nc" id="L153">			java.util.Set&lt;java.lang.String&gt; anagramSet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+
+<span class="nc" id="L155">			anagramSet.add (word);</span>
+
+<span class="nc" id="L157">			_anagramMap.put (</span>
+				anagramKey,
+				anagramSet
+			);
+		}
+
+<span class="nc" id="L163">		return true;</span>
+	}
+
+	/**
+	 * Return the Map of Anagrams
+	 * 
+	 * @return The Map of Anagrams
+	 */
+
+	public java.util.Map&lt;java.lang.String, java.util.Set&lt;java.lang.String&gt;&gt; anagramMap()
+	{
+<span class="nc" id="L174">		return _anagramMap;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

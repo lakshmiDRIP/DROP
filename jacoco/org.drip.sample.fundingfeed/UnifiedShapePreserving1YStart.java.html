@@ -21,33 +21,52 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -64,24 +83,33 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  */
 
 /**
- * UnifiedShapePreserving1YStart demonstrates the unified re-constitution and Metrics Generation.
+ * &lt;i&gt;UnifiedShapePreserving1YStart&lt;/i&gt; demonstrates the unified re-constitution and Metrics Generation.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fundingfeed/README.md&quot;&gt;Funding Marks Feed ETL&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L72">public class UnifiedShapePreserving1YStart {</span>
+<span class="nc" id="L100">public class UnifiedShapePreserving1YStart {</span>
 
 	public static final void main (
 		final String[] args)
 		throws Exception
 	{
-<span class="nc" id="L78">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L106">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L80">		String strCurrency = &quot;USD&quot;;</span>
-<span class="nc" id="L81">		String strFundingMarksLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Feeds\\FundingMarks\\&quot; + strCurrency + &quot;Formatted.csv&quot;;</span>
-<span class="nc" id="L82">		String strFundingMetricsLocation = &quot;C:\\DRIP\\CreditAnalytics\\Daemons\\Metrics\\FundingCurve\\Unified\\&quot; + strCurrency + &quot;.csv&quot;;</span>
+<span class="nc" id="L108">		String strCurrency = &quot;USD&quot;;</span>
+<span class="nc" id="L109">		String strFundingMarksLocation = &quot;C:\\DROP\\Daemons\\Feeds\\FundingMarks\\&quot; + strCurrency + &quot;Formatted.csv&quot;;</span>
+<span class="nc" id="L110">		String strFundingMetricsLocation = &quot;C:\\DROP\\Daemons\\Metrics\\FundingCurve\\Unified\\&quot; + strCurrency + &quot;.csv&quot;;</span>
 
-<span class="nc" id="L84">		String[] astrPreFixFloatTenor = new String[] {</span>
+<span class="nc" id="L112">		String[] astrPreFixFloatTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -101,10 +129,10 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;40Y&quot;,
 			&quot;50Y&quot;
 		};
-<span class="nc" id="L104">		String[] astrInTenor = new String[] {</span>
+<span class="nc" id="L132">		String[] astrInTenor = new String[] {</span>
 			&quot;1Y&quot;
 		};
-<span class="nc" id="L107">		String[] astrForTenor = new String[] {</span>
+<span class="nc" id="L135">		String[] astrForTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -121,7 +149,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;20Y&quot;,
 			&quot;25Y&quot;,
 		};
-<span class="nc" id="L124">		String[] astrPostFixFloatMaturityTenor = new String[] {</span>
+<span class="nc" id="L152">		String[] astrPostFixFloatMaturityTenor = new String[] {</span>
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
 			&quot;3Y&quot;,
@@ -142,58 +170,58 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			&quot;50Y&quot;
 		};
 
-<span class="nc" id="L145">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
+<span class="nc" id="L173">		CSVGrid csvGrid = CSVParser.StringGrid (</span>
 			strFundingMarksLocation,
 			false
 		);
 
-<span class="nc" id="L150">		Map&lt;JulianDate, InstrumentSetTenorQuote&gt; mapISTQ = csvGrid.groupedOrderedDouble (0.01);</span>
+<span class="nc" id="L178">		Map&lt;JulianDate, InstrumentSetTenorQuote&gt; mapISTQ = csvGrid.groupedOrderedDouble (0.01);</span>
 
-<span class="nc" id="L152">		int iNumClose = mapISTQ.size();</span>
+<span class="nc" id="L180">		int iNumClose = mapISTQ.size();</span>
 
-<span class="nc" id="L154">		int iCloseDate = 0;</span>
-<span class="nc" id="L155">		String strDump = &quot;Date&quot;;</span>
-<span class="nc" id="L156">		JulianDate[] adtClose = new JulianDate[iNumClose];</span>
-<span class="nc" id="L157">		double[][] aadblFixFloatQuote = new double[iNumClose][18];</span>
+<span class="nc" id="L182">		int iCloseDate = 0;</span>
+<span class="nc" id="L183">		String strDump = &quot;Date&quot;;</span>
+<span class="nc" id="L184">		JulianDate[] adtClose = new JulianDate[iNumClose];</span>
+<span class="nc" id="L185">		double[][] aadblFixFloatQuote = new double[iNumClose][18];</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		for (String strInTenor : astrInTenor) {</span>
-<span class="nc bnc" id="L160" title="All 2 branches missed.">			for (String strForTenor : astrForTenor)</span>
-<span class="nc" id="L161">				strDump += &quot;,&quot; + strInTenor + strForTenor;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (String strInTenor : astrInTenor) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L189">				strDump += &quot;,&quot; + strInTenor + strForTenor;</span>
 		}
 
-<span class="nc" id="L164">		System.out.println (strDump);</span>
+<span class="nc" id="L192">		System.out.println (strDump);</span>
 
-<span class="nc" id="L166">		BufferedWriter bwMetrics = new BufferedWriter (new java.io.FileWriter (strFundingMetricsLocation));</span>
+<span class="nc" id="L194">		BufferedWriter bwMetrics = new BufferedWriter (new java.io.FileWriter (strFundingMetricsLocation));</span>
 
-<span class="nc" id="L168">		bwMetrics.write (strDump + &quot;\n&quot;);</span>
+<span class="nc" id="L196">		bwMetrics.write (strDump + &quot;\n&quot;);</span>
 
-<span class="nc bnc" id="L170" title="All 2 branches missed.">		for (Map.Entry&lt;JulianDate, InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		for (Map.Entry&lt;JulianDate, InstrumentSetTenorQuote&gt; meISTQ : mapISTQ.entrySet()) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (null == meISTQ) continue;</span>
 
-<span class="nc" id="L173">			JulianDate dtSpot = meISTQ.getKey();</span>
+<span class="nc" id="L201">			JulianDate dtSpot = meISTQ.getKey();</span>
 
-<span class="nc" id="L175">			InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
+<span class="nc" id="L203">			InstrumentSetTenorQuote istq = meISTQ.getValue();</span>
 
-<span class="nc bnc" id="L177" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
+<span class="nc bnc" id="L205" title="All 4 branches missed.">			if (null == dtSpot || null == istq) continue;</span>
 
-<span class="nc" id="L179">			double[] adblDepositQuote = istq.instrumentQuote (&quot;DEPOSIT&quot;);</span>
+<span class="nc" id="L207">			double[] adblDepositQuote = istq.instrumentQuote (&quot;DEPOSIT&quot;);</span>
 
-<span class="nc" id="L181">			String[] astrDepositMaturityTenor = istq.instrumentTenor (&quot;DEPOSIT&quot;);</span>
+<span class="nc" id="L209">			String[] astrDepositMaturityTenor = istq.instrumentTenor (&quot;DEPOSIT&quot;);</span>
 
-<span class="nc" id="L183">			double[] adblFixFloatQuote = istq.instrumentQuote (&quot;FIXFLOAT&quot;);</span>
+<span class="nc" id="L211">			double[] adblFixFloatQuote = istq.instrumentQuote (&quot;FIXFLOAT&quot;);</span>
 
-<span class="nc" id="L185">			String[] astrFixFloatMaturityTenor = istq.instrumentTenor (&quot;FIXFLOAT&quot;);</span>
+<span class="nc" id="L213">			String[] astrFixFloatMaturityTenor = istq.instrumentTenor (&quot;FIXFLOAT&quot;);</span>
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">			int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
-<span class="nc bnc" id="L188" title="All 2 branches missed.">			int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
-<span class="nc bnc" id="L189" title="All 2 branches missed.">			int iNumDepositTenor = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
-<span class="nc bnc" id="L190" title="All 2 branches missed.">			int iNumFixFloatTenor = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">			int iNumDepositQuote = null == adblDepositQuote ? 0 : adblDepositQuote.length;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			int iNumFixFloatQuote = null == adblFixFloatQuote ? 0 : adblFixFloatQuote.length;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			int iNumDepositTenor = null == astrDepositMaturityTenor ? 0 : astrDepositMaturityTenor.length;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			int iNumFixFloatTenor = null == astrFixFloatMaturityTenor ? 0 : astrFixFloatMaturityTenor.length;</span>
 
-<span class="nc bnc" id="L192" title="All 6 branches missed.">			if (0 == iNumFixFloatQuote || iNumDepositQuote != iNumDepositTenor || iNumFixFloatQuote !=</span>
+<span class="nc bnc" id="L220" title="All 6 branches missed.">			if (0 == iNumFixFloatQuote || iNumDepositQuote != iNumDepositTenor || iNumFixFloatQuote !=</span>
 				iNumFixFloatTenor)
-<span class="nc" id="L194">				continue;</span>
+<span class="nc" id="L222">				continue;</span>
 
-<span class="nc" id="L196">			MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.FundingCurve (</span>
+<span class="nc" id="L224">			MergedDiscountForwardCurve dcFunding = LatentMarketStateBuilder.FundingCurve (</span>
 				dtSpot,
 				strCurrency,
 				astrDepositMaturityTenor,
@@ -207,13 +235,13 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 				LatentMarketStateBuilder.SHAPE_PRESERVING
 			);
 
-<span class="nc" id="L210">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
+<span class="nc" id="L238">			CurveSurfaceQuoteContainer csqc = new CurveSurfaceQuoteContainer();</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">			if (!csqc.setFundingState (dcFunding)) continue;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			if (!csqc.setFundingState (dcFunding)) continue;</span>
 
-<span class="nc" id="L214">			ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="nc" id="L242">			ValuationParams valParams = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="nc" id="L216">			FixFloatComponent[] aFFC = OTCInstrumentBuilder.FixFloatStandard (</span>
+<span class="nc" id="L244">			FixFloatComponent[] aFFC = OTCInstrumentBuilder.FixFloatStandard (</span>
 				dtSpot,
 				strCurrency,
 				&quot;ALL&quot;,
@@ -222,8 +250,8 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 				0.
 			);
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">			for (int j = 0; j &lt; aFFC.length; ++j)</span>
-<span class="nc" id="L226">				aadblFixFloatQuote[iCloseDate][j] = aFFC[j].measureValue (</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">			for (int j = 0; j &lt; aFFC.length; ++j)</span>
+<span class="nc" id="L254">				aadblFixFloatQuote[iCloseDate][j] = aFFC[j].measureValue (</span>
 					valParams,
 					null,
 					csqc,
@@ -231,12 +259,12 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 					&quot;SwapRate&quot;
 				);
 
-<span class="nc" id="L234">			adtClose[iCloseDate] = dtSpot;</span>
+<span class="nc" id="L262">			adtClose[iCloseDate] = dtSpot;</span>
 
-<span class="nc bnc" id="L236" title="All 2 branches missed.">			if (++iCloseDate &gt;= iNumClose) break;</span>
-<span class="nc" id="L237">		}</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">			if (++iCloseDate &gt;= iNumClose) break;</span>
+<span class="nc" id="L265">		}</span>
 
-<span class="nc" id="L239">		Map&lt;JulianDate, FundingCurveMetrics&gt; mapFCM = FundingCurveAPI.HorizonMetrics (</span>
+<span class="nc" id="L267">		Map&lt;JulianDate, FundingCurveMetrics&gt; mapFCM = FundingCurveAPI.HorizonMetrics (</span>
 			adtClose,
 			astrPostFixFloatMaturityTenor,
 			aadblFixFloatQuote,
@@ -246,27 +274,29 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 			LatentMarketStateBuilder.SHAPE_PRESERVING
 		);
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L250">			FundingCurveMetrics fcm = mapFCM.get (adtClose[i]);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L278">			FundingCurveMetrics fcm = mapFCM.get (adtClose[i]);</span>
 
-<span class="nc" id="L252">			strDump = adtClose[i].toString();</span>
+<span class="nc" id="L280">			strDump = adtClose[i].toString();</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">			for (String strInTenor : astrInTenor) {</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">				for (String strForTenor : astrForTenor)</span>
-<span class="nc" id="L256">					strDump += &quot;,&quot; + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L257">						fcm.nativeForwardRate (</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">			for (String strInTenor : astrInTenor) {</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">				for (String strForTenor : astrForTenor)</span>
+<span class="nc" id="L284">					strDump += &quot;,&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L285">						fcm.nativeForwardRate (</span>
 							strInTenor,
 							strForTenor
 						), 1, 5, 100.
 					);
 			}
 
-<span class="nc" id="L264">			System.out.println (strDump);</span>
+<span class="nc" id="L292">			System.out.println (strDump);</span>
 
-<span class="nc" id="L266">			bwMetrics.write (strDump + &quot;\n&quot;);</span>
+<span class="nc" id="L294">			bwMetrics.write (strDump + &quot;\n&quot;);</span>
 		}
 
-<span class="nc" id="L269">		bwMetrics.close();</span>
-<span class="nc" id="L270">	}</span>
+<span class="nc" id="L297">		bwMetrics.close();</span>
+
+<span class="nc" id="L299">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L300">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -16,35 +16,54 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -61,13 +80,22 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * This Sample illustrates the Construction and Usage of the IBOR 12M Forward Curve Using Vanilla Cubic
- * 	Polynomial.
+ * &lt;i&gt;IBOR12MCubicPolyVanilla&lt;/i&gt; illustrates the Construction and Usage of the IBOR 12M Forward Curve Using
+ * Vanilla Cubic Polynomial.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forward/README.md&quot;&gt;Forward Rate Curve Construction&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L70">public class IBOR12MCubicPolyVanilla {</span>
+<span class="nc" id="L98">public class IBOR12MCubicPolyVanilla {</span>
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
@@ -76,31 +104,31 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L79">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L107">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L81">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L109">		JulianDate dtValue = DateUtil.CreateFromYMD (</span>
 			2012,
 			DateUtil.DECEMBER,
 			11
 		);
 
-<span class="fc" id="L87">		String strTenor = &quot;12M&quot;;</span>
-<span class="fc" id="L88">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L115">		String strTenor = &quot;12M&quot;;</span>
+<span class="fc" id="L116">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L90">		ForwardLabel fri = ForwardLabel.Create (</span>
+<span class="fc" id="L118">		ForwardLabel fri = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="fc" id="L95">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L123">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
 			dtValue,
 			strCurrency
 		);
 
-<span class="fc" id="L100">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L128">		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-<span class="fc" id="L103">			SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L131">			SegmentInelasticDesignControl.Create (</span>
 				2,
 				2
 			),
@@ -115,7 +143,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L118">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L146">		double[] adblDepositQuote = new double[] {</span>
 			0.006537,
 			0.006187,
 			0.005772,
@@ -123,7 +151,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.005400
 		};
 
-<span class="fc" id="L126">		String[] astrDepositTenor = new String[] {</span>
+<span class="fc" id="L154">		String[] astrDepositTenor = new String[] {</span>
 			 &quot;1M&quot;,
 			 &quot;3M&quot;,
 			 &quot;6M&quot;,
@@ -135,7 +163,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Fix-Float Component and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L138">		double[] adblFRAQuote = new double[] {</span>
+<span class="fc" id="L166">		double[] adblFRAQuote = new double[] {</span>
 			0.004974,
 			0.004783,
 			0.004822,
@@ -144,7 +172,7 @@ import org.drip.state.identifier.ForwardLabel;
 			0.006025
 		};
 
-<span class="fc" id="L147">		String[] astrFRATenor = new String[] {</span>
+<span class="fc" id="L175">		String[] astrFRATenor = new String[] {</span>
 			 &quot;3M&quot;,
 			 &quot;6M&quot;,
 			 &quot;9M&quot;,
@@ -157,7 +185,7 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Float-Float Component and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L160">		double[] adblFloatFloatQuote = new double[] {</span>
+<span class="fc" id="L188">		double[] adblFloatFloatQuote = new double[] {</span>
 			-0.002070,	//  3Y
 			-0.001640,	//  4Y
 			-0.001510,	//  5Y
@@ -174,7 +202,7 @@ import org.drip.state.identifier.ForwardLabel;
 			-0.000660	// 30Y
 		};
 
-<span class="fc" id="L177">		String[] astrFloatFloatTenor = new String[] {</span>
+<span class="fc" id="L205">		String[] astrFloatFloatTenor = new String[] {</span>
 			  &quot;3Y&quot;,
 			  &quot;4Y&quot;,
 			  &quot;5Y&quot;,
@@ -195,28 +223,28 @@ import org.drip.state.identifier.ForwardLabel;
 		 * Construct the Array of Terminal Synthetic Float-Float Components and their Quotes from the given set of parameters
 		 */
 
-<span class="fc" id="L198">		String[] astrSyntheticFloatFloatTenor = new String[] {</span>
+<span class="fc" id="L226">		String[] astrSyntheticFloatFloatTenor = new String[] {</span>
 			&quot;35Y&quot;,
 			&quot;40Y&quot;,
 			&quot;50Y&quot;,
 			&quot;60Y&quot;
 		};
 
-<span class="fc" id="L205">		double[] adblSyntheticFloatFloatQuote = new double[] {</span>
+<span class="fc" id="L233">		double[] adblSyntheticFloatFloatQuote = new double[] {</span>
 			-0.000660,
 			-0.000660,
 			-0.000660,
 			-0.000660
 		};
 
-<span class="fc" id="L212">		ForwardCurve fc6M = IBOR6MCubicPolyVanilla.Make6MForward (</span>
+<span class="fc" id="L240">		ForwardCurve fc6M = IBOR6MCubicPolyVanilla.Make6MForward (</span>
 			dtValue,
 			strCurrency,
 			&quot;6M&quot;,
 			true
 		);
 
-<span class="fc" id="L219">		ForwardCurve fc12M = IBORCurve.CustomIBORBuilderSample (</span>
+<span class="fc" id="L247">		ForwardCurve fc12M = IBORCurve.CustomIBORBuilderSample (</span>
 			dcEONIA,
 			fc6M,
 			fri,
@@ -240,12 +268,14 @@ import org.drip.state.identifier.ForwardLabel;
 			true
 		);
 
-<span class="fc" id="L243">		IBORCurve.ForwardJack (</span>
+<span class="fc" id="L271">		IBORCurve.ForwardJack (</span>
 			dtValue,
 			&quot;---- VANILLA CUBIC POLYNOMIAL FORWARD CURVE SENSITIVITY ---&quot;,
 			fc12M,
 			&quot;DerivedParBasisSpread&quot;
 		);
-<span class="fc" id="L249">	}</span>
+
+<span class="fc" id="L278">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L279">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -292,18 +292,20 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 <span class="fc" id="L292">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = _stream.value</span>
 <span class="fc" id="L293">			(valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="fc" id="L295">		mapResult.put (&quot;ForwardRate&quot;, mapResult.get (&quot;Rate&quot;));</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">		if (null == mapResult) return null;</span>
 
-<span class="fc" id="L297">		return mapResult;</span>
+<span class="fc" id="L297">		mapResult.put (&quot;ForwardRate&quot;, mapResult.get (&quot;Rate&quot;));</span>
+
+<span class="fc" id="L299">		return mapResult;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L302">		java.util.Set&lt;java.lang.String&gt; setMeasureNames = _stream.availableMeasures();</span>
+<span class="nc" id="L304">		java.util.Set&lt;java.lang.String&gt; setMeasureNames = _stream.availableMeasures();</span>
 
-<span class="nc" id="L304">		setMeasureNames.add (&quot;ForwardRate&quot;);</span>
+<span class="nc" id="L306">		setMeasureNames.add (&quot;ForwardRate&quot;);</span>
 
-<span class="nc" id="L306">		return setMeasureNames;</span>
+<span class="nc" id="L308">		return setMeasureNames;</span>
 	}
 
 	@Override public double pv (
@@ -313,18 +315,18 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L316">		return _stream.pv (valParams, pricerParams, csqc, vcp);</span>
+<span class="nc" id="L318">		return _stream.pv (valParams, pricerParams, csqc, vcp);</span>
 	}
 
 	@Override public void setPrimaryCode (
 		final java.lang.String strCode)
 	{
-<span class="fc" id="L322">		_strCode = strCode;</span>
-<span class="fc" id="L323">	}</span>
+<span class="fc" id="L324">		_strCode = strCode;</span>
+<span class="fc" id="L325">	}</span>
 
 	@Override public java.lang.String primaryCode()
 	{
-<span class="fc" id="L327">		return _strCode;</span>
+<span class="fc" id="L329">		return _strCode;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
@@ -333,52 +335,52 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="pc bpc" id="L336" title="3 of 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= maturityDate().julian() || null == csqs)</span>
-<span class="nc" id="L337">			return null;</span>
+<span class="pc bpc" id="L338" title="3 of 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= maturityDate().julian() || null == csqs)</span>
+<span class="nc" id="L339">			return null;</span>
 
-<span class="fc" id="L339">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
+<span class="fc" id="L341">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
-<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
 		try {
-<span class="fc" id="L344">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = value</span>
-<span class="fc" id="L345">				(valParams, pricerParams, csqs, quotingParams);</span>
+<span class="fc" id="L346">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasures = value</span>
+<span class="fc" id="L347">				(valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="pc bpc" id="L347" title="1 of 2 branches missed.">			if (null == mapMeasures) return null;</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">			if (null == mapMeasures) return null;</span>
 
-<span class="fc" id="L349">			int iEffectiveDate = effectiveDate().julian();</span>
+<span class="fc" id="L351">			int iEffectiveDate = effectiveDate().julian();</span>
 
-<span class="fc" id="L351">			double dblDFEffective = dcFunding.df (iEffectiveDate);</span>
+<span class="fc" id="L353">			double dblDFEffective = dcFunding.df (iEffectiveDate);</span>
 
-<span class="fc" id="L353">			double dblDFMaturity = dcFunding.df (maturityDate().julian());</span>
+<span class="fc" id="L355">			double dblDFMaturity = dcFunding.df (maturityDate().julian());</span>
 
-<span class="fc" id="L355">			org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
-<span class="fc" id="L356">				(iEffectiveDate, &quot;Rate&quot;);</span>
+<span class="fc" id="L357">			org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
+<span class="fc" id="L358">				(iEffectiveDate, &quot;Rate&quot;);</span>
 
-<span class="fc" id="L358">			org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
-<span class="fc" id="L359">				(maturityDate().julian(), &quot;Rate&quot;);</span>
+<span class="fc" id="L360">			org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
+<span class="fc" id="L361">				(maturityDate().julian(), &quot;Rate&quot;);</span>
 
-<span class="pc bpc" id="L361" title="2 of 4 branches missed.">			if (null == wjDFEffective || null == wjDFMaturity) return null;</span>
+<span class="pc bpc" id="L363" title="2 of 4 branches missed.">			if (null == wjDFEffective || null == wjDFMaturity) return null;</span>
 
-<span class="fc" id="L363">			org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack = new</span>
-<span class="fc" id="L364">				org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());</span>
+<span class="fc" id="L365">			org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack = new</span>
+<span class="fc" id="L366">				org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());</span>
 
-<span class="fc bfc" id="L366" title="All 2 branches covered.">			for (int i = 0; i &lt; wjDFMaturity.numParameters(); ++i) {</span>
-<span class="pc bpc" id="L367" title="1 of 2 branches missed.">				if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, i, wjDFMaturity.firstDerivative (0,</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">			for (int i = 0; i &lt; wjDFMaturity.numParameters(); ++i) {</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">				if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, i, wjDFMaturity.firstDerivative (0,</span>
 					i) / dblDFEffective))
-<span class="nc" id="L369">					return null;</span>
+<span class="nc" id="L371">					return null;</span>
 
-<span class="pc bpc" id="L371" title="1 of 2 branches missed.">				if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, i, -wjDFEffective.firstDerivative</span>
-<span class="fc" id="L372">					(0, i) * dblDFMaturity / dblDFEffective / dblDFEffective))</span>
-<span class="nc" id="L373">					return null;</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">				if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, i, -wjDFEffective.firstDerivative</span>
+<span class="fc" id="L374">					(0, i) * dblDFMaturity / dblDFEffective / dblDFEffective))</span>
+<span class="nc" id="L375">					return null;</span>
 			}
 
-<span class="fc" id="L376">			return wjPVDFMicroJack;</span>
-<span class="nc" id="L377">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L378">			e.printStackTrace();</span>
+<span class="fc" id="L378">			return wjPVDFMicroJack;</span>
+<span class="nc" id="L379">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L380">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L381">		return null;</span>
+<span class="nc" id="L383">		return null;</span>
 	}
 
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
@@ -388,63 +390,63 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc bnc" id="L391" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= maturityDate().julian() || null ==</span>
-<span class="nc bnc" id="L392" title="All 4 branches missed.">			strManifestMeasure || strManifestMeasure.isEmpty() || null == csqs)</span>
-<span class="nc" id="L393">			return null;</span>
+<span class="nc bnc" id="L393" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= maturityDate().julian() || null ==</span>
+<span class="nc bnc" id="L394" title="All 4 branches missed.">			strManifestMeasure || strManifestMeasure.isEmpty() || null == csqs)</span>
+<span class="nc" id="L395">			return null;</span>
 
-<span class="nc" id="L395">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
+<span class="nc" id="L397">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
-<span class="nc bnc" id="L397" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="nc bnc" id="L399" title="All 2 branches missed.">		if (&quot;Rate&quot;.equalsIgnoreCase (strManifestMeasure)) {</span>
-<span class="nc" id="L400">			int iEffectiveDate = effectiveDate().julian();</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (&quot;Rate&quot;.equalsIgnoreCase (strManifestMeasure)) {</span>
+<span class="nc" id="L402">			int iEffectiveDate = effectiveDate().julian();</span>
 
 			try {
-<span class="nc" id="L403">				double dblDFEffective = dcFunding.df (iEffectiveDate);</span>
+<span class="nc" id="L405">				double dblDFEffective = dcFunding.df (iEffectiveDate);</span>
 
-<span class="nc" id="L405">				double dblDFMaturity = dcFunding.df (maturityDate().julian());</span>
+<span class="nc" id="L407">				double dblDFMaturity = dcFunding.df (maturityDate().julian());</span>
 
-<span class="nc" id="L407">				org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
-<span class="nc" id="L408">					(iEffectiveDate, &quot;Rate&quot;);</span>
+<span class="nc" id="L409">				org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
+<span class="nc" id="L410">					(iEffectiveDate, &quot;Rate&quot;);</span>
 
-<span class="nc" id="L410">				org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
-<span class="nc" id="L411">					(maturityDate().julian(), &quot;Rate&quot;);</span>
+<span class="nc" id="L412">				org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
+<span class="nc" id="L413">					(maturityDate().julian(), &quot;Rate&quot;);</span>
 
-<span class="nc bnc" id="L413" title="All 4 branches missed.">				if (null == wjDFEffective || null == wjDFMaturity) return null;</span>
+<span class="nc bnc" id="L415" title="All 4 branches missed.">				if (null == wjDFEffective || null == wjDFMaturity) return null;</span>
 
-<span class="nc" id="L415">				org.drip.quant.calculus.WengertJacobian wjDFMicroJack = new</span>
-<span class="nc" id="L416">					org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());</span>
+<span class="nc" id="L417">				org.drip.quant.calculus.WengertJacobian wjDFMicroJack = new</span>
+<span class="nc" id="L418">					org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());</span>
 
-<span class="nc bnc" id="L418" title="All 2 branches missed.">				for (int i = 0; i &lt; wjDFMaturity.numParameters(); ++i) {</span>
-<span class="nc bnc" id="L419" title="All 2 branches missed.">					if (!wjDFMicroJack.accumulatePartialFirstDerivative (0, i,</span>
-<span class="nc" id="L420">						wjDFMaturity.firstDerivative (0, i) / dblDFEffective))</span>
-<span class="nc" id="L421">						return null;</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">				for (int i = 0; i &lt; wjDFMaturity.numParameters(); ++i) {</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">					if (!wjDFMicroJack.accumulatePartialFirstDerivative (0, i,</span>
+<span class="nc" id="L422">						wjDFMaturity.firstDerivative (0, i) / dblDFEffective))</span>
+<span class="nc" id="L423">						return null;</span>
 
-<span class="nc bnc" id="L423" title="All 2 branches missed.">					if (!wjDFMicroJack.accumulatePartialFirstDerivative (0, i, -1. *</span>
-<span class="nc" id="L424">						wjDFEffective.firstDerivative (0, i) * dblDFMaturity / dblDFEffective /</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">					if (!wjDFMicroJack.accumulatePartialFirstDerivative (0, i, -1. *</span>
+<span class="nc" id="L426">						wjDFEffective.firstDerivative (0, i) * dblDFMaturity / dblDFEffective /</span>
 							dblDFEffective))
-<span class="nc" id="L426">						return null;</span>
+<span class="nc" id="L428">						return null;</span>
 				}
 
-<span class="nc" id="L429">				return wjDFMicroJack;</span>
-<span class="nc" id="L430">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L431">				e.printStackTrace();</span>
+<span class="nc" id="L431">				return wjDFMicroJack;</span>
+<span class="nc" id="L432">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L433">				e.printStackTrace();</span>
 			}
 		}
 
-<span class="nc" id="L435">		return null;</span>
+<span class="nc" id="L437">		return null;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="fc" id="L442">			return new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
-<span class="nc" id="L443">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L444">			e.printStackTrace();</span>
+<span class="fc" id="L444">			return new org.drip.product.calib.FloatingStreamQuoteSet (aLSS);</span>
+<span class="nc" id="L445">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L446">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L447">		return null;</span>
+<span class="nc" id="L449">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
@@ -454,7 +456,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="fc" id="L457">		return _stream.forwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="fc" id="L459">		return _stream.forwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
@@ -464,7 +466,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L467">		return _stream.fundingPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="nc" id="L469">		return _stream.fundingPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
@@ -474,7 +476,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="fc" id="L477">		return _stream.fundingForwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="fc" id="L479">		return _stream.fundingForwardPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fxPRWC (
@@ -484,7 +486,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L487">		return _stream.fxPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
+<span class="nc" id="L489">		return _stream.fxPRWC (valParams, pricerParams, csqs, vcp, pqs);</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint govviePRWC (
@@ -494,7 +496,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L497">		return null;</span>
+<span class="nc" id="L499">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -504,7 +506,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L507">		return null;</span>
+<span class="nc" id="L509">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; calibMeasures (
@@ -513,7 +515,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
-<span class="nc" id="L516">		return null;</span>
+<span class="nc" id="L518">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

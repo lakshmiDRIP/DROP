@@ -22,35 +22,54 @@ import org.drip.state.identifier.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -67,12 +86,21 @@ import org.drip.state.identifier.*;
  */
 
 /**
- * MultiCurveFRAMarket contains the demonstration of the Market Multi-Curve FRA Product sample.
+ * &lt;i&gt;MultiCurveFRAMarket&lt;/i&gt; contains the demonstration of the Market Multi-Curve FRA Product sample.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fra/README.md&quot;&gt;FRA Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L75">public class MultiCurveFRAMarket {</span>
+<span class="nc" id="L103">public class MultiCurveFRAMarket {</span>
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
@@ -81,43 +109,43 @@ import org.drip.state.identifier.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L84">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L112">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L86">		String strTenor = &quot;6M&quot;;</span>
-<span class="fc" id="L87">		String strCurrency = &quot;JPY&quot;;</span>
-<span class="fc" id="L88">		double dblEURIBOR6MVol = 0.37;</span>
-<span class="fc" id="L89">		double dblEONIAVol = 0.37;</span>
-<span class="fc" id="L90">		double dblEONIAEURIBOR6MCorrelation = 0.8;</span>
+<span class="fc" id="L114">		String strTenor = &quot;6M&quot;;</span>
+<span class="fc" id="L115">		String strCurrency = &quot;JPY&quot;;</span>
+<span class="fc" id="L116">		double dblEURIBOR6MVol = 0.37;</span>
+<span class="fc" id="L117">		double dblEONIAVol = 0.37;</span>
+<span class="fc" id="L118">		double dblEONIAEURIBOR6MCorrelation = 0.8;</span>
 
-<span class="fc" id="L92">		JulianDate dtToday = DateUtil.Today();</span>
+<span class="fc" id="L120">		JulianDate dtToday = DateUtil.Today();</span>
 
-<span class="fc" id="L94">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L122">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
 			dtToday,
 			strCurrency
 		);
 
-<span class="fc" id="L99">		ForwardCurve fcEURIBOR6M = IBOR6MQuarticPolyVanilla.Make6MForward (</span>
+<span class="fc" id="L127">		ForwardCurve fcEURIBOR6M = IBOR6MQuarticPolyVanilla.Make6MForward (</span>
 			dtToday,
 			strCurrency,
 			strTenor
 		);
 
-<span class="fc" id="L105">		ForwardLabel fri = ForwardLabel.Create (</span>
+<span class="fc" id="L133">		ForwardLabel fri = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="fc" id="L110">		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);</span>
+<span class="fc" id="L138">		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);</span>
 
-<span class="fc" id="L112">		JulianDate dtForwardStart = dtToday.addTenor (strTenor);</span>
+<span class="fc" id="L140">		JulianDate dtForwardStart = dtToday.addTenor (strTenor);</span>
 
-<span class="fc" id="L114">		FRAMarketComponent fra = SingleStreamComponentBuilder.FRAMarket (</span>
+<span class="fc" id="L142">		FRAMarketComponent fra = SingleStreamComponentBuilder.FRAMarket (</span>
 			dtForwardStart,
 			fri,
 			0.006
 		);
 
-<span class="fc" id="L120">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L148">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dcEONIA,
 			fcEURIBOR6M,
 			null,
@@ -128,45 +156,47 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="fc" id="L131">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L159">		ValuationParams valParams = new ValuationParams (</span>
 			dtToday,
 			dtToday,
 			strCurrency
 		);
 
-<span class="fc" id="L137">		mktParams.setForwardVolatility (</span>
-<span class="fc" id="L138">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="fc" id="L139">				dtToday.julian(),</span>
-<span class="fc" id="L140">				VolatilityLabel.Standard (fri),</span>
-<span class="fc" id="L141">				fri.currency(),</span>
+<span class="fc" id="L165">		mktParams.setForwardVolatility (</span>
+<span class="fc" id="L166">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L167">				dtToday.julian(),</span>
+<span class="fc" id="L168">				VolatilityLabel.Standard (fri),</span>
+<span class="fc" id="L169">				fri.currency(),</span>
 				dblEURIBOR6MVol
 			)
 		);
 
-<span class="fc" id="L146">		mktParams.setFundingVolatility (</span>
-<span class="fc" id="L147">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="fc" id="L148">				dtToday.julian(),</span>
-<span class="fc" id="L149">				VolatilityLabel.Standard (fundingLabel),</span>
-<span class="fc" id="L150">				fri.currency(),</span>
+<span class="fc" id="L174">		mktParams.setFundingVolatility (</span>
+<span class="fc" id="L175">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L176">				dtToday.julian(),</span>
+<span class="fc" id="L177">				VolatilityLabel.Standard (fundingLabel),</span>
+<span class="fc" id="L178">				fri.currency(),</span>
 				dblEONIAVol
 			)
 		);
 
-<span class="fc" id="L155">		mktParams.setForwardFundingCorrelation (</span>
+<span class="fc" id="L183">		mktParams.setForwardFundingCorrelation (</span>
 			fri,
 			fundingLabel,
 			new FlatUnivariate (dblEONIAEURIBOR6MCorrelation)
 		);
 
-<span class="fc" id="L161">		Map&lt;String, Double&gt; mapFRAOutput = fra.value (</span>
+<span class="fc" id="L189">		Map&lt;String, Double&gt; mapFRAOutput = fra.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapFRAOutput.entrySet())</span>
-<span class="fc" id="L169">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
-<span class="fc" id="L170">	}</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">		for (Map.Entry&lt;String, Double&gt; me : mapFRAOutput.entrySet())</span>
+<span class="fc" id="L197">			System.out.println (&quot;\t&quot; + me.getKey() + &quot; =&gt; &quot; + me.getValue());</span>
+
+<span class="fc" id="L199">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L200">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

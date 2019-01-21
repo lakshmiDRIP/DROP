@@ -29,35 +29,54 @@ import org.drip.state.inference.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -74,12 +93,21 @@ import org.drip.state.inference.*;
  */
 
 /**
- * IBORCurve illustrates the Construction and Usage of the IBOR Forward Curve.
+ * &lt;i&gt;IBORCurve&lt;/i&gt; illustrates the Construction and Usage of the IBOR Forward Curve.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/forward/README.md&quot;&gt;Forward Rate Curve Construction&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class IBORCurve {</span>
+<span class="nc" id="L110">public class IBORCurve {</span>
 
 	private static final FloatFloatComponent OTCFloatFloat (
 		final JulianDate dtSpot,
@@ -88,9 +116,9 @@ import org.drip.state.inference.*;
 		final String strMaturityTenor,
 		final double dblBasis)
 	{
-<span class="fc" id="L91">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L119">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="fc" id="L93">		return ffConv.createFloatFloatComponent (</span>
+<span class="fc" id="L121">		return ffConv.createFloatFloatComponent (</span>
 			dtSpot,
 			strDerivedTenor,
 			strMaturityTenor,
@@ -107,14 +135,14 @@ import org.drip.state.inference.*;
 		final String strIndex,
 		final double dblCoupon)
 	{
-<span class="fc" id="L110">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L138">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			strLocation,
 			strMaturityTenor,
 			strIndex
 		);
 
-<span class="fc" id="L117">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L145">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -132,9 +160,9 @@ import org.drip.state.inference.*;
 		final double dblDerivedFixedCoupon,
 		final double dblBasis)
 	{
-<span class="nc" id="L135">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="nc" id="L163">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="nc" id="L137">		return ffConv.createFixFloatComponentPair (</span>
+<span class="nc" id="L165">		return ffConv.createFixFloatComponentPair (</span>
 			dtSpot,
 			strDerivedTenor,
 			strMaturityTenor,
@@ -157,18 +185,18 @@ import org.drip.state.inference.*;
 		final ForwardLabel fri)
 		throws Exception
 	{
-<span class="pc bpc" id="L160" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
+<span class="pc bpc" id="L188" title="2 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
 
-<span class="fc" id="L162">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L190">		SingleStreamComponent[] aDeposit = new SingleStreamComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L165">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L193">			aDeposit[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="fc" id="L167">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
+<span class="fc" id="L195">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
 				fri
 			);
 
-<span class="fc" id="L171">		return aDeposit;</span>
+<span class="fc" id="L199">		return aDeposit;</span>
 	}
 
 	/*
@@ -184,18 +212,18 @@ import org.drip.state.inference.*;
 		final double[] adblFRAStrike)
 		throws Exception
 	{
-<span class="pc bpc" id="L187" title="2 of 6 branches missed.">		if (null == astrMaturityTenor || null == adblFRAStrike || 0 == astrMaturityTenor.length) return null;</span>
+<span class="pc bpc" id="L215" title="2 of 6 branches missed.">		if (null == astrMaturityTenor || null == adblFRAStrike || 0 == astrMaturityTenor.length) return null;</span>
 
-<span class="fc" id="L189">		FRAStandardComponent[] aFRA = new FRAStandardComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L217">		FRAStandardComponent[] aFRA = new FRAStandardComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L192">			aFRA[i] = SingleStreamComponentBuilder.FRAStandard (</span>
-<span class="fc" id="L193">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L220">			aFRA[i] = SingleStreamComponentBuilder.FRAStandard (</span>
+<span class="fc" id="L221">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
 				fri,
 				adblFRAStrike[i]
 			);
 
-<span class="fc" id="L198">		return aFRA;</span>
+<span class="fc" id="L226">		return aFRA;</span>
 	}
 
 	private static final FixFloatComponent[] FixFloatSwap2 (
@@ -204,21 +232,21 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="pc bpc" id="L207" title="1 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
+<span class="pc bpc" id="L235" title="1 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
 
-<span class="fc" id="L209">		FixFloatComponent[] aFixFloat = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L237">		FixFloatComponent[] aFixFloat = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L212">			aFixFloat[i] = OTCIRS (</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L240">			aFixFloat[i] = OTCIRS (</span>
 				dtEffective,
-<span class="fc" id="L214">				fri.currency(),</span>
+<span class="fc" id="L242">				fri.currency(),</span>
 				&quot;ALL&quot;,
 				astrMaturityTenor[i],
 				&quot;MAIN&quot;,
 				0.
 			);
 
-<span class="fc" id="L221">		return aFixFloat;</span>
+<span class="fc" id="L249">		return aFixFloat;</span>
 	}
 
 	private static final FixFloatComponent[] FixFloatSwap (
@@ -227,17 +255,17 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="nc bnc" id="L230" title="All 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
+<span class="nc bnc" id="L258" title="All 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
 
-<span class="nc" id="L232">		JulianDate dtEffective = dtValue.addDays (2);</span>
+<span class="nc" id="L260">		JulianDate dtEffective = dtValue.addDays (2);</span>
 
-<span class="nc" id="L234">		String strCurrency = fri.currency();</span>
+<span class="nc" id="L262">		String strCurrency = fri.currency();</span>
 
-<span class="nc" id="L236">		FixFloatComponent[] aFFC = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="nc" id="L264">		FixFloatComponent[] aFFC = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="nc" id="L238">		int iTenorInMonths = Integer.parseInt (fri.tenor().split (&quot;M&quot;)[0]);</span>
+<span class="nc" id="L266">		int iTenorInMonths = Integer.parseInt (fri.tenor().split (&quot;M&quot;)[0]);</span>
 
-<span class="nc" id="L240">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
+<span class="nc" id="L268">		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (</span>
 			1,
 			&quot;Act/360&quot;,
 			false,
@@ -248,8 +276,8 @@ import org.drip.state.inference.*;
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
-<span class="nc" id="L251">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
-<span class="nc" id="L252">			fri.tenor(),</span>
+<span class="nc" id="L279">		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (</span>
+<span class="nc" id="L280">			fri.tenor(),</span>
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
 			fri,
@@ -257,9 +285,9 @@ import org.drip.state.inference.*;
 			0.
 		);
 
-<span class="nc" id="L260">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
+<span class="nc" id="L288">		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (</span>
 			12 / iTenorInMonths,
-<span class="nc" id="L262">			fri.tenor(),</span>
+<span class="nc" id="L290">			fri.tenor(),</span>
 			strCurrency,
 			null,
 			-1.,
@@ -269,21 +297,21 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L272">		CashSettleParams csp = new CashSettleParams (</span>
+<span class="nc" id="L300">		CashSettleParams csp = new CashSettleParams (</span>
 			0,
 			strCurrency,
 			0
 		);
 
-<span class="nc bnc" id="L278" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="nc" id="L279">			int iTenorCompare = Helper.TenorCompare (</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="nc" id="L307">			int iTenorCompare = Helper.TenorCompare (</span>
 				astrMaturityTenor[i],
 				&quot;6M&quot;
 			);
 
-<span class="nc bnc" id="L284" title="All 2 branches missed.">			String strFixedTenor = Helper.LEFT_TENOR_LESSER == iTenorCompare ? astrMaturityTenor[i] : &quot;6M&quot;;</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">			String strFixedTenor = Helper.LEFT_TENOR_LESSER == iTenorCompare ? astrMaturityTenor[i] : &quot;6M&quot;;</span>
 
-<span class="nc" id="L286">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
+<span class="nc" id="L314">			ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (</span>
 				strFixedTenor,
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 				null,
@@ -292,7 +320,7 @@ import org.drip.state.inference.*;
 				strCurrency
 			);
 
-<span class="nc" id="L295">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
+<span class="nc" id="L323">			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (</span>
 				1,
 				strFixedTenor,
 				strCurrency,
@@ -304,31 +332,31 @@ import org.drip.state.inference.*;
 				null
 			);
 
-<span class="nc" id="L307">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (</span>
+<span class="nc" id="L335">			List&lt;Integer&gt; lsFixedStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (</span>
 				dtEffective,
-<span class="nc" id="L309">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
+<span class="nc" id="L337">				dtEffective.addTenor (astrMaturityTenor[i]),</span>
 				&quot;1Y&quot;,
 				null,
 				CompositePeriodBuilder.SHORT_STUB
 			);
 
-<span class="nc" id="L315">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
+<span class="nc" id="L343">			List&lt;Integer&gt; lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (</span>
 				dtEffective,
-<span class="nc" id="L317">				fri.tenor(),</span>
+<span class="nc" id="L345">				fri.tenor(),</span>
 				astrMaturityTenor[i],
 				null
 			);
 
-<span class="nc" id="L322">			Stream floatingStream = new Stream (</span>
-<span class="nc" id="L323">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="nc" id="L350">			Stream floatingStream = new Stream (</span>
+<span class="nc" id="L351">				CompositePeriodBuilder.FloatingCompositeUnit (</span>
 					lsFloatingStreamEdgeDate,
 					cpsFloating,
 					cfusFloating
 				)
 			);
 
-<span class="nc" id="L330">			Stream fixedStream = new Stream (</span>
-<span class="nc" id="L331">				CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="nc" id="L358">			Stream fixedStream = new Stream (</span>
+<span class="nc" id="L359">				CompositePeriodBuilder.FixedCompositeUnit (</span>
 					lsFixedStreamEdgeDate,
 					cpsFixed,
 					ucasFixed,
@@ -336,16 +364,16 @@ import org.drip.state.inference.*;
 				)
 			);
 
-<span class="nc" id="L339">			aFFC[i] = new FixFloatComponent (</span>
+<span class="nc" id="L367">			aFFC[i] = new FixFloatComponent (</span>
 				fixedStream,
 				floatingStream,
 				csp
 			);
 
-<span class="nc" id="L345">			aFFC[i].setPrimaryCode (&quot;FixFloat:&quot; + astrMaturityTenor[i]);</span>
+<span class="nc" id="L373">			aFFC[i].setPrimaryCode (&quot;FixFloat:&quot; + astrMaturityTenor[i]);</span>
 		}
 
-<span class="nc" id="L348">		return aFFC;</span>
+<span class="nc" id="L376">		return aFFC;</span>
 	}
 
 	/*
@@ -360,16 +388,16 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="pc bpc" id="L363" title="1 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
+<span class="pc bpc" id="L391" title="1 of 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
 
-<span class="fc" id="L365">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L393">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc" id="L367">		int iTenorInMonths = Integer.parseInt (fri.tenor().split (&quot;M&quot;)[0]);</span>
+<span class="fc" id="L395">		int iTenorInMonths = Integer.parseInt (fri.tenor().split (&quot;M&quot;)[0]);</span>
 
-<span class="fc" id="L369">		String strCurrency = fri.currency();</span>
+<span class="fc" id="L397">		String strCurrency = fri.currency();</span>
 
-<span class="fc bfc" id="L371" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L372">			aFFC[i] = OTCFloatFloat (</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L400">			aFFC[i] = OTCFloatFloat (</span>
 				dtSpot,
 				strCurrency,
 				iTenorInMonths + &quot;M&quot;,
@@ -377,7 +405,7 @@ import org.drip.state.inference.*;
 				0.
 			);
 
-<span class="fc" id="L380">		return aFFC;</span>
+<span class="fc" id="L408">		return aFFC;</span>
 	}
 
 	/*
@@ -393,28 +421,28 @@ import org.drip.state.inference.*;
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
-<span class="nc bnc" id="L396" title="All 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
+<span class="nc bnc" id="L424" title="All 4 branches missed.">		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;</span>
 
-<span class="nc" id="L398">		ComponentPair[] aFFCP = new ComponentPair[astrMaturityTenor.length];</span>
+<span class="nc" id="L426">		ComponentPair[] aFFCP = new ComponentPair[astrMaturityTenor.length];</span>
 
-<span class="nc" id="L400">		ValuationParams valParams = new ValuationParams (</span>
+<span class="nc" id="L428">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
-<span class="nc" id="L403">			friDerived.currency()</span>
+<span class="nc" id="L431">			friDerived.currency()</span>
 		);
 
-<span class="nc bnc" id="L406" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
-<span class="nc" id="L407">			ComponentPair cp = OTCComponentPair (</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i) {</span>
+<span class="nc" id="L435">			ComponentPair cp = OTCComponentPair (</span>
 				dtSpot,
-<span class="nc" id="L409">				friDerived.currency(),</span>
-<span class="nc" id="L410">				friDerived.tenor(),</span>
+<span class="nc" id="L437">				friDerived.currency(),</span>
+<span class="nc" id="L438">				friDerived.tenor(),</span>
 				astrMaturityTenor[i],
 				0.,
 				0.,
 				0.
 			);
 
-<span class="nc" id="L417">			double dblReferenceFixedCoupon = cp.referenceComponent().measureValue (</span>
+<span class="nc" id="L445">			double dblReferenceFixedCoupon = cp.referenceComponent().measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -422,7 +450,7 @@ import org.drip.state.inference.*;
 				&quot;FairPremium&quot;
 			);
 
-<span class="nc" id="L425">			double dblDerivedFixedCoupon = cp.derivedComponent().measureValue (</span>
+<span class="nc" id="L453">			double dblDerivedFixedCoupon = cp.derivedComponent().measureValue (</span>
 				valParams,
 				null,
 				csqs,
@@ -430,10 +458,10 @@ import org.drip.state.inference.*;
 				&quot;FairPremium&quot;
 			);
 
-<span class="nc" id="L433">			aFFCP[i] = OTCComponentPair (</span>
+<span class="nc" id="L461">			aFFCP[i] = OTCComponentPair (</span>
 				dtSpot,
-<span class="nc" id="L435">				friDerived.currency(),</span>
-<span class="nc" id="L436">				friDerived.tenor(),</span>
+<span class="nc" id="L463">				friDerived.currency(),</span>
+<span class="nc" id="L464">				friDerived.tenor(),</span>
 				astrMaturityTenor[i],
 				dblReferenceFixedCoupon,
 				dblDerivedFixedCoupon,
@@ -441,7 +469,7 @@ import org.drip.state.inference.*;
 			);
 		}
 
-<span class="nc" id="L444">		return aFFCP;</span>
+<span class="nc" id="L472">		return aFFCP;</span>
 	}
 
 	public static final ForwardCurve CustomIBORBuilderSample (
@@ -468,17 +496,17 @@ import org.drip.state.inference.*;
 		final boolean bPrintMetric)
 		throws Exception
 	{
-<span class="fc bfc" id="L471" title="All 2 branches covered.">		if (bPrintMetric) {</span>
-<span class="fc" id="L472">			System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">		if (bPrintMetric) {</span>
+<span class="fc" id="L500">			System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L474">			System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
+<span class="fc" id="L502">			System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
 
-<span class="fc" id="L476">			System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L504">			System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 		}
 
-<span class="fc" id="L479">		JulianDate dtValue = dc.epoch();</span>
+<span class="fc" id="L507">		JulianDate dtValue = dc.epoch();</span>
 
-<span class="fc" id="L481">		SingleStreamComponent[] aDeposit = DepositFromMaturityDays (</span>
+<span class="fc" id="L509">		SingleStreamComponent[] aDeposit = DepositFromMaturityDays (</span>
 			dtValue,
 			astrDepositTenor,
 			fri
@@ -488,14 +516,14 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L491">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="fc" id="L519">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDeposit,
 			strDepositCalibMeasure,
 			adblDepositQuote
 		);
 
-<span class="fc" id="L498">		FRAStandardComponent[] aFRA = FRAFromMaturityDays (</span>
+<span class="fc" id="L526">		FRAStandardComponent[] aFRA = FRAFromMaturityDays (</span>
 			dtValue,
 			fri,
 			astrFRATenor,
@@ -506,14 +534,14 @@ import org.drip.state.inference.*;
 		 * Construct the FRA Instrument Set Stretch Builder
 		 */
 
-<span class="fc" id="L509">		LatentStateStretchSpec fraStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="fc" id="L537">		LatentStateStretchSpec fraStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;FRA&quot;,
 			aFRA,
 			strFRACalibMeasure,
 			adblFRAQuote
 		);
 
-<span class="fc" id="L516">		FixFloatComponent[] aFixFloat = FixFloatSwap2 (</span>
+<span class="fc" id="L544">		FixFloatComponent[] aFixFloat = FixFloatSwap2 (</span>
 			dtValue,
 			fri,
 			astrFixFloatTenor
@@ -523,14 +551,14 @@ import org.drip.state.inference.*;
 		 * Construct the Fix-Float Component Set Stretch Builder
 		 */
 
-<span class="fc" id="L526">		LatentStateStretchSpec fixFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="fc" id="L554">		LatentStateStretchSpec fixFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;FIXFLOAT&quot;,
 			aFixFloat,
 			strFixFloatCalibMeasure,
 			adblFixFloatQuote
 		);
 
-<span class="fc" id="L533">		FloatFloatComponent[] aFloatFloat = FloatFloatSwap (</span>
+<span class="fc" id="L561">		FloatFloatComponent[] aFloatFloat = FloatFloatSwap (</span>
 			dtValue,
 			fri,
 			astrFloatFloatTenor
@@ -540,14 +568,14 @@ import org.drip.state.inference.*;
 		 * Construct the Float-Float Component Set Stretch Builder
 		 */
 
-<span class="fc" id="L543">		LatentStateStretchSpec floatFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="fc" id="L571">		LatentStateStretchSpec floatFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;FLOATFLOAT&quot;,
 			aFloatFloat,
 			strFloatFloatCalibMeasure,
 			adblFloatFloatQuote
 		);
 
-<span class="fc" id="L550">		FloatFloatComponent[] aSyntheticFloatFloat = FloatFloatSwap (</span>
+<span class="fc" id="L578">		FloatFloatComponent[] aSyntheticFloatFloat = FloatFloatSwap (</span>
 			dtValue,
 			fri,
 			astrSyntheticFloatFloatTenor
@@ -557,14 +585,14 @@ import org.drip.state.inference.*;
 		 * Construct the Synthetic Float-Float Component Set Stretch Builder
 		 */
 
-<span class="fc" id="L560">		LatentStateStretchSpec syntheticFloatFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="fc" id="L588">		LatentStateStretchSpec syntheticFloatFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;SYNTHETICFLOATFLOAT&quot;,
 			aSyntheticFloatFloat,
 			strSyntheticFloatFloatCalibMeasure,
 			adblSyntheticFloatFloatQuote
 		);
 
-<span class="fc" id="L567">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="fc" id="L595">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			fraStretch,
 			fixFloatStretch,
@@ -580,25 +608,25 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="fc" id="L583">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="fc" id="L611">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			scbc,
-<span class="fc" id="L585">			BoundarySettings.NaturalStandard(),</span>
+<span class="fc" id="L613">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
 		);
 
-<span class="fc" id="L591">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L619">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtValue,
-<span class="fc" id="L594">			fri.currency()</span>
+<span class="fc" id="L622">			fri.currency()</span>
 		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-<span class="fc" id="L601">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L629">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
 			fcReference,
 			null,
@@ -614,7 +642,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit and Swap Stretches.
 		 */
 
-<span class="pc bpc" id="L617" title="2 of 4 branches missed.">		ForwardCurve fcDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+<span class="pc bpc" id="L645" title="2 of 4 branches missed.">		ForwardCurve fcDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
 			lcc,
 			aStretchSpec,
 			fri,
@@ -629,101 +657,101 @@ import org.drip.state.inference.*;
 		 * Set the discount curve + cubic polynomial forward curve based component market parameters.
 		 */
 
-<span class="fc" id="L632">		mktParams.setForwardState (fcDerived);</span>
+<span class="fc" id="L660">		mktParams.setForwardState (fcDerived);</span>
 
-<span class="fc bfc" id="L634" title="All 2 branches covered.">		if (bPrintMetric) {</span>
+<span class="fc bfc" id="L662" title="All 2 branches covered.">		if (bPrintMetric) {</span>
 			/*
 			 * Cross-Comparison of the Deposit Calibration Instrument &quot;Forward&quot; metric.
 			 */
 
-<span class="pc bpc" id="L639" title="2 of 4 branches missed.">			if (null != aDeposit &amp;&amp; null != adblDepositQuote) {</span>
-<span class="fc" id="L640">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="pc bpc" id="L667" title="2 of 4 branches missed.">			if (null != aDeposit &amp;&amp; null != adblDepositQuote) {</span>
+<span class="fc" id="L668">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L642">				System.out.println (&quot;\t     DEPOSIT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="fc" id="L670">				System.out.println (&quot;\t     DEPOSIT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="fc" id="L644">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L672">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L646" title="All 2 branches covered.">				for (int i = 0; i &lt; aDeposit.length; ++i)</span>
-<span class="fc" id="L647">					System.out.println (&quot;\t[&quot; + aDeposit[i].effectiveDate() + &quot; - &quot; + aDeposit[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L648">						FormatUtil.FormatDouble (aDeposit[i].measureValue (valParams, null, mktParams, null, strDepositCalibMeasure), 1, 6, 1.) +</span>
-<span class="fc" id="L649">							&quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L650">								FormatUtil.FormatDouble (fcDerived.forward (aDeposit[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L674" title="All 2 branches covered.">				for (int i = 0; i &lt; aDeposit.length; ++i)</span>
+<span class="fc" id="L675">					System.out.println (&quot;\t[&quot; + aDeposit[i].effectiveDate() + &quot; - &quot; + aDeposit[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L676">						FormatUtil.FormatDouble (aDeposit[i].measureValue (valParams, null, mktParams, null, strDepositCalibMeasure), 1, 6, 1.) +</span>
+<span class="fc" id="L677">							&quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L678">								FormatUtil.FormatDouble (fcDerived.forward (aDeposit[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the FRA Calibration Instrument &quot;Forward&quot; metric.
 			 */
 
-<span class="pc bpc" id="L657" title="1 of 4 branches missed.">			if (null != aFRA &amp;&amp; null != adblFRAQuote) {</span>
-<span class="fc" id="L658">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="pc bpc" id="L685" title="1 of 4 branches missed.">			if (null != aFRA &amp;&amp; null != adblFRAQuote) {</span>
+<span class="fc" id="L686">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L660">				System.out.println (&quot;\t     FRA INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="fc" id="L688">				System.out.println (&quot;\t     FRA INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="fc" id="L662">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L690">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L664" title="All 2 branches covered.">				for (int i = 0; i &lt; aFRA.length; ++i)</span>
-<span class="fc" id="L665">					System.out.println (&quot;\t[&quot; + aFRA[i].effectiveDate() + &quot; - &quot; + aFRA[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L666">						FormatUtil.FormatDouble (aFRA[i].measureValue (valParams, null, mktParams, null, strFRACalibMeasure), 1, 6, 1.) +</span>
-<span class="fc" id="L667">							&quot; | &quot; + FormatUtil.FormatDouble (adblFRAQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L668">								FormatUtil.FormatDouble (fcDerived.forward (aFRA[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L692" title="All 2 branches covered.">				for (int i = 0; i &lt; aFRA.length; ++i)</span>
+<span class="fc" id="L693">					System.out.println (&quot;\t[&quot; + aFRA[i].effectiveDate() + &quot; - &quot; + aFRA[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L694">						FormatUtil.FormatDouble (aFRA[i].measureValue (valParams, null, mktParams, null, strFRACalibMeasure), 1, 6, 1.) +</span>
+<span class="fc" id="L695">							&quot; | &quot; + FormatUtil.FormatDouble (adblFRAQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L696">								FormatUtil.FormatDouble (fcDerived.forward (aFRA[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the Fix-Float Calibration Instrument &quot;DerivedParBasisSpread&quot; metric.
 			 */
 
-<span class="pc bpc" id="L675" title="1 of 4 branches missed.">			if (null != aFixFloat &amp;&amp; null != adblFixFloatQuote) {</span>
-<span class="fc" id="L676">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="pc bpc" id="L703" title="1 of 4 branches missed.">			if (null != aFixFloat &amp;&amp; null != adblFixFloatQuote) {</span>
+<span class="fc" id="L704">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L678">				System.out.println (&quot;\t     FIX-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="fc" id="L706">				System.out.println (&quot;\t     FIX-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="fc" id="L680">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L708">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L682" title="All 2 branches covered.">				for (int i = 0; i &lt; aFixFloat.length; ++i)</span>
-<span class="fc" id="L683">					System.out.println (&quot;\t[&quot; + aFixFloat[i].effectiveDate() + &quot; - &quot; + aFixFloat[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L684">						FormatUtil.FormatDouble (aFixFloat[i].measureValue (valParams, null, mktParams, null, strFixFloatCalibMeasure), 1, 4, 100.) +</span>
-<span class="fc" id="L685">							&quot;% | &quot; + FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L686">								FormatUtil.FormatDouble (fcDerived.forward (aFixFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">				for (int i = 0; i &lt; aFixFloat.length; ++i)</span>
+<span class="fc" id="L711">					System.out.println (&quot;\t[&quot; + aFixFloat[i].effectiveDate() + &quot; - &quot; + aFixFloat[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L712">						FormatUtil.FormatDouble (aFixFloat[i].measureValue (valParams, null, mktParams, null, strFixFloatCalibMeasure), 1, 4, 100.) +</span>
+<span class="fc" id="L713">							&quot;% | &quot; + FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L714">								FormatUtil.FormatDouble (fcDerived.forward (aFixFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the Float-Float Calibration Instrument &quot;DerivedParBasisSpread&quot; metric.
 			 */
 
-<span class="pc bpc" id="L693" title="1 of 4 branches missed.">			if (null != aFloatFloat &amp;&amp; null != adblFloatFloatQuote) {</span>
-<span class="fc" id="L694">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="pc bpc" id="L721" title="1 of 4 branches missed.">			if (null != aFloatFloat &amp;&amp; null != adblFloatFloatQuote) {</span>
+<span class="fc" id="L722">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L696">				System.out.println (&quot;\t     FLOAT-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="fc" id="L724">				System.out.println (&quot;\t     FLOAT-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="fc" id="L698">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L726">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L700" title="All 2 branches covered.">				for (int i = 0; i &lt; aFloatFloat.length; ++i)</span>
-<span class="fc" id="L701">					System.out.println (&quot;\t[&quot; + aFloatFloat[i].effectiveDate() + &quot; - &quot; + aFloatFloat[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L702">						FormatUtil.FormatDouble (aFloatFloat[i].measureValue (valParams, null, mktParams, null, strFloatFloatCalibMeasure), 1, 2, 1.) +</span>
-<span class="fc" id="L703">							&quot; | &quot; + FormatUtil.FormatDouble (adblFloatFloatQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L704">								FormatUtil.FormatDouble (fcDerived.forward (aFloatFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L728" title="All 2 branches covered.">				for (int i = 0; i &lt; aFloatFloat.length; ++i)</span>
+<span class="fc" id="L729">					System.out.println (&quot;\t[&quot; + aFloatFloat[i].effectiveDate() + &quot; - &quot; + aFloatFloat[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L730">						FormatUtil.FormatDouble (aFloatFloat[i].measureValue (valParams, null, mktParams, null, strFloatFloatCalibMeasure), 1, 2, 1.) +</span>
+<span class="fc" id="L731">							&quot; | &quot; + FormatUtil.FormatDouble (adblFloatFloatQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L732">								FormatUtil.FormatDouble (fcDerived.forward (aFloatFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the Synthetic Float-Float Calibration Instrument &quot;DerivedParBasisSpread&quot; metric.
 			 */
 
-<span class="pc bpc" id="L711" title="1 of 4 branches missed.">			if (null != aSyntheticFloatFloat &amp;&amp; null != adblSyntheticFloatFloatQuote) {</span>
-<span class="fc" id="L712">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="pc bpc" id="L739" title="1 of 4 branches missed.">			if (null != aSyntheticFloatFloat &amp;&amp; null != adblSyntheticFloatFloatQuote) {</span>
+<span class="fc" id="L740">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L714">				System.out.println (&quot;\t     SYNTHETIC FLOAT-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="fc" id="L742">				System.out.println (&quot;\t     SYNTHETIC FLOAT-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="fc" id="L716">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L744">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L718" title="All 2 branches covered.">				for (int i = 0; i &lt; aSyntheticFloatFloat.length; ++i)</span>
-<span class="fc" id="L719">					System.out.println (&quot;\t[&quot; + aSyntheticFloatFloat[i].effectiveDate() + &quot; - &quot; + aSyntheticFloatFloat[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="fc" id="L720">						FormatUtil.FormatDouble (aSyntheticFloatFloat[i].measureValue (valParams, null, mktParams, null, strSyntheticFloatFloatCalibMeasure), 1, 2, 1.) +</span>
-<span class="fc" id="L721">							&quot; | &quot; + FormatUtil.FormatDouble (adblSyntheticFloatFloatQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L722">								FormatUtil.FormatDouble (fcDerived.forward (aSyntheticFloatFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="fc bfc" id="L746" title="All 2 branches covered.">				for (int i = 0; i &lt; aSyntheticFloatFloat.length; ++i)</span>
+<span class="fc" id="L747">					System.out.println (&quot;\t[&quot; + aSyntheticFloatFloat[i].effectiveDate() + &quot; - &quot; + aSyntheticFloatFloat[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="fc" id="L748">						FormatUtil.FormatDouble (aSyntheticFloatFloat[i].measureValue (valParams, null, mktParams, null, strSyntheticFloatFloatCalibMeasure), 1, 2, 1.) +</span>
+<span class="fc" id="L749">							&quot; | &quot; + FormatUtil.FormatDouble (adblSyntheticFloatFloatQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L750">								FormatUtil.FormatDouble (fcDerived.forward (aSyntheticFloatFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 		}
 
-<span class="fc" id="L726">		return fcDerived;</span>
+<span class="fc" id="L754">		return fcDerived;</span>
 	}
 
 	public static final ForwardCurve CustomIBORBuilderSample2 (
@@ -750,27 +778,27 @@ import org.drip.state.inference.*;
 		final boolean bPrintMetric)
 		throws Exception
 	{
-<span class="nc bnc" id="L753" title="All 2 branches missed.">		if (bPrintMetric) {</span>
-<span class="nc" id="L754">			System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">		if (bPrintMetric) {</span>
+<span class="nc" id="L782">			System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L756">			System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
+<span class="nc" id="L784">			System.out.println (&quot;\t     &quot; + strHeaderComment);</span>
 
-<span class="nc" id="L758">			System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc" id="L786">			System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 		}
 
-<span class="nc" id="L761">		JulianDate dtValue = dc.epoch();</span>
+<span class="nc" id="L789">		JulianDate dtValue = dc.epoch();</span>
 
-<span class="nc" id="L763">		ValuationParams valParams = new ValuationParams (</span>
+<span class="nc" id="L791">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtValue,
-<span class="nc" id="L766">			fri.currency()</span>
+<span class="nc" id="L794">			fri.currency()</span>
 		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-<span class="nc" id="L773">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="nc" id="L801">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
 			fcReference,
 			null,
@@ -781,7 +809,7 @@ import org.drip.state.inference.*;
 			null
 		);
 
-<span class="nc" id="L784">		SingleStreamComponent[] aDeposit = DepositFromMaturityDays (</span>
+<span class="nc" id="L812">		SingleStreamComponent[] aDeposit = DepositFromMaturityDays (</span>
 			dtValue,
 			astrDepositTenor,
 			fri
@@ -791,14 +819,14 @@ import org.drip.state.inference.*;
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L794">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="nc" id="L822">		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;DEPOSIT&quot;,
 			aDeposit,
 			strDepositCalibMeasure,
 			adblDepositQuote
 		);
 
-<span class="nc" id="L801">		FRAStandardComponent[] aFRA = FRAFromMaturityDays (</span>
+<span class="nc" id="L829">		FRAStandardComponent[] aFRA = FRAFromMaturityDays (</span>
 			dtValue,
 			fri,
 			astrFRATenor,
@@ -809,14 +837,14 @@ import org.drip.state.inference.*;
 		 * Construct the FRA Instrument Set Stretch Builder
 		 */
 
-<span class="nc" id="L812">		LatentStateStretchSpec fraStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="nc" id="L840">		LatentStateStretchSpec fraStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;FRA&quot;,
 			aFRA,
 			strFRACalibMeasure,
 			adblFRAQuote
 		);
 
-<span class="nc" id="L819">		FixFloatComponent[] aFixFloat = FixFloatSwap (</span>
+<span class="nc" id="L847">		FixFloatComponent[] aFixFloat = FixFloatSwap (</span>
 			dtValue,
 			fri,
 			astrFixFloatTenor
@@ -826,14 +854,14 @@ import org.drip.state.inference.*;
 		 * Construct the Fix-Float Component Set Stretch Builder
 		 */
 
-<span class="nc" id="L829">		LatentStateStretchSpec fixFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
+<span class="nc" id="L857">		LatentStateStretchSpec fixFloatStretch = LatentStateStretchBuilder.ForwardStretchSpec (</span>
 			&quot;FIXFLOAT&quot;,
 			aFixFloat,
 			strFixFloatCalibMeasure,
 			adblFixFloatQuote
 		);
 
-<span class="nc" id="L836">		org.drip.product.fx.ComponentPair[] aComponentPair = FixFloatComponentPair (</span>
+<span class="nc" id="L864">		org.drip.product.fx.ComponentPair[] aComponentPair = FixFloatComponentPair (</span>
 			dtValue,
 			mktParams,
 			fri,
@@ -844,7 +872,7 @@ import org.drip.state.inference.*;
 		 * Construct the Float-Float Component Set Stretch Builder
 		 */
 
-<span class="nc" id="L847">		LatentStateStretchSpec fixFloatCPStretch = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
+<span class="nc" id="L875">		LatentStateStretchSpec fixFloatCPStretch = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
 			&quot;FIXFLOATCP&quot;,
 			aComponentPair,
 			valParams,
@@ -854,7 +882,7 @@ import org.drip.state.inference.*;
 			true
 		);
 
-<span class="nc" id="L857">		org.drip.product.fx.ComponentPair[] aSyntheticComponentPair = FixFloatComponentPair (</span>
+<span class="nc" id="L885">		org.drip.product.fx.ComponentPair[] aSyntheticComponentPair = FixFloatComponentPair (</span>
 			dtValue,
 			mktParams,
 			fri,
@@ -865,7 +893,7 @@ import org.drip.state.inference.*;
 		 * Construct the Synthetic Fix-Float Component Set Stretch Builder
 		 */
 
-<span class="nc" id="L868">		LatentStateStretchSpec syntheticFixFloatCPStretch = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
+<span class="nc" id="L896">		LatentStateStretchSpec syntheticFixFloatCPStretch = LatentStateStretchBuilder.ComponentPairForwardStretch (</span>
 			&quot;SYNTHETICFIXFLOATCP&quot;,
 			aSyntheticComponentPair,
 			valParams,
@@ -875,7 +903,7 @@ import org.drip.state.inference.*;
 			true
 		);
 
-<span class="nc" id="L878">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
+<span class="nc" id="L906">		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {</span>
 			depositStretch,
 			fraStretch,
 			fixFloatStretch,
@@ -891,9 +919,9 @@ import org.drip.state.inference.*;
 		 * 	- Natural Boundary Setting
 		 */
 
-<span class="nc" id="L894">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
+<span class="nc" id="L922">		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (</span>
 			scbc,
-<span class="nc" id="L896">			BoundarySettings.NaturalStandard(),</span>
+<span class="nc" id="L924">			BoundarySettings.NaturalStandard(),</span>
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null
@@ -904,7 +932,7 @@ import org.drip.state.inference.*;
 		 *  of Deposit and Swap Stretches.
 		 */
 
-<span class="nc bnc" id="L907" title="All 4 branches missed.">		ForwardCurve fcDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+<span class="nc bnc" id="L935" title="All 4 branches missed.">		ForwardCurve fcDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
 			lcc,
 			aStretchSpec,
 			fri,
@@ -919,101 +947,101 @@ import org.drip.state.inference.*;
 		 * Set the discount curve + cubic polynomial forward curve based component market parameters.
 		 */
 
-<span class="nc" id="L922">		mktParams.setForwardState (fcDerived);</span>
+<span class="nc" id="L950">		mktParams.setForwardState (fcDerived);</span>
 
-<span class="nc bnc" id="L924" title="All 2 branches missed.">		if (bPrintMetric) {</span>
+<span class="nc bnc" id="L952" title="All 2 branches missed.">		if (bPrintMetric) {</span>
 			/*
 			 * Cross-Comparison of the Deposit Calibration Instrument &quot;Forward&quot; metric.
 			 */
 
-<span class="nc bnc" id="L929" title="All 4 branches missed.">			if (null != aDeposit &amp;&amp; null != adblDepositQuote) {</span>
-<span class="nc" id="L930">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc bnc" id="L957" title="All 4 branches missed.">			if (null != aDeposit &amp;&amp; null != adblDepositQuote) {</span>
+<span class="nc" id="L958">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L932">				System.out.println (&quot;\t     DEPOSIT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="nc" id="L960">				System.out.println (&quot;\t     DEPOSIT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="nc" id="L934">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc" id="L962">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L936" title="All 2 branches missed.">				for (int i = 0; i &lt; aDeposit.length; ++i)</span>
-<span class="nc" id="L937">					System.out.println (&quot;\t[&quot; + aDeposit[i].effectiveDate() + &quot; - &quot; + aDeposit[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L938">						FormatUtil.FormatDouble (aDeposit[i].measureValue (valParams, null, mktParams, null, strDepositCalibMeasure), 1, 6, 1.) +</span>
-<span class="nc" id="L939">							&quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L940">								FormatUtil.FormatDouble (fcDerived.forward (aDeposit[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="nc bnc" id="L964" title="All 2 branches missed.">				for (int i = 0; i &lt; aDeposit.length; ++i)</span>
+<span class="nc" id="L965">					System.out.println (&quot;\t[&quot; + aDeposit[i].effectiveDate() + &quot; - &quot; + aDeposit[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="nc" id="L966">						FormatUtil.FormatDouble (aDeposit[i].measureValue (valParams, null, mktParams, null, strDepositCalibMeasure), 1, 6, 1.) +</span>
+<span class="nc" id="L967">							&quot; | &quot; + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L968">								FormatUtil.FormatDouble (fcDerived.forward (aDeposit[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the FRA Calibration Instrument &quot;Forward&quot; metric.
 			 */
 
-<span class="nc bnc" id="L947" title="All 4 branches missed.">			if (null != aFRA &amp;&amp; null != adblFRAQuote) {</span>
-<span class="nc" id="L948">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc bnc" id="L975" title="All 4 branches missed.">			if (null != aFRA &amp;&amp; null != adblFRAQuote) {</span>
+<span class="nc" id="L976">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L950">				System.out.println (&quot;\t     FRA INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="nc" id="L978">				System.out.println (&quot;\t     FRA INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="nc" id="L952">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc" id="L980">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L954" title="All 2 branches missed.">				for (int i = 0; i &lt; aFRA.length; ++i)</span>
-<span class="nc" id="L955">					System.out.println (&quot;\t[&quot; + aFRA[i].effectiveDate() + &quot; - &quot; + aFRA[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L956">						FormatUtil.FormatDouble (aFRA[i].measureValue (valParams, null, mktParams, null, strFRACalibMeasure), 1, 6, 1.) +</span>
-<span class="nc" id="L957">							&quot; | &quot; + FormatUtil.FormatDouble (adblFRAQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L958">								FormatUtil.FormatDouble (fcDerived.forward (aFRA[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="nc bnc" id="L982" title="All 2 branches missed.">				for (int i = 0; i &lt; aFRA.length; ++i)</span>
+<span class="nc" id="L983">					System.out.println (&quot;\t[&quot; + aFRA[i].effectiveDate() + &quot; - &quot; + aFRA[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="nc" id="L984">						FormatUtil.FormatDouble (aFRA[i].measureValue (valParams, null, mktParams, null, strFRACalibMeasure), 1, 6, 1.) +</span>
+<span class="nc" id="L985">							&quot; | &quot; + FormatUtil.FormatDouble (adblFRAQuote[i], 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L986">								FormatUtil.FormatDouble (fcDerived.forward (aFRA[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the Fix-Float Calibration Instrument &quot;DerivedParBasisSpread&quot; metric.
 			 */
 
-<span class="nc bnc" id="L965" title="All 4 branches missed.">			if (null != aFixFloat &amp;&amp; null != adblFixFloatQuote) {</span>
-<span class="nc" id="L966">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc bnc" id="L993" title="All 4 branches missed.">			if (null != aFixFloat &amp;&amp; null != adblFixFloatQuote) {</span>
+<span class="nc" id="L994">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L968">				System.out.println (&quot;\t     FIX-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
+<span class="nc" id="L996">				System.out.println (&quot;\t     FIX-FLOAT INSTRUMENTS QUOTE RECOVERY&quot;);</span>
 
-<span class="nc" id="L970">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc" id="L998">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L972" title="All 2 branches missed.">				for (int i = 0; i &lt; aFixFloat.length; ++i)</span>
-<span class="nc" id="L973">					System.out.println (&quot;\t[&quot; + aFixFloat[i].effectiveDate() + &quot; - &quot; + aFixFloat[i].maturityDate() + &quot;] = &quot; +</span>
-<span class="nc" id="L974">						FormatUtil.FormatDouble (aFixFloat[i].measureValue (valParams, null, mktParams, null, strFixFloatCalibMeasure), 1, 2, 100.) +</span>
-<span class="nc" id="L975">							&quot;% | &quot; + FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="nc" id="L976">								FormatUtil.FormatDouble (fcDerived.forward (aFixFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="nc bnc" id="L1000" title="All 2 branches missed.">				for (int i = 0; i &lt; aFixFloat.length; ++i)</span>
+<span class="nc" id="L1001">					System.out.println (&quot;\t[&quot; + aFixFloat[i].effectiveDate() + &quot; - &quot; + aFixFloat[i].maturityDate() + &quot;] = &quot; +</span>
+<span class="nc" id="L1002">						FormatUtil.FormatDouble (aFixFloat[i].measureValue (valParams, null, mktParams, null, strFixFloatCalibMeasure), 1, 2, 100.) +</span>
+<span class="nc" id="L1003">							&quot;% | &quot; + FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="nc" id="L1004">								FormatUtil.FormatDouble (fcDerived.forward (aFixFloat[i].maturityDate()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the Fix-Float Component Pair &quot;DerivedParBasisSpread&quot; metric.
 			 */
 
-<span class="nc bnc" id="L983" title="All 4 branches missed.">			if (null != aComponentPair &amp;&amp; null != adblComponentPairQuote) {</span>
-<span class="nc" id="L984">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc bnc" id="L1011" title="All 4 branches missed.">			if (null != aComponentPair &amp;&amp; null != adblComponentPairQuote) {</span>
+<span class="nc" id="L1012">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L986">				System.out.println (&quot;\t     FIX-FLOAT COMPONENT PAIR QUOTE RECOVERY&quot;);</span>
+<span class="nc" id="L1014">				System.out.println (&quot;\t     FIX-FLOAT COMPONENT PAIR QUOTE RECOVERY&quot;);</span>
 
-<span class="nc" id="L988">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc" id="L1016">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L990" title="All 2 branches missed.">				for (int i = 0; i &lt; aComponentPair.length; ++i)</span>
-<span class="nc" id="L991">					System.out.println (&quot;\t[&quot; + aComponentPair[i].effective() + &quot; - &quot; + aComponentPair[i].maturity() + &quot;] = &quot; +</span>
-<span class="nc" id="L992">						FormatUtil.FormatDouble (aComponentPair[i].measureValue (valParams, null, mktParams, null, strComponentPairCalibMeasure), 1, 2, 1.) +</span>
-<span class="nc" id="L993">							&quot; | &quot; + FormatUtil.FormatDouble (adblComponentPairQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L994">								FormatUtil.FormatDouble (fcDerived.forward (aComponentPair[i].maturity()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="nc bnc" id="L1018" title="All 2 branches missed.">				for (int i = 0; i &lt; aComponentPair.length; ++i)</span>
+<span class="nc" id="L1019">					System.out.println (&quot;\t[&quot; + aComponentPair[i].effective() + &quot; - &quot; + aComponentPair[i].maturity() + &quot;] = &quot; +</span>
+<span class="nc" id="L1020">						FormatUtil.FormatDouble (aComponentPair[i].measureValue (valParams, null, mktParams, null, strComponentPairCalibMeasure), 1, 2, 1.) +</span>
+<span class="nc" id="L1021">							&quot; | &quot; + FormatUtil.FormatDouble (adblComponentPairQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1022">								FormatUtil.FormatDouble (fcDerived.forward (aComponentPair[i].maturity()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 
 			/*
 			 * Cross-Comparison of the Synthetic Float-Float Component Pair &quot;DerivedParBasisSpread&quot; metric.
 			 */
 
-<span class="nc bnc" id="L1001" title="All 4 branches missed.">			if (null != aSyntheticComponentPair &amp;&amp; null != adblSyntheticComponentPairQuote) {</span>
-<span class="nc" id="L1002">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc bnc" id="L1029" title="All 4 branches missed.">			if (null != aSyntheticComponentPair &amp;&amp; null != adblSyntheticComponentPairQuote) {</span>
+<span class="nc" id="L1030">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc" id="L1004">				System.out.println (&quot;\t     SYNTHETIC FIX-FLOAT COMPONENT PAIR QUOTE RECOVERY&quot;);</span>
+<span class="nc" id="L1032">				System.out.println (&quot;\t     SYNTHETIC FIX-FLOAT COMPONENT PAIR QUOTE RECOVERY&quot;);</span>
 
-<span class="nc" id="L1006">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="nc" id="L1034">				System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="nc bnc" id="L1008" title="All 2 branches missed.">				for (int i = 0; i &lt; aSyntheticComponentPair.length; ++i)</span>
-<span class="nc" id="L1009">					System.out.println (&quot;\t[&quot; + aSyntheticComponentPair[i].effective() + &quot; - &quot; + aSyntheticComponentPair[i].maturity() + &quot;] = &quot; +</span>
-<span class="nc" id="L1010">						FormatUtil.FormatDouble (aSyntheticComponentPair[i].measureValue (valParams, null, mktParams, null, strSyntheticComponentPairCalibMeasure), 1, 2, 1.) +</span>
-<span class="nc" id="L1011">							&quot; | &quot; + FormatUtil.FormatDouble (adblSyntheticComponentPairQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
-<span class="nc" id="L1012">								FormatUtil.FormatDouble (fcDerived.forward (aSyntheticComponentPair[i].maturity()), 1, 4, 100.) + &quot;%&quot;);</span>
+<span class="nc bnc" id="L1036" title="All 2 branches missed.">				for (int i = 0; i &lt; aSyntheticComponentPair.length; ++i)</span>
+<span class="nc" id="L1037">					System.out.println (&quot;\t[&quot; + aSyntheticComponentPair[i].effective() + &quot; - &quot; + aSyntheticComponentPair[i].maturity() + &quot;] = &quot; +</span>
+<span class="nc" id="L1038">						FormatUtil.FormatDouble (aSyntheticComponentPair[i].measureValue (valParams, null, mktParams, null, strSyntheticComponentPairCalibMeasure), 1, 2, 1.) +</span>
+<span class="nc" id="L1039">							&quot; | &quot; + FormatUtil.FormatDouble (adblSyntheticComponentPairQuote[i], 1, 2, 10000.) + &quot; | &quot; +</span>
+<span class="nc" id="L1040">								FormatUtil.FormatDouble (fcDerived.forward (aSyntheticComponentPair[i].maturity()), 1, 4, 100.) + &quot;%&quot;);</span>
 			}
 		}
 
-<span class="nc" id="L1016">		return fcDerived;</span>
+<span class="nc" id="L1044">		return fcDerived;</span>
 	}
 
 	private static final void ForwardJack (
@@ -1022,16 +1050,16 @@ import org.drip.state.inference.*;
 		final String strStartDateTenor,
 		final String strManifestMeasure)
 	{
-<span class="fc" id="L1025">		JulianDate dtJack = dt.addTenor (strStartDateTenor);</span>
+<span class="fc" id="L1053">		JulianDate dtJack = dt.addTenor (strStartDateTenor);</span>
 
-<span class="fc" id="L1027">		System.out.println (&quot;\t&quot; + </span>
+<span class="fc" id="L1055">		System.out.println (&quot;\t&quot; + </span>
 			dtJack + &quot; | &quot; +
 			strStartDateTenor + &quot;: &quot; +
-<span class="fc" id="L1030">			fc.jackDForwardDManifestMeasure (</span>
+<span class="fc" id="L1058">			fc.jackDForwardDManifestMeasure (</span>
 				strManifestMeasure,
-<span class="fc" id="L1032">				dtJack).displayString()</span>
+<span class="fc" id="L1060">				dtJack).displayString()</span>
 			);
-<span class="fc" id="L1034">	}</span>
+<span class="fc" id="L1062">	}</span>
 
 	public static final void ForwardJack (
 		final JulianDate dt,
@@ -1039,21 +1067,21 @@ import org.drip.state.inference.*;
 		final ForwardCurve fc,
 		final String strManifestMeasure)
 	{
-<span class="fc" id="L1042">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L1070">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L1044">		System.out.println (&quot;\t&quot; + strHeaderComment);</span>
+<span class="fc" id="L1072">		System.out.println (&quot;\t&quot; + strHeaderComment);</span>
 
-<span class="fc" id="L1046">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L1074">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L1048">		ForwardJack (dt, fc, &quot;1Y&quot;, strManifestMeasure);</span>
+<span class="fc" id="L1076">		ForwardJack (dt, fc, &quot;1Y&quot;, strManifestMeasure);</span>
 
-<span class="fc" id="L1050">		ForwardJack (dt, fc, &quot;2Y&quot;, strManifestMeasure);</span>
+<span class="fc" id="L1078">		ForwardJack (dt, fc, &quot;2Y&quot;, strManifestMeasure);</span>
 
-<span class="fc" id="L1052">		ForwardJack (dt, fc, &quot;3Y&quot;, strManifestMeasure);</span>
+<span class="fc" id="L1080">		ForwardJack (dt, fc, &quot;3Y&quot;, strManifestMeasure);</span>
 
-<span class="fc" id="L1054">		ForwardJack (dt, fc, &quot;5Y&quot;, strManifestMeasure);</span>
+<span class="fc" id="L1082">		ForwardJack (dt, fc, &quot;5Y&quot;, strManifestMeasure);</span>
 
-<span class="fc" id="L1056">		ForwardJack (dt, fc, &quot;7Y&quot;, strManifestMeasure);</span>
-<span class="fc" id="L1057">	}</span>
+<span class="fc" id="L1084">		ForwardJack (dt, fc, &quot;7Y&quot;, strManifestMeasure);</span>
+<span class="fc" id="L1085">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

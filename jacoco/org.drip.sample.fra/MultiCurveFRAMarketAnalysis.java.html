@@ -24,35 +24,54 @@ import org.drip.state.volatility.VolatilityCurve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -69,27 +88,36 @@ import org.drip.state.volatility.VolatilityCurve;
  */
 
 /**
- * MultiCurveFRAMarketAnalysis contains an analysis of the correlation and volatility impact on the Market
- *  FRA.
+ * &lt;i&gt;MultiCurveFRAMarketAnalysis&lt;/i&gt; contains an analysis of the correlation and volatility impact on the
+ * Market FRA.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fra/README.md&quot;&gt;FRA Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L78">public class MultiCurveFRAMarketAnalysis {</span>
+<span class="nc" id="L106">public class MultiCurveFRAMarketAnalysis {</span>
 	static class FRAMktConvexityCorrection {
-<span class="fc" id="L80">		double _dblParMktFwd = Double.NaN;</span>
-<span class="fc" id="L81">		double _dblParStdFwd = Double.NaN;</span>
-<span class="fc" id="L82">		double _dblConvexityCorrection = Double.NaN;</span>
+<span class="fc" id="L108">		double _dblParMktFwd = Double.NaN;</span>
+<span class="fc" id="L109">		double _dblParStdFwd = Double.NaN;</span>
+<span class="fc" id="L110">		double _dblConvexityCorrection = Double.NaN;</span>
 
 		FRAMktConvexityCorrection (
 			final double dblParMktFwd,
 			final double dblParStdFwd,
 			final double dblConvexityCorrection)
-<span class="fc" id="L88">		{</span>
-<span class="fc" id="L89">			_dblParMktFwd = dblParMktFwd;</span>
-<span class="fc" id="L90">			_dblParStdFwd = dblParStdFwd;</span>
-<span class="fc" id="L91">			_dblConvexityCorrection = dblConvexityCorrection;</span>
-<span class="fc" id="L92">		}</span>
+<span class="fc" id="L116">		{</span>
+<span class="fc" id="L117">			_dblParMktFwd = dblParMktFwd;</span>
+<span class="fc" id="L118">			_dblParStdFwd = dblParStdFwd;</span>
+<span class="fc" id="L119">			_dblConvexityCorrection = dblConvexityCorrection;</span>
+<span class="fc" id="L120">		}</span>
 	}
 
 	private static final VolatilityCurve ATMVolatilityCurve (
@@ -100,13 +128,13 @@ import org.drip.state.volatility.VolatilityCurve;
 		final double[] adblVolatility)
 		throws Exception
 	{
-<span class="fc" id="L103">		int[] iPillarDate = new int[astrTenor.length];</span>
+<span class="fc" id="L131">		int[] iPillarDate = new int[astrTenor.length];</span>
 
-<span class="fc bfc" id="L105" title="All 2 branches covered.">		for (int i = 0; i &lt; iPillarDate.length; ++i)</span>
-<span class="fc" id="L106">			iPillarDate[i] = dtEpoch.addTenor (astrTenor[i]).julian();</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; iPillarDate.length; ++i)</span>
+<span class="fc" id="L134">			iPillarDate[i] = dtEpoch.addTenor (astrTenor[i]).julian();</span>
 
-<span class="fc" id="L108">		return new FlatForwardVolatilityCurve (</span>
-<span class="fc" id="L109">			dtEpoch.julian(),</span>
+<span class="fc" id="L136">		return new FlatForwardVolatilityCurve (</span>
+<span class="fc" id="L137">			dtEpoch.julian(),</span>
 			label,
 			strCurrency,
 			iPillarDate,
@@ -124,25 +152,25 @@ import org.drip.state.volatility.VolatilityCurve;
 		final double dblEONIAEURIBOR6MCorrelation)
 		throws Exception
 	{
-<span class="fc" id="L127">		String strTenor = &quot;6M&quot;;</span>
-<span class="fc" id="L128">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L155">		String strTenor = &quot;6M&quot;;</span>
+<span class="fc" id="L156">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L130">		ForwardLabel fri = ForwardLabel.Create (</span>
+<span class="fc" id="L158">		ForwardLabel fri = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="fc" id="L135">		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);</span>
+<span class="fc" id="L163">		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);</span>
 
-<span class="fc" id="L137">		JulianDate dtForwardStart = dtValue.addTenor (strForwardStartTenor);</span>
+<span class="fc" id="L165">		JulianDate dtForwardStart = dtValue.addTenor (strForwardStartTenor);</span>
 
-<span class="fc" id="L139">		FRAMarketComponent fra = SingleStreamComponentBuilder.FRAMarket (</span>
+<span class="fc" id="L167">		FRAMarketComponent fra = SingleStreamComponentBuilder.FRAMarket (</span>
 			dtForwardStart,
 			fri,
 			0.006
 		);
 
-<span class="fc" id="L145">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L173">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dcEONIA,
 			fcEURIBOR6M,
 			null,
@@ -153,33 +181,33 @@ import org.drip.state.volatility.VolatilityCurve;
 			null
 		);
 
-<span class="fc" id="L156">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L184">		ValuationParams valParams = new ValuationParams (</span>
 			dtValue,
 			dtValue,
 			strCurrency
 		);
 
-<span class="fc" id="L162">		mktParams.setForwardVolatility (vcEURIBOR6M);</span>
+<span class="fc" id="L190">		mktParams.setForwardVolatility (vcEURIBOR6M);</span>
 
-<span class="fc" id="L164">		mktParams.setFundingVolatility (vcEONIA);</span>
+<span class="fc" id="L192">		mktParams.setFundingVolatility (vcEONIA);</span>
 
-<span class="fc" id="L166">		mktParams.setForwardFundingCorrelation (</span>
+<span class="fc" id="L194">		mktParams.setForwardFundingCorrelation (</span>
 			fri,
 			fundingLabel,
 			new FlatUnivariate (dblEONIAEURIBOR6MCorrelation)
 		);
 
-<span class="fc" id="L172">		Map&lt;String, Double&gt; mapFRAOutput = fra.value (</span>
+<span class="fc" id="L200">		Map&lt;String, Double&gt; mapFRAOutput = fra.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="fc" id="L179">		return new FRAMktConvexityCorrection (</span>
-<span class="fc" id="L180">			mapFRAOutput.get (&quot;shiftedlognormalparmarketfra&quot;),</span>
-<span class="fc" id="L181">			mapFRAOutput.get (&quot;parstandardfra&quot;),</span>
-<span class="fc" id="L182">			mapFRAOutput.get (&quot;shiftedlognormalconvexitycorrection&quot;)</span>
+<span class="fc" id="L207">		return new FRAMktConvexityCorrection (</span>
+<span class="fc" id="L208">			mapFRAOutput.get (&quot;shiftedlognormalparmarketfra&quot;),</span>
+<span class="fc" id="L209">			mapFRAOutput.get (&quot;parstandardfra&quot;),</span>
+<span class="fc" id="L210">			mapFRAOutput.get (&quot;shiftedlognormalconvexitycorrection&quot;)</span>
 		);
 	}
 
@@ -191,25 +219,25 @@ import org.drip.state.volatility.VolatilityCurve;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L194">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L222">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L196">		String strTenor = &quot;6M&quot;;</span>
-<span class="fc" id="L197">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L224">		String strTenor = &quot;6M&quot;;</span>
+<span class="fc" id="L225">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L199">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L227">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
 
-<span class="fc" id="L201">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
+<span class="fc" id="L229">		MergedDiscountForwardCurve dcEONIA = OvernightIndexCurve.MakeDC (</span>
 			dtToday,
 			strCurrency
 		);
 
-<span class="fc" id="L206">		ForwardCurve fcEURIBOR6M = IBOR6MQuarticPolyVanilla.Make6MForward (</span>
+<span class="fc" id="L234">		ForwardCurve fcEURIBOR6M = IBOR6MQuarticPolyVanilla.Make6MForward (</span>
 			dtToday,
 			strCurrency,
 			strTenor
 		);
 
-<span class="fc" id="L212">		String[] astrForwardStartTenor = {</span>
+<span class="fc" id="L240">		String[] astrForwardStartTenor = {</span>
 			&quot;6M&quot;,
 			&quot;1Y&quot;,
 			&quot;2Y&quot;,
@@ -222,7 +250,7 @@ import org.drip.state.volatility.VolatilityCurve;
 			&quot;9Y&quot;
 		};
 
-<span class="fc" id="L225">		double[] adblVolatility = new double[] {</span>
+<span class="fc" id="L253">		double[] adblVolatility = new double[] {</span>
 			0.5946, // 6M
 			0.5311,	// 1Y
 			0.3307,	// 2Y
@@ -235,20 +263,20 @@ import org.drip.state.volatility.VolatilityCurve;
 			0.1574	// 9Y
 		};
 
-<span class="fc" id="L238">		double dblEONIAEURIBOR6MCorrelation = 0.8;</span>
+<span class="fc" id="L266">		double dblEONIAEURIBOR6MCorrelation = 0.8;</span>
 
-<span class="fc" id="L240">		VolatilityCurve vcEONIA = ATMVolatilityCurve (</span>
+<span class="fc" id="L268">		VolatilityCurve vcEONIA = ATMVolatilityCurve (</span>
 			dtToday,
-<span class="fc" id="L242">			VolatilityLabel.Standard (FundingLabel.Standard (strCurrency)),</span>
+<span class="fc" id="L270">			VolatilityLabel.Standard (FundingLabel.Standard (strCurrency)),</span>
 			strCurrency,
 			astrForwardStartTenor,
 			adblVolatility
 		);
 
-<span class="fc" id="L248">		VolatilityCurve vEURIBOR6M = ATMVolatilityCurve (</span>
+<span class="fc" id="L276">		VolatilityCurve vEURIBOR6M = ATMVolatilityCurve (</span>
 			dtToday,
-<span class="fc" id="L250">			VolatilityLabel.Standard (</span>
-<span class="fc" id="L251">				ForwardLabel.Create (</span>
+<span class="fc" id="L278">			VolatilityLabel.Standard (</span>
+<span class="fc" id="L279">				ForwardLabel.Create (</span>
 					strCurrency,
 					strTenor
 				)
@@ -258,20 +286,20 @@ import org.drip.state.volatility.VolatilityCurve;
 			adblVolatility
 		);
 
-<span class="fc" id="L261">		System.out.println (&quot;\t---------------------------------&quot;);</span>
+<span class="fc" id="L289">		System.out.println (&quot;\t---------------------------------&quot;);</span>
 
-<span class="fc" id="L263">		System.out.println (&quot;\t---------------------------------&quot;);</span>
+<span class="fc" id="L291">		System.out.println (&quot;\t---------------------------------&quot;);</span>
 
-<span class="fc" id="L265">		System.out.println (&quot;\t---------------------------------&quot;);</span>
+<span class="fc" id="L293">		System.out.println (&quot;\t---------------------------------&quot;);</span>
 
-<span class="fc" id="L267">		System.out.println (&quot;\t---------------------------------&quot;);</span>
+<span class="fc" id="L295">		System.out.println (&quot;\t---------------------------------&quot;);</span>
 
-<span class="fc" id="L269">		System.out.println (&quot;\tTNR =&gt;   MKT   |   STD   |  CONV &quot;);</span>
+<span class="fc" id="L297">		System.out.println (&quot;\tTNR =&gt;   MKT   |   STD   |  CONV &quot;);</span>
 
-<span class="fc" id="L271">		System.out.println (&quot;\t---------------------------------&quot;);</span>
+<span class="fc" id="L299">		System.out.println (&quot;\t---------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L273" title="All 2 branches covered.">		for (String strForwardStartTenor : astrForwardStartTenor) {</span>
-<span class="fc" id="L274">			FRAMktConvexityCorrection fraMktMetric = FRAMktMetric (</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">		for (String strForwardStartTenor : astrForwardStartTenor) {</span>
+<span class="fc" id="L302">			FRAMktConvexityCorrection fraMktMetric = FRAMktMetric (</span>
 				dtToday,
 				dcEONIA,
 				fcEURIBOR6M,
@@ -281,13 +309,15 @@ import org.drip.state.volatility.VolatilityCurve;
 				dblEONIAEURIBOR6MCorrelation
 			);
 
-<span class="fc" id="L284">			System.out.println (</span>
+<span class="fc" id="L312">			System.out.println (</span>
 				&quot;\t &quot; + strForwardStartTenor + &quot; =&gt; &quot; +
-<span class="fc" id="L286">				FormatUtil.FormatDouble (fraMktMetric._dblParMktFwd, 1, 3, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L287">				FormatUtil.FormatDouble (fraMktMetric._dblParStdFwd, 1, 3, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L288">				FormatUtil.FormatDouble (fraMktMetric._dblConvexityCorrection, 1, 2, 10000.)</span>
+<span class="fc" id="L314">				FormatUtil.FormatDouble (fraMktMetric._dblParMktFwd, 1, 3, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L315">				FormatUtil.FormatDouble (fraMktMetric._dblParStdFwd, 1, 3, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L316">				FormatUtil.FormatDouble (fraMktMetric._dblConvexityCorrection, 1, 2, 10000.)</span>
 			);
 		}
-<span class="fc" id="L291">	}</span>
+
+<span class="fc" id="L320">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L321">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

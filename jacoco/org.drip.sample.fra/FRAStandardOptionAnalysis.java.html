@@ -28,35 +28,54 @@ import org.drip.state.identifier.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -73,13 +92,22 @@ import org.drip.state.identifier.*;
  */
 
 /**
- * FRAStandardOptionAnalysis contains the demonstration of the custom volatility-correlation analysis of
- *  Option on a Standard Multi-Curve FRA.
+ * &lt;i&gt;FRAStandardOptionAnalysis&lt;/i&gt; contains the demonstration of the custom volatility-correlation analysis
+ * of Option on a Standard Multi-Curve FRA.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fra/README.md&quot;&gt;FRA Analytics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class FRAStandardOptionAnalysis {</span>
+<span class="nc" id="L110">public class FRAStandardOptionAnalysis {</span>
 
 	private static final FixFloatComponent OTCFixFloat (
 		final JulianDate dtSpot,
@@ -87,14 +115,14 @@ import org.drip.state.identifier.*;
 		final String strMaturityTenor,
 		final double dblCoupon)
 	{
-<span class="fc" id="L90">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
+<span class="fc" id="L118">		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (</span>
 			strCurrency,
 			&quot;ALL&quot;,
 			strMaturityTenor,
 			&quot;MAIN&quot;
 		);
 
-<span class="fc" id="L97">		return ffConv.createFixFloatComponent (</span>
+<span class="fc" id="L125">		return ffConv.createFixFloatComponent (</span>
 			dtSpot,
 			strMaturityTenor,
 			dblCoupon,
@@ -110,9 +138,9 @@ import org.drip.state.identifier.*;
 		final String strMaturityTenor,
 		final double dblBasis)
 	{
-<span class="fc" id="L113">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
+<span class="fc" id="L141">		FloatFloatSwapConvention ffConv = IBORFloatFloatContainer.ConventionFromJurisdiction (strCurrency);</span>
 
-<span class="fc" id="L115">		return ffConv.createFloatFloatComponent (</span>
+<span class="fc" id="L143">		return ffConv.createFloatFloatComponent (</span>
 			dtSpot,
 			strDerivedTenor,
 			strMaturityTenor,
@@ -134,31 +162,31 @@ import org.drip.state.identifier.*;
 		final String strCurrency)
 		throws Exception
 	{
-<span class="fc" id="L137">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
+<span class="fc" id="L165">		CalibratableComponent[] aCalibComp = new CalibratableComponent[aiDay.length + iNumFuture];</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
-<span class="fc" id="L140">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">		for (int i = 0; i &lt; aiDay.length; ++i)</span>
+<span class="fc" id="L168">			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (</span>
 				dtEffective,
-<span class="fc" id="L142">				dtEffective.addBusDays (</span>
+<span class="fc" id="L170">				dtEffective.addBusDays (</span>
 					aiDay[i],
 					strCurrency
 				),
-<span class="fc" id="L146">				ForwardLabel.Create (</span>
+<span class="fc" id="L174">				ForwardLabel.Create (</span>
 					strCurrency,
 					&quot;3M&quot;
 				)
 			);
 
-<span class="fc" id="L152">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
+<span class="fc" id="L180">		CalibratableComponent[] aEDF = SingleStreamComponentBuilder.ForwardRateFuturesPack (</span>
 			dtEffective,
 			iNumFuture,
 			strCurrency
 		);
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
-<span class="nc" id="L159">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		for (int i = aiDay.length; i &lt; aiDay.length + iNumFuture; ++i)</span>
+<span class="nc" id="L187">			aCalibComp[i] = aEDF[i - aiDay.length];</span>
 
-<span class="fc" id="L161">		return aCalibComp;</span>
+<span class="fc" id="L189">		return aCalibComp;</span>
 	}
 
 	/*
@@ -174,17 +202,17 @@ import org.drip.state.identifier.*;
 		final double[] adblCoupon)
 		throws Exception
 	{
-<span class="fc" id="L177">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L205">		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L180">			aIRS[i] = OTCFixFloat (</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L208">			aIRS[i] = OTCFixFloat (</span>
 				dtSpot,
 				strCurrency,
 				astrMaturityTenor[i],
 				adblCoupon[i]
 			);
 
-<span class="fc" id="L187">		return aIRS;</span>
+<span class="fc" id="L215">		return aIRS;</span>
 	}
 
 	/*
@@ -205,7 +233,7 @@ import org.drip.state.identifier.*;
 		 * Construct the array of Deposit instruments and their quotes.
 		 */
 
-<span class="fc" id="L208">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
+<span class="fc" id="L236">		CalibratableComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (</span>
 			dtSpot,
 			new int[] {
 				1, 2, 3, 7, 14, 21, 30, 60
@@ -214,11 +242,11 @@ import org.drip.state.identifier.*;
 			strCurrency
 		);
 
-<span class="fc" id="L217">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L245">		double[] adblDepositQuote = new double[] {</span>
 			0.01200, 0.01200, 0.01200, 0.01450, 0.01550, 0.01600, 0.01660, 0.01850
 		};
 
-<span class="fc" id="L221">		String[] astrDepositManifestMeasure = new String[] {</span>
+<span class="fc" id="L249">		String[] astrDepositManifestMeasure = new String[] {</span>
 			&quot;ForwardRate&quot;,
 			&quot;ForwardRate&quot;,
 			&quot;ForwardRate&quot;,
@@ -233,7 +261,7 @@ import org.drip.state.identifier.*;
 		 * Construct the array of Swap instruments and their quotes.
 		 */
 
-<span class="fc" id="L236">		double[] adblSwapQuote = new double[] {</span>
+<span class="fc" id="L264">		double[] adblSwapQuote = new double[] {</span>
 			0.02604,    //  4Y
 			0.02808,    //  5Y
 			0.02983,    //  6Y
@@ -251,7 +279,7 @@ import org.drip.state.identifier.*;
 			0.03145     // 50Y
 		};
 
-<span class="fc" id="L254">		String[] astrSwapManifestMeasure = new String[] {</span>
+<span class="fc" id="L282">		String[] astrSwapManifestMeasure = new String[] {</span>
 			&quot;SwapRate&quot;,    //  4Y
 			&quot;SwapRate&quot;,    //  5Y
 			&quot;SwapRate&quot;,    //  6Y
@@ -269,7 +297,7 @@ import org.drip.state.identifier.*;
 			&quot;SwapRate&quot;     // 50Y
 		};
 
-<span class="fc" id="L272">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
+<span class="fc" id="L300">		CalibratableComponent[] aSwapComp = SwapInstrumentsFromMaturityTenor (</span>
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
@@ -282,7 +310,7 @@ import org.drip.state.identifier.*;
 		 * Construct a shape preserving and smoothing KLK Hyperbolic Spline from the cash/swap instruments.
 		 */
 
-<span class="fc" id="L285">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
+<span class="fc" id="L313">		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (</span>
 			&quot;KLK_HYPERBOLIC_SHAPE_TEMPLATE&quot;,
 			new ValuationParams (
 				dtSpot,
@@ -312,10 +340,10 @@ import org.drip.state.identifier.*;
 		final int iTenorInMonths)
 		throws Exception
 	{
-<span class="fc" id="L315">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
+<span class="fc" id="L343">		FloatFloatComponent[] aFFC = new FloatFloatComponent[astrMaturityTenor.length];</span>
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
-<span class="fc" id="L318">			aFFC[i] = OTCFloatFloat (</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">		for (int i = 0; i &lt; astrMaturityTenor.length; ++i)</span>
+<span class="fc" id="L346">			aFFC[i] = OTCFloatFloat (</span>
 				dtSpot,
 				strCurrency,
 				iTenorInMonths + &quot;M&quot;,
@@ -323,7 +351,7 @@ import org.drip.state.identifier.*;
 				0.
 			);
 
-<span class="fc" id="L326">		return aFFC;</span>
+<span class="fc" id="L354">		return aFFC;</span>
 	}
 
 	private static final ForwardCurve MakeFC (
@@ -339,16 +367,16 @@ import org.drip.state.identifier.*;
 		 * Construct the 6M-xM float-float basis swap.
 		 */
 
-<span class="fc" id="L342">		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (</span>
+<span class="fc" id="L370">		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (</span>
 			dtSpot,
 			strCurrency,
 			astrxM6MFwdTenor,
 			iTenorInMonths
 		);
 
-<span class="fc" id="L349">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
+<span class="fc" id="L377">		String strBasisTenor = iTenorInMonths + &quot;M&quot;;</span>
 
-<span class="fc" id="L351">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L379">		ValuationParams valParams = new ValuationParams (</span>
 			dtSpot,
 			dtSpot,
 			strCurrency
@@ -358,24 +386,24 @@ import org.drip.state.identifier.*;
 		 * Calculate the starting forward rate off of the discount curve.
 		 */
 
-<span class="fc" id="L361">		double dblStartingFwd = dc.forward (</span>
-<span class="fc" id="L362">			dtSpot.julian(),</span>
-<span class="fc" id="L363">			dtSpot.addTenor (strBasisTenor).julian()</span>
+<span class="fc" id="L389">		double dblStartingFwd = dc.forward (</span>
+<span class="fc" id="L390">			dtSpot.julian(),</span>
+<span class="fc" id="L391">			dtSpot.addTenor (strBasisTenor).julian()</span>
 		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-<span class="fc" id="L370">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);</span>
+<span class="fc" id="L398">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);</span>
 
 		/*
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
 		 */
 
-<span class="fc" id="L376">		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
+<span class="fc" id="L404">		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (</span>
 			&quot;QUARTIC_FWD&quot; + strBasisTenor,
-<span class="fc" id="L378">			ForwardLabel.Create (</span>
+<span class="fc" id="L406">			ForwardLabel.Create (</span>
 				strCurrency,
 				strBasisTenor
 			),
@@ -398,13 +426,13 @@ import org.drip.state.identifier.*;
 		final MergedDiscountForwardCurve dc)
 		throws Exception
 	{
-<span class="fc" id="L401">		Map&lt;String, ForwardCurve&gt; mapFC = new HashMap&lt;String, ForwardCurve&gt;();</span>
+<span class="fc" id="L429">		Map&lt;String, ForwardCurve&gt; mapFC = new HashMap&lt;String, ForwardCurve&gt;();</span>
 
 		/*
 		 * Build and run the sampling for the 1M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="fc" id="L407">		ForwardCurve fc1M = MakeFC (</span>
+<span class="fc" id="L435">		ForwardCurve fc1M = MakeFC (</span>
 			dt,
 			strCurrency,
 			dc,
@@ -432,7 +460,7 @@ import org.drip.state.identifier.*;
 			}
 		);
 
-<span class="fc" id="L435">		mapFC.put (</span>
+<span class="fc" id="L463">		mapFC.put (</span>
 			&quot;1M&quot;,
 			fc1M
 		);
@@ -441,7 +469,7 @@ import org.drip.state.identifier.*;
 		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="fc" id="L444">		ForwardCurve fc3M = MakeFC (</span>
+<span class="fc" id="L472">		ForwardCurve fc3M = MakeFC (</span>
 			dt,
 			strCurrency,
 			dc,
@@ -469,7 +497,7 @@ import org.drip.state.identifier.*;
 			}
 		);
 
-<span class="fc" id="L472">		mapFC.put (</span>
+<span class="fc" id="L500">		mapFC.put (</span>
 			&quot;3M&quot;,
 			fc3M
 		);
@@ -478,7 +506,7 @@ import org.drip.state.identifier.*;
 		 * Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
 		 */
 
-<span class="fc" id="L481">		ForwardCurve fc12M = MakeFC (</span>
+<span class="fc" id="L509">		ForwardCurve fc12M = MakeFC (</span>
 			dt,
 			strCurrency,
 			dc,
@@ -508,12 +536,12 @@ import org.drip.state.identifier.*;
 			}
 		);
 
-<span class="fc" id="L511">		mapFC.put (</span>
+<span class="fc" id="L539">		mapFC.put (</span>
 			&quot;12M&quot;,
 			fc12M
 		);
 
-<span class="fc" id="L516">		return mapFC;</span>
+<span class="fc" id="L544">		return mapFC;</span>
 	}
 
 	private static final void VolCorrScenario (
@@ -525,39 +553,39 @@ import org.drip.state.identifier.*;
 		final double dblForwardFundingCorr)
 		throws Exception
 	{
-<span class="fc" id="L528">		ForwardLabel fri = fra.forwardLabel().get (&quot;DERIVED&quot;);</span>
+<span class="fc" id="L556">		ForwardLabel fri = fra.forwardLabel().get (&quot;DERIVED&quot;);</span>
 
-<span class="fc" id="L530">		FundingLabel fundingLabel = FundingLabel.Standard (fri.currency());</span>
+<span class="fc" id="L558">		FundingLabel fundingLabel = FundingLabel.Standard (fri.currency());</span>
 
-<span class="fc" id="L532">		mktParams.setForwardVolatility (</span>
-<span class="fc" id="L533">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="fc" id="L534">				valParams.valueDate(),</span>
-<span class="fc" id="L535">				VolatilityLabel.Standard (fri),</span>
-<span class="fc" id="L536">				fri.currency(),</span>
+<span class="fc" id="L560">		mktParams.setForwardVolatility (</span>
+<span class="fc" id="L561">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L562">				valParams.valueDate(),</span>
+<span class="fc" id="L563">				VolatilityLabel.Standard (fri),</span>
+<span class="fc" id="L564">				fri.currency(),</span>
 				dblForwardVol
 			)
 		);
 
-<span class="fc" id="L541">		mktParams.setFundingVolatility (</span>
-<span class="fc" id="L542">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
-<span class="fc" id="L543">				valParams.valueDate(),</span>
-<span class="fc" id="L544">				VolatilityLabel.Standard (fundingLabel),</span>
-<span class="fc" id="L545">				fri.currency(),</span>
+<span class="fc" id="L569">		mktParams.setFundingVolatility (</span>
+<span class="fc" id="L570">			ScenarioDeterministicVolatilityBuilder.FlatForward (</span>
+<span class="fc" id="L571">				valParams.valueDate(),</span>
+<span class="fc" id="L572">				VolatilityLabel.Standard (fundingLabel),</span>
+<span class="fc" id="L573">				fri.currency(),</span>
 				dblFundingVol
 			)
 		);
 
-<span class="fc" id="L550">		mktParams.setForwardFundingCorrelation (</span>
+<span class="fc" id="L578">		mktParams.setForwardFundingCorrelation (</span>
 			fri,
 			fundingLabel,
 			new FlatUnivariate (dblForwardFundingCorr)
 		);
 
-<span class="fc" id="L556">		double dblStrike = 0.0189;</span>
-<span class="fc" id="L557">		String strManifestMeasure = &quot;QuantoAdjustedParForward&quot;;</span>
+<span class="fc" id="L584">		double dblStrike = 0.0189;</span>
+<span class="fc" id="L585">		String strManifestMeasure = &quot;QuantoAdjustedParForward&quot;;</span>
 
-<span class="fc" id="L559">		FRAStandardCapFloorlet fraCaplet = new FRAStandardCapFloorlet (</span>
-<span class="fc" id="L560">			fra.name() + &quot;::CAPLET&quot;,</span>
+<span class="fc" id="L587">		FRAStandardCapFloorlet fraCaplet = new FRAStandardCapFloorlet (</span>
+<span class="fc" id="L588">			fra.name() + &quot;::CAPLET&quot;,</span>
 			fra,
 			strManifestMeasure,
 			true,
@@ -572,8 +600,8 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="fc" id="L575">		FRAStandardCapFloorlet fraFloorlet = new FRAStandardCapFloorlet (</span>
-<span class="fc" id="L576">			fra.name() + &quot;::FLOORLET&quot;,</span>
+<span class="fc" id="L603">		FRAStandardCapFloorlet fraFloorlet = new FRAStandardCapFloorlet (</span>
+<span class="fc" id="L604">			fra.name() + &quot;::FLOORLET&quot;,</span>
 			fra,
 			strManifestMeasure,
 			false,
@@ -588,46 +616,46 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="fc" id="L591">		Map&lt;String, Double&gt; mapFRACapletOutput = fraCaplet.value (</span>
+<span class="fc" id="L619">		Map&lt;String, Double&gt; mapFRACapletOutput = fraCaplet.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="fc" id="L598">		Map&lt;String, Double&gt; mapFRAFloorletOutput = fraFloorlet.value (</span>
+<span class="fc" id="L626">		Map&lt;String, Double&gt; mapFRAFloorletOutput = fraFloorlet.value (</span>
 			valParams,
 			null,
 			mktParams,
 			null
 		);
 
-<span class="fc" id="L605">		double dblATMFRA = mapFRACapletOutput.get (&quot;ATMFRA&quot;);</span>
+<span class="fc" id="L633">		double dblATMFRA = mapFRACapletOutput.get (&quot;ATMFRA&quot;);</span>
 
-<span class="fc" id="L607">		double dblManifestMeasureIntrinsic = mapFRACapletOutput.get (&quot;ManifestMeasureIntrinsic&quot;);</span>
+<span class="fc" id="L635">		double dblManifestMeasureIntrinsic = mapFRACapletOutput.get (&quot;ManifestMeasureIntrinsic&quot;);</span>
 
-<span class="fc" id="L609">		double dblManifestMeasureIntrinsicValue = mapFRACapletOutput.get (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
+<span class="fc" id="L637">		double dblManifestMeasureIntrinsicValue = mapFRACapletOutput.get (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
 
-<span class="fc" id="L611">		double dblForwardATMCapletPrice = mapFRACapletOutput.get (&quot;ForwardATMIntrinsic&quot;);</span>
+<span class="fc" id="L639">		double dblForwardATMCapletPrice = mapFRACapletOutput.get (&quot;ForwardATMIntrinsic&quot;);</span>
 
-<span class="fc" id="L613">		double dblSpotCapletPrice = mapFRACapletOutput.get (&quot;SpotPrice&quot;);</span>
+<span class="fc" id="L641">		double dblSpotCapletPrice = mapFRACapletOutput.get (&quot;SpotPrice&quot;);</span>
 
-<span class="fc" id="L615">		double dblForwardATMFloorletPrice = mapFRAFloorletOutput.get (&quot;ForwardATMIntrinsic&quot;);</span>
+<span class="fc" id="L643">		double dblForwardATMFloorletPrice = mapFRAFloorletOutput.get (&quot;ForwardATMIntrinsic&quot;);</span>
 
-<span class="fc" id="L617">		double dblSpotFloorletPrice = mapFRAFloorletOutput.get (&quot;SpotPrice&quot;);</span>
+<span class="fc" id="L645">		double dblSpotFloorletPrice = mapFRAFloorletOutput.get (&quot;SpotPrice&quot;);</span>
 
-<span class="fc" id="L619">		System.out.println (&quot;\t[&quot; +</span>
-<span class="fc" id="L620">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + &quot;%,&quot; +</span>
-<span class="fc" id="L621">			org.drip.quant.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + &quot;%,&quot; +</span>
-<span class="fc" id="L622">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + &quot;%] =&quot; +</span>
-<span class="fc" id="L623">			org.drip.quant.common.FormatUtil.FormatDouble (dblATMFRA, 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L624">			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L625">			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L626">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMCapletPrice, 1, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L627">			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotCapletPrice, 1, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L628">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMFloorletPrice, 1, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L629">			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotFloorletPrice, 1, 1, 10000.));</span>
-<span class="fc" id="L630">	}</span>
+<span class="fc" id="L647">		System.out.println (&quot;\t[&quot; +</span>
+<span class="fc" id="L648">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + &quot;%,&quot; +</span>
+<span class="fc" id="L649">			org.drip.quant.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + &quot;%,&quot; +</span>
+<span class="fc" id="L650">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + &quot;%] =&quot; +</span>
+<span class="fc" id="L651">			org.drip.quant.common.FormatUtil.FormatDouble (dblATMFRA, 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L652">			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L653">			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L654">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMCapletPrice, 1, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L655">			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotCapletPrice, 1, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L656">			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMFloorletPrice, 1, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L657">			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotFloorletPrice, 1, 1, 10000.));</span>
+<span class="fc" id="L658">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -637,41 +665,41 @@ import org.drip.state.identifier.*;
 		 * Initialize the Credit Analytics Library
 		 */
 
-<span class="fc" id="L640">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L668">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L642">		String strTenor = &quot;3M&quot;;</span>
-<span class="fc" id="L643">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L670">		String strTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L671">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L645">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
+<span class="fc" id="L673">		JulianDate dtToday = DateUtil.Today().addTenor (&quot;0D&quot;);</span>
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-<span class="fc" id="L651">		MergedDiscountForwardCurve dc = MakeDC (</span>
+<span class="fc" id="L679">		MergedDiscountForwardCurve dc = MakeDC (</span>
 			dtToday,
 			strCurrency
 		);
 
-<span class="fc" id="L656">		Map&lt;String, ForwardCurve&gt; mapFC = MakeFC (</span>
+<span class="fc" id="L684">		Map&lt;String, ForwardCurve&gt; mapFC = MakeFC (</span>
 			dtToday,
 			strCurrency,
 			dc
 		);
 
-<span class="fc" id="L662">		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);</span>
+<span class="fc" id="L690">		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);</span>
 
-<span class="fc" id="L664">		JulianDate dtForwardStart = dtToday.addTenor (strTenor);</span>
+<span class="fc" id="L692">		JulianDate dtForwardStart = dtToday.addTenor (strTenor);</span>
 
-<span class="fc" id="L666">		FRAStandardComponent fra = SingleStreamComponentBuilder.FRAStandard (</span>
+<span class="fc" id="L694">		FRAStandardComponent fra = SingleStreamComponentBuilder.FRAStandard (</span>
 			dtForwardStart,
 			fri,
 			0.006
 		);
 
-<span class="fc" id="L672">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L700">		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (</span>
 			dc,
-<span class="fc" id="L674">			mapFC.get (strTenor),</span>
+<span class="fc" id="L702">			mapFC.get (strTenor),</span>
 			null,
 			null,
 			null,
@@ -680,40 +708,40 @@ import org.drip.state.identifier.*;
 			null
 		);
 
-<span class="fc" id="L683">		ValuationParams valParams = new ValuationParams (</span>
+<span class="fc" id="L711">		ValuationParams valParams = new ValuationParams (</span>
 			dtToday,
 			dtToday,
 			strCurrency
 		);
 
-<span class="fc" id="L689">		double[] adblSigmaFwd = new double[] {0.1, 0.2, 0.3, 0.4, 0.5};</span>
-<span class="fc" id="L690">		double[] adblSigmaFwd2DomX = new double[] {0.10, 0.15, 0.20, 0.25, 0.30};</span>
-<span class="fc" id="L691">		double[] adblCorrFwdFwd2DomX = new double[] {-0.99, -0.50, 0.00, 0.50, 0.99};</span>
+<span class="fc" id="L717">		double[] adblSigmaFwd = new double[] {0.1, 0.2, 0.3, 0.4, 0.5};</span>
+<span class="fc" id="L718">		double[] adblSigmaFwd2DomX = new double[] {0.10, 0.15, 0.20, 0.25, 0.30};</span>
+<span class="fc" id="L719">		double[] adblCorrFwdFwd2DomX = new double[] {-0.99, -0.50, 0.00, 0.50, 0.99};</span>
 
-<span class="fc" id="L693">		System.out.println (&quot;\tPrinting the IRS Output in Order (Left -&gt; Right):&quot;);</span>
+<span class="fc" id="L721">		System.out.println (&quot;\tPrinting the IRS Output in Order (Left -&gt; Right):&quot;);</span>
 
-<span class="fc" id="L695">		System.out.println (&quot;\t\tFRA ATM (%)&quot;);</span>
+<span class="fc" id="L723">		System.out.println (&quot;\t\tFRA ATM (%)&quot;);</span>
 
-<span class="fc" id="L697">		System.out.println (&quot;\t\tManifest Measure Instrinsic (bp)&quot;);</span>
+<span class="fc" id="L725">		System.out.println (&quot;\t\tManifest Measure Instrinsic (bp)&quot;);</span>
 
-<span class="fc" id="L699">		System.out.println (&quot;\t\tManifest Measure Instrinsic Value&quot;);</span>
+<span class="fc" id="L727">		System.out.println (&quot;\t\tManifest Measure Instrinsic Value&quot;);</span>
 
-<span class="fc" id="L701">		System.out.println (&quot;\t\tForward Caplet ATM Price&quot;);</span>
+<span class="fc" id="L729">		System.out.println (&quot;\t\tForward Caplet ATM Price&quot;);</span>
 
-<span class="fc" id="L703">		System.out.println (&quot;\t\tSpot Caplet Price&quot;);</span>
+<span class="fc" id="L731">		System.out.println (&quot;\t\tSpot Caplet Price&quot;);</span>
 
-<span class="fc" id="L705">		System.out.println (&quot;\t\tForward Floorlet ATM Price&quot;);</span>
+<span class="fc" id="L733">		System.out.println (&quot;\t\tForward Floorlet ATM Price&quot;);</span>
 
-<span class="fc" id="L707">		System.out.println (&quot;\t\tSpot Floorlet Price&quot;);</span>
+<span class="fc" id="L735">		System.out.println (&quot;\t\tSpot Floorlet Price&quot;);</span>
 
-<span class="fc" id="L709">		System.out.println (&quot;\t-------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L737">		System.out.println (&quot;\t-------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L711">		System.out.println (&quot;\t-------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L739">		System.out.println (&quot;\t-------------------------------------------------------------&quot;);</span>
 
-<span class="fc bfc" id="L713" title="All 2 branches covered.">		for (double dblSigmaFwd : adblSigmaFwd) {</span>
-<span class="fc bfc" id="L714" title="All 2 branches covered.">			for (double dblSigmaFwd2DomX : adblSigmaFwd2DomX) {</span>
-<span class="fc bfc" id="L715" title="All 2 branches covered.">				for (double dblCorrFwdFwd2DomX : adblCorrFwdFwd2DomX)</span>
-<span class="fc" id="L716">					VolCorrScenario (</span>
+<span class="fc bfc" id="L741" title="All 2 branches covered.">		for (double dblSigmaFwd : adblSigmaFwd) {</span>
+<span class="fc bfc" id="L742" title="All 2 branches covered.">			for (double dblSigmaFwd2DomX : adblSigmaFwd2DomX) {</span>
+<span class="fc bfc" id="L743" title="All 2 branches covered.">				for (double dblCorrFwdFwd2DomX : adblCorrFwdFwd2DomX)</span>
+<span class="fc" id="L744">					VolCorrScenario (</span>
 						fra,
 						valParams,
 						mktParams,
@@ -723,6 +751,8 @@ import org.drip.state.identifier.*;
 					);
 			}
 		}
-<span class="fc" id="L726">	}</span>
+
+<span class="fc" id="L755">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L756">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

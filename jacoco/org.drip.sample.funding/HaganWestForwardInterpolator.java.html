@@ -3,6 +3,7 @@ package org.drip.sample.funding;
 
 import org.drip.function.r1tor1.LinearRationalShapeControl;
 import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.ExponentialTensionSetParams;
 import org.drip.spline.params.*;
 import org.drip.spline.pchip.*;
@@ -13,36 +14,56 @@ import org.drip.spline.stretch.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -59,24 +80,53 @@ import org.drip.spline.stretch.*;
  */
 
 /**
- * This sample illustrates using the Hagan and West (2006) Estimator. It provides the following
- *  functionality:
- * 	- Set up the Predictor ordinates and the response values..
- * 	- Construct the rational linear shape control with the specified tension.
- * 	- Create the Segment Inelastic design using the Ck and Curvature Penalty Derivatives.
- * 	- Build the Array of Segment Custom Builder Control Parameters of the KLK Hyperbolic Tension Basis
- * 		Type, the tension, the segment inelastic design control, and the shape controller.
- * 	- Setup the monotone convex stretch using the above settings, and with no linear inference, no
- * 		spurious extrema, or no monotone filtering applied.
- * 	- Setup the monotone convex stretch using the above settings, and with linear inference, no spurious
- * 		extrema, or no monotone filtering applied.
- * 	- Compute and display the monotone convex output with the linear forward state.
- * 	- Compute and display the monotone convex output with the harmonic forward state.
+ * &lt;i&gt;HaganWestForwardInterpolator&lt;/i&gt; illustrates using the Hagan and West (2006) Estimator. It provides the
+ * following functionality:
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Set up the Predictor ordinates and the response values.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Construct the rational linear shape control with the specified tension.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Create the Segment Inelastic design using the Ck and Curvature Penalty Derivatives.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Build the Array of Segment Custom Builder Control Parameters of the KLK Hyperbolic Tension Basis
+ * 				Type, the tension, the segment inelastic design control, and the shape controller.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Setup the monotone convex stretch using the above settings, and with no linear inference, no
+ * 				spurious extrema, or no monotone filtering applied.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Setup the monotone convex stretch using the above settings, and with linear inference, no
+ * 				spurious extrema, or no monotone filtering applied.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Compute and display the monotone convex output with the linear forward state.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Compute and display the monotone convex output with the harmonic forward state.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/funding/README.md&quot;&gt;Funding Curve Builder&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L79">public class HaganWestForwardInterpolator {</span>
+<span class="nc" id="L129">public class HaganWestForwardInterpolator {</span>
 
 	/*
 	 * Display the monotone convex response value pre- and post- positivity enforcement.
@@ -95,48 +145,48 @@ import org.drip.spline.stretch.*;
 		 * 	predictor ordinates pre-positivity enforcement.
 		 */
 
-<span class="fc" id="L98">		double dblTimeBegin = 0.;</span>
-<span class="fc" id="L99">		double dblTimeFinish = 30.;</span>
-<span class="fc" id="L100">		double dblTimeDelta = 3.00;</span>
-<span class="fc" id="L101">		double dblTime = dblTimeBegin;</span>
+<span class="fc" id="L148">		double dblTimeBegin = 0.;</span>
+<span class="fc" id="L149">		double dblTimeFinish = 30.;</span>
+<span class="fc" id="L150">		double dblTimeDelta = 3.00;</span>
+<span class="fc" id="L151">		double dblTime = dblTimeBegin;</span>
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">		while (dblTime &lt;= dblTimeFinish) {</span>
-<span class="fc" id="L104">			System.out.println (&quot;\t\tResponse[&quot; +</span>
-<span class="fc" id="L105">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
-<span class="fc" id="L106">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L107">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		while (dblTime &lt;= dblTimeFinish) {</span>
+<span class="fc" id="L154">			System.out.println (&quot;\t\tResponse[&quot; +</span>
+<span class="fc" id="L155">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
+<span class="fc" id="L156">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L157">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
 			);
 
-<span class="fc" id="L110">			dblTime += dblTimeDelta;</span>
+<span class="fc" id="L160">			dblTime += dblTimeDelta;</span>
 		}
 
 		/*
 		 * Verify if the monotone convex positivity enforcement succeeded
 		 */
 
-<span class="fc" id="L117">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L119">		System.out.println (&quot;\t\tPositivity enforced? &quot; + mchw.enforcePositivity());</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t\tPositivity enforced? &quot; + mchw.enforcePositivity());</span>
 
-<span class="fc" id="L121">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L123">		dblTime = dblTimeBegin;</span>
+<span class="fc" id="L173">		dblTime = dblTimeBegin;</span>
 
 		/*
 		 * Compare the stretch response values with that of the Monotone Convex across the range of the
 		 * 	predictor ordinates post-positivity enforcement.
 		 */
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		while (dblTime &lt;= dblTimeFinish) {</span>
-<span class="fc" id="L131">			System.out.println (&quot;\t\tPositivity Enforced Response[&quot; +</span>
-<span class="fc" id="L132">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
-<span class="fc" id="L133">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L134">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		while (dblTime &lt;= dblTimeFinish) {</span>
+<span class="fc" id="L181">			System.out.println (&quot;\t\tPositivity Enforced Response[&quot; +</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + &quot;]: &quot; +</span>
+<span class="fc" id="L183">				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L184">				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)</span>
 			);
 
-<span class="fc" id="L137">			dblTime += dblTimeDelta;</span>
+<span class="fc" id="L187">			dblTime += dblTimeDelta;</span>
 		}
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L189">	}</span>
 
 	/*
 	 * This sample demonstrates the construction and usage of the Monotone Hagan West Functionality. It shows
@@ -163,10 +213,10 @@ import org.drip.spline.stretch.*;
 		 * Set up the Predictor ordinates and the response values.
 		 */
 
-<span class="fc" id="L166">		double[] adblTime = new double[] {</span>
+<span class="fc" id="L216">		double[] adblTime = new double[] {</span>
 			0., 0.10, 1.0, 4.0, 9.0, 20.0, 30.0
 		};
-<span class="fc" id="L169">		double[] adblForwardRate = new double[] {</span>
+<span class="fc" id="L219">		double[] adblForwardRate = new double[] {</span>
 			1.008, 1.073, 1.221, 1.878, 2.226, 2.460
 		};
 
@@ -174,21 +224,21 @@ import org.drip.spline.stretch.*;
 		 * Construct the rational linear shape control with the specified tension.
 		 */
 
-<span class="fc" id="L177">		double dblShapeControllerTension = 1.;</span>
+<span class="fc" id="L227">		double dblShapeControllerTension = 1.;</span>
 
-<span class="fc" id="L179">		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (</span>
+<span class="fc" id="L229">		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (</span>
 			false,
 			new LinearRationalShapeControl (dblShapeControllerTension)
 		);
 
-<span class="fc" id="L184">		int iK = 2;</span>
-<span class="fc" id="L185">		int iCurvaturePenaltyDerivativeOrder = 2;</span>
+<span class="fc" id="L234">		int iK = 2;</span>
+<span class="fc" id="L235">		int iCurvaturePenaltyDerivativeOrder = 2;</span>
 
 		/*
 		 * Create the Segment Inelastic design using the Ck and Curvature Penalty Derivatives.
 		 */
 
-<span class="fc" id="L191">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L241">		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (</span>
 			iK,
 			iCurvaturePenaltyDerivativeOrder
 		);
@@ -198,9 +248,9 @@ import org.drip.spline.stretch.*;
 		 * 	Type, the tension, the segment inelastic design control, and the shape controller.
 		 */
 
-<span class="fc" id="L201">		double dblKLKTension = 1.;</span>
+<span class="fc" id="L251">		double dblKLKTension = 1.;</span>
 
-<span class="fc" id="L203">		SegmentCustomBuilderControl scbc = new SegmentCustomBuilderControl (</span>
+<span class="fc" id="L253">		SegmentCustomBuilderControl scbc = new SegmentCustomBuilderControl (</span>
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 			new ExponentialTensionSetParams (dblKLKTension),
 			sdic,
@@ -208,17 +258,17 @@ import org.drip.spline.stretch.*;
 			null
 		);
 
-<span class="fc" id="L211">		SegmentCustomBuilderControl[] aSCBC = new SegmentCustomBuilderControl[adblForwardRate.length];</span>
+<span class="fc" id="L261">		SegmentCustomBuilderControl[] aSCBC = new SegmentCustomBuilderControl[adblForwardRate.length];</span>
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">		for (int i = 0; i &lt; adblForwardRate.length; ++i)</span>
-<span class="fc" id="L214">			aSCBC[i] = scbc;</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		for (int i = 0; i &lt; adblForwardRate.length; ++i)</span>
+<span class="fc" id="L264">			aSCBC[i] = scbc;</span>
 
 		/*
 		 * Setup the monotone convex stretch using the above settings, and with no linear inference, no
 		 * 	spurious extrema, or no monotone filtering applied.
 		 */
 
-<span class="fc" id="L221">		MultiSegmentSequence mssLinear = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
+<span class="fc" id="L271">		MultiSegmentSequence mssLinear = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
 			&quot;MSS_LINEAR&quot;,
 			adblTime,
 			adblForwardRate,
@@ -235,7 +285,7 @@ import org.drip.spline.stretch.*;
 		 * 	spurious extrema, or no monotone filtering applied.
 		 */
 
-<span class="fc" id="L238">		MultiSegmentSequence mssHarmonic = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
+<span class="fc" id="L288">		MultiSegmentSequence mssHarmonic = LocalControlStretchBuilder.CreateMonotoneConvexStretch (</span>
 			&quot;MSS_HARMONIC&quot;,
 			adblTime,
 			adblForwardRate,
@@ -251,18 +301,18 @@ import org.drip.spline.stretch.*;
 		 * Compute and display the monotone convex output with the linear forward state.
 		 */
 
-<span class="fc" id="L254">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L304">		System.out.println (&quot;\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L256">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH LINEAR FORWARD STATE&quot;);</span>
+<span class="fc" id="L306">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH LINEAR FORWARD STATE&quot;);</span>
 
-<span class="fc" id="L258">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L308">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
 		/*
 		 * Compute and display the monotone convex output with the harmonic forward state.
 		 */
 
-<span class="fc" id="L264">		DisplayOP (</span>
-<span class="fc" id="L265">			MonotoneConvexHaganWest.Create (</span>
+<span class="fc" id="L314">		DisplayOP (</span>
+<span class="fc" id="L315">			MonotoneConvexHaganWest.Create (</span>
 				adblTime,
 				adblForwardRate,
 				false
@@ -271,14 +321,14 @@ import org.drip.spline.stretch.*;
 			adblTime
 		);
 
-<span class="fc" id="L274">		System.out.println (&quot;\n\n\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L324">		System.out.println (&quot;\n\n\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L276">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH HARMONIC FORWARD STATE&quot;);</span>
+<span class="fc" id="L326">		System.out.println (&quot;\t     MONOTONE CONVEX HAGAN WEST WITH HARMONIC FORWARD STATE&quot;);</span>
 
-<span class="fc" id="L278">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
+<span class="fc" id="L328">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
-<span class="fc" id="L280">		DisplayOP (</span>
-<span class="fc" id="L281">			MonotoneConvexHaganWest.Create (</span>
+<span class="fc" id="L330">		DisplayOP (</span>
+<span class="fc" id="L331">			MonotoneConvexHaganWest.Create (</span>
 				adblTime,
 				adblForwardRate,
 				true
@@ -286,13 +336,17 @@ import org.drip.spline.stretch.*;
 			mssHarmonic,
 			adblTime
 		);
-<span class="fc" id="L289">	}</span>
+<span class="fc" id="L339">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L295">		MonotoneHaganWestInterpolatorSample();</span>
-<span class="fc" id="L296">	}</span>
+<span class="fc" id="L345">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L347">		MonotoneHaganWestInterpolatorSample();</span>
+
+<span class="fc" id="L349">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L350">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
