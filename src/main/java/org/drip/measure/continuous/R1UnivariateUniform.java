@@ -1,5 +1,5 @@
 
-package org.drip.measure.discrete;
+package org.drip.measure.continuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,10 +7,6 @@ package org.drip.measure.discrete;
 
 /*!
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
@@ -68,117 +64,156 @@ package org.drip.measure.discrete;
  */
 
 /**
- * <i>PoissonDistribution</i> implements the Univariate Poisson Distribution using the specified
- * Mean/Variance.
+ * <i>R1UnivariateUniform</i> implements the Univariate R<sup>1</sup> Uniform Distribution. It implements the
+ * Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure">Measure</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete">Discrete</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous">Continuous</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PoissonDistribution extends org.drip.measure.continuous.R1Univariate {
-	private double _dblLambda = java.lang.Double.NaN;
-	private double _dblExponentialLambda = java.lang.Double.NaN;
+public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariate
+{
+	private double _leftSupport = java.lang.Double.NaN;
+	private double _rightSupport = java.lang.Double.NaN;
 
 	/**
-	 * Construct a PoissonDistribution Instance
+	 * Construct a Standard (0, 1) R^1 Uniform Distribution
 	 * 
-	 * @param dblLambda Lambda
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @return Standard (0, 1) R^1 Uniform Distribution
 	 */
 
-	public PoissonDistribution (
-		final double dblLambda)
-		throws java.lang.Exception
+	public static final R1UnivariateUniform Standard()
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
-			throw new java.lang.Exception ("PoissonDistribution constructor: Invalid inputs");
+		try
+		{
+			return new R1UnivariateUniform (
+				0.,
+				1.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		_dblExponentialLambda = java.lang.Math.exp (-1. * _dblLambda);
+		return null;
 	}
 
 	/**
-	 * Retrieve Lambda
+	 * R1UnivariateUniform Constructor
 	 * 
-	 * @return Lambda
+	 * @param leftSupport The Left Support
+	 * @param rightSupport The Right Support
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double lambda()
+	public R1UnivariateUniform (
+		final double leftSupport,
+		final double rightSupport)
+		throws java.lang.Exception
 	{
-		return _dblLambda;
+		if (!org.drip.quant.common.NumberUtil.IsValid (_leftSupport = leftSupport) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_rightSupport = rightSupport) ||
+			_leftSupport >= _rightSupport)
+		{
+			throw new java.lang.Exception ("R1UnivariateUniform COnstructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Left Support
+	 * 
+	 * @return The Left Support
+	 */
+
+	public double leftSupport()
+	{
+		return _leftSupport;
+	}
+
+	/**
+	 * Retrieve the Right Support
+	 * 
+	 * @return The Right Support
+	 */
+
+	public double rightSupport()
+	{
+		return _rightSupport;
+	}
+
+	/**
+	 * Indicate if the specified x Value stays inside the Support
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Value stays in Support
+	 */
+
+	public boolean supported (
+		final double x)
+	{
+		return org.drip.quant.common.NumberUtil.IsValid (x) && x >= _leftSupport || x <= _rightSupport;			
 	}
 
 	@Override public double cumulative (
-		final double dblX)
+		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("PoissonDistribution::cumulative => Invalid inputs");
+		if (!supported (x))
+			throw new java.lang.Exception ("R1UnivariateUniform::cumulative => Invalid Inputs");
 
-		int iEnd = (int) dblX;
-		double dblYLocal = 1.;
-		double dblYCumulative = 0.;
-
-		for (int i = 1; i < iEnd; ++i) {
-			i = i + 1;
-			dblYLocal *= _dblLambda / i;
-			dblYCumulative += _dblExponentialLambda * dblYLocal;
-		}
-
-		return dblYCumulative;
+		return  (x - _leftSupport) / (_rightSupport - _leftSupport);
 	}
 
 	@Override public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
+		final double xLeft,
+		final double xRight)
 		throws java.lang.Exception
 	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
+		return cumulative (xLeft) - cumulative (xRight);
 	}
 
 	@Override public double invCumulative (
-		final double dblY)
+		final double y)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY))
-			throw new java.lang.Exception ("PoissonDistribution::invCumulative => Invalid inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
+			throw new java.lang.Exception ("R1UnivariateUniform::invCumulative => Cannot calculate");
 
-		int i = 0;
-		double dblYLocal = 1.;
-		double dblYCumulative = 0.;
-
-		while (dblYCumulative < dblY) {
-			i = i + 1;
-			dblYLocal *= _dblLambda / i;
-			dblYCumulative += _dblExponentialLambda * dblYLocal;
-		}
-
-		return i - 1;
+	    return y * (_rightSupport - _leftSupport) + _leftSupport;
 	}
 
 	@Override public double density (
-		final double dblX)
+		final double x)
 		throws java.lang.Exception
 	{
-		throw new java.lang.Exception
-			("PoissonDistribution::density => Not available for discrete distributions");
+		if (!supported (x)) throw new java.lang.Exception ("R1UnivariateUniform::density => Invalid Inputs");
+
+		return 1. / (_rightSupport - _leftSupport);
 	}
 
 	@Override public double mean()
 	{
-	    return _dblLambda;
+	    return 0.5 * (_rightSupport + _leftSupport);
 	}
 
 	@Override public double variance()
 	{
-	    return _dblLambda;
+	    return (_rightSupport - _leftSupport) / 12.;
+	}
+
+	@Override public double random()
+	{
+	    return java.lang.Math.random() * (_rightSupport - _leftSupport) + _leftSupport;
 	}
 
 	@Override public org.drip.quant.common.Array2D histogram()

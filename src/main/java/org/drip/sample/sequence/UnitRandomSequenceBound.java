@@ -1,7 +1,7 @@
 
 package org.drip.sample.sequence;
 
-import org.drip.measure.continuous.R1;
+import org.drip.measure.continuous.R1Univariate;
 import org.drip.measure.lebesgue.R1Uniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.metrics.*;
@@ -84,7 +84,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void ChernoffBinomialBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -106,7 +106,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void PoissonChernoffBinomialBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -128,7 +128,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void KarpHagerupRubUpperBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -150,7 +150,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void KarpHagerupRubLowerBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception

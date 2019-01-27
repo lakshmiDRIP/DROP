@@ -121,7 +121,7 @@ public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.rxtord.
 		org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput =
 			(org.drip.spaces.metric.R1Combinatorial) inputMetricVectorSpace();
 
-		org.drip.measure.continuous.R1 distR1 = r1CombinatorialInput.borelSigmaMeasure();
+		org.drip.measure.continuous.R1Univariate distR1 = r1CombinatorialInput.borelSigmaMeasure();
 
 		java.util.List<java.lang.Double> lsElem = r1CombinatorialInput.elementSpace();
 

@@ -7,12 +7,6 @@ package org.drip.measure.continuous;
 
 /*!
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
@@ -70,8 +64,8 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1</i> implements the Base Abstract Class behind R<sup>1</sup> Distributions. It exports the Methods
- * for incremental, cumulative, and inverse cumulative distribution densities.
+ * <i>R1UnivariateExponential</i> implements the Univariate R<sup>1</sup> Exponential Distribution. It
+ * implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
  *
  *	<br><br>
  *  <ul>
@@ -84,90 +78,109 @@ package org.drip.measure.continuous;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1 {
+public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univariate
+{
+	private double _lambda = java.lang.Double.NaN;
 
 	/**
-	 * Compute the cumulative under the distribution to the given value
+	 * Construct the Standard R1UnivariateExponential Distribution (lambda = 1.)
 	 * 
-	 * @param dblX Variate to which the cumulative is to be computed
-	 * 
-	 * @return The cumulative
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @return The Standard R1UnivariateExponential Distribution
 	 */
 
-	public abstract double cumulative (
-		final double dblX)
-		throws java.lang.Exception;
-
-	/**
-	 * Compute the Incremental under the Distribution between the 2 variates
-	 * 
-	 * @param dblXLeft Left Variate to which the cumulative is to be computed
-	 * @param dblXRight Right Variate to which the cumulative is to be computed
-	 * 
-	 * @return The Incremental under the Distribution between the 2 variates
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
-	 */
-
-	public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
-		throws java.lang.Exception
+	public static final R1UnivariateExponential Standard()
 	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
+		try
+		{
+			return new R1UnivariateExponential (1.);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Compute the inverse cumulative under the distribution corresponding to the given value
+	 * R1UnivariateExponential Constructor
 	 * 
-	 * @param dblX Value corresponding to which the inverse cumulative is to be computed
+	 * @param lambda Lambda (Inverse Scaling Parameter)
 	 * 
-	 * @return The inverse cumulative
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double invCumulative (
-		final double dblX)
-		throws java.lang.Exception;
+	public R1UnivariateExponential (
+		final double lambda)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
+		{
+			throw new java.lang.Exception ("R1UnivariateExponential Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
-	 * Compute the Density under the Distribution at the given Variate
+	 * Retrieve the Lambda (Inverse Scaling Parameter)
 	 * 
-	 * @param dblX Variate at which the Density needs to be computed
-	 * 
-	 * @return The Density
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @return The Lambda (Inverse Scaling Parameter)
 	 */
 
-	public abstract double density (
-		final double dblX)
-		throws java.lang.Exception;
+	public double lambda()
+	{
+		return _lambda;
+	}
 
-	/**
-	 * Retrieve the Mean of the Distribution
-	 * 
-	 * @return The Mean of the Distribution
-	 */
+	@Override public double cumulative (
+		final double x)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x) || x < 0.)
+			throw new java.lang.Exception ("R1UnivariateExponential::cumulative => Invalid Inputs");
 
-	public abstract double mean();
+		return 1. - java.lang.Math.exp (-1. * _lambda * x);
+	}
 
-	/**
-	 * Retrieve the Variance of the Distribution
-	 * 
-	 * @return The Variance of the Distribution
-	 */
+	@Override public double incremental (
+		final double xLeft,
+		final double xRight)
+		throws java.lang.Exception
+	{
+		return cumulative (xLeft) - cumulative (xRight);
+	}
 
-	public abstract double variance();
+	@Override public double invCumulative (
+		final double y)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
+			throw new java.lang.Exception ("R1UnivariateExponential::invCumulative => Cannot calculate");
 
-	/**
-	 * Retrieve the Univariate Weighted Histogram
-	 * 
-	 * @return The Univariate Weighted Histogram
-	 */
+	    return -1. / _lambda * java.lang.Math.log (1. - y);
+	}
 
-	public abstract org.drip.quant.common.Array2D histogram();
+	@Override public double density (
+		final double x)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x) || x < 0.)
+			throw new java.lang.Exception ("R1UnivariateExponential::density => Invalid Inputs");
+
+		return _lambda * java.lang.Math.exp (-1. * _lambda * x);
+	}
+
+	@Override public double mean()
+	{
+	    return 1. / _lambda;
+	}
+
+	@Override public double variance()
+	{
+	    return 1. / (_lambda * _lambda);
+	}
+
+	@Override public org.drip.quant.common.Array2D histogram()
+	{
+		return null;
+	}
 }

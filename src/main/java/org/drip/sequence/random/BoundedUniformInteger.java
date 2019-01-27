@@ -136,7 +136,7 @@ public class BoundedUniformInteger extends org.drip.sequence.random.UnivariateSe
 
 	@Override public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics sequence (
 		final int iNumEntry,
-		final org.drip.measure.continuous.R1 distPopulation)
+		final org.drip.measure.continuous.R1Univariate distPopulation)
 	{
 		double[] adblSequence = new double[iNumEntry];
 

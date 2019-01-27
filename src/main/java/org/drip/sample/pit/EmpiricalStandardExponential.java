@@ -1,7 +1,7 @@
 
 package org.drip.sample.pit;
 
-import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.continuous.R1UnivariateExponential;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.core.ResponseAccumulator;
@@ -70,8 +70,8 @@ import org.drip.validation.core.ResponseDistribution;
  */
 
 /**
- * <i>EmpiricalStandardUniform</i> illustrates the Probability Integral Transform and the p-Value for an
- * Empirical Standard Uniform Distribution.
+ * <i>EmpiricalStandardExponential</i> illustrates the Probability Integral Transform and the p-Value for an
+ * Empirical Standard Exponential Distribution.
  *
  *  <br><br>
  *  <ul>
@@ -109,13 +109,13 @@ import org.drip.validation.core.ResponseDistribution;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EmpiricalStandardUniform
+public class EmpiricalStandardExponential
 {
 
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateUniform.Standard().random();
+		return R1UnivariateExponential.Standard().random();
 	}
 
 	public static final void main (

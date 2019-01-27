@@ -84,7 +84,7 @@ package org.drip.measure.gaussian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateNormal extends org.drip.measure.continuous.R1 {
+public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate {
 	private double _dblMean = java.lang.Double.NaN;
 	private double _dblSigma = java.lang.Double.NaN;
 
@@ -181,6 +181,20 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1 {
 	@Override public org.drip.quant.common.Array2D histogram()
 	{
 		return null;
+	}
+
+	@Override public double random()
+	{
+		try
+		{
+			return invCumulative (java.lang.Math.random());
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return java.lang.Double.NaN;
 	}
 
 	/**

@@ -100,7 +100,7 @@ public interface R1Normed extends org.drip.spaces.metric.GeneralizedMetricVector
 	 * @return The Borel Sigma R^1 Probability Measure
 	 */
 
-	public abstract org.drip.measure.continuous.R1 borelSigmaMeasure();
+	public abstract org.drip.measure.continuous.R1Univariate borelSigmaMeasure();
 
 	/**
 	 * Compute the Metric Norm of the Sample

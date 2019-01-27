@@ -1,7 +1,7 @@
 
 package org.drip.sample.sequence;
 
-import org.drip.measure.continuous.R1;
+import org.drip.measure.continuous.R1Univariate;
 import org.drip.measure.lebesgue.R1Uniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.metrics.*;
@@ -84,7 +84,7 @@ public class IIDSequenceSumBound {
 
 	private static final void WeakLawBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -106,7 +106,7 @@ public class IIDSequenceSumBound {
 
 	private static final void ChernoffHoeffdingBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final double dblSupport,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
@@ -129,7 +129,7 @@ public class IIDSequenceSumBound {
 
 	private static final void BennettBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final double dblSupport,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
@@ -152,7 +152,7 @@ public class IIDSequenceSumBound {
 
 	private static final void BernsteinBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1 dist,
+		final R1Univariate dist,
 		final double dblSupport,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)

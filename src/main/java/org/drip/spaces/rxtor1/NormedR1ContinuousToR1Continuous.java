@@ -125,7 +125,7 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.rxtor1.Nor
 
 		final org.drip.function.definition.R1ToR1 funcR1ToR1 = function();
 
-		final org.drip.measure.continuous.R1 distR1 = r1Continuous.borelSigmaMeasure();
+		final org.drip.measure.continuous.R1Univariate distR1 = r1Continuous.borelSigmaMeasure();
 
 		if (null == distR1 || null == funcR1ToR1)
 			throw new java.lang.Exception

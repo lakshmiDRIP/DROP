@@ -1,5 +1,5 @@
 
-package org.drip.sequence.random;
+package org.drip.measure.continuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,6 +11,8 @@ package org.drip.sequence.random;
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
@@ -68,73 +70,124 @@ package org.drip.sequence.random;
  */
 
 /**
- * <i>Bounded</i> implements the Bounded Random Univariate Generator with a Lower and an upper Bound.
- * 
- * <br><br>
+ * <i>R1Univariate</i> implements the Base Abstract Class behind R<sup>1</sup> Univariate Distributions. It
+ * exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
+ *
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence">Sequence</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sequence/random">Random</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure">Measure</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous">Continuous</a></li>
  *  </ul>
- * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class Bounded extends org.drip.sequence.random.UnivariateSequenceGenerator {
-	private double _dblLowerBound = java.lang.Double.NaN;
-	private double _dblUpperBound = java.lang.Double.NaN;
+public abstract class R1Univariate {
 
-	protected Bounded (
-		final double dblLowerBound,
-		final double dblUpperBound)
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param dblX Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	public abstract double cumulative (
+		final double dblX)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Incremental under the Distribution between the 2 variates
+	 * 
+	 * @param dblXLeft Left Variate to which the cumulative is to be computed
+	 * @param dblXRight Right Variate to which the cumulative is to be computed
+	 * 
+	 * @return The Incremental under the Distribution between the 2 variates
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	public double incremental (
+		final double dblXLeft,
+		final double dblXRight)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound <=
-				dblLowerBound)
-			throw new java.lang.Exception ("Bounded ctr: Invalid Inputs!");
+		return cumulative (dblXRight) - cumulative (dblXLeft);
 	}
 
 	/**
-	 * Retrieve the Lower Bound
+	 * Compute the inverse cumulative under the distribution corresponding to the given value
 	 * 
-	 * @return The Lower Bound
+	 * @param dblX Value corresponding to which the inverse cumulative is to be computed
+	 * 
+	 * @return The inverse cumulative
+	 * 
+	 * @throws java.lang.Exception Thrown if the input is invalid
 	 */
 
-	public double lowerBound()
-	{
-		return _dblLowerBound;
-	}
+	public abstract double invCumulative (
+		final double dblX)
+		throws java.lang.Exception;
 
 	/**
-	 * Retrieve the Upper Bound
+	 * Compute the Density under the Distribution at the given Variate
 	 * 
-	 * @return The Upper Bound
+	 * @param dblX Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws java.lang.Exception Thrown if the input is invalid
 	 */
 
-	public double upperBound()
+	public abstract double density (
+		final double dblX)
+		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 */
+
+	public abstract double mean();
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 */
+
+	public abstract double variance();
+
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 */
+
+	public double random()
 	{
-		return _dblUpperBound;
-	}
-
-	@Override public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics sequence (
-		final int iNumEntry,
-		final org.drip.measure.continuous.R1Univariate distPopulation)
-	{
-		double[] adblSequence = new double[iNumEntry];
-
-		for (int i = 0; i < iNumEntry; ++i)
-			adblSequence[i] = random();
-
-		try {
-			return new org.drip.sequence.metrics.UnitSequenceAgnosticMetrics (adblSequence, null ==
-				distPopulation ? java.lang.Double.NaN : distPopulation.mean());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return invCumulative (java.lang.Math.random());
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
-		return null;
+		return java.lang.Double.NaN;
 	}
+
+	/**
+	 * Retrieve the Univariate Weighted Histogram
+	 * 
+	 * @return The Univariate Weighted Histogram
+	 */
+
+	public abstract org.drip.quant.common.Array2D histogram();
 }

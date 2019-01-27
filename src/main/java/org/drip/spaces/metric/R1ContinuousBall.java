@@ -108,7 +108,7 @@ public class R1ContinuousBall extends org.drip.spaces.metric.R1Continuous {
 	public static final R1ContinuousBall ClosedUnit (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1 distR1,
+		final org.drip.measure.continuous.R1Univariate distR1,
 		final int iPNorm)
 	{
 		try {
@@ -135,7 +135,7 @@ public class R1ContinuousBall extends org.drip.spaces.metric.R1Continuous {
 	public R1ContinuousBall (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1 distR1,
+		final org.drip.measure.continuous.R1Univariate distR1,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception

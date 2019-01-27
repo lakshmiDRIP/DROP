@@ -121,7 +121,7 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.rxtord.Nor
 		org.drip.spaces.metric.R1Combinatorial r1ContinuousInput = (org.drip.spaces.metric.R1Combinatorial)
 			inputMetricVectorSpace();
 
-		final org.drip.measure.continuous.R1 distR1 = r1ContinuousInput.borelSigmaMeasure();
+		final org.drip.measure.continuous.R1Univariate distR1 = r1ContinuousInput.borelSigmaMeasure();
 
 		final org.drip.function.definition.R1ToRd funcR1ToRd = function();
 

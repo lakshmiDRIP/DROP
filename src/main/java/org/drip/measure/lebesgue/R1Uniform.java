@@ -82,7 +82,7 @@ package org.drip.measure.lebesgue;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1Uniform extends org.drip.measure.continuous.R1 {
+public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 	protected static final int GRID_WIDTH = 100;
 
 	private double _dblLeftPredictorOrdinateEdge = java.lang.Double.NaN;
