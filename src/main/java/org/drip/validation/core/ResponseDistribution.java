@@ -157,4 +157,106 @@ public class ResponseDistribution
 	{
 		return _responsePValueMap;
 	}
+
+	/**
+	 * Compute the p-Value corresponding to the Response Instance
+	 * 
+	 * @param response The Response Instance
+	 * 
+	 * @return The p-Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double pValue (
+		final double response)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (response))
+		{
+			throw new java.lang.Exception ("ResponseDistribution::pValue => Invalid Inputs");
+		}
+
+		java.util.Set<java.lang.Double> responseKeySet = _responsePValueMap.keySet();
+
+		double responseKeyCurrent = java.lang.Double.NaN;
+		double responseKeyPrevious = java.lang.Double.NaN;
+
+		for (double responseKey : responseKeySet)
+		{
+			if (response == responseKey)
+			{
+				return _responsePValueMap.get (response);
+			}
+
+			if (response < responseKey)
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (responseKeyPrevious))
+				{
+					return 0.;
+				}
+
+				responseKeyCurrent = responseKey;
+				break;
+			}
+
+			responseKeyPrevious = responseKey;
+		}
+
+		return response >= responseKeyCurrent ? 1. :
+			((response - responseKeyPrevious) * _responsePValueMap.get (responseKeyCurrent) +
+			(responseKeyCurrent - response) * _responsePValueMap.get (responseKeyPrevious)) /
+			(responseKeyCurrent - responseKeyPrevious);
+	}
+
+	/**
+	 * Compute the corresponding to the Response Instance p-Value
+	 * 
+	 * @param pValue The p-Value
+	 * 
+	 * @return The Response Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double response (
+		final double pValue)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))
+		{
+			throw new java.lang.Exception ("ResponseDistribution::response => Invalid Inputs");
+		}
+
+		java.util.Set<java.lang.Double> pValueKeySet = _pValueResponseMap.keySet();
+
+		double pValueKeyCurrent = java.lang.Double.NaN;
+		double pValueKeyPrevious = java.lang.Double.NaN;
+
+		for (double pValueKey : pValueKeySet)
+		{
+			if (pValue == pValueKey)
+			{
+				return _pValueResponseMap.get (pValue);
+			}
+
+			if (pValue < pValueKey)
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (pValueKeyPrevious))
+				{
+					return _pValueResponseMap.get (pValueKey);
+				}
+
+				pValueKeyCurrent = pValueKey;
+				break;
+			}
+
+			pValueKeyPrevious = pValueKey;
+		}
+
+		return pValue >= pValueKeyCurrent ? _pValueResponseMap.get (pValueKeyCurrent) :
+			((pValue - pValueKeyPrevious) * _pValueResponseMap.get (pValueKeyCurrent) +
+			(pValueKeyCurrent - pValue) * _pValueResponseMap.get (pValueKeyPrevious)) /
+			(pValueKeyCurrent - pValueKeyPrevious);
+	}
 }

@@ -236,4 +236,40 @@ public class ResponseAccumulator
 
 		return cumulativeProbabilityFromRight / _totalInstanceCount;
 	}
+
+	/**
+	 * Perform a Probability Integral Transform to generate the Response Distribution
+	 * 
+	 * @return The Response Distribution
+	 */
+
+	public org.drip.validation.core.ResponseDistribution probabilityIntegralTransform()
+	{
+		int instanceCount = 0;
+		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
+
+		java.util.Map<java.lang.Double, java.lang.Double> responsePValueMap = new
+			java.util.TreeMap<java.lang.Double, java.lang.Double>();
+
+		for (double responseKey : _instanceCountMap.keySet())
+		{
+			instanceCount += _instanceCountMap.get (responseKey);
+
+			responsePValueMap.put (
+				responseKey,
+				totalInstanceCountReciprocal * instanceCount
+			);
+		}
+
+		try
+		{
+			return new org.drip.validation.core.ResponseDistribution (responsePValueMap);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
