@@ -64,19 +64,29 @@ package org.drip.validation.core;
  */
 
 /**
- * <i>ProbabilityIntegralTransform</i> holds the Functionality associated with a Probability Integral
- * Transform (PIT) - generating the Cumulative Distribution from the Sorted Predictor/Response Map.
+ * <i>ResponseDistribution</i> contains the Distribution of the Response Instances.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F. Karyampas, D., and A. Nawroth (2013): A Sound Basel III Compliant Framework for
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
  *  			Back-testing Credit Exposure Models
  *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
  *  	</li>
  *  	<li>
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  	</li>
+ *  	<li>
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
+ *  	</li>
+ *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
  *  	</li>
  *  </ul>
  *
@@ -84,113 +94,67 @@ package org.drip.validation.core;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template">Template</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/template/probabilityintegraltransform">Probability Integral Transform</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProbabilityIntegralTransform
+public class ResponseDistribution
 {
-	private int _totalResponseCount = 0;
-	private java.util.Map<java.lang.Double, java.lang.Integer> _responseCount = null;
+	private java.util.Map<java.lang.Double, java.lang.Double> _pValueResponseMap = null;
+	private java.util.Map<java.lang.Double, java.lang.Double> _responsePValueMap = null;
 
 	/**
-	 * Empty ProbabilityIntegralTransform Constructor
-	 */
-
-	public ProbabilityIntegralTransform()
-	{
-	}
-
-	/**
-	 * Retrieve the Response Counter Map
+	 * ResponseDistribution Constructor
 	 * 
-	 * @return The Response Counter Map
-	 */
-
-	public java.util.Map<java.lang.Double, java.lang.Integer> responseCount()
-	{
-		return _responseCount;
-	}
-
-	/**
-	 * Retrieve the Total Response Count
-	 * 
-	 * @return The Total Response Count
-	 */
-
-	public int totalResponseCount()
-	{
-		return _totalResponseCount;
-	}
-	/**
-	 * Add the specified Response Entry
-	 * 
-	 * @param response The Response
-	 * 
-	 * @return TRUE - The Response Entry successfully added
-	 */
-
-	public boolean addResponse (
-		final double response)
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (response))
-		{
-			return false;
-		}
-
-		if (null == _responseCount)
-		{
-			_responseCount = new java.util.TreeMap<java.lang.Double, java.lang.Integer>();
-		}
-
-		_responseCount.put (
-			response,
-			_responseCount.containsKey (response) ? _responseCount.get (response) + 1 : 1
-		);
-
-		++_totalResponseCount;
-		return true;
-	}
-
-	/**
-	 * Extract the Empirical Response Cumulative Probability
-	 * 
-	 * @param response The Response
-	 * 
-	 * @return The Empirical Response Cumulative Probability
+	 * @param responsePValueMap Response - p Value Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double empiricalCumulative (
-		final double response)
+	public ResponseDistribution (
+		final java.util.Map<java.lang.Double, java.lang.Double> responsePValueMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (response))
+		if (null == (_responsePValueMap = responsePValueMap) || 0 == _responsePValueMap.size())
 		{
-			throw new java.lang.Exception
-				("ProbabilityIntegralTransform::empiricalCumulative => Invalid Inputs");
+			throw new java.lang.Exception ("ResponseDistribution Constructor => Invalid Inputs");
 		}
 
-		double empiricalCumulative = 0;
+		_pValueResponseMap = new java.util.TreeMap<java.lang.Double, java.lang.Double>();
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Integer> responseCountMap :
-			_responseCount.entrySet())
+		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> responsePValueMapEntry :
+			_responsePValueMap.entrySet())
 		{
-			double responseKey = responseCountMap.getKey();
-
-			if (responseKey > response)
-			{
-				break;
-			}
-
-			empiricalCumulative += responseCountMap.getValue();
+			_pValueResponseMap.put (
+				responsePValueMapEntry.getValue(),
+				responsePValueMapEntry.getKey()
+			);
 		}
+	}
 
-		return empiricalCumulative / _totalResponseCount;
+	/**
+	 * Retrieve the p Value - Response Map
+	 * 
+	 * @return The p Value - Response Map
+	 */
+
+	public java.util.Map<java.lang.Double, java.lang.Double> pValueResponseMap()
+	{
+		return _pValueResponseMap;
+	}
+
+	/**
+	 * Retrieve the Response - p Value Map
+	 * 
+	 * @return The Response - p Value Map
+	 */
+
+	public java.util.Map<java.lang.Double, java.lang.Double> responsePValueMap()
+	{
+		return _responsePValueMap;
 	}
 }

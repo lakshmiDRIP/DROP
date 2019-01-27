@@ -186,4 +186,21 @@ public class NormalQuadrature {
     {
     	return InverseCDF (java.lang.Math.random());
     }
+
+    /**
+     * Compute the Error Function of x
+     * 
+     * @param x x
+     * 
+     * @return The Error Function of x
+     * 
+     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     */
+
+    public static final double ErrorFunction (
+    	final double x)
+    	throws java.lang.Exception
+	{
+    	return 2. * CDF (x * java.lang.Math.sqrt (2.)) - 1.;
+	}
 }
