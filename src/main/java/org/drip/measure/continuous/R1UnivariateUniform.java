@@ -124,7 +124,7 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 			!org.drip.quant.common.NumberUtil.IsValid (_rightSupport = rightSupport) ||
 			_leftSupport >= _rightSupport)
 		{
-			throw new java.lang.Exception ("R1UnivariateUniform COnstructor => Invalid Inputs");
+			throw new java.lang.Exception ("R1UnivariateUniform Constructor => Invalid Inputs");
 		}
 	}
 
