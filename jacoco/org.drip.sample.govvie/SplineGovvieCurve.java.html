@@ -14,33 +14,52 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -57,35 +76,44 @@ import org.drip.state.govvie.GovvieCurve;
  */
 
 /**
- * SplineGovvieCurve demonstrates the Construction and Usage of the Spline-based Govvie Curve.
+ * &lt;i&gt;SplineGovvieCurve&lt;/i&gt; demonstrates the Construction and Usage of the Spline-based Govvie Curve.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/README.md&quot;&gt;Govvie Curve Builder&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L65">public class SplineGovvieCurve {</span>
+<span class="nc" id="L93">public class SplineGovvieCurve {</span>
 
 	public static void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L99">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L73">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L101">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L75">		String strTreasuryCode = &quot;UST&quot;;</span>
-<span class="fc" id="L76">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L103">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L104">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L78">		int[] aiMaturityDate = {</span>
-<span class="fc" id="L79">			dtSpot.addTenor (&quot;01Y&quot;).julian(),</span>
-<span class="fc" id="L80">			dtSpot.addTenor (&quot;02Y&quot;).julian(),</span>
-<span class="fc" id="L81">			dtSpot.addTenor (&quot;03Y&quot;).julian(),</span>
-<span class="fc" id="L82">			dtSpot.addTenor (&quot;05Y&quot;).julian(),</span>
-<span class="fc" id="L83">			dtSpot.addTenor (&quot;07Y&quot;).julian(),</span>
-<span class="fc" id="L84">			dtSpot.addTenor (&quot;10Y&quot;).julian(),</span>
-<span class="fc" id="L85">			dtSpot.addTenor (&quot;30Y&quot;).julian()</span>
+<span class="fc" id="L106">		int[] aiMaturityDate = {</span>
+<span class="fc" id="L107">			dtSpot.addTenor (&quot;01Y&quot;).julian(),</span>
+<span class="fc" id="L108">			dtSpot.addTenor (&quot;02Y&quot;).julian(),</span>
+<span class="fc" id="L109">			dtSpot.addTenor (&quot;03Y&quot;).julian(),</span>
+<span class="fc" id="L110">			dtSpot.addTenor (&quot;05Y&quot;).julian(),</span>
+<span class="fc" id="L111">			dtSpot.addTenor (&quot;07Y&quot;).julian(),</span>
+<span class="fc" id="L112">			dtSpot.addTenor (&quot;10Y&quot;).julian(),</span>
+<span class="fc" id="L113">			dtSpot.addTenor (&quot;30Y&quot;).julian()</span>
 		};
 
-<span class="fc" id="L88">		double[] adblYield = {</span>
+<span class="fc" id="L116">		double[] adblYield = {</span>
 			0.0113, // &quot;01Y&quot;,
 			0.0121, // &quot;02Y&quot;,
 			0.0127, // &quot;03Y&quot;,
@@ -95,7 +123,7 @@ import org.drip.state.govvie.GovvieCurve;
 			0.0198  // &quot;30Y&quot;
 		};
 
-<span class="fc" id="L98">		GovvieCurve gc = ScenarioGovvieCurveBuilder.CubicPolynomialCurve (</span>
+<span class="fc" id="L126">		GovvieCurve gc = ScenarioGovvieCurveBuilder.CubicPolynomialCurve (</span>
 			strTreasuryCode,
 			dtSpot,
 			strTreasuryCode,
@@ -104,7 +132,7 @@ import org.drip.state.govvie.GovvieCurve;
 			adblYield
 		);
 
-<span class="fc" id="L107">		JulianDate[] adtEffective = new JulianDate[] {</span>
+<span class="fc" id="L135">		JulianDate[] adtEffective = new JulianDate[] {</span>
 			dtSpot,
 			dtSpot,
 			dtSpot,
@@ -114,42 +142,44 @@ import org.drip.state.govvie.GovvieCurve;
 			dtSpot
 		};
 
-<span class="fc" id="L117">		JulianDate[] adtMaturity = new JulianDate[] {</span>
-<span class="fc" id="L118">			dtSpot.addTenor (&quot;1Y&quot;),</span>
-<span class="fc" id="L119">			dtSpot.addTenor (&quot;2Y&quot;),</span>
-<span class="fc" id="L120">			dtSpot.addTenor (&quot;3Y&quot;),</span>
-<span class="fc" id="L121">			dtSpot.addTenor (&quot;5Y&quot;),</span>
-<span class="fc" id="L122">			dtSpot.addTenor (&quot;7Y&quot;),</span>
-<span class="fc" id="L123">			dtSpot.addTenor (&quot;10Y&quot;),</span>
-<span class="fc" id="L124">			dtSpot.addTenor (&quot;30Y&quot;)</span>
+<span class="fc" id="L145">		JulianDate[] adtMaturity = new JulianDate[] {</span>
+<span class="fc" id="L146">			dtSpot.addTenor (&quot;1Y&quot;),</span>
+<span class="fc" id="L147">			dtSpot.addTenor (&quot;2Y&quot;),</span>
+<span class="fc" id="L148">			dtSpot.addTenor (&quot;3Y&quot;),</span>
+<span class="fc" id="L149">			dtSpot.addTenor (&quot;5Y&quot;),</span>
+<span class="fc" id="L150">			dtSpot.addTenor (&quot;7Y&quot;),</span>
+<span class="fc" id="L151">			dtSpot.addTenor (&quot;10Y&quot;),</span>
+<span class="fc" id="L152">			dtSpot.addTenor (&quot;30Y&quot;)</span>
 		};
 
-<span class="fc" id="L127">		BondComponent[] aTreasury = TreasuryBuilder.FromCode (</span>
+<span class="fc" id="L155">		BondComponent[] aTreasury = TreasuryBuilder.FromCode (</span>
 			strTreasuryCode,
 			adtEffective,
 			adtMaturity,
 			adblYield
 		);
 
-<span class="fc" id="L134">		GovvieCurve gcCalib = ScenarioGovvieCurveBuilder.CubicPolyShapePreserver (</span>
+<span class="fc" id="L162">		GovvieCurve gcCalib = ScenarioGovvieCurveBuilder.CubicPolyShapePreserver (</span>
 			strTreasuryCode,
 			strTreasuryCode,
 			strCurrency,
-<span class="fc" id="L138">			dtSpot.julian(),</span>
+<span class="fc" id="L166">			dtSpot.julian(),</span>
 			aTreasury,
 			adblYield,
 			&quot;Yield&quot;
 		);
 
-<span class="fc" id="L144">		System.out.println();</span>
+<span class="fc" id="L172">		System.out.println();</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; adblYield.length; ++i)</span>
-<span class="fc" id="L147">			System.out.println (</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int i = 0; i &lt; adblYield.length; ++i)</span>
+<span class="fc" id="L175">			System.out.println (</span>
 				&quot;\t[&quot; + new JulianDate (aiMaturityDate[i]) + &quot;] =&gt; &quot; +
-<span class="fc" id="L149">				FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L150">				FormatUtil.FormatDouble (gc.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L151">				FormatUtil.FormatDouble (gcCalib.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% || &quot;</span>
+<span class="fc" id="L177">				FormatUtil.FormatDouble (adblYield[i], 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L178">				FormatUtil.FormatDouble (gc.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L179">				FormatUtil.FormatDouble (gcCalib.yield (aiMaturityDate[i]), 1, 2, 100.) + &quot;% || &quot;</span>
 			);
-<span class="fc" id="L153">	}</span>
+
+<span class="fc" id="L182">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L183">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

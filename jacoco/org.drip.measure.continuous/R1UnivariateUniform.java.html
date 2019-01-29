@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1UnivariateUniform.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.continuous</a> &gt; <span class="el_source">R1UnivariateUniform.java</span></div><h1>R1UnivariateUniform.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.continuous;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1UnivariateUniform&lt;/i&gt; implements the Univariate R&lt;sup&gt;1&lt;/sup&gt; Uniform Distribution. It implements the
+ * Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous&quot;&gt;Continuous&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariate
+{
+<span class="nc" id="L83">	private double _leftSupport = java.lang.Double.NaN;</span>
+<span class="nc" id="L84">	private double _rightSupport = java.lang.Double.NaN;</span>
+
+	/**
+	 * Construct a Standard (0, 1) R^1 Uniform Distribution
+	 * 
+	 * @return Standard (0, 1) R^1 Uniform Distribution
+	 */
+
+	public static final R1UnivariateUniform Standard()
+	{
+		try
+		{
+<span class="nc" id="L96">			return new R1UnivariateUniform (</span>
+				0.,
+				1.
+			);
+		}
+<span class="nc" id="L101">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L103">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L106">		return null;</span>
+	}
+
+	/**
+	 * R1UnivariateUniform Constructor
+	 * 
+	 * @param leftSupport The Left Support
+	 * @param rightSupport The Right Support
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1UnivariateUniform (
+		final double leftSupport,
+		final double rightSupport)
+		throws java.lang.Exception
+<span class="nc" id="L122">	{</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_leftSupport = leftSupport) ||</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_rightSupport = rightSupport) ||</span>
+			_leftSupport &gt;= _rightSupport)
+		{
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;R1UnivariateUniform Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L129">	}</span>
+
+	/**
+	 * Retrieve the Left Support
+	 * 
+	 * @return The Left Support
+	 */
+
+	public double leftSupport()
+	{
+<span class="nc" id="L139">		return _leftSupport;</span>
+	}
+
+	/**
+	 * Retrieve the Right Support
+	 * 
+	 * @return The Right Support
+	 */
+
+	public double rightSupport()
+	{
+<span class="nc" id="L150">		return _rightSupport;</span>
+	}
+
+	/**
+	 * Indicate if the specified x Value stays inside the Support
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Value stays in Support
+	 */
+
+	public boolean supported (
+		final double x)
+	{
+<span class="nc bnc" id="L164" title="All 6 branches missed.">		return org.drip.quant.common.NumberUtil.IsValid (x) &amp;&amp; x &gt;= _leftSupport || x &lt;= _rightSupport;			</span>
+	}
+
+	@Override public double cumulative (
+		final double x)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!supported (x))</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;R1UnivariateUniform::cumulative =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L174">		return  (x - _leftSupport) / (_rightSupport - _leftSupport);</span>
+	}
+
+	@Override public double incremental (
+		final double xLeft,
+		final double xRight)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L182">		return cumulative (xLeft) - cumulative (xRight);</span>
+	}
+
+	@Override public double invCumulative (
+		final double y)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L189" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (y) || 1. &lt; y || 0. &gt; y)</span>
+<span class="nc" id="L190">			throw new java.lang.Exception (&quot;R1UnivariateUniform::invCumulative =&gt; Cannot calculate&quot;);</span>
+
+<span class="nc" id="L192">	    return y * (_rightSupport - _leftSupport) + _leftSupport;</span>
+	}
+
+	@Override public double density (
+		final double x)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (!supported (x)) throw new java.lang.Exception (&quot;R1UnivariateUniform::density =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L201">		return 1. / (_rightSupport - _leftSupport);</span>
+	}
+
+	@Override public double mean()
+	{
+<span class="nc" id="L206">	    return 0.5 * (_rightSupport + _leftSupport);</span>
+	}
+
+	@Override public double variance()
+	{
+<span class="nc" id="L211">	    return (_rightSupport - _leftSupport) / 12.;</span>
+	}
+
+	@Override public double random()
+	{
+<span class="nc" id="L216">	    return java.lang.Math.random() * (_rightSupport - _leftSupport) + _leftSupport;</span>
+	}
+
+	@Override public org.drip.quant.common.Array2D histogram()
+	{
+<span class="nc" id="L221">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

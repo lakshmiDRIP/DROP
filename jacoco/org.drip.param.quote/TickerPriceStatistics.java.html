@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TickerPriceStatistics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.param.quote</a> &gt; <span class="el_source">TickerPriceStatistics.java</span></div><h1>TickerPriceStatistics.java</h1><pre class="source lang-java linenums">
+package org.drip.param.quote;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;TickerPriceStatistics&lt;/i&gt; maintains the Running &quot;Thin&quot; Price Statistics for a Single Ticker.
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote&quot;&gt;Quote&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class TickerPriceStatistics
+{
+<span class="nc" id="L82">	private int _count = 0;</span>
+<span class="nc" id="L83">	private double _maximum = java.lang.Double.NaN;</span>
+<span class="nc" id="L84">	private double _minimum = java.lang.Double.NaN;</span>
+<span class="nc" id="L85">	private double _aggregate = java.lang.Double.NaN;</span>
+
+	/**
+	 * TickerPriceStatistics Constructor
+	 * 
+	 * @param price The Instance Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TickerPriceStatistics (
+		final double price)
+		throws java.lang.Exception
+<span class="nc" id="L98">	{</span>
+<span class="nc bnc" id="L99" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (price) || 0. &gt;= price)</span>
+		{
+<span class="nc" id="L101">			throw new java.lang.Exception (&quot;TickerPriceStatistics Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L104">		_count = 1;</span>
+<span class="nc" id="L105">		_minimum = price;</span>
+<span class="nc" id="L106">		_maximum = price;</span>
+<span class="nc" id="L107">		_aggregate = price;</span>
+<span class="nc" id="L108">	}</span>
+
+	/**
+	 * Retrieve the Ticker Instance Count
+	 * 
+	 * @return The Ticker Instance Count
+	 */
+
+	public int count()
+	{
+<span class="nc" id="L118">		return _count;</span>
+	}
+
+	/**
+	 * Retrieve the Minimum Ticker Price
+	 * 
+	 * @return The Minimum Ticker Price
+	 */
+
+	public double minimum()
+	{
+<span class="nc" id="L129">		return _minimum;</span>
+	}
+
+	/**
+	 * Retrieve the Maximum Ticker Price
+	 * 
+	 * @return The Maximum Ticker Price
+	 */
+
+	public double maximum()
+	{
+<span class="nc" id="L140">		return _maximum;</span>
+	}
+
+	/**
+	 * Retrieve the Aggregate Ticker Price
+	 * 
+	 * @return The Aggregate Ticker Price
+	 */
+
+	public double aggregate()
+	{
+<span class="nc" id="L151">		return _aggregate;</span>
+	}
+
+	/**
+	 * Retrieve the Average Ticker Price
+	 * 
+	 * @return The Average Ticker Price
+	 */
+
+	public double average()
+	{
+<span class="nc" id="L162">		return _aggregate / _count;</span>
+	}
+
+	/**
+	 * Add a Single Price Instance
+	 * 
+	 * @param price The Instance Price
+	 * 
+	 * @return TRUE - The Price Instance successfully added
+	 */
+
+	public boolean addInstance (
+		final double price)
+	{
+<span class="nc bnc" id="L176" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (price) || 0. &gt;= price)</span>
+		{
+<span class="nc" id="L178">			return false;</span>
+		}
+
+<span class="nc" id="L181">		++_count;</span>
+<span class="nc" id="L182">		_aggregate += price;</span>
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (_minimum &gt; price)</span>
+		{
+<span class="nc" id="L186">			_minimum = price;</span>
+		}
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		else if (_maximum &lt; price)</span>
+		{
+<span class="nc" id="L190">			_maximum = price;</span>
+		}
+
+<span class="nc" id="L193">		return true;</span>
+	}
+
+	@Override public java.lang.String toString()
+	{
+<span class="nc" id="L198">		return &quot;&quot; + _maximum + &quot; &quot; + _minimum + &quot; &quot; + average();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

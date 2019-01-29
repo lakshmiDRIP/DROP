@@ -25,32 +25,51 @@ import org.drip.state.sequence.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -67,13 +86,22 @@ import org.drip.state.sequence.*;
  */
 
 /**
- * PathVertexExerciseMetrics demonstrates the Simulations of the Per-Path Callable Bond OAS Based Exercise
- *  Metrics.
+ * &lt;i&gt;PathVertexExerciseMetrics&lt;/i&gt; demonstrates the Simulations of the Per-Path Callable Bond OAS Based
+ * Exercise Metrics.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govviemc/README.md&quot;&gt;Govvie Curve Monte Carlo Runs&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L76">public class PathVertexExerciseMetrics {</span>
+<span class="nc" id="L104">public class PathVertexExerciseMetrics {</span>
 
 	private static final MergedDiscountForwardCurve FundingCurve (
 		final JulianDate dtSpot,
@@ -81,15 +109,15 @@ import org.drip.state.sequence.*;
 		final double dblBump)
 		throws Exception
 	{
-<span class="fc" id="L84">		String[] astrDepositMaturityTenor = new String[] {</span>
+<span class="fc" id="L112">		String[] astrDepositMaturityTenor = new String[] {</span>
 			&quot;2D&quot;
 		};
 
-<span class="fc" id="L88">		double[] adblDepositQuote = new double[] {</span>
+<span class="fc" id="L116">		double[] adblDepositQuote = new double[] {</span>
 			0.0111956 + dblBump // 2D
 		};
 
-<span class="fc" id="L92">		double[] adblFuturesQuote = new double[] {</span>
+<span class="fc" id="L120">		double[] adblFuturesQuote = new double[] {</span>
 			0.011375 + dblBump,	// 98.8625
 			0.013350 + dblBump,	// 98.6650
 			0.014800 + dblBump,	// 98.5200
@@ -98,7 +126,7 @@ import org.drip.state.sequence.*;
 			0.019300 + dblBump	// 98.0700
 		};
 
-<span class="fc" id="L101">		String[] astrFixFloatMaturityTenor = new String[] {</span>
+<span class="fc" id="L129">		String[] astrFixFloatMaturityTenor = new String[] {</span>
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
 			&quot;04Y&quot;,
@@ -118,7 +146,7 @@ import org.drip.state.sequence.*;
 			&quot;50Y&quot;
 		};
 
-<span class="fc" id="L121">		double[] adblFixFloatQuote = new double[] {</span>
+<span class="fc" id="L149">		double[] adblFixFloatQuote = new double[] {</span>
 			0.017029 + dblBump, //  2Y
 			0.019354 + dblBump, //  3Y
 			0.021044 + dblBump, //  4Y
@@ -138,7 +166,7 @@ import org.drip.state.sequence.*;
 			0.027655 + dblBump  // 50Y
 		};
 
-<span class="fc" id="L141">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
+<span class="fc" id="L169">		return LatentMarketStateBuilder.SmoothFundingCurve (</span>
 			dtSpot,
 			strCurrency,
 			astrDepositMaturityTenor,
@@ -158,10 +186,10 @@ import org.drip.state.sequence.*;
 		final int iNumVertex)
 		throws Exception
 	{
-<span class="fc" id="L161">		double dblVolatility = 0.10;</span>
-<span class="fc" id="L162">		String strTreasuryCode = &quot;UST&quot;;</span>
+<span class="fc" id="L189">		double dblVolatility = 0.10;</span>
+<span class="fc" id="L190">		String strTreasuryCode = &quot;UST&quot;;</span>
 
-<span class="fc" id="L164">		String[] astrTenor = new String[] {</span>
+<span class="fc" id="L192">		String[] astrTenor = new String[] {</span>
 			&quot;01Y&quot;,
 			&quot;02Y&quot;,
 			&quot;03Y&quot;,
@@ -172,7 +200,7 @@ import org.drip.state.sequence.*;
 			&quot;30Y&quot;
 		};
 
-<span class="fc" id="L175">		double[] adblTreasuryCoupon = new double[] {</span>
+<span class="fc" id="L203">		double[] adblTreasuryCoupon = new double[] {</span>
 			0.0100,
 			0.0100,
 			0.0125,
@@ -183,7 +211,7 @@ import org.drip.state.sequence.*;
 			0.0300
 		};
 
-<span class="fc" id="L186">		double[] adblTreasuryYield = new double[] {</span>
+<span class="fc" id="L214">		double[] adblTreasuryYield = new double[] {</span>
 			0.0083,	//  1Y
 			0.0122, //  2Y
 			0.0149, //  3Y
@@ -194,15 +222,15 @@ import org.drip.state.sequence.*;
 			0.0308  // 30Y
 		};
 
-<span class="fc" id="L197">		int iNumDimension = astrTenor.length;</span>
-<span class="fc" id="L198">		double[][] aadblCorrelation = new double[iNumDimension][iNumDimension];</span>
+<span class="fc" id="L225">		int iNumDimension = astrTenor.length;</span>
+<span class="fc" id="L226">		double[][] aadblCorrelation = new double[iNumDimension][iNumDimension];</span>
 
-<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDimension; ++i) {</span>
-<span class="fc bfc" id="L201" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumDimension; ++j)</span>
-<span class="fc bfc" id="L202" title="All 2 branches covered.">				aadblCorrelation[i][j] = i == j ? 1. : 0.;</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDimension; ++i) {</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumDimension; ++j)</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">				aadblCorrelation[i][j] = i == j ? 1. : 0.;</span>
 		}
 
-<span class="fc" id="L205">		GovvieBuilderSettings gbs = new GovvieBuilderSettings (</span>
+<span class="fc" id="L233">		GovvieBuilderSettings gbs = new GovvieBuilderSettings (</span>
 			dtSpot,
 			strTreasuryCode,
 			astrTenor,
@@ -210,7 +238,7 @@ import org.drip.state.sequence.*;
 			adblTreasuryYield
 		);
 
-<span class="fc" id="L213">		return PathVertexGovvie.Standard (</span>
+<span class="fc" id="L241">		return PathVertexGovvie.Standard (</span>
 			gbs,
 			new CorrelatedPathVertexDimension (
 				new RandomNumberGenerator(),
@@ -221,7 +249,7 @@ import org.drip.state.sequence.*;
 				null
 			),
 			new DiffusionEvolver (
-<span class="fc" id="L224">				DiffusionEvaluatorLogarithmic.Standard (</span>
+<span class="fc" id="L252">				DiffusionEvaluatorLogarithmic.Standard (</span>
 					0.,
 					dblVolatility
 				)
@@ -233,24 +261,24 @@ import org.drip.state.sequence.*;
 		final EmbeddedOptionSchedule eos)
 		throws Exception
 	{
-<span class="fc" id="L236">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L264">		JulianDate dtEffective = DateUtil.CreateFromYMD (</span>
 			2009,
 			12,
 			3
 		);
 
-<span class="fc" id="L242">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L270">		JulianDate dtMaturity  = DateUtil.CreateFromYMD (</span>
 			2039,
 			12,
 			1
 		);
 
-<span class="fc" id="L248">		double dblCoupon = 0.06558;</span>
-<span class="fc" id="L249">		int iFreq = 2;</span>
-<span class="fc" id="L250">		String strCUSIP = &quot;033177XV3&quot;;</span>
-<span class="fc" id="L251">		String strDayCount = &quot;30/360&quot;;</span>
+<span class="fc" id="L276">		double dblCoupon = 0.06558;</span>
+<span class="fc" id="L277">		int iFreq = 2;</span>
+<span class="fc" id="L278">		String strCUSIP = &quot;033177XV3&quot;;</span>
+<span class="fc" id="L279">		String strDayCount = &quot;30/360&quot;;</span>
 
-<span class="fc" id="L253">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
+<span class="fc" id="L281">		BondComponent bond = BondBuilder.CreateSimpleFixed (</span>
 			strCUSIP,
 			&quot;USD&quot;,
 			&quot;&quot;,
@@ -263,48 +291,48 @@ import org.drip.state.sequence.*;
 			null
 		);
 
-<span class="fc" id="L266">		bond.setEmbeddedCallSchedule (eos);</span>
+<span class="fc" id="L294">		bond.setEmbeddedCallSchedule (eos);</span>
 
-<span class="fc" id="L268">		return bond;</span>
+<span class="fc" id="L296">		return bond;</span>
 	}
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L275">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L303">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L277">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
+<span class="fc" id="L305">		JulianDate dtSpot = DateUtil.CreateFromYMD (</span>
 			2017,
 			DateUtil.MARCH,
 			24
 		);
 
-<span class="fc" id="L283">		int iNumPath = 50;</span>
-<span class="fc" id="L284">		double dblCleanPrice = 1.08641;</span>
-<span class="fc" id="L285">		int[] aiExerciseDate = new int[] {</span>
-<span class="fc" id="L286">			DateUtil.CreateFromYMD (2019, 12,  1).julian(),</span>
-<span class="fc" id="L287">			DateUtil.CreateFromYMD (2020, 12,  1).julian(),</span>
-<span class="fc" id="L288">			DateUtil.CreateFromYMD (2021, 12,  1).julian(),</span>
-<span class="fc" id="L289">			DateUtil.CreateFromYMD (2022, 12,  1).julian(),</span>
-<span class="fc" id="L290">			DateUtil.CreateFromYMD (2023, 12,  1).julian(),</span>
-<span class="fc" id="L291">			DateUtil.CreateFromYMD (2024, 12,  1).julian(),</span>
-<span class="fc" id="L292">			DateUtil.CreateFromYMD (2025, 12,  1).julian(),</span>
-<span class="fc" id="L293">			DateUtil.CreateFromYMD (2026, 12,  1).julian(),</span>
-<span class="fc" id="L294">			DateUtil.CreateFromYMD (2027, 12,  1).julian(),</span>
-<span class="fc" id="L295">			DateUtil.CreateFromYMD (2028, 12,  1).julian(),</span>
-<span class="fc" id="L296">			DateUtil.CreateFromYMD (2029, 12,  1).julian(),</span>
-<span class="fc" id="L297">			DateUtil.CreateFromYMD (2030, 12,  1).julian(),</span>
-<span class="fc" id="L298">			DateUtil.CreateFromYMD (2031, 12,  1).julian(),</span>
-<span class="fc" id="L299">			DateUtil.CreateFromYMD (2032, 12,  1).julian(),</span>
-<span class="fc" id="L300">			DateUtil.CreateFromYMD (2033, 12,  1).julian(),</span>
-<span class="fc" id="L301">			DateUtil.CreateFromYMD (2034, 12,  1).julian(),</span>
-<span class="fc" id="L302">			DateUtil.CreateFromYMD (2035, 12,  1).julian(),</span>
-<span class="fc" id="L303">			DateUtil.CreateFromYMD (2036, 12,  1).julian(),</span>
-<span class="fc" id="L304">			DateUtil.CreateFromYMD (2037, 12,  1).julian(),</span>
-<span class="fc" id="L305">			DateUtil.CreateFromYMD (2038, 12,  1).julian(),</span>
+<span class="fc" id="L311">		int iNumPath = 50;</span>
+<span class="fc" id="L312">		double dblCleanPrice = 1.08641;</span>
+<span class="fc" id="L313">		int[] aiExerciseDate = new int[] {</span>
+<span class="fc" id="L314">			DateUtil.CreateFromYMD (2019, 12,  1).julian(),</span>
+<span class="fc" id="L315">			DateUtil.CreateFromYMD (2020, 12,  1).julian(),</span>
+<span class="fc" id="L316">			DateUtil.CreateFromYMD (2021, 12,  1).julian(),</span>
+<span class="fc" id="L317">			DateUtil.CreateFromYMD (2022, 12,  1).julian(),</span>
+<span class="fc" id="L318">			DateUtil.CreateFromYMD (2023, 12,  1).julian(),</span>
+<span class="fc" id="L319">			DateUtil.CreateFromYMD (2024, 12,  1).julian(),</span>
+<span class="fc" id="L320">			DateUtil.CreateFromYMD (2025, 12,  1).julian(),</span>
+<span class="fc" id="L321">			DateUtil.CreateFromYMD (2026, 12,  1).julian(),</span>
+<span class="fc" id="L322">			DateUtil.CreateFromYMD (2027, 12,  1).julian(),</span>
+<span class="fc" id="L323">			DateUtil.CreateFromYMD (2028, 12,  1).julian(),</span>
+<span class="fc" id="L324">			DateUtil.CreateFromYMD (2029, 12,  1).julian(),</span>
+<span class="fc" id="L325">			DateUtil.CreateFromYMD (2030, 12,  1).julian(),</span>
+<span class="fc" id="L326">			DateUtil.CreateFromYMD (2031, 12,  1).julian(),</span>
+<span class="fc" id="L327">			DateUtil.CreateFromYMD (2032, 12,  1).julian(),</span>
+<span class="fc" id="L328">			DateUtil.CreateFromYMD (2033, 12,  1).julian(),</span>
+<span class="fc" id="L329">			DateUtil.CreateFromYMD (2034, 12,  1).julian(),</span>
+<span class="fc" id="L330">			DateUtil.CreateFromYMD (2035, 12,  1).julian(),</span>
+<span class="fc" id="L331">			DateUtil.CreateFromYMD (2036, 12,  1).julian(),</span>
+<span class="fc" id="L332">			DateUtil.CreateFromYMD (2037, 12,  1).julian(),</span>
+<span class="fc" id="L333">			DateUtil.CreateFromYMD (2038, 12,  1).julian(),</span>
 		};
-<span class="fc" id="L307">		double[] adblExercisePrice = new double[] {</span>
+<span class="fc" id="L335">		double[] adblExercisePrice = new double[] {</span>
 			1.,
 			1.,
 			1.,
@@ -327,19 +355,19 @@ import org.drip.state.sequence.*;
 			1.,
 		};
 
-<span class="fc" id="L330">		int iNumVertex = aiExerciseDate.length;</span>
-<span class="fc" id="L331">		double[] adblOptimalExercisePV = new double[iNumPath];</span>
-<span class="fc" id="L332">		int[] aiOptimalExerciseVertexIndex = new int[iNumPath];</span>
-<span class="fc" id="L333">		double[] adblOptimalExerciseOAS = new double[iNumPath];</span>
-<span class="fc" id="L334">		double[] adblOptimalExercisePrice = new double[iNumPath];</span>
-<span class="fc" id="L335">		double[] adblOptimalExerciseOASGap = new double[iNumPath];</span>
-<span class="fc" id="L336">		double[] adblOptimalExerciseDuration = new double[iNumPath];</span>
-<span class="fc" id="L337">		double[] adblOptimalExerciseConvexity = new double[iNumPath];</span>
-<span class="fc" id="L338">		JulianDate[] adtOptimalExerciseDate = new JulianDate[iNumPath];</span>
-<span class="fc" id="L339">		double[][] aadblForwardPrice = new double[iNumPath][iNumVertex];</span>
-<span class="fc" id="L340">		ValuationParams[] aValParamsEvent = new ValuationParams[iNumVertex];</span>
+<span class="fc" id="L358">		int iNumVertex = aiExerciseDate.length;</span>
+<span class="fc" id="L359">		double[] adblOptimalExercisePV = new double[iNumPath];</span>
+<span class="fc" id="L360">		int[] aiOptimalExerciseVertexIndex = new int[iNumPath];</span>
+<span class="fc" id="L361">		double[] adblOptimalExerciseOAS = new double[iNumPath];</span>
+<span class="fc" id="L362">		double[] adblOptimalExercisePrice = new double[iNumPath];</span>
+<span class="fc" id="L363">		double[] adblOptimalExerciseOASGap = new double[iNumPath];</span>
+<span class="fc" id="L364">		double[] adblOptimalExerciseDuration = new double[iNumPath];</span>
+<span class="fc" id="L365">		double[] adblOptimalExerciseConvexity = new double[iNumPath];</span>
+<span class="fc" id="L366">		JulianDate[] adtOptimalExerciseDate = new JulianDate[iNumPath];</span>
+<span class="fc" id="L367">		double[][] aadblForwardPrice = new double[iNumPath][iNumVertex];</span>
+<span class="fc" id="L368">		ValuationParams[] aValParamsEvent = new ValuationParams[iNumVertex];</span>
 
-<span class="fc" id="L342">		BondComponent bond = Callable (</span>
+<span class="fc" id="L370">		BondComponent bond = Callable (</span>
 			new EmbeddedOptionSchedule (
 				aiExerciseDate,
 				adblExercisePrice,
@@ -352,23 +380,23 @@ import org.drip.state.sequence.*;
 			)
 		);
 
-<span class="fc" id="L355">		PathVertexGovvie mcrg = ScenarioGovvieCurves (</span>
+<span class="fc" id="L383">		PathVertexGovvie mcrg = ScenarioGovvieCurves (</span>
 			dtSpot,
 			iNumPath,
 			iNumVertex
 		);
 
-<span class="fc" id="L361">		GovvieCurve[][] aaGCPathEvent = mcrg.pathVertex (aiExerciseDate);</span>
+<span class="fc" id="L389">		GovvieCurve[][] aaGCPathEvent = mcrg.pathVertex (aiExerciseDate);</span>
 
-<span class="fc" id="L363">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
+<span class="fc" id="L391">		MergedDiscountForwardCurve mdfc = FundingCurve (</span>
 			dtSpot,
 			&quot;USD&quot;,
 			0.
 		);
 
-<span class="fc" id="L369">		CurveSurfaceQuoteContainer csqcSpot = MarketParamsBuilder.Create (</span>
+<span class="fc" id="L397">		CurveSurfaceQuoteContainer csqcSpot = MarketParamsBuilder.Create (</span>
 			mdfc,
-<span class="fc" id="L371">			mcrg.govvieBuilderSettings().groundState(),</span>
+<span class="fc" id="L399">			mcrg.govvieBuilderSettings().groundState(),</span>
 			null,
 			null,
 			null,
@@ -376,21 +404,21 @@ import org.drip.state.sequence.*;
 			null
 		);
 
-<span class="fc" id="L379">		ValuationParams valParamsSpot = ValuationParams.Spot (dtSpot.julian());</span>
+<span class="fc" id="L407">		ValuationParams valParamsSpot = ValuationParams.Spot (dtSpot.julian());</span>
 
-<span class="fc" id="L381">		double dblOASSpot = bond.oasFromPrice (</span>
+<span class="fc" id="L409">		double dblOASSpot = bond.oasFromPrice (</span>
 			valParamsSpot,
 			csqcSpot,
 			null,
 			dblCleanPrice
 		);
 
-<span class="fc bfc" id="L388" title="All 2 branches covered.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex)</span>
-<span class="fc" id="L389">			aValParamsEvent[iVertex] = ValuationParams.Spot (aiExerciseDate[iVertex]);</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">		for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex)</span>
+<span class="fc" id="L417">			aValParamsEvent[iVertex] = ValuationParams.Spot (aiExerciseDate[iVertex]);</span>
 
-<span class="fc bfc" id="L391" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="fc bfc" id="L392" title="All 2 branches covered.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
-<span class="fc" id="L393">				CurveSurfaceQuoteContainer csqcEvent = MarketParamsBuilder.Create (</span>
+<span class="fc bfc" id="L419" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
+<span class="fc" id="L421">				CurveSurfaceQuoteContainer csqcEvent = MarketParamsBuilder.Create (</span>
 					mdfc,
 					aaGCPathEvent[iPath][iVertex],
 					null,
@@ -400,7 +428,7 @@ import org.drip.state.sequence.*;
 					null
 				);
 
-<span class="fc" id="L403">				aadblForwardPrice[iPath][iVertex] = bond.priceFromOAS (</span>
+<span class="fc" id="L431">				aadblForwardPrice[iPath][iVertex] = bond.priceFromOAS (</span>
 					aValParamsEvent[iVertex],
 					csqcEvent,
 					null,
@@ -409,61 +437,61 @@ import org.drip.state.sequence.*;
 			}
 		}
 
-<span class="fc bfc" id="L412" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="fc" id="L413">			adblOptimalExercisePV[iPath] = 0.;</span>
-<span class="fc" id="L414">			adblOptimalExercisePrice[iPath] = 1.;</span>
-<span class="fc" id="L415">			aiOptimalExerciseVertexIndex[0] = iNumVertex - 1;</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc" id="L441">			adblOptimalExercisePV[iPath] = 0.;</span>
+<span class="fc" id="L442">			adblOptimalExercisePrice[iPath] = 1.;</span>
+<span class="fc" id="L443">			aiOptimalExerciseVertexIndex[0] = iNumVertex - 1;</span>
 
-<span class="fc" id="L417">			adtOptimalExerciseDate[iPath] = bond.maturityDate();</span>
+<span class="fc" id="L445">			adtOptimalExerciseDate[iPath] = bond.maturityDate();</span>
 
-<span class="fc bfc" id="L419" title="All 2 branches covered.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
-<span class="fc" id="L420">				double dblExercisePV = (aadblForwardPrice[iPath][iVertex] - adblExercisePrice[iVertex])</span>
-<span class="fc" id="L421">					* mdfc.df (aiExerciseDate[iVertex]);</span>
+<span class="fc bfc" id="L447" title="All 2 branches covered.">			for (int iVertex = 0; iVertex &lt; iNumVertex; ++iVertex) {</span>
+<span class="fc" id="L448">				double dblExercisePV = (aadblForwardPrice[iPath][iVertex] - adblExercisePrice[iVertex])</span>
+<span class="fc" id="L449">					* mdfc.df (aiExerciseDate[iVertex]);</span>
 
-<span class="fc bfc" id="L423" title="All 2 branches covered.">				if (dblExercisePV &gt; adblOptimalExercisePV[iPath]) {</span>
-<span class="fc" id="L424">					adtOptimalExerciseDate[iPath] = new JulianDate (aiExerciseDate[iVertex]);</span>
+<span class="fc bfc" id="L451" title="All 2 branches covered.">				if (dblExercisePV &gt; adblOptimalExercisePV[iPath]) {</span>
+<span class="fc" id="L452">					adtOptimalExerciseDate[iPath] = new JulianDate (aiExerciseDate[iVertex]);</span>
 
-<span class="fc" id="L426">					adblOptimalExercisePrice[iPath] = adblExercisePrice[iVertex];</span>
-<span class="fc" id="L427">					aiOptimalExerciseVertexIndex[iPath] = iVertex;</span>
-<span class="fc" id="L428">					adblOptimalExercisePV[iPath] = dblExercisePV;</span>
+<span class="fc" id="L454">					adblOptimalExercisePrice[iPath] = adblExercisePrice[iVertex];</span>
+<span class="fc" id="L455">					aiOptimalExerciseVertexIndex[iPath] = iVertex;</span>
+<span class="fc" id="L456">					adblOptimalExercisePV[iPath] = dblExercisePV;</span>
 				}
 			}
 		}
 
-<span class="fc" id="L433">		System.out.println (&quot;\n&quot;);</span>
+<span class="fc" id="L461">		System.out.println (&quot;\n&quot;);</span>
 
-<span class="fc" id="L435">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L463">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L437">		System.out.println (&quot;\t||                        PATH-WISE EXERCISE METRICS                         ||&quot;);</span>
+<span class="fc" id="L465">		System.out.println (&quot;\t||                        PATH-WISE EXERCISE METRICS                         ||&quot;);</span>
 
-<span class="fc" id="L439">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L467">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L441">		System.out.println (&quot;\t||    L -&gt; R:                                                                ||&quot;);</span>
+<span class="fc" id="L469">		System.out.println (&quot;\t||    L -&gt; R:                                                                ||&quot;);</span>
 
-<span class="fc" id="L443">		System.out.println (&quot;\t||        Path Number                                                        ||&quot;);</span>
+<span class="fc" id="L471">		System.out.println (&quot;\t||        Path Number                                                        ||&quot;);</span>
 
-<span class="fc" id="L445">		System.out.println (&quot;\t||        Optimal Exercise Index                                             ||&quot;);</span>
+<span class="fc" id="L473">		System.out.println (&quot;\t||        Optimal Exercise Index                                             ||&quot;);</span>
 
-<span class="fc" id="L447">		System.out.println (&quot;\t||        Optimal Exercise Date                                              ||&quot;);</span>
+<span class="fc" id="L475">		System.out.println (&quot;\t||        Optimal Exercise Date                                              ||&quot;);</span>
 
-<span class="fc" id="L449">		System.out.println (&quot;\t||        Optimal Exercise Price                                             ||&quot;);</span>
+<span class="fc" id="L477">		System.out.println (&quot;\t||        Optimal Exercise Price                                             ||&quot;);</span>
 
-<span class="fc" id="L451">		System.out.println (&quot;\t||        Optimal Exercise Value                                             ||&quot;);</span>
+<span class="fc" id="L479">		System.out.println (&quot;\t||        Optimal Exercise Value                                             ||&quot;);</span>
 
-<span class="fc" id="L453">		System.out.println (&quot;\t||        Optimal Exercise OAS                                               ||&quot;);</span>
+<span class="fc" id="L481">		System.out.println (&quot;\t||        Optimal Exercise OAS                                               ||&quot;);</span>
 
-<span class="fc" id="L455">		System.out.println (&quot;\t||        Optimal Exercise OAS Gap                                           ||&quot;);</span>
+<span class="fc" id="L483">		System.out.println (&quot;\t||        Optimal Exercise OAS Gap                                           ||&quot;);</span>
 
-<span class="fc" id="L457">		System.out.println (&quot;\t||        Optimal Exercise Duration                                          ||&quot;);</span>
+<span class="fc" id="L485">		System.out.println (&quot;\t||        Optimal Exercise Duration                                          ||&quot;);</span>
 
-<span class="fc" id="L459">		System.out.println (&quot;\t||        Optimal Exercise Convexity                                         ||&quot;);</span>
+<span class="fc" id="L487">		System.out.println (&quot;\t||        Optimal Exercise Convexity                                         ||&quot;);</span>
 
-<span class="fc" id="L461">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L489">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L463" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
-<span class="fc" id="L464">			int iOptimalExerciseDate = adtOptimalExerciseDate[iPath].julian();</span>
+<span class="fc bfc" id="L491" title="All 2 branches covered.">		for (int iPath = 0; iPath &lt; iNumPath; ++iPath) {</span>
+<span class="fc" id="L492">			int iOptimalExerciseDate = adtOptimalExerciseDate[iPath].julian();</span>
 
-<span class="fc" id="L466">			adblOptimalExerciseOAS[iPath] = bond.oasFromPrice (</span>
+<span class="fc" id="L494">			adblOptimalExerciseOAS[iPath] = bond.oasFromPrice (</span>
 				valParamsSpot,
 				csqcSpot,
 				null,
@@ -472,7 +500,7 @@ import org.drip.state.sequence.*;
 				dblCleanPrice
 			);
 
-<span class="fc" id="L475">			adblOptimalExerciseDuration[iPath] = bond.modifiedDurationFromPrice (</span>
+<span class="fc" id="L503">			adblOptimalExerciseDuration[iPath] = bond.modifiedDurationFromPrice (</span>
 				valParamsSpot,
 				csqcSpot,
 				null,
@@ -481,7 +509,7 @@ import org.drip.state.sequence.*;
 				dblCleanPrice
 			);
 
-<span class="fc" id="L484">			adblOptimalExerciseConvexity[iPath] = bond.convexityFromPrice (</span>
+<span class="fc" id="L512">			adblOptimalExerciseConvexity[iPath] = bond.convexityFromPrice (</span>
 				valParamsSpot,
 				csqcSpot,
 				null,
@@ -490,93 +518,95 @@ import org.drip.state.sequence.*;
 				dblCleanPrice
 			);
 
-<span class="fc" id="L493">			adblOptimalExerciseOASGap[iPath] = adblOptimalExerciseOAS[iPath] - dblOASSpot;</span>
+<span class="fc" id="L521">			adblOptimalExerciseOASGap[iPath] = adblOptimalExerciseOAS[iPath] - dblOASSpot;</span>
 
-<span class="fc" id="L495">			System.out.println (</span>
+<span class="fc" id="L523">			System.out.println (</span>
 				&quot;\t|| &quot; +
-<span class="fc" id="L497">				FormatUtil.FormatDouble (iPath, 2, 0, 1.) + &quot; =&gt; &quot; +</span>
-<span class="fc" id="L498">				FormatUtil.FormatDouble (aiOptimalExerciseVertexIndex[iPath], 2, 0, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L525">				FormatUtil.FormatDouble (iPath, 2, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="fc" id="L526">				FormatUtil.FormatDouble (aiOptimalExerciseVertexIndex[iPath], 2, 0, 1.) + &quot; | &quot; +</span>
 				adtOptimalExerciseDate[iPath] + &quot; | &quot; +
-<span class="fc" id="L500">				FormatUtil.FormatDouble (adblOptimalExercisePrice[iPath], 3, 2, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L501">				FormatUtil.FormatDouble (adblOptimalExercisePV[iPath], 2, 1, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L502">				FormatUtil.FormatDouble (adblOptimalExerciseOAS[iPath], 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L503">				FormatUtil.FormatDouble (adblOptimalExerciseOASGap[iPath], 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L504">				FormatUtil.FormatDouble (adblOptimalExerciseDuration[iPath], 2, 2, 10000.)  + &quot; | &quot; +</span>
-<span class="fc" id="L505">				FormatUtil.FormatDouble (adblOptimalExerciseConvexity[iPath], 1, 2, 1000000.) + &quot; ||&quot;</span>
+<span class="fc" id="L528">				FormatUtil.FormatDouble (adblOptimalExercisePrice[iPath], 3, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L529">				FormatUtil.FormatDouble (adblOptimalExercisePV[iPath], 2, 1, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L530">				FormatUtil.FormatDouble (adblOptimalExerciseOAS[iPath], 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L531">				FormatUtil.FormatDouble (adblOptimalExerciseOASGap[iPath], 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L532">				FormatUtil.FormatDouble (adblOptimalExerciseDuration[iPath], 2, 2, 10000.)  + &quot; | &quot; +</span>
+<span class="fc" id="L533">				FormatUtil.FormatDouble (adblOptimalExerciseConvexity[iPath], 1, 2, 1000000.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L509">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L537">		System.out.println (&quot;\t||---------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L511">		System.out.println();</span>
+<span class="fc" id="L539">		System.out.println();</span>
 
-<span class="fc" id="L513">		UnivariateDiscreteThin udtOptimalExercisePrice = new UnivariateDiscreteThin (adblOptimalExercisePrice);</span>
+<span class="fc" id="L541">		UnivariateDiscreteThin udtOptimalExercisePrice = new UnivariateDiscreteThin (adblOptimalExercisePrice);</span>
 
-<span class="fc" id="L515">		UnivariateDiscreteThin udtOptimalExercisePV = new UnivariateDiscreteThin (adblOptimalExercisePV);</span>
+<span class="fc" id="L543">		UnivariateDiscreteThin udtOptimalExercisePV = new UnivariateDiscreteThin (adblOptimalExercisePV);</span>
 
-<span class="fc" id="L517">		UnivariateDiscreteThin udtOptimalExerciseOAS = new UnivariateDiscreteThin (adblOptimalExerciseOAS);</span>
+<span class="fc" id="L545">		UnivariateDiscreteThin udtOptimalExerciseOAS = new UnivariateDiscreteThin (adblOptimalExerciseOAS);</span>
 
-<span class="fc" id="L519">		UnivariateDiscreteThin udtOptimalExerciseOASGap = new UnivariateDiscreteThin (adblOptimalExerciseOASGap);</span>
+<span class="fc" id="L547">		UnivariateDiscreteThin udtOptimalExerciseOASGap = new UnivariateDiscreteThin (adblOptimalExerciseOASGap);</span>
 
-<span class="fc" id="L521">		UnivariateDiscreteThin udtOptimalExerciseDuration = new UnivariateDiscreteThin (adblOptimalExerciseDuration);</span>
+<span class="fc" id="L549">		UnivariateDiscreteThin udtOptimalExerciseDuration = new UnivariateDiscreteThin (adblOptimalExerciseDuration);</span>
 
-<span class="fc" id="L523">		UnivariateDiscreteThin udtOptimalExerciseConvexity = new UnivariateDiscreteThin (adblOptimalExerciseConvexity);</span>
+<span class="fc" id="L551">		UnivariateDiscreteThin udtOptimalExerciseConvexity = new UnivariateDiscreteThin (adblOptimalExerciseConvexity);</span>
 
-<span class="fc" id="L525">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L553">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L527">		System.out.println (&quot;\t||        Optimal Exercise Price                               ||&quot;);</span>
+<span class="fc" id="L555">		System.out.println (&quot;\t||        Optimal Exercise Price                               ||&quot;);</span>
 
-<span class="fc" id="L529">		System.out.println (&quot;\t||        Optimal Exercise Value                               ||&quot;);</span>
+<span class="fc" id="L557">		System.out.println (&quot;\t||        Optimal Exercise Value                               ||&quot;);</span>
 
-<span class="fc" id="L531">		System.out.println (&quot;\t||        Optimal Exercise OAS                                 ||&quot;);</span>
+<span class="fc" id="L559">		System.out.println (&quot;\t||        Optimal Exercise OAS                                 ||&quot;);</span>
 
-<span class="fc" id="L533">		System.out.println (&quot;\t||        Optimal Exercise OAS Gap                             ||&quot;);</span>
+<span class="fc" id="L561">		System.out.println (&quot;\t||        Optimal Exercise OAS Gap                             ||&quot;);</span>
 
-<span class="fc" id="L535">		System.out.println (&quot;\t||        Optimal Exercise Duration                            ||&quot;);</span>
+<span class="fc" id="L563">		System.out.println (&quot;\t||        Optimal Exercise Duration                            ||&quot;);</span>
 
-<span class="fc" id="L537">		System.out.println (&quot;\t||        Optimal Exercise Convexity                           ||&quot;);</span>
+<span class="fc" id="L565">		System.out.println (&quot;\t||        Optimal Exercise Convexity                           ||&quot;);</span>
 
-<span class="fc" id="L539">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L567">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L541">		System.out.println (&quot;\t|| AVERAGE =&gt; &quot; +</span>
-<span class="fc" id="L542">			FormatUtil.FormatDouble (udtOptimalExercisePrice.average(), 3, 2, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L543">			FormatUtil.FormatDouble (udtOptimalExercisePV.average(), 2, 1, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L544">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.average(), 3, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L545">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.average(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L546">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.average(), 2, 2, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L547">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.average(), 1, 2, 1000000.) + &quot; ||&quot;</span>
+<span class="fc" id="L569">		System.out.println (&quot;\t|| AVERAGE =&gt; &quot; +</span>
+<span class="fc" id="L570">			FormatUtil.FormatDouble (udtOptimalExercisePrice.average(), 3, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L571">			FormatUtil.FormatDouble (udtOptimalExercisePV.average(), 2, 1, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L572">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.average(), 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L573">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.average(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L574">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.average(), 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L575">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.average(), 1, 2, 1000000.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L550">		System.out.println (&quot;\t||  ERROR  =&gt; &quot; +</span>
-<span class="fc" id="L551">			FormatUtil.FormatDouble (udtOptimalExercisePrice.error(), 3, 2, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L552">			FormatUtil.FormatDouble (udtOptimalExercisePV.error(), 2, 1, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L553">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.error(), 3, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L554">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.error(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L555">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.error(), 2, 2, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L556">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.error(), 1, 2, 1000000.) + &quot; ||&quot;</span>
+<span class="fc" id="L578">		System.out.println (&quot;\t||  ERROR  =&gt; &quot; +</span>
+<span class="fc" id="L579">			FormatUtil.FormatDouble (udtOptimalExercisePrice.error(), 3, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L580">			FormatUtil.FormatDouble (udtOptimalExercisePV.error(), 2, 1, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L581">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.error(), 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L582">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.error(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L583">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.error(), 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L584">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.error(), 1, 2, 1000000.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L559">		System.out.println (&quot;\t|| MAXIMUM =&gt; &quot; +</span>
-<span class="fc" id="L560">			FormatUtil.FormatDouble (udtOptimalExercisePrice.maximum(), 3, 2, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L561">			FormatUtil.FormatDouble (udtOptimalExercisePV.maximum(), 2, 1, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L562">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.maximum(), 3, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L563">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.maximum(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L564">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.maximum(), 2, 2, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L565">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.maximum(), 1, 2, 1000000.) + &quot; ||&quot;</span>
+<span class="fc" id="L587">		System.out.println (&quot;\t|| MAXIMUM =&gt; &quot; +</span>
+<span class="fc" id="L588">			FormatUtil.FormatDouble (udtOptimalExercisePrice.maximum(), 3, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L589">			FormatUtil.FormatDouble (udtOptimalExercisePV.maximum(), 2, 1, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L590">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.maximum(), 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L591">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.maximum(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L592">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.maximum(), 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L593">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.maximum(), 1, 2, 1000000.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L568">		System.out.println (&quot;\t|| MINIMUM =&gt; &quot; +</span>
-<span class="fc" id="L569">			FormatUtil.FormatDouble (udtOptimalExercisePrice.minimum(), 3, 2, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L570">			FormatUtil.FormatDouble (udtOptimalExercisePV.minimum(), 2, 1, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L571">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.minimum(), 3, 1, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L572">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.minimum(), 3, 0, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L573">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.minimum(), 2, 2, 10000.) + &quot; | &quot; +</span>
-<span class="fc" id="L574">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.minimum(), 1, 2, 1000000.) + &quot; ||&quot;</span>
+<span class="fc" id="L596">		System.out.println (&quot;\t|| MINIMUM =&gt; &quot; +</span>
+<span class="fc" id="L597">			FormatUtil.FormatDouble (udtOptimalExercisePrice.minimum(), 3, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L598">			FormatUtil.FormatDouble (udtOptimalExercisePV.minimum(), 2, 1, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L599">			FormatUtil.FormatDouble (udtOptimalExerciseOAS.minimum(), 3, 1, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L600">			FormatUtil.FormatDouble (udtOptimalExerciseOASGap.minimum(), 3, 0, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L601">			FormatUtil.FormatDouble (udtOptimalExerciseDuration.minimum(), 2, 2, 10000.) + &quot; | &quot; +</span>
+<span class="fc" id="L602">			FormatUtil.FormatDouble (udtOptimalExerciseConvexity.minimum(), 1, 2, 1000000.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L577">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L605">		System.out.println (&quot;\t||-------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L579">		System.out.println();</span>
-<span class="fc" id="L580">	}</span>
+<span class="fc" id="L607">		System.out.println();</span>
+
+<span class="fc" id="L609">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L610">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
