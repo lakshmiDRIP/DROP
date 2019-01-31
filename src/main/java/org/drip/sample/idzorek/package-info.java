@@ -1,6 +1,6 @@
 
 /**
- * Idzorek (2004) User Confidence Tilt
+ * Idzorek (2005) User Confidence Tilt
  *
  * @author Lakshmi Krishnamurthy
  */
