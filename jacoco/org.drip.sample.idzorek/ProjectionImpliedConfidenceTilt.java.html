@@ -15,33 +15,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -58,19 +77,34 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * ProjectionImpliedConfidenceTilt computes the Tilt induced on an Asset by a User-specified Confidence. The
- *  References are:
+ * &lt;i&gt;ProjectionImpliedConfidenceTilt&lt;/i&gt; computes the Tilt induced on an Asset by a User-specified
+ * Confidence. The References are:
  *  
- *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
- *  	Sachs Asset Management
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios,
+ *  			Goldman Sachs Asset Management
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User
+ *  			Specified Confidence Levels, Ibbotson Associates, Chicago
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  *  
- *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
- *  	Confidence Levels, Ibbotson Associates, Chicago
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/README.md&quot;&gt;Idzorek (2005) User Confidence Setting&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L73">public class ProjectionImpliedConfidenceTilt {</span>
+<span class="nc" id="L107">public class ProjectionImpliedConfidenceTilt {</span>
 
 	private static final void DisplayTilt (
 		final String[] astrAssetID,
@@ -80,40 +114,40 @@ import org.drip.service.env.EnvManager;
 		final double dblProjectionUserConfidence)
 		throws Exception
 	{
-<span class="fc" id="L83">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L117">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L85">		System.out.println (</span>
+<span class="fc" id="L119">		System.out.println (</span>
 			&quot;\t| VIEW #&quot; + iViewIndex + &quot;                CONFIDENCE =&gt; &quot; +
-<span class="fc" id="L87">			FormatUtil.FormatDouble (dblProjectionUserConfidence, 2, 2, 100.) + &quot;%         ||&quot;</span>
+<span class="fc" id="L121">			FormatUtil.FormatDouble (dblProjectionUserConfidence, 2, 2, 100.) + &quot;%         ||&quot;</span>
 		);
 
-<span class="fc" id="L90">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L124">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L92">		System.out.println (&quot;\t|             ASSET ID            =&gt;   TILT  |  WEIGHT ||&quot;);</span>
+<span class="fc" id="L126">		System.out.println (&quot;\t|             ASSET ID            =&gt;   TILT  |  WEIGHT ||&quot;);</span>
 
-<span class="fc" id="L94">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L128">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedTilt.length; ++i)</span>
-<span class="fc" id="L97">			System.out.println (</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedTilt.length; ++i)</span>
+<span class="fc" id="L131">			System.out.println (</span>
 				&quot;\t| &quot; + astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L99">				FormatUtil.FormatDouble (adblImpliedTilt[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L100">				FormatUtil.FormatDouble (adblImpliedTilt[i] + adblUnadjustedWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L133">				FormatUtil.FormatDouble (adblImpliedTilt[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L134">				FormatUtil.FormatDouble (adblImpliedTilt[i] + adblUnadjustedWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L103">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L104">	}</span>
+<span class="fc" id="L137">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L138">	}</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L110">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L144">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L112">		double dblTau = 0.025;</span>
-<span class="fc" id="L113">		double dblRiskAversion = 3.07;</span>
-<span class="fc" id="L114">		double dblRiskFreeRate = 0.00;</span>
+<span class="fc" id="L146">		double dblTau = 0.025;</span>
+<span class="fc" id="L147">		double dblRiskAversion = 3.07;</span>
+<span class="fc" id="L148">		double dblRiskFreeRate = 0.00;</span>
 
-<span class="fc" id="L116">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L150">		String[] astrAssetID = new String[] {</span>
 			&quot;US BONDS                       &quot;,
 			&quot;INTERNATIONAL BONDS            &quot;,
 			&quot;US LARGE GROWTH                &quot;,
@@ -124,7 +158,7 @@ import org.drip.service.env.EnvManager;
 			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
 		};
 
-<span class="fc" id="L127">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L161">		double[] adblAssetEquilibriumWeight = new double[] {</span>
 			0.1934,
 			0.2613,
 			0.1209,
@@ -135,7 +169,7 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="fc" id="L138">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L172">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -146,31 +180,31 @@ import org.drip.service.env.EnvManager;
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
 
-<span class="fc" id="L149">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+<span class="fc" id="L183">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
 
-<span class="fc" id="L155">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+<span class="fc" id="L189">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
 			0.0525,
 			0.0025,
 			0.0200
 		};
 
-<span class="fc" id="L161">		double[] adblUserSpecifiedProjectionConfidence = new double[] {</span>
+<span class="fc" id="L195">		double[] adblUserSpecifiedProjectionConfidence = new double[] {</span>
 			0.25,
 			0.50,
 			0.65
 		};
 
-<span class="fc" id="L167">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
+<span class="fc" id="L201">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
 			aadblAssetExcessReturnsCovariance,
 			aadblAssetSpaceViewProjection,
 			dblTau
 		);
 
-<span class="fc" id="L173">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L207">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
 			new MultivariateMeta (
 				new String[] {
 					&quot;PROJECTION #1&quot;,
@@ -182,9 +216,9 @@ import org.drip.service.env.EnvManager;
 			aadblProjectionExcessReturnsCovariance
 		);
 
-<span class="fc" id="L185">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L186">			ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L187">				Portfolio.Standard (</span>
+<span class="fc" id="L219">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L220">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L221">				Portfolio.Standard (</span>
 					astrAssetID,
 					adblAssetEquilibriumWeight
 				),
@@ -202,18 +236,20 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L205">		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTilt (adblUserSpecifiedProjectionConfidence);</span>
+<span class="fc" id="L239">		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTilt (adblUserSpecifiedProjectionConfidence);</span>
 
-<span class="fc" id="L207">		System.out.println (&quot;\n\n&quot;);</span>
+<span class="fc" id="L241">		System.out.println (&quot;\n\n&quot;);</span>
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">		for (int i = 0; i &lt; adblUserSpecifiedProjectionConfidence.length; ++i)</span>
-<span class="fc" id="L210">			DisplayTilt (</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">		for (int i = 0; i &lt; adblUserSpecifiedProjectionConfidence.length; ++i)</span>
+<span class="fc" id="L244">			DisplayTilt (</span>
 				astrAssetID,
 				i,
 				aadblProjectionTilt[i],
 				adblAssetEquilibriumWeight,
 				adblUserSpecifiedProjectionConfidence[i]
 			);
-<span class="fc" id="L217">	}</span>
+
+<span class="fc" id="L252">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L253">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

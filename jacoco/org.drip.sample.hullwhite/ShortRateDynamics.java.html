@@ -14,34 +14,53 @@ import org.drip.state.identifier.FundingLabel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -58,13 +77,22 @@ import org.drip.state.identifier.FundingLabel;
  */
 
 /**
- * ShortRateDynamics demonstrates the Construction and Usage of the Hull-White 1F Model Dynamics for the
- *  Evolution of the Short Rate.
+ * &lt;i&gt;ShortRateDynamics&lt;/i&gt; demonstrates the Construction and Usage of the Hull-White 1F Model Dynamics for
+ * the Evolution of the Short Rate.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hullwhite/README.md&quot;&gt;Hull-White 1F Dynamics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L67">public class ShortRateDynamics {</span>
+<span class="nc" id="L95">public class ShortRateDynamics {</span>
 
 	private static final SingleFactorStateEvolver HullWhiteEvolver (
 		final String strCurrency,
@@ -73,8 +101,8 @@ import org.drip.state.identifier.FundingLabel;
 		final double dblStartingForwardRate)
 		throws Exception
 	{
-<span class="fc" id="L76">		return new SingleFactorStateEvolver (</span>
-<span class="fc" id="L77">			FundingLabel.Standard (strCurrency),</span>
+<span class="fc" id="L104">		return new SingleFactorStateEvolver (</span>
+<span class="fc" id="L105">			FundingLabel.Standard (strCurrency),</span>
 			dblSigma,
 			dblA,
 			new FlatUnivariate (dblStartingForwardRate),
@@ -93,103 +121,105 @@ import org.drip.state.identifier.FundingLabel;
 		final double dblStartingShortRate)
 		throws Exception
 	{
-<span class="fc" id="L96">		int iDayStep = 2;</span>
-<span class="fc" id="L97">		JulianDate dtView = dtSpot;</span>
-<span class="fc" id="L98">		double dblShortRate = dblStartingShortRate;</span>
+<span class="fc" id="L124">		int iDayStep = 2;</span>
+<span class="fc" id="L125">		JulianDate dtView = dtSpot;</span>
+<span class="fc" id="L126">		double dblShortRate = dblStartingShortRate;</span>
 
-<span class="fc" id="L100">		int iSpotDate = dtSpot.julian();</span>
+<span class="fc" id="L128">		int iSpotDate = dtSpot.julian();</span>
 
-<span class="fc" id="L102">		int iEndDate = dtSpot.addTenor (strViewTenor).julian();</span>
+<span class="fc" id="L130">		int iEndDate = dtSpot.addTenor (strViewTenor).julian();</span>
 
-<span class="fc" id="L104">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L132">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L106">		System.out.println (&quot;\t|                                                      ||&quot;);</span>
+<span class="fc" id="L134">		System.out.println (&quot;\t|                                                      ||&quot;);</span>
 
-<span class="fc" id="L108">		System.out.println (&quot;\t|    Hull-White Evolution Run                          ||&quot;);</span>
+<span class="fc" id="L136">		System.out.println (&quot;\t|    Hull-White Evolution Run                          ||&quot;);</span>
 
-<span class="fc" id="L110">		System.out.println (&quot;\t|    ------------------------                          ||&quot;);</span>
+<span class="fc" id="L138">		System.out.println (&quot;\t|    ------------------------                          ||&quot;);</span>
 
-<span class="fc" id="L112">		System.out.println (&quot;\t|                                                      ||&quot;);</span>
+<span class="fc" id="L140">		System.out.println (&quot;\t|                                                      ||&quot;);</span>
 
-<span class="fc" id="L114">		System.out.println (&quot;\t|    L-&gt;R:                                             ||&quot;);</span>
+<span class="fc" id="L142">		System.out.println (&quot;\t|    L-&gt;R:                                             ||&quot;);</span>
 
-<span class="fc" id="L116">		System.out.println (&quot;\t|        Date                                          ||&quot;);</span>
+<span class="fc" id="L144">		System.out.println (&quot;\t|        Date                                          ||&quot;);</span>
 
-<span class="fc" id="L118">		System.out.println (&quot;\t|        Short Rate (%)                                ||&quot;);</span>
+<span class="fc" id="L146">		System.out.println (&quot;\t|        Short Rate (%)                                ||&quot;);</span>
 
-<span class="fc" id="L120">		System.out.println (&quot;\t|        Short Rate - Change (%)                       ||&quot;);</span>
+<span class="fc" id="L148">		System.out.println (&quot;\t|        Short Rate - Change (%)                       ||&quot;);</span>
 
-<span class="fc" id="L122">		System.out.println (&quot;\t|        Alpha (%)                                     ||&quot;);</span>
+<span class="fc" id="L150">		System.out.println (&quot;\t|        Alpha (%)                                     ||&quot;);</span>
 
-<span class="fc" id="L124">		System.out.println (&quot;\t|        Theta (%)                                     ||&quot;);</span>
+<span class="fc" id="L152">		System.out.println (&quot;\t|        Theta (%)                                     ||&quot;);</span>
 
-<span class="fc" id="L126">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L154">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">		while (dtView.julian() &lt; iEndDate) {</span>
-<span class="fc" id="L129">			int iViewDate = dtView.julian();</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">		while (dtView.julian() &lt; iEndDate) {</span>
+<span class="fc" id="L157">			int iViewDate = dtView.julian();</span>
 
-<span class="fc" id="L131">			double dblAlpha = hw.alpha (</span>
+<span class="fc" id="L159">			double dblAlpha = hw.alpha (</span>
 				iSpotDate,
 				iViewDate
 			);
 
-<span class="fc" id="L136">			double dblTheta = hw.theta (</span>
+<span class="fc" id="L164">			double dblTheta = hw.theta (</span>
 				iSpotDate,
 				iViewDate
 			);
 
-<span class="fc" id="L141">			double dblShortRateIncrement = hw.shortRateIncrement (</span>
+<span class="fc" id="L169">			double dblShortRateIncrement = hw.shortRateIncrement (</span>
 				iSpotDate,
 				iViewDate,
 				dblShortRate,
 				iDayStep
 			);
 
-<span class="fc" id="L148">			dblShortRate += dblShortRateIncrement;</span>
+<span class="fc" id="L176">			dblShortRate += dblShortRateIncrement;</span>
 
-<span class="fc" id="L150">			System.out.println (&quot;\t| [&quot; + dtView + &quot;] = &quot; +</span>
-<span class="fc" id="L151">				FormatUtil.FormatDouble (dblShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L152">				FormatUtil.FormatDouble (dblShortRateIncrement, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L153">				FormatUtil.FormatDouble (dblAlpha, 1, 4, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L154">				FormatUtil.FormatDouble (dblTheta, 1, 4, 100.) + &quot;% || &quot;</span>
+<span class="fc" id="L178">			System.out.println (&quot;\t| [&quot; + dtView + &quot;] = &quot; +</span>
+<span class="fc" id="L179">				FormatUtil.FormatDouble (dblShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L180">				FormatUtil.FormatDouble (dblShortRateIncrement, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L181">				FormatUtil.FormatDouble (dblAlpha, 1, 4, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (dblTheta, 1, 4, 100.) + &quot;% || &quot;</span>
 			);
 
-<span class="fc" id="L157">			dtView = dtView.addBusDays (</span>
+<span class="fc" id="L185">			dtView = dtView.addBusDays (</span>
 				iDayStep,
 				strCurrency
 			);
-<span class="fc" id="L161">		}</span>
+<span class="fc" id="L189">		}</span>
 
-<span class="fc" id="L163">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
-<span class="fc" id="L164">	}</span>
+<span class="fc" id="L191">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L192">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L170">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L198">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L172">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L200">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L174">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L175">		double dblStartingShortRate = 0.05;</span>
-<span class="fc" id="L176">		double dblSigma = 0.05;</span>
-<span class="fc" id="L177">		double dblA = 1.;</span>
+<span class="fc" id="L202">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L203">		double dblStartingShortRate = 0.05;</span>
+<span class="fc" id="L204">		double dblSigma = 0.05;</span>
+<span class="fc" id="L205">		double dblA = 1.;</span>
 
-<span class="fc" id="L179">		SingleFactorStateEvolver hw = HullWhiteEvolver (</span>
+<span class="fc" id="L207">		SingleFactorStateEvolver hw = HullWhiteEvolver (</span>
 			strCurrency,
 			dblSigma,
 			dblA,
 			dblStartingShortRate
 		);
 
-<span class="fc" id="L186">		ShortRateEvolution (</span>
+<span class="fc" id="L214">		ShortRateEvolution (</span>
 			hw,
 			dtSpot,
 			strCurrency,
 			&quot;4M&quot;,
 			dblStartingShortRate
 		);
-<span class="fc" id="L193">	}</span>
+
+<span class="fc" id="L222">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L223">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

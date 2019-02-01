@@ -11,33 +11,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,13 +73,22 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * PiecewiseDisplacedLebesgue demonstrates the Generation, the Reconciliation, and the Usage of a Piece-wise
- *  Displaced Linear Lebesgue Measure.
+ * &lt;i&gt;PiecewiseDisplacedLebesgue&lt;/i&gt; demonstrates the Generation, the Reconciliation, and the Usage of a
+ * Piece-wise Displaced Linear Lebesgue Measure.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalSupportLibrary.md&quot;&gt;Numerical Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/README.md&quot;&gt;Probability Measure Generators&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L63">public class PiecewiseDisplacedLebesgue {</span>
+<span class="nc" id="L91">public class PiecewiseDisplacedLebesgue {</span>
 
 	private static final void RPDL (
 		final String strMessage,
@@ -71,7 +99,7 @@ import org.drip.service.env.EnvManager;
 		final double dblXMean)
 		throws Exception
 	{
-<span class="fc" id="L74">		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (</span>
+<span class="fc" id="L102">		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (</span>
 			dblXMin,
 			dblXMax,
 			adblX,
@@ -79,31 +107,31 @@ import org.drip.service.env.EnvManager;
 			dblXMean
 		);
 
-<span class="fc" id="L82">		double[] adblQuintile = new double[] {</span>
+<span class="fc" id="L110">		double[] adblQuintile = new double[] {</span>
 			0.25,
 			0.50,
 			0.75
 		};
 
-<span class="fc" id="L88">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
+<span class="fc" id="L116">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
 
 		/* for (int i = 0; i &lt; adblX.length; ++i)
 			strDump +=
 				FormatUtil.FormatDouble (adblX[i], 3, 3, 1.) + &quot; =&gt;&quot; +
 				FormatUtil.FormatDouble (rpdl.cumulative (adblX[i]), 1, 2, 1.) + &quot; | &quot;; */
 
-<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
-<span class="fc" id="L96">			strDump += &quot; &quot; +</span>
-<span class="fc" id="L97">				FormatUtil.FormatDouble (rpdl.invCumulative (adblQuintile[i]), 3, 3, 1.) + &quot; =&gt;&quot; +</span>
-<span class="fc" id="L98">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot;   | &quot;;</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
+<span class="fc" id="L124">			strDump += &quot; &quot; +</span>
+<span class="fc" id="L125">				FormatUtil.FormatDouble (rpdl.invCumulative (adblQuintile[i]), 3, 3, 1.) + &quot; =&gt;&quot; +</span>
+<span class="fc" id="L126">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot;   | &quot;;</span>
 
-<span class="fc" id="L100">		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();</span>
+<span class="fc" id="L128">		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensitySlope.length; ++i)</span>
-<span class="fc" id="L103">			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + &quot;,&quot;;</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensitySlope.length; ++i)</span>
+<span class="fc" id="L131">			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + &quot;,&quot;;</span>
 
-<span class="fc" id="L105">		System.out.println (strDump + FormatUtil.FormatDouble (rpdl.densityDisplacement(), 1, 9, 1.) + &quot; ||&quot;);</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L133">		System.out.println (strDump + FormatUtil.FormatDouble (rpdl.densityDisplacement(), 1, 9, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L134">	}</span>
 
 	private static final void DateRPDL (
 		final String strMessage,
@@ -114,7 +142,7 @@ import org.drip.service.env.EnvManager;
 		final double dblXMean)
 		throws Exception
 	{
-<span class="fc" id="L117">		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (</span>
+<span class="fc" id="L145">		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (</span>
 			dblXMin,
 			dblXMax,
 			adblX,
@@ -122,42 +150,42 @@ import org.drip.service.env.EnvManager;
 			dblXMean
 		);
 
-<span class="fc" id="L125">		double[] adblQuintile = new double[] {</span>
+<span class="fc" id="L153">		double[] adblQuintile = new double[] {</span>
 			0.25,
 			0.50,
 			0.75
 		};
 
-<span class="fc" id="L131">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
+<span class="fc" id="L159">		String strDump = &quot;\t|| &quot; + strMessage + &quot; | &quot;;</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
-<span class="fc" id="L134">			strDump +=</span>
-<span class="fc" id="L135">				new JulianDate ((int) rpdl.invCumulative (adblQuintile[i])) + &quot; =&gt;&quot; +</span>
-<span class="fc" id="L136">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot; | &quot;;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQuintile.length; ++i)</span>
+<span class="fc" id="L162">			strDump +=</span>
+<span class="fc" id="L163">				new JulianDate ((int) rpdl.invCumulative (adblQuintile[i])) + &quot; =&gt;&quot; +</span>
+<span class="fc" id="L164">				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + &quot; | &quot;;</span>
 
-<span class="fc" id="L138">		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();</span>
+<span class="fc" id="L166">		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();</span>
 
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensitySlope.length; ++i)</span>
-<span class="fc" id="L141">			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + &quot;,&quot;;</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (int i = 0; i &lt; adblDensitySlope.length; ++i)</span>
+<span class="fc" id="L169">			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + &quot;,&quot;;</span>
 
-<span class="fc" id="L143">		System.out.println (strDump + FormatUtil.FormatDouble (rpdl.densityDisplacement(), 1, 9, 1.) + &quot; ||&quot;);</span>
-<span class="fc" id="L144">	}</span>
+<span class="fc" id="L171">		System.out.println (strDump + FormatUtil.FormatDouble (rpdl.densityDisplacement(), 1, 9, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L172">	}</span>
 
 	public static final void main (
 		final String[] args)
 		throws Exception
 	{
-<span class="fc" id="L150">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L178">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L152">		System.out.println();</span>
+<span class="fc" id="L180">		System.out.println();</span>
 
-<span class="fc" id="L154">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L182">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L156">		System.out.println (&quot;\t||             FIELD                |                       CUMULATIVE PROBABILITY                    |                  PROBABILITY DENSITY PARAMETERS                  ||&quot;);</span>
+<span class="fc" id="L184">		System.out.println (&quot;\t||             FIELD                |                       CUMULATIVE PROBABILITY                    |                  PROBABILITY DENSITY PARAMETERS                  ||&quot;);</span>
 
-<span class="fc" id="L158">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L186">		System.out.println (&quot;\t||-----------------------------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L160">		RPDL (</span>
+<span class="fc" id="L188">		RPDL (</span>
 			&quot;Age (Months In Balance)         &quot;,
 			0.,
 			60.,
@@ -166,20 +194,20 @@ import org.drip.service.env.EnvManager;
 			10.1
 		);
 
-<span class="fc" id="L169">		DateRPDL (</span>
+<span class="fc" id="L197">		DateRPDL (</span>
 			&quot;Vintage                         &quot;,
-<span class="fc" id="L171">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2007&quot;).julian(),</span>
-<span class="fc" id="L172">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2015&quot;).julian(),</span>
+<span class="fc" id="L199">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2007&quot;).julian(),</span>
+<span class="fc" id="L200">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2015&quot;).julian(),</span>
 			new double[] {
-<span class="fc" id="L174">				DateUtil.CreateFromDDMMMYYYY (&quot;15-APR-2012&quot;).julian(),</span>
-<span class="fc" id="L175">				DateUtil.CreateFromDDMMMYYYY (&quot;15-MAR-2013&quot;).julian(),</span>
-<span class="fc" id="L176">				DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2014&quot;).julian()</span>
+<span class="fc" id="L202">				DateUtil.CreateFromDDMMMYYYY (&quot;15-APR-2012&quot;).julian(),</span>
+<span class="fc" id="L203">				DateUtil.CreateFromDDMMMYYYY (&quot;15-MAR-2013&quot;).julian(),</span>
+<span class="fc" id="L204">				DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2014&quot;).julian()</span>
 			},
 			new double[] {0.25, 0.50, 0.75},
-<span class="fc" id="L179">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2013&quot;).julian()</span>
+<span class="fc" id="L207">			DateUtil.CreateFromDDMMMYYYY (&quot;15-FEB-2013&quot;).julian()</span>
 		);
 
-<span class="fc" id="L182">		RPDL (</span>
+<span class="fc" id="L210">		RPDL (</span>
 			&quot;Original Principal ('000s)      &quot;,
 			0.5,
 			35.,
@@ -188,7 +216,7 @@ import org.drip.service.env.EnvManager;
 			14.254
 		);
 
-<span class="fc" id="L191">		RPDL (</span>
+<span class="fc" id="L219">		RPDL (</span>
 			&quot;Monthly Gross Income ('000s)    &quot;,
 			0.25,
 			725.549,
@@ -197,7 +225,7 @@ import org.drip.service.env.EnvManager;
 			6.066
 		);
 
-<span class="fc" id="L200">		RPDL (</span>
+<span class="fc" id="L228">		RPDL (</span>
 			&quot;Coupon (%)                      &quot;,
 			5.3,
 			29.,
@@ -206,7 +234,7 @@ import org.drip.service.env.EnvManager;
 			13.70
 		);
 
-<span class="fc" id="L209">		RPDL (</span>
+<span class="fc" id="L237">		RPDL (</span>
 			&quot;FICO At Origination             &quot;,
 			612.,
 			847.,
@@ -215,7 +243,7 @@ import org.drip.service.env.EnvManager;
 			699.
 		);
 
-<span class="fc" id="L218">		RPDL (</span>
+<span class="fc" id="L246">		RPDL (</span>
 			&quot;DTI ex Mortgage (%)             &quot;,
 			0.,
 			39.,
@@ -224,7 +252,7 @@ import org.drip.service.env.EnvManager;
 			16.6
 		);
 
-<span class="fc" id="L227">		RPDL (</span>
+<span class="fc" id="L255">		RPDL (</span>
 			&quot;Total Borrower Accounts         &quot;,
 			1,
 			162,
@@ -233,7 +261,7 @@ import org.drip.service.env.EnvManager;
 			25
 		);
 
-<span class="fc" id="L236">		RPDL (</span>
+<span class="fc" id="L264">		RPDL (</span>
 			&quot;Revolving Utilization Rate (%)  &quot;,
 			0.,
 			892.,
@@ -242,7 +270,7 @@ import org.drip.service.env.EnvManager;
 			57.
 		);
 
-<span class="fc" id="L245">		RPDL (</span>
+<span class="fc" id="L273">		RPDL (</span>
 			&quot;Inquiries in Last 6 Months      &quot;,
 			0.,
 			33.,
@@ -250,6 +278,8 @@ import org.drip.service.env.EnvManager;
 			new double[] {0.75},
 			0.9
 		);
-<span class="fc" id="L253">	}</span>
+
+<span class="fc" id="L282">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L283">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -20,34 +20,53 @@ import org.drip.state.identifier.*;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -64,13 +83,22 @@ import org.drip.state.identifier.*;
  */
 
 /**
- * MultiFactorDynamics demonstrates the Construction and Usage of the Multi-Factor Gaussian Model Dynamics
- *  for the Evolution of the Instantaneous Forward Rate, the Price, and the Short Rate.
+ * &lt;i&gt;MultiFactorDynamics&lt;/i&gt; demonstrates the Construction and Usage of the Multi-Factor Gaussian Model
+ * Dynamics for the Evolution of the Instantaneous Forward Rate, the Price, and the Short Rate.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hjm/README.md&quot;&gt;Generic HJM Evolution&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L73">public class MultiFactorDynamics {</span>
+<span class="nc" id="L101">public class MultiFactorDynamics {</span>
 
 	private static final MarketSurface FlatVolatilitySurface (
 		final JulianDate dtStart,
@@ -78,25 +106,25 @@ import org.drip.state.identifier.*;
 		final double dblFlatVol)
 		throws Exception
 	{
-<span class="fc" id="L81">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+<span class="fc" id="L109">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
 			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
 			dtStart,
 			strCurrency,
 			new double[] {
-<span class="fc" id="L86">				dtStart.julian(),</span>
-<span class="fc" id="L87">				dtStart.addYears (2).julian(),</span>
-<span class="fc" id="L88">				dtStart.addYears (4).julian(),</span>
-<span class="fc" id="L89">				dtStart.addYears (6).julian(),</span>
-<span class="fc" id="L90">				dtStart.addYears (8).julian(),</span>
-<span class="fc" id="L91">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L114">				dtStart.julian(),</span>
+<span class="fc" id="L115">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L116">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L117">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L118">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L119">				dtStart.addYears (10).julian()</span>
 			},
 			new double[] {
-<span class="fc" id="L94">				dtStart.julian(),</span>
-<span class="fc" id="L95">				dtStart.addYears (2).julian(),</span>
-<span class="fc" id="L96">				dtStart.addYears (4).julian(),</span>
-<span class="fc" id="L97">				dtStart.addYears (6).julian(),</span>
-<span class="fc" id="L98">				dtStart.addYears (8).julian(),</span>
-<span class="fc" id="L99">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L122">				dtStart.julian(),</span>
+<span class="fc" id="L123">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L124">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L125">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L126">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L127">				dtStart.addYears (10).julian()</span>
 			},
 			new double[][] {
 				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
@@ -109,7 +137,7 @@ import org.drip.state.identifier.*;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="fc" id="L112">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L140">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -119,7 +147,7 @@ import org.drip.state.identifier.*;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="fc" id="L122">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L150">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -138,7 +166,7 @@ import org.drip.state.identifier.*;
 		final R1ToR1 auForwardRate)
 		throws Exception
 	{
-<span class="fc" id="L141">		MultiFactorVolatility mfv = new MultiFactorVolatility (</span>
+<span class="fc" id="L169">		MultiFactorVolatility mfv = new MultiFactorVolatility (</span>
 			new MarketSurface[] {
 				mktSurfFlatVol1,
 				mktSurfFlatVol2,
@@ -168,9 +196,9 @@ import org.drip.state.identifier.*;
 			)
 		);
 
-<span class="fc" id="L171">		return new MultiFactorStateEvolver (</span>
-<span class="fc" id="L172">			FundingLabel.Standard (strCurrency),</span>
-<span class="fc" id="L173">			ForwardLabel.Create (</span>
+<span class="fc" id="L199">		return new MultiFactorStateEvolver (</span>
+<span class="fc" id="L200">			FundingLabel.Standard (strCurrency),</span>
+<span class="fc" id="L201">			ForwardLabel.Create (</span>
 				strCurrency,
 				&quot;6M&quot;
 			),
@@ -189,71 +217,71 @@ import org.drip.state.identifier.*;
 		final double dblStartingPrice)
 		throws Exception
 	{
-<span class="fc" id="L192">		int iViewDate = dtStart.addTenor (strViewTenor).julian();</span>
+<span class="fc" id="L220">		int iViewDate = dtStart.addTenor (strViewTenor).julian();</span>
 
-<span class="fc" id="L194">		int iTargetDate = dtStart.addTenor (strTargetTenor).julian();</span>
+<span class="fc" id="L222">		int iTargetDate = dtStart.addTenor (strTargetTenor).julian();</span>
 
-<span class="fc" id="L196">		int iDayStep = 2;</span>
-<span class="fc" id="L197">		JulianDate dtSpot = dtStart;</span>
-<span class="fc" id="L198">		double dblPrice = dblStartingPrice;</span>
-<span class="fc" id="L199">		double dblShortRate = dblStartingForwardRate;</span>
-<span class="fc" id="L200">		double dblLIBORForwardRate = dblStartingForwardRate;</span>
-<span class="fc" id="L201">		double dblInstantaneousForwardRate = dblStartingForwardRate;</span>
-<span class="fc" id="L202">		double dblContinuouslyCompoundedShortRate = dblStartingForwardRate;</span>
-<span class="fc" id="L203">		double dblShiftedLIBORForwardRate = dblStartingForwardRate + (365.25 / (iTargetDate - iViewDate));</span>
+<span class="fc" id="L224">		int iDayStep = 2;</span>
+<span class="fc" id="L225">		JulianDate dtSpot = dtStart;</span>
+<span class="fc" id="L226">		double dblPrice = dblStartingPrice;</span>
+<span class="fc" id="L227">		double dblShortRate = dblStartingForwardRate;</span>
+<span class="fc" id="L228">		double dblLIBORForwardRate = dblStartingForwardRate;</span>
+<span class="fc" id="L229">		double dblInstantaneousForwardRate = dblStartingForwardRate;</span>
+<span class="fc" id="L230">		double dblContinuouslyCompoundedShortRate = dblStartingForwardRate;</span>
+<span class="fc" id="L231">		double dblShiftedLIBORForwardRate = dblStartingForwardRate + (365.25 / (iTargetDate - iViewDate));</span>
 
-<span class="fc" id="L205">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L233">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L207">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L235">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
 
-<span class="fc" id="L209">		System.out.println (&quot;\t|    Heath-Jarrow-Morton Gaussian Run                                                                                           ||&quot;);</span>
+<span class="fc" id="L237">		System.out.println (&quot;\t|    Heath-Jarrow-Morton Gaussian Run                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L211">		System.out.println (&quot;\t|    --------------------------------                                                                                           ||&quot;);</span>
+<span class="fc" id="L239">		System.out.println (&quot;\t|    --------------------------------                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L213">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
+<span class="fc" id="L241">		System.out.println (&quot;\t|                                                                                                                               ||&quot;);</span>
 
-<span class="fc" id="L215">		System.out.println (&quot;\t|        L-&gt;R:                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L243">		System.out.println (&quot;\t|        L-&gt;R:                                                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L217">		System.out.println (&quot;\t|            Date                                                                                                               ||&quot;);</span>
+<span class="fc" id="L245">		System.out.println (&quot;\t|            Date                                                                                                               ||&quot;);</span>
 
-<span class="fc" id="L219">		System.out.println (&quot;\t|            Instantaneous Forward Rate (%)                                                                                     ||&quot;);</span>
+<span class="fc" id="L247">		System.out.println (&quot;\t|            Instantaneous Forward Rate (%)                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L221">		System.out.println (&quot;\t|            Instantaneous Forward Rate - Change (%)                                                                            ||&quot;);</span>
+<span class="fc" id="L249">		System.out.println (&quot;\t|            Instantaneous Forward Rate - Change (%)                                                                            ||&quot;);</span>
 
-<span class="fc" id="L223">		System.out.println (&quot;\t|            LIBOR Forward Rate (%)                                                                                             ||&quot;);</span>
+<span class="fc" id="L251">		System.out.println (&quot;\t|            LIBOR Forward Rate (%)                                                                                             ||&quot;);</span>
 
-<span class="fc" id="L225">		System.out.println (&quot;\t|            LIBOR Forward Rate - Change (%)                                                                                    ||&quot;);</span>
+<span class="fc" id="L253">		System.out.println (&quot;\t|            LIBOR Forward Rate - Change (%)                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L227">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate (%)                                                                                     ||&quot;);</span>
+<span class="fc" id="L255">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate (%)                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L229">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate - Change (%)                                                                            ||&quot;);</span>
+<span class="fc" id="L257">		System.out.println (&quot;\t|            Shifted LIBOR Forward Rate - Change (%)                                                                            ||&quot;);</span>
 
-<span class="fc" id="L231">		System.out.println (&quot;\t|            Short Rate (%)                                                                                                     ||&quot;);</span>
+<span class="fc" id="L259">		System.out.println (&quot;\t|            Short Rate (%)                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L233">		System.out.println (&quot;\t|            Short Rate - Change (%)                                                                                            ||&quot;);</span>
+<span class="fc" id="L261">		System.out.println (&quot;\t|            Short Rate - Change (%)                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L235">		System.out.println (&quot;\t|            Continuously Compounded Short Rate (%)                                                                             ||&quot;);</span>
+<span class="fc" id="L263">		System.out.println (&quot;\t|            Continuously Compounded Short Rate (%)                                                                             ||&quot;);</span>
 
-<span class="fc" id="L237">		System.out.println (&quot;\t|            Continuously Compounded Short Rate - Change (%)                                                                    ||&quot;);</span>
+<span class="fc" id="L265">		System.out.println (&quot;\t|            Continuously Compounded Short Rate - Change (%)                                                                    ||&quot;);</span>
 
-<span class="fc" id="L239">		System.out.println (&quot;\t|            Price                                                                                                              ||&quot;);</span>
+<span class="fc" id="L267">		System.out.println (&quot;\t|            Price                                                                                                              ||&quot;);</span>
 
-<span class="fc" id="L241">		System.out.println (&quot;\t|            Price - Change                                                                                                     ||&quot;);</span>
+<span class="fc" id="L269">		System.out.println (&quot;\t|            Price - Change                                                                                                     ||&quot;);</span>
 
-<span class="fc" id="L243">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L271">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L245" title="All 2 branches covered.">		while (dtSpot.julian() &lt; iViewDate) {</span>
-<span class="fc" id="L246">			int iSpotDate = dtSpot.julian();</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">		while (dtSpot.julian() &lt; iViewDate) {</span>
+<span class="fc" id="L274">			int iSpotDate = dtSpot.julian();</span>
 
-<span class="fc" id="L248">			double dblIFRIncrement = hjm.instantaneousForwardRateIncrement (</span>
+<span class="fc" id="L276">			double dblIFRIncrement = hjm.instantaneousForwardRateIncrement (</span>
 				iViewDate,
 				iTargetDate,
 				iDayStep
 			);
 
-<span class="fc" id="L254">			dblInstantaneousForwardRate += dblIFRIncrement;</span>
+<span class="fc" id="L282">			dblInstantaneousForwardRate += dblIFRIncrement;</span>
 
-<span class="fc" id="L256">			double dblLIBORForwardRateIncrement = hjm.liborForwardRateIncrement (</span>
+<span class="fc" id="L284">			double dblLIBORForwardRateIncrement = hjm.liborForwardRateIncrement (</span>
 				iSpotDate,
 				iViewDate,
 				iTargetDate,
@@ -261,9 +289,9 @@ import org.drip.state.identifier.*;
 				iDayStep
 			);
 
-<span class="fc" id="L264">			dblLIBORForwardRate += dblLIBORForwardRateIncrement;</span>
+<span class="fc" id="L292">			dblLIBORForwardRate += dblLIBORForwardRateIncrement;</span>
 
-<span class="fc" id="L266">			double dblShiftedLIBORForwardRateIncrement = hjm.shiftedLIBORForwardIncrement (</span>
+<span class="fc" id="L294">			double dblShiftedLIBORForwardRateIncrement = hjm.shiftedLIBORForwardIncrement (</span>
 				iSpotDate,
 				iViewDate,
 				iTargetDate,
@@ -271,26 +299,26 @@ import org.drip.state.identifier.*;
 				iDayStep
 			);
 
-<span class="fc" id="L274">			dblShiftedLIBORForwardRate += dblShiftedLIBORForwardRateIncrement;</span>
+<span class="fc" id="L302">			dblShiftedLIBORForwardRate += dblShiftedLIBORForwardRateIncrement;</span>
 
-<span class="fc" id="L276">			double dblShortRateIncrement = hjm.shortRateIncrement (</span>
+<span class="fc" id="L304">			double dblShortRateIncrement = hjm.shortRateIncrement (</span>
 				iSpotDate,
 				iViewDate,
 				iDayStep
 			);
 
-<span class="fc" id="L282">			dblShortRate += dblShortRateIncrement;</span>
+<span class="fc" id="L310">			dblShortRate += dblShortRateIncrement;</span>
 
-<span class="fc" id="L284">			double dblProportionalPriceIncrement = hjm.proportionalPriceIncrement (</span>
+<span class="fc" id="L312">			double dblProportionalPriceIncrement = hjm.proportionalPriceIncrement (</span>
 				iViewDate,
 				iTargetDate,
 				dblShortRate,
 				iDayStep
 			);
 
-<span class="fc" id="L291">			dblPrice *= (1. + dblProportionalPriceIncrement);</span>
+<span class="fc" id="L319">			dblPrice *= (1. + dblProportionalPriceIncrement);</span>
 
-<span class="fc" id="L293">			double dblContinuouslyCompoundedShortRateIncrement = hjm.compoundedShortRateIncrement (</span>
+<span class="fc" id="L321">			double dblContinuouslyCompoundedShortRateIncrement = hjm.compoundedShortRateIncrement (</span>
 				iSpotDate,
 				iViewDate,
 				iTargetDate,
@@ -299,67 +327,67 @@ import org.drip.state.identifier.*;
 				iDayStep
 			);
 
-<span class="fc" id="L302">			dblContinuouslyCompoundedShortRate += dblContinuouslyCompoundedShortRateIncrement;</span>
+<span class="fc" id="L330">			dblContinuouslyCompoundedShortRate += dblContinuouslyCompoundedShortRateIncrement;</span>
 
-<span class="fc" id="L304">			System.out.println (&quot;\t| [&quot; + dtSpot + &quot;] = &quot; +</span>
-<span class="fc" id="L305">				FormatUtil.FormatDouble (dblInstantaneousForwardRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L306">				FormatUtil.FormatDouble (dblIFRIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L307">				FormatUtil.FormatDouble (dblLIBORForwardRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L308">				FormatUtil.FormatDouble (dblLIBORForwardRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L309">				FormatUtil.FormatDouble (dblShiftedLIBORForwardRate, 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L310">				FormatUtil.FormatDouble (dblShiftedLIBORForwardRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L311">				FormatUtil.FormatDouble (dblShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L312">				FormatUtil.FormatDouble (dblShortRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L313">				FormatUtil.FormatDouble (dblContinuouslyCompoundedShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L314">				FormatUtil.FormatDouble (dblContinuouslyCompoundedShortRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L315">				FormatUtil.FormatDouble (dblPrice, 2, 2, 100.) + &quot; | &quot; +</span>
-<span class="fc" id="L316">				FormatUtil.FormatDouble (dblProportionalPriceIncrement, 1, 2, 100.) + &quot; || &quot;</span>
+<span class="fc" id="L332">			System.out.println (&quot;\t| [&quot; + dtSpot + &quot;] = &quot; +</span>
+<span class="fc" id="L333">				FormatUtil.FormatDouble (dblInstantaneousForwardRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L334">				FormatUtil.FormatDouble (dblIFRIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L335">				FormatUtil.FormatDouble (dblLIBORForwardRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L336">				FormatUtil.FormatDouble (dblLIBORForwardRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L337">				FormatUtil.FormatDouble (dblShiftedLIBORForwardRate, 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L338">				FormatUtil.FormatDouble (dblShiftedLIBORForwardRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L339">				FormatUtil.FormatDouble (dblShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L340">				FormatUtil.FormatDouble (dblShortRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L341">				FormatUtil.FormatDouble (dblContinuouslyCompoundedShortRate, 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L342">				FormatUtil.FormatDouble (dblContinuouslyCompoundedShortRateIncrement, 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L343">				FormatUtil.FormatDouble (dblPrice, 2, 2, 100.) + &quot; | &quot; +</span>
+<span class="fc" id="L344">				FormatUtil.FormatDouble (dblProportionalPriceIncrement, 1, 2, 100.) + &quot; || &quot;</span>
 			);
 
-<span class="fc" id="L319">			dtSpot = dtSpot.addBusDays (</span>
+<span class="fc" id="L347">			dtSpot = dtSpot.addBusDays (</span>
 				iDayStep,
 				strCurrency
 			);
-<span class="fc" id="L323">		}</span>
+<span class="fc" id="L351">		}</span>
 
-<span class="fc" id="L325">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="fc" id="L326">	}</span>
+<span class="fc" id="L353">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L354">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L332">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L360">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L334">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L362">		String strCurrency = &quot;USD&quot;;</span>
 
-<span class="fc" id="L336">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L364">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L338">		double dblFlatVol1 = 0.01;</span>
-<span class="fc" id="L339">		double dblFlatVol2 = 0.02;</span>
-<span class="fc" id="L340">		double dblFlatVol3 = 0.03;</span>
-<span class="fc" id="L341">		double dblFlatForwardRate = 0.05;</span>
-<span class="fc" id="L342">		double dblStartingPrice = 0.9875;</span>
+<span class="fc" id="L366">		double dblFlatVol1 = 0.01;</span>
+<span class="fc" id="L367">		double dblFlatVol2 = 0.02;</span>
+<span class="fc" id="L368">		double dblFlatVol3 = 0.03;</span>
+<span class="fc" id="L369">		double dblFlatForwardRate = 0.05;</span>
+<span class="fc" id="L370">		double dblStartingPrice = 0.9875;</span>
 
-<span class="fc" id="L344">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
+<span class="fc" id="L372">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol1
 		);
 
-<span class="fc" id="L350">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
+<span class="fc" id="L378">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol2
 		);
 
-<span class="fc" id="L356">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
+<span class="fc" id="L384">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol3
 		);
 
-<span class="fc" id="L362">		MultiFactorStateEvolver hjm = HJMInstance (</span>
+<span class="fc" id="L390">		MultiFactorStateEvolver hjm = HJMInstance (</span>
 			dtSpot,
 			strCurrency,
 			mktSurfFlatVol1,
@@ -368,7 +396,7 @@ import org.drip.state.identifier.*;
 			new FlatUnivariate (dblFlatForwardRate)
 		);
 
-<span class="fc" id="L371">		Evolve (</span>
+<span class="fc" id="L399">		Evolve (</span>
 			hjm,
 			dtSpot,
 			strCurrency,
@@ -377,6 +405,8 @@ import org.drip.state.identifier.*;
 			dblFlatForwardRate,
 			dblStartingPrice
 		);
-<span class="fc" id="L380">	}</span>
+
+<span class="fc" id="L409">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L410">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

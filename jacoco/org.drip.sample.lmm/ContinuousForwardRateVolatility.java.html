@@ -19,34 +19,53 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -63,22 +82,38 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * ContinuousForwardRateVolatility demonstrates the Implying of the Volatility of the Continuously
- *  Compounded Forward Rate from the Corresponding LIBOR Forward Rate Volatility. The References are:
- * 
- *  1) Goldys, B., M. Musiela, and D. Sondermann (1994): Log-normality of Rates and Term Structure Models,
- *  	The University of New South Wales.
- * 
- *  2) Musiela, M. (1994): Nominal Annual Rates and Log-normal Volatility Structure, The University of New
- *   	South Wales.
- * 
- * 	3) Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
- * 		Finance 7 (2), 127-155.
+ * &lt;i&gt;ContinuousForwardRateVolatility&lt;/i&gt; demonstrates the Implying of the Volatility of the Continuously
+ * Compounded Forward Rate from the Corresponding LIBOR Forward Rate Volatility. The References are:
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Goldys, B., M. Musiela, and D. Sondermann (1994): Log-normality of Rates and Term Structure
+ *  			Models, The University of New South Wales.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Musiela, M. (1994): Nominal Annual Rates and Log-normal Volatility Structure, The University of
+ *  			New South Wales.
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics,
+ * 				Mathematical Finance 7 (2), 127-155.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/lmm/README.md&quot;&gt;LIBOR Market (LMM-BGM Variant) Evolution&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L81">public class ContinuousForwardRateVolatility {</span>
+<span class="nc" id="L116">public class ContinuousForwardRateVolatility {</span>
 
 	private static final MarketSurface FlatVolatilitySurface (
 		final JulianDate dtStart,
@@ -86,25 +121,25 @@ import org.drip.state.identifier.ForwardLabel;
 		final double dblFlatVol)
 		throws Exception
 	{
-<span class="fc" id="L89">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
+<span class="fc" id="L124">		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (</span>
 			&quot;VIEW_TARGET_VOLATILITY_SURFACE&quot;,
 			dtStart,
 			strCurrency,
 			new double[] {
-<span class="fc" id="L94">				dtStart.julian(),</span>
-<span class="fc" id="L95">				dtStart.addYears (2).julian(),</span>
-<span class="fc" id="L96">				dtStart.addYears (4).julian(),</span>
-<span class="fc" id="L97">				dtStart.addYears (6).julian(),</span>
-<span class="fc" id="L98">				dtStart.addYears (8).julian(),</span>
-<span class="fc" id="L99">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L129">				dtStart.julian(),</span>
+<span class="fc" id="L130">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L131">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L132">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L133">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L134">				dtStart.addYears (10).julian()</span>
 			},
 			new double[] {
-<span class="fc" id="L102">				dtStart.julian(),</span>
-<span class="fc" id="L103">				dtStart.addYears (2).julian(),</span>
-<span class="fc" id="L104">				dtStart.addYears (4).julian(),</span>
-<span class="fc" id="L105">				dtStart.addYears (6).julian(),</span>
-<span class="fc" id="L106">				dtStart.addYears (8).julian(),</span>
-<span class="fc" id="L107">				dtStart.addYears (10).julian()</span>
+<span class="fc" id="L137">				dtStart.julian(),</span>
+<span class="fc" id="L138">				dtStart.addYears (2).julian(),</span>
+<span class="fc" id="L139">				dtStart.addYears (4).julian(),</span>
+<span class="fc" id="L140">				dtStart.addYears (6).julian(),</span>
+<span class="fc" id="L141">				dtStart.addYears (8).julian(),</span>
+<span class="fc" id="L142">				dtStart.addYears (10).julian()</span>
 			},
 			new double[][] {
 				{dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol, dblFlatVol},
@@ -117,7 +152,7 @@ import org.drip.state.identifier.ForwardLabel;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="fc" id="L120">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L155">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -127,7 +162,7 @@ import org.drip.state.identifier.ForwardLabel;
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-<span class="fc" id="L130">				SegmentInelasticDesignControl.Create (</span>
+<span class="fc" id="L165">				SegmentInelasticDesignControl.Create (</span>
 					2,
 					2
 				),
@@ -141,69 +176,69 @@ import org.drip.state.identifier.ForwardLabel;
 		final String strTenor,
 		final double[] adblVol)
 	{
-<span class="fc" id="L144">		String strDump = &quot;\t | &quot; + strTenor + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L179">		String strDump = &quot;\t | &quot; + strTenor + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; adblVol.length; ++i)</span>
-<span class="fc" id="L147">			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + &quot;% |&quot;;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; adblVol.length; ++i)</span>
+<span class="fc" id="L182">			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + &quot;% |&quot;;</span>
 
-<span class="fc" id="L149">		System.out.println (strDump);</span>
-<span class="fc" id="L150">	}</span>
+<span class="fc" id="L184">		System.out.println (strDump);</span>
+<span class="fc" id="L185">	}</span>
 
 	public static void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L156">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L191">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L158">		String strTenor = &quot;3M&quot;;</span>
-<span class="fc" id="L159">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L160">		double dblFlatVol1 = 0.35;</span>
-<span class="fc" id="L161">		double dblFlatVol2 = 0.42;</span>
-<span class="fc" id="L162">		double dblFlatVol3 = 0.27;</span>
-<span class="fc" id="L163">		double dblFlatForwardRate = 0.02;</span>
+<span class="fc" id="L193">		String strTenor = &quot;3M&quot;;</span>
+<span class="fc" id="L194">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L195">		double dblFlatVol1 = 0.35;</span>
+<span class="fc" id="L196">		double dblFlatVol2 = 0.42;</span>
+<span class="fc" id="L197">		double dblFlatVol3 = 0.27;</span>
+<span class="fc" id="L198">		double dblFlatForwardRate = 0.02;</span>
 
-<span class="fc" id="L165">		int[] aiNumFactor = {</span>
+<span class="fc" id="L200">		int[] aiNumFactor = {</span>
 			1, 2, 3
 		};
 
-<span class="fc" id="L169">		String[] astrForwardTenor = {</span>
+<span class="fc" id="L204">		String[] astrForwardTenor = {</span>
 			&quot;1Y&quot;, &quot;2Y&quot;, &quot;3Y&quot;, &quot;4Y&quot;, &quot;5Y&quot;, &quot;6Y&quot;, &quot;7Y&quot;, &quot;8Y&quot;
 		};
 
-<span class="fc" id="L173">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
+<span class="fc" id="L208">		ForwardLabel forwardLabel = ForwardLabel.Create (</span>
 			strCurrency,
 			strTenor
 		);
 
-<span class="fc" id="L178">		JulianDate dtSpot = org.drip.analytics.date.DateUtil.Today();</span>
+<span class="fc" id="L213">		JulianDate dtSpot = org.drip.analytics.date.DateUtil.Today();</span>
 
-<span class="fc" id="L180">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
+<span class="fc" id="L215">		MarketSurface mktSurfFlatVol1 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol1
 		);
 
-<span class="fc" id="L186">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
+<span class="fc" id="L221">		MarketSurface mktSurfFlatVol2 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol2
 		);
 
-<span class="fc" id="L192">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
+<span class="fc" id="L227">		MarketSurface mktSurfFlatVol3 = FlatVolatilitySurface (</span>
 			dtSpot,
 			strCurrency,
 			dblFlatVol3
 		);
 
-<span class="fc" id="L198">		ForwardCurve fc = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
+<span class="fc" id="L233">		ForwardCurve fc = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (</span>
 			dtSpot,
 			forwardLabel,
 			dblFlatForwardRate
 		);
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">		for (int iNumFactor : aiNumFactor) {</span>
-<span class="fc" id="L205">			LognormalLIBORVolatility llv = new LognormalLIBORVolatility (</span>
-<span class="fc" id="L206">				dtSpot.julian(),</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">		for (int iNumFactor : aiNumFactor) {</span>
+<span class="fc" id="L240">			LognormalLIBORVolatility llv = new LognormalLIBORVolatility (</span>
+<span class="fc" id="L241">				dtSpot.julian(),</span>
 				forwardLabel,
 				new MarketSurface[] {
 					mktSurfFlatVol1,
@@ -234,25 +269,27 @@ import org.drip.state.identifier.ForwardLabel;
 				)
 			);
 
-<span class="fc" id="L237">			System.out.println (&quot;\n\t |------------------------------|&quot;);</span>
+<span class="fc" id="L272">			System.out.println (&quot;\n\t |------------------------------|&quot;);</span>
 
-<span class="fc" id="L239">			System.out.println (&quot;\t |  CONTINUOUS FORWARD RATE VOL |&quot;);</span>
+<span class="fc" id="L274">			System.out.println (&quot;\t |  CONTINUOUS FORWARD RATE VOL |&quot;);</span>
 
-<span class="fc" id="L241">			System.out.println (&quot;\t |    Num Factors: &quot; + iNumFactor + &quot;            |&quot;);</span>
+<span class="fc" id="L276">			System.out.println (&quot;\t |    Num Factors: &quot; + iNumFactor + &quot;            |&quot;);</span>
 
-<span class="fc" id="L243">			System.out.println (&quot;\t |------------------------------|&quot;);</span>
+<span class="fc" id="L278">			System.out.println (&quot;\t |------------------------------|&quot;);</span>
 
-<span class="fc bfc" id="L245" title="All 2 branches covered.">			for (String strForwardTenor : astrForwardTenor)</span>
-<span class="fc" id="L246">				DisplayVolArray (</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">			for (String strForwardTenor : astrForwardTenor)</span>
+<span class="fc" id="L281">				DisplayVolArray (</span>
 					strForwardTenor,
-<span class="fc" id="L248">					llv.continuousForwardVolatility (</span>
-<span class="fc" id="L249">						dtSpot.addTenor (strForwardTenor).julian(),</span>
+<span class="fc" id="L283">					llv.continuousForwardVolatility (</span>
+<span class="fc" id="L284">						dtSpot.addTenor (strForwardTenor).julian(),</span>
 						fc
 					)
 				);
 
-<span class="fc" id="L254">			System.out.println (&quot;\t |------------------------------|&quot;);</span>
+<span class="fc" id="L289">			System.out.println (&quot;\t |------------------------------|&quot;);</span>
 		}
-<span class="fc" id="L256">	}</span>
+
+<span class="fc" id="L292">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L293">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

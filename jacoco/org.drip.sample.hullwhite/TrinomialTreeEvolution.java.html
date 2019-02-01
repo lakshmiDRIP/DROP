@@ -14,34 +14,53 @@ import org.drip.state.identifier.FundingLabel;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -58,13 +77,22 @@ import org.drip.state.identifier.FundingLabel;
  */
 
 /**
- * TrinomialTreeEvolution demonstrates the Construction and Usage of the Hull-White Trinomial Tree and the
- *  Eventual Evolution of the Short Rate on it.
+ * &lt;i&gt;TrinomialTreeEvolution&lt;/i&gt; demonstrates the Construction and Usage of the Hull-White Trinomial Tree and
+ * the Eventual Evolution of the Short Rate on it.
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hullwhite/README.md&quot;&gt;Hull-White 1F Dynamics&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L67">public class TrinomialTreeEvolution {</span>
+<span class="nc" id="L95">public class TrinomialTreeEvolution {</span>
 
 	private static final SingleFactorStateEvolver HullWhiteEvolver (
 		final String strCurrency,
@@ -73,8 +101,8 @@ import org.drip.state.identifier.FundingLabel;
 		final double dblStartingForwardRate)
 		throws Exception
 	{
-<span class="fc" id="L76">		return new SingleFactorStateEvolver (</span>
-<span class="fc" id="L77">			FundingLabel.Standard (strCurrency),</span>
+<span class="fc" id="L104">		return new SingleFactorStateEvolver (</span>
+<span class="fc" id="L105">			FundingLabel.Standard (strCurrency),</span>
 			dblSigma,
 			dblA,
 			new FlatUnivariate (dblStartingForwardRate),
@@ -89,157 +117,159 @@ import org.drip.state.identifier.FundingLabel;
 		final TrinomialTreeTransitionMetrics hwtm)
 		throws Exception
 	{
-<span class="fc" id="L92">		System.out.println (&quot;\t| [&quot; + new JulianDate (hwtm.initialDate()) + &quot; -&gt; &quot; +</span>
-<span class="fc" id="L93">			new JulianDate (hwtm.terminalDate()) + &quot;] =&gt; &quot; +</span>
-<span class="fc" id="L94">			FormatUtil.FormatDouble (hwtm.expectedTerminalX(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L95">			FormatUtil.FormatDouble (Math.sqrt (hwtm.xVariance()), 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L96">			FormatUtil.FormatDouble (hwtm.xStochasticShift(), 1, 4, 1.) + &quot; || &quot; +</span>
-<span class="fc" id="L97">			FormatUtil.FormatDouble (hwtm.probabilityUp(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L98">			FormatUtil.FormatDouble (hwtm.upNodeMetrics().x(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L99">			FormatUtil.FormatDouble (hwtm.upNodeMetrics().shortRate(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L100">			FormatUtil.FormatDouble (hwtm.probabilityDown(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L101">			FormatUtil.FormatDouble (hwtm.downNodeMetrics().x(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L102">			FormatUtil.FormatDouble (hwtm.downNodeMetrics().shortRate(), 1, 2, 100.) + &quot;% || &quot; +</span>
-<span class="fc" id="L103">			FormatUtil.FormatDouble (hwtm.probabilityStay(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L104">			FormatUtil.FormatDouble (hwtm.stayNodeMetrics().x(), 1, 4, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L105">			FormatUtil.FormatDouble (hwtm.stayNodeMetrics().shortRate(), 1, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L120">		System.out.println (&quot;\t| [&quot; + new JulianDate (hwtm.initialDate()) + &quot; -&gt; &quot; +</span>
+<span class="fc" id="L121">			new JulianDate (hwtm.terminalDate()) + &quot;] =&gt; &quot; +</span>
+<span class="fc" id="L122">			FormatUtil.FormatDouble (hwtm.expectedTerminalX(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L123">			FormatUtil.FormatDouble (Math.sqrt (hwtm.xVariance()), 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L124">			FormatUtil.FormatDouble (hwtm.xStochasticShift(), 1, 4, 1.) + &quot; || &quot; +</span>
+<span class="fc" id="L125">			FormatUtil.FormatDouble (hwtm.probabilityUp(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L126">			FormatUtil.FormatDouble (hwtm.upNodeMetrics().x(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L127">			FormatUtil.FormatDouble (hwtm.upNodeMetrics().shortRate(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L128">			FormatUtil.FormatDouble (hwtm.probabilityDown(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L129">			FormatUtil.FormatDouble (hwtm.downNodeMetrics().x(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L130">			FormatUtil.FormatDouble (hwtm.downNodeMetrics().shortRate(), 1, 2, 100.) + &quot;% || &quot; +</span>
+<span class="fc" id="L131">			FormatUtil.FormatDouble (hwtm.probabilityStay(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L132">			FormatUtil.FormatDouble (hwtm.stayNodeMetrics().x(), 1, 4, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L133">			FormatUtil.FormatDouble (hwtm.stayNodeMetrics().shortRate(), 1, 2, 100.) + &quot;% ||&quot;</span>
 		);
-<span class="fc" id="L107">	}</span>
+<span class="fc" id="L135">	}</span>
 
 	private static final void TreeHeader (
 		final String strEvolutionComment)
 		throws Exception
 	{
-<span class="fc" id="L113">		System.out.println (&quot;\n\n\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\n\n\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L115">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L143">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L117">		System.out.println (strEvolutionComment);</span>
+<span class="fc" id="L145">		System.out.println (strEvolutionComment);</span>
 
-<span class="fc" id="L119">		System.out.println (&quot;\t|    ---------------------------------------------------                                                                                             ||&quot;);</span>
+<span class="fc" id="L147">		System.out.println (&quot;\t|    ---------------------------------------------------                                                                                             ||&quot;);</span>
 
-<span class="fc" id="L121">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L149">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L123">		System.out.println (&quot;\t|    L-&gt;R:                                                                                                                                           ||&quot;);</span>
+<span class="fc" id="L151">		System.out.println (&quot;\t|    L-&gt;R:                                                                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L125">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L153">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L127">		System.out.println (&quot;\t|        Initial Date                                                                                                                                ||&quot;);</span>
+<span class="fc" id="L155">		System.out.println (&quot;\t|        Initial Date                                                                                                                                ||&quot;);</span>
 
-<span class="fc" id="L129">		System.out.println (&quot;\t|        Final Date                                                                                                                                  ||&quot;);</span>
+<span class="fc" id="L157">		System.out.println (&quot;\t|        Final Date                                                                                                                                  ||&quot;);</span>
 
-<span class="fc" id="L131">		System.out.println (&quot;\t|        Expected Final X                                                                                                                            ||&quot;);</span>
+<span class="fc" id="L159">		System.out.println (&quot;\t|        Expected Final X                                                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L133">		System.out.println (&quot;\t|        X Volatility (%)                                                                                                                            ||&quot;);</span>
+<span class="fc" id="L161">		System.out.println (&quot;\t|        X Volatility (%)                                                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L135">		System.out.println (&quot;\t|        X Stochastic Shift                                                                                                                          ||&quot;);</span>
+<span class="fc" id="L163">		System.out.println (&quot;\t|        X Stochastic Shift                                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L137">		System.out.println (&quot;\t|        Move-Up Probability                                                                                                                         ||&quot;);</span>
+<span class="fc" id="L165">		System.out.println (&quot;\t|        Move-Up Probability                                                                                                                         ||&quot;);</span>
 
-<span class="fc" id="L139">		System.out.println (&quot;\t|        Move-Up X Node Value                                                                                                                        ||&quot;);</span>
+<span class="fc" id="L167">		System.out.println (&quot;\t|        Move-Up X Node Value                                                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L141">		System.out.println (&quot;\t|        Move-Up Short Rate                                                                                                                          ||&quot;);</span>
+<span class="fc" id="L169">		System.out.println (&quot;\t|        Move-Up Short Rate                                                                                                                          ||&quot;);</span>
 
-<span class="fc" id="L143">		System.out.println (&quot;\t|        Move-Down Probability                                                                                                                       ||&quot;);</span>
+<span class="fc" id="L171">		System.out.println (&quot;\t|        Move-Down Probability                                                                                                                       ||&quot;);</span>
 
-<span class="fc" id="L145">		System.out.println (&quot;\t|        Move-Down X Node Value                                                                                                                      ||&quot;);</span>
+<span class="fc" id="L173">		System.out.println (&quot;\t|        Move-Down X Node Value                                                                                                                      ||&quot;);</span>
 
-<span class="fc" id="L147">		System.out.println (&quot;\t|        Move-Down Short Rate                                                                                                                        ||&quot;);</span>
+<span class="fc" id="L175">		System.out.println (&quot;\t|        Move-Down Short Rate                                                                                                                        ||&quot;);</span>
 
-<span class="fc" id="L149">		System.out.println (&quot;\t|        Stay Probability                                                                                                                            ||&quot;);</span>
+<span class="fc" id="L177">		System.out.println (&quot;\t|        Stay Probability                                                                                                                            ||&quot;);</span>
 
-<span class="fc" id="L151">		System.out.println (&quot;\t|        Stay X Node Value                                                                                                                           ||&quot;);</span>
+<span class="fc" id="L179">		System.out.println (&quot;\t|        Stay X Node Value                                                                                                                           ||&quot;);</span>
 
-<span class="fc" id="L153">		System.out.println (&quot;\t|        Stay Short Rate                                                                                                                             ||&quot;);</span>
+<span class="fc" id="L181">		System.out.println (&quot;\t|        Stay Short Rate                                                                                                                             ||&quot;);</span>
 
-<span class="fc" id="L155">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
+<span class="fc" id="L183">		System.out.println (&quot;\t|                                                                                                                                                    ||&quot;);</span>
 
-<span class="fc" id="L157">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="fc" id="L158">	}</span>
+<span class="fc" id="L185">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L186">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L164">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L192">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L166">		JulianDate dtSpot = DateUtil.Today();</span>
+<span class="fc" id="L194">		JulianDate dtSpot = DateUtil.Today();</span>
 
-<span class="fc" id="L168">		String strCurrency = &quot;USD&quot;;</span>
-<span class="fc" id="L169">		double dblStartingShortRate = 0.05;</span>
-<span class="fc" id="L170">		double dblSigma = 0.01;</span>
-<span class="fc" id="L171">		double dblA = 1.;</span>
+<span class="fc" id="L196">		String strCurrency = &quot;USD&quot;;</span>
+<span class="fc" id="L197">		double dblStartingShortRate = 0.05;</span>
+<span class="fc" id="L198">		double dblSigma = 0.01;</span>
+<span class="fc" id="L199">		double dblA = 1.;</span>
 
-<span class="fc" id="L173">		SingleFactorStateEvolver hw = HullWhiteEvolver (</span>
+<span class="fc" id="L201">		SingleFactorStateEvolver hw = HullWhiteEvolver (</span>
 			strCurrency,
 			dblSigma,
 			dblA,
 			dblStartingShortRate
 		);
 
-<span class="fc" id="L180">		int iSpotDate = dtSpot.julian();</span>
+<span class="fc" id="L208">		int iSpotDate = dtSpot.julian();</span>
 
-<span class="fc" id="L182">		int iFinalDate = dtSpot.addMonths (6).julian();</span>
+<span class="fc" id="L210">		int iFinalDate = dtSpot.addMonths (6).julian();</span>
 
-<span class="fc" id="L184">		int iInitialDate = iSpotDate;</span>
-<span class="fc" id="L185">		TrinomialTreeTransitionMetrics hwtm = null;</span>
+<span class="fc" id="L212">		int iInitialDate = iSpotDate;</span>
+<span class="fc" id="L213">		TrinomialTreeTransitionMetrics hwtm = null;</span>
 
-<span class="fc" id="L187">		TreeHeader (&quot;\t|    Hull-White Trinomial Tree Upwards Evolution Metrics                                                                                             ||&quot;);</span>
+<span class="fc" id="L215">		TreeHeader (&quot;\t|    Hull-White Trinomial Tree Upwards Evolution Metrics                                                                                             ||&quot;);</span>
 
-<span class="fc bfc" id="L189" title="All 2 branches covered.">		while (iInitialDate &lt; iFinalDate) {</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">			DumpMetrics (hwtm =</span>
-<span class="fc" id="L191">				hw.evolveTrinomialTree (</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		while (iInitialDate &lt; iFinalDate) {</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">			DumpMetrics (hwtm =</span>
+<span class="fc" id="L219">				hw.evolveTrinomialTree (</span>
 					iSpotDate,
 					iInitialDate,
 					iFinalDate,
-<span class="fc" id="L195">					null == hwtm ? null : hwtm.upNodeMetrics()</span>
+<span class="fc" id="L223">					null == hwtm ? null : hwtm.upNodeMetrics()</span>
 				)
 			);
 
-<span class="fc" id="L199">			iInitialDate += 10;</span>
+<span class="fc" id="L227">			iInitialDate += 10;</span>
 		}
 
-<span class="fc" id="L202">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L204">		hwtm = null;</span>
-<span class="fc" id="L205">		iInitialDate = iSpotDate;</span>
+<span class="fc" id="L232">		hwtm = null;</span>
+<span class="fc" id="L233">		iInitialDate = iSpotDate;</span>
 
-<span class="fc" id="L207">		TreeHeader (&quot;\t|    Hull-White Trinomial Tree Downwards Evolution Metrics                                                                                           ||&quot;);</span>
+<span class="fc" id="L235">		TreeHeader (&quot;\t|    Hull-White Trinomial Tree Downwards Evolution Metrics                                                                                           ||&quot;);</span>
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">		while (iInitialDate &lt; iFinalDate) {</span>
-<span class="fc bfc" id="L210" title="All 2 branches covered.">			DumpMetrics (hwtm =</span>
-<span class="fc" id="L211">				hw.evolveTrinomialTree (</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">		while (iInitialDate &lt; iFinalDate) {</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">			DumpMetrics (hwtm =</span>
+<span class="fc" id="L239">				hw.evolveTrinomialTree (</span>
 					iSpotDate,
 					iInitialDate,
 					iFinalDate,
-<span class="fc" id="L215">					null == hwtm ? null : hwtm.downNodeMetrics()</span>
+<span class="fc" id="L243">					null == hwtm ? null : hwtm.downNodeMetrics()</span>
 				)
 			);
 
-<span class="fc" id="L219">			iInitialDate += 10;</span>
+<span class="fc" id="L247">			iInitialDate += 10;</span>
 		}
 
-<span class="fc" id="L222">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L250">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L224">		hwtm = null;</span>
-<span class="fc" id="L225">		iInitialDate = iSpotDate;</span>
+<span class="fc" id="L252">		hwtm = null;</span>
+<span class="fc" id="L253">		iInitialDate = iSpotDate;</span>
 
-<span class="fc" id="L227">		TreeHeader (&quot;\t|    Hull-White Trinomial Tree Stay-Put Evolution Metrics                                                                                            ||&quot;);</span>
+<span class="fc" id="L255">		TreeHeader (&quot;\t|    Hull-White Trinomial Tree Stay-Put Evolution Metrics                                                                                            ||&quot;);</span>
 
-<span class="fc bfc" id="L229" title="All 2 branches covered.">		while (iInitialDate &lt; iFinalDate) {</span>
-<span class="fc bfc" id="L230" title="All 2 branches covered.">			DumpMetrics (hwtm =</span>
-<span class="fc" id="L231">				hw.evolveTrinomialTree (</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">		while (iInitialDate &lt; iFinalDate) {</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">			DumpMetrics (hwtm =</span>
+<span class="fc" id="L259">				hw.evolveTrinomialTree (</span>
 					iSpotDate,
 					iInitialDate,
 					iFinalDate,
-<span class="fc" id="L235">					null == hwtm ? null : hwtm.stayNodeMetrics()</span>
+<span class="fc" id="L263">					null == hwtm ? null : hwtm.stayNodeMetrics()</span>
 				)
 			);
 
-<span class="fc" id="L239">			iInitialDate += 10;</span>
+<span class="fc" id="L267">			iInitialDate += 10;</span>
 		}
 
-<span class="fc" id="L242">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
-<span class="fc" id="L243">	}</span>
+<span class="fc" id="L270">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L272">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L273">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

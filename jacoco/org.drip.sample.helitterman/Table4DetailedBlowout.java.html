@@ -3,39 +3,59 @@ package org.drip.sample.helitterman;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.linearalgebra.Matrix;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -52,22 +72,38 @@ import org.drip.quant.linearalgebra.Matrix;
  */
 
 /**
- * Table4DetailedBlowout replicates the detailed Steps involved in the Black-Litterman Model Process as
- *  illustrated in Table #4 the Following Paper:
+ * &lt;i&gt;Table4DetailedBlowout&lt;/i&gt; replicates the detailed Steps involved in the Black-Litterman Model Process
+ * as illustrated in Table #4 the Following Paper:
  *  
- *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
- *  	Sachs Asset Management
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios,
+ *  			Goldman Sachs Asset Management
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/helitterman/README.md&quot;&gt;He and Litterman (1999) Reconcilers&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L64">public class Table4DetailedBlowout {</span>
+<span class="nc" id="L98">public class Table4DetailedBlowout {</span>
 
 	public static void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="fc" id="L70">		String[] astrInputSovereign = new String[] {</span>
+<span class="fc" id="L104">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="fc" id="L106">		String[] astrInputSovereign = new String[] {</span>
 			&quot;AUS&quot;,
 			&quot;CAD&quot;,
 			&quot;FRA&quot;,
@@ -77,7 +113,7 @@ import org.drip.quant.linearalgebra.Matrix;
 			&quot;USA&quot;
 		};
 
-<span class="fc" id="L80">		double[][] aadblInputCorrelation = new double[][] {</span>
+<span class="fc" id="L116">		double[][] aadblInputCorrelation = new double[][] {</span>
 			{1.000, 0.488, 0.478, 0.515, 0.439, 0.512, 0.491},
 			{0.488, 1.000, 0.664, 0.655, 0.310, 0.608, 0.779},
 			{0.478, 0.664, 1.000, 0.861, 0.355, 0.783, 0.668},
@@ -87,7 +123,7 @@ import org.drip.quant.linearalgebra.Matrix;
 			{0.491, 0.779, 0.668, 0.653, 0.306, 0.652, 1.000}
 		};
 
-<span class="fc" id="L90">		double[] adblInputVolatility = new double[] {</span>
+<span class="fc" id="L126">		double[] adblInputVolatility = new double[] {</span>
 			0.160,
 			0.203,
 			0.248,
@@ -97,7 +133,7 @@ import org.drip.quant.linearalgebra.Matrix;
 			0.187
 		};
 
-<span class="fc" id="L100">		double[] adblInputW = new double[] {</span>
+<span class="fc" id="L136">		double[] adblInputW = new double[] {</span>
 			0.016,
 			0.022,
 			0.052,
@@ -107,370 +143,372 @@ import org.drip.quant.linearalgebra.Matrix;
 			0.615
 		};
 
-<span class="fc" id="L110">		double dblInputDELTA = 2.5;</span>
-<span class="fc" id="L111">		double dblInputTAU = 0.05;</span>
+<span class="fc" id="L146">		double dblInputDELTA = 2.5;</span>
+<span class="fc" id="L147">		double dblInputTAU = 0.05;</span>
 
-<span class="fc" id="L113">		double[][] aadblInputP = new double[][] {</span>
+<span class="fc" id="L149">		double[][] aadblInputP = new double[][] {</span>
 			{ 0.000,  0.000, -0.295,  1.000,  0.000, -0.705,  0.000}
 		};
 
-<span class="fc" id="L117">		double[][] aadblInputOmega = new double[][] {</span>
+<span class="fc" id="L153">		double[][] aadblInputOmega = new double[][] {</span>
 			{0.021}
 		};
 
-<span class="fc" id="L121">		double[] adblInputQ = new double[] {</span>
+<span class="fc" id="L157">		double[] adblInputQ = new double[] {</span>
 			0.05
 		};
 
-<span class="fc" id="L125">		int iNumSovereign = astrInputSovereign.length;</span>
-<span class="fc" id="L126">		double[][] aadblSIGMA = new double[iNumSovereign][iNumSovereign];</span>
+<span class="fc" id="L161">		int iNumSovereign = astrInputSovereign.length;</span>
+<span class="fc" id="L162">		double[][] aadblSIGMA = new double[iNumSovereign][iNumSovereign];</span>
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSovereign; ++i) {</span>
-<span class="fc bfc" id="L129" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumSovereign; ++j)</span>
-<span class="fc" id="L130">				aadblSIGMA[i][j] = adblInputVolatility[i] * adblInputVolatility[j] * aadblInputCorrelation[i][j];</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSovereign; ++i) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumSovereign; ++j)</span>
+<span class="fc" id="L166">				aadblSIGMA[i][j] = adblInputVolatility[i] * adblInputVolatility[j] * aadblInputCorrelation[i][j];</span>
 		}
 
-<span class="fc" id="L133">		double[] adblPI = Matrix.Product (</span>
+<span class="fc" id="L169">		double[] adblPI = Matrix.Product (</span>
 			aadblSIGMA,
 			adblInputW
 		);
 
-<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSovereign; ++i)</span>
-<span class="fc" id="L139">			adblPI[i] *= dblInputDELTA;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSovereign; ++i)</span>
+<span class="fc" id="L175">			adblPI[i] *= dblInputDELTA;</span>
 
-<span class="fc" id="L141">		System.out.println();</span>
+<span class="fc" id="L177">		System.out.println();</span>
 
-<span class="fc bfc" id="L143" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSovereign; ++i)</span>
-<span class="fc" id="L144">			System.out.println (</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSovereign; ++i)</span>
+<span class="fc" id="L180">			System.out.println (</span>
 				&quot;\t{PI}[&quot; + astrInputSovereign[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L146">				FormatUtil.FormatDouble (adblPI[i], 1, 1, 100.) + &quot;%&quot;</span>
+<span class="fc" id="L182">				FormatUtil.FormatDouble (adblPI[i], 1, 1, 100.) + &quot;%&quot;</span>
 			);
 
-<span class="fc" id="L149">		System.out.println();</span>
+<span class="fc" id="L185">		System.out.println();</span>
 
-<span class="fc" id="L151">		double[] adblPdotPI = Matrix.Product (</span>
+<span class="fc" id="L187">		double[] adblPdotPI = Matrix.Product (</span>
 			aadblInputP,
 			adblPI
 		);
 
-<span class="fc bfc" id="L156" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPdotPI.length; ++i)</span>
-<span class="fc" id="L157">			System.out.println (</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPdotPI.length; ++i)</span>
+<span class="fc" id="L193">			System.out.println (</span>
 				&quot;\t{P.PI}[&quot; + i + &quot;] =&gt;&quot; +
-<span class="fc" id="L159">				FormatUtil.FormatDouble (adblPdotPI[i], 1, 6, 1.)</span>
+<span class="fc" id="L195">				FormatUtil.FormatDouble (adblPdotPI[i], 1, 6, 1.)</span>
 			);
 
-<span class="fc" id="L162">		System.out.println();</span>
+<span class="fc" id="L198">		System.out.println();</span>
 
-<span class="fc" id="L164">		double[] adblQMinus_PdotPI_ = new double[adblInputQ.length];</span>
+<span class="fc" id="L200">		double[] adblQMinus_PdotPI_ = new double[adblInputQ.length];</span>
 
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		for (int i = 0; i &lt; adblInputQ.length; ++i)</span>
-<span class="fc" id="L167">			adblQMinus_PdotPI_[i] = adblInputQ[i] - adblPdotPI[i];</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">		for (int i = 0; i &lt; adblInputQ.length; ++i)</span>
+<span class="fc" id="L203">			adblQMinus_PdotPI_[i] = adblInputQ[i] - adblPdotPI[i];</span>
 
-<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQMinus_PdotPI_.length; ++i)</span>
-<span class="fc" id="L170">			System.out.println (</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		for (int i = 0; i &lt; adblQMinus_PdotPI_.length; ++i)</span>
+<span class="fc" id="L206">			System.out.println (</span>
 				&quot;\t{Q-P.PI}[&quot; + i + &quot;] =&gt;&quot; +
-<span class="fc" id="L172">				FormatUtil.FormatDouble (adblQMinus_PdotPI_[i], 1, 6, 1.)</span>
+<span class="fc" id="L208">				FormatUtil.FormatDouble (adblQMinus_PdotPI_[i], 1, 6, 1.)</span>
 			);
 
-<span class="fc" id="L175">		System.out.println();</span>
+<span class="fc" id="L211">		System.out.println();</span>
 
-<span class="fc" id="L177">		double[][] aadblPTranspose = Matrix.Transpose (aadblInputP);</span>
+<span class="fc" id="L213">		double[][] aadblPTranspose = Matrix.Transpose (aadblInputP);</span>
 
-<span class="fc" id="L179">		double[][] aadblSIGMAdot_Ptranspose_ = Matrix.Product (</span>
+<span class="fc" id="L215">		double[][] aadblSIGMAdot_Ptranspose_ = Matrix.Product (</span>
 			aadblSIGMA,
 			aadblPTranspose
 		);
 
-<span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAdot_Ptranspose_.length; ++i)</span>
-<span class="fc bfc" id="L185" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAdot_Ptranspose_[0].length; ++j) {</span>
-<span class="fc" id="L186">				System.out.println (</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAdot_Ptranspose_.length; ++i)</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAdot_Ptranspose_[0].length; ++j) {</span>
+<span class="fc" id="L222">				System.out.println (</span>
 					&quot;\t{SIGMA.PTRANSPOSE}[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L188">					FormatUtil.FormatDouble (aadblSIGMAdot_Ptranspose_[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L224">					FormatUtil.FormatDouble (aadblSIGMAdot_Ptranspose_[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L192">		System.out.println();</span>
+<span class="fc" id="L228">		System.out.println();</span>
 
-<span class="fc" id="L194">		double[][] aadblPdotSIGMAdot_PTranspose_ = Matrix.Product (</span>
+<span class="fc" id="L230">		double[][] aadblPdotSIGMAdot_PTranspose_ = Matrix.Product (</span>
 			aadblInputP,
 			aadblSIGMAdot_Ptranspose_
 		);
 
-<span class="fc bfc" id="L199" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblPdotSIGMAdot_PTranspose_.length; ++i)</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblPdotSIGMAdot_PTranspose_[0].length; ++j) {</span>
-<span class="fc" id="L201">				System.out.println (</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblPdotSIGMAdot_PTranspose_.length; ++i)</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblPdotSIGMAdot_PTranspose_[0].length; ++j) {</span>
+<span class="fc" id="L237">				System.out.println (</span>
 					&quot;\t{P.SIGMA.PTRANSPOSE}[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L203">					FormatUtil.FormatDouble (aadblPdotSIGMAdot_PTranspose_[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L239">					FormatUtil.FormatDouble (aadblPdotSIGMAdot_PTranspose_[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L207">		System.out.println();</span>
+<span class="fc" id="L243">		System.out.println();</span>
 
-<span class="fc" id="L209">		double[][] aadblPdotSIGMAdot_PTranspose_plusOMEGA = new double[aadblPdotSIGMAdot_PTranspose_.length][aadblPdotSIGMAdot_PTranspose_[0].length];</span>
+<span class="fc" id="L245">		double[][] aadblPdotSIGMAdot_PTranspose_plusOMEGA = new double[aadblPdotSIGMAdot_PTranspose_.length][aadblPdotSIGMAdot_PTranspose_[0].length];</span>
 
-<span class="fc bfc" id="L211" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblPdotSIGMAdot_PTranspose_plusOMEGA.length; ++i)</span>
-<span class="fc bfc" id="L212" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblPdotSIGMAdot_PTranspose_plusOMEGA[0].length; ++j) {</span>
-<span class="fc" id="L213">				aadblPdotSIGMAdot_PTranspose_plusOMEGA[i][j] = aadblPdotSIGMAdot_PTranspose_[i][j] + aadblInputOmega[i][j];</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblPdotSIGMAdot_PTranspose_plusOMEGA.length; ++i)</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblPdotSIGMAdot_PTranspose_plusOMEGA[0].length; ++j) {</span>
+<span class="fc" id="L249">				aadblPdotSIGMAdot_PTranspose_plusOMEGA[i][j] = aadblPdotSIGMAdot_PTranspose_[i][j] + aadblInputOmega[i][j];</span>
 
-<span class="fc" id="L215">				System.out.println (</span>
+<span class="fc" id="L251">				System.out.println (</span>
 					&quot;\t{P.SIGMA.PTRANSPOSE+OMEGA}[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L217">					FormatUtil.FormatDouble (aadblPdotSIGMAdot_PTranspose_plusOMEGA[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L253">					FormatUtil.FormatDouble (aadblPdotSIGMAdot_PTranspose_plusOMEGA[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L221">		System.out.println();</span>
+<span class="fc" id="L257">		System.out.println();</span>
 
-<span class="fc" id="L223">		double[][] aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse = Matrix.InvertUsingGaussianElimination (aadblPdotSIGMAdot_PTranspose_plusOMEGA);</span>
+<span class="fc" id="L259">		double[][] aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse = Matrix.InvertUsingGaussianElimination (aadblPdotSIGMAdot_PTranspose_plusOMEGA);</span>
 
-<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (int i = 0; i &lt; aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse.length; ++i)</span>
-<span class="fc bfc" id="L226" title="All 2 branches covered.">			for (int j = 0; j &lt; aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse[0].length; ++j) {</span>
-<span class="fc" id="L227">				System.out.println (</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int i = 0; i &lt; aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse.length; ++i)</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">			for (int j = 0; j &lt; aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse[0].length; ++j) {</span>
+<span class="fc" id="L263">				System.out.println (</span>
 					&quot;\t{P.SIGMA.PTRANSPOSE+OMEGA}^(-1)[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L229">					FormatUtil.FormatDouble (aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L265">					FormatUtil.FormatDouble (aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L233">		System.out.println();</span>
+<span class="fc" id="L269">		System.out.println();</span>
 
-<span class="fc" id="L235">		double[] aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__ = Matrix.Product (</span>
+<span class="fc" id="L271">		double[] aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__ = Matrix.Product (</span>
 			aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse,
 			adblQMinus_PdotPI_
 		);
 
-<span class="fc bfc" id="L240" title="All 2 branches covered.">		for (int i = 0; i &lt; aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__.length; ++i)</span>
-<span class="fc" id="L241">			System.out.println (</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">		for (int i = 0; i &lt; aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__.length; ++i)</span>
+<span class="fc" id="L277">			System.out.println (</span>
 				&quot;\t{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{Q-P.PI}[&quot; + i + &quot;] =&gt;&quot; +
-<span class="fc" id="L243">				FormatUtil.FormatDouble (aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__[i], 1, 6, 1.)</span>
+<span class="fc" id="L279">				FormatUtil.FormatDouble (aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__[i], 1, 6, 1.)</span>
 			);
 
-<span class="fc" id="L246">		System.out.println();</span>
+<span class="fc" id="L282">		System.out.println();</span>
 
-<span class="fc" id="L248">		double[] aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__ = Matrix.Product (</span>
+<span class="fc" id="L284">		double[] aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__ = Matrix.Product (</span>
 			aadblSIGMAdot_Ptranspose_,
 			aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__
 		);
 
-<span class="fc bfc" id="L253" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__.length; ++i)</span>
-<span class="fc" id="L254">			System.out.println (</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__.length; ++i)</span>
+<span class="fc" id="L290">			System.out.println (</span>
 				&quot;\t{SIGMA.PTRANSPOSE}{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{Q-P.PI}[&quot; + i + &quot;] =&gt;&quot; +
-<span class="fc" id="L256">				FormatUtil.FormatDouble (aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__[i], 1, 6, 1.)</span>
+<span class="fc" id="L292">				FormatUtil.FormatDouble (aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__[i], 1, 6, 1.)</span>
 			);
 
-<span class="fc" id="L259">		System.out.println();</span>
+<span class="fc" id="L295">		System.out.println();</span>
 
-<span class="fc" id="L261">		double[] adblPIHAT = new double[adblPI.length];</span>
+<span class="fc" id="L297">		double[] adblPIHAT = new double[adblPI.length];</span>
 
-<span class="fc bfc" id="L263" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPIHAT.length; ++i) {</span>
-<span class="fc" id="L264">			adblPIHAT[i] = adblPI[i] + aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__[i];</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPIHAT.length; ++i) {</span>
+<span class="fc" id="L300">			adblPIHAT[i] = adblPI[i] + aadblSIGMAdot$Ptranspose$__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dot_Qminus__PdotPI__[i];</span>
 
-<span class="fc" id="L266">			System.out.println (</span>
+<span class="fc" id="L302">			System.out.println (</span>
 				&quot;\tPIHAT=PI+{SIGMA.PTRANSPOSE}{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{Q-P.PI}[&quot; + i + &quot;] =&gt;&quot; +
-<span class="fc" id="L268">				FormatUtil.FormatDouble (adblPIHAT[i], 1, 1, 100.) + &quot;%&quot;</span>
+<span class="fc" id="L304">				FormatUtil.FormatDouble (adblPIHAT[i], 1, 1, 100.) + &quot;%&quot;</span>
 			);
 		}
 
-<span class="fc" id="L272">		System.out.println();</span>
+<span class="fc" id="L308">		System.out.println();</span>
 
-<span class="fc" id="L274">		double[][] aadblPdotSIGMA = Matrix.Product (</span>
+<span class="fc" id="L310">		double[][] aadblPdotSIGMA = Matrix.Product (</span>
 			aadblInputP,
 			aadblSIGMA
 		);
 
-<span class="fc bfc" id="L279" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblPdotSIGMA.length; ++i)</span>
-<span class="fc bfc" id="L280" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblPdotSIGMA[0].length; ++j)</span>
-<span class="fc" id="L281">				System.out.println (</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblPdotSIGMA.length; ++i)</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblPdotSIGMA[0].length; ++j)</span>
+<span class="fc" id="L317">				System.out.println (</span>
 					&quot;\tP.SIGMA[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L283">					FormatUtil.FormatDouble (aadblPdotSIGMA[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L319">					FormatUtil.FormatDouble (aadblPdotSIGMA[i][j], 1, 6, 1.)</span>
 				);
 
-<span class="fc" id="L286">		System.out.println();</span>
+<span class="fc" id="L322">		System.out.println();</span>
 
-<span class="fc" id="L288">		double[][] aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA = Matrix.Product (</span>
+<span class="fc" id="L324">		double[][] aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA = Matrix.Product (</span>
 			aadbl$PdotSIGMAdot_PTranspose_plusOMEGA$inverse,
 			aadblPdotSIGMA
 		);
 
-<span class="fc bfc" id="L293" title="All 2 branches covered.">		for (int i = 0; i &lt; aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA.length; ++i)</span>
-<span class="fc bfc" id="L294" title="All 2 branches covered.">			for (int j = 0; j &lt; aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[0].length; ++j)</span>
-<span class="fc" id="L295">				System.out.println (</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">		for (int i = 0; i &lt; aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA.length; ++i)</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">			for (int j = 0; j &lt; aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[0].length; ++j)</span>
+<span class="fc" id="L331">				System.out.println (</span>
 					&quot;\t{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA}[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L297">					FormatUtil.FormatDouble (aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L333">					FormatUtil.FormatDouble (aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j], 1, 6, 1.)</span>
 				);
 
-<span class="fc" id="L300">		System.out.println();</span>
+<span class="fc" id="L336">		System.out.println();</span>
 
-<span class="fc" id="L302">		double[][] aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA = Matrix.Product (</span>
+<span class="fc" id="L338">		double[][] aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA = Matrix.Product (</span>
 			aadblSIGMAdot_Ptranspose_,
 			aadbl__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA
 		);
 
-<span class="fc bfc" id="L307" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA.length; ++i)</span>
-<span class="fc bfc" id="L308" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[0].length; ++j)</span>
-<span class="fc" id="L309">				System.out.println (</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA.length; ++i)</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[0].length; ++j)</span>
+<span class="fc" id="L345">				System.out.println (</span>
 					&quot;\t{SIGMA.PTRANSPOSE}.{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA}[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L311">					FormatUtil.FormatDouble (aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L347">					FormatUtil.FormatDouble (aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j], 1, 6, 1.)</span>
 				);
 
-<span class="fc" id="L314">		System.out.println();</span>
+<span class="fc" id="L350">		System.out.println();</span>
 
-<span class="fc" id="L316">		double[][] aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA = new double[iNumSovereign][iNumSovereign];</span>
+<span class="fc" id="L352">		double[][] aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA = new double[iNumSovereign][iNumSovereign];</span>
 
-<span class="fc bfc" id="L318" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA.length; ++i)</span>
-<span class="fc bfc" id="L319" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[0].length; ++j) {</span>
-<span class="fc" id="L320">				aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j] =</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA.length; ++i)</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[0].length; ++j) {</span>
+<span class="fc" id="L356">				aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j] =</span>
 					aadblSIGMA[i][j] - aadblSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j];
 
-<span class="fc" id="L323">				System.out.println (</span>
+<span class="fc" id="L359">				System.out.println (</span>
 					&quot;\tSIGMA-{SIGMA.PTRANSPOSE}.{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA}[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L325">					FormatUtil.FormatDouble (aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L361">					FormatUtil.FormatDouble (aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L329">		System.out.println();</span>
+<span class="fc" id="L365">		System.out.println();</span>
 
-<span class="fc" id="L331">		double[][] aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$ =</span>
+<span class="fc" id="L367">		double[][] aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$ =</span>
 			new double[iNumSovereign][iNumSovereign];
 
-<span class="fc bfc" id="L334" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$.length; ++i)</span>
-<span class="fc bfc" id="L335" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[0].length; ++j) {</span>
-<span class="fc" id="L336">				aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j] =</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$.length; ++i)</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[0].length; ++j) {</span>
+<span class="fc" id="L372">				aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j] =</span>
 					dblInputTAU * aadblSIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA[i][j];
 
-<span class="fc" id="L339">				System.out.println (</span>
+<span class="fc" id="L375">				System.out.println (</span>
 					&quot;\tTAU.(SIGMA-{SIGMA.PTRANSPOSE}.{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA})[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L341">					FormatUtil.FormatDouble (aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L377">					FormatUtil.FormatDouble (aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L345">		System.out.println();</span>
+<span class="fc" id="L381">		System.out.println();</span>
 
-<span class="fc" id="L347">		double[][] aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$ =</span>
+<span class="fc" id="L383">		double[][] aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$ =</span>
 			new double[iNumSovereign][iNumSovereign];
 
-<span class="fc bfc" id="L350" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$.length; ++i)</span>
-<span class="fc bfc" id="L351" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[0].length; ++j) {</span>
-<span class="fc" id="L352">				aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j] =</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$.length; ++i)</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[0].length; ++j) {</span>
+<span class="fc" id="L388">				aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j] =</span>
 					aadblSIGMA[i][j] +
 						aadblTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j];
 
-<span class="fc" id="L356">				System.out.println (</span>
+<span class="fc" id="L392">				System.out.println (</span>
 					&quot;\tSIGMA+TAU.(SIGMA-{SIGMA.PTRANSPOSE}.{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA})[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L358">					FormatUtil.FormatDouble (aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L394">					FormatUtil.FormatDouble (aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L362">		System.out.println();</span>
+<span class="fc" id="L398">		System.out.println();</span>
 
-<span class="fc" id="L364">		double[][] aadblSIGMAPInverse = Matrix.InvertUsingGaussianElimination (aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$);</span>
+<span class="fc" id="L400">		double[][] aadblSIGMAPInverse = Matrix.InvertUsingGaussianElimination (aadblSIGMAplusTAUdot$$SIGMAminusSIGMAdot_Ptranspose_dot__$PdotSIGMAdot_PTranspose_plusOMEGA$inverse__dotPdotSIGMA$$);</span>
 
-<span class="fc bfc" id="L366" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAPInverse.length; ++i)</span>
-<span class="fc bfc" id="L367" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAPInverse[0].length; ++j) {</span>
-<span class="fc" id="L368">				System.out.println (</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblSIGMAPInverse.length; ++i)</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblSIGMAPInverse[0].length; ++j) {</span>
+<span class="fc" id="L404">				System.out.println (</span>
 					&quot;\t[SIGMA+TAU.(SIGMA-{SIGMA.PTRANSPOSE}.{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA})]^(-1)[&quot; + i + &quot;][&quot; + j + &quot;] =&gt;&quot; +
-<span class="fc" id="L370">					FormatUtil.FormatDouble (aadblSIGMAPInverse[i][j], 1, 6, 1.)</span>
+<span class="fc" id="L406">					FormatUtil.FormatDouble (aadblSIGMAPInverse[i][j], 1, 6, 1.)</span>
 				);
 			}
 
-<span class="fc" id="L374">		System.out.println();</span>
+<span class="fc" id="L410">		System.out.println();</span>
 
-<span class="fc" id="L376">		double[] adblSIGMAPInversedotPIHAT = Matrix.Product (</span>
+<span class="fc" id="L412">		double[] adblSIGMAPInversedotPIHAT = Matrix.Product (</span>
 			aadblSIGMAPInverse,
 			adblPIHAT
 		);
 
-<span class="fc bfc" id="L381" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSIGMAPInversedotPIHAT.length; ++i) {</span>
-<span class="fc" id="L382">			adblSIGMAPInversedotPIHAT[i] /= dblInputDELTA;</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSIGMAPInversedotPIHAT.length; ++i) {</span>
+<span class="fc" id="L418">			adblSIGMAPInversedotPIHAT[i] /= dblInputDELTA;</span>
 
-<span class="fc" id="L384">			System.out.println (</span>
+<span class="fc" id="L420">			System.out.println (</span>
 				&quot;\t[SIGMA+TAU.(SIGMA-{SIGMA.PTRANSPOSE}.{P.SIGMA.PTRANSPOSE+OMEGA}^(-1).{P.SIGMA})]^(-1).PIHAT[&quot; + i + &quot;] =&gt;&quot; +
-<span class="fc" id="L386">				FormatUtil.FormatDouble (adblSIGMAPInversedotPIHAT[i], 1, 1, 100.) + &quot;%&quot;</span>
+<span class="fc" id="L422">				FormatUtil.FormatDouble (adblSIGMAPInversedotPIHAT[i], 1, 1, 100.) + &quot;%&quot;</span>
 			);
 		}
 
-<span class="fc" id="L390">		System.out.println (&quot;\n\n\t|----------------||&quot;);</span>
+<span class="fc" id="L426">		System.out.println (&quot;\n\n\t|----------------||&quot;);</span>
 
-<span class="fc" id="L392">		System.out.println (&quot;\t|  EQUILIBRIUM   ||&quot;);</span>
+<span class="fc" id="L428">		System.out.println (&quot;\t|  EQUILIBRIUM   ||&quot;);</span>
 
-<span class="fc" id="L394">		System.out.println (&quot;\t|    RETURNS     ||&quot;);</span>
+<span class="fc" id="L430">		System.out.println (&quot;\t|    RETURNS     ||&quot;);</span>
 
-<span class="fc" id="L396">		System.out.println (&quot;\t|----------------||&quot;);</span>
+<span class="fc" id="L432">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="fc bfc" id="L398" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPI.length; ++i) {</span>
-<span class="fc" id="L399">			System.out.println (</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPI.length; ++i) {</span>
+<span class="fc" id="L435">			System.out.println (</span>
 				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L401">				FormatUtil.FormatDouble (adblPI[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L437">				FormatUtil.FormatDouble (adblPI[i], 2, 1, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L405">		System.out.println (&quot;\n\n\t|----------------||&quot;);</span>
+<span class="fc" id="L441">		System.out.println (&quot;\n\n\t|----------------||&quot;);</span>
 
-<span class="fc" id="L407">		System.out.println (&quot;\t| BLACK LITERMAN ||&quot;);</span>
+<span class="fc" id="L443">		System.out.println (&quot;\t| BLACK LITERMAN ||&quot;);</span>
 
-<span class="fc" id="L409">		System.out.println (&quot;\t|    RETURNS     ||&quot;);</span>
+<span class="fc" id="L445">		System.out.println (&quot;\t|    RETURNS     ||&quot;);</span>
 
-<span class="fc" id="L411">		System.out.println (&quot;\t|----------------||&quot;);</span>
+<span class="fc" id="L447">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="fc bfc" id="L413" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPIHAT.length; ++i) {</span>
-<span class="fc" id="L414">			System.out.println (</span>
-				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L416">				FormatUtil.FormatDouble (adblPIHAT[i], 2, 1, 100.) + &quot;% ||&quot;</span>
-			);
-		}
-
-<span class="fc" id="L420">		System.out.println (&quot;\t|----------------||&quot;);</span>
-
-<span class="fc" id="L422">		System.out.println (&quot;\t|----------------||&quot;);</span>
-
-<span class="fc" id="L424">		System.out.println (&quot;\n\n\t|-----------------||&quot;);</span>
-
-<span class="fc" id="L426">		System.out.println (&quot;\t|   EQUILIBRIUM   ||&quot;);</span>
-
-<span class="fc" id="L428">		System.out.println (&quot;\t|   ALLOCATION    ||&quot;);</span>
-
-<span class="fc" id="L430">		System.out.println (&quot;\t|-----------------||&quot;);</span>
-
-<span class="fc bfc" id="L432" title="All 2 branches covered.">		for (int i = 0; i &lt; adblInputW.length; ++i) {</span>
-<span class="fc" id="L433">			System.out.println (</span>
-				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L435">				FormatUtil.FormatDouble (adblInputW[i] / (1. + dblInputTAU), 2, 1, 100.) + &quot;% ||&quot;</span>
-			);
-		}
-
-<span class="fc" id="L439">		System.out.println (&quot;\t|-----------------||&quot;);</span>
-
-<span class="fc" id="L441">		System.out.println (&quot;\n\n\t|-----------------||&quot;);</span>
-
-<span class="fc" id="L443">		System.out.println (&quot;\t| BLACK LITERMAN  ||&quot;);</span>
-
-<span class="fc" id="L445">		System.out.println (&quot;\t|    ALLOCATION   ||&quot;);</span>
-
-<span class="fc" id="L447">		System.out.println (&quot;\t|-----------------||&quot;);</span>
-
-<span class="fc bfc" id="L449" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSIGMAPInversedotPIHAT.length; ++i) {</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">		for (int i = 0; i &lt; adblPIHAT.length; ++i) {</span>
 <span class="fc" id="L450">			System.out.println (</span>
-				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L452">				FormatUtil.FormatDouble (adblSIGMAPInversedotPIHAT[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt;&quot; +
+<span class="fc" id="L452">				FormatUtil.FormatDouble (adblPIHAT[i], 2, 1, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L456">		System.out.println (&quot;\t|-----------------||&quot;);</span>
+<span class="fc" id="L456">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="fc" id="L458">		System.out.println (&quot;\n\n\t|------------------||&quot;);</span>
+<span class="fc" id="L458">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="fc" id="L460">		System.out.println (&quot;\t|  BLACK LITERMAN  ||&quot;);</span>
+<span class="fc" id="L460">		System.out.println (&quot;\n\n\t|-----------------||&quot;);</span>
 
-<span class="fc" id="L462">		System.out.println (&quot;\t| ALLOCATION SHIFT ||&quot;);</span>
+<span class="fc" id="L462">		System.out.println (&quot;\t|   EQUILIBRIUM   ||&quot;);</span>
 
-<span class="fc" id="L464">		System.out.println (&quot;\t|------------------||&quot;);</span>
+<span class="fc" id="L464">		System.out.println (&quot;\t|   ALLOCATION    ||&quot;);</span>
 
-<span class="fc bfc" id="L466" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSIGMAPInversedotPIHAT.length; ++i) {</span>
-<span class="fc" id="L467">			System.out.println (</span>
+<span class="fc" id="L466">		System.out.println (&quot;\t|-----------------||&quot;);</span>
+
+<span class="fc bfc" id="L468" title="All 2 branches covered.">		for (int i = 0; i &lt; adblInputW.length; ++i) {</span>
+<span class="fc" id="L469">			System.out.println (</span>
 				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L469">				FormatUtil.FormatDouble (adblSIGMAPInversedotPIHAT[i] - (adblInputW[i] / (1. + dblInputTAU)), 2, 1, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L471">				FormatUtil.FormatDouble (adblInputW[i] / (1. + dblInputTAU), 2, 1, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L473">		System.out.println (&quot;\t|------------------||&quot;);</span>
-<span class="fc" id="L474">	}</span>
+<span class="fc" id="L475">		System.out.println (&quot;\t|-----------------||&quot;);</span>
+
+<span class="fc" id="L477">		System.out.println (&quot;\n\n\t|-----------------||&quot;);</span>
+
+<span class="fc" id="L479">		System.out.println (&quot;\t| BLACK LITERMAN  ||&quot;);</span>
+
+<span class="fc" id="L481">		System.out.println (&quot;\t|    ALLOCATION   ||&quot;);</span>
+
+<span class="fc" id="L483">		System.out.println (&quot;\t|-----------------||&quot;);</span>
+
+<span class="fc bfc" id="L485" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSIGMAPInversedotPIHAT.length; ++i) {</span>
+<span class="fc" id="L486">			System.out.println (</span>
+				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt; &quot; +
+<span class="fc" id="L488">				FormatUtil.FormatDouble (adblSIGMAPInversedotPIHAT[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L492">		System.out.println (&quot;\t|-----------------||&quot;);</span>
+
+<span class="fc" id="L494">		System.out.println (&quot;\n\n\t|------------------||&quot;);</span>
+
+<span class="fc" id="L496">		System.out.println (&quot;\t|  BLACK LITERMAN  ||&quot;);</span>
+
+<span class="fc" id="L498">		System.out.println (&quot;\t| ALLOCATION SHIFT ||&quot;);</span>
+
+<span class="fc" id="L500">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="fc bfc" id="L502" title="All 2 branches covered.">		for (int i = 0; i &lt; adblSIGMAPInversedotPIHAT.length; ++i) {</span>
+<span class="fc" id="L503">			System.out.println (</span>
+				&quot;\t| [&quot; + astrInputSovereign[i] + &quot;] =&gt; &quot; +
+<span class="fc" id="L505">				FormatUtil.FormatDouble (adblSIGMAPInversedotPIHAT[i] - (adblInputW[i] / (1. + dblInputTAU)), 2, 1, 100.) + &quot;%  ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L509">		System.out.println (&quot;\t|------------------||&quot;);</span>
+
+<span class="fc" id="L511">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L512">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

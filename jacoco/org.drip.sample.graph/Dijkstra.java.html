@@ -16,31 +16,50 @@ import org.drip.spaces.graph.ShortestPathTree;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -57,31 +76,48 @@ import org.drip.spaces.graph.ShortestPathTree;
  */
 
 /**
- * Dijkstra illustrates the Execution of the Dijkstra Algorithm. The References are:
+ * &lt;i&gt;Dijkstra&lt;/i&gt; illustrates the Execution of the Dijkstra Algorithm. The References are:
  *  
- *  1) Wikipedia (2018a): Graph (Abstract Data Type)
- *  	https://en.wikipedia.org/wiki/Graph_(abstract_data_type).
- *  
- *  2) Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory.
- *  
- *  3) Wikipedia (2018c): Graph (Discrete Mathematics)
- *  	https://en.wikipedia.org/wiki/Graph_(discrete_mathematics).
- *  
- *  4) Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
- *  
- *  5) Wikipedia (2018e): Bellman-Ford Algorithm
- *  	https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm.
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018a): Graph (Abstract Data Type)
+ *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018c): Graph (Discrete Mathematics)
+ *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018e): Bellman-Ford Algorithm
+ *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/graph/README.md&quot;&gt;Graph Builder and Navigator&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L78">public class Dijkstra</span>
+<span class="nc" id="L114">public class Dijkstra</span>
 {
 
 	private static final Topography SetTopography()
 		throws Exception
 	{
-<span class="nc" id="L84">		String[] vertexArray = new String[]</span>
+<span class="nc" id="L120">		String[] vertexArray = new String[]</span>
 		{
 			&quot;Delhi     &quot;,
 			&quot;Bombay    &quot;,
@@ -95,14 +131,14 @@ import org.drip.spaces.graph.ShortestPathTree;
 			&quot;Jaipur    &quot;
 		};
 
-<span class="nc" id="L98">		Topography topography = new Topography();</span>
+<span class="nc" id="L134">		Topography topography = new Topography();</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">		for (String vertexName : vertexArray)</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (String vertexName : vertexArray)</span>
 		{
-<span class="nc" id="L102">			topography.addVertex (vertexName);</span>
+<span class="nc" id="L138">			topography.addVertex (vertexName);</span>
 		}
 
-<span class="nc" id="L105">		topography.addEdge (</span>
+<span class="nc" id="L141">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[1], // Bombay
@@ -110,7 +146,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L113">		topography.addEdge (</span>
+<span class="nc" id="L149">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[2], // Madras
@@ -118,7 +154,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L121">		topography.addEdge (</span>
+<span class="nc" id="L157">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[2], // Madras
@@ -126,7 +162,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L129">		topography.addEdge (</span>
+<span class="nc" id="L165">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[3], // Calcutta
@@ -134,7 +170,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L137">		topography.addEdge (</span>
+<span class="nc" id="L173">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[3], // Calcutta
@@ -142,7 +178,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L145">		topography.addEdge (</span>
+<span class="nc" id="L181">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[3], // Calcutta
@@ -150,7 +186,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L153">		topography.addEdge (</span>
+<span class="nc" id="L189">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[4], // Bangalore
@@ -158,7 +194,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L161">		topography.addEdge (</span>
+<span class="nc" id="L197">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[5], // Hyderabad
@@ -166,7 +202,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L169">		topography.addEdge (</span>
+<span class="nc" id="L205">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[2], // Madras
 				vertexArray[6], // Cochin
@@ -174,7 +210,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L177">		topography.addEdge (</span>
+<span class="nc" id="L213">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[7], // Pune
@@ -182,7 +218,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L185">		topography.addEdge (</span>
+<span class="nc" id="L221">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[1], // Bombay
 				vertexArray[8], // Ahmedabad
@@ -190,7 +226,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L193">		topography.addEdge (</span>
+<span class="nc" id="L229">		topography.addEdge (</span>
 			new Edge (
 				vertexArray[0], // Delhi
 				vertexArray[9], // Jaipur
@@ -198,7 +234,7 @@ import org.drip.spaces.graph.ShortestPathTree;
 			)
 		);
 
-<span class="nc" id="L201">		return topography;</span>
+<span class="nc" id="L237">		return topography;</span>
 	}
 
 	private static final String PathVertexes (
@@ -207,62 +243,62 @@ import org.drip.spaces.graph.ShortestPathTree;
 		final ShortestPathTree vertexPeripheryMap)
 		throws Exception
 	{
-<span class="nc" id="L210">		String path = &quot;&quot;;</span>
-<span class="nc" id="L211">		String vertex = destination;</span>
+<span class="nc" id="L246">		String path = &quot;&quot;;</span>
+<span class="nc" id="L247">		String vertex = destination;</span>
 
-<span class="nc" id="L213">		ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);</span>
+<span class="nc" id="L249">		ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);</span>
 
-<span class="nc bnc" id="L215" title="All 2 branches missed.">		while (!source.equalsIgnoreCase (vertexPeriphery.current()))</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		while (!source.equalsIgnoreCase (vertexPeriphery.current()))</span>
 		{
-<span class="nc" id="L217">			path = path + vertexPeriphery.current() + &quot; &lt;- &quot;;</span>
+<span class="nc" id="L253">			path = path + vertexPeriphery.current() + &quot; &lt;- &quot;;</span>
 
-<span class="nc" id="L219">			vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertexPeriphery.preceeding());</span>
+<span class="nc" id="L255">			vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertexPeriphery.preceeding());</span>
 		}
 
-<span class="nc" id="L222">		path = path + source;</span>
-<span class="nc" id="L223">		return path;</span>
+<span class="nc" id="L258">		path = path + source;</span>
+<span class="nc" id="L259">		return path;</span>
 	}
 
 	public static void main (
 		final String[] inputArray)
 		throws Exception
 	{
-<span class="nc" id="L230">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L266">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L232">		Topography topography = SetTopography();</span>
+<span class="nc" id="L268">		Topography topography = SetTopography();</span>
 
-<span class="nc" id="L234">		DijkstraScheme dijkstraScheme = new DijkstraScheme (topography);</span>
+<span class="nc" id="L270">		DijkstraScheme dijkstraScheme = new DijkstraScheme (topography);</span>
 
-<span class="nc" id="L236">		Set&lt;String&gt; vertexNameSet = topography.vertexNameSet();</span>
+<span class="nc" id="L272">		Set&lt;String&gt; vertexNameSet = topography.vertexNameSet();</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		for (String source : vertexNameSet)</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (String source : vertexNameSet)</span>
 		{
-<span class="nc" id="L240">			ShortestPathTree vertexPeripheryMap = dijkstraScheme.spf (source).vertexPeripheryMap();</span>
+<span class="nc" id="L276">			ShortestPathTree vertexPeripheryMap = dijkstraScheme.spf (source).vertexPeripheryMap();</span>
 
-<span class="nc" id="L242">			System.out.println (&quot;\t||------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L278">			System.out.println (&quot;\t||------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">			for (String vertex : vertexNameSet)</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			for (String vertex : vertexNameSet)</span>
 			{
-<span class="nc bnc" id="L246" title="All 2 branches missed.">				if (!vertex.equalsIgnoreCase(source))</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">				if (!vertex.equalsIgnoreCase(source))</span>
 				{
-<span class="nc" id="L248">					ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);</span>
+<span class="nc" id="L284">					ShortestPathVertex vertexPeriphery = vertexPeripheryMap.shortestPathVertex (vertex);</span>
 
-<span class="nc" id="L250">					System.out.println (</span>
+<span class="nc" id="L286">					System.out.println (</span>
 						&quot;\t|| &quot; + source + &quot; to &quot; + vertex + &quot; is &quot; +
-<span class="nc" id="L252">						FormatUtil.FormatDouble (vertexPeriphery.weightFromSource(), 4, 0, 1.) +</span>
-<span class="nc" id="L253">						&quot; | Previous is &quot; + vertexPeriphery.preceeding() + &quot; || &quot; + PathVertexes (</span>
+<span class="nc" id="L288">						FormatUtil.FormatDouble (vertexPeriphery.weightFromSource(), 4, 0, 1.) +</span>
+<span class="nc" id="L289">						&quot; | Previous is &quot; + vertexPeriphery.preceeding() + &quot; || &quot; + PathVertexes (</span>
 							source,
 							vertex,
 							vertexPeripheryMap
 						)
 					);
 				}
-<span class="nc" id="L260">			}</span>
+<span class="nc" id="L296">			}</span>
 
-<span class="nc" id="L262">			System.out.println (&quot;\t||------------------------------------------------------------||\n&quot;);</span>
-<span class="nc" id="L263">		}</span>
+<span class="nc" id="L298">			System.out.println (&quot;\t||------------------------------------------------------------||\n&quot;);</span>
+<span class="nc" id="L299">		}</span>
 
-<span class="nc" id="L265">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L266">	}</span>
+<span class="nc" id="L301">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L302">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -11,33 +11,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -54,19 +73,34 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * ExpectedExcessReturnsWeights reconciles the Expected Returns and the corresponding Weights for different
- * 	Input Asset Distributions using the Black-Litterman Model Process. The References are:
+ * &lt;i&gt;ExpectedExcessReturnsWeights&lt;/i&gt; reconciles the Expected Returns and the corresponding Weights for
+ * different Input Asset Distributions using the Black-Litterman Model Process. The References are:
  *  
- *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
- *  	Sachs Asset Management
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios,
+ *  			Goldman Sachs Asset Management
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User
+ *  			Specified Confidence Levels, Ibbotson Associates, Chicago
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  *  
- *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
- *  	Confidence Levels, Ibbotson Associates, Chicago
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/README.md&quot;&gt;Idzorek (2005) User Confidence Setting&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L69">public class ExpectedExcessReturnsWeights {</span>
+<span class="nc" id="L103">public class ExpectedExcessReturnsWeights {</span>
 
 	private static final void ForwardOptimizationWeights (
 		final ForwardReverseOptimizationOutput from,
@@ -75,51 +109,51 @@ import org.drip.service.env.EnvManager;
 		final int iRight,
 		final String strHeader)
 	{
-<span class="fc" id="L78">		Portfolio fromPortfolio = from.optimalPortfolio();</span>
+<span class="fc" id="L112">		Portfolio fromPortfolio = from.optimalPortfolio();</span>
 
-<span class="fc" id="L80">		String[] astrAssetID = fromPortfolio.id();</span>
+<span class="fc" id="L114">		String[] astrAssetID = fromPortfolio.id();</span>
 
-<span class="fc" id="L82">		double[] adblWeight = fromPortfolio.weights();</span>
+<span class="fc" id="L116">		double[] adblWeight = fromPortfolio.weights();</span>
 
-<span class="fc" id="L84">		AssetComponent acMaxWeight = fromPortfolio.maxWeight();</span>
+<span class="fc" id="L118">		AssetComponent acMaxWeight = fromPortfolio.maxWeight();</span>
 
-<span class="fc" id="L86">		AssetComponent acMinWeight = fromPortfolio.minWeight();</span>
+<span class="fc" id="L120">		AssetComponent acMinWeight = fromPortfolio.minWeight();</span>
 
-<span class="fc" id="L88">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L122">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L90">		System.out.println (strHeader);</span>
+<span class="fc" id="L124">		System.out.println (strHeader);</span>
 
-<span class="fc" id="L92">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L126">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L94">		System.out.println (&quot;\t|                  ID               =&gt;  CALC  | VERIFY ||&quot;);</span>
+<span class="fc" id="L128">		System.out.println (&quot;\t|                  ID               =&gt;  CALC  | VERIFY ||&quot;);</span>
 
-<span class="fc" id="L96">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L130">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L98" title="All 2 branches covered.">		for (int i = 0; i &lt; adblWeight.length; ++i)</span>
-<span class="fc" id="L99">			System.out.println (</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; adblWeight.length; ++i)</span>
+<span class="fc" id="L133">			System.out.println (</span>
 				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L101">				FormatUtil.FormatDouble (adblWeight[i], iLeft, iRight, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L102">				FormatUtil.FormatDouble (adblWeightReconciler[i], iLeft, iRight, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L135">				FormatUtil.FormatDouble (adblWeight[i], iLeft, iRight, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L136">				FormatUtil.FormatDouble (adblWeightReconciler[i], iLeft, iRight, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L105">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L139">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L107">		System.out.println (&quot;\t| HIGH : &quot; + acMaxWeight.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (acMaxWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\t| HIGH : &quot; + acMaxWeight.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (acMaxWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
 
-<span class="fc" id="L109">		System.out.println (&quot;\t| LOW  : &quot; + acMinWeight.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (acMinWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+<span class="fc" id="L143">		System.out.println (&quot;\t| LOW  : &quot; + acMinWeight.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (acMinWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
 
-<span class="fc" id="L111">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L112">	}</span>
+<span class="fc" id="L145">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L146">	}</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L118">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L152">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L120">		double dblRiskAversion = 3.07;</span>
+<span class="fc" id="L154">		double dblRiskAversion = 3.07;</span>
 
-<span class="fc" id="L122">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L156">		String[] astrAssetID = new String[] {</span>
 			&quot;US BONDS                       &quot;,
 			&quot;INTERNATIONAL BONDS            &quot;,
 			&quot;US LARGE GROWTH                &quot;,
@@ -130,7 +164,7 @@ import org.drip.service.env.EnvManager;
 			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
 		};
 
-<span class="fc" id="L133">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L167">		double[] adblAssetEquilibriumWeight = new double[] {</span>
 			0.1934,
 			0.2613,
 			0.1209,
@@ -141,7 +175,7 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="fc" id="L144">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L178">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -152,7 +186,7 @@ import org.drip.service.env.EnvManager;
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
 
-<span class="fc" id="L155">		double[] adblAssetSpaceHistoricalReturns = new double[] {</span>
+<span class="fc" id="L189">		double[] adblAssetSpaceHistoricalReturns = new double[] {</span>
 			 0.0315,
 			 0.0175,
 			-0.0639,
@@ -163,7 +197,7 @@ import org.drip.service.env.EnvManager;
 			-0.0526
 		};
 
-<span class="fc" id="L166">		double[] adblAssetSpaceCAPMReturns = new double[] {</span>
+<span class="fc" id="L200">		double[] adblAssetSpaceCAPMReturns = new double[] {</span>
 			0.0008,
 			0.0067,
 			0.0641,
@@ -174,7 +208,7 @@ import org.drip.service.env.EnvManager;
 			0.0660
 		};
 
-<span class="fc" id="L177">		double[] adblAssetSpaceGSMIReturns = new double[] {</span>
+<span class="fc" id="L211">		double[] adblAssetSpaceGSMIReturns = new double[] {</span>
 			 0.0002,
 			 0.0018,
 			 0.0557,
@@ -185,7 +219,7 @@ import org.drip.service.env.EnvManager;
 			 0.0560
 		};
 
-<span class="fc" id="L188">		double[] adblHistoricalPortfolioWeightReconciler = new double[] {</span>
+<span class="fc" id="L222">		double[] adblHistoricalPortfolioWeightReconciler = new double[] {</span>
 			 11.4432,
 			 -1.0459,
 			  0.5459,
@@ -196,7 +230,7 @@ import org.drip.service.env.EnvManager;
 			  0.1459
 		};
 
-<span class="fc" id="L199">		double[] adblCAPMGSMIPortfolioWeightReconciler = new double[] {</span>
+<span class="fc" id="L233">		double[] adblCAPMGSMIPortfolioWeightReconciler = new double[] {</span>
 			  0.2133,
 			  0.0519,
 			  0.1080,
@@ -207,8 +241,8 @@ import org.drip.service.env.EnvManager;
 			  0.0214
 		};
 
-<span class="fc" id="L210">		ForwardReverseOptimizationOutput fromPrior = ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L211">			Portfolio.Standard (</span>
+<span class="fc" id="L244">		ForwardReverseOptimizationOutput fromPrior = ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L245">			Portfolio.Standard (</span>
 				astrAssetID,
 				adblAssetEquilibriumWeight
 			),
@@ -216,31 +250,31 @@ import org.drip.service.env.EnvManager;
 			dblRiskAversion
 		);
 
-<span class="fc" id="L219">		double[] adblImpliedEquilibriumExcessReturns = fromPrior.expectedAssetExcessReturns();</span>
+<span class="fc" id="L253">		double[] adblImpliedEquilibriumExcessReturns = fromPrior.expectedAssetExcessReturns();</span>
 
-<span class="fc" id="L221">		System.out.println (&quot;\n\t|---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L255">		System.out.println (&quot;\n\t|---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L223">		System.out.println (&quot;\t|               STARTING RETURNS SOURCES RECONCILIATION               ||&quot;);</span>
+<span class="fc" id="L257">		System.out.println (&quot;\t|               STARTING RETURNS SOURCES RECONCILIATION               ||&quot;);</span>
 
-<span class="fc" id="L225">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L259">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L227">		System.out.println (&quot;\t|                ID                 =&gt;  HIST  | GSMI  | CAPM  | IMPL  ||&quot;);</span>
+<span class="fc" id="L261">		System.out.println (&quot;\t|                ID                 =&gt;  HIST  | GSMI  | CAPM  | IMPL  ||&quot;);</span>
 
-<span class="fc" id="L229">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L263">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L231" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedEquilibriumExcessReturns.length; ++i)</span>
-<span class="fc" id="L232">			System.out.println (</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedEquilibriumExcessReturns.length; ++i)</span>
+<span class="fc" id="L266">			System.out.println (</span>
 				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L234">				FormatUtil.FormatDouble (adblAssetSpaceHistoricalReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L235">				FormatUtil.FormatDouble (adblAssetSpaceGSMIReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L236">				FormatUtil.FormatDouble (adblAssetSpaceCAPMReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L237">				FormatUtil.FormatDouble (dblRiskAversion * adblImpliedEquilibriumExcessReturns[i], 1, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L268">				FormatUtil.FormatDouble (adblAssetSpaceHistoricalReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L269">				FormatUtil.FormatDouble (adblAssetSpaceGSMIReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L270">				FormatUtil.FormatDouble (adblAssetSpaceCAPMReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L271">				FormatUtil.FormatDouble (dblRiskAversion * adblImpliedEquilibriumExcessReturns[i], 1, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L240">		System.out.println (&quot;\t|---------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L274">		System.out.println (&quot;\t|---------------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L242">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L243">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L276">		ForwardOptimizationWeights (</span>
+<span class="fc" id="L277">			ForwardReverseOptimizationOutput.Forward (</span>
 				astrAssetID,
 				adblAssetSpaceHistoricalReturns,
 				aadblAssetExcessReturnsCovariance,
@@ -252,8 +286,8 @@ import org.drip.service.env.EnvManager;
 			&quot;\t|             HISTORICAL WEIGHTS RECONCILER            ||&quot;
 		);
 
-<span class="fc" id="L255">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L256">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L289">		ForwardOptimizationWeights (</span>
+<span class="fc" id="L290">			ForwardReverseOptimizationOutput.Forward (</span>
 				astrAssetID,
 				adblAssetSpaceGSMIReturns,
 				aadblAssetExcessReturnsCovariance,
@@ -265,8 +299,8 @@ import org.drip.service.env.EnvManager;
 			&quot;\t|              CAPM GSMI WEIGHTS RECONCILER            ||&quot;
 		);
 
-<span class="fc" id="L268">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L269">			ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L302">		ForwardOptimizationWeights (</span>
+<span class="fc" id="L303">			ForwardReverseOptimizationOutput.Forward (</span>
 				astrAssetID,
 				adblAssetSpaceCAPMReturns,
 				aadblAssetExcessReturnsCovariance,
@@ -277,6 +311,8 @@ import org.drip.service.env.EnvManager;
 			1,
 			&quot;\t|             EQUILIBRIUM WEIGHTS RECONCILER           ||&quot;
 		);
-<span class="fc" id="L280">	}</span>
+
+<span class="fc" id="L315">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L316">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

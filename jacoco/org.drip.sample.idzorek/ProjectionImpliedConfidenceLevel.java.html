@@ -15,33 +15,52 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -58,31 +77,46 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * ProjectionImpliedConfidenceLevel reconciles the Implied Confidence Black-Litterman Model Process Levels
- * 	generated using the Idzorek Model. The References are:
+ * &lt;i&gt;ProjectionImpliedConfidenceLevel&lt;/i&gt; reconciles the Implied Confidence Black-Litterman Model Process
+ * Levels generated using the Idzorek Model. The References are:
  *  
- *  - He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios, Goldman
- *  	Sachs Asset Management
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		He. G., and R. Litterman (1999): The Intuition behind the Black-Litterman Model Portfolios,
+ *  			Goldman Sachs Asset Management
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User
+ *  			Specified Confidence Levels, Ibbotson Associates, Chicago
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
  *  
- *  - Idzorek, T. (2005): A Step-by-Step Guide to the Black-Litterman Model: Incorporating User-Specified
- *  	Confidence Levels, Ibbotson Associates, Chicago
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/README.md&quot;&gt;Idzorek (2005) User Confidence Setting&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L73">public class ProjectionImpliedConfidenceLevel {</span>
+<span class="nc" id="L107">public class ProjectionImpliedConfidenceLevel {</span>
 
 	public static final void main (
 		final String[] astArgs)
 		throws Exception
 	{
-<span class="fc" id="L79">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L113">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L81">		double dblTau = 0.025;</span>
-<span class="fc" id="L82">		double dblRiskAversion = 3.07;</span>
-<span class="fc" id="L83">		double dblRiskFreeRate = 0.00;</span>
+<span class="fc" id="L115">		double dblTau = 0.025;</span>
+<span class="fc" id="L116">		double dblRiskAversion = 3.07;</span>
+<span class="fc" id="L117">		double dblRiskFreeRate = 0.00;</span>
 
-<span class="fc" id="L85">		double[] adblCustomConfidenceWeightReconciler = new double[] {</span>
+<span class="fc" id="L119">		double[] adblCustomConfidenceWeightReconciler = new double[] {</span>
 			0.2988,
 			0.1559,
 			0.0935,
@@ -93,7 +127,7 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="fc" id="L96">		double[] adblFullConfidenceWeightReconciler = new double[] {</span>
+<span class="fc" id="L130">		double[] adblFullConfidenceWeightReconciler = new double[] {</span>
 			0.4382,
 			0.0165,
 			0.0381,
@@ -104,7 +138,7 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="fc" id="L107">		double[] adblCustomWeightDeviationReconciler = new double[] {</span>
+<span class="fc" id="L141">		double[] adblCustomWeightDeviationReconciler = new double[] {</span>
 			 0.1054,
 			-0.1054,
 			-0.0273,
@@ -114,7 +148,7 @@ import org.drip.service.env.EnvManager;
 			 0.0363
 		};
 
-<span class="fc" id="L117">		double[] adblFullWeightDeviationReconciler = new double[] {</span>
+<span class="fc" id="L151">		double[] adblFullWeightDeviationReconciler = new double[] {</span>
 			 0.2448,
 			-0.2448,
 			-0.0828,
@@ -124,7 +158,7 @@ import org.drip.service.env.EnvManager;
 			 0.1103
 		};
 
-<span class="fc" id="L127">		double[] adblImpliedConfidenceLevelReconciler = new double[] {</span>
+<span class="fc" id="L161">		double[] adblImpliedConfidenceLevelReconciler = new double[] {</span>
 			 0.4306,
 			 0.4306,
 			 0.3302,
@@ -134,7 +168,7 @@ import org.drip.service.env.EnvManager;
 			 0.3294
 		};
 
-<span class="fc" id="L137">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L171">		String[] astrAssetID = new String[] {</span>
 			&quot;US BONDS                       &quot;,
 			&quot;INTERNATIONAL BONDS            &quot;,
 			&quot;US LARGE GROWTH                &quot;,
@@ -145,7 +179,7 @@ import org.drip.service.env.EnvManager;
 			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
 		};
 
-<span class="fc" id="L148">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L182">		double[] adblAssetEquilibriumWeight = new double[] {</span>
 			0.1934,
 			0.2613,
 			0.1209,
@@ -156,7 +190,7 @@ import org.drip.service.env.EnvManager;
 			0.0349
 		};
 
-<span class="fc" id="L159">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L193">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -167,25 +201,25 @@ import org.drip.service.env.EnvManager;
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
 
-<span class="fc" id="L170">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+<span class="fc" id="L204">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
 
-<span class="fc" id="L176">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+<span class="fc" id="L210">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
 			0.0525,
 			0.0025,
 			0.0200
 		};
 
-<span class="fc" id="L182">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
+<span class="fc" id="L216">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
 			aadblAssetExcessReturnsCovariance,
 			aadblAssetSpaceViewProjection,
 			dblTau
 		);
 
-<span class="fc" id="L188">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L222">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
 			new MultivariateMeta (
 				new String[] {
 					&quot;PROJECTION #1&quot;,
@@ -197,9 +231,9 @@ import org.drip.service.env.EnvManager;
 			aadblProjectionExcessReturnsCovariance
 		);
 
-<span class="fc" id="L200">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L201">			ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L202">				Portfolio.Standard (</span>
+<span class="fc" id="L234">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L235">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L236">				Portfolio.Standard (</span>
 					astrAssetID,
 					adblAssetEquilibriumWeight
 				),
@@ -217,124 +251,126 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L220">		ProjectionImpliedConfidenceOutput pico = blce.impliedConfidenceRun();</span>
+<span class="fc" id="L254">		ProjectionImpliedConfidenceOutput pico = blce.impliedConfidenceRun();</span>
 
-<span class="fc" id="L222">		ForwardReverseOptimizationOutput frooCustomProjectionConfidence = pico.customConfidenceOutput().adjustedMetrics();</span>
+<span class="fc" id="L256">		ForwardReverseOptimizationOutput frooCustomProjectionConfidence = pico.customConfidenceOutput().adjustedMetrics();</span>
 
-<span class="fc" id="L224">		double[] adblCustomConfidenceReturns = frooCustomProjectionConfidence.expectedAssetExcessReturns();</span>
+<span class="fc" id="L258">		double[] adblCustomConfidenceReturns = frooCustomProjectionConfidence.expectedAssetExcessReturns();</span>
 
-<span class="fc" id="L226">		ForwardReverseOptimizationOutput frooFullProjectionConfidence = pico.fullConfidenceOutput().adjustedMetrics();</span>
+<span class="fc" id="L260">		ForwardReverseOptimizationOutput frooFullProjectionConfidence = pico.fullConfidenceOutput().adjustedMetrics();</span>
 
-<span class="fc" id="L228">		double[] adblFullConfidenceReturns = frooFullProjectionConfidence.expectedAssetExcessReturns();</span>
+<span class="fc" id="L262">		double[] adblFullConfidenceReturns = frooFullProjectionConfidence.expectedAssetExcessReturns();</span>
 
-<span class="fc" id="L230">		double[] adblFullConfidenceWeight = pico.fullProjectionConfidenceWeight();</span>
+<span class="fc" id="L264">		double[] adblFullConfidenceWeight = pico.fullProjectionConfidenceWeight();</span>
 
-<span class="fc" id="L232">		double[] adblCustomConfidenceWeight = pico.customProjectionConfidenceWeight();</span>
+<span class="fc" id="L266">		double[] adblCustomConfidenceWeight = pico.customProjectionConfidenceWeight();</span>
 
-<span class="fc" id="L234">		double[] adblFullWeightDeviation = pico.fullProjectionConfidenceDeviation();</span>
+<span class="fc" id="L268">		double[] adblFullWeightDeviation = pico.fullProjectionConfidenceDeviation();</span>
 
-<span class="fc" id="L236">		double[] adblCustomWeightDeviation = pico.customProjectionConfidenceDeviation();</span>
+<span class="fc" id="L270">		double[] adblCustomWeightDeviation = pico.customProjectionConfidenceDeviation();</span>
 
-<span class="fc" id="L238">		double[] adblImpliedConfidenceLevel = pico.level();</span>
+<span class="fc" id="L272">		double[] adblImpliedConfidenceLevel = pico.level();</span>
 
-<span class="fc" id="L240">		System.out.println (&quot;\n\n\t|----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L274">		System.out.println (&quot;\n\n\t|----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L242">		System.out.println (&quot;\t|    CUSTOM vs. FULL CONFIDENCE RETURNS COMPARISON   ||&quot;);</span>
+<span class="fc" id="L276">		System.out.println (&quot;\t|    CUSTOM vs. FULL CONFIDENCE RETURNS COMPARISON   ||&quot;);</span>
 
-<span class="fc" id="L244">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L278">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L246">		System.out.println (&quot;\t|             ASSET               =&gt;  FULL  | CUSTOM ||&quot;);</span>
+<span class="fc" id="L280">		System.out.println (&quot;\t|             ASSET               =&gt;  FULL  | CUSTOM ||&quot;);</span>
 
-<span class="fc" id="L248">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+<span class="fc" id="L282">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L250" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length; ++i)</span>
-<span class="fc" id="L251">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length; ++i)</span>
+<span class="fc" id="L285">			System.out.println (&quot;\t| &quot; +</span>
 				astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L253">				FormatUtil.FormatDouble (adblFullConfidenceReturns[i], 1, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L254">				FormatUtil.FormatDouble (adblCustomConfidenceReturns[i], 1, 2, 100.) + &quot;% || &quot;</span>
+<span class="fc" id="L287">				FormatUtil.FormatDouble (adblFullConfidenceReturns[i], 1, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L288">				FormatUtil.FormatDouble (adblCustomConfidenceReturns[i], 1, 2, 100.) + &quot;% || &quot;</span>
 			);
 
-<span class="fc" id="L257">		System.out.println (&quot;\t|----------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L291">		System.out.println (&quot;\t|----------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L259">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L293">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L261">		System.out.println (&quot;\t| {IDZO} EQUILIBRIUM WEIGHTS COMPARISON ACROSS CONFIDENCE LEVELS ||&quot;);</span>
+<span class="fc" id="L295">		System.out.println (&quot;\t| {IDZO} EQUILIBRIUM WEIGHTS COMPARISON ACROSS CONFIDENCE LEVELS ||&quot;);</span>
 
-<span class="fc" id="L263">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L297">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L265">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |   NONE  ||&quot;);</span>
+<span class="fc" id="L299">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |   NONE  ||&quot;);</span>
 
-<span class="fc" id="L267">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L301">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L269" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length; ++i)</span>
-<span class="fc" id="L270">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length; ++i)</span>
+<span class="fc" id="L304">			System.out.println (&quot;\t| &quot; +</span>
 				astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L272">				FormatUtil.FormatDouble (adblFullConfidenceWeightReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L273">				FormatUtil.FormatDouble (adblCustomConfidenceWeightReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L274">				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L306">				FormatUtil.FormatDouble (adblFullConfidenceWeightReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L307">				FormatUtil.FormatDouble (adblCustomConfidenceWeightReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L308">				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L277">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L311">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L279">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L313">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L281">		System.out.println (&quot;\t| {DRIP} EQUILIBRIUM WEIGHTS COMPARISON ACROSS CONFIDENCE LEVELS ||&quot;);</span>
+<span class="fc" id="L315">		System.out.println (&quot;\t| {DRIP} EQUILIBRIUM WEIGHTS COMPARISON ACROSS CONFIDENCE LEVELS ||&quot;);</span>
 
-<span class="fc" id="L283">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L317">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L285">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |   NONE  ||&quot;);</span>
+<span class="fc" id="L319">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |   NONE  ||&quot;);</span>
 
-<span class="fc" id="L287">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L321">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L289" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length; ++i)</span>
-<span class="fc" id="L290">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length; ++i)</span>
+<span class="fc" id="L324">			System.out.println (&quot;\t| &quot; +</span>
 				astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L292">				FormatUtil.FormatDouble (adblFullConfidenceWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L293">				FormatUtil.FormatDouble (adblCustomConfidenceWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L294">				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L326">				FormatUtil.FormatDouble (adblFullConfidenceWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L327">				FormatUtil.FormatDouble (adblCustomConfidenceWeight[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L328">				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L297">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L331">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L299">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L333">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L301">		System.out.println (&quot;\t|  {IDZO} WEIGHTS DEVIATION COMPARISON ACROSS CONFIDENCE LEVELS  ||&quot;);</span>
+<span class="fc" id="L335">		System.out.println (&quot;\t|  {IDZO} WEIGHTS DEVIATION COMPARISON ACROSS CONFIDENCE LEVELS  ||&quot;);</span>
 
-<span class="fc" id="L303">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L337">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L305">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |   NONE  ||&quot;);</span>
+<span class="fc" id="L339">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |   NONE  ||&quot;);</span>
 
-<span class="fc" id="L307">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L341">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L309" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length - 1; ++i)</span>
-<span class="fc" id="L310">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length - 1; ++i)</span>
+<span class="fc" id="L344">			System.out.println (&quot;\t| &quot; +</span>
 				astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L312">				FormatUtil.FormatDouble (adblFullWeightDeviationReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L313">				FormatUtil.FormatDouble (adblCustomWeightDeviationReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L314">				FormatUtil.FormatDouble (adblImpliedConfidenceLevelReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L346">				FormatUtil.FormatDouble (adblFullWeightDeviationReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L347">				FormatUtil.FormatDouble (adblCustomWeightDeviationReconciler[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L348">				FormatUtil.FormatDouble (adblImpliedConfidenceLevelReconciler[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L317">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L351">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L319">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L353">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L321">		System.out.println (&quot;\t|  {DRIP} WEIGHTS DEVIATION COMPARISON ACROSS CONFIDENCE LEVELS  ||&quot;);</span>
+<span class="fc" id="L355">		System.out.println (&quot;\t|  {DRIP} WEIGHTS DEVIATION COMPARISON ACROSS CONFIDENCE LEVELS  ||&quot;);</span>
 
-<span class="fc" id="L323">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L357">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L325">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |  LEVEL  ||&quot;);</span>
+<span class="fc" id="L359">		System.out.println (&quot;\t|             ASSET               =&gt;   FULL  |  CUSTOM |  LEVEL  ||&quot;);</span>
 
-<span class="fc" id="L327">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L361">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L329" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length - 1; ++i)</span>
-<span class="fc" id="L330">			System.out.println (&quot;\t| &quot; +</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int i = 0; i &lt; adblFullConfidenceWeight.length - 1; ++i)</span>
+<span class="fc" id="L364">			System.out.println (&quot;\t| &quot; +</span>
 				astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L332">				FormatUtil.FormatDouble (adblFullWeightDeviation[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L333">				FormatUtil.FormatDouble (adblCustomWeightDeviation[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L334">				FormatUtil.FormatDouble (adblImpliedConfidenceLevel[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L366">				FormatUtil.FormatDouble (adblFullWeightDeviation[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L367">				FormatUtil.FormatDouble (adblCustomWeightDeviation[i], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L368">				FormatUtil.FormatDouble (adblImpliedConfidenceLevel[i], 2, 2, 100.) + &quot;% ||&quot;</span>
 			);
 
-<span class="fc" id="L337">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L338">	}</span>
+<span class="fc" id="L371">		System.out.println (&quot;\t|----------------------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L373">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L374">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
