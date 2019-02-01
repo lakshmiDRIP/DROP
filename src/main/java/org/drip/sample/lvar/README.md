@@ -7,9 +7,15 @@ DROP LVaR illustrates Estimating of the Liquidity VaR Based Optimal Trajectory.
 
 ## Class Components
 
- * [***AlmgrenConstantTradingEnhanced***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/execution/AlmgrenConstantTradingEnhanced.java)
- <i>AlmgrenConstantTradingEnhanced</i> demonstrates the Generation of the Optimal Trading Trajectory under
- the Condition of Constant Trading Enhanced Volatility using a Numerical Optimization Technique.
+ * [***OptimalTrajectoryNoDrift***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/lvar/OptimalTrajectoryNoDrift.java)
+ <i>OptimalTrajectoryNoDrift</i> generates the Trade/Holdings List of Optimal Execution Schedule based on the
+ Evolution Walk Parameters specified according to the Liquidity VaR Optimal Objective Function, exclusive of
+ Drift. The Generation follows a Numerical Optimizer Scheme.
+
+ * [***OptimalTrajectoryWithDrift***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/lvar/OptimalTrajectoryWithDrift.java)
+ <i>OptimalTrajectoryWithDrift</i> generates the Trade/Holdings List of Optimal Execution Schedule based on
+ the Evolution Walk Parameters specified according to the Liquidity VaR Optimal Objective Function, inclusive
+ of Drift. The Generation follows a Numerical Optimizer Scheme.
 
 
 ## References

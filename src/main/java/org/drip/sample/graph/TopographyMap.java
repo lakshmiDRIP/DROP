@@ -81,18 +81,18 @@ import org.drip.spaces.graph.Vertex;
  *  	<li>
  *  		Wikipedia (2018a): Graph (Abstract Data Type)
  *  			https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Wikipedia (2018b): Graph Theory https://en.wikipedia.org/wiki/Graph_theory
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Wikipedia (2018c): Graph (Discrete Mathematics)
  *  			https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Wikipedia (2018d): Dijkstra's Algorithm https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
- *  	<li>
  *  	</li>
+ *  	<li>
  *  		Wikipedia (2018e): Bellman-Ford Algorithm
  *  			https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
  *  	</li>
