@@ -1,5 +1,5 @@
 
-package org.drip.sample.pit;
+package org.drip.sample.hypothesistest;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
@@ -70,8 +70,8 @@ import org.drip.validation.core.ResponseDistribution;
  */
 
 /**
- * <i>EmpiricalStandardNormal</i> illustrates the Probability Integral Transform and the p-Value for an
- * Empirical Standard Normal Distribution.
+ * <i>StandardNormalPIT</i> illustrates the Probability Integral Transform and the p-Value for an Empirical
+ * Standard Normal Distribution.
  *
  *  <br><br>
  *  <ul>
@@ -102,14 +102,14 @@ import org.drip.validation.core.ResponseDistribution;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pit">Probability Integral Transform</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypothesistest">Statistical Hypothesis Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EmpiricalStandardNormal
+public class StandardNormalPIT
 {
 
 	private static final double UnivariateRandom()

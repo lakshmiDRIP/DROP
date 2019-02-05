@@ -235,6 +235,17 @@ public class UnivariateMoments {
 	}
 
 	/**
+	 * Retrieve the Series Standard Error
+	 * 
+	 * @return The Series Standard Error
+	 */
+
+	public double stdError()
+	{
+		return java.lang.Math.sqrt (_dblVariance / _iNumSample);
+	}
+
+	/**
 	 * Retrieve the Moments Map
 	 * 
 	 * @return The Map of Moments
@@ -243,5 +254,71 @@ public class UnivariateMoments {
 	public java.util.Map<java.lang.Integer, java.lang.Double> momentMap()
 	{
 		return _mapMoment;
+	}
+
+	/**
+	 * Compute the Series t-Statistic around the Series Hypothesis Pivot
+	 * 
+	 * @param hypothesisPivot The Series Hypothesis Pivot
+	 * 
+	 * @return The Series t-Statistic around the Series Hypothesis Pivot
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double tStatistic (
+		final double hypothesisPivot)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (hypothesisPivot))
+		{
+			throw new java.lang.Exception ("UnivariateMetrics::tStatistic => Invalid Inputs");
+		}
+
+		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance / _iNumSample);
+	}
+
+	/**
+	 * Estimate the Offset in Terms of the NUmber of Standard Errors
+	 * 
+	 * @param x The Observation Point
+	 * 
+	 * @return The Offset in Terms of the NUmber of Standard Errors
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double standardErrorOffset (
+		final double x)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		{
+			throw new java.lang.Exception ("UnivariateMetrics::standardErrorOffset => Invalid Inputs");
+		}
+
+		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance / _iNumSample);
+	}
+
+	/**
+	 * Retrieve the Degrees of Freedom
+	 * 
+	 * @return The Degrees of Freedom
+	 */
+
+	public int degreesOfFreedom()
+	{
+		return _iNumSample - 1;
+	}
+
+	/**
+	 * Compute the Predictive Confidence Level
+	 * 
+	 * @return The Predictive Confidence Level
+	 */
+
+	public double predictiveConfidenceLevel()
+	{
+		return java.lang.Math.sqrt (_dblVariance * (1. + (1. + _iNumSample)));
 	}
 }

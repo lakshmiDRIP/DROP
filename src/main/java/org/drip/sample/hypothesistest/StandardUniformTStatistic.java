@@ -1,11 +1,11 @@
 
-package org.drip.sample.pit;
+package org.drip.sample.hypothesistest;
 
 import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.statistics.UnivariateMoments;
 import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.StringUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.core.ResponseAccumulator;
-import org.drip.validation.core.ResponseDistribution;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +70,8 @@ import org.drip.validation.core.ResponseDistribution;
  */
 
 /**
- * <i>EmpiricalStandardUniform</i> illustrates the Probability Integral Transform and the p-Value for an
- * Empirical Standard Uniform Distribution.
+ * <i>StandardUniformTStatistic</i> illustrates the Computation of the t-statistic, z-score, and other
+ * related Metrics of the Sample/Population Mean for an Empirical Standard Uniform Distribution.
  *
  *  <br><br>
  *  <ul>
@@ -85,12 +85,11 @@ import org.drip.validation.core.ResponseDistribution;
  *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
- *  	</li>
- *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
  *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	</li>
+ *  	<li>
+ *  		Wikipedia (2018): t-statistic https://en.wikipedia.org/wiki/T-statistic
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -102,14 +101,14 @@ import org.drip.validation.core.ResponseDistribution;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/pit">Probability Integral Transform</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypothesistest">Statistical Hypothesis Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EmpiricalStandardUniform
+public class StandardUniformTStatistic
 {
 
 	private static final double UnivariateRandom()
@@ -118,50 +117,120 @@ public class EmpiricalStandardUniform
 		return R1UnivariateUniform.Standard().random();
 	}
 
+	private static final double SampleMeanEstimate (
+		final int count)
+		throws Exception
+	{
+		double[] univariateRandomArray = new double[count];
+
+		for (int index = 0; index < count; ++index)
+		{
+			univariateRandomArray[index] = UnivariateRandom();
+		}
+
+		return UnivariateMoments.Standard (
+			StringUtil.GUID(),
+			univariateRandomArray,
+			null
+		).mean();
+	}
+
+	private static final UnivariateMoments SampleStatistics (
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+		double[] sampleMeanEstimateArray = new double[sampleCount];
+
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+		{
+			sampleMeanEstimateArray[sampleIndex] = SampleMeanEstimate (drawCount);
+		}
+
+		return UnivariateMoments.Standard (
+			StringUtil.GUID(),
+			sampleMeanEstimateArray,
+			null
+		);
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		int pValueTestCount = 25;
-		int instanceCount = 1000000;
+		int drawCount = 10000;
+		int sampleCount = 200;
 
-		ResponseAccumulator responseAccumulator = new ResponseAccumulator();
+		UnivariateMoments sampleStatistics = SampleStatistics (
+			drawCount,
+			sampleCount
+		);
 
-		for (int instanceIndex = 0; instanceIndex < instanceCount; ++instanceIndex)
-		{
-			responseAccumulator.addResponse (UnivariateRandom());
-		}
+		double nextDraw = UnivariateRandom();
 
-		ResponseDistribution responseDistribution = responseAccumulator.probabilityIntegralTransform();
+		double updatedMean = (sampleStatistics.mean() * sampleCount + nextDraw) / (sampleCount + 1);
 
-		System.out.println ("\t|-------------------||");
+		System.out.println ("\t|--------------------------------------------------||");
 
-		System.out.println ("\t| Empirical p-Value ||");
+		System.out.println ("\t|          STANDARD UNIFORM DISTRIBUTION           ||");
 
-		System.out.println ("\t|-------------------||");
+		System.out.println ("\t|--------------------------------------------------||");
 
-		System.out.println ("\t|  L -> R:          ||");
+		System.out.println (
+			"\t| Mean                           => " +
+			FormatUtil.FormatDouble (sampleStatistics.mean(), 1, 8, 1.)
+		);
 
-		System.out.println ("\t|    Test Response  ||");
+		System.out.println (
+			"\t| Sample Count                   => " +
+			FormatUtil.FormatDouble (sampleStatistics.numSample(), 3, 0, 1.)
+		);
 
-		System.out.println ("\t|    Test p-Value   ||");
+		System.out.println (
+			"\t| Degrees Of Freedom             => " +
+			FormatUtil.FormatDouble (sampleStatistics.degreesOfFreedom(), 3, 0, 1.)
+		);
 
-		System.out.println ("\t|-------------------||");
+		System.out.println (
+			"\t| Standard Deviation             => " +
+			FormatUtil.FormatDouble (sampleStatistics.stdDev(), 1, 8, 1.)
+		);
 
-		for (int pValueTestIndex = 0; pValueTestIndex < pValueTestCount; ++pValueTestIndex)
-		{
-			double testResponse = UnivariateRandom();
+		System.out.println (
+			"\t| Standard Error                 => " +
+			FormatUtil.FormatDouble (sampleStatistics.stdError(), 1, 8, 1.)
+		);
 
-			System.out.println (
-				"\t|" +
-				FormatUtil.FormatDouble (testResponse, 1, 4, 1.) + " => " +
-				FormatUtil.FormatDouble (responseDistribution.pValue (testResponse), 1, 4, 1.) + " ||"
-			);
-		}
+		System.out.println (
+			"\t| Variance                       => " +
+			FormatUtil.FormatDouble (sampleStatistics.variance(), 1, 8, 1.)
+		);
 
-		System.out.println ("\t|-------------------||");
+		System.out.println (
+			"\t| Predictive Confidence Interval => " +
+			FormatUtil.FormatDouble (sampleStatistics.predictiveConfidenceLevel(), 3, 1, 1.)
+		);
+
+		System.out.println (
+			"\t| Z-Score                        => " +
+			FormatUtil.FormatDouble (sampleStatistics.tStatistic (0.5), 1, 8, 1.)
+		);
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println (
+			"\t| Next Draw T-Statistics         => " +
+			FormatUtil.FormatDouble (sampleStatistics.tStatistic (updatedMean), 3, 1, 1.)
+		);
+
+		System.out.println (
+			"\t| Standard Error Offset          => " +
+			FormatUtil.FormatDouble (sampleStatistics.standardErrorOffset (nextDraw), 1, 0, 1.)
+		);
+
+		System.out.println ("\t|--------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
