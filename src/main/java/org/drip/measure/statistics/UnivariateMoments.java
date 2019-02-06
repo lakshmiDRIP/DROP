@@ -242,7 +242,7 @@ public class UnivariateMoments {
 
 	public double stdError()
 	{
-		return java.lang.Math.sqrt (_dblVariance / _iNumSample);
+		return java.lang.Math.sqrt (_dblVariance);
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class UnivariateMoments {
 			throw new java.lang.Exception ("UnivariateMetrics::tStatistic => Invalid Inputs");
 		}
 
-		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance / _iNumSample);
+		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance);
 	}
 
 	/**
@@ -297,7 +297,7 @@ public class UnivariateMoments {
 			throw new java.lang.Exception ("UnivariateMetrics::standardErrorOffset => Invalid Inputs");
 		}
 
-		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance / _iNumSample);
+		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance);
 	}
 
 	/**
@@ -319,6 +319,6 @@ public class UnivariateMoments {
 
 	public double predictiveConfidenceLevel()
 	{
-		return java.lang.Math.sqrt (_dblVariance * (1. + (1. + _iNumSample)));
+		return java.lang.Math.sqrt (_dblVariance * (1. + 1. / (1. + _iNumSample)));
 	}
 }

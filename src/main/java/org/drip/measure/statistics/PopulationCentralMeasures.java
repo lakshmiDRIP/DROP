@@ -1,5 +1,5 @@
 
-package org.drip.measure.continuous;
+package org.drip.measure.statistics;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -10,9 +10,6 @@ package org.drip.measure.continuous;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
@@ -70,147 +67,87 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1Univariate</i> implements the Base Abstract Class behind R<sup>1</sup> Univariate Distributions. It
- * exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
+ * <i>PopulationCentralMeasures</i> holds the Population Central Measures (Mean, and Variance) of the
+ * Population.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure">Measure</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous">Continuous</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics">Statistics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1Univariate {
+public class PopulationCentralMeasures
+{
+	private double _mean = java.lang.Double.NaN;
+	private double _variance = java.lang.Double.NaN;
 
 	/**
-	 * Compute the cumulative under the distribution to the given value
+	 * PopulationCentralMeasures Constructor
 	 * 
-	 * @param dblX Variate to which the cumulative is to be computed
+	 * @param mean Population Mean
+	 * @param variance Population Variance
 	 * 
-	 * @return The cumulative
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double cumulative (
-		final double dblX)
-		throws java.lang.Exception;
-
-	/**
-	 * Compute the Incremental under the Distribution between the 2 variates
-	 * 
-	 * @param dblXLeft Left Variate to which the cumulative is to be computed
-	 * @param dblXRight Right Variate to which the cumulative is to be computed
-	 * 
-	 * @return The Incremental under the Distribution between the 2 variates
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
-	 */
-
-	public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
+	public PopulationCentralMeasures (
+		final double mean,
+		final double variance)
 		throws java.lang.Exception
 	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
+		if (!org.drip.quant.common.NumberUtil.IsValid (_mean = mean) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_variance = variance))
+		{
+			throw new java.lang.Exception ("PopulationCentralMeasures Constructor => Invalid Inputsx");
+		}
 	}
 
 	/**
-	 * Compute the inverse cumulative under the distribution corresponding to the given value
+	 * Retrieve the Population Mean
 	 * 
-	 * @param dblX Value corresponding to which the inverse cumulative is to be computed
-	 * 
-	 * @return The inverse cumulative
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @return The Population Mean
 	 */
 
-	public abstract double invCumulative (
-		final double dblX)
-		throws java.lang.Exception;
-
-	/**
-	 * Compute the Density under the Distribution at the given Variate
-	 * 
-	 * @param dblX Variate at which the Density needs to be computed
-	 * 
-	 * @return The Density
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
-	 */
-
-	public abstract double density (
-		final double dblX)
-		throws java.lang.Exception;
-
-	/**
-	 * Retrieve the Mean of the Distribution
-	 * 
-	 * @return The Mean of the Distribution
-	 */
-
-	public abstract double mean();
-
-	/**
-	 * Retrieve the Variance of the Distribution
-	 * 
-	 * @return The Variance of the Distribution
-	 */
-
-	public abstract double variance();
-
-	/**
-	 * Generate a Random Variable corresponding to the Distribution
-	 * 
-	 * @return Random Variable corresponding to the Distribution
-	 */
-
-	public double random()
+	public double mean()
 	{
-		try
-		{
-			return invCumulative (java.lang.Math.random());
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return java.lang.Double.NaN;
+		return _mean;
 	}
 
 	/**
-	 * Retrieve the Population Central Measures
+	 * Retrieve the Population Variance
 	 * 
-	 * @return The Population Central Measures
+	 * @return The Population Variance
 	 */
 
-	public org.drip.measure.statistics.PopulationCentralMeasures populationCentralMeasures()
+	public double variance()
 	{
-		try
-		{
-			return new org.drip.measure.statistics.PopulationCentralMeasures (
-				mean(),
-				variance()
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _variance;
 	}
 
 	/**
-	 * Retrieve the Univariate Weighted Histogram
+	 * Compute the Draw's z-Score around the Population Mean
 	 * 
-	 * @return The Univariate Weighted Histogram
+	 * @param x The Next Draw
+	 * 
+	 * @return The Draw's z-Score around the Population Mean
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract org.drip.quant.common.Array2D histogram();
+	public double zScore (
+		final double x)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		{
+			throw new java.lang.Exception ("PopulationCentralMeasures::zScore => Invalid Inputs");
+		}
+
+		return (_mean - x) / java.lang.Math.sqrt (_variance);
+	}
 }

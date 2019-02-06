@@ -64,7 +64,8 @@ package org.drip.validation.core;
  */
 
 /**
- * <i>ResponseDistribution</i> contains the Distribution of the Response Instances.
+ * <i>PTestSetting</i> contains the Control Settings that determine the Success/Failure of the specified
+ * p-Test.
  *
  *  <br><br>
  *  <ul>
@@ -102,161 +103,71 @@ package org.drip.validation.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ResponseDistribution
+public class PTestSetting
 {
-	private java.util.Map<java.lang.Double, java.lang.Double> _pValueResponseMap = null;
-	private java.util.Map<java.lang.Double, java.lang.Double> _responsePValueMap = null;
 
 	/**
-	 * ResponseDistribution Constructor
+	 * Left Tail p-Test
+	 */
+
+	public static final int LEFT_TAIL_CHECK = 0;
+
+	/**
+	 * Right Tail p-Test
+	 */
+
+	public static final int RIGHT_TAIL_CHECK = 1;
+
+	/**
+	 * Left Tail p-Test
+	 */
+
+	public static final int DOUBLE_TAIL_CHECK = 2;
+
+	private int _tailCheck = RIGHT_TAIL_CHECK;
+	private double _threshold = java.lang.Double.NaN;
+
+	/**
+	 * PTestSetting Constructor
 	 * 
-	 * @param responsePValueMap Response - p Value Map
+	 * @param threshold The Test Threshold
+	 * @param tailCheck Test Tail Check Flag
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ResponseDistribution (
-		final java.util.Map<java.lang.Double, java.lang.Double> responsePValueMap)
+	public PTestSetting (
+		final double threshold,
+		final int tailCheck)
 		throws java.lang.Exception
 	{
-		if (null == (_responsePValueMap = responsePValueMap) || 0 == _responsePValueMap.size())
+		if (!org.drip.quant.common.NumberUtil.IsValid (_threshold = threshold))
 		{
-			throw new java.lang.Exception ("ResponseDistribution Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("PTestSetting Constructor => Invalid Inputs");
 		}
 
-		_pValueResponseMap = new java.util.TreeMap<java.lang.Double, java.lang.Double>();
-
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> responsePValueMapEntry :
-			_responsePValueMap.entrySet())
-		{
-			_pValueResponseMap.put (
-				responsePValueMapEntry.getValue(),
-				responsePValueMapEntry.getKey()
-			);
-		}
+		_tailCheck = tailCheck;
 	}
 
 	/**
-	 * Retrieve the p Value - Response Map
+	 * Retrieve the Test Tail Check
 	 * 
-	 * @return The p Value - Response Map
+	 * @return The Test Tail Check
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Double> pValueResponseMap()
+	public int tailCheck()
 	{
-		return _pValueResponseMap;
+		return _tailCheck;
 	}
 
 	/**
-	 * Retrieve the Response - p Value Map
+	 * Retrieve the Test Tail Threshold
 	 * 
-	 * @return The Response - p Value Map
+	 * @return The Test Tail Threshold
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Double> responsePValueMap()
+	public double threshold()
 	{
-		return _responsePValueMap;
-	}
-
-	/**
-	 * Compute the p-Value corresponding to the Response Instance
-	 * 
-	 * @param response The Response Instance
-	 * 
-	 * @return The p-Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double pValue (
-		final double response)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (response))
-		{
-			throw new java.lang.Exception ("ResponseDistribution::pValue => Invalid Inputs");
-		}
-
-		java.util.Set<java.lang.Double> responseKeySet = _responsePValueMap.keySet();
-
-		double responseKeyCurrent = java.lang.Double.NaN;
-		double responseKeyPrevious = java.lang.Double.NaN;
-
-		for (double responseKey : responseKeySet)
-		{
-			if (response == responseKey)
-			{
-				return _responsePValueMap.get (response);
-			}
-
-			if (response < responseKey)
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (responseKeyPrevious))
-				{
-					return 0.;
-				}
-
-				responseKeyCurrent = responseKey;
-				break;
-			}
-
-			responseKeyPrevious = responseKey;
-		}
-
-		return response >= responseKeyCurrent ? 1. :
-			((response - responseKeyPrevious) * _responsePValueMap.get (responseKeyCurrent) +
-			(responseKeyCurrent - response) * _responsePValueMap.get (responseKeyPrevious)) /
-			(responseKeyCurrent - responseKeyPrevious);
-	}
-
-	/**
-	 * Compute the corresponding to the Response Instance p-Value
-	 * 
-	 * @param pValue The p-Value
-	 * 
-	 * @return The Response Instance
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double response (
-		final double pValue)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))
-		{
-			throw new java.lang.Exception ("ResponseDistribution::response => Invalid Inputs");
-		}
-
-		java.util.Set<java.lang.Double> pValueKeySet = _pValueResponseMap.keySet();
-
-		double pValueKeyCurrent = java.lang.Double.NaN;
-		double pValueKeyPrevious = java.lang.Double.NaN;
-
-		for (double pValueKey : pValueKeySet)
-		{
-			if (pValue == pValueKey)
-			{
-				return _pValueResponseMap.get (pValue);
-			}
-
-			if (pValue < pValueKey)
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (pValueKeyPrevious))
-				{
-					return _pValueResponseMap.get (pValueKey);
-				}
-
-				pValueKeyCurrent = pValueKey;
-				break;
-			}
-
-			pValueKeyPrevious = pValueKey;
-		}
-
-		return pValue >= pValueKeyCurrent ? _pValueResponseMap.get (pValueKeyCurrent) :
-			((pValue - pValueKeyPrevious) * _pValueResponseMap.get (pValueKeyCurrent) +
-			(pValueKeyCurrent - pValue) * _pValueResponseMap.get (pValueKeyPrevious)) /
-			(pValueKeyCurrent - pValueKeyPrevious);
+		return _threshold;
 	}
 }

@@ -208,7 +208,8 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 
 	@Override public double variance()
 	{
-	    return (_rightSupport - _leftSupport) / 12.;
+		double support = _rightSupport - _leftSupport;
+		return support * support / 12.;
 	}
 
 	@Override public double random()

@@ -5,7 +5,7 @@ import org.drip.measure.continuous.R1UnivariateUniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.core.ResponseAccumulator;
-import org.drip.validation.core.ResponseDistribution;
+import org.drip.validation.core.StatisticalHypothesis;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -134,7 +134,7 @@ public class StandardUniformPIT
 			responseAccumulator.addResponse (UnivariateRandom());
 		}
 
-		ResponseDistribution responseDistribution = responseAccumulator.probabilityIntegralTransform();
+		StatisticalHypothesis responseDistribution = responseAccumulator.probabilityIntegralTransform();
 
 		System.out.println ("\t|-------------------||");
 

@@ -243,7 +243,7 @@ public class ResponseAccumulator
 	 * @return The Response Distribution
 	 */
 
-	public org.drip.validation.core.ResponseDistribution probabilityIntegralTransform()
+	public org.drip.validation.core.StatisticalHypothesis probabilityIntegralTransform()
 	{
 		int instanceCount = 0;
 		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
@@ -263,7 +263,7 @@ public class ResponseAccumulator
 
 		try
 		{
-			return new org.drip.validation.core.ResponseDistribution (responsePValueMap);
+			return new org.drip.validation.core.StatisticalHypothesis (responsePValueMap);
 		}
 		catch (java.lang.Exception e)
 		{

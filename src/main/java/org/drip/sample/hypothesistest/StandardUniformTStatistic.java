@@ -2,6 +2,7 @@
 package org.drip.sample.hypothesistest;
 
 import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.statistics.PopulationCentralMeasures;
 import org.drip.measure.statistics.UnivariateMoments;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.StringUtil;
@@ -117,6 +118,11 @@ public class StandardUniformTStatistic
 		return R1UnivariateUniform.Standard().random();
 	}
 
+	private static final PopulationCentralMeasures PopulationMeasures()
+	{
+		return R1UnivariateUniform.Standard().populationCentralMeasures();
+	}
+
 	private static final double SampleMeanEstimate (
 		final int count)
 		throws Exception
@@ -168,6 +174,8 @@ public class StandardUniformTStatistic
 			sampleCount
 		);
 
+		PopulationCentralMeasures populationCentralMeasures = PopulationMeasures();
+
 		double nextDraw = UnivariateRandom();
 
 		double updatedMean = (sampleStatistics.mean() * sampleCount + nextDraw) / (sampleCount + 1);
@@ -179,8 +187,25 @@ public class StandardUniformTStatistic
 		System.out.println ("\t|--------------------------------------------------||");
 
 		System.out.println (
+			"\t| Population Mean                => " +
+			FormatUtil.FormatDouble (populationCentralMeasures.mean(), 1, 8, 1.)
+		);
+
+		System.out.println (
+			"\t| Population Variance            => " +
+			FormatUtil.FormatDouble (populationCentralMeasures.variance(), 1, 8, 1.)
+		);
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println (
 			"\t| Mean                           => " +
 			FormatUtil.FormatDouble (sampleStatistics.mean(), 1, 8, 1.)
+		);
+
+		System.out.println (
+			"\t| Variance                       => " +
+			FormatUtil.FormatDouble (sampleStatistics.variance(), 1, 8, 1.)
 		);
 
 		System.out.println (
@@ -204,30 +229,30 @@ public class StandardUniformTStatistic
 		);
 
 		System.out.println (
-			"\t| Variance                       => " +
-			FormatUtil.FormatDouble (sampleStatistics.variance(), 1, 8, 1.)
-		);
-
-		System.out.println (
 			"\t| Predictive Confidence Interval => " +
-			FormatUtil.FormatDouble (sampleStatistics.predictiveConfidenceLevel(), 3, 1, 1.)
-		);
-
-		System.out.println (
-			"\t| Z-Score                        => " +
-			FormatUtil.FormatDouble (sampleStatistics.tStatistic (0.5), 1, 8, 1.)
+			FormatUtil.FormatDouble (sampleStatistics.predictiveConfidenceLevel(), 1, 8, 1.)
 		);
 
 		System.out.println ("\t|--------------------------------------------------||");
 
 		System.out.println (
+			"\t| Next Draw                      => " +
+			FormatUtil.FormatDouble (nextDraw, 1, 8, 1.)
+		);
+
+		System.out.println (
 			"\t| Next Draw T-Statistics         => " +
-			FormatUtil.FormatDouble (sampleStatistics.tStatistic (updatedMean), 3, 1, 1.)
+			FormatUtil.FormatDouble (sampleStatistics.tStatistic (updatedMean), 1, 8, 1.)
 		);
 
 		System.out.println (
 			"\t| Standard Error Offset          => " +
 			FormatUtil.FormatDouble (sampleStatistics.standardErrorOffset (nextDraw), 1, 0, 1.)
+		);
+
+		System.out.println (
+			"\t| Population Z-Score             => " +
+			FormatUtil.FormatDouble (populationCentralMeasures.zScore (nextDraw), 1, 8, 1.)
 		);
 
 		System.out.println ("\t|--------------------------------------------------||");

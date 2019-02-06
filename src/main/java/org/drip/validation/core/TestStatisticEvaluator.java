@@ -1,11 +1,5 @@
 
-package org.drip.sample.hypothesistest;
-
-import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.validation.core.ResponseAccumulator;
-import org.drip.validation.core.StatisticalHypothesis;
+package org.drip.validation.core;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,27 +64,27 @@ import org.drip.validation.core.StatisticalHypothesis;
  */
 
 /**
- * <i>StandardNormalPIT</i> illustrates the Probability Integral Transform and the p-Value for an Empirical
- * Standard Normal Distribution.
+ * <i>TestStatisticEvaluator</i> exposes the Function that must be applied on a Set to evaluate the Test
+ * Statistic.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
- *  			Back-testing Credit Exposure Models
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
  *  	</li>
  *  	<li>
- *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): Probability Integral Transform
- *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  		Perspectives in Psychological Science 6 (3) 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -101,68 +95,28 @@ import org.drip.validation.core.StatisticalHypothesis;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypothesistest">Statistical Hypothesis Tests</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardNormalPIT
+public interface TestStatisticEvaluator
 {
 
-	private static final double UnivariateRandom()
-		throws Exception
-	{
-		return R1UnivariateNormal.Standard().random();
-	}
+	/**
+	 * Evaluate the Test Statistic for the sample Array
+	 * 
+	 * @param sampleArray The Sample Array
+	 * 
+	 * @return The Test Statistic
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		int pValueTestCount = 25;
-		int instanceCount = 1000000;
-
-		ResponseAccumulator responseAccumulator = new ResponseAccumulator();
-
-		for (int instanceIndex = 0; instanceIndex < instanceCount; ++instanceIndex)
-		{
-			responseAccumulator.addResponse (UnivariateRandom());
-		}
-
-		StatisticalHypothesis responseDistribution = responseAccumulator.probabilityIntegralTransform();
-
-		System.out.println ("\t|-------------------||");
-
-		System.out.println ("\t| Empirical p-Value ||");
-
-		System.out.println ("\t|-------------------||");
-
-		System.out.println ("\t|  L -> R:          ||");
-
-		System.out.println ("\t|    Test Response  ||");
-
-		System.out.println ("\t|    Test p-Value   ||");
-
-		System.out.println ("\t|-------------------||");
-
-		for (int pValueTestIndex = 0; pValueTestIndex < pValueTestCount; ++pValueTestIndex)
-		{
-			double testResponse = UnivariateRandom();
-
-			System.out.println (
-				"\t|" +
-				FormatUtil.FormatDouble (testResponse, 1, 4, 1.) + " => " +
-				FormatUtil.FormatDouble (responseDistribution.pValue (testResponse), 1, 4, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t|-------------------||");
-
-		EnvManager.TerminateEnv();
-	}
+	public abstract double evaluate (
+		final double[] sampleArray)
+		throws java.lang.Exception;
 }
