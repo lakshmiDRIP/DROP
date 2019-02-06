@@ -1,5 +1,7 @@
 
-package org.drip.validation.core;
+package org.drip.sample.hypothesistest;
+
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,27 +66,26 @@ package org.drip.validation.core;
  */
 
 /**
- * <i>PTestSetting</i> contains the Control Settings that determine the Success/Failure of the specified
- * p-Test.
+ * <i>StandardUniformPTest</i> illustrates p-Test of an Standard Uniform Ensemble.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
- *  			Back-testing Credit Exposure Models
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
  *  	</li>
  *  	<li>
- *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): Probability Integral Transform
- *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  		Perspectives in Psychological Science 6 (3) 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -92,7 +93,7 @@ package org.drip.validation.core;
  *  </ul>
  *
  *  <br><br>
- *  <ul>
+- *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
@@ -103,71 +104,15 @@ package org.drip.validation.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PTestSetting
+public class StandardUniformPTest
 {
 
-	/**
-	 * Left Tail p-Test
-	 */
-
-	public static final int LEFT_TAIL_CHECK = 0;
-
-	/**
-	 * Right Tail p-Test
-	 */
-
-	public static final int RIGHT_TAIL_CHECK = 1;
-
-	/**
-	 * Left Tail p-Test
-	 */
-
-	public static final int DOUBLE_TAIL_CHECK = 2;
-
-	private int _tailCheck = RIGHT_TAIL_CHECK;
-	private double _threshold = java.lang.Double.NaN;
-
-	/**
-	 * PTestSetting Constructor
-	 * 
-	 * @param threshold The Test Threshold
-	 * @param tailCheck Test Tail Check Flag
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public PTestSetting (
-		final double threshold,
-		final int tailCheck)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_threshold = threshold))
-		{
-			throw new java.lang.Exception ("PTestSetting Constructor => Invalid Inputs");
-		}
+		EnvManager.InitEnv ("");
 
-		_tailCheck = tailCheck;
-	}
-
-	/**
-	 * Retrieve the Test Tail Check
-	 * 
-	 * @return The Test Tail Check
-	 */
-
-	public int tailCheck()
-	{
-		return _tailCheck;
-	}
-
-	/**
-	 * Retrieve the Test Tail Threshold
-	 * 
-	 * @return The Test Tail Threshold
-	 */
-
-	public double threshold()
-	{
-		return _threshold;
+		EnvManager.TerminateEnv();
 	}
 }

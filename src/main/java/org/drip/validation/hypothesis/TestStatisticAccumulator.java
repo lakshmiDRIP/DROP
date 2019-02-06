@@ -1,5 +1,5 @@
 
-package org.drip.validation.core;
+package org.drip.validation.hypothesis;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.validation.core;
  */
 
 /**
- * <i>ResponseAccumulator</i> contains the Instance Counts of the Sorted Response Values.
+ * <i>TestStatisticAccumulator</i> contains the Instance Counts of the Sorted Test Statistic Values.
  *
  *  <br><br>
  *  <ul>
@@ -102,16 +102,16 @@ package org.drip.validation.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ResponseAccumulator
+public class TestStatisticAccumulator
 {
 	private int _totalInstanceCount = 0;
 	private java.util.TreeMap<java.lang.Double, java.lang.Integer> _instanceCountMap = null;
 
 	/**
-	 * Empty ResponseAccumulator Constructor
+	 * Empty TestStatisticAccumulator Constructor
 	 */
 
-	public ResponseAccumulator()
+	public TestStatisticAccumulator()
 	{
 	}
 
@@ -138,17 +138,17 @@ public class ResponseAccumulator
 	}
 
 	/**
-	 * Add the specified Response Entry
+	 * Add the specified Test Statistic Entry
 	 * 
-	 * @param response The Response
+	 * @param testStatistic The Test Statistic
 	 * 
-	 * @return TRUE - The Response Entry successfully added
+	 * @return TRUE - The Test Statistic Entry successfully added
 	 */
 
-	public boolean addResponse (
-		final double response)
+	public boolean addTestStatistic (
+		final double testStatistic)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (response))
+		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))
 		{
 			return false;
 		}
@@ -159,8 +159,8 @@ public class ResponseAccumulator
 		}
 
 		_instanceCountMap.put (
-			response,
-			_instanceCountMap.containsKey (response) ? _instanceCountMap.get (response) + 1 : 1
+			testStatistic,
+			_instanceCountMap.containsKey (testStatistic) ? _instanceCountMap.get (testStatistic) + 1 : 1
 		);
 
 		++_totalInstanceCount;
@@ -168,102 +168,102 @@ public class ResponseAccumulator
 	}
 
 	/**
-	 * Extract the Empirical Cumulative Response Probability from the Smallest Response Value
+	 * Extract the Empirical Cumulative Test Statistic Probability from the Smallest Response Value
 	 * 
 	 * @param response The Response
 	 * 
-	 * @return The Empirical Cumulative Response Probability from the Smallest Response Value
+	 * @return The Empirical Cumulative Test Statistic Probability from the Smallest Response Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double cumulativeProbabilityFromLeft (
-		final double response)
+		final double testStatistic)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (response) || 0 == _totalInstanceCount)
+		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
 		{
 			throw new java.lang.Exception
-				("ResponseAccumulator::cumulativeProbabilityFromLeft => Invalid Inputs");
+				("TestStatisticAccumulator::cumulativeProbabilityFromLeft => Invalid Inputs");
 		}
 
 		double cumulativeProbabilityFromLeft = 0;
 
-		for (double responseKey : _instanceCountMap.keySet())
+		for (double testStatisticKey : _instanceCountMap.keySet())
 		{
-			if (responseKey > response)
+			if (testStatisticKey > testStatistic)
 			{
 				break;
 			}
 
-			cumulativeProbabilityFromLeft += _instanceCountMap.get (response);
+			cumulativeProbabilityFromLeft += _instanceCountMap.get (testStatistic);
 		}
 
 		return cumulativeProbabilityFromLeft / _totalInstanceCount;
 	}
 
 	/**
-	 * Extract the Empirical Cumulative Response Probability from the Largest Response Value
+	 * Extract the Empirical Cumulative Test Statistic Probability from the Largest Response Value
 	 * 
-	 * @param response The Response
+	 * @param testStatistic The Test Statistic
 	 * 
-	 * @return The Empirical Cumulative Response Probability from the Largest Response Value
+	 * @return The Empirical Cumulative Test Statistic Probability from the Largest Response Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double cumulativeProbabilityFromRight (
-		final double response)
+		final double testStatistic)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (response) || 0 == _totalInstanceCount)
+		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
 		{
 			throw new java.lang.Exception
-				("ResponseAccumulator::cumulativeProbabilityFromRight => Invalid Inputs");
+				("TestStatisticAccumulator::cumulativeProbabilityFromRight => Invalid Inputs");
 		}
 
 		double cumulativeProbabilityFromRight = 0;
 
-		for (double responseKey : _instanceCountMap.descendingKeySet())
+		for (double testStatisticKey : _instanceCountMap.descendingKeySet())
 		{
-			if (responseKey < response)
+			if (testStatisticKey < testStatistic)
 			{
 				break;
 			}
 
-			cumulativeProbabilityFromRight += _instanceCountMap.get (response);
+			cumulativeProbabilityFromRight += _instanceCountMap.get (testStatistic);
 		}
 
 		return cumulativeProbabilityFromRight / _totalInstanceCount;
 	}
 
 	/**
-	 * Perform a Probability Integral Transform to generate the Response Distribution
+	 * Perform a Probability Integral Transform to generate the Test Statistic Distribution
 	 * 
-	 * @return The Response Distribution
+	 * @return The Test Statistic Distribution
 	 */
 
-	public org.drip.validation.core.StatisticalHypothesis probabilityIntegralTransform()
+	public org.drip.validation.hypothesis.Test probabilityIntegralTransform()
 	{
 		int instanceCount = 0;
 		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
 
-		java.util.Map<java.lang.Double, java.lang.Double> responsePValueMap = new
+		java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap = new
 			java.util.TreeMap<java.lang.Double, java.lang.Double>();
 
-		for (double responseKey : _instanceCountMap.keySet())
+		for (double testStatisticKey : _instanceCountMap.keySet())
 		{
-			instanceCount += _instanceCountMap.get (responseKey);
+			instanceCount += _instanceCountMap.get (testStatisticKey);
 
-			responsePValueMap.put (
-				responseKey,
+			testStatisticPValueMap.put (
+				testStatisticKey,
 				totalInstanceCountReciprocal * instanceCount
 			);
 		}
 
 		try
 		{
-			return new org.drip.validation.core.StatisticalHypothesis (responsePValueMap);
+			return new org.drip.validation.hypothesis.Test (testStatisticPValueMap);
 		}
 		catch (java.lang.Exception e)
 		{

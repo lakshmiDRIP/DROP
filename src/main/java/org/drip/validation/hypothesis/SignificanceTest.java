@@ -1,11 +1,5 @@
 
-package org.drip.sample.hypothesistest;
-
-import org.drip.measure.continuous.R1UnivariateUniform;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.validation.core.ResponseAccumulator;
-import org.drip.validation.core.StatisticalHypothesis;
+package org.drip.validation.hypothesis;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,27 +64,26 @@ import org.drip.validation.core.StatisticalHypothesis;
  */
 
 /**
- * <i>StandardUniformPIT</i> illustrates the Probability Integral Transform and the p-Value for an Empirical
- * Standard Uniform Distribution.
+ * <i>SignificanceTest</i> contains the Results of the Significant Test of the Statistical Hypothesis.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
- *  			Back-testing Credit Exposure Models
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
  *  	</li>
  *  	<li>
- *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): Probability Integral Transform
- *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  		Perspectives in Psychological Science 6 (3) 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -101,68 +94,90 @@ import org.drip.validation.core.StatisticalHypothesis;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypothesistest">Statistical Hypothesis Tests</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardUniformPIT
+public class SignificanceTest
 {
+	private boolean _pass = false;
+	private double _testStatistic = java.lang.Double.NaN;
+	private double _leftTailPValue = java.lang.Double.NaN;
+	private double _rightTailPValue = java.lang.Double.NaN;
 
-	private static final double UnivariateRandom()
-		throws Exception
+	/**
+	 * SignificanceTest Constructor
+	 * 
+	 * @param testStatistic Test Statistic
+	 * @param leftTailPValue Left Tail p-value
+	 * @param rightTailPValue Right Tail p-value
+	 * @param pass TRUE - Test successfully Passed
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SignificanceTest (
+		final double testStatistic,
+		final double leftTailPValue,
+		final double rightTailPValue,
+		final boolean pass)
+		throws java.lang.Exception
 	{
-		return R1UnivariateUniform.Standard().random();
+		if (!org.drip.quant.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_rightTailPValue = rightTailPValue))
+		{
+			throw new java.lang.Exception ("SignificanceTest Constructor => Invalid Inputs");
+		}
+
+		_pass = pass;
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve the Test Statistic
+	 * 
+	 * @return The Test Statistic
+	 */
+
+	public double testStatistic()
 	{
-		EnvManager.InitEnv ("");
+		return _testStatistic;
+	}
 
-		int pValueTestCount = 25;
-		int instanceCount = 1000000;
+	/**
+	 * Retrieve the Left Tail p-Value
+	 * 
+	 * @return The Left Tail p-Value
+	 */
 
-		ResponseAccumulator responseAccumulator = new ResponseAccumulator();
+	public double leftTailPValue()
+	{
+		return _leftTailPValue;
+	}
 
-		for (int instanceIndex = 0; instanceIndex < instanceCount; ++instanceIndex)
-		{
-			responseAccumulator.addResponse (UnivariateRandom());
-		}
+	/**
+	 * Retrieve the Right Tail p-Value
+	 * 
+	 * @return The Right Tail p-Value
+	 */
 
-		StatisticalHypothesis responseDistribution = responseAccumulator.probabilityIntegralTransform();
+	public double rightTailPValue()
+	{
+		return _rightTailPValue;
+	}
 
-		System.out.println ("\t|-------------------||");
+	/**
+	 * Indicate of the Test has been successfully Passed
+	 * 
+	 * @return TRUE - Test has been successfully Passed
+	 */
 
-		System.out.println ("\t| Empirical p-Value ||");
-
-		System.out.println ("\t|-------------------||");
-
-		System.out.println ("\t|  L -> R:          ||");
-
-		System.out.println ("\t|    Test Response  ||");
-
-		System.out.println ("\t|    Test p-Value   ||");
-
-		System.out.println ("\t|-------------------||");
-
-		for (int pValueTestIndex = 0; pValueTestIndex < pValueTestCount; ++pValueTestIndex)
-		{
-			double testResponse = UnivariateRandom();
-
-			System.out.println (
-				"\t|" +
-				FormatUtil.FormatDouble (testResponse, 1, 4, 1.) + " => " +
-				FormatUtil.FormatDouble (responseDistribution.pValue (testResponse), 1, 4, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t|-------------------||");
-
-		EnvManager.TerminateEnv();
+	public boolean pass()
+	{
+		return _pass;
 	}
 }

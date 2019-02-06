@@ -1,7 +1,7 @@
 
-package org.drip.sample.hypothesistest;
+package org.drip.sample.samplestatistics;
 
-import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.continuous.R1UnivariateExponential;
 import org.drip.measure.statistics.PopulationCentralMeasures;
 import org.drip.measure.statistics.UnivariateMoments;
 import org.drip.quant.common.FormatUtil;
@@ -71,8 +71,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StandardUniformTStatistic</i> illustrates the Computation of the t-statistic, z-score, and other
- * related Metrics of the Sample/Population Mean for an Empirical Standard Uniform Distribution.
+ * <i>StandardExponentialTStatistic</i> illustrates the Computation of the t-statistic, z-score, and other
+ * related Metrics of the Sample/Population Mean for an Empirical Standard Exponential Distribution.
  *
  *  <br><br>
  *  <ul>
@@ -109,18 +109,18 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardUniformTStatistic
+public class StandardExponentialTStatistic
 {
 
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateUniform.Standard().random();
+		return R1UnivariateExponential.Standard().random();
 	}
 
 	private static final PopulationCentralMeasures PopulationMeasures()
 	{
-		return R1UnivariateUniform.Standard().populationCentralMeasures();
+		return R1UnivariateExponential.Standard().populationCentralMeasures();
 	}
 
 	private static final double SampleMeanEstimate (

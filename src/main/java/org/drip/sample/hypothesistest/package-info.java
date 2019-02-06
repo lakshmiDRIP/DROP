@@ -1,6 +1,6 @@
 
 /**
- * Empirical Univariate Statistical Hypothesis Tests
+ * Sample/Ensemble Statistical Hypothesis Tests
  *
  * @author Lakshmi Krishnamurthy
  */

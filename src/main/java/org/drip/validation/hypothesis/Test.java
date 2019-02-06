@@ -1,5 +1,5 @@
 
-package org.drip.validation.core;
+package org.drip.validation.hypothesis;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.validation.core;
  */
 
 /**
- * <i>StatisticalHypothesis</i> implements the Statistical Hypothesis. It holds the PIT Distribution CDF of
- * the Test-Statistic Response Instances.
+ * <i>Test</i> implements a Single Statistical Hypothesis Test. It holds the PIT Distribution CDF of the
+ * Test-Statistic Response Instances.
  *
  *  <br><br>
  *  <ul>
@@ -103,27 +103,27 @@ package org.drip.validation.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StatisticalHypothesis
+public class Test
 {
 	private java.util.Map<java.lang.Double, java.lang.Double> _pValueTestStatisticMap = null;
 	private java.util.Map<java.lang.Double, java.lang.Double> _testStatisticPValueMap = null;
 
 	/**
-	 * StatisticalHypothesis Constructor
+	 * Test Constructor
 	 * 
 	 * @param testStatisticPValueMap Test Statistic - p Value Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public StatisticalHypothesis (
+	public Test (
 		final java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap)
 		throws java.lang.Exception
 	{
 		if (null == (_testStatisticPValueMap = testStatisticPValueMap) ||
 			0 == _testStatisticPValueMap.size())
 		{
-			throw new java.lang.Exception ("StatisticalHypothesis Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("Test Constructor => Invalid Inputs");
 		}
 
 		_pValueTestStatisticMap = new java.util.TreeMap<java.lang.Double, java.lang.Double>();
@@ -176,7 +176,7 @@ public class StatisticalHypothesis
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))
 		{
-			throw new java.lang.Exception ("StatisticalHypothesis::pValue => Invalid Inputs");
+			throw new java.lang.Exception ("Test::pValue => Invalid Inputs");
 		}
 
 		java.util.Set<java.lang.Double> testStatisticKeySet = _testStatisticPValueMap.keySet();
@@ -229,7 +229,7 @@ public class StatisticalHypothesis
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))
 		{
-			throw new java.lang.Exception ("StatisticalHypothesis::testStatistic => Invalid Inputs");
+			throw new java.lang.Exception ("Test::testStatistic => Invalid Inputs");
 		}
 
 		java.util.Set<java.lang.Double> pValueKeySet = _pValueTestStatisticMap.keySet();
@@ -271,39 +271,89 @@ public class StatisticalHypothesis
 	 * @param pTestSetting The P-Test Setting
 	 * 
 	 * @return The Significance Test Result for the Realized Test Statistic
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean significanceTest (
+	public org.drip.validation.hypothesis.SignificanceTest significanceTest (
 		final double testStatistic,
-		final org.drip.validation.core.PTestSetting pTestSetting)
-		throws java.lang.Exception
+		final org.drip.validation.hypothesis.PTestSetting pTestSetting)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
 		{
-			throw new java.lang.Exception ("StatisticalHypothesis::significanceTest => Invalid Inputs");
+			return null;
 		}
 
-		double pValue = pValue (testStatistic);
+		double pValue = java.lang.Double.NaN;
+
+		try
+		{
+			pValue = pValue (testStatistic);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
 
 		int tailCheck = pTestSetting.tailCheck();
 
 		double threshold = pTestSetting.threshold();
 
-		if (org.drip.validation.core.PTestSetting.LEFT_TAIL_CHECK == tailCheck)
+		if (org.drip.validation.hypothesis.PTestSetting.LEFT_TAIL_CHECK == tailCheck)
 		{
-			return pValue < threshold;
+			try
+			{
+				return new SignificanceTest (
+					testStatistic,
+					1. - pValue,
+					pValue,
+					pValue < threshold
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
 		}
 
-		if (org.drip.validation.core.PTestSetting.RIGHT_TAIL_CHECK == tailCheck)
+		if (org.drip.validation.hypothesis.PTestSetting.RIGHT_TAIL_CHECK == tailCheck)
 		{
-			return 1. - pValue < threshold;
+			try
+			{
+				return new SignificanceTest (
+					testStatistic,
+					1. - pValue,
+					pValue,
+					1. - pValue < threshold
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
 		}
 
-		return 2. * java.lang.Math.min (
-			pValue,
-			1. - pValue
-		) < threshold;
+		try
+		{
+			return new SignificanceTest (
+				testStatistic,
+				1. - pValue,
+				pValue,
+				2. * java.lang.Math.min (
+					pValue,
+					1. - pValue
+				) < threshold
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

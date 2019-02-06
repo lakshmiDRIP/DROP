@@ -1,11 +1,11 @@
 
-package org.drip.sample.hypothesistest;
+package org.drip.sample.samplestatistics;
 
-import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.measure.continuous.R1UnivariateUniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.core.ResponseAccumulator;
-import org.drip.validation.core.StatisticalHypothesis;
+import org.drip.validation.hypothesis.Test;
+import org.drip.validation.hypothesis.TestStatisticAccumulator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +70,8 @@ import org.drip.validation.core.StatisticalHypothesis;
  */
 
 /**
- * <i>StandardNormalPIT</i> illustrates the Probability Integral Transform and the p-Value for an Empirical
- * Standard Normal Distribution.
+ * <i>StandardUniformPIT</i> illustrates the Probability Integral Transform and the p-Value for an Empirical
+ * Standard Uniform Distribution.
  *
  *  <br><br>
  *  <ul>
@@ -109,13 +109,13 @@ import org.drip.validation.core.StatisticalHypothesis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardNormalPIT
+public class StandardUniformPIT
 {
 
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateNormal.Standard().random();
+		return R1UnivariateUniform.Standard().random();
 	}
 
 	public static final void main (
@@ -127,14 +127,14 @@ public class StandardNormalPIT
 		int pValueTestCount = 25;
 		int instanceCount = 1000000;
 
-		ResponseAccumulator responseAccumulator = new ResponseAccumulator();
+		TestStatisticAccumulator responseAccumulator = new TestStatisticAccumulator();
 
 		for (int instanceIndex = 0; instanceIndex < instanceCount; ++instanceIndex)
 		{
-			responseAccumulator.addResponse (UnivariateRandom());
+			responseAccumulator.addTestStatistic (UnivariateRandom());
 		}
 
-		StatisticalHypothesis responseDistribution = responseAccumulator.probabilityIntegralTransform();
+		Test responseDistribution = responseAccumulator.probabilityIntegralTransform();
 
 		System.out.println ("\t|-------------------||");
 

@@ -1,5 +1,5 @@
 
-package org.drip.validation.core;
+package org.drip.validation.hypothesis;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.validation.core;
  */
 
 /**
- * <i>TestStatisticEvaluator</i> exposes the Function that must be applied on a Set to evaluate the Test
- * Statistic.
+ * <i>Ensemble</i> contains the Ensemble Collection of Statistical Samples and their Test Statistic
+ * Evaluators.
  *
  *  <br><br>
  *  <ul>
@@ -103,20 +103,142 @@ package org.drip.validation.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface TestStatisticEvaluator
+public class Ensemble
 {
+	private org.drip.validation.hypothesis.Sample[] _sampleArray = null;
+	private org.drip.validation.hypothesis.PTestSetting _pTestSetting = null;
+	private org.drip.validation.hypothesis.TestStatisticEvaluator[] _testStatisticEvaluatorArray =
+		null;
 
 	/**
-	 * Evaluate the Test Statistic for the sample Array
+	 * Ensemble Constructor
 	 * 
-	 * @param sampleArray The Sample Array
-	 * 
-	 * @return The Test Statistic
+	 * @param pTestSetting The Statistical Hypothesis p-Test Setting
+	 * @param sampleArray Array of the Statistical Hypothesis Samples
+	 * @param testStatisticEvaluatorArray Array of the Test Statistic Evaluators
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double evaluate (
-		final double[] sampleArray)
-		throws java.lang.Exception;
+	public Ensemble (
+		final org.drip.validation.hypothesis.PTestSetting pTestSetting,
+		final org.drip.validation.hypothesis.Sample[] sampleArray,
+		final org.drip.validation.hypothesis.TestStatisticEvaluator[] testStatisticEvaluatorArray)
+		throws java.lang.Exception
+	{
+		if (null == (_pTestSetting = pTestSetting) ||
+			null == (_sampleArray = sampleArray) ||
+			null == (_testStatisticEvaluatorArray = testStatisticEvaluatorArray))
+		{
+			throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+		}
+
+		int sampleCount = _sampleArray.length;
+		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
+
+		if (0 == sampleCount || 0 == testStatisticEvaluatorCount)
+		{
+			throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+		}
+
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+		{
+			if (null == _sampleArray[sampleIndex])
+			{
+				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+			}
+		}
+
+		for (int testStatisticEvaluatorIndex = 0;
+			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
+			++testStatisticEvaluatorIndex)
+		{
+			if (null == _testStatisticEvaluatorArray[testStatisticEvaluatorIndex])
+			{
+				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+			}
+		}
+	}
+
+	/**
+	 * Retrieve the Statistical Hypothesis p-Test Settings
+	 * 
+	 * @return The Statistical Hypothesis p-Test Settings
+	 */
+
+	public org.drip.validation.hypothesis.PTestSetting pTestSetting()
+	{
+		return _pTestSetting;
+	}
+
+	/**
+	 * Retrieve the Array of the Statistical Hypothesis Samples
+	 * 
+	 * @return The Array of the Statistical Hypothesis Samples
+	 */
+
+	public org.drip.validation.hypothesis.Sample[] sampleArray()
+	{
+		return _sampleArray;
+	}
+
+	/**
+	 * Retrieve the Array of the Test Statistic Evaluators
+	 * 
+	 * @return The Array of the Test Statistic Evaluators
+	 */
+
+	public org.drip.validation.hypothesis.TestStatisticEvaluator[] testStatisticEvaluatorArray()
+	{
+		return _testStatisticEvaluatorArray;
+	}
+
+	/**
+	 * Generate the Test Statistic Accumulator Array
+	 * 
+	 * @return The Test Statistic Accumulator Array
+	 */
+
+	public org.drip.validation.hypothesis.Test[] testArray()
+	{
+		int sampleCount = _sampleArray.length;
+		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
+		org.drip.validation.hypothesis.Test[] testArray = new
+			org.drip.validation.hypothesis.Test[testStatisticEvaluatorCount];
+
+		for (int testStatisticAccumulatorIndex = 0;
+			testStatisticAccumulatorIndex < testStatisticEvaluatorCount;
+			++testStatisticAccumulatorIndex)
+		{
+			org.drip.validation.hypothesis.TestStatisticAccumulator testStatisticAccumulator = new
+				org.drip.validation.hypothesis.TestStatisticAccumulator();
+
+			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+			{
+				try
+				{
+					if (!testStatisticAccumulator.addTestStatistic
+						(_sampleArray[sampleIndex].applyTestStatistic
+							(_testStatisticEvaluatorArray[testStatisticAccumulatorIndex])))
+					{
+						return null;
+					}
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+
+			if (null == (testArray[testStatisticAccumulatorIndex] =
+				testStatisticAccumulator.probabilityIntegralTransform()))
+			{
+				return null;
+			}
+		}
+
+		return testArray;
+	}
 }
