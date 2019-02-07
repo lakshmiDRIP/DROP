@@ -106,14 +106,12 @@ package org.drip.validation.hypothesis;
 public class Ensemble
 {
 	private org.drip.validation.hypothesis.Sample[] _sampleArray = null;
-	private org.drip.validation.hypothesis.PTestSetting _pTestSetting = null;
 	private org.drip.validation.hypothesis.TestStatisticEvaluator[] _testStatisticEvaluatorArray =
 		null;
 
 	/**
 	 * Ensemble Constructor
 	 * 
-	 * @param pTestSetting The Statistical Hypothesis p-Test Setting
 	 * @param sampleArray Array of the Statistical Hypothesis Samples
 	 * @param testStatisticEvaluatorArray Array of the Test Statistic Evaluators
 	 * 
@@ -121,13 +119,11 @@ public class Ensemble
 	 */
 
 	public Ensemble (
-		final org.drip.validation.hypothesis.PTestSetting pTestSetting,
 		final org.drip.validation.hypothesis.Sample[] sampleArray,
 		final org.drip.validation.hypothesis.TestStatisticEvaluator[] testStatisticEvaluatorArray)
 		throws java.lang.Exception
 	{
-		if (null == (_pTestSetting = pTestSetting) ||
-			null == (_sampleArray = sampleArray) ||
+		if (null == (_sampleArray = sampleArray) ||
 			null == (_testStatisticEvaluatorArray = testStatisticEvaluatorArray))
 		{
 			throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
@@ -161,17 +157,6 @@ public class Ensemble
 	}
 
 	/**
-	 * Retrieve the Statistical Hypothesis p-Test Settings
-	 * 
-	 * @return The Statistical Hypothesis p-Test Settings
-	 */
-
-	public org.drip.validation.hypothesis.PTestSetting pTestSetting()
-	{
-		return _pTestSetting;
-	}
-
-	/**
 	 * Retrieve the Array of the Statistical Hypothesis Samples
 	 * 
 	 * @return The Array of the Statistical Hypothesis Samples
@@ -194,9 +179,9 @@ public class Ensemble
 	}
 
 	/**
-	 * Generate the Test Statistic Accumulator Array
+	 * Generate the Test Statistic Based Test Hypothesis Array
 	 * 
-	 * @return The Test Statistic Accumulator Array
+	 * @return The Test Statistic Based Test Hypothesis Array
 	 */
 
 	public org.drip.validation.hypothesis.Test[] testArray()
@@ -240,5 +225,78 @@ public class Ensemble
 		}
 
 		return testArray;
+	}
+
+	/**
+	 * Retrieve the Array of t-Test Results
+	 * 
+	 * @return The Array of t-Test Results
+	 */
+
+	public org.drip.validation.hypothesis.TTest[] tTestArray (
+		final double testStatistic)
+	{
+		int sampleCount = _sampleArray.length;
+		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
+		org.drip.validation.hypothesis.TTest[] tTestArray = new
+			org.drip.validation.hypothesis.TTest[testStatisticEvaluatorCount];
+
+		for (int testStatisticEvaluatorIndex = 0;
+			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
+			++testStatisticEvaluatorIndex)
+		{
+			double[] testStatisticArray = new double[sampleCount];
+
+			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+			{
+				try
+				{
+					testStatisticArray[sampleIndex] = _sampleArray[sampleIndex].applyTestStatistic
+						(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex]);
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+
+			org.drip.measure.statistics.UnivariateMoments ensembleUnivariateMoments =
+				org.drip.measure.statistics.UnivariateMoments.Standard (
+					"UnivariateMoments",
+					testStatisticArray,
+					null
+				);
+
+			if (null == ensembleUnivariateMoments)
+			{
+				return null;
+			}
+
+			try
+			{
+				tTestArray[testStatisticEvaluatorIndex] = new org.drip.validation.hypothesis.TTest (
+					testStatistic,
+					sampleCount,
+					ensembleUnivariateMoments.mean(),
+					ensembleUnivariateMoments.variance(),
+					ensembleUnivariateMoments.stdDev(),
+					ensembleUnivariateMoments.stdError(),
+					ensembleUnivariateMoments.degreesOfFreedom(),
+					ensembleUnivariateMoments.predictiveConfidenceLevel(),
+					ensembleUnivariateMoments.tStatistic (testStatistic),
+					ensembleUnivariateMoments.standardErrorOffset (testStatistic)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return tTestArray;
 	}
 }

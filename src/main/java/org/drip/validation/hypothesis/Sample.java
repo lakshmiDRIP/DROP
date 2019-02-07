@@ -140,7 +140,7 @@ public class Sample
 	/**
 	 * Apply the specified Test Statistic Evaluator to the Sample
 	 * 
-	 * @param testStatistic The Test Statistic Evaluator
+	 * @param testStatisticEvaluator The Test Statistic Evaluator
 	 * 
 	 * @return The Sample Test Statistic
 	 * 
@@ -148,14 +148,14 @@ public class Sample
 	 */
 
 	public double applyTestStatistic (
-		final org.drip.validation.hypothesis.TestStatisticEvaluator testStatistic)
+		final org.drip.validation.hypothesis.TestStatisticEvaluator testStatisticEvaluator)
 		throws java.lang.Exception
 	{
-		if (null == testStatistic)
+		if (null == testStatisticEvaluator)
 		{
 			throw new java.lang.Exception ("Sample::applyTestStatistic => Invalid Inputs");
 		}
 
-		return testStatistic.evaluate (_realizationArray);
+		return testStatisticEvaluator.evaluate (_realizationArray);
 	}
 }

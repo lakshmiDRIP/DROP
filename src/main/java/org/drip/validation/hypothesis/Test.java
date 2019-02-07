@@ -205,7 +205,8 @@ public class Test
 			testStatisticKeyPrevious = testStatisticKey;
 		}
 
-		return testStatistic >= testStatisticKeyCurrent ? 1. :
+		return !org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||
+			testStatistic >= testStatisticKeyCurrent ? 1. :
 			((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
 				(testStatisticKeyCurrent) +
 			(testStatisticKeyCurrent - testStatistic) * _testStatisticPValueMap.get
@@ -275,7 +276,7 @@ public class Test
 
 	public org.drip.validation.hypothesis.SignificanceTest significanceTest (
 		final double testStatistic,
-		final org.drip.validation.hypothesis.PTestSetting pTestSetting)
+		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
 		{
@@ -299,7 +300,7 @@ public class Test
 
 		double threshold = pTestSetting.threshold();
 
-		if (org.drip.validation.hypothesis.PTestSetting.LEFT_TAIL_CHECK == tailCheck)
+		if (org.drip.validation.hypothesis.SignificanceTestSetting.LEFT_TAIL_CHECK == tailCheck)
 		{
 			try
 			{
@@ -307,7 +308,7 @@ public class Test
 					testStatistic,
 					1. - pValue,
 					pValue,
-					pValue < threshold
+					pValue > threshold
 				);
 			}
 			catch (java.lang.Exception e)
@@ -318,7 +319,7 @@ public class Test
 			}
 		}
 
-		if (org.drip.validation.hypothesis.PTestSetting.RIGHT_TAIL_CHECK == tailCheck)
+		if (org.drip.validation.hypothesis.SignificanceTestSetting.RIGHT_TAIL_CHECK == tailCheck)
 		{
 			try
 			{
@@ -326,7 +327,7 @@ public class Test
 					testStatistic,
 					1. - pValue,
 					pValue,
-					1. - pValue < threshold
+					1. - pValue > threshold
 				);
 			}
 			catch (java.lang.Exception e)
@@ -346,7 +347,7 @@ public class Test
 				2. * java.lang.Math.min (
 					pValue,
 					1. - pValue
-				) < threshold
+				) > threshold
 			);
 		}
 		catch (java.lang.Exception e)
