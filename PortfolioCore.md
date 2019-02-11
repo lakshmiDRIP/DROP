@@ -26,7 +26,7 @@ Portfolio Core Module contains libraries the implement Portfolio Contruction, al
  * Asset Allocation Constraint Terms
 
 
-## Asset Allocation Analytics Coverage
+## Transaction Cost Analytics Coverage
 
  * Execution Cost and Transaction Trajectories
  * Execution of Portfolio Transactions - Optimal Trajectory

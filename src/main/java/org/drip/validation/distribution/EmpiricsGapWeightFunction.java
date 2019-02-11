@@ -1,5 +1,5 @@
 
-package org.drip.validation.hypothesis;
+package org.drip.validation.distribution;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,7 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>TestStatisticEvaluator</i> exposes the Function that must be applied on a Set to evaluate the Test
- * Statistic.
+ * <i>EmpiricsGapWeightFunction</i> weighs the outcomes of each Empirical Hypothesis Gap.
  *
  *  <br><br>
  *  <ul>
@@ -96,27 +95,96 @@ package org.drip.validation.hypothesis;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distribution">Hypothesis Target Difference Significance Test</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface TestStatisticEvaluator
+public abstract class EmpiricsGapWeightFunction
 {
 
 	/**
-	 * Evaluate the Test Statistic for the sample Array
+	 * Construct the Cramers-von Mises Version of the Empirics Gap Weight Function
 	 * 
-	 * @param sampleArray The Sample Array
+	 * @return The Cramers-von Mises Version of the Empirics Gap Weight Function
+	 */
+
+	public static final EmpiricsGapWeightFunction CramersVonMises()
+	{
+		try
+		{
+			return new EmpiricsGapWeightFunction()
+			{
+				@Override public double weight (
+					final double gap)
+					throws java.lang.Exception
+				{
+					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
+					{
+						throw new java.lang.Exception
+							("EmpiricsGapWeightFunction::weight => Invalid Inputs");
+					}
+
+					return 1.;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Anderson-Darling Version of the Empirics Gap Weight Function
 	 * 
-	 * @return The Test Statistic
+	 * @return The Anderson-Darling Version of the Empirics Gap Weight Function
+	 */
+
+	public static final EmpiricsGapWeightFunction AndersonDarling()
+	{
+		try
+		{
+			return new EmpiricsGapWeightFunction()
+			{
+				@Override public double weight (
+					final double gap)
+					throws java.lang.Exception
+				{
+					if (!org.drip.quant.common.NumberUtil.IsValid (gap) || 0. == gap)
+					{
+						throw new java.lang.Exception
+							("EmpiricsGapWeightFunction::weight => Invalid Inputs");
+					}
+
+					return 1. / gap;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
+	 * 
+	 * @param gap The Empirical to Hypothesis Gap
+	 * 
+	 * @return The Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double evaluate (
-		final double[] sampleArray)
+	public abstract double weight (
+		final double gap)
 		throws java.lang.Exception;
 }

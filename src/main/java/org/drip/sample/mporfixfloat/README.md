@@ -7,35 +7,35 @@ DROP Sample MPoR Fix Float illustrates CSA Enforced Fix-Float MPoR Exposure.
 
 ## Class Components
 
- * [***OTCPayerAggressiveTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCPayerAggressiveTimeline.java)
+ * [***OTCPayerAggressiveTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCPayerAggressiveTimeline.java)
  <i>OTCPayerAggressiveTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC Payer
  Swap on a Daily Grid using the "Aggressive" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCPayerClassicalMinusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCPayerClassicalMinusTimeline.java)
+ * [***OTCPayerClassicalMinusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCPayerClassicalMinusTimeline.java)
  <i>OTCPayerClassicalMinusTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Payer Swap on a Daily Grid using the "Classical-" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCPayerClassicalPlusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCPayerClassicalPlusTimeline.java)
+ * [***OTCPayerClassicalPlusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCPayerClassicalPlusTimeline.java)
  <i>OTCPayerClassicalPlusTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Payer Swap on a Daily Grid using the "Classical+" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCPayerConservativeTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCPayerConservativeTimeline.java)
+ * [***OTCPayerConservativeTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCPayerConservativeTimeline.java)
  <i>OTCPayerConservativeTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Payer Swap on a Daily Grid using the "Conservative" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCReceiverAggressiveTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCReceiverAggressiveTimeline.java)
+ * [***OTCReceiverAggressiveTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCReceiverAggressiveTimeline.java)
  <i>OTCReceiverAggressiveTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Receiver Swap on a Daily Grid using the "Aggressive" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCReceiverClassicalMinusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCReceiverClassicalMinusTimeline.java)
+ * [***OTCReceiverClassicalMinusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCReceiverClassicalMinusTimeline.java)
  <i>OTCReceiverClassicalMinusTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Receiver Swap on a Daily Grid using the "Classical-" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCReceiverClassicalPlusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCReceiverClassicalPlusTimeline.java)
+ * [***OTCReceiverClassicalPlusTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCReceiverClassicalPlusTimeline.java)
  <i>OTCReceiverClassicalPlusTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Receiver Swap on a Daily Grid using the "Classical+" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 
- * [***OTCReceiverConservativeTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/measure/OTCReceiverConservativeTimeline.java)
+ * [***OTCReceiverConservativeTimeline***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mporfixfloat/OTCReceiverConservativeTimeline.java)
  <i>OTCReceiverConservativeTimeline</i> displays the MPoR-related Exposure Metrics Suite for the given OTC
  Receiver Swap on a Daily Grid using the "Conservative" CSA Timeline of Andersen, Pykhtin, and Sokol (2017).
 

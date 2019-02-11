@@ -1,5 +1,5 @@
 
-package org.drip.validation.hypothesis;
+package org.drip.validation.evidence;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -105,8 +105,8 @@ package org.drip.validation.hypothesis;
 
 public class Ensemble
 {
-	private org.drip.validation.hypothesis.Sample[] _sampleArray = null;
-	private org.drip.validation.hypothesis.TestStatisticEvaluator[] _testStatisticEvaluatorArray =
+	private org.drip.validation.evidence.Sample[] _sampleArray = null;
+	private org.drip.validation.evidence.TestStatisticEvaluator[] _testStatisticEvaluatorArray =
 		null;
 
 	/**
@@ -119,8 +119,8 @@ public class Ensemble
 	 */
 
 	public Ensemble (
-		final org.drip.validation.hypothesis.Sample[] sampleArray,
-		final org.drip.validation.hypothesis.TestStatisticEvaluator[] testStatisticEvaluatorArray)
+		final org.drip.validation.evidence.Sample[] sampleArray,
+		final org.drip.validation.evidence.TestStatisticEvaluator[] testStatisticEvaluatorArray)
 		throws java.lang.Exception
 	{
 		if (null == (_sampleArray = sampleArray) ||
@@ -162,7 +162,7 @@ public class Ensemble
 	 * @return The Array of the Statistical Hypothesis Samples
 	 */
 
-	public org.drip.validation.hypothesis.Sample[] sampleArray()
+	public org.drip.validation.evidence.Sample[] sampleArray()
 	{
 		return _sampleArray;
 	}
@@ -173,30 +173,30 @@ public class Ensemble
 	 * @return The Array of the Test Statistic Evaluators
 	 */
 
-	public org.drip.validation.hypothesis.TestStatisticEvaluator[] testStatisticEvaluatorArray()
+	public org.drip.validation.evidence.TestStatisticEvaluator[] testStatisticEvaluatorArray()
 	{
 		return _testStatisticEvaluatorArray;
 	}
 
 	/**
-	 * Generate the Test Statistic Based Test Hypothesis Array
+	 * Construct the Test Statistic Based Significance Test Hypothesis Array
 	 * 
-	 * @return The Test Statistic Based Test Hypothesis Array
+	 * @return The Test Statistic Based Significance Test Hypothesis Array
 	 */
 
-	public org.drip.validation.hypothesis.Test[] testArray()
+	public org.drip.validation.hypothesis.SignificanceTest[] significanceTest()
 	{
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		org.drip.validation.hypothesis.Test[] testArray = new
-			org.drip.validation.hypothesis.Test[testStatisticEvaluatorCount];
+		org.drip.validation.hypothesis.SignificanceTest[] testArray = new
+			org.drip.validation.hypothesis.SignificanceTest[testStatisticEvaluatorCount];
 
 		for (int testStatisticAccumulatorIndex = 0;
 			testStatisticAccumulatorIndex < testStatisticEvaluatorCount;
 			++testStatisticAccumulatorIndex)
 		{
-			org.drip.validation.hypothesis.TestStatisticAccumulator testStatisticAccumulator = new
-				org.drip.validation.hypothesis.TestStatisticAccumulator();
+			org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
+				org.drip.validation.evidence.TestStatisticAccumulator();
 
 			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 			{
@@ -228,18 +228,20 @@ public class Ensemble
 	}
 
 	/**
-	 * Retrieve the Array of t-Test Results
+	 * Compute the Array of t-Test Results
+	 * 
+	 * @param testStatistic The Test Statistic
 	 * 
 	 * @return The Array of t-Test Results
 	 */
 
-	public org.drip.validation.hypothesis.TTest[] tTestArray (
+	public org.drip.validation.hypothesis.TTestOutcome[] tTest (
 		final double testStatistic)
 	{
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		org.drip.validation.hypothesis.TTest[] tTestArray = new
-			org.drip.validation.hypothesis.TTest[testStatisticEvaluatorCount];
+		org.drip.validation.hypothesis.TTestOutcome[] tTestArray = new
+			org.drip.validation.hypothesis.TTestOutcome[testStatisticEvaluatorCount];
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
@@ -276,7 +278,7 @@ public class Ensemble
 
 			try
 			{
-				tTestArray[testStatisticEvaluatorIndex] = new org.drip.validation.hypothesis.TTest (
+				tTestArray[testStatisticEvaluatorIndex] = new org.drip.validation.hypothesis.TTestOutcome (
 					testStatistic,
 					sampleCount,
 					ensembleUnivariateMoments.mean(),
@@ -298,5 +300,109 @@ public class Ensemble
 		}
 
 		return tTestArray;
+	}
+
+	/**
+	 * Compute the Array of Statistical Test Outcomes
+	 * 
+	 * @param testStatistic The Realized Test Statistic
+	 * @param pTestSetting The P-Test Setting
+	 * 
+	 * @return The Array of Statistical Test Outcomes
+	 */
+
+	public org.drip.validation.hypothesis.StatisticalTestOutcome[] statisticalTest (
+		final double testStatistic,
+		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
+		{
+			return null;
+		}
+
+		int sampleCount = _sampleArray.length;
+		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
+		org.drip.validation.hypothesis.StatisticalTestOutcome[] statisticalTestOutcomeArray = new
+			org.drip.validation.hypothesis.StatisticalTestOutcome[testStatisticEvaluatorCount];
+
+		for (int testStatisticEvaluatorIndex = 0;
+			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
+			++testStatisticEvaluatorIndex)
+		{
+			double[] testStatisticArray = new double[sampleCount];
+
+			org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
+				org.drip.validation.evidence.TestStatisticAccumulator();
+
+			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+			{
+				try
+				{
+					if (!testStatisticAccumulator.addTestStatistic (testStatisticArray[sampleIndex] =
+						_sampleArray[sampleIndex].applyTestStatistic
+							(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex])))
+					{
+						return null;
+					}
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+
+			org.drip.validation.hypothesis.SignificanceTest statisticalTest =
+				testStatisticAccumulator.probabilityIntegralTransform();
+
+			if (null == statisticalTest)
+			{
+				return null;
+			}
+
+			org.drip.measure.statistics.UnivariateMoments ensembleUnivariateMoments =
+				org.drip.measure.statistics.UnivariateMoments.Standard (
+					"UnivariateMoments",
+					testStatisticArray,
+					null
+				);
+
+			if (null == ensembleUnivariateMoments)
+			{
+				return null;
+			}
+
+			try
+			{
+				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new
+					org.drip.validation.hypothesis.StatisticalTestOutcome (
+						statisticalTest.significanceTest (
+							testStatistic,
+							pTestSetting
+						),
+						new org.drip.validation.hypothesis.TTestOutcome (
+							testStatistic,
+							sampleCount,
+							ensembleUnivariateMoments.mean(),
+							ensembleUnivariateMoments.variance(),
+							ensembleUnivariateMoments.stdDev(),
+							ensembleUnivariateMoments.stdError(),
+							ensembleUnivariateMoments.degreesOfFreedom(),
+							ensembleUnivariateMoments.predictiveConfidenceLevel(),
+							ensembleUnivariateMoments.tStatistic (testStatistic),
+							ensembleUnivariateMoments.standardErrorOffset (testStatistic)
+						)
+					);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return statisticalTestOutcomeArray;
 	}
 }

@@ -64,7 +64,8 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>SignificanceTest</i> contains the Results of the Significant Test of the Statistical Hypothesis.
+ * <i>SignificanceTest</i> implements a Single Statistical Hypothesis Significance Test. It holds the PIT
+ * Distribution CDF of the Test-Statistic Response Instances.
  *
  *  <br><br>
  *  <ul>
@@ -104,80 +105,256 @@ package org.drip.validation.hypothesis;
 
 public class SignificanceTest
 {
-	private boolean _pass = false;
-	private double _testStatistic = java.lang.Double.NaN;
-	private double _leftTailPValue = java.lang.Double.NaN;
-	private double _rightTailPValue = java.lang.Double.NaN;
+	private java.util.Map<java.lang.Double, java.lang.Double> _pValueTestStatisticMap = null;
+	private java.util.Map<java.lang.Double, java.lang.Double> _testStatisticPValueMap = null;
 
 	/**
 	 * SignificanceTest Constructor
 	 * 
-	 * @param testStatistic Test Statistic
-	 * @param leftTailPValue Left Tail p-value
-	 * @param rightTailPValue Right Tail p-value
-	 * @param pass TRUE - Test successfully Passed
+	 * @param testStatisticPValueMap Test Statistic - p Value Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SignificanceTest (
-		final double testStatistic,
-		final double leftTailPValue,
-		final double rightTailPValue,
-		final boolean pass)
+		final java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_rightTailPValue = rightTailPValue))
+		if (null == (_testStatisticPValueMap = testStatisticPValueMap) ||
+			0 == _testStatisticPValueMap.size())
 		{
 			throw new java.lang.Exception ("SignificanceTest Constructor => Invalid Inputs");
 		}
 
-		_pass = pass;
+		_pValueTestStatisticMap = new java.util.TreeMap<java.lang.Double, java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> testStatisticPValueMapEntry :
+			_testStatisticPValueMap.entrySet())
+		{
+			_pValueTestStatisticMap.put (
+				testStatisticPValueMapEntry.getValue(),
+				testStatisticPValueMapEntry.getKey()
+			);
+		}
 	}
 
 	/**
-	 * Retrieve the Test Statistic
+	 * Retrieve the p Value - Test Statistic Map
 	 * 
-	 * @return The Test Statistic
+	 * @return The p Value - Test Statistic Map
 	 */
 
-	public double testStatistic()
+	public java.util.Map<java.lang.Double, java.lang.Double> pValueResponseMap()
 	{
-		return _testStatistic;
+		return _pValueTestStatisticMap;
 	}
 
 	/**
-	 * Retrieve the Left Tail p-Value
+	 * Retrieve the Test Statistic - p Value Map
 	 * 
-	 * @return The Left Tail p-Value
+	 * @return The Test Statistic - p Value Map
 	 */
 
-	public double leftTailPValue()
+	public java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap()
 	{
-		return _leftTailPValue;
+		return _testStatisticPValueMap;
 	}
 
 	/**
-	 * Retrieve the Right Tail p-Value
+	 * Compute the p-Value corresponding to the Test Statistic Instance
 	 * 
-	 * @return The Right Tail p-Value
+	 * @param testStatistic The Test Statistic Instance
+	 * 
+	 * @return The p-Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double rightTailPValue()
+	public double pValue (
+		final double testStatistic)
+		throws java.lang.Exception
 	{
-		return _rightTailPValue;
+		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))
+		{
+			throw new java.lang.Exception ("SignificanceTest::pValue => Invalid Inputs");
+		}
+
+		java.util.Set<java.lang.Double> testStatisticKeySet = _testStatisticPValueMap.keySet();
+
+		double testStatisticKeyCurrent = java.lang.Double.NaN;
+		double testStatisticKeyPrevious = java.lang.Double.NaN;
+
+		for (double testStatisticKey : testStatisticKeySet)
+		{
+			if (testStatistic == testStatisticKey)
+			{
+				return _testStatisticPValueMap.get (testStatistic);
+			}
+
+			if (testStatistic < testStatisticKey)
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyPrevious))
+				{
+					return 0.;
+				}
+
+				testStatisticKeyCurrent = testStatisticKey;
+				break;
+			}
+
+			testStatisticKeyPrevious = testStatisticKey;
+		}
+
+		return !org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||
+			testStatistic >= testStatisticKeyCurrent ? 1. :
+			((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
+				(testStatisticKeyCurrent) +
+			(testStatisticKeyCurrent - testStatistic) * _testStatisticPValueMap.get
+				(testStatisticKeyPrevious)) /
+			(testStatisticKeyCurrent - testStatisticKeyPrevious);
 	}
 
 	/**
-	 * Indicate of the Test has been successfully Passed
+	 * Compute the Test Statistic Instance corresponding to the p-Value
 	 * 
-	 * @return TRUE - Test has been successfully Passed
+	 * @param pValue The p-Value
+	 * 
+	 * @return The Response Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean pass()
+	public double testStatistic (
+		final double pValue)
+		throws java.lang.Exception
 	{
-		return _pass;
+		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))
+		{
+			throw new java.lang.Exception ("SignificanceTest::testStatistic => Invalid Inputs");
+		}
+
+		java.util.Set<java.lang.Double> pValueKeySet = _pValueTestStatisticMap.keySet();
+
+		double pValueKeyCurrent = java.lang.Double.NaN;
+		double pValueKeyPrevious = java.lang.Double.NaN;
+
+		for (double pValueKey : pValueKeySet)
+		{
+			if (pValue == pValueKey)
+			{
+				return _pValueTestStatisticMap.get (pValue);
+			}
+
+			if (pValue < pValueKey)
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (pValueKeyPrevious))
+				{
+					return _pValueTestStatisticMap.get (pValueKey);
+				}
+
+				pValueKeyCurrent = pValueKey;
+				break;
+			}
+
+			pValueKeyPrevious = pValueKey;
+		}
+
+		return pValue >= pValueKeyCurrent ? _pValueTestStatisticMap.get (pValueKeyCurrent) :
+			((pValue - pValueKeyPrevious) * _pValueTestStatisticMap.get (pValueKeyCurrent) +
+			(pValueKeyCurrent - pValue) * _pValueTestStatisticMap.get (pValueKeyPrevious)) /
+			(pValueKeyCurrent - pValueKeyPrevious);
+	}
+
+	/**
+	 * Run the Significance Test for the Realized Test Statistic
+	 * 
+	 * @param testStatistic The Realized Test Statistic
+	 * @param pTestSetting The P-Test Setting
+	 * 
+	 * @return The Significance Test Result for the Realized Test Statistic
+	 */
+
+	public org.drip.validation.hypothesis.SignificanceTestOutcome significanceTest (
+		final double testStatistic,
+		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
+		{
+			return null;
+		}
+
+		double pValue = java.lang.Double.NaN;
+
+		try
+		{
+			pValue = pValue (testStatistic);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		int tailCheck = pTestSetting.tailCheck();
+
+		double threshold = pTestSetting.threshold();
+
+		if (org.drip.validation.hypothesis.SignificanceTestSetting.LEFT_TAIL_CHECK == tailCheck)
+		{
+			try
+			{
+				return new SignificanceTestOutcome (
+					testStatistic,
+					1. - pValue,
+					pValue,
+					pValue > threshold
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		if (org.drip.validation.hypothesis.SignificanceTestSetting.RIGHT_TAIL_CHECK == tailCheck)
+		{
+			try
+			{
+				return new SignificanceTestOutcome (
+					testStatistic,
+					1. - pValue,
+					pValue,
+					1. - pValue > threshold
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		try
+		{
+			return new SignificanceTestOutcome (
+				testStatistic,
+				1. - pValue,
+				pValue,
+				2. * java.lang.Math.min (
+					pValue,
+					1. - pValue
+				) > threshold
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

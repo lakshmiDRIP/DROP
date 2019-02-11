@@ -11,7 +11,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v4.00.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure/ExposureAnalytics_v4.01.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/Exposure) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -24,6 +24,9 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
  * *SIMM* => Initial Margin Analytics based on ISDA SIMM and its Variants.
 	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Asimm) }
+ * *BCBS* => Basel Capital, Funding, and Liquidity Metrics.
+	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/README.md) | 
+	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Abcbs) }
 
 
 ## Coverage
@@ -49,8 +52,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Some Behavioral and Legal Aspects
 	* Simplified Timeline of IMA/CSA Events
 	* Identification of Key Time Periods
-	* Establishing the Sequence of Events
-	* Evaluation of the Client Survival Probability
+	* Establishing the Sequence of Events	* Evaluation of the Client Survival Probability
 	* Timeline Calibration
 	* Aggressive Calibration
 	* Conservative Calibration
@@ -61,8 +63,7 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Portfolio Results
 	* CVA Results
 	* Improvement of the Computation Times
-	* The Coarse Grid Lookback Method and its Shortcomings
-	* Brownian Bridge Method
+	* The Coarse Grid Lookback Method and its Shortcomings	* Brownian Bridge Method
 	* Initial Margin
 	* Conclusion
 	* References
@@ -147,6 +148,15 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* SIMM
 	* MVA
 	* Summary
+ * Basel II
+	* Overview
+	* Objective
+	* The Accord in Operation: Three Pillars
+	* The First Pillar: Minimum Capital Requirements
+	* The Second Pillar: The Supervisory Review
+	* The Third Pillar: Market Discipline
+	* Chronological Updates
+	* References
  * Basel III
 	* Overview
 	* Key Principles - Capital Requirements
@@ -158,29 +168,6 @@ Exposure Analytics Library computes the Scenario Exposures at the specified Trad
 	* Europe Implementation
 	* Key Milestones
 	* References
- * Basel III Framework for Backtesting Exposure Models
-	* Abstract
-	* Introduction
-	* Basic Concepts and the Need for Backtesting
-	* Regulatory Guidances
-	* RF Backtesting: The Backtesting Construction for Collateralized and Uncollateralized Models
-	* Discriminatory Power RF Backtesting
-	* The Aggregation of Backtesting Results
-	* Correlations Backtesting
-	* Portfolio Backtesting
-	* Capital Buffer Calculation
-	* Conclusion
-	* References
- * Initial Margin Backtesting Framework
-	* Abstract
-	* Introduction
-	* How to Construct a DIM Model
-	* How to Back Test a DIM Model
-	* Backtesting DIM Mapping Functions (for Capital Exposure and CVA)
-	* Backtesting the IMRD for MVA and LCR/NSFR
-	* Conclusion
-	* References
-
 
 ## DROP Specifications
 

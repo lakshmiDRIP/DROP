@@ -1,5 +1,5 @@
 
-package org.drip.validation.hypothesis;
+package org.drip.validation.distribution;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>Sample</i> holds the Sample of Realizations.
+ * <i>EmpiricsGapTestStatistic</i> computes the Weighted Hypothesis-Empirical Gap as the Test Statistic.
  *
  *  <br><br>
  *  <ul>
@@ -91,71 +91,53 @@ package org.drip.validation.hypothesis;
  *  </ul>
  *
  *  <br><br>
-- *  <ul>
+ *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distribution">Hypothesis Target Difference Significance Test</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Sample
+public class EmpiricsGapTestStatistic
 {
-	private double[] _realizationArray = null;
+	private org.drip.validation.evidence.Ensemble _modelEnsemble = null;
+	private org.drip.validation.evidence.Ensemble _sampleEnsemble = null;
+	private org.drip.validation.distribution.EmpiricsGapWeightFunction _weightFunction = null;
 
 	/**
-	 * Sample Constructor
+	 * Retrieve the Model Ensemble
 	 * 
-	 * @param realizationArray The Sample Realization Array
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Model Ensemble
 	 */
 
-	public Sample (
-		final double[] realizationArray)
-		throws java.lang.Exception
+	public org.drip.validation.evidence.Ensemble modelEnsemble()
 	{
-		if (null == (_realizationArray = realizationArray) ||
-			0 == _realizationArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_realizationArray))
-		{
-			throw new java.lang.Exception ("Sample Constructor => Invalid Inputs");
-		}
+		return _modelEnsemble;
 	}
 
 	/**
-	 * Retrieve the Realization Array
+	 * Retrieve the Sample Ensemble
 	 * 
-	 * @return The Realization Array
+	 * @return The Sample Ensemble
 	 */
 
-	public double[] realizationArray()
+	public org.drip.validation.evidence.Ensemble sampleEnsemble()
 	{
-		return _realizationArray;
+		return _sampleEnsemble;
 	}
 
 	/**
-	 * Apply the specified Test Statistic Evaluator to the Sample
+	 * Retrieve the Empirics-Hypothesis Gap Weight Function
 	 * 
-	 * @param testStatisticEvaluator The Test Statistic Evaluator
-	 * 
-	 * @return The Sample Test Statistic
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Empirics-Hypothesis Gap Weight Function
 	 */
 
-	public double applyTestStatistic (
-		final org.drip.validation.hypothesis.TestStatisticEvaluator testStatisticEvaluator)
-		throws java.lang.Exception
+	public org.drip.validation.distribution.EmpiricsGapWeightFunction weightFunction()
 	{
-		if (null == testStatisticEvaluator)
-		{
-			throw new java.lang.Exception ("Sample::applyTestStatistic => Invalid Inputs");
-		}
-
-		return testStatisticEvaluator.evaluate (_realizationArray);
+		return _weightFunction;
 	}
 }

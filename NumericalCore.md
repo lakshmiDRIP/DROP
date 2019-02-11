@@ -8,11 +8,23 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
 
 ## Component Libraries
 
+ * [*Model Validation*](https://github.com/lakshmiDRIP/DROP/blob/master/ModelValidationLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
+
  * [*Spline Builder*](https://github.com/lakshmiDRIP/DROP/blob/master/SplineBuilderLibrary.md) => Functionality for constructing Spline Based Curves and Surfaces.
 
  * [*Statistical Learning*](https://github.com/lakshmiDRIP/DROP/blob/master/StatisticalLearningLibrary.md) => Statistical Learning Analyzers and Machine Learning Schemes.
 
  * [*Numerical Optimizer*](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalOptimizerLibrary.md) => Functionality for Numerical Methods - including R<sup>x</sup> Solvers, Linear Algebra, and Constrained Optimizers.
+
+
+## Model Validation Coverage
+
+ * Probability Integral Transform
+ * t-Statistic
+ * p-value
+ * Basel III Framework for Backtesting Exposure Models
+ * Initial Margin Backtesting Framework
+ * Model Risk Management Framework
 
 
 ## Spline Builder Coverage

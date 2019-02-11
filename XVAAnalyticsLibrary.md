@@ -47,7 +47,7 @@ XVA Analytics Library contains the Utilities to generate various Valuation Adjus
 	* Implementation - The Correlation Matrix
 	* Testing
 	* Random Number Generators
-	* Multi-Stram RNG's
+	* Multi-Stream RNG's
  * Core CVA/DVA Model
 	* Abstract and Synopsys
 	* Introduction
@@ -192,8 +192,7 @@ XVA Analytics Library contains the Utilities to generate various Valuation Adjus
 	* Addressing the Shortcomings of FCA/FBA Accounting
 	* References
  * Albanese and Andersen (2014) Results Summary
-	* Valuation Adjustment Estimation Framework Setup
-	* OTC Books Funding Set Decomposition
+	* Valuation Adjustment Estimation Framework Setup	* OTC Books Funding Set Decomposition
 	* Inconsistent Booking Under the FCA/FBA
 	* Improvements Offered by the FVA/FDA Accounting
 	* References
@@ -235,8 +234,7 @@ XVA Analytics Library contains the Utilities to generate various Valuation Adjus
 	* FVA/FDA Accounting
 	* FCA/FBA Accounting
 	* References
- * Liquidity Spreads, Asset Liability Symmetry, and Alternative Allocations for Excess Collateral
-	* Motivation
+ * Liquidity Spreads, Asset Liability Symmetry, and Alternative Allocations for Excess Collateral	* Motivation
 	* Working Capital Management and Operations
 	* Equity Gain and Debt Gain
 	* Liquidity Based Analysis and Treatment
@@ -284,7 +282,6 @@ XVA Analytics Library contains the Utilities to generate various Valuation Adjus
 	* Proof of the Statement FCA<sub>IV</sub> < FCA<sub>III</sub> < FCA<sub>I</sub>
 	* Discussion
 	* References
-
 
 ## DROP Specifications
 

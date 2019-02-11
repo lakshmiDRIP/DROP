@@ -97,8 +97,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* References
  * Karush-Kuhn-Tucker Conditions
 	* Introduction, Overview, Purpose, and Motivation
-	* Necessary Conditions for Optimization Problems
-	* Regularity Conditions or Constraint Qualifications
+	* Necessary Conditions for Optimization Problems	* Regularity Conditions or Constraint Qualifications
 	* Sufficiency Conditions
 	* KKT Conditions Application - Economics
 	* KKT Conditions Application - Value Function

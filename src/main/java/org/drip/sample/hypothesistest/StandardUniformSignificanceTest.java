@@ -4,12 +4,12 @@ package org.drip.sample.hypothesistest;
 import org.drip.measure.continuous.R1UnivariateUniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.hypothesis.Ensemble;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
-import org.drip.validation.hypothesis.Sample;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.SignificanceTestOutcome;
 import org.drip.validation.hypothesis.SignificanceTest;
-import org.drip.validation.hypothesis.Test;
-import org.drip.validation.hypothesis.TestStatisticEvaluator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -176,7 +176,7 @@ public class StandardUniformSignificanceTest
 	}
 
 	private static final void SignificanceTest (
-		final Test test,
+		final SignificanceTest test,
 		final int drawCount,
 		final TestStatisticEvaluator testStatisticEvaluator,
 		final SignificanceTestSetting pTestSetting)
@@ -184,7 +184,7 @@ public class StandardUniformSignificanceTest
 	{
 		Sample testSample = GenerateSample (drawCount);
 
-		SignificanceTest significanceTest = test.significanceTest (
+		SignificanceTestOutcome significanceTest = test.significanceTest (
 			testSample.applyTestStatistic (testStatisticEvaluator),
 			pTestSetting
 		);
@@ -217,7 +217,7 @@ public class StandardUniformSignificanceTest
 			testStatisticEvaluatorArray
 		);
 
-		Test test = ensemble.testArray()[0];
+		SignificanceTest test = ensemble.significanceTest()[0];
 
 		SignificanceTestSetting significanceTestSettingRightTail = SignificanceTestSetting.FisherRightTail();
 

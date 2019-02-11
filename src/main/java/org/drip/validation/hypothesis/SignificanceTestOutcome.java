@@ -64,7 +64,7 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>TTest</i> holds the Results of a Statistic Hypothesis t-Test.
+ * <i>SignificanceTestOutcome</i> contains the Results of the Significant Test of the Statistical Hypothesis.
  *
  *  <br><br>
  *  <ul>
@@ -81,7 +81,9 @@ package org.drip.validation.hypothesis;
  *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): t-statistic https://en.wikipedia.org/wiki/T-statistic
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  		Perspectives in Psychological Science 6 (3) 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -100,71 +102,45 @@ package org.drip.validation.hypothesis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TTest
+public class SignificanceTestOutcome
 {
-	private double _ensembleMean = java.lang.Double.NaN;
+	private boolean _pass = false;
 	private double _testStatistic = java.lang.Double.NaN;
-	private int _sampleCount = java.lang.Integer.MIN_VALUE;
-	private double _ensembleVariance = java.lang.Double.NaN;
-	private double _ensembleTStatistics = java.lang.Double.NaN;
-	private double _ensembleStandardError = java.lang.Double.NaN;
-	private double _ensembleStandardDeviation = java.lang.Double.NaN;
-	private double _ensembleStandardErrorOffset = java.lang.Double.NaN;
-	private int _ensembleDegreesOfFreedom = java.lang.Integer.MIN_VALUE;
-	private double _ensemblePredictiveConfidenceInterval = java.lang.Double.NaN;
+	private double _leftTailPValue = java.lang.Double.NaN;
+	private double _rightTailPValue = java.lang.Double.NaN;
 
 	/**
-	 * TTest Constructor
+	 * SignificanceTestOutcome Constructor
 	 * 
-	 * @param testStatistic Sample Test Statistic
-	 * @param sampleCount Number of Samples in the Ensemble
-	 * @param ensembleMean Ensemble Mean
-	 * @param ensembleVariance Ensemble Variance
-	 * @param ensembleStandardDeviation Ensemble Standard Deviation
-	 * @param ensembleStandardError Ensemble Standard Error
-	 * @param ensembleDegreesOfFreedom Ensemble Degrees of Freedom
-	 * @param ensemblePredictiveConfidenceInterval Ensemble Predictive Confidence Interval
-	 * @param ensembleTStatistics Ensemble t-Statistics
-	 * @param ensembleStandardErrorOffset  Ensemble Standard Error Offset
+	 * @param testStatistic Test Statistic
+	 * @param leftTailPValue Left Tail p-value
+	 * @param rightTailPValue Right Tail p-value
+	 * @param pass TRUE - Test successfully Passed
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TTest (
+	public SignificanceTestOutcome (
 		final double testStatistic,
-		final int sampleCount,
-		final double ensembleMean,
-		final double ensembleVariance,
-		final double ensembleStandardDeviation,
-		final double ensembleStandardError,
-		final int ensembleDegreesOfFreedom,
-		final double ensemblePredictiveConfidenceInterval,
-		final double ensembleTStatistics,
-		final double ensembleStandardErrorOffset)
+		final double leftTailPValue,
+		final double rightTailPValue,
+		final boolean pass)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
-			0 >= (_sampleCount = sampleCount) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleMean = ensembleMean) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleStandardDeviation =
-				ensembleStandardDeviation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||
-			0 > (_ensembleDegreesOfFreedom = ensembleDegreesOfFreedom) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =
-				ensemblePredictiveConfidenceInterval) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleStandardErrorOffset =
-				ensembleStandardErrorOffset))
+			!org.drip.quant.common.NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_rightTailPValue = rightTailPValue))
 		{
-			throw new java.lang.Exception ("TTest Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("SignificanceTestOutcome Constructor => Invalid Inputs");
 		}
+
+		_pass = pass;
 	}
 
 	/**
-	 * Retrieve the Sample Test Statistic
+	 * Retrieve the Test Statistic
 	 * 
-	 * @return The Sample Test Statistic
+	 * @return The Test Statistic
 	 */
 
 	public double testStatistic()
@@ -173,101 +149,35 @@ public class TTest
 	}
 
 	/**
-	 * Retrieve the Sample Count
+	 * Retrieve the Left Tail p-Value
 	 * 
-	 * @return The Sample Count
+	 * @return The Left Tail p-Value
 	 */
 
-	public int sampleCount()
+	public double leftTailPValue()
 	{
-		return _sampleCount;
+		return _leftTailPValue;
 	}
 
 	/**
-	 * Retrieve the Ensemble Mean
+	 * Retrieve the Right Tail p-Value
 	 * 
-	 * @return The Ensemble Mean
+	 * @return The Right Tail p-Value
 	 */
 
-	public double ensembleMean()
+	public double rightTailPValue()
 	{
-		return _ensembleMean;
+		return _rightTailPValue;
 	}
 
 	/**
-	 * Retrieve the Ensemble Variance
+	 * Indicate of the Test has been successfully Passed
 	 * 
-	 * @return The Ensemble Variance
+	 * @return TRUE - Test has been successfully Passed
 	 */
 
-	public double ensembleVariance()
+	public boolean pass()
 	{
-		return _ensembleVariance;
-	}
-
-	/**
-	 * Retrieve the Ensemble Standard Deviation
-	 * 
-	 * @return The Ensemble Standard Deviation
-	 */
-
-	public double ensembleStandardDeviation()
-	{
-		return _ensembleStandardDeviation;
-	}
-
-	/**
-	 * Retrieve the Ensemble Standard Error
-	 * 
-	 * @return The Ensemble Standard Error
-	 */
-
-	public double ensembleStandardError()
-	{
-		return _ensembleStandardError;
-	}
-
-	/**
-	 * Retrieve the Ensemble Degrees of Freedom
-	 * 
-	 * @return The Ensemble Degrees of Freedom
-	 */
-
-	public int ensembleDegreesOfFreedom()
-	{
-		return _ensembleDegreesOfFreedom;
-	}
-
-	/**
-	 * Retrieve the Ensemble Predictive Confidence Interval
-	 * 
-	 * @return The Ensemble Predictive Confidence Interval
-	 */
-
-	public double ensemblePredictiveConfidenceInterval()
-	{
-		return _ensemblePredictiveConfidenceInterval;
-	}
-
-	/**
-	 * Retrieve the Ensemble t-Statistics
-	 * 
-	 * @return The Ensemble t-Statistics
-	 */
-
-	public double ensembleTStatistics()
-	{
-		return _ensembleTStatistics;
-	}
-
-	/**
-	 * Retrieve the Ensemble Standard Error Offset
-	 * 
-	 * @return The Ensemble Standard Error Offset
-	 */
-
-	public double ensembleStandardErrorOffset()
-	{
-		return _ensembleStandardErrorOffset;
+		return _pass;
 	}
 }

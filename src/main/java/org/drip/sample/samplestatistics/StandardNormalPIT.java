@@ -4,8 +4,8 @@ package org.drip.sample.samplestatistics;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.hypothesis.Test;
-import org.drip.validation.hypothesis.TestStatisticAccumulator;
+import org.drip.validation.evidence.TestStatisticAccumulator;
+import org.drip.validation.hypothesis.SignificanceTest;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -134,7 +134,7 @@ public class StandardNormalPIT
 			responseAccumulator.addTestStatistic (UnivariateRandom());
 		}
 
-		Test responseDistribution = responseAccumulator.probabilityIntegralTransform();
+		SignificanceTest responseDistribution = responseAccumulator.probabilityIntegralTransform();
 
 		System.out.println ("\t|-------------------||");
 

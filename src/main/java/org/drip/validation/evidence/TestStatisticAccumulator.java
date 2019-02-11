@@ -1,5 +1,5 @@
 
-package org.drip.validation.hypothesis;
+package org.drip.validation.evidence;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -170,7 +170,7 @@ public class TestStatisticAccumulator
 	/**
 	 * Extract the Empirical Cumulative Test Statistic Probability from the Smallest Response Value
 	 * 
-	 * @param response The Response
+	 * @param testStatistic The Test Statistic
 	 * 
 	 * @return The Empirical Cumulative Test Statistic Probability from the Smallest Response Value
 	 * 
@@ -243,7 +243,7 @@ public class TestStatisticAccumulator
 	 * @return The Test Statistic Distribution
 	 */
 
-	public org.drip.validation.hypothesis.Test probabilityIntegralTransform()
+	public org.drip.validation.hypothesis.SignificanceTest probabilityIntegralTransform()
 	{
 		int instanceCount = 0;
 		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
@@ -263,7 +263,7 @@ public class TestStatisticAccumulator
 
 		try
 		{
-			return new org.drip.validation.hypothesis.Test (testStatisticPValueMap);
+			return new org.drip.validation.hypothesis.SignificanceTest (testStatisticPValueMap);
 		}
 		catch (java.lang.Exception e)
 		{

@@ -14,7 +14,7 @@ Analytics Core Module contains libraries the implement Fixed Income Analytics, A
 
  * [*XVA Analytics*](https://github.com/lakshmiDRIP/DROP/blob/master/XVAAnalyticsLibrary.md) => Valuation Adjustments (Collateral VA/CVA/DVA/FBA/FCA/FVA/MVA/XVA).
 
- * [*Exposure Analytics*](https://github.com/lakshmiDRIP/DROP/blob/master/ExposureAnalyticsLibrary.md) => Scenario Exposures and Margins at the specified Trade Group Granularity.
+ * [*Exposure Analytics*](https://github.com/lakshmiDRIP/DROP/blob/master/ExposureAnalyticsLibrary.md) => Exposure, Margin, and Capital at the specified Trade Group Granularity.
 
 
 ## Fixed Income Analytics Coverage
@@ -98,8 +98,7 @@ Analytics Core Module contains libraries the implement Fixed Income Analytics, A
  * Credit and Funding Valuation Adjustments
  * Triggers and Close-out Adjustments
  * Entry Prices, Exit Prices, and Trade FTP
- * Liquidity Spreads, Asset Liability Symmetry, and Alternative Allocations for Excess Collateral
- * Albanese and Andersen (2014) Case Study
+ * Liquidity Spreads, Asset Liability Symmetry, and Alternative Allocations for Excess Collateral * Albanese and Andersen (2014) Case Study
  * Conclusions with Funding Adjustments with RHO
  * The FVA Puzzle: Accounting, Risk Management, and Collateral Trading
  * Derivatives Funding, Netting, and Accounting
@@ -114,9 +113,8 @@ Analytics Core Module contains libraries the implement Fixed Income Analytics, A
  * ISDA SIMM Methodology
  * Dynamic Initial Margin Impact on Exposure
  * CCP and SIMM Initial Margin
+ * Basel II
  * Basel III
- * Basel III Framework for Backtesting Exposure Models
- * Initial Margin Backtesting Framework
 
 
 ## DROP Specifications

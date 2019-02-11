@@ -9,7 +9,7 @@ DROP Sample Govvie illustrates the Boot/Spline Govvie Curve Construction API.
 
  |          Sample         | Source | Output |
  |-------------------------|--------|--------|
- | Non-Linear Govvie Curve | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/NonLinearGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/NonLinearGovvieCurve.drop) |
+ | Non-Linear Govvie Curve | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/NonlinearGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/NonlinearGovvieCurve.drop) |
  | Spline Govvie Curve     | [Java](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/govvie/SplineGovvieCurve.java) | [DROP](https://github.com/lakshmiDRIP/DROP/blob/master/drop/org/drip/sample/govvie/SplineGovvieCurve.drop) |
 
 
