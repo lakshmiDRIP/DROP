@@ -238,12 +238,12 @@ public class TestStatisticAccumulator
 	}
 
 	/**
-	 * Perform a Probability Integral Transform to generate the Test Statistic Distribution
+	 * Perform a Probability Integral Transform to generate the Test Statistic CDF Distribution
 	 * 
-	 * @return The Test Statistic Distribution
+	 * @return The Test Statistic CDF Distribution
 	 */
 
-	public org.drip.validation.hypothesis.SignificanceTest probabilityIntegralTransform()
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
 		int instanceCount = 0;
 		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
@@ -263,7 +263,7 @@ public class TestStatisticAccumulator
 
 		try
 		{
-			return new org.drip.validation.hypothesis.SignificanceTest (testStatisticPValueMap);
+			return new org.drip.validation.hypothesis.ProbabilityIntegralTransform (testStatisticPValueMap);
 		}
 		catch (java.lang.Exception e)
 		{

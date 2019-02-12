@@ -105,9 +105,12 @@ package org.drip.validation.evidence;
 
 public class Ensemble
 {
+	private double[][] _testStatistic = null;
 	private org.drip.validation.evidence.Sample[] _sampleArray = null;
 	private org.drip.validation.evidence.TestStatisticEvaluator[] _testStatisticEvaluatorArray =
 		null;
+	private org.drip.validation.hypothesis.ProbabilityIntegralTransform[] _probabilityIntegralTransformArray
+		= null;
 
 	/**
 	 * Ensemble Constructor
@@ -131,6 +134,9 @@ public class Ensemble
 
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
+		_testStatistic = new double[testStatisticEvaluatorCount][sampleCount];
+		_probabilityIntegralTransformArray = new
+			org.drip.validation.hypothesis.ProbabilityIntegralTransform[testStatisticEvaluatorCount];
 
 		if (0 == sampleCount || 0 == testStatisticEvaluatorCount)
 		{
@@ -153,7 +159,36 @@ public class Ensemble
 			{
 				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
 			}
+
+			org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
+				org.drip.validation.evidence.TestStatisticAccumulator();
+
+			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+			{
+				if (!testStatisticAccumulator.addTestStatistic (_sampleArray[sampleIndex].applyTestStatistic
+					(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex])))
+				{
+					throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+				}
+			}
+
+			if (null == (_probabilityIntegralTransformArray[testStatisticEvaluatorIndex] =
+				testStatisticAccumulator.probabilityIntegralTransform()))
+			{
+				throw new java.lang.Exception ("Ensemble Constructor => Invalid Inputs");
+			}
 		}
+	}
+
+	/**
+	 * Retrieve the Computed Ensemble Test Statistics
+	 * 
+	 * @return The Computed Ensemble Test Statistics
+	 */
+
+	public double[][] testStatistic()
+	{
+		return _testStatistic;
 	}
 
 	/**
@@ -179,52 +214,48 @@ public class Ensemble
 	}
 
 	/**
+	 * Retrieve the Array of Probability Integral Transforms, one for each Test Statistic
+	 * 
+	 * @return The Array of Probability Integral Transforms
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
+	{
+		return _probabilityIntegralTransformArray;
+	}
+
+	/**
 	 * Construct the Test Statistic Based Significance Test Hypothesis Array
 	 * 
 	 * @return The Test Statistic Based Significance Test Hypothesis Array
 	 */
 
-	public org.drip.validation.hypothesis.SignificanceTest[] significanceTest()
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[] significanceTest()
 	{
-		int sampleCount = _sampleArray.length;
-		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		org.drip.validation.hypothesis.SignificanceTest[] testArray = new
-			org.drip.validation.hypothesis.SignificanceTest[testStatisticEvaluatorCount];
+		int probabilityIntegralTransformCount = _testStatisticEvaluatorArray.length;
+		org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[]
+			probabilityIntegralTransformTestArray = new
+				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[probabilityIntegralTransformCount];
 
-		for (int testStatisticAccumulatorIndex = 0;
-			testStatisticAccumulatorIndex < testStatisticEvaluatorCount;
-			++testStatisticAccumulatorIndex)
+		for (int probabilityIntegralTransformIndex = 0;
+			probabilityIntegralTransformIndex < probabilityIntegralTransformCount;
+			++probabilityIntegralTransformIndex)
 		{
-			org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
-				org.drip.validation.evidence.TestStatisticAccumulator();
-
-			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+			try
 			{
-				try
-				{
-					if (!testStatisticAccumulator.addTestStatistic
-						(_sampleArray[sampleIndex].applyTestStatistic
-							(_testStatisticEvaluatorArray[testStatisticAccumulatorIndex])))
-					{
-						return null;
-					}
-				}
-				catch (java.lang.Exception e)
-				{
-					e.printStackTrace();
-
-					return null;
-				}
+				probabilityIntegralTransformTestArray[probabilityIntegralTransformIndex] = new
+					org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
+						(_probabilityIntegralTransformArray[probabilityIntegralTransformIndex]);
 			}
-
-			if (null == (testArray[testStatisticAccumulatorIndex] =
-				testStatisticAccumulator.probabilityIntegralTransform()))
+			catch (java.lang.Exception e)
 			{
+				e.printStackTrace();
+
 				return null;
 			}
 		}
 
-		return testArray;
+		return probabilityIntegralTransformTestArray;
 	}
 
 	/**
@@ -353,11 +384,17 @@ public class Ensemble
 				}
 			}
 
-			org.drip.validation.hypothesis.SignificanceTest statisticalTest =
-				testStatisticAccumulator.probabilityIntegralTransform();
+			org.drip.validation.hypothesis.ProbabilityIntegralTransformTest pitTest = null;
 
-			if (null == statisticalTest)
+			try
 			{
+				pitTest = new org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
+					(testStatisticAccumulator.probabilityIntegralTransform());
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
 				return null;
 			}
 
@@ -377,7 +414,7 @@ public class Ensemble
 			{
 				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new
 					org.drip.validation.hypothesis.StatisticalTestOutcome (
-						statisticalTest.significanceTest (
+						pitTest.significanceTest (
 							testStatistic,
 							pTestSetting
 						),

@@ -64,8 +64,8 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>SignificanceTest</i> implements a Single Statistical Hypothesis Significance Test. It holds the PIT
- * Distribution CDF of the Test-Statistic Response Instances.
+ * <i>ProbabilityIntegralTransformTest</i> implements Comparison Tests post a PIT Transform on the Hypothesis
+ * and/or Test Sample.
  *
  *  <br><br>
  *  <ul>
@@ -103,166 +103,37 @@ package org.drip.validation.hypothesis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SignificanceTest
+public class ProbabilityIntegralTransformTest
 {
-	private java.util.Map<java.lang.Double, java.lang.Double> _pValueTestStatisticMap = null;
-	private java.util.Map<java.lang.Double, java.lang.Double> _testStatisticPValueMap = null;
+	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _probabilityIntegralTransform = null;
 
 	/**
-	 * SignificanceTest Constructor
+	 * ProbabilityIntegralTransformTest Constructor
 	 * 
-	 * @param testStatisticPValueMap Test Statistic - p Value Map
+	 * @param probabilityIntegralTransform The Probability Integral Transform Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SignificanceTest (
-		final java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap)
+	public ProbabilityIntegralTransformTest (
+		final org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform)
 		throws java.lang.Exception
 	{
-		if (null == (_testStatisticPValueMap = testStatisticPValueMap) ||
-			0 == _testStatisticPValueMap.size())
+		if (null == (_probabilityIntegralTransform = probabilityIntegralTransform))
 		{
-			throw new java.lang.Exception ("SignificanceTest Constructor => Invalid Inputs");
-		}
-
-		_pValueTestStatisticMap = new java.util.TreeMap<java.lang.Double, java.lang.Double>();
-
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> testStatisticPValueMapEntry :
-			_testStatisticPValueMap.entrySet())
-		{
-			_pValueTestStatisticMap.put (
-				testStatisticPValueMapEntry.getValue(),
-				testStatisticPValueMapEntry.getKey()
-			);
+			throw new java.lang.Exception ("ProbabilityIntegralTransformTest Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the p Value - Test Statistic Map
+	 * Retrieve the ProbabilityIntegralTransform Instance
 	 * 
-	 * @return The p Value - Test Statistic Map
+	 * @return The ProbabilityIntegralTransform Instance
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Double> pValueResponseMap()
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
-		return _pValueTestStatisticMap;
-	}
-
-	/**
-	 * Retrieve the Test Statistic - p Value Map
-	 * 
-	 * @return The Test Statistic - p Value Map
-	 */
-
-	public java.util.Map<java.lang.Double, java.lang.Double> testStatisticPValueMap()
-	{
-		return _testStatisticPValueMap;
-	}
-
-	/**
-	 * Compute the p-Value corresponding to the Test Statistic Instance
-	 * 
-	 * @param testStatistic The Test Statistic Instance
-	 * 
-	 * @return The p-Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double pValue (
-		final double testStatistic)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))
-		{
-			throw new java.lang.Exception ("SignificanceTest::pValue => Invalid Inputs");
-		}
-
-		java.util.Set<java.lang.Double> testStatisticKeySet = _testStatisticPValueMap.keySet();
-
-		double testStatisticKeyCurrent = java.lang.Double.NaN;
-		double testStatisticKeyPrevious = java.lang.Double.NaN;
-
-		for (double testStatisticKey : testStatisticKeySet)
-		{
-			if (testStatistic == testStatisticKey)
-			{
-				return _testStatisticPValueMap.get (testStatistic);
-			}
-
-			if (testStatistic < testStatisticKey)
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyPrevious))
-				{
-					return 0.;
-				}
-
-				testStatisticKeyCurrent = testStatisticKey;
-				break;
-			}
-
-			testStatisticKeyPrevious = testStatisticKey;
-		}
-
-		return !org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||
-			testStatistic >= testStatisticKeyCurrent ? 1. :
-			((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
-				(testStatisticKeyCurrent) +
-			(testStatisticKeyCurrent - testStatistic) * _testStatisticPValueMap.get
-				(testStatisticKeyPrevious)) /
-			(testStatisticKeyCurrent - testStatisticKeyPrevious);
-	}
-
-	/**
-	 * Compute the Test Statistic Instance corresponding to the p-Value
-	 * 
-	 * @param pValue The p-Value
-	 * 
-	 * @return The Response Instance
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double testStatistic (
-		final double pValue)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))
-		{
-			throw new java.lang.Exception ("SignificanceTest::testStatistic => Invalid Inputs");
-		}
-
-		java.util.Set<java.lang.Double> pValueKeySet = _pValueTestStatisticMap.keySet();
-
-		double pValueKeyCurrent = java.lang.Double.NaN;
-		double pValueKeyPrevious = java.lang.Double.NaN;
-
-		for (double pValueKey : pValueKeySet)
-		{
-			if (pValue == pValueKey)
-			{
-				return _pValueTestStatisticMap.get (pValue);
-			}
-
-			if (pValue < pValueKey)
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (pValueKeyPrevious))
-				{
-					return _pValueTestStatisticMap.get (pValueKey);
-				}
-
-				pValueKeyCurrent = pValueKey;
-				break;
-			}
-
-			pValueKeyPrevious = pValueKey;
-		}
-
-		return pValue >= pValueKeyCurrent ? _pValueTestStatisticMap.get (pValueKeyCurrent) :
-			((pValue - pValueKeyPrevious) * _pValueTestStatisticMap.get (pValueKeyCurrent) +
-			(pValueKeyCurrent - pValue) * _pValueTestStatisticMap.get (pValueKeyPrevious)) /
-			(pValueKeyCurrent - pValueKeyPrevious);
+		return _probabilityIntegralTransform;
 	}
 
 	/**
@@ -287,7 +158,7 @@ public class SignificanceTest
 
 		try
 		{
-			pValue = pValue (testStatistic);
+			pValue = _probabilityIntegralTransform.pValue (testStatistic);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -356,5 +227,49 @@ public class SignificanceTest
 		}
 
 		return null;
+	}
+
+	/**
+	 * Run a Distance Test to compute the Weighted Distance Metric between the Hypothesis and the Sample
+	 * 
+	 * @param samplePIT The Sample Probability Integral Transform
+	 * @param empiricsGapLossFunction The Empirics Gap Loss Function
+	 * @param empiricsGapWeightFunction The Empirics Gap Weight Function
+	 * 
+	 * @return The Weighted Distance Metric
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double distanceTest (
+		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
+		final org.drip.validation.distance.GapLossFunction empiricsGapLossFunction,
+		final org.drip.validation.distance.GapWeightFunction empiricsGapWeightFunction)
+		throws java.lang.Exception
+	{
+		if (null == samplePIT || null == empiricsGapLossFunction || null == empiricsGapWeightFunction)
+		{
+			throw new java.lang.Exception
+				("ProbabilityIntegralTransformTest::distanceTest => Invalid Inputs");
+		}
+
+		double distance = 0.;
+		double hypothesisPValueLeft = 0.;
+
+		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> sampleTestStatisticPValue :
+			samplePIT.testStatisticPValueMap().entrySet())
+		{
+			double hypothesisPValueRight = _probabilityIntegralTransform.pValue
+				(sampleTestStatisticPValue.getKey());
+
+			double gap = sampleTestStatisticPValue.getValue() - hypothesisPValueRight;
+
+			distance = distance + empiricsGapLossFunction.loss (gap) * empiricsGapWeightFunction.weight (gap)
+				* (hypothesisPValueRight - hypothesisPValueLeft);
+
+			hypothesisPValueLeft = hypothesisPValueRight;
+		}
+
+		return distance;
 	}
 }

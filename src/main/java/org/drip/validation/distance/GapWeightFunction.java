@@ -1,5 +1,5 @@
 
-package org.drip.validation.distribution;
+package org.drip.validation.distance;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.validation.distribution;
  */
 
 /**
- * <i>EmpiricsGapWeightFunction</i> weighs the outcomes of each Empirical Hypothesis Gap.
+ * <i>GapWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap.
  *
  *  <br><br>
  *  <ul>
@@ -102,20 +102,20 @@ package org.drip.validation.distribution;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class EmpiricsGapWeightFunction
+public abstract class GapWeightFunction
 {
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Empirics Gap Weight Function
+	 * Construct the Cramers-von Mises Version of the Gap Weight Function
 	 * 
-	 * @return The Cramers-von Mises Version of the Empirics Gap Weight Function
+	 * @return The Cramers-von Mises Version of the Gap Weight Function
 	 */
 
-	public static final EmpiricsGapWeightFunction CramersVonMises()
+	public static final GapWeightFunction CramersVonMises()
 	{
 		try
 		{
-			return new EmpiricsGapWeightFunction()
+			return new GapWeightFunction()
 			{
 				@Override public double weight (
 					final double gap)
@@ -123,8 +123,7 @@ public abstract class EmpiricsGapWeightFunction
 				{
 					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
 					{
-						throw new java.lang.Exception
-							("EmpiricsGapWeightFunction::weight => Invalid Inputs");
+						throw new java.lang.Exception ("GapWeightFunction::weight => Invalid Inputs");
 					}
 
 					return 1.;
@@ -140,28 +139,27 @@ public abstract class EmpiricsGapWeightFunction
 	}
 
 	/**
-	 * Construct the Anderson-Darling Version of the Empirics Gap Weight Function
+	 * Construct the Anderson-Darling Version of the Gap Weight Function
 	 * 
-	 * @return The Anderson-Darling Version of the Empirics Gap Weight Function
+	 * @return The Anderson-Darling Version of the Gap Weight Function
 	 */
 
-	public static final EmpiricsGapWeightFunction AndersonDarling()
+	public static final GapWeightFunction AndersonDarling()
 	{
 		try
 		{
-			return new EmpiricsGapWeightFunction()
+			return new GapWeightFunction()
 			{
 				@Override public double weight (
 					final double gap)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (gap) || 0. == gap)
+					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
 					{
-						throw new java.lang.Exception
-							("EmpiricsGapWeightFunction::weight => Invalid Inputs");
+						throw new java.lang.Exception ("GapWeightFunction::weight => Invalid Inputs");
 					}
 
-					return 1. / gap;
+					return 0. == gap ? 0. : 1. / gap;
 				}
 			};
 		}

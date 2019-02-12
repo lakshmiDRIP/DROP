@@ -5,7 +5,7 @@ import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.evidence.TestStatisticAccumulator;
-import org.drip.validation.hypothesis.SignificanceTest;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -134,7 +134,7 @@ public class StandardNormalPIT
 			responseAccumulator.addTestStatistic (UnivariateRandom());
 		}
 
-		SignificanceTest responseDistribution = responseAccumulator.probabilityIntegralTransform();
+		ProbabilityIntegralTransform pit = responseAccumulator.probabilityIntegralTransform();
 
 		System.out.println ("\t|-------------------||");
 
@@ -157,7 +157,7 @@ public class StandardNormalPIT
 			System.out.println (
 				"\t|" +
 				FormatUtil.FormatDouble (testResponse, 1, 4, 1.) + " => " +
-				FormatUtil.FormatDouble (responseDistribution.pValue (testResponse), 1, 4, 1.) + " ||"
+				FormatUtil.FormatDouble (pit.pValue (testResponse), 1, 4, 1.) + " ||"
 			);
 		}
 
