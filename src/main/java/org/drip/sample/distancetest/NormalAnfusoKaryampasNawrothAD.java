@@ -1,5 +1,15 @@
 
-package org.drip.validation.distance;
+package org.drip.sample.distancetest;
+
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.service.env.EnvManager;
+import org.drip.validation.distance.GapLossFunction;
+import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapWeightFunction;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +74,8 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossFunction</i> holds the Function that Penalizes the Gap between the Empirical and the Hypothesis
- * p-values.
+ * <i>NormalAnfusoKaryampasNawrothAD</i> demonstrates the Generation of the Sample Distance Metrics for
+ * Different Ensemble Hypotheses.
  *
  *  <br><br>
  *  <ul>
@@ -96,61 +106,149 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossFunction
+public class NormalAnfusoKaryampasNawrothAD
 {
 
-	/**
-	 * Construct the Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
-	 * 
-	 * @return The Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
-	 */
-
-	public static final GapLossFunction AnfusoKaryampasNawroth()
+	private static final double UnivariateRandom (
+		final double mean,
+		final double sigma)
+		throws Exception
 	{
-		try
-		{
-			return new GapLossFunction()
-			{
-				@Override public double loss (
-					final double gap)
-					throws java.lang.Exception
-				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-					{
-						throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
-					}
-
-					return gap * gap;
-				}
-			};
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return new R1UnivariateNormal (
+			mean,
+			sigma
+		).random();
 	}
 
-	/**
-	 * 
-	 * Compute the Loss corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Loss
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+	private static final Sample GenerateSample (
+		final double mean,
+		final double sigma,
+		final int drawCount)
+		throws Exception
+	{
+		double[] univariateRandomArray = new double[drawCount];
 
-	public abstract double loss (
-		final double gap)
-		throws java.lang.Exception;
+		for (int drawIndex = 0; drawIndex < drawCount; ++drawIndex)
+		{
+			univariateRandomArray[drawIndex] = UnivariateRandom (
+				mean,
+				sigma
+			);
+		}
+
+		return new Sample (univariateRandomArray);
+	}
+
+	private static final Sample[] GenerateSampleArray (
+		final double mean,
+		final double sigma,
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+		Sample[] sampleArray = new Sample[sampleCount];
+
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+		{
+			sampleArray[sampleIndex] = GenerateSample (
+				mean,
+				sigma,
+				drawCount
+			);
+		}
+
+		return sampleArray;
+	}
+
+	private static final Ensemble GenerateEnsemble (
+		final double mean,
+		final double sigma,
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+		return new Ensemble (
+			GenerateSampleArray (
+				mean,
+				sigma,
+				drawCount,
+				sampleCount
+			),
+			new TestStatisticEvaluator[]
+			{
+				new TestStatisticEvaluator()
+				{
+					public double evaluate (
+						final double[] drawArray)
+						throws Exception
+					{
+						return 1.;
+					}
+				}
+			}
+		);
+	}
+
+	private static final GapTestOutcome DistanceTest (
+		final Sample sample,
+		final Ensemble ensemble,
+		final GapLossFunction gapLossFunction,
+		final GapWeightFunction gapLossWeightFunction)
+		throws Exception
+	{
+		return new ProbabilityIntegralTransformTest (ensemble.nativeProbabilityIntegralTransform()).distanceTest (
+			sample.nativeProbabilityIntegralTransform(),
+			gapLossFunction,
+			gapLossWeightFunction
+		);
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int drawCount = 2000;
+		int sampleCount = 1000;
+		double sampleMean = 0.;
+		double sampleSigma = 1.;
+		double hypothesisMean = 0.;
+		double hypothesisSigma = 1.;
+
+		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
+
+		GapWeightFunction gapLossWeightFunction = GapWeightFunction.AndersonDarling();
+
+		Sample sample = GenerateSample (
+			sampleMean,
+			sampleSigma,
+			drawCount
+		);
+
+		Ensemble hypothesis = GenerateEnsemble (
+			hypothesisMean,
+			hypothesisSigma,
+			drawCount,
+			sampleCount
+		);
+
+		GapTestOutcome gapTestOutcome = DistanceTest (
+			sample,
+			hypothesis,
+			gapLossFunction,
+			gapLossWeightFunction
+		);
+
+		System.out.println (gapTestOutcome.distance());
+
+		EnvManager.TerminateEnv();
+	}
 }

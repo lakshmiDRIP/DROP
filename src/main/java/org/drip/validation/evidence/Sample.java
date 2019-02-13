@@ -102,7 +102,7 @@ package org.drip.validation.evidence;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Sample
+public class Sample implements org.drip.validation.evidence.NativePITGenerator
 {
 	private double[] _realizationArray = null;
 
@@ -157,5 +157,22 @@ public class Sample
 		}
 
 		return testStatisticEvaluator.evaluate (_realizationArray);
+	}
+
+	@Override public org.drip.validation.hypothesis.ProbabilityIntegralTransform
+		nativeProbabilityIntegralTransform()
+	{
+		org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new
+			org.drip.validation.evidence.TestStatisticAccumulator();
+
+		for (double realization : _realizationArray)
+		{
+			if (!testStatisticAccumulator.addTestStatistic (realization))
+			{
+				return null;
+			}
+		}
+
+		return testStatisticAccumulator.probabilityIntegralTransform();
 	}
 }

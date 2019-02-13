@@ -230,46 +230,79 @@ public class ProbabilityIntegralTransformTest
 	}
 
 	/**
-	 * Run a Distance Test to compute the Weighted Distance Metric between the Hypothesis and the Sample
+	 * Run a Distance Gap Test between the Hypothesis and the Sample
 	 * 
 	 * @param samplePIT The Sample Probability Integral Transform
 	 * @param empiricsGapLossFunction The Empirics Gap Loss Function
 	 * @param empiricsGapWeightFunction The Empirics Gap Weight Function
 	 * 
-	 * @return The Weighted Distance Metric
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Distance Gap Test Outcome
 	 */
 
-	public double distanceTest (
+	public org.drip.validation.distance.GapTestOutcome distanceTest (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
 		final org.drip.validation.distance.GapLossFunction empiricsGapLossFunction,
 		final org.drip.validation.distance.GapWeightFunction empiricsGapWeightFunction)
-		throws java.lang.Exception
 	{
 		if (null == samplePIT || null == empiricsGapLossFunction || null == empiricsGapWeightFunction)
 		{
-			throw new java.lang.Exception
-				("ProbabilityIntegralTransformTest::distanceTest => Invalid Inputs");
+			return null;
 		}
 
 		double distance = 0.;
 		double hypothesisPValueLeft = 0.;
 
+		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new
+			org.drip.validation.evidence.TestStatisticAccumulator();
+
+		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new
+			org.drip.validation.evidence.TestStatisticAccumulator();
+
 		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> sampleTestStatisticPValue :
 			samplePIT.testStatisticPValueMap().entrySet())
 		{
-			double hypothesisPValueRight = _probabilityIntegralTransform.pValue
-				(sampleTestStatisticPValue.getKey());
+			try
+			{
+				double hypothesisPValueRight = _probabilityIntegralTransform.pValue
+					(sampleTestStatisticPValue.getKey());
 
-			double gap = sampleTestStatisticPValue.getValue() - hypothesisPValueRight;
+				double gap = sampleTestStatisticPValue.getValue() - hypothesisPValueRight;
 
-			distance = distance + empiricsGapLossFunction.loss (gap) * empiricsGapWeightFunction.weight (gap)
-				* (hypothesisPValueRight - hypothesisPValueLeft);
+				double gapLoss = empiricsGapLossFunction.loss (gap);
 
-			hypothesisPValueLeft = hypothesisPValueRight;
+				double weightedGapLoss = empiricsGapLossFunction.loss (gap);
+
+				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);
+
+				if (!unweightedGapLossAccumulator.addTestStatistic (gapLoss) ||
+					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss))
+				{
+					return null;
+				}
+
+				hypothesisPValueLeft = hypothesisPValueRight;
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
 		}
 
-		return distance;
+		try
+		{
+			return new org.drip.validation.distance.GapTestOutcome (
+				unweightedGapLossAccumulator.probabilityIntegralTransform(),
+				weightedGapLossAccumulator.probabilityIntegralTransform(),
+				distance
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

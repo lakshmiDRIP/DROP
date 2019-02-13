@@ -64,8 +64,7 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossFunction</i> holds the Function that Penalizes the Gap between the Empirical and the Hypothesis
- * p-values.
+ * <i>GapTestOutcome</i> holds the Outcomes of a Distance Test of a Sample from the Hypothesis.
  *
  *  <br><br>
  *  <ul>
@@ -103,54 +102,72 @@ package org.drip.validation.distance;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossFunction
+public class GapTestOutcome
 {
+	private double _distance = java.lang.Double.NaN;
+	private org.drip.validation.hypothesis.ProbabilityIntegralTransform
+		_probabilityIntegralTransformWeighted = null;
+	private org.drip.validation.hypothesis.ProbabilityIntegralTransform
+		_probabilityIntegralTransformUnweighted = null;
 
 	/**
-	 * Construct the Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
+	 * GapTestOutcome Constructor
 	 * 
-	 * @return The Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
-	 */
-
-	public static final GapLossFunction AnfusoKaryampasNawroth()
-	{
-		try
-		{
-			return new GapLossFunction()
-			{
-				@Override public double loss (
-					final double gap)
-					throws java.lang.Exception
-				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-					{
-						throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
-					}
-
-					return gap * gap;
-				}
-			};
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * 
-	 * Compute the Loss corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Loss
+	 * @param probabilityIntegralTransformUnweighted The Probability Integral Transform of the Raw Gap Losses
+	 * @param probabilityIntegralTransformWeighted The Probability Integral Transform of the Weighted Gap
+	 * 		Losses
+	 * @param distance Distance Metric
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double loss (
-		final double gap)
-		throws java.lang.Exception;
+	public GapTestOutcome (
+		final org.drip.validation.hypothesis.ProbabilityIntegralTransform
+			probabilityIntegralTransformUnweighted,
+		final org.drip.validation.hypothesis.ProbabilityIntegralTransform
+			probabilityIntegralTransformWeighted,
+		final double distance)
+		throws java.lang.Exception
+	{
+		if (null == (_probabilityIntegralTransformUnweighted = probabilityIntegralTransformUnweighted) ||
+			null == (_probabilityIntegralTransformWeighted = probabilityIntegralTransformWeighted) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_distance = distance))
+		{
+			throw new java.lang.Exception ("GapTestOutcome Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Probability Integral Transform of the Raw Gap Losses
+	 * 
+	 * @return The Probability Integral Transform of the Raw Gap Losses
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransform
+		probabilityIntegralTransformUnweighted()
+	{
+		return _probabilityIntegralTransformUnweighted;
+	}
+
+	/**
+	 * Retrieve the Probability Integral Transform of the Weighted Gap Losses
+	 * 
+	 * @return The Probability Integral Transform of the Weighted Gap Losses
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransform probabilityIntegralTransformWeighted()
+	{
+		return _probabilityIntegralTransformWeighted;
+	}
+
+	/**
+	 * Retrieve the Outcome Distance Metric
+	 * 
+	 * @return The Outcome Distance Metric
+	 */
+
+	public double distance()
+	{
+		return _distance;
+	}
 }
