@@ -2,6 +2,7 @@
 package org.drip.sample.distancetest;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapTestOutcome;
@@ -74,8 +75,21 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  */
 
 /**
- * <i>NormalAnfusoKaryampasNawrothAD</i> demonstrates the Generation of the Sample Distance Metrics for
- * Different Ensemble Hypotheses.
+ * <i>NormalAndersonDarlingGapDiscriminant</i> demonstrates the Generation of the Sample Distance
+ * Discriminant Metrics for Different Ensemble Hypotheses.
+ * 
+ *  <br><br>
+ *  <ul>
+ *  	<li>
+ *  		<b>Reference Distribution  </b> - <i>Univariate Normal</i>
+ *  	</li>
+ *  	<li>
+ *  		<b>Gap Loss Function       </b> - <i>Anfuso, Karyampas, and Nawroth (2017)</i>
+ *  	</li>
+ *  	<li>
+ *  		<b>Gap Loss Weight Function</b> - <i>Anderson and Darling</i>
+ *  	</li>
+ *  </ul>
  *
  *  <br><br>
  *  <ul>
@@ -113,7 +127,7 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalAnfusoKaryampasNawrothAD
+public class NormalAndersonDarlingGapDiscriminant
 {
 
 	private static final double UnivariateRandom (
@@ -203,11 +217,37 @@ public class NormalAnfusoKaryampasNawrothAD
 		final GapWeightFunction gapLossWeightFunction)
 		throws Exception
 	{
-		return new ProbabilityIntegralTransformTest (ensemble.nativeProbabilityIntegralTransform()).distanceTest (
+		return new ProbabilityIntegralTransformTest (
+			ensemble.nativeProbabilityIntegralTransform()
+		).distanceTest (
 			sample.nativeProbabilityIntegralTransform(),
 			gapLossFunction,
 			gapLossWeightFunction
 		);
+	}
+
+	private static final double DistanceTest (
+		final double hypothesisMean,
+		final double hypothesisSigma,
+		final int drawCount,
+		final int sampleCount,
+		final Sample sample,
+		final GapLossFunction gapLossFunction,
+		final GapWeightFunction gapLossWeightFunction,
+		final int quantileCount)
+		throws Exception
+	{
+		return DistanceTest (
+			sample,
+			GenerateEnsemble (
+				hypothesisMean,
+				hypothesisSigma,
+				drawCount,
+				sampleCount
+			),
+			gapLossFunction,
+			gapLossWeightFunction
+		).distance();
 	}
 
 	public static final void main (
@@ -217,11 +257,24 @@ public class NormalAnfusoKaryampasNawrothAD
 		EnvManager.InitEnv ("");
 
 		int drawCount = 2000;
-		int sampleCount = 1000;
+		int sampleCount = 600;
 		double sampleMean = 0.;
 		double sampleSigma = 1.;
-		double hypothesisMean = 0.;
-		double hypothesisSigma = 1.;
+		int quantileCount = 20;
+		double[] hypothesisMeanArray = {
+			-0.50,
+			-0.25,
+			 0.00,
+			 0.25,
+			 0.50
+		};
+		double[] hypothesisSigmaArray = {
+			0.50,
+			0.75,
+			1.00,
+			1.25,
+			1.50
+		};
 
 		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
 
@@ -233,21 +286,27 @@ public class NormalAnfusoKaryampasNawrothAD
 			drawCount
 		);
 
-		Ensemble hypothesis = GenerateEnsemble (
-			hypothesisMean,
-			hypothesisSigma,
-			drawCount,
-			sampleCount
-		);
-
-		GapTestOutcome gapTestOutcome = DistanceTest (
-			sample,
-			hypothesis,
-			gapLossFunction,
-			gapLossWeightFunction
-		);
-
-		System.out.println (gapTestOutcome.distance());
+		for (double hypothesisMean : hypothesisMeanArray)
+		{
+			for (double hypothesisSigma : hypothesisSigmaArray)
+			{
+				System.out.println (
+					"\t| " +
+					FormatUtil.FormatDouble(hypothesisMean, 1, 2, 1.) + " | " +
+					FormatUtil.FormatDouble(hypothesisSigma, 1, 2, 1.) + " => " +
+					DistanceTest (
+						hypothesisMean,
+						hypothesisSigma,
+						drawCount,
+						sampleCount,
+						sample,
+						gapLossFunction,
+						gapLossWeightFunction,
+						quantileCount
+					)
+				);
+			}
+		}
 
 		EnvManager.TerminateEnv();
 	}

@@ -82,9 +82,8 @@ package org.drip.validation.hypothesis;
  *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
- *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
- *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
- *  		Perspectives in Psychological Science 6 (3) 291-298
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -144,7 +143,7 @@ public class ProbabilityIntegralTransform
 	 * @return The p Value - Test Statistic Map
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.Double> pValueResponseMap()
+	public java.util.Map<java.lang.Double, java.lang.Double> pValueTestStatisticMap()
 	{
 		return _pValueTestStatisticMap;
 	}
@@ -263,5 +262,85 @@ public class ProbabilityIntegralTransform
 			((pValue - pValueKeyPrevious) * _pValueTestStatisticMap.get (pValueKeyCurrent) +
 			(pValueKeyCurrent - pValue) * _pValueTestStatisticMap.get (pValueKeyPrevious)) /
 			(pValueKeyCurrent - pValueKeyPrevious);
+	}
+
+	/**
+	 * Generate the Histogram Corresponding to the Test Statistic and its p-Value
+	 * 
+	 * @param quantileCount The Number of Quantiles inside the Histogram
+	 * 
+	 * @return The Histogram Corresponding to the Test Statistic and its p-Value
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram histogram (
+		int quantileCount)
+	{
+		if (0 >= quantileCount)
+		{
+			return null;
+		}
+
+		int mapSize = _pValueTestStatisticMap.size();
+
+		if (mapSize <= quantileCount)
+		{
+			return null;
+		}
+
+		double[] testStatisticArray = new double[quantileCount + 1];
+		double[] pValueCumulativeArray = new double[quantileCount + 1];
+		double[] pValueIncrementalArray = new double[quantileCount + 1];
+
+		try
+		{
+			pValueIncrementalArray[0] = 0.;
+
+			testStatisticArray[0] = testStatistic (pValueCumulativeArray[0] = 0.);
+
+			testStatisticArray[quantileCount] = testStatistic (pValueCumulativeArray[quantileCount] = 1.);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		double testStatisticIncrement = (testStatisticArray[quantileCount] - testStatisticArray[0]) /
+			quantileCount;
+
+		for (int quantileIndex = 1; quantileIndex < quantileCount; ++quantileIndex)
+		{
+			try
+			{
+				pValueIncrementalArray[quantileIndex] = (pValueCumulativeArray[quantileIndex] = pValue
+					(testStatisticArray[quantileIndex] = testStatisticArray[0] + testStatisticIncrement *
+					quantileIndex)) - pValueCumulativeArray[quantileIndex - 1];
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		pValueIncrementalArray[quantileCount] = pValueCumulativeArray[quantileCount] -
+			pValueCumulativeArray[quantileCount - 1];
+
+		try
+		{
+			return new org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram (
+				testStatisticArray,
+				pValueCumulativeArray,
+				pValueIncrementalArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
