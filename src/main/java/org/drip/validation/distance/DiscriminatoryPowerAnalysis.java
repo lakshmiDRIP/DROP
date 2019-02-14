@@ -226,4 +226,51 @@ public class DiscriminatoryPowerAnalysis
 
 		return null;
 	}
+
+	/**
+	 * Generate the Gap Test Outcomes for the specified Hypothesis Suite
+	 * 
+	 * @param hypothesisSuite The Hypothesis Suite
+	 * 
+	 * @return The Suite of Gap Test Outcomes
+	 */
+
+	public org.drip.validation.distance.HypothesisOutcomeSuite hypothesisGapTest (
+		final org.drip.validation.distance.HypothesisSuite hypothesisSuite)
+	{
+		if (null == hypothesisSuite)
+		{
+			return null;
+		}
+
+		java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> hypothesisMap =
+			hypothesisSuite.hypothesisMap();
+
+		if (0 == hypothesisMap.size())
+		{
+			return null;
+		}
+
+		org.drip.validation.distance.HypothesisOutcomeSuite hypothesisOutcomeSuite = new
+			org.drip.validation.distance.HypothesisOutcomeSuite();
+
+		for (java.util.Map.Entry<java.lang.String, org.drip.validation.evidence.Ensemble> hypothesisMapEntry
+			: hypothesisMap.entrySet())
+		{
+			org.drip.validation.distance.GapTestOutcome gapTestOutcome = gapTest
+				(hypothesisMapEntry.getValue());
+
+			if (null == gapTestOutcome)
+			{
+				continue;
+			}
+
+			hypothesisOutcomeSuite.add (
+				hypothesisMapEntry.getKey(),
+				gapTestOutcome
+			);
+		}
+
+		return hypothesisOutcomeSuite;
+	}
 }

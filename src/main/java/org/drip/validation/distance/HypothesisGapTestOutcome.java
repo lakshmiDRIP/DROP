@@ -105,6 +105,28 @@ package org.drip.validation.distance;
 public class HypothesisGapTestOutcome
 {
 	private java.lang.String _hypothesisID = "";
+	private org.drip.validation.distance.GapTestOutcome _gapTestOutcome = null;
+
+	/**
+	 * HypothesisGapTestOutcome Constructor
+	 * 
+	 * @param hypothesisID The Hypothesis ID
+	 * @param gapTestOutcome The Gap Test Outcome
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public HypothesisGapTestOutcome (
+		final java.lang.String hypothesisID,
+		final org.drip.validation.distance.GapTestOutcome gapTestOutcome)
+		throws java.lang.Exception
+	{
+		if (null == (_hypothesisID = hypothesisID) || _hypothesisID.isEmpty() ||
+			null == (_gapTestOutcome = gapTestOutcome))
+		{
+			throw new java.lang.Exception ("HypothesisGapTestOutcome Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Hypothesis ID
@@ -115,5 +137,16 @@ public class HypothesisGapTestOutcome
 	public java.lang.String hypothesisID()
 	{
 		return _hypothesisID;
+	}
+
+	/**
+	 * Retrieve the Gap Test Outcome
+	 * 
+	 * @return The Gap Test Outcome
+	 */
+
+	public org.drip.validation.distance.GapTestOutcome gapTestOutcome()
+	{
+		return _gapTestOutcome;
 	}
 }

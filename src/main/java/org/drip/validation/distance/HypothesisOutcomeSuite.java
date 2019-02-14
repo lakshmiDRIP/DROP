@@ -108,7 +108,7 @@ public class HypothesisOutcomeSuite
 	private java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> _outcomeMap = new
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.distance.GapTestOutcome>();
 
-	private java.util.Map<java.lang.Double, java.lang.String> _distanceHypothesisMap = new
+	private java.util.TreeMap<java.lang.Double, java.lang.String> _distanceHypothesisMap = new
 		java.util.TreeMap<java.lang.Double, java.lang.String>();
 
 	/**
@@ -136,7 +136,7 @@ public class HypothesisOutcomeSuite
 	 * @return The Distance-Hypothesis Map
 	 */
 
-	public java.util.Map<java.lang.Double, java.lang.String> distanceHypothesisMap()
+	public java.util.TreeMap<java.lang.Double, java.lang.String> distanceHypothesisMap()
 	{
 		return _distanceHypothesisMap;
 	}
@@ -171,5 +171,35 @@ public class HypothesisOutcomeSuite
 		);
 
 		return true;
+	}
+
+	/**
+	 * Retrieve the Leading/Best Fit Hypothesis and its Test Outcome
+	 * 
+	 * @return The Leading/Best Fit Hypothesis and its Test Outcome
+	 */
+
+	public org.drip.validation.distance.HypothesisGapTestOutcome leadingHypothesis()
+	{
+		if (0 == _distanceHypothesisMap.size())
+		{
+			return null;
+		}
+
+		java.lang.String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
+
+		try
+		{
+			return new org.drip.validation.distance.HypothesisGapTestOutcome (
+				leadingHypothesisID,
+				_outcomeMap.get (leadingHypothesisID)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
