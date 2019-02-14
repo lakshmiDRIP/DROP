@@ -1,7 +1,7 @@
 
 package org.drip.sample.distancetest;
 
-import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.measure.continuous.R1UnivariateExponential;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossFunction;
@@ -10,6 +10,7 @@ import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 
 /*
@@ -75,19 +76,19 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  */
 
 /**
- * <i>NormalAndersonDarlingGapDiscriminant</i> demonstrates the Generation of the Sample Distance
- * Discriminant Metrics for Different Ensemble Hypotheses.
+ * <i>ExponentialCramersVonMisesGapAnalysis</i> demonstrates the Generation of the Sample Distance Metrics
+ * for Different Ensemble Hypotheses.
  * 
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		<b>Reference Distribution  </b> - <i>Univariate Normal</i>
+ *  		<b>Reference Distribution  </b> - <i>Univariate Exponential</i>
  *  	</li>
  *  	<li>
  *  		<b>Gap Loss Function       </b> - <i>Anfuso, Karyampas, and Nawroth (2017)</i>
  *  	</li>
  *  	<li>
- *  		<b>Gap Loss Weight Function</b> - <i>Anderson and Darling</i>
+ *  		<b>Gap Loss Weight Function</b> - <i>Cramers and von Mises</i>
  *  	</li>
  *  </ul>
  *
@@ -127,23 +128,18 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalAndersonDarlingGapDiscriminant
+public class ExponentialCramersVonMisesGapAnalysis
 {
 
 	private static final double UnivariateRandom (
-		final double mean,
-		final double sigma)
+		final double lambda)
 		throws Exception
 	{
-		return new R1UnivariateNormal (
-			mean,
-			sigma
-		).random();
+		return new R1UnivariateExponential (lambda).random();
 	}
 
 	private static final Sample GenerateSample (
-		final double mean,
-		final double sigma,
+		final double lambda,
 		final int drawCount)
 		throws Exception
 	{
@@ -151,18 +147,14 @@ public class NormalAndersonDarlingGapDiscriminant
 
 		for (int drawIndex = 0; drawIndex < drawCount; ++drawIndex)
 		{
-			univariateRandomArray[drawIndex] = UnivariateRandom (
-				mean,
-				sigma
-			);
+			univariateRandomArray[drawIndex] = UnivariateRandom (lambda);
 		}
 
 		return new Sample (univariateRandomArray);
 	}
 
 	private static final Sample[] GenerateSampleArray (
-		final double mean,
-		final double sigma,
+		final double lambda,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
@@ -172,8 +164,7 @@ public class NormalAndersonDarlingGapDiscriminant
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
 			sampleArray[sampleIndex] = GenerateSample (
-				mean,
-				sigma,
+				lambda,
 				drawCount
 			);
 		}
@@ -182,16 +173,14 @@ public class NormalAndersonDarlingGapDiscriminant
 	}
 
 	private static final Ensemble GenerateEnsemble (
-		final double mean,
-		final double sigma,
+		final double lambda,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
 		return new Ensemble (
 			GenerateSampleArray (
-				mean,
-				sigma,
+				lambda,
 				drawCount,
 				sampleCount
 			),
@@ -226,9 +215,8 @@ public class NormalAndersonDarlingGapDiscriminant
 		);
 	}
 
-	private static final double DistanceTest (
-		final double hypothesisMean,
-		final double hypothesisSigma,
+	private static final void DistanceTest (
+		final double hypothesisLambda,
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
@@ -237,17 +225,67 @@ public class NormalAndersonDarlingGapDiscriminant
 		final int quantileCount)
 		throws Exception
 	{
-		return DistanceTest (
+		Ensemble hypothesis = GenerateEnsemble (
+			hypothesisLambda,
+			drawCount,
+			sampleCount
+		);
+
+		GapTestOutcome gapTestOutcome = DistanceTest (
 			sample,
-			GenerateEnsemble (
-				hypothesisMean,
-				hypothesisSigma,
-				drawCount,
-				sampleCount
-			),
+			hypothesis,
 			gapLossFunction,
 			gapLossWeightFunction
-		).distance();
+		);
+
+		ProbabilityIntegralTransformHistogram histogram =
+			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (quantileCount);
+
+		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
+
+		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
+
+		double[] gapArray = histogram.testStatisticArray();
+
+		double distance = gapTestOutcome.distance();
+
+		System.out.println ("\t|------------------------------------------------------||");
+
+		System.out.println ("\t|  Exponential Anfuso Karyampas Nawroth Distance Test  ||");
+
+		System.out.println ("\t|------------------------------------------------------||");
+
+		System.out.println (
+			"\t|   Lambda => [" + FormatUtil.FormatDouble (hypothesisLambda, 1, 8, 1.) +
+			"]                            ||"
+		);
+
+		System.out.println ("\t|------------------------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                                           ||");
+
+		System.out.println ("\t|        - Weighted Distance Metric                    ||");
+
+		System.out.println ("\t|        - Cumulative p-Value                          ||");
+
+		System.out.println ("\t|        - Incremental p-Value                         ||");
+
+		System.out.println ("\t|        - Ensemble Weighted Distance                  ||");
+
+		System.out.println ("\t|------------------------------------------------------||");
+
+		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
+		{
+			System.out.println (
+				"\t|" +
+				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|------------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -258,76 +296,57 @@ public class NormalAndersonDarlingGapDiscriminant
 
 		int drawCount = 2000;
 		int sampleCount = 600;
-		double sampleMean = 0.;
-		double sampleSigma = 1.;
+		double sampleLambda = 1.;
 		int quantileCount = 20;
-		double[] hypothesisMeanArray = {
-			-0.50,
-			-0.25,
-			 0.00,
-			 0.25,
-			 0.50
-		};
-		double[] hypothesisSigmaArray = {
+		double[] hypothesisLambdaArray =
+		{
+			0.20,
+			0.30,
+			0.40,
 			0.50,
-			0.75,
+			0.60,
+			0.70,
+			0.80,
+			0.90,
 			1.00,
-			1.25,
-			1.50
+			1.10,
+			1.20,
+			1.30,
+			1.40,
+			1.50,
+			1.60,
+			1.70,
+			1.80,
+			1.90,
+			2.00,
+			2.10,
+			2.20,
+			2.30,
+			2.40,
+			2.50
 		};
 
 		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
 
-		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.AndersonDarling();
+		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.CramersVonMises();
 
 		Sample sample = GenerateSample (
-			sampleMean,
-			sampleSigma,
+			sampleLambda,
 			drawCount
 		);
 
-		System.out.println ("\t|------------------------------||");
-
-		System.out.println ("\t|    DISCRIMINANT GRID SCAN    ||");
-
-		System.out.println ("\t|------------------------------||");
-
-		System.out.println ("\t|    L -> R:                   ||");
-
-		System.out.println ("\t|        - Hypothesis Mean     ||");
-
-		System.out.println ("\t|        - Hypothesis Sigma    ||");
-
-		System.out.println ("\t|        - Distance Metric     ||");
-
-		System.out.println ("\t|------------------------------||");
-
-		for (double hypothesisMean : hypothesisMeanArray)
+		for (double hypothesisLambda : hypothesisLambdaArray)
 		{
-			for (double hypothesisSigma : hypothesisSigmaArray)
-			{
-				System.out.println (
-					"\t| " +
-					FormatUtil.FormatDouble (hypothesisMean, 1, 2, 1.) + " | " +
-					FormatUtil.FormatDouble (hypothesisSigma, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (
-						DistanceTest (
-							hypothesisMean,
-							hypothesisSigma,
-							drawCount,
-							sampleCount,
-							sample,
-							gapLossFunction,
-							gapLossWeightFunction,
-							quantileCount
-						),
-						1, 8, 1.
-					) + " ||"
-				);
-			}
+			DistanceTest (
+				hypothesisLambda,
+				drawCount,
+				sampleCount,
+				sample,
+				gapLossFunction,
+				gapLossWeightFunction,
+				quantileCount
+			);
 		}
-
-		System.out.println ("\t|------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

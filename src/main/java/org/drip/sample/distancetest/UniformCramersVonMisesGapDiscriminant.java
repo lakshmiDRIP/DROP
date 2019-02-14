@@ -1,12 +1,12 @@
 
 package org.drip.sample.distancetest;
 
-import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.measure.continuous.R1UnivariateUniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossFunction;
-import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapLossWeightFunction;
+import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
@@ -75,19 +75,19 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  */
 
 /**
- * <i>NormalAndersonDarlingGapDiscriminant</i> demonstrates the Generation of the Sample Distance
+ * <i>UniformCramersVonMisesGapDiscriminant</i> demonstrates the Generation of the Sample Distance
  * Discriminant Metrics for Different Ensemble Hypotheses.
  * 
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		<b>Reference Distribution  </b> - <i>Univariate Normal</i>
+ *  		<b>Reference Distribution  </b> - <i>Univariate Uniform</i>
  *  	</li>
  *  	<li>
  *  		<b>Gap Loss Function       </b> - <i>Anfuso, Karyampas, and Nawroth (2017)</i>
  *  	</li>
  *  	<li>
- *  		<b>Gap Loss Weight Function</b> - <i>Anderson and Darling</i>
+ *  		<b>Gap Loss Weight Function</b> - <i>Cramers and von Mises</i>
  *  	</li>
  *  </ul>
  *
@@ -127,23 +127,23 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalAndersonDarlingGapDiscriminant
+public class UniformCramersVonMisesGapDiscriminant
 {
 
 	private static final double UnivariateRandom (
-		final double mean,
-		final double sigma)
+		final double leftSupport,
+		final double rightSupport)
 		throws Exception
 	{
-		return new R1UnivariateNormal (
-			mean,
-			sigma
+		return new R1UnivariateUniform (
+			leftSupport,
+			rightSupport
 		).random();
 	}
 
 	private static final Sample GenerateSample (
-		final double mean,
-		final double sigma,
+		final double leftSupport,
+		final double rightSupport,
 		final int drawCount)
 		throws Exception
 	{
@@ -152,8 +152,8 @@ public class NormalAndersonDarlingGapDiscriminant
 		for (int drawIndex = 0; drawIndex < drawCount; ++drawIndex)
 		{
 			univariateRandomArray[drawIndex] = UnivariateRandom (
-				mean,
-				sigma
+				leftSupport,
+				rightSupport
 			);
 		}
 
@@ -161,8 +161,8 @@ public class NormalAndersonDarlingGapDiscriminant
 	}
 
 	private static final Sample[] GenerateSampleArray (
-		final double mean,
-		final double sigma,
+		final double leftSupport,
+		final double rightSupport,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
@@ -172,8 +172,8 @@ public class NormalAndersonDarlingGapDiscriminant
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
 			sampleArray[sampleIndex] = GenerateSample (
-				mean,
-				sigma,
+				leftSupport,
+				rightSupport,
 				drawCount
 			);
 		}
@@ -182,16 +182,16 @@ public class NormalAndersonDarlingGapDiscriminant
 	}
 
 	private static final Ensemble GenerateEnsemble (
-		final double mean,
-		final double sigma,
+		final double leftSupport,
+		final double rightSupport,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
 		return new Ensemble (
 			GenerateSampleArray (
-				mean,
-				sigma,
+				leftSupport,
+				rightSupport,
 				drawCount,
 				sampleCount
 			),
@@ -227,8 +227,8 @@ public class NormalAndersonDarlingGapDiscriminant
 	}
 
 	private static final double DistanceTest (
-		final double hypothesisMean,
-		final double hypothesisSigma,
+		final double hypothesisLeftSupport,
+		final double hypothesisRightSupport,
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
@@ -237,14 +237,16 @@ public class NormalAndersonDarlingGapDiscriminant
 		final int quantileCount)
 		throws Exception
 	{
+		Ensemble hypothesis = GenerateEnsemble (
+			hypothesisLeftSupport,
+			hypothesisRightSupport,
+			drawCount,
+			sampleCount
+		);
+
 		return DistanceTest (
 			sample,
-			GenerateEnsemble (
-				hypothesisMean,
-				hypothesisSigma,
-				drawCount,
-				sampleCount
-			),
+			hypothesis,
 			gapLossFunction,
 			gapLossWeightFunction
 		).distance();
@@ -258,31 +260,31 @@ public class NormalAndersonDarlingGapDiscriminant
 
 		int drawCount = 2000;
 		int sampleCount = 600;
-		double sampleMean = 0.;
-		double sampleSigma = 1.;
+		double sampleLeftSupport = 0.;
+		double sampleRightSupport = 1.;
 		int quantileCount = 20;
-		double[] hypothesisMeanArray = {
+		double[] hypothesisLeftSupportArray = {
 			-0.50,
 			-0.25,
 			 0.00,
 			 0.25,
 			 0.50
 		};
-		double[] hypothesisSigmaArray = {
-			0.50,
+		double[] hypothesisRightSupportArray = {
 			0.75,
 			1.00,
 			1.25,
-			1.50
+			1.50,
+			1.75
 		};
 
 		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
 
-		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.AndersonDarling();
+		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.CramersVonMises();
 
 		Sample sample = GenerateSample (
-			sampleMean,
-			sampleSigma,
+			sampleLeftSupport,
+			sampleRightSupport,
 			drawCount
 		);
 
@@ -294,26 +296,26 @@ public class NormalAndersonDarlingGapDiscriminant
 
 		System.out.println ("\t|    L -> R:                   ||");
 
-		System.out.println ("\t|        - Hypothesis Mean     ||");
+		System.out.println ("\t|        - Hypothesis Left     ||");
 
-		System.out.println ("\t|        - Hypothesis Sigma    ||");
+		System.out.println ("\t|        - Hypothesis Right    ||");
 
 		System.out.println ("\t|        - Distance Metric     ||");
 
 		System.out.println ("\t|------------------------------||");
 
-		for (double hypothesisMean : hypothesisMeanArray)
+		for (double hypothesisLeftSupport : hypothesisLeftSupportArray)
 		{
-			for (double hypothesisSigma : hypothesisSigmaArray)
+			for (double hypothesisRightSupport : hypothesisRightSupportArray)
 			{
 				System.out.println (
 					"\t| " +
-					FormatUtil.FormatDouble (hypothesisMean, 1, 2, 1.) + " | " +
-					FormatUtil.FormatDouble (hypothesisSigma, 1, 2, 1.) + " => " +
+					FormatUtil.FormatDouble (hypothesisLeftSupport, 1, 2, 1.) + " | " +
+					FormatUtil.FormatDouble (hypothesisRightSupport, 1, 2, 1.) + " => " +
 					FormatUtil.FormatDouble (
 						DistanceTest (
-							hypothesisMean,
-							hypothesisSigma,
+							hypothesisLeftSupport,
+							hypothesisRightSupport,
 							drawCount,
 							sampleCount,
 							sample,

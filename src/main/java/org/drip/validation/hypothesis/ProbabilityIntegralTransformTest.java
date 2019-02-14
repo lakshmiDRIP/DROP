@@ -242,7 +242,7 @@ public class ProbabilityIntegralTransformTest
 	public org.drip.validation.distance.GapTestOutcome distanceTest (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
 		final org.drip.validation.distance.GapLossFunction empiricsGapLossFunction,
-		final org.drip.validation.distance.GapWeightFunction empiricsGapWeightFunction)
+		final org.drip.validation.distance.GapLossWeightFunction empiricsGapWeightFunction)
 	{
 		if (null == samplePIT || null == empiricsGapLossFunction || null == empiricsGapWeightFunction)
 		{

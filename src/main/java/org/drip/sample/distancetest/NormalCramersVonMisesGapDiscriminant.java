@@ -75,7 +75,7 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  */
 
 /**
- * <i>NormalAndersonDarlingGapDiscriminant</i> demonstrates the Generation of the Sample Distance
+ * <i>NormalCramersVonMisesGapDiscriminant</i> demonstrates the Generation of the Sample Distance
  * Discriminant Metrics for Different Ensemble Hypotheses.
  * 
  *  <br><br>
@@ -87,7 +87,7 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  *  		<b>Gap Loss Function       </b> - <i>Anfuso, Karyampas, and Nawroth (2017)</i>
  *  	</li>
  *  	<li>
- *  		<b>Gap Loss Weight Function</b> - <i>Anderson and Darling</i>
+ *  		<b>Gap Loss Weight Function</b> - <i>Cramers and von Mises</i>
  *  	</li>
  *  </ul>
  *
@@ -127,7 +127,7 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalAndersonDarlingGapDiscriminant
+public class NormalCramersVonMisesGapDiscriminant
 {
 
 	private static final double UnivariateRandom (
@@ -278,7 +278,7 @@ public class NormalAndersonDarlingGapDiscriminant
 
 		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
 
-		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.AndersonDarling();
+		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.CramersVonMises();
 
 		Sample sample = GenerateSample (
 			sampleMean,

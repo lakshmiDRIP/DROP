@@ -64,7 +64,7 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap.
+ * <i>HypothesisGapTestOutcome</i> holds the Hypothesis ID and the its corresponding Gap Test Outcome.
  *
  *  <br><br>
  *  <ul>
@@ -102,87 +102,18 @@ package org.drip.validation.distance;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapWeightFunction
+public class HypothesisGapTestOutcome
 {
+	private java.lang.String _hypothesisID = "";
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Gap Weight Function
+	 * Retrieve the Hypothesis ID
 	 * 
-	 * @return The Cramers-von Mises Version of the Gap Weight Function
+	 * @return The Hypothesis ID
 	 */
 
-	public static final GapWeightFunction CramersVonMises()
+	public java.lang.String hypothesisID()
 	{
-		try
-		{
-			return new GapWeightFunction()
-			{
-				@Override public double weight (
-					final double gap)
-					throws java.lang.Exception
-				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-					{
-						throw new java.lang.Exception ("GapWeightFunction::weight => Invalid Inputs");
-					}
-
-					return 1.;
-				}
-			};
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _hypothesisID;
 	}
-
-	/**
-	 * Construct the Anderson-Darling Version of the Gap Weight Function
-	 * 
-	 * @return The Anderson-Darling Version of the Gap Weight Function
-	 */
-
-	public static final GapWeightFunction AndersonDarling()
-	{
-		try
-		{
-			return new GapWeightFunction()
-			{
-				@Override public double weight (
-					final double gap)
-					throws java.lang.Exception
-				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-					{
-						throw new java.lang.Exception ("GapWeightFunction::weight => Invalid Inputs");
-					}
-
-					return 0. == gap ? 0. : 1. / gap;
-				}
-			};
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Weight
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract double weight (
-		final double gap)
-		throws java.lang.Exception;
 }

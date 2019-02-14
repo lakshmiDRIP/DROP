@@ -6,7 +6,7 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapTestOutcome;
-import org.drip.validation.distance.GapWeightFunction;
+import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
@@ -215,7 +215,7 @@ public class NormalAndersonDarlingGapAnalysis
 		final Sample sample,
 		final Ensemble ensemble,
 		final GapLossFunction gapLossFunction,
-		final GapWeightFunction gapLossWeightFunction)
+		final GapLossWeightFunction gapLossWeightFunction)
 		throws Exception
 	{
 		return new ProbabilityIntegralTransformTest (
@@ -234,7 +234,7 @@ public class NormalAndersonDarlingGapAnalysis
 		final int sampleCount,
 		final Sample sample,
 		final GapLossFunction gapLossFunction,
-		final GapWeightFunction gapLossWeightFunction,
+		final GapLossWeightFunction gapLossWeightFunction,
 		final int quantileCount)
 		throws Exception
 	{
@@ -265,7 +265,7 @@ public class NormalAndersonDarlingGapAnalysis
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println ("\t|   Normal Anfuso Karyampas Nawroth AD Distance Test   ||");
+		System.out.println ("\t|    Normal Anfuso Karyampas Nawroth Distance Test     ||");
 
 		System.out.println ("\t|------------------------------------------------------||");
 
@@ -330,7 +330,7 @@ public class NormalAndersonDarlingGapAnalysis
 
 		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
 
-		GapWeightFunction gapLossWeightFunction = GapWeightFunction.AndersonDarling();
+		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.AndersonDarling();
 
 		Sample sample = GenerateSample (
 			sampleMean,
