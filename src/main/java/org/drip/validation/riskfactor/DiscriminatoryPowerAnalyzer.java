@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -65,7 +65,7 @@ package org.drip.validation.distance;
 
 /**
  * <i>DiscriminatoryPowerAnalyzer</i> implements the Discriminatory Power Analyzer for the given Sample
- * across the One/More Hypothesis.
+ * across the One/More Hypothesis at a Single Event.
  *
  *  <br><br>
  *  <ul>
@@ -103,34 +103,32 @@ package org.drip.validation.distance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscriminatoryPowerAnalysis
+public class DiscriminatoryPowerAnalyzer
 {
-	private org.drip.validation.distance.GapLossFunction _gapLossFunction = null;
-	private org.drip.validation.distance.GapLossWeightFunction _gapLossWeightFunction = null;
 	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =
 		null;
+	private org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		_discriminatoryPowerAnalyzerSetting = null;
 
 	/**
-	 * Construct a DiscriminatoryPowerAnalysis Instance from the Sample
+	 * Construct a DiscriminatoryPowerAnalyzer Instance from the Sample
 	 * 
 	 * @param sample The Sample Instance
-	 * @param gapLossFunction Gap Loss Function
-	 * @param gapLossWeightFunction Gap Loss Weight Function
+	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
 	 * 
-	 * @return The DiscriminatoryPowerAnalysis Instance
+	 * @return The DiscriminatoryPowerAnalyzer Instance
 	 */
 
-	public static final DiscriminatoryPowerAnalysis FromSample (
+	public static final DiscriminatoryPowerAnalyzer FromSample (
 		final org.drip.validation.evidence.Sample sample,
-		final org.drip.validation.distance.GapLossFunction gapLossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction)
+		final org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+			discriminatoryPowerAnalyzerSetting)
 	{
 		try
 		{
-			return null == sample ? null : new DiscriminatoryPowerAnalysis (
+			return null == sample ? null : new DiscriminatoryPowerAnalyzer (
 				sample.nativeProbabilityIntegralTransform(),
-				gapLossFunction,
-				gapLossWeightFunction
+				discriminatoryPowerAnalyzerSetting
 			);
 		}
 		catch (java.lang.Exception e)
@@ -142,26 +140,24 @@ public class DiscriminatoryPowerAnalysis
 	}
 
 	/**
-	 * DiscriminatoryPowerAnalysis Constructor
+	 * DiscriminatoryPowerAnalyzer Constructor
 	 * 
 	 * @param sampleProbabilityIntegralTransform Sample Probability Integral Transform
-	 * @param gapLossFunction Gap Loss Function
-	 * @param gapLossWeightFunction Gap Loss Weight Function
+	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DiscriminatoryPowerAnalysis (
+	public DiscriminatoryPowerAnalyzer (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
-		final org.drip.validation.distance.GapLossFunction gapLossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction)
+		final org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+			discriminatoryPowerAnalyzerSetting)
 		throws java.lang.Exception
 	{
 		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||
-			null == (_gapLossFunction = gapLossFunction) ||
-			null == (_gapLossWeightFunction = gapLossWeightFunction))
+			null == (_discriminatoryPowerAnalyzerSetting = discriminatoryPowerAnalyzerSetting))
 		{
-			throw new java.lang.Exception ("DiscriminatoryPowerAnalysis Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("DiscriminatoryPowerAnalyzer Constructor => Invalid Inputs");
 		}
 	}
 
@@ -177,25 +173,15 @@ public class DiscriminatoryPowerAnalysis
 	}
 
 	/**
-	 * Retrieve the Gap Loss Function
+	 * Retrieve the Discriminatory Power Analyzer Setting
 	 * 
-	 * @return The Gap Loss Function
+	 * @return The Discriminatory Power Analyzer Setting
 	 */
 
-	public org.drip.validation.distance.GapLossFunction gapLossFunction()
+	public org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		discriminatoryPowerAnalyzerSetting()
 	{
-		return _gapLossFunction;
-	}
-
-	/**
-	 * Retrieve the Gap Loss Weight Function
-	 * 
-	 * @return The Gap Loss Weight Function
-	 */
-
-	public org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction()
-	{
-		return _gapLossWeightFunction;
+		return _discriminatoryPowerAnalyzerSetting;
 	}
 
 	/**
@@ -215,8 +201,8 @@ public class DiscriminatoryPowerAnalysis
 				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
 					(hypothesis.nativeProbabilityIntegralTransform()).distanceTest (
 						_sampleProbabilityIntegralTransform,
-						_gapLossFunction,
-						_gapLossWeightFunction
+						_discriminatoryPowerAnalyzerSetting.gapLossFunction(),
+						_discriminatoryPowerAnalyzerSetting.gapLossWeightFunction()
 					);
 		}
 		catch (java.lang.Exception e)

@@ -4,7 +4,6 @@ package org.drip.sample.anfuso2013;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.DiscriminatoryPowerAnalysis;
 import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
@@ -12,6 +11,8 @@ import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
+import org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting;
+import org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -267,10 +268,12 @@ public class WeightedGapDistribution2c
 			drawCount
 		);
 
-		DiscriminatoryPowerAnalysis discriminatoryPowerAnalysis = DiscriminatoryPowerAnalysis.FromSample (
+		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapLossFunction.AnfusoKaryampasNawroth(),
-			GapLossWeightFunction.CramersVonMises()
+			new DiscriminatoryPowerAnalyzerSetting (
+				GapLossFunction.AnfusoKaryampasNawroth(),
+				GapLossWeightFunction.CramersVonMises()
+			)
 		);
 
 		Ensemble hypothesis = GenerateEnsemble (

@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap Loss.
+ * <i>HypothesisOutcomeSuiteAggregate</i> holds the Map of Hypothesis and its corresponding Gap Test Outcome
+ * Aggregate.
  *
  *  <br><br>
  *  <ul>
@@ -95,76 +96,82 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossWeightFunction
+public class HypothesisOutcomeSuiteAggregate
 {
+	private java.util.TreeMap<java.lang.Double, java.lang.String> _distanceHypothesisMap = new
+		java.util.TreeMap<java.lang.Double, java.lang.String>();
+
+	private java.util.Map<java.lang.String, org.drip.validation.riskfactor.GapTestOutcomeAggregate>
+		_eventOutcomeAggregate = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.riskfactor.GapTestOutcomeAggregate>();
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Gap Loss Weight Function
-	 * 
-	 * @return The Cramers-von Mises Version of the Gap Loss Weight Function
+	 * Empty HypothesisOutcomeSuiteAggregate Constructor
 	 */
 
-	public static final GapLossWeightFunction CramersVonMises()
+	public HypothesisOutcomeSuiteAggregate()
 	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 1.;
-			}
-		};
 	}
 
 	/**
-	 * Construct the Anderson-Darling Version of the Gap Loss Weight Function
+	 * Retrieve the Hypothesis Event Gap Test Outcome Aggregate
 	 * 
-	 * @return The Anderson-Darling Version of the Gap Loss Weight Function
+	 * @return The Hypothesis Event Gap Test Outcome Aggregate
 	 */
 
-	public static final GapLossWeightFunction AndersonDarling()
+	public java.util.Map<java.lang.String, org.drip.validation.riskfactor.GapTestOutcomeAggregate>
+		eventOutcomeAggregate()
 	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 0. == gap ? 0. : 1. / gap;
-			}
-		};
+		return _eventOutcomeAggregate;
 	}
 
 	/**
+	 * Retrieve the Aggregate Distance - Hypothesis ID Map
 	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Weight
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Aggregate Distance - Hypothesis ID Map
 	 */
 
-	public abstract double weight (
-		final double gap)
-		throws java.lang.Exception;
+	public java.util.TreeMap<java.lang.Double, java.lang.String> distanceHypothesisMap()
+	{
+		return _distanceHypothesisMap;
+	}
+
+	/**
+	 * Add a Hypothesis ID and Gap Test Outcome Aggregate
+	 * 
+	 * @param hypothesisID The Hypothesis ID
+	 * @param gapTestOutcomeAggregate The Gap Test Outcome Aggregate
+	 * 
+	 * @return TRUE - The Gap Test Outcome Aggregate successfully added
+	 */
+
+	public boolean add (
+		final java.lang.String hypothesisID,
+		final org.drip.validation.riskfactor.GapTestOutcomeAggregate gapTestOutcomeAggregate)
+	{
+		if (null == hypothesisID || hypothesisID.isEmpty() ||
+			null == gapTestOutcomeAggregate)
+		{
+			return false;
+		}
+
+		_eventOutcomeAggregate.put (
+			hypothesisID,
+			gapTestOutcomeAggregate
+		);
+
+		_distanceHypothesisMap.put (
+			gapTestOutcomeAggregate.distance(),
+			hypothesisID
+		);
+
+		return true;
+	}
 }

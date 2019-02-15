@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap Loss.
+ * <i>EventAggregationWeightFunction</i> exposes the Aggregation Weight for the given Event.
  *
  *  <br><br>
  *  <ul>
@@ -95,76 +95,46 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossWeightFunction
+public abstract class EventAggregationWeightFunction
 {
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Gap Loss Weight Function
+	 * Construct the Anfuso, Karyampas, and Nawroth (2017) Version of Event Aggregation Weight Function
 	 * 
-	 * @return The Cramers-von Mises Version of the Gap Loss Weight Function
+	 * @return The Anfuso, Karyampas, and Nawroth (2017) Version of Event Aggregation Weight Function
 	 */
 
-	public static final GapLossWeightFunction CramersVonMises()
+	public static final EventAggregationWeightFunction AnfusoKaryampasNawroth()
 	{
-		return new GapLossWeightFunction()
+		return new EventAggregationWeightFunction()
 		{
-			@Override public double weight (
-				final double gap)
+			public double loading (
+				final java.lang.String eventID)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 1.;
+				return 1. / org.drip.analytics.support.Helper.TenorToYearFraction (eventID);
 			}
 		};
 	}
 
 	/**
-	 * Construct the Anderson-Darling Version of the Gap Loss Weight Function
+	 * Generate the Loadings Weight corresponding to the Event ID
 	 * 
-	 * @return The Anderson-Darling Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction AndersonDarling()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 0. == gap ? 0. : 1. / gap;
-			}
-		};
-	}
-
-	/**
+	 * @param eventID The Event ID
 	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Weight
+	 * @return The Loadings Weight corresponding to the Event ID
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double weight (
-		final double gap)
+	public abstract double loading (
+		final java.lang.String eventID)
 		throws java.lang.Exception;
 }

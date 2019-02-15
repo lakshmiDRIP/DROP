@@ -4,13 +4,14 @@ package org.drip.sample.anfuso2013;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.DiscriminatoryPowerAnalysis;
 import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting;
+import org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +76,8 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
  */
 
 /**
- * <i>WeightedGapDistribution4a</i> demonstrates the Weighted Gap Distribution illustrated in Table 4a of
- * Anfuso, Karyampas, and Nawroth (2013).
+ * <i>ADDiscriminatoryPowerAnalysis4a</i> demonstrates the Discriminatory Power Analysis illustrated in Table
+ * 4a of Anfuso, Karyampas, and Nawroth (2013).
  *
  *  <br><br>
  *  <ul>
@@ -114,7 +115,7 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeightedGapDistribution4a
+public class ADDiscriminatoryPowerAnalysis4a
 {
 
 	private static final double UnivariateRandom (
@@ -238,10 +239,12 @@ public class WeightedGapDistribution4a
 			drawCount
 		);
 
-		DiscriminatoryPowerAnalysis discriminatoryPowerAnalysis = DiscriminatoryPowerAnalysis.FromSample (
+		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapLossFunction.AnfusoKaryampasNawroth(),
-			GapLossWeightFunction.AndersonDarling()
+			new DiscriminatoryPowerAnalyzerSetting (
+				GapLossFunction.AnfusoKaryampasNawroth(),
+				GapLossWeightFunction.CramersVonMises()
+			)
 		);
 
 		System.out.println ("\t|--------------------------------||");

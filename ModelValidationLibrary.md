@@ -11,7 +11,7 @@ Model Validation Library contains Statistical Hypotheses Validation and Testing 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidation_v4.05.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidation_v4.06.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 

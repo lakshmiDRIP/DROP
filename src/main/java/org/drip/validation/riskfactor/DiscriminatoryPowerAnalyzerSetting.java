@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap Loss.
+ * <i>DiscriminatoryPowerAnalyzerSetting</i> contains the Settings needed for Customizing the Discriminatory
+ * Power Analysis.
  *
  *  <br><br>
  *  <ul>
@@ -95,76 +96,59 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossWeightFunction
+public class DiscriminatoryPowerAnalyzerSetting
 {
+	private org.drip.validation.distance.GapLossFunction _gapLossFunction = null;
+	private org.drip.validation.distance.GapLossWeightFunction _gapLossWeightFunction = null;
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Gap Loss Weight Function
+	 * DiscriminatoryPowerAnalyzerSetting Constructor
 	 * 
-	 * @return The Cramers-von Mises Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction CramersVonMises()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 1.;
-			}
-		};
-	}
-
-	/**
-	 * Construct the Anderson-Darling Version of the Gap Loss Weight Function
-	 * 
-	 * @return The Anderson-Darling Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction AndersonDarling()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 0. == gap ? 0. : 1. / gap;
-			}
-		};
-	}
-
-	/**
-	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Weight
+	 * @param gapLossFunction Gap Loss Function
+	 * @param gapLossWeightFunction Gap Loss Weight Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double weight (
-		final double gap)
-		throws java.lang.Exception;
+	public DiscriminatoryPowerAnalyzerSetting (
+		final org.drip.validation.distance.GapLossFunction gapLossFunction,
+		final org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction)
+		throws java.lang.Exception
+	{
+		if (null == (_gapLossFunction = gapLossFunction) ||
+			null == (_gapLossWeightFunction = gapLossWeightFunction))
+		{
+			throw new java.lang.Exception
+				("DiscriminatoryPowerAnalyzerSetting Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Gap Loss Function
+	 * 
+	 * @return The Gap Loss Function
+	 */
+
+	public org.drip.validation.distance.GapLossFunction gapLossFunction()
+	{
+		return _gapLossFunction;
+	}
+
+	/**
+	 * Retrieve the Gap Loss Weight Function
+	 * 
+	 * @return The Gap Loss Weight Function
+	 */
+
+	public org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction()
+	{
+		return _gapLossWeightFunction;
+	}
 }

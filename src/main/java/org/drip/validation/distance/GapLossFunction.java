@@ -114,29 +114,20 @@ public abstract class GapLossFunction
 
 	public static final GapLossFunction AnfusoKaryampasNawroth()
 	{
-		try
+		return new GapLossFunction()
 		{
-			return new GapLossFunction()
+			@Override public double loss (
+				final double gap)
+				throws java.lang.Exception
 			{
-				@Override public double loss (
-					final double gap)
-					throws java.lang.Exception
+				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-					{
-						throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
-					}
-
-					return gap * gap;
+					throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
 				}
-			};
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+				return gap * gap;
+			}
+		};
 	}
 
 	/**

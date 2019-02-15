@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap Loss.
+ * <i>DiscriminatoryPowerAnalyzerAggregate</i> implements the Discriminatory Power Analyzer for the given
+ * Sample across the One/More Hypothesis and Multiple Events.
  *
  *  <br><br>
  *  <ul>
@@ -95,76 +96,103 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossWeightFunction
+public class DiscriminatoryPowerAnalyzerAggregate
 {
+	private org.drip.validation.riskfactor.EventAggregationWeightFunction _eventAggregationWeightFunction =
+		null;
+	private org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		_discriminatoryPowerAnalyzerSetting = null;
+
+	private java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
+		_eventSamplePITMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.hypothesis.ProbabilityIntegralTransform>();
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Gap Loss Weight Function
+	 * DiscriminatoryPowerAnalyzerAggregate Constructor
 	 * 
-	 * @return The Cramers-von Mises Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction CramersVonMises()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 1.;
-			}
-		};
-	}
-
-	/**
-	 * Construct the Anderson-Darling Version of the Gap Loss Weight Function
-	 * 
-	 * @return The Anderson-Darling Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction AndersonDarling()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 0. == gap ? 0. : 1. / gap;
-			}
-		};
-	}
-
-	/**
-	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Weight
+	 * @param eventSamplePITMap Event Sample PIT Map
+	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
+	 * @param eventAggregationWeightFunction Event Aggregation Weight Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double weight (
-		final double gap)
-		throws java.lang.Exception;
+	public DiscriminatoryPowerAnalyzerAggregate (
+		final java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
+			eventSamplePITMap,
+		final org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+			discriminatoryPowerAnalyzerSetting,
+		final org.drip.validation.riskfactor.EventAggregationWeightFunction eventAggregationWeightFunction)
+		throws java.lang.Exception
+	{
+		if (null == (_eventSamplePITMap = eventSamplePITMap) || 0 == _eventSamplePITMap.size() ||
+			null == (_discriminatoryPowerAnalyzerSetting = discriminatoryPowerAnalyzerSetting) ||
+			null == (_eventAggregationWeightFunction = eventAggregationWeightFunction))
+		{
+			throw new java.lang.Exception
+				("DiscriminatoryPowerAnalyzerAggregate Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Discriminatory Power Analyzer Setting
+	 * 
+	 * @return The Discriminatory Power Analyzer Setting
+	 */
+
+	public org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		discriminatoryPowerAnalyzerSetting()
+	{
+		return _discriminatoryPowerAnalyzerSetting;
+	}
+
+	/**
+	 * Retrieve the Event Aggregation Weight Function
+	 *
+	 * @return The Event Aggregation Weight Function
+	 */
+
+	public org.drip.validation.riskfactor.EventAggregationWeightFunction eventAggregationWeightFunction()
+	{
+		return _eventAggregationWeightFunction;
+	}
+
+	/**
+	 * Retrieve the Event Sample PIT Map
+	 * 
+	 * @return The Event Sample PIT Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
+		eventSamplePITMap()
+	{
+		return _eventSamplePITMap;
+	}
+
+	/**
+	 * Generate the Gap Test Outcomes Aggregate for the specified Hypothesis Suite
+	 * 
+	 * @param hypothesisSuite The Hypothesis Suite
+	 * 
+	 * @return The Suite of Gap Test Outcomes
+	 */
+
+	public org.drip.validation.distance.HypothesisOutcomeSuite hypothesisGapTest (
+		final java.util.Map<java.lang.String, org.drip.validation.distance.HypothesisSuite>
+			eventHypothesisSuiteMap)
+	{
+		if (null == eventHypothesisSuiteMap || 0 == eventHypothesisSuiteMap.size())
+		{
+			return null;
+		}
+
+		return null;
+	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>GapLossWeightFunction</i> weighs the outcome of each Empirical Hypothesis Gap Loss.
+ * <i>GapTestOutcomeAggregate</i> holds the Map of Event Gap Test Outcomes and the Aggregate DPA Distance
+ * Metric for a <b>Single <i>Hypothesis</i></b>.
  *
  *  <br><br>
  *  <ul>
@@ -95,76 +96,59 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GapLossWeightFunction
+public class GapTestOutcomeAggregate
 {
+	private double _distance = java.lang.Double.NaN;
+	private java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> _eventOutcomeMap =
+		null;
 
 	/**
-	 * Construct the Cramers-von Mises Version of the Gap Loss Weight Function
+	 * GapTestOutcomeAggregate Constructor
 	 * 
-	 * @return The Cramers-von Mises Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction CramersVonMises()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 1.;
-			}
-		};
-	}
-
-	/**
-	 * Construct the Anderson-Darling Version of the Gap Loss Weight Function
-	 * 
-	 * @return The Anderson-Darling Version of the Gap Loss Weight Function
-	 */
-
-	public static final GapLossWeightFunction AndersonDarling()
-	{
-		return new GapLossWeightFunction()
-		{
-			@Override public double weight (
-				final double gap)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
-				{
-					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
-				}
-
-				return 0. == gap ? 0. : 1. / gap;
-			}
-		};
-	}
-
-	/**
-	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
-	 * 
-	 * @param gap The Empirical to Hypothesis Gap
-	 * 
-	 * @return The Weight
+	 * @param eventOutcomeMap Event to Gap Test Outcome Map
+	 * @param distance Aggregate Distance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double weight (
-		final double gap)
-		throws java.lang.Exception;
+	public GapTestOutcomeAggregate (
+		final java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> eventOutcomeMap,
+		final double distance)
+		throws java.lang.Exception
+	{
+		if (null == (_eventOutcomeMap = eventOutcomeMap) || 0 == _eventOutcomeMap.size() ||
+			!org.drip.quant.common.NumberUtil.IsValid (_distance = distance))
+		{
+			throw new java.lang.Exception ("GapTestOutcomeAggregate Constructor => Invalid inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Event to Gap Test Outcome Map
+	 * 
+	 * @return The Event to Gap Test Outcome Map
+	 */
+
+	public java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> eventOutcomeMap()
+	{
+		return _eventOutcomeMap;
+	}
+
+	/**
+	 * Retrieve the Aggregate Distance
+	 * 
+	 * @return The Aggregate Distance
+	 */
+
+	public double distance()
+	{
+		return _distance;
+	}
 }

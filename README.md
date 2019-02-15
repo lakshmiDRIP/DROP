@@ -10,7 +10,7 @@ DROP is composed of three modules.
 
  * [***Analytics Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/AnalyticsCore.md)   =>   Fixed Income Analytics, Asset Back Analytics, Exposure and Margin Analytics, and XVA Analytics.
  * [***Portfolio Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/PortfolioCore.md)   =>   Portfolio Contruction, along with Execution/Transaction Cost Models.
- * [***Numerical Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalCore.md)   =>   Spline Builder, Statistical Learning, Numerical Optimizer, and Algorithm Support Libraries.
+ * [***Numerical Core Module***](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalCore.md)   =>   Model Validation, Spline Builder, Statistical Learning, Numerical Optimizer, and Algorithm Support Libraries.
 
 
 ## Pointers
@@ -60,6 +60,7 @@ DROP is composed of three modules.
   | spline                 | [README](https://github.com/lakshmiDRIP/DROP/blob/master/src/main/java/org/drip/spline/README.md) | [Git](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aspline) | [Spline Builder](https://github.com/lakshmiDRIP/DROP/blob/master/SplineBuilderLibrary.md) | [Numerical](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalCore.md) |
   | state                  | [README](https://github.com/lakshmiDRIP/DROP/blob/master/src/main/java/org/drip/state/README.md) | [Git](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Astate) | [Fixed Income Analytics](https://github.com/lakshmiDRIP/DROP/blob/master/FixedIncomeAnalyticsLibrary.md) | [Analytics](https://github.com/lakshmiDRIP/DROP/blob/master/AnalyticsCore.md) |
   | template               | [README](https://github.com/lakshmiDRIP/DROP/blob/master/src/main/java/org/drip/template/README.md) | [Git](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Atemplate) | [Fixed Income Analytics](https://github.com/lakshmiDRIP/DROP/blob/master/FixedIncomeAnalyticsLibrary.md) | [Analytics](https://github.com/lakshmiDRIP/DROP/blob/master/AnalyticsCore.md) |
+  | validation             | [README](https://github.com/lakshmiDRIP/DROP/blob/master/src/main/java/org/drip/validation/README.md) | [Git](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Avalidation) | [Model Validation](https://github.com/lakshmiDRIP/DROP/blob/master/ModelValidationLibrary.md) | [Numerical](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalCore.md) |
   | xva                    | [README](https://github.com/lakshmiDRIP/DROP/blob/master/src/main/java/org/drip/xva/README.md) | [Git](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Axva) | [XVA Analytics](https://github.com/lakshmiDRIP/DROP/blob/master/ExposureAnalyticsLibrary.md) | [Analytics](https://github.com/lakshmiDRIP/DROP/blob/master/AnalyticsCore.md) |
 
 

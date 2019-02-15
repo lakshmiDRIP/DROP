@@ -59,6 +59,10 @@
 		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aexecution) }
 
 ## [Numerical Core Module](https://github.com/lakshmiDRIP/DROP/blob/master/NumericalCore.md)
+ * [***Model Validation Library***](https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md) => Functionality for Statistical Hypotheses Validation and Testing.
+	* *Validation* => Statistical Hypotheses Evidence Processing and Testing.
+		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md) | 
+		[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Avalidation) }
  * [***Spline Builder Library***](https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md) => Functionality for constructing Spline Based Curves and Surfaces.
 	* *Spline* => Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions.
 		* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md) | 
