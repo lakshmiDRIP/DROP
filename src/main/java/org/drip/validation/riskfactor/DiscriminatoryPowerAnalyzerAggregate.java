@@ -96,7 +96,7 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
  *  </ul>
  * <br><br>
  *
@@ -176,23 +176,108 @@ public class DiscriminatoryPowerAnalyzerAggregate
 		return _eventSamplePITMap;
 	}
 
+	private org.drip.validation.riskfactor.GapTestOutcomeAggregate eventOutcomeAggregate (
+		final java.lang.String hypothesisID,
+		final java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventEnsembleMap)
+	{
+		double distanceAggregate = 0.;
+
+		java.util.Map<java.lang.String, org.drip.validation.distance.GapTestOutcome> eventOutcomeMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.distance.GapTestOutcome>();
+
+		try
+		{
+			for (java.util.Map.Entry<java.lang.String, org.drip.validation.evidence.Ensemble> eventEnsemble :
+				eventEnsembleMap.entrySet())
+			{
+				java.lang.String eventID = eventEnsemble.getKey();
+
+				if (!_eventSamplePITMap.containsKey (eventID))
+				{
+					return null;
+				}
+
+				DiscriminatoryPowerAnalyzer discriminatoryPowerAnalyzer = new DiscriminatoryPowerAnalyzer
+				(
+					_eventSamplePITMap.get (eventID),
+					_discriminatoryPowerAnalyzerSetting
+				);
+
+				org.drip.validation.distance.GapTestOutcome gapTestOutcome =
+					discriminatoryPowerAnalyzer.gapTest (eventEnsemble.getValue());
+
+				if (null == gapTestOutcome)
+				{
+					return null;
+				}
+
+				distanceAggregate = distanceAggregate + gapTestOutcome.distance() *
+					_eventAggregationWeightFunction.loading (eventID);
+
+				eventOutcomeMap.put (
+					hypothesisID,
+					gapTestOutcome
+				);
+			}
+
+			return new org.drip.validation.riskfactor.GapTestOutcomeAggregate (
+				eventOutcomeMap,
+				distanceAggregate
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+	}
+
 	/**
-	 * Generate the Gap Test Outcomes Aggregate for the specified Hypothesis Suite
+	 * Generate the Hypotheses Outcome Suite Aggregate for the specified Hypothesis Suite Aggregate
 	 * 
-	 * @param hypothesisSuite The Hypothesis Suite
+	 * @param hypothesisSuiteAggregate The Hypothesis Suite Aggregate
 	 * 
 	 * @return The Suite of Gap Test Outcomes
 	 */
 
-	public org.drip.validation.distance.HypothesisOutcomeSuite hypothesisGapTest (
-		final java.util.Map<java.lang.String, org.drip.validation.distance.HypothesisSuite>
-			eventHypothesisSuiteMap)
+	public org.drip.validation.riskfactor.HypothesisOutcomeSuiteAggregate hypothesisGapTest (
+		final org.drip.validation.riskfactor.HypothesisSuiteAggregate hypothesisSuiteAggregate)
 	{
-		if (null == eventHypothesisSuiteMap || 0 == eventHypothesisSuiteMap.size())
+		if (null == hypothesisSuiteAggregate)
 		{
 			return null;
 		}
 
-		return null;
+		java.util.Map<java.lang.String, java.util.Map<java.lang.String,
+			org.drip.validation.evidence.Ensemble>> hypothesisEventMap =
+				hypothesisSuiteAggregate.hypothesisEventMap();
+
+		if (0 == hypothesisEventMap.size())
+		{
+			return null;
+		}
+
+		org.drip.validation.riskfactor.HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate = new
+			org.drip.validation.riskfactor.HypothesisOutcomeSuiteAggregate();
+
+		for (java.util.Map.Entry<java.lang.String, java.util.Map<java.lang.String,
+			org.drip.validation.evidence.Ensemble>> hypothesisEvent : hypothesisEventMap.entrySet())
+		{
+			java.lang.String hypothesisID = hypothesisEvent.getKey();
+
+			if (!hypothesisOutcomeSuiteAggregate.add (
+				hypothesisID,
+				eventOutcomeAggregate (
+					hypothesisID,
+					hypothesisEvent.getValue()
+				)
+			))
+			{
+				return null;
+			}
+		}
+
+		return hypothesisOutcomeSuiteAggregate;
 	}
 }

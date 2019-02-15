@@ -179,7 +179,7 @@ public class HypothesisOutcomeSuite
 	 * @return The Leading/Best Fit Hypothesis and its Test Outcome
 	 */
 
-	public org.drip.validation.distance.HypothesisGapTestOutcome leadingHypothesis()
+	public org.drip.validation.distance.HypothesisOutcome leadingHypothesis()
 	{
 		if (0 == _distanceHypothesisMap.size())
 		{
@@ -190,7 +190,7 @@ public class HypothesisOutcomeSuite
 
 		try
 		{
-			return new org.drip.validation.distance.HypothesisGapTestOutcome (
+			return new org.drip.validation.distance.HypothesisOutcome (
 				leadingHypothesisID,
 				_outcomeMap.get (leadingHypothesisID)
 			);

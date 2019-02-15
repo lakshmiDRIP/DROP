@@ -129,24 +129,55 @@ public class HypothesisSuite
 	/**
 	 * Add a Hypothesis to the Map
 	 * 
+	 * @param hypothesisID The Hypothesis ID
 	 * @param hypothesis The Ensemble Hypothesis
 	 * 
 	 * @return TRUE - The Hypothesis Successfully added
 	 */
 
 	public boolean add (
+		final java.lang.String hypothesisID,
 		final org.drip.validation.evidence.Ensemble hypothesis)
 	{
-		if (null == hypothesis)
+		if (null == hypothesisID || hypothesisID.isEmpty() ||
+			null == hypothesis)
 		{
 			return false;
 		}
 
 		_hypothesisMap.put (
-			org.drip.quant.common.StringUtil.GUID(),
+			hypothesisID,
 			hypothesis
 		);
 
 		return true;
+	}
+
+	/**
+	 * Indicate if the Hypothesis Specified by the ID is Avaliable
+	 * 
+	 * @param hypothesisID The Hypothesis ID
+	 * 
+	 * @return TRUE - The Hypothesis Specified by the ID is Avaliable
+	 */
+
+	public boolean containsHypothesis (
+		final java.lang.String hypothesisID)
+	{
+		return null != hypothesisID && !hypothesisID.isEmpty() && _hypothesisMap.containsKey (hypothesisID);
+	}
+
+	/**
+	 * Retrieve the Hypothesis Specified by the ID
+	 * 
+	 * @param hypothesisID The Hypothesis ID
+	 * 
+	 * @return The Hypothesis Specified by the ID
+	 */
+
+	public org.drip.validation.evidence.Ensemble hypothesis (
+		final java.lang.String hypothesisID)
+	{
+		return containsHypothesis (hypothesisID) ? _hypothesisMap.get (hypothesisID) : null;
 	}
 }

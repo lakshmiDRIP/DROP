@@ -1,5 +1,5 @@
 
-package org.drip.validation.distance;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.validation.distance;
  */
 
 /**
- * <i>HypothesisGapTestOutcome</i> holds the Hypothesis ID and the its corresponding Gap Test Outcome.
+ * <i>HypothesisOutcomeAggregate</i> holds the Hypothesis and its corresponding Gap Test Outcome Aggregate.
  *
  *  <br><br>
  *  <ul>
@@ -95,36 +95,36 @@ package org.drip.validation.distance;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HypothesisGapTestOutcome
+public class HypothesisOutcomeAggregate
 {
-	private java.lang.String _hypothesisID = "";
-	private org.drip.validation.distance.GapTestOutcome _gapTestOutcome = null;
+	private java.lang.String _hypothesisID = null;
+	private org.drip.validation.riskfactor.GapTestOutcomeAggregate _gapTestOutcomeAggregate = null;
 
 	/**
-	 * HypothesisGapTestOutcome Constructor
+	 * HypothesisOutcomeAggregate Constructor
 	 * 
-	 * @param hypothesisID The Hypothesis ID
-	 * @param gapTestOutcome The Gap Test Outcome
+	 * @param hypothesisID Hypothesis ID
+	 * @param gapTestOutcomeAggregate Gap Test Outcome Aggregate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
-	public HypothesisGapTestOutcome (
+	public HypothesisOutcomeAggregate (
 		final java.lang.String hypothesisID,
-		final org.drip.validation.distance.GapTestOutcome gapTestOutcome)
+		final org.drip.validation.riskfactor.GapTestOutcomeAggregate gapTestOutcomeAggregate)
 		throws java.lang.Exception
 	{
 		if (null == (_hypothesisID = hypothesisID) || _hypothesisID.isEmpty() ||
-			null == (_gapTestOutcome = gapTestOutcome))
+			null == (_gapTestOutcomeAggregate = gapTestOutcomeAggregate))
 		{
-			throw new java.lang.Exception ("HypothesisGapTestOutcome Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("HypothesisOutcomeAggregate Constructor => Invalid Inputs");
 		}
 	}
 
@@ -140,13 +140,13 @@ public class HypothesisGapTestOutcome
 	}
 
 	/**
-	 * Retrieve the Gap Test Outcome
+	 * Retrieve the Gap Test Outcome Aggregate
 	 * 
-	 * @return The Gap Test Outcome
+	 * @return The Gap Test Outcome Aggregate
 	 */
 
-	public org.drip.validation.distance.GapTestOutcome gapTestOutcome()
+	public org.drip.validation.riskfactor.GapTestOutcomeAggregate gapTestOutcomeAggregate()
 	{
-		return _gapTestOutcome;
+		return _gapTestOutcomeAggregate;
 	}
 }

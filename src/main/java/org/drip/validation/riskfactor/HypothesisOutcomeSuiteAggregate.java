@@ -96,7 +96,7 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Distance Test Builders</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
  *  </ul>
  * <br><br>
  *
@@ -109,7 +109,7 @@ public class HypothesisOutcomeSuiteAggregate
 		java.util.TreeMap<java.lang.Double, java.lang.String>();
 
 	private java.util.Map<java.lang.String, org.drip.validation.riskfactor.GapTestOutcomeAggregate>
-		_eventOutcomeAggregate = new
+		_hypothesisOutcomeAggregate = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.riskfactor.GapTestOutcomeAggregate>();
 
 	/**
@@ -127,9 +127,9 @@ public class HypothesisOutcomeSuiteAggregate
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.validation.riskfactor.GapTestOutcomeAggregate>
-		eventOutcomeAggregate()
+		hypothesisOutcomeAggregate()
 	{
-		return _eventOutcomeAggregate;
+		return _hypothesisOutcomeAggregate;
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class HypothesisOutcomeSuiteAggregate
 			return false;
 		}
 
-		_eventOutcomeAggregate.put (
+		_hypothesisOutcomeAggregate.put (
 			hypothesisID,
 			gapTestOutcomeAggregate
 		);
@@ -173,5 +173,35 @@ public class HypothesisOutcomeSuiteAggregate
 		);
 
 		return true;
+	}
+
+	/**
+	 * Retrieve the Leading/Best Fit Hypothesis and its Test Outcome Aggregate
+	 * 
+	 * @return The Leading/Best Fit Hypothesis and its Test Outcome Aggregate
+	 */
+
+	public org.drip.validation.riskfactor.HypothesisOutcomeAggregate leadingHypothesis()
+	{
+		if (0 == _distanceHypothesisMap.size())
+		{
+			return null;
+		}
+
+		java.lang.String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
+
+		try
+		{
+			return new org.drip.validation.riskfactor.HypothesisOutcomeAggregate (
+				leadingHypothesisID,
+				_hypothesisOutcomeAggregate.get (leadingHypothesisID)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

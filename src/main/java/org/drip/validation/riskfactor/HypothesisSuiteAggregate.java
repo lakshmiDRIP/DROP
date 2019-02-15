@@ -1,5 +1,5 @@
 
-package org.drip.validation.hypothesis;
+package org.drip.validation.riskfactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,22 +64,22 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>ProbabilityIntegralTransformHistogram</i> contains the p-value Cumulative and Incremental Histograma
- * across the Test Statistic.
+ * <i>HypothesisSuiteAggregate</i> holds Indexed Hypothesis Ensembles across One/More Event Points.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
- *  			American Statistician 56 (3) 202-206
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
  *  	</li>
  *  	<li>
- *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
- *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
  *  	</li>
  *  	<li>
- *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
- *  			and Purpose American Statistician 70 (2) 129-133
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
  *  	</li>
  *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
@@ -95,87 +95,124 @@ package org.drip.validation.hypothesis;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis">Statistical Hypothesis Validation Test Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProbabilityIntegralTransformHistogram
+public class HypothesisSuiteAggregate
 {
-	private double[] _testStatisticArray = null;
-	private double[] _pValueCumulativeArray = null;
-	private double[] _pValueIncrementalArray = null;
+	private java.util.Map<java.lang.String, java.util.Map<java.lang.String,
+		org.drip.validation.evidence.Ensemble>> _hypothesisEventMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.util.Map<java.lang.String,
+				org.drip.validation.evidence.Ensemble>>();
 
 	/**
-	 * ProbabilityIntegralTransformHistogram Constructor
-	 * 
-	 * @param testStatisticArray Array of Test Statistics
-	 * @param pValueCumulativeArray Array of Cumulative p-Values
-	 * @param pValueIncrementalArray Array of Incremental p-Values
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Empty HypothesisSuiteAggregate Constructor
 	 */
 
-	public ProbabilityIntegralTransformHistogram (
-		final double[] testStatisticArray,
-		final double[] pValueCumulativeArray,
-		final double[] pValueIncrementalArray)
-		throws java.lang.Exception
+	public HypothesisSuiteAggregate()
 	{
-		if (null == (_testStatisticArray = testStatisticArray) ||
-			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
-			null == (_pValueIncrementalArray = pValueIncrementalArray))
+	}
+
+	/**
+	 * Retrieve the Hypothesis Event Map
+	 * 
+	 * @return The Hypothesis Event Map
+	 */
+
+	public
+		java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble>>
+			hypothesisEventMap()
+	{
+		return _hypothesisEventMap;
+	}
+
+	/**
+	 * Add the Specified Hypothesis with its ID and the Event
+	 * 
+	 * @param hypothesisID The Hypothesis ID
+	 * @param eventID The Event ID
+	 * @param hypothesis The Hypothesis
+	 * 
+	 * @return TRUE - The Hypothesis Successfully Added
+	 */
+
+	public boolean add (
+		final java.lang.String hypothesisID,
+		final java.lang.String eventID,
+		final org.drip.validation.evidence.Ensemble hypothesis)
+	{
+		if (null == hypothesisID || hypothesisID.isEmpty() ||
+			null == eventID || eventID.isEmpty() ||
+			null == hypothesis)
 		{
-			throw new java.lang.Exception
-				("ProbabilityIntegralTransformHistogram Constructor => Invalid Inputs");
+			return false;
 		}
 
-		int count = _testStatisticArray.length;
-
-		if (0 == count ||
-			count != _pValueCumulativeArray.length ||
-			count != _pValueIncrementalArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_testStatisticArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueIncrementalArray))
+		if (_hypothesisEventMap.containsKey (hypothesisID))
 		{
-			throw new java.lang.Exception
-				("ProbabilityIntegralTransformHistogram Constructor => Invalid Inputs");
+			_hypothesisEventMap.get (hypothesisID).put (
+				eventID,
+				hypothesis
+			);
 		}
+		else
+		{
+			java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.evidence.Ensemble>();
+
+			eventMap.put (
+				eventID,
+				hypothesis
+			);
+
+			_hypothesisEventMap.put (
+				hypothesisID,
+				eventMap
+			);
+		}
+
+		return true;
 	}
 
 	/**
-	 * Retrieve the Array of Test Statistics
+	 * Indicate if the specified Hypothesis is Available
 	 * 
-	 * @return The Array of Test Statistics
+	 * @param hypothesisID The Hypothesis ID
+	 * @param eventID The Event ID
+	 * 
+	 * @return TRUE - The specified Hypothesis is Available
 	 */
 
-	public double[] testStatisticArray()
+	public boolean containsHypothesis (
+		final java.lang.String hypothesisID,
+		final java.lang.String eventID)
 	{
-		return _testStatisticArray;
+		return null != hypothesisID && !hypothesisID.isEmpty() &&
+			null != eventID && !eventID.isEmpty() &&
+			_hypothesisEventMap.containsKey (hypothesisID) &&
+			_hypothesisEventMap.get (hypothesisID).containsKey (eventID);
 	}
 
 	/**
-	 * Retrieve the Array of Cumulative p-Values
+	 * Retrieve the Specified Hypothesis
 	 * 
-	 * @return The Array of Cumulative p-Values
+	 * @param hypothesisID The Hypothesis ID
+	 * @param eventID The Event ID
+	 * 
+	 * @return The Specified Hypothesis
 	 */
 
-	public double[] pValueCumulativeArray()
+	public org.drip.validation.evidence.Ensemble hypothesis (
+		final java.lang.String hypothesisID,
+		final java.lang.String eventID)
 	{
-		return _pValueCumulativeArray;
-	}
-
-	/**
-	 * Retrieve the Array of Incremental p-Values
-	 * 
-	 * @return The Array of Incremental p-Values
-	 */
-
-	public double[] pValueIncrementalArray()
-	{
-		return _pValueIncrementalArray;
+		return containsHypothesis (
+			hypothesisID,
+			eventID
+		) ? _hypothesisEventMap.get (hypothesisID).get (eventID) : null;
 	}
 }

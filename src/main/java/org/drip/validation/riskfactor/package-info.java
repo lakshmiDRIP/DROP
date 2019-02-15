@@ -1,6 +1,6 @@
 
 /**
- * Risk Factor Event Horizon Tests
+ * Risk Factor Aggregate Distance Tests
  *
  * @author Lakshmi Krishnamurthy
  */
