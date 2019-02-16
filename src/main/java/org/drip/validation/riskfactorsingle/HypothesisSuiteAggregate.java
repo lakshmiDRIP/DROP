@@ -1,5 +1,5 @@
 
-package org.drip.validation.riskfactor;
+package org.drip.validation.riskfactorsingle;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,7 @@ package org.drip.validation.riskfactor;
  */
 
 /**
- * <i>DiscriminatoryPowerAnalyzerSetting</i> contains the Settings needed for Customizing the Discriminatory
- * Power Analysis.
+ * <i>HypothesisSuiteAggregate</i> holds Indexed Hypothesis Ensembles across One/More Event Points.
  *
  *  <br><br>
  *  <ul>
@@ -96,59 +95,124 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle">Single Risk Factor Aggregate Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscriminatoryPowerAnalyzerSetting
+public class HypothesisSuiteAggregate
 {
-	private org.drip.validation.distance.GapLossFunction _gapLossFunction = null;
-	private org.drip.validation.distance.GapLossWeightFunction _gapLossWeightFunction = null;
+	private java.util.Map<java.lang.String, java.util.Map<java.lang.String,
+		org.drip.validation.evidence.Ensemble>> _hypothesisEventMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.util.Map<java.lang.String,
+				org.drip.validation.evidence.Ensemble>>();
 
 	/**
-	 * DiscriminatoryPowerAnalyzerSetting Constructor
-	 * 
-	 * @param gapLossFunction Gap Loss Function
-	 * @param gapLossWeightFunction Gap Loss Weight Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Empty HypothesisSuiteAggregate Constructor
 	 */
 
-	public DiscriminatoryPowerAnalyzerSetting (
-		final org.drip.validation.distance.GapLossFunction gapLossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction)
-		throws java.lang.Exception
+	public HypothesisSuiteAggregate()
 	{
-		if (null == (_gapLossFunction = gapLossFunction) ||
-			null == (_gapLossWeightFunction = gapLossWeightFunction))
+	}
+
+	/**
+	 * Retrieve the Hypothesis Event Map
+	 * 
+	 * @return The Hypothesis Event Map
+	 */
+
+	public
+		java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble>>
+			hypothesisEventMap()
+	{
+		return _hypothesisEventMap;
+	}
+
+	/**
+	 * Add the Specified Hypothesis with its ID and the Event
+	 * 
+	 * @param hypothesisID The Hypothesis ID
+	 * @param eventID The Event ID
+	 * @param hypothesis The Hypothesis
+	 * 
+	 * @return TRUE - The Hypothesis Successfully Added
+	 */
+
+	public boolean add (
+		final java.lang.String hypothesisID,
+		final java.lang.String eventID,
+		final org.drip.validation.evidence.Ensemble hypothesis)
+	{
+		if (null == hypothesisID || hypothesisID.isEmpty() ||
+			null == eventID || eventID.isEmpty() ||
+			null == hypothesis)
 		{
-			throw new java.lang.Exception
-				("DiscriminatoryPowerAnalyzerSetting Constructor => Invalid Inputs");
+			return false;
 		}
+
+		if (_hypothesisEventMap.containsKey (hypothesisID))
+		{
+			_hypothesisEventMap.get (hypothesisID).put (
+				eventID,
+				hypothesis
+			);
+		}
+		else
+		{
+			java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.evidence.Ensemble>();
+
+			eventMap.put (
+				eventID,
+				hypothesis
+			);
+
+			_hypothesisEventMap.put (
+				hypothesisID,
+				eventMap
+			);
+		}
+
+		return true;
 	}
 
 	/**
-	 * Retrieve the Gap Loss Function
+	 * Indicate if the specified Hypothesis is Available
 	 * 
-	 * @return The Gap Loss Function
+	 * @param hypothesisID The Hypothesis ID
+	 * @param eventID The Event ID
+	 * 
+	 * @return TRUE - The specified Hypothesis is Available
 	 */
 
-	public org.drip.validation.distance.GapLossFunction gapLossFunction()
+	public boolean containsHypothesis (
+		final java.lang.String hypothesisID,
+		final java.lang.String eventID)
 	{
-		return _gapLossFunction;
+		return null != hypothesisID && !hypothesisID.isEmpty() &&
+			null != eventID && !eventID.isEmpty() &&
+			_hypothesisEventMap.containsKey (hypothesisID) &&
+			_hypothesisEventMap.get (hypothesisID).containsKey (eventID);
 	}
 
 	/**
-	 * Retrieve the Gap Loss Weight Function
+	 * Retrieve the Specified Hypothesis
 	 * 
-	 * @return The Gap Loss Weight Function
+	 * @param hypothesisID The Hypothesis ID
+	 * @param eventID The Event ID
+	 * 
+	 * @return The Specified Hypothesis
 	 */
 
-	public org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction()
+	public org.drip.validation.evidence.Ensemble hypothesis (
+		final java.lang.String hypothesisID,
+		final java.lang.String eventID)
 	{
-		return _gapLossWeightFunction;
+		return containsHypothesis (
+			hypothesisID,
+			eventID
+		) ? _hypothesisEventMap.get (hypothesisID).get (eventID) : null;
 	}
 }

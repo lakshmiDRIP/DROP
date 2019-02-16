@@ -65,8 +65,8 @@ package org.drip.measure.stochastic;
  */
 
 /**
- * <i>LabelCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
- * The References are:
+ * <i>LabelCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as
+ * well as their Means. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,160 +105,122 @@ package org.drip.measure.stochastic;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelCorrelation
+public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelation
 {
-	protected double[][] _matrix = null;
-	protected java.util.List<java.lang.String> _labelList = null;
-
-	protected java.util.Map<java.lang.String, java.lang.Integer> _labelIndexMap = new
-		java.util.HashMap<java.lang.String, java.lang.Integer>();
+	private double[] _meanArray = null;
+	private double[] _volatilityArray = null;
+	private org.drip.measure.gaussian.Covariance _covariance = null;
 
 	/**
-	 * LabelCorrelation Constructor
+	 * LabelCovariance Constructor
 	 * 
 	 * @param labelList The List of Labels
-	 * @param matrix The Correlation Matrix
+	 * @param meanArray Array of Variate Means
+	 * @param volatilityArray Array of Variate Volatilities
+	 * @param correlationMatrix The Correlation Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelCorrelation (
+	public LabelCovariance (
 		final java.util.List<java.lang.String> labelList,
-		final double[][] matrix)
+		final double[] meanArray,
+		final double[] volatilityArray,
+		final double[][] correlationMatrix)
 		throws java.lang.Exception
 	{
-		if (null == (_labelList = labelList) ||
-			null == (_matrix = matrix))
+		super (
+			labelList,
+			correlationMatrix
+		);
+
+		if (null == (_meanArray = meanArray) ||
+			null == (_volatilityArray = volatilityArray))
 		{
-			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
 		}
 
-		int labelCount = _labelList.size();
+		int variateCount = correlationMatrix.length;
+		double[][] covarianceMatrix = new double[variateCount][variateCount];
 
-		if (0 == labelCount || labelCount != _matrix.length)
+		if (variateCount != _meanArray.length ||
+			variateCount != _volatilityArray.length)
 		{
-			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
 		}
 
-		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
+		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI)
 		{
-			_labelIndexMap.put (
-				_labelList.get (labelIndex),
-				labelIndex
-			);
-
-			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_matrix[labelIndex]))
+			if (!org.drip.quant.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||
+				!org.drip.quant.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
+				0. > _volatilityArray[variateIndexI])
 			{
-				throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
+				throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+			}
+
+			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ)
+			{
+				covarianceMatrix[variateIndexI][variateIndexJ] =
+					correlationMatrix[variateIndexI][variateIndexJ] * _volatilityArray[variateIndexI] *
+					_volatilityArray[variateIndexJ];
 			}
 		}
+
+		_covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
 	}
 
 	/**
-	 * Retrieve the Cross-Label Correlation Matrix
+	 * Retrieve the Array of Variate Means
 	 * 
-	 * @return The Cross-Label Correlation Matrix
+	 * @return The Array of Variate Means
 	 */
 
-	public double[][] matrix()
+	public double[] meanArray()
+	{
+		return _meanArray;
+	}
+
+	/**
+	 * Retrieve the Array of Variate Volatilities
+	 * 
+	 * @return The Array of Variate Volatilities
+	 */
+
+	public double[] volatilityArray()
+	{
+		return _volatilityArray;
+	}
+
+	/**
+	 * Retrieve the Correlation Matrix
+	 * 
+	 * @return The Correlation Matrix
+	 */
+
+	public double[][] correlationMatrix()
 	{
 		return _matrix;
 	}
 
 	/**
-	 * Retrieve the Label List
+	 * Retrieve the Covariance Matrix
 	 * 
-	 * @return The Label List
+	 * @return The Covariance Matrix
 	 */
 
-	public java.util.List<java.lang.String> labelList()
+	public double[][] covarianceMatrix()
 	{
-		return _labelList;
+		return _covariance.covarianceMatrix();
 	}
 
 	/**
-	 * Retrieve the Correlation Entry for the Pair of Labels
+	 * Retrieve the Precision Matrix
 	 * 
-	 * @param label1 Label #1
-	 * @param label2 Label #2
-	 * 
-	 * @return The Correlation Entry
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Precision Matrix
 	 */
 
-	public double entry (
-		final java.lang.String label1,
-		final java.lang.String label2)
-		throws java.lang.Exception
+	public double[][] precisionMatrix()
 	{
-		if (null == label1 || !_labelList.contains (label1) ||
-			null == label2 || !_labelList.contains (label2))
-		{
-			throw new java.lang.Exception ("LabelCorrelation::entry => Invalid Inputs");
-		}
-
-		return _matrix[_labelIndexMap.get (label1)][_labelIndexMap.get (label2)];
-	}
-
-	/**
-	 * Generate the InterestRateTenorCorrelation Instance that corresponds to the Tenor sub-space
-	 * 
-	 * @param subTenorList The sub-Tenor List
-	 * 
-	 * @return The InterestRateTenorCorrelation Instance
-	 */
-
-	public LabelCorrelation subTenor (
-		final java.util.List<java.lang.String> subTenorList)
-	{
-		if (null == subTenorList)
-		{
-			return null;
-		}
-
-		int subTenorSize = subTenorList.size();
-
-		if (0 == subTenorSize)
-		{
-			return null;
-		}
-
-		double[][] subTenorMatrix = new double[subTenorSize][subTenorSize];
-
-		for (int subTenorOuterIndex = 0; subTenorOuterIndex < subTenorSize; ++subTenorOuterIndex)
-		{
-			for (int subTenorInnerIndex = 0; subTenorInnerIndex < subTenorSize; ++subTenorInnerIndex)
-			{
-				try
-				{
-					subTenorMatrix[subTenorOuterIndex][subTenorInnerIndex] = entry (
-						subTenorList.get (subTenorOuterIndex),
-						subTenorList.get (subTenorInnerIndex)
-					);
-				}
-				catch (java.lang.Exception e)
-				{
-					e.printStackTrace();
-
-					return null;
-				}
-			}
-		}
-
-		try
-		{
-			return new LabelCorrelation (
-				subTenorList,
-				subTenorMatrix
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _covariance.precisionMatrix();
 	}
 }

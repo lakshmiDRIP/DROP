@@ -11,8 +11,8 @@ import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
-import org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting;
-import org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzer;
+import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
+import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

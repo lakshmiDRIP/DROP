@@ -1,5 +1,5 @@
 
-package org.drip.validation.riskfactor;
+package org.drip.validation.riskfactorsingle;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,7 @@ package org.drip.validation.riskfactor;
  */
 
 /**
- * <i>HypothesisOutcomeSuiteAggregate</i> holds the Map of Hypothesis and its corresponding Gap Test Outcome
- * Aggregate.
+ * <i>EventAggregationWeightFunction</i> exposes the Aggregation Weight for the given Event.
  *
  *  <br><br>
  *  <ul>
@@ -96,112 +95,46 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle">Single Risk Factor Aggregate Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HypothesisOutcomeSuiteAggregate
+public abstract class EventAggregationWeightFunction
 {
-	private java.util.TreeMap<java.lang.Double, java.lang.String> _distanceHypothesisMap = new
-		java.util.TreeMap<java.lang.Double, java.lang.String>();
-
-	private java.util.Map<java.lang.String, org.drip.validation.riskfactor.GapTestOutcomeAggregate>
-		_hypothesisOutcomeAggregate = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.riskfactor.GapTestOutcomeAggregate>();
 
 	/**
-	 * Empty HypothesisOutcomeSuiteAggregate Constructor
+	 * Construct the Anfuso, Karyampas, and Nawroth (2017) Version of Event Aggregation Weight Function
+	 * 
+	 * @return The Anfuso, Karyampas, and Nawroth (2017) Version of Event Aggregation Weight Function
 	 */
 
-	public HypothesisOutcomeSuiteAggregate()
+	public static final EventAggregationWeightFunction AnfusoKaryampasNawroth()
 	{
-	}
-
-	/**
-	 * Retrieve the Hypothesis Event Gap Test Outcome Aggregate
-	 * 
-	 * @return The Hypothesis Event Gap Test Outcome Aggregate
-	 */
-
-	public java.util.Map<java.lang.String, org.drip.validation.riskfactor.GapTestOutcomeAggregate>
-		hypothesisOutcomeAggregate()
-	{
-		return _hypothesisOutcomeAggregate;
-	}
-
-	/**
-	 * Retrieve the Aggregate Distance - Hypothesis ID Map
-	 * 
-	 * @return The Aggregate Distance - Hypothesis ID Map
-	 */
-
-	public java.util.TreeMap<java.lang.Double, java.lang.String> distanceHypothesisMap()
-	{
-		return _distanceHypothesisMap;
-	}
-
-	/**
-	 * Add a Hypothesis ID and Gap Test Outcome Aggregate
-	 * 
-	 * @param hypothesisID The Hypothesis ID
-	 * @param gapTestOutcomeAggregate The Gap Test Outcome Aggregate
-	 * 
-	 * @return TRUE - The Gap Test Outcome Aggregate successfully added
-	 */
-
-	public boolean add (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.riskfactor.GapTestOutcomeAggregate gapTestOutcomeAggregate)
-	{
-		if (null == hypothesisID || hypothesisID.isEmpty() ||
-			null == gapTestOutcomeAggregate)
+		return new EventAggregationWeightFunction()
 		{
-			return false;
-		}
-
-		_hypothesisOutcomeAggregate.put (
-			hypothesisID,
-			gapTestOutcomeAggregate
-		);
-
-		_distanceHypothesisMap.put (
-			gapTestOutcomeAggregate.distance(),
-			hypothesisID
-		);
-
-		return true;
+			public double loading (
+				final java.lang.String eventID)
+				throws java.lang.Exception
+			{
+				return 1. / org.drip.analytics.support.Helper.TenorToYearFraction (eventID);
+			}
+		};
 	}
 
 	/**
-	 * Retrieve the Leading/Best Fit Hypothesis and its Test Outcome Aggregate
+	 * Generate the Loadings Weight corresponding to the Event ID
 	 * 
-	 * @return The Leading/Best Fit Hypothesis and its Test Outcome Aggregate
+	 * @param eventID The Event ID
+	 * 
+	 * @return The Loadings Weight corresponding to the Event ID
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public org.drip.validation.riskfactor.HypothesisOutcomeAggregate leadingHypothesis()
-	{
-		if (0 == _distanceHypothesisMap.size())
-		{
-			return null;
-		}
-
-		java.lang.String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();
-
-		try
-		{
-			return new org.drip.validation.riskfactor.HypothesisOutcomeAggregate (
-				leadingHypothesisID,
-				_hypothesisOutcomeAggregate.get (leadingHypothesisID)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public abstract double loading (
+		final java.lang.String eventID)
+		throws java.lang.Exception;
 }

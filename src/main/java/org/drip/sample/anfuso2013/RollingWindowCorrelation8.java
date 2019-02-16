@@ -1,5 +1,14 @@
 
-package org.drip.validation.riskfactor;
+package org.drip.sample.anfuso2013;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.statistics.MultivariateDiscrete;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +73,8 @@ package org.drip.validation.riskfactor;
  */
 
 /**
- * <i>HypothesisSuiteAggregate</i> holds Indexed Hypothesis Ensembles across One/More Event Points.
+ * <i>RollingWindowCorrelation8</i> demonstrates computing the Correlation on a Rolling Window Basis between
+ * Two Correlated Series as illustrated in Table 8 of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>
@@ -92,127 +102,98 @@ package org.drip.validation.riskfactor;
  *
  *  <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md">Model Validation Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013">Anfuso, Karyampas, and Nawroth (2013) Replications</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HypothesisSuiteAggregate
+public class RollingWindowCorrelation8
 {
-	private java.util.Map<java.lang.String, java.util.Map<java.lang.String,
-		org.drip.validation.evidence.Ensemble>> _hypothesisEventMap = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.util.Map<java.lang.String,
-				org.drip.validation.evidence.Ensemble>>();
 
-	/**
-	 * Empty HypothesisSuiteAggregate Constructor
-	 */
-
-	public HypothesisSuiteAggregate()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve the Hypothesis Event Map
-	 * 
-	 * @return The Hypothesis Event Map
-	 */
-
-	public
-		java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble>>
-			hypothesisEventMap()
-	{
-		return _hypothesisEventMap;
-	}
-
-	/**
-	 * Add the Specified Hypothesis with its ID and the Event
-	 * 
-	 * @param hypothesisID The Hypothesis ID
-	 * @param eventID The Event ID
-	 * @param hypothesis The Hypothesis
-	 * 
-	 * @return TRUE - The Hypothesis Successfully Added
-	 */
-
-	public boolean add (
-		final java.lang.String hypothesisID,
-		final java.lang.String eventID,
-		final org.drip.validation.evidence.Ensemble hypothesis)
-	{
-		if (null == hypothesisID || hypothesisID.isEmpty() ||
-			null == eventID || eventID.isEmpty() ||
-			null == hypothesis)
+		int pathCount = 1;
+		int vertexCount = 390;
+		int rollingWindow = 26;
+		double[][] correlation = 
 		{
-			return false;
+			{1.000, 0.161},	// SNP500
+			{0.161, 1.000},	// CHFUSD
+		};
+
+		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+			new RandomNumberGenerator(),
+			correlation,
+			vertexCount,
+			pathCount,
+			false,
+			null
+		);
+
+		double[][] correlatedSequence =
+			correlatedPathVertexDimension.straightMultiPathVertexRd()[0].flatform();
+
+		List<double[]> windowSequence = new ArrayList<double[]>();
+
+		for (int rollingIndex = 0; rollingIndex < rollingWindow; ++rollingIndex)
+		{
+			windowSequence.add (correlatedSequence[rollingIndex]);
 		}
 
-		if (_hypothesisEventMap.containsKey (hypothesisID))
+		double[][] rollingWindowSequence = new double[rollingWindow][2];
+
+		System.out.println ("\t|---------------------------------------------||");
+
+		System.out.println ("\t|   Time Series Rolling Window Correlation    ||");
+
+		System.out.println ("\t|---------------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                                  ||");
+
+		System.out.println ("\t|            - SNP500                         ||");
+
+		System.out.println ("\t|            - CHFUSD                         ||");
+
+		System.out.println ("\t|            - SNP500 vs. CHFUSD Correlation  ||");
+
+		System.out.println ("\t|            - CHFUSD vs. SNP500 Correlation  ||");
+
+		System.out.println ("\t|---------------------------------------------||");
+
+		for (int index = rollingWindow; index < vertexCount; ++index)
 		{
-			_hypothesisEventMap.get (hypothesisID).put (
-				eventID,
-				hypothesis
+			windowSequence.toArray (rollingWindowSequence);
+
+			MultivariateDiscrete multivariateDiscrete = new MultivariateDiscrete (rollingWindowSequence);
+
+			double[][] rollingWindowCorrelation = multivariateDiscrete.correlation();
+
+			System.out.println ("\t| " +
+				FormatUtil.FormatDouble (correlatedSequence[index][0], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (correlatedSequence[index][1], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (rollingWindowCorrelation[0][1], 2, 1, 100.) + "% | " +
+				FormatUtil.FormatDouble (rollingWindowCorrelation[1][0], 2, 1, 100.) + "% ||"
 			);
+
+			if (index < vertexCount - 1)
+			{
+				windowSequence.remove (0);
+
+				windowSequence.add (correlatedSequence[index + 1]);
+			}
 		}
-		else
-		{
-			java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventMap = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.validation.evidence.Ensemble>();
 
-			eventMap.put (
-				eventID,
-				hypothesis
-			);
+		System.out.println ("\t|---------------------------------------------||");
 
-			_hypothesisEventMap.put (
-				hypothesisID,
-				eventMap
-			);
-		}
-
-		return true;
-	}
-
-	/**
-	 * Indicate if the specified Hypothesis is Available
-	 * 
-	 * @param hypothesisID The Hypothesis ID
-	 * @param eventID The Event ID
-	 * 
-	 * @return TRUE - The specified Hypothesis is Available
-	 */
-
-	public boolean containsHypothesis (
-		final java.lang.String hypothesisID,
-		final java.lang.String eventID)
-	{
-		return null != hypothesisID && !hypothesisID.isEmpty() &&
-			null != eventID && !eventID.isEmpty() &&
-			_hypothesisEventMap.containsKey (hypothesisID) &&
-			_hypothesisEventMap.get (hypothesisID).containsKey (eventID);
-	}
-
-	/**
-	 * Retrieve the Specified Hypothesis
-	 * 
-	 * @param hypothesisID The Hypothesis ID
-	 * @param eventID The Event ID
-	 * 
-	 * @return The Specified Hypothesis
-	 */
-
-	public org.drip.validation.evidence.Ensemble hypothesis (
-		final java.lang.String hypothesisID,
-		final java.lang.String eventID)
-	{
-		return containsHypothesis (
-			hypothesisID,
-			eventID
-		) ? _hypothesisEventMap.get (hypothesisID).get (eventID) : null;
+		EnvManager.TerminateEnv();
 	}
 }

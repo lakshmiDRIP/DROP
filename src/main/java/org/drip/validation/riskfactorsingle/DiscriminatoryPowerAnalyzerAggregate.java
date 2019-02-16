@@ -1,5 +1,5 @@
 
-package org.drip.validation.riskfactor;
+package org.drip.validation.riskfactorsingle;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -96,7 +96,7 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle">Single Risk Factor Aggregate Tests</a></li>
  *  </ul>
  * <br><br>
  *
@@ -105,9 +105,9 @@ package org.drip.validation.riskfactor;
 
 public class DiscriminatoryPowerAnalyzerAggregate
 {
-	private org.drip.validation.riskfactor.EventAggregationWeightFunction _eventAggregationWeightFunction =
+	private org.drip.validation.riskfactorsingle.EventAggregationWeightFunction _eventAggregationWeightFunction =
 		null;
-	private org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+	private org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 		_discriminatoryPowerAnalyzerSetting = null;
 
 	private java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
@@ -127,9 +127,9 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	public DiscriminatoryPowerAnalyzerAggregate (
 		final java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
 			eventSamplePITMap,
-		final org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 			discriminatoryPowerAnalyzerSetting,
-		final org.drip.validation.riskfactor.EventAggregationWeightFunction eventAggregationWeightFunction)
+		final org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction)
 		throws java.lang.Exception
 	{
 		if (null == (_eventSamplePITMap = eventSamplePITMap) || 0 == _eventSamplePITMap.size() ||
@@ -147,7 +147,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Discriminatory Power Analyzer Setting
 	 */
 
-	public org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+	public org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 		discriminatoryPowerAnalyzerSetting()
 	{
 		return _discriminatoryPowerAnalyzerSetting;
@@ -159,7 +159,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Event Aggregation Weight Function
 	 */
 
-	public org.drip.validation.riskfactor.EventAggregationWeightFunction eventAggregationWeightFunction()
+	public org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction()
 	{
 		return _eventAggregationWeightFunction;
 	}
@@ -176,7 +176,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 		return _eventSamplePITMap;
 	}
 
-	private org.drip.validation.riskfactor.GapTestOutcomeAggregate eventOutcomeAggregate (
+	private org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate eventOutcomeAggregate (
 		final java.lang.String hypothesisID,
 		final java.util.Map<java.lang.String, org.drip.validation.evidence.Ensemble> eventEnsembleMap)
 	{
@@ -215,12 +215,12 @@ public class DiscriminatoryPowerAnalyzerAggregate
 					_eventAggregationWeightFunction.loading (eventID);
 
 				eventOutcomeMap.put (
-					hypothesisID,
+					eventID,
 					gapTestOutcome
 				);
 			}
 
-			return new org.drip.validation.riskfactor.GapTestOutcomeAggregate (
+			return new org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate (
 				eventOutcomeMap,
 				distanceAggregate
 			);
@@ -241,8 +241,8 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Suite of Gap Test Outcomes
 	 */
 
-	public org.drip.validation.riskfactor.HypothesisOutcomeSuiteAggregate hypothesisGapTest (
-		final org.drip.validation.riskfactor.HypothesisSuiteAggregate hypothesisSuiteAggregate)
+	public org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisGapTest (
+		final org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate hypothesisSuiteAggregate)
 	{
 		if (null == hypothesisSuiteAggregate)
 		{
@@ -258,8 +258,8 @@ public class DiscriminatoryPowerAnalyzerAggregate
 			return null;
 		}
 
-		org.drip.validation.riskfactor.HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate = new
-			org.drip.validation.riskfactor.HypothesisOutcomeSuiteAggregate();
+		org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate = new
+			org.drip.validation.riskfactorsingle.HypothesisOutcomeSuiteAggregate();
 
 		for (java.util.Map.Entry<java.lang.String, java.util.Map<java.lang.String,
 			org.drip.validation.evidence.Ensemble>> hypothesisEvent : hypothesisEventMap.entrySet())

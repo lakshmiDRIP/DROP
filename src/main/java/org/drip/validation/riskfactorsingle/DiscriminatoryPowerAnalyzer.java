@@ -1,5 +1,5 @@
 
-package org.drip.validation.riskfactor;
+package org.drip.validation.riskfactorsingle;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -96,7 +96,7 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle">Single Risk Factor Aggregate Tests</a></li>
  *  </ul>
  * <br><br>
  *
@@ -107,7 +107,7 @@ public class DiscriminatoryPowerAnalyzer
 {
 	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =
 		null;
-	private org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+	private org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 		_discriminatoryPowerAnalyzerSetting = null;
 
 	/**
@@ -121,7 +121,7 @@ public class DiscriminatoryPowerAnalyzer
 
 	public static final DiscriminatoryPowerAnalyzer FromSample (
 		final org.drip.validation.evidence.Sample sample,
-		final org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 			discriminatoryPowerAnalyzerSetting)
 	{
 		try
@@ -150,7 +150,7 @@ public class DiscriminatoryPowerAnalyzer
 
 	public DiscriminatoryPowerAnalyzer (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
-		final org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 			discriminatoryPowerAnalyzerSetting)
 		throws java.lang.Exception
 	{
@@ -178,7 +178,7 @@ public class DiscriminatoryPowerAnalyzer
 	 * @return The Discriminatory Power Analyzer Setting
 	 */
 
-	public org.drip.validation.riskfactor.DiscriminatoryPowerAnalyzerSetting
+	public org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
 		discriminatoryPowerAnalyzerSetting()
 	{
 		return _discriminatoryPowerAnalyzerSetting;

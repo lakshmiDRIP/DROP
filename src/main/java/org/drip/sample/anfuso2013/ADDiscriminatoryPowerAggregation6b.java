@@ -86,8 +86,8 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
  */
 
 /**
- * <i>CVMDiscriminatoryPowerAggregation6a</i> demonstrates Multi-Horizon Discriminatory Power Aggregation
- * illustrated in Table 6a of Anfuso, Karyampas, and Nawroth (2013).
+ * <i>ADDiscriminatoryPowerAggregation6a</i> demonstrates Multi-Horizon Discriminatory Power Aggregation
+ * illustrated in Table 6b of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>
@@ -125,7 +125,7 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CVMDiscriminatoryPowerAggregation6a
+public class ADDiscriminatoryPowerAggregation6b
 {
 
 	private static final double UnivariateRandom (
@@ -315,7 +315,7 @@ public class CVMDiscriminatoryPowerAggregation6a
 		DiscriminatoryPowerAnalyzerSetting discriminatoryPowerAnalyzerSetting = new
 			DiscriminatoryPowerAnalyzerSetting (
 				GapLossFunction.AnfusoKaryampasNawroth(),
-				GapLossWeightFunction.CramersVonMises()
+				GapLossWeightFunction.AndersonDarling()
 			);
 
 		EventAggregationWeightFunction eventAggregationWeightFunction =

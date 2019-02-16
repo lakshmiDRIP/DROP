@@ -1,5 +1,5 @@
 
-package org.drip.validation.riskfactor;
+package org.drip.validation.riskfactorjoint;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.validation.riskfactor;
  */
 
 /**
- * <i>HypothesisOutcomeAggregate</i> holds the Hypothesis and its corresponding Gap Test Outcome Aggregate.
+ * <i>SampleCohort</i> exposes the Multiple Risk Factor Sample Realizations and its Reduction to a Synthetic
+ * Single Risk Factor.
  *
  *  <br><br>
  *  <ul>
@@ -95,58 +96,42 @@ package org.drip.validation.riskfactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactor">Risk Factor Aggregate Distance Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorjoint">Joint Risk Factor Aggregate Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HypothesisOutcomeAggregate
+public interface SampleCohort
 {
-	private java.lang.String _hypothesisID = null;
-	private org.drip.validation.riskfactor.GapTestOutcomeAggregate _gapTestOutcomeAggregate = null;
 
 	/**
-	 * HypothesisOutcomeAggregate Constructor
+	 * Retrieve the List of Latent State Labels
 	 * 
-	 * @param hypothesisID Hypothesis ID
-	 * @param gapTestOutcomeAggregate Gap Test Outcome Aggregate
-	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @return The List of Latent State Labels
 	 */
 
-	public HypothesisOutcomeAggregate (
-		final java.lang.String hypothesisID,
-		final org.drip.validation.riskfactor.GapTestOutcomeAggregate gapTestOutcomeAggregate)
-		throws java.lang.Exception
-	{
-		if (null == (_hypothesisID = hypothesisID) || _hypothesisID.isEmpty() ||
-			null == (_gapTestOutcomeAggregate = gapTestOutcomeAggregate))
-		{
-			throw new java.lang.Exception ("HypothesisOutcomeAggregate Constructor => Invalid Inputs");
-		}
-	}
+	public abstract java.util.List<java.lang.String> latentStateLabelList();
 
 	/**
-	 * Retrieve the Hypothesis ID
+	 * Retrieve the Vertex R<sup>d</sup> Multi-Factor Realizations
 	 * 
-	 * @return The Hypothesis ID
+	 * @return The Vertex R<sup>d</sup> Multi-Factor Realizations
 	 */
 
-	public java.lang.String hypothesisID()
-	{
-		return _hypothesisID;
-	}
+	public abstract double[][] vertedRd();
 
 	/**
-	 * Retrieve the Gap Test Outcome Aggregate
+	 * Reduce the Joint Realizations for the Pair of State Labels to a Single Risk Factor Sample
 	 * 
-	 * @return The Gap Test Outcome Aggregate
+	 * @param label1 Latent State Label 1
+	 * @param label2 Latent State Label 2
+	 * 
+	 * @return The Single Risk Factor Sample
 	 */
 
-	public org.drip.validation.riskfactor.GapTestOutcomeAggregate gapTestOutcomeAggregate()
-	{
-		return _gapTestOutcomeAggregate;
-	}
+	public abstract org.drip.validation.evidence.Sample reduce (
+		final java.lang.String label1,
+		final java.lang.String label2);
 }
