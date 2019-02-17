@@ -1,5 +1,5 @@
 
-package org.drip.sample.anfuso2013;
+package org.drip.sample.anfuso2017;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
@@ -76,8 +76,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  */
 
 /**
- * <i>ADDiscriminatoryPowerAnalysis4a</i> demonstrates the Discriminatory Power Analysis illustrated in Table
- * 4a of Anfuso, Karyampas, and Nawroth (2013).
+ * <i>CVMDiscriminatoryPowerAnalysis3b</i> demonstrates the Discriminatory Power Analysis illustrated in
+ * Table 3b of Anfuso, Karyampas, and Nawroth (2013).
  *
  *  <br><br>
  *  <ul>
@@ -115,7 +115,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ADDiscriminatoryPowerAnalysis4a
+public class CVMDiscriminatoryPowerAnalysis3b
 {
 
 	private static final double UnivariateRandom (
@@ -213,7 +213,7 @@ public class ADDiscriminatoryPowerAnalysis4a
 
 		int drawCount = 3780;
 		int sampleCount = 100;
-		double horizon = 1. / 12;
+		double horizon = 3. / 12;
 		double sampleAnnualMean = 0.;
 		double sampleAnnualVolatility = 0.1;
 		double[] hypothesisAnnualMeanArray = {

@@ -64,8 +64,7 @@ package org.drip.measure.stochastic;
  */
 
 /**
- * <i>LabelCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as
- * well as their Means. The References are:
+ * <i>LabelBase</i> is the Base Class that holds the Labeled Latent State Vertex Content. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,166 +103,54 @@ package org.drip.measure.stochastic;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelation
+public class LabelBase
 {
-	private double[] _meanArray = null;
-	private double[] _volatilityArray = null;
-	private org.drip.measure.gaussian.Covariance _covariance = null;
+	protected java.util.List<java.lang.String> _labelList = null;
+
+	protected java.util.Map<java.lang.String, java.lang.Integer> _labelIndexMap = new
+		java.util.HashMap<java.lang.String, java.lang.Integer>();
 
 	/**
-	 * LabelCovariance Constructor
+	 * LabelBase Constructor
 	 * 
 	 * @param labelList The List of Labels
-	 * @param meanArray Array of Variate Means
-	 * @param volatilityArray Array of Variate Volatilities
-	 * @param correlationMatrix The Correlation Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelCovariance (
-		final java.util.List<java.lang.String> labelList,
-		final double[] meanArray,
-		final double[] volatilityArray,
-		final double[][] correlationMatrix)
+	public LabelBase (
+		final java.util.List<java.lang.String> labelList)
 		throws java.lang.Exception
 	{
-		super (
-			labelList,
-			correlationMatrix
-		);
-
-		if (null == (_meanArray = meanArray) ||
-			null == (_volatilityArray = volatilityArray))
+		if (null == (_labelList = labelList))
 		{
-			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelBase Constructor => Invalid Inputs");
 		}
 
-		int variateCount = correlationMatrix.length;
-		double[][] covarianceMatrix = new double[variateCount][variateCount];
+		int labelCount = _labelList.size();
 
-		if (variateCount != _meanArray.length ||
-			variateCount != _volatilityArray.length)
+		if (0 == labelCount)
 		{
-			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelBase Constructor => Invalid Inputs");
 		}
 
-		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI)
+		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
-				0. > _volatilityArray[variateIndexI])
-			{
-				throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
-			}
-
-			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ)
-			{
-				covarianceMatrix[variateIndexI][variateIndexJ] =
-					correlationMatrix[variateIndexI][variateIndexJ] * _volatilityArray[variateIndexI] *
-					_volatilityArray[variateIndexJ];
-			}
+			_labelIndexMap.put (
+				_labelList.get (labelIndex),
+				labelIndex
+			);
 		}
-
-		_covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
 	}
 
 	/**
-	 * Retrieve the Array of Variate Means
+	 * Retrieve the Label List
 	 * 
-	 * @return The Array of Variate Means
+	 * @return The Label List
 	 */
 
-	public double[] meanArray()
+	public java.util.List<java.lang.String> labelList()
 	{
-		return _meanArray;
-	}
-
-	/**
-	 * Retrieve the Array of Variate Volatilities
-	 * 
-	 * @return The Array of Variate Volatilities
-	 */
-
-	public double[] volatilityArray()
-	{
-		return _volatilityArray;
-	}
-
-	/**
-	 * Retrieve the Correlation Matrix
-	 * 
-	 * @return The Correlation Matrix
-	 */
-
-	public double[][] correlationMatrix()
-	{
-		return _matrix;
-	}
-
-	/**
-	 * Retrieve the Covariance Matrix
-	 * 
-	 * @return The Covariance Matrix
-	 */
-
-	public double[][] covarianceMatrix()
-	{
-		return _covariance.covarianceMatrix();
-	}
-
-	/**
-	 * Retrieve the Precision Matrix
-	 * 
-	 * @return The Precision Matrix
-	 */
-
-	public double[][] precisionMatrix()
-	{
-		return _covariance.precisionMatrix();
-	}
-
-	/**
-	 * Retrieve the Mean of the Latent State
-	 * 
-	 * @param label Latent State Label
-	 * 
-	 * @return Mean of the Latent State
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double mean (
-		final java.lang.String label)
-		throws java.lang.Exception
-	{
-		if (null == label || !_labelList.contains (label))
-		{
-			throw new java.lang.Exception ("LabelCovariance::mean => Invalid Inputs");
-		}
-
-		return _meanArray[_labelIndexMap.get (label)];
-	}
-
-	/**
-	 * Retrieve the Volatility of the Latent State
-	 * 
-	 * @param label Latent State Label
-	 * 
-	 * @return Volatility of the Latent State
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double volatility (
-		final java.lang.String label)
-		throws java.lang.Exception
-	{
-		if (null == label || !_labelList.contains (label))
-		{
-			throw new java.lang.Exception ("LabelCovariance::volatility => Invalid Inputs");
-		}
-
-		return _volatilityArray[_labelIndexMap.get (label)];
+		return _labelList;
 	}
 }

@@ -1,17 +1,18 @@
 
-package org.drip.sample.anfuso2013;
+package org.drip.sample.anfuso2017;
 
-import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.quant.common.FormatUtil;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.measure.crng.RandomNumberGenerator;
+import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.stochastic.LabelCovariance;
+import org.drip.measure.stochastic.LabelRdVertex;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
-import org.drip.validation.distance.GapLossWeightFunction;
-import org.drip.validation.distance.GapTestOutcome;
-import org.drip.validation.evidence.Ensemble;
+import org.drip.state.identifier.EntityEquityLabel;
+import org.drip.state.identifier.FXLabel;
 import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
-import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
+import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +77,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  */
 
 /**
- * <i>CVMDiscriminatoryPowerAnalysis3c</i> demonstrates the Discriminatory Power Analysis illustrated in
- * Table 3c of Anfuso, Karyampas, and Nawroth (2013).
+ * <i>ADCorrelationBacktesting7a</i> demonstrates the Horizon Multi-Factor Gap PIT Quantiles set out in Table
+ * 7a of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>
@@ -115,94 +116,57 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CVMDiscriminatoryPowerAnalysis3c
-{
+public class ADCorrelationBacktesting7a {
 
-	private static final double UnivariateRandom (
-		final double mean,
-		final double sigma)
+	private static final Sample CorrelatedSample (
+		final List<String> labelList,
+		final double[] annualMeanArray,
+		final double[] annualVolatilityArray,
+		final double[][] correlationMatrix,
+		final int vertexCount,
+		final double horizon)
 		throws Exception
 	{
-		return new R1UnivariateNormal (
-			mean,
-			sigma
-		).random();
-	}
+		double horizonSQRT = Math.sqrt (horizon);
 
-	private static final Sample GenerateSample (
-		final double mean,
-		final double sigma,
-		final int drawCount)
-		throws Exception
-	{
-		double[] univariateRandomArray = new double[drawCount];
-
-		for (int drawIndex = 0; drawIndex < drawCount; ++drawIndex)
-		{
-			univariateRandomArray[drawIndex] = UnivariateRandom (
-				mean,
-				sigma
-			);
-		}
-
-		return new Sample (univariateRandomArray);
-	}
-
-	private static final Sample[] GenerateSampleArray (
-		final double mean,
-		final double sigma,
-		final int drawCount,
-		final int sampleCount)
-		throws Exception
-	{
-		Sample[] sampleArray = new Sample[sampleCount];
-
-		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
-		{
-			sampleArray[sampleIndex] = GenerateSample (
-				mean,
-				sigma,
-				drawCount
-			);
-		}
-
-		return sampleArray;
-	}
-
-	private static final Ensemble GenerateEnsemble (
-		final double mean,
-		final double sigma,
-		final int drawCount,
-		final int sampleCount)
-		throws Exception
-	{
-		return new Ensemble (
-			GenerateSampleArray (
-				mean,
-				sigma,
-				drawCount,
-				sampleCount
-			),
-			new TestStatisticEvaluator[]
-			{
-				new TestStatisticEvaluator()
-				{
-					public double evaluate (
-						final double[] drawArray)
-						throws Exception
-					{
-						return 1.;
-					}
-				}
-			}
+		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+			new RandomNumberGenerator(),
+			correlationMatrix,
+			vertexCount,
+			1,
+			false,
+			null
 		);
-	}
 
-	private static final double DistanceTest (
-		final GapTestOutcome gapTestOutcome)
-		throws Exception
-	{
-		return gapTestOutcome.distance();
+		double[][] realization =
+			correlatedPathVertexDimension.straightMultiPathVertexRd()[0].flatform();
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			for (int entityIndex = 0; entityIndex < correlationMatrix.length; ++entityIndex)
+			{
+				realization[vertexIndex][entityIndex] =
+					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT +
+					annualMeanArray[entityIndex] * horizon;
+			}
+		}
+
+		return new NormalSampleCohort (
+			new LabelRdVertex (
+				labelList,
+				realization
+			),
+			new LabelCovariance (
+				labelList,
+				annualMeanArray,
+				annualVolatilityArray,
+				correlationMatrix
+			),
+			horizon
+		).reduce (
+			labelList.get (0),
+			labelList.get (1)
+		);
 	}
 
 	public static final void main (
@@ -211,81 +175,48 @@ public class CVMDiscriminatoryPowerAnalysis3c
 	{
 		EnvManager.InitEnv ("");
 
-		int drawCount = 3780;
-		int sampleCount = 100;
-		double horizon = 3. / 12;
-		double sampleAnnualMean = 0.;
-		double sampleAnnualVolatility = 0.1;
-		double[] hypothesisAnnualMeanArray = {
-			-0.050,
-			-0.025,
-			 0.000,
-			 0.025,
-			 0.050
+		int vertexCount = 390;
+		String currency = "USD";
+		double horizon = 1. / 12.;
+		String equityEntity = "SNP500";
+		String fxCurrencyPair = "CHF/USD";
+		double[][] correlation = 
+		{
+			{1.000, 0.500},	// SNP500
+			{0.500, 1.000},	// CHFUSD
 		};
-		double[] hypothesisAnnualVolatilityArray = {
-			0.050,
-			0.075,
-			0.100,
-			0.125,
-			0.150
+		double[] annualMeanArray =
+		{
+			0.06,
+			0.01
+		};
+		double[] annualVolatilityArray =
+		{
+			0.1,
+			0.1
 		};
 
-		double hypothesisHorizonSQRT = Math.sqrt (horizon);
+		List<String> labelList = new ArrayList<String>();
 
-		Sample sample = GenerateSample (
-			sampleAnnualMean,
-			sampleAnnualVolatility * hypothesisHorizonSQRT,
-			drawCount
+		labelList.add (
+			EntityEquityLabel.Standard (
+				equityEntity,
+				currency
+			).fullyQualifiedName()
 		);
 
-		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
-			sample,
-			new DiscriminatoryPowerAnalyzerSetting (
-				GapLossFunction.AnfusoKaryampasNawroth(),
-				GapLossWeightFunction.CramersVonMises()
+		labelList.add (FXLabel.Standard (fxCurrencyPair).fullyQualifiedName());
+
+		System.out.println (
+			CorrelatedSample (
+				labelList,
+				annualMeanArray,
+				annualVolatilityArray,
+				correlation,
+				vertexCount,
+				horizon
 			)
 		);
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t|     DISCRIMINANT GRID SCAN     ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t|    L -> R:                     ||");
-
-		System.out.println ("\t|        - Hypothesis Mean       ||");
-
-		System.out.println ("\t|        - Hypothesis Sigma      ||");
-
-		System.out.println ("\t|        - Distance Metric       ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)
-		{
-			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)
-			{
-				Ensemble hypothesis = GenerateEnsemble (
-					hypothesisAnnualMean * horizon,
-					hypothesisAnnualVolatility * hypothesisHorizonSQRT,
-					drawCount,
-					sampleCount
-				);
-
-				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
-
-				System.out.println (
-					"\t| " +
-					FormatUtil.FormatDouble (hypothesisAnnualMean, 1, 3, 1.) + " | " +
-					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 1, 3, 1.) + " => " +
-					FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + " ||"
-				);
-			}
-		}
-
-		System.out.println ("\t|------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

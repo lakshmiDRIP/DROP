@@ -120,7 +120,7 @@ public interface SampleCohort
 	 * @return The Vertex R<sup>d</sup> Multi-Factor Realizations
 	 */
 
-	public abstract double[][] vertedRd();
+	public abstract org.drip.measure.stochastic.LabelRdVertex vertexRd();
 
 	/**
 	 * Reduce the Joint Realizations for the Pair of State Labels to a Single Risk Factor Sample

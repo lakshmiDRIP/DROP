@@ -105,13 +105,9 @@ package org.drip.measure.stochastic;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelCorrelation
+public class LabelCorrelation extends org.drip.measure.stochastic.LabelBase
 {
 	protected double[][] _matrix = null;
-	protected java.util.List<java.lang.String> _labelList = null;
-
-	protected java.util.Map<java.lang.String, java.lang.Integer> _labelIndexMap = new
-		java.util.HashMap<java.lang.String, java.lang.Integer>();
 
 	/**
 	 * LabelCorrelation Constructor
@@ -127,13 +123,14 @@ public class LabelCorrelation
 		final double[][] matrix)
 		throws java.lang.Exception
 	{
-		if (null == (_labelList = labelList) ||
-			null == (_matrix = matrix))
+		super (labelList);
+
+		if (null == (_matrix = matrix))
 		{
 			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 		}
 
-		int labelCount = _labelList.size();
+		int labelCount = labelList.size();
 
 		if (0 == labelCount || labelCount != _matrix.length)
 		{
@@ -142,11 +139,6 @@ public class LabelCorrelation
 
 		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
 		{
-			_labelIndexMap.put (
-				_labelList.get (labelIndex),
-				labelIndex
-			);
-
 			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
 				!org.drip.quant.common.NumberUtil.IsValid (_matrix[labelIndex]))
 			{
@@ -164,17 +156,6 @@ public class LabelCorrelation
 	public double[][] matrix()
 	{
 		return _matrix;
-	}
-
-	/**
-	 * Retrieve the Label List
-	 * 
-	 * @return The Label List
-	 */
-
-	public java.util.List<java.lang.String> labelList()
-	{
-		return _labelList;
 	}
 
 	/**

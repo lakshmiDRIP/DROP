@@ -1,5 +1,5 @@
 
-package org.drip.sample.anfuso2013;
+package org.drip.sample.anfuso2017;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
@@ -77,7 +77,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  */
 
 /**
- * <i>WeightedGapDistribution2a</i> demonstrates the Weighted Gap Distribution illustrated in Table 2a of
+ * <i>WeightedGapDistribution2c</i> demonstrates the Weighted Gap Distribution illustrated in Table 2c of
  * Anfuso, Karyampas, and Nawroth (2013).
  *
  *  <br><br>
@@ -116,7 +116,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeightedGapDistribution2a
+public class WeightedGapDistribution2c
 {
 
 	private static final double UnivariateRandom (
@@ -257,7 +257,7 @@ public class WeightedGapDistribution2a
 		int sampleCount = 1000;
 		double annualMean = 0.;
 		int quantileCount = 20;
-		double horizon = 1. / 12;
+		double horizon = 12. / 12;
 		double annualVolatility = 0.1;
 
 		double horizonVolatility = annualVolatility * Math.sqrt (horizon);

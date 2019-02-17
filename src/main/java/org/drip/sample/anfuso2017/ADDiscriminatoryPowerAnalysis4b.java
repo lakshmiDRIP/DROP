@@ -1,5 +1,5 @@
 
-package org.drip.sample.anfuso2013;
+package org.drip.sample.anfuso2017;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
@@ -10,7 +10,6 @@ import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
 
@@ -77,8 +76,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  */
 
 /**
- * <i>WeightedGapDistribution2b</i> demonstrates the Weighted Gap Distribution illustrated in Table 2b of
- * Anfuso, Karyampas, and Nawroth (2013).
+ * <i>ADDiscriminatoryPowerAnalysis4b</i> demonstrates the Discriminatory Power Analysis illustrated in Table
+ * 4b of Anfuso, Karyampas, and Nawroth (2013).
  *
  *  <br><br>
  *  <ul>
@@ -116,7 +115,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeightedGapDistribution2b
+public class ADDiscriminatoryPowerAnalysis4b
 {
 
 	private static final double UnivariateRandom (
@@ -199,52 +198,11 @@ public class WeightedGapDistribution2b
 		);
 	}
 
-	private static final void DistanceTest (
-		final GapTestOutcome gapTestOutcome,
-		final int quantileCount)
+	private static final double DistanceTest (
+		final GapTestOutcome gapTestOutcome)
 		throws Exception
 	{
-		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (quantileCount);
-
-		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
-
-		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
-
-		double[] gapArray = histogram.testStatisticArray();
-
-		double distance = gapTestOutcome.distance();
-
-		System.out.println ("\t|------------------------------------------------------||");
-
-		System.out.println ("\t|    Normal Anfuso Karyampas Nawroth Distance Test     ||");
-
-		System.out.println ("\t|------------------------------------------------------||");
-
-		System.out.println ("\t|    L -> R:                                           ||");
-
-		System.out.println ("\t|        - Weighted Distance Metric                    ||");
-
-		System.out.println ("\t|        - Cumulative p-Value                          ||");
-
-		System.out.println ("\t|        - Incremental p-Value                         ||");
-
-		System.out.println ("\t|        - Ensemble Weighted Distance                  ||");
-
-		System.out.println ("\t|------------------------------------------------------||");
-
-		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
-		{
-			System.out.println (
-				"\t|" +
-				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t|------------------------------------------------------||");
+		return gapTestOutcome.distance();
 	}
 
 	public static final void main (
@@ -254,17 +212,30 @@ public class WeightedGapDistribution2b
 		EnvManager.InitEnv ("");
 
 		int drawCount = 3780;
-		int sampleCount = 1000;
-		double annualMean = 0.;
-		int quantileCount = 20;
+		int sampleCount = 100;
 		double horizon = 3. / 12;
-		double annualVolatility = 0.1;
+		double sampleAnnualMean = 0.;
+		double sampleAnnualVolatility = 0.1;
+		double[] hypothesisAnnualMeanArray = {
+			-0.050,
+			-0.025,
+			 0.000,
+			 0.025,
+			 0.050
+		};
+		double[] hypothesisAnnualVolatilityArray = {
+			0.050,
+			0.075,
+			0.100,
+			0.125,
+			0.150
+		};
 
-		double horizonVolatility = annualVolatility * Math.sqrt (horizon);
+		double hypothesisHorizonSQRT = Math.sqrt (horizon);
 
 		Sample sample = GenerateSample (
-			annualMean,
-			horizonVolatility,
+			sampleAnnualMean,
+			sampleAnnualVolatility * hypothesisHorizonSQRT,
 			drawCount
 		);
 
@@ -276,19 +247,45 @@ public class WeightedGapDistribution2b
 			)
 		);
 
-		Ensemble hypothesis = GenerateEnsemble (
-			annualMean,
-			horizonVolatility,
-			drawCount,
-			sampleCount
-		);
+		System.out.println ("\t|--------------------------------||");
 
-		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
+		System.out.println ("\t|     DISCRIMINANT GRID SCAN     ||");
 
-		DistanceTest (
-			gapTestOutcome,
-			quantileCount
-		);
+		System.out.println ("\t|--------------------------------||");
+
+		System.out.println ("\t|    L -> R:                     ||");
+
+		System.out.println ("\t|        - Hypothesis Mean       ||");
+
+		System.out.println ("\t|        - Hypothesis Sigma      ||");
+
+		System.out.println ("\t|        - Distance Metric       ||");
+
+		System.out.println ("\t|--------------------------------||");
+
+		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)
+		{
+			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)
+			{
+				Ensemble hypothesis = GenerateEnsemble (
+					hypothesisAnnualMean * horizon,
+					hypothesisAnnualVolatility * hypothesisHorizonSQRT,
+					drawCount,
+					sampleCount
+				);
+
+				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
+
+				System.out.println (
+					"\t| " +
+					FormatUtil.FormatDouble (hypothesisAnnualMean, 1, 3, 1.) + " | " +
+					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 1, 3, 1.) + " => " +
+					FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + " ||"
+				);
+			}
+		}
+
+		System.out.println ("\t|--------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
