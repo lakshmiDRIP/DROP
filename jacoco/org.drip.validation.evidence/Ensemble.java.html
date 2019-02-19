@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ensemble.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.evidence</a> &gt; <span class="el_source">Ensemble.java</span></div><h1>Ensemble.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.evidence;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;Ensemble&lt;/i&gt; contains the Ensemble Collection of Statistical Samples and their Test Statistic
+ * Evaluators.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  		Perspectives in Psychological Science 6 (3) 291-298
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence&quot;&gt;Sample and Ensemble Evidence Processors&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Ensemble implements org.drip.validation.evidence.NativePITGenerator
+{
+<span class="nc" id="L108">	private double[][] _evaluatedSampleTestStatistic = null;</span>
+<span class="nc" id="L109">	private org.drip.validation.evidence.Sample[] _sampleArray = null;</span>
+<span class="nc" id="L110">	private org.drip.validation.evidence.TestStatisticEvaluator[] _testStatisticEvaluatorArray =</span>
+		null;
+<span class="nc" id="L112">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform[] _probabilityIntegralTransformArray</span>
+		= null;
+
+	/**
+	 * Ensemble Constructor
+	 * 
+	 * @param sampleArray Array of the Statistical Hypothesis Samples
+	 * @param testStatisticEvaluatorArray Array of the Test Statistic Evaluators
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public Ensemble (
+		final org.drip.validation.evidence.Sample[] sampleArray,
+		final org.drip.validation.evidence.TestStatisticEvaluator[] testStatisticEvaluatorArray)
+		throws java.lang.Exception
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_sampleArray = sampleArray) ||</span>
+			null == (_testStatisticEvaluatorArray = testStatisticEvaluatorArray))
+		{
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;Ensemble Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L135">		int sampleCount = _sampleArray.length;</span>
+<span class="nc" id="L136">		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;</span>
+<span class="nc" id="L137">		_evaluatedSampleTestStatistic = new double[testStatisticEvaluatorCount][sampleCount];</span>
+<span class="nc" id="L138">		_probabilityIntegralTransformArray = new</span>
+			org.drip.validation.hypothesis.ProbabilityIntegralTransform[testStatisticEvaluatorCount];
+
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (0 == sampleCount || 0 == testStatisticEvaluatorCount)</span>
+		{
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;Ensemble Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+		{
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			if (null == _sampleArray[sampleIndex])</span>
+			{
+<span class="nc" id="L150">				throw new java.lang.Exception (&quot;Ensemble Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+
+<span class="nc" id="L154">		for (int testStatisticEvaluatorIndex = 0;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			testStatisticEvaluatorIndex &lt; testStatisticEvaluatorCount;</span>
+<span class="nc" id="L156">			++testStatisticEvaluatorIndex)</span>
+		{
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			if (null == _testStatisticEvaluatorArray[testStatisticEvaluatorIndex])</span>
+			{
+<span class="nc" id="L160">				throw new java.lang.Exception (&quot;Ensemble Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+
+<span class="nc" id="L163">			org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new</span>
+				org.drip.validation.evidence.TestStatisticAccumulator();
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+			{
+<span class="nc" id="L168">				if (!testStatisticAccumulator.addTestStatistic</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">					(_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex][sampleIndex] =</span>
+						_sampleArray[sampleIndex].applyTestStatistic
+<span class="nc" id="L171">							(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex])))</span>
+				{
+<span class="nc" id="L173">					throw new java.lang.Exception (&quot;Ensemble Constructor =&gt; Invalid Inputs&quot;);</span>
+				}
+			}
+
+<span class="nc" id="L177">			if (null == (_probabilityIntegralTransformArray[testStatisticEvaluatorIndex] =</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">				testStatisticAccumulator.probabilityIntegralTransform()))</span>
+			{
+<span class="nc" id="L180">				throw new java.lang.Exception (&quot;Ensemble Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="nc" id="L183">	}</span>
+
+	/**
+	 * Retrieve the Computed Ensemble Test Statistics
+	 * 
+	 * @return The Computed Ensemble Test Statistics
+	 */
+
+	public double[][] evaluatedSampleTestStatistic()
+	{
+<span class="nc" id="L193">		return _evaluatedSampleTestStatistic;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Statistical Hypothesis Samples
+	 * 
+	 * @return The Array of the Statistical Hypothesis Samples
+	 */
+
+	public org.drip.validation.evidence.Sample[] sampleArray()
+	{
+<span class="nc" id="L204">		return _sampleArray;</span>
+	}
+
+	/**
+	 * Retrieve the Array of the Test Statistic Evaluators
+	 * 
+	 * @return The Array of the Test Statistic Evaluators
+	 */
+
+	public org.drip.validation.evidence.TestStatisticEvaluator[] testStatisticEvaluatorArray()
+	{
+<span class="nc" id="L215">		return _testStatisticEvaluatorArray;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Probability Integral Transforms, one for each Test Statistic
+	 * 
+	 * @return The Array of Probability Integral Transforms
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
+	{
+<span class="nc" id="L226">		return _probabilityIntegralTransformArray;</span>
+	}
+
+	/**
+	 * Construct the Test Statistic Based Significance Test Hypothesis Array
+	 * 
+	 * @return The Test Statistic Based Significance Test Hypothesis Array
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[] significanceTest()
+	{
+<span class="nc" id="L237">		int probabilityIntegralTransformCount = _testStatisticEvaluatorArray.length;</span>
+		org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[]
+<span class="nc" id="L239">			probabilityIntegralTransformTestArray = new</span>
+				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[probabilityIntegralTransformCount];
+
+<span class="nc" id="L242">		for (int probabilityIntegralTransformIndex = 0;</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">			probabilityIntegralTransformIndex &lt; probabilityIntegralTransformCount;</span>
+<span class="nc" id="L244">			++probabilityIntegralTransformIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L248">				probabilityIntegralTransformTestArray[probabilityIntegralTransformIndex] = new</span>
+					org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
+						(_probabilityIntegralTransformArray[probabilityIntegralTransformIndex]);
+			}
+<span class="nc" id="L252">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L254">				e.printStackTrace();</span>
+
+<span class="nc" id="L256">				return null;</span>
+<span class="nc" id="L257">			}</span>
+		}
+
+<span class="nc" id="L260">		return probabilityIntegralTransformTestArray;</span>
+	}
+
+	/**
+	 * Compute the Array of t-Test Results
+	 * 
+	 * @param testStatistic The Test Statistic
+	 * 
+	 * @return The Array of t-Test Results
+	 */
+
+	public org.drip.validation.hypothesis.TTestOutcome[] tTest (
+		final double testStatistic)
+	{
+<span class="nc" id="L274">		int sampleCount = _sampleArray.length;</span>
+<span class="nc" id="L275">		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;</span>
+<span class="nc" id="L276">		org.drip.validation.hypothesis.TTestOutcome[] tTestArray = new</span>
+			org.drip.validation.hypothesis.TTestOutcome[testStatisticEvaluatorCount];
+
+<span class="nc" id="L279">		for (int testStatisticEvaluatorIndex = 0;</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">			testStatisticEvaluatorIndex &lt; testStatisticEvaluatorCount;</span>
+<span class="nc" id="L281">			++testStatisticEvaluatorIndex)</span>
+		{
+<span class="nc" id="L283">			org.drip.measure.statistics.UnivariateMoments ensembleUnivariateMoments =</span>
+<span class="nc" id="L284">				org.drip.measure.statistics.UnivariateMoments.Standard (</span>
+					&quot;UnivariateMoments&quot;,
+					_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex],
+					null
+				);
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">			if (null == ensembleUnivariateMoments)</span>
+			{
+<span class="nc" id="L292">				return null;</span>
+			}
+
+			try
+			{
+<span class="nc" id="L297">				tTestArray[testStatisticEvaluatorIndex] = new org.drip.validation.hypothesis.TTestOutcome (</span>
+					testStatistic,
+					sampleCount,
+<span class="nc" id="L300">					ensembleUnivariateMoments.mean(),</span>
+<span class="nc" id="L301">					ensembleUnivariateMoments.variance(),</span>
+<span class="nc" id="L302">					ensembleUnivariateMoments.stdDev(),</span>
+<span class="nc" id="L303">					ensembleUnivariateMoments.stdError(),</span>
+<span class="nc" id="L304">					ensembleUnivariateMoments.degreesOfFreedom(),</span>
+<span class="nc" id="L305">					ensembleUnivariateMoments.predictiveConfidenceLevel(),</span>
+<span class="nc" id="L306">					ensembleUnivariateMoments.tStatistic (testStatistic),</span>
+<span class="nc" id="L307">					ensembleUnivariateMoments.standardErrorOffset (testStatistic)</span>
+				);
+			}
+<span class="nc" id="L310">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L312">				e.printStackTrace();</span>
+
+<span class="nc" id="L314">				return null;</span>
+<span class="nc" id="L315">			}</span>
+		}
+
+<span class="nc" id="L318">		return tTestArray;</span>
+	}
+
+	/**
+	 * Compute the Array of Statistical Test Outcomes
+	 * 
+	 * @param testStatistic The Realized Test Statistic
+	 * @param pTestSetting The P-Test Setting
+	 * 
+	 * @return The Array of Statistical Test Outcomes
+	 */
+
+	public org.drip.validation.hypothesis.StatisticalTestOutcome[] statisticalTest (
+		final double testStatistic,
+		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
+	{
+<span class="nc bnc" id="L334" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)</span>
+		{
+<span class="nc" id="L336">			return null;</span>
+		}
+
+<span class="nc" id="L339">		int sampleCount = _sampleArray.length;</span>
+<span class="nc" id="L340">		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;</span>
+<span class="nc" id="L341">		org.drip.validation.hypothesis.StatisticalTestOutcome[] statisticalTestOutcomeArray = new</span>
+			org.drip.validation.hypothesis.StatisticalTestOutcome[testStatisticEvaluatorCount];
+
+		org.drip.validation.hypothesis.ProbabilityIntegralTransformTest[]
+<span class="nc" id="L345">			probabilityIntegralTransformTestArray = significanceTest();</span>
+
+<span class="nc" id="L347">		for (int testStatisticEvaluatorIndex = 0;</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">			testStatisticEvaluatorIndex &lt; testStatisticEvaluatorCount;</span>
+<span class="nc" id="L349">			++testStatisticEvaluatorIndex)</span>
+		{
+<span class="nc" id="L351">			org.drip.measure.statistics.UnivariateMoments ensembleUnivariateMoments =</span>
+<span class="nc" id="L352">				org.drip.measure.statistics.UnivariateMoments.Standard (</span>
+					&quot;UnivariateMoments&quot;,
+					_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex],
+					null
+				);
+
+<span class="nc bnc" id="L358" title="All 2 branches missed.">			if (null == ensembleUnivariateMoments)</span>
+			{
+<span class="nc" id="L360">				return null;</span>
+			}
+
+			try
+			{
+<span class="nc" id="L365">				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new</span>
+					org.drip.validation.hypothesis.StatisticalTestOutcome (
+<span class="nc" id="L367">						probabilityIntegralTransformTestArray[testStatisticEvaluatorIndex].significanceTest (</span>
+							testStatistic,
+							pTestSetting
+						),
+						new org.drip.validation.hypothesis.TTestOutcome (
+							testStatistic,
+							sampleCount,
+<span class="nc" id="L374">							ensembleUnivariateMoments.mean(),</span>
+<span class="nc" id="L375">							ensembleUnivariateMoments.variance(),</span>
+<span class="nc" id="L376">							ensembleUnivariateMoments.stdDev(),</span>
+<span class="nc" id="L377">							ensembleUnivariateMoments.stdError(),</span>
+<span class="nc" id="L378">							ensembleUnivariateMoments.degreesOfFreedom(),</span>
+<span class="nc" id="L379">							ensembleUnivariateMoments.predictiveConfidenceLevel(),</span>
+<span class="nc" id="L380">							ensembleUnivariateMoments.tStatistic (testStatistic),</span>
+<span class="nc" id="L381">							ensembleUnivariateMoments.standardErrorOffset (testStatistic)</span>
+						)
+					);
+			}
+<span class="nc" id="L385">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L387">				e.printStackTrace();</span>
+
+<span class="nc" id="L389">				return null;</span>
+<span class="nc" id="L390">			}</span>
+		}
+
+<span class="nc" id="L393">		return statisticalTestOutcomeArray;</span>
+	}
+
+	@Override public org.drip.validation.hypothesis.ProbabilityIntegralTransform
+		nativeProbabilityIntegralTransform()
+	{
+<span class="nc" id="L399">		org.drip.validation.evidence.TestStatisticAccumulator testStatisticAccumulator = new</span>
+			org.drip.validation.evidence.TestStatisticAccumulator();
+
+<span class="nc" id="L402">		int sampleCount = _sampleArray.length;</span>
+
+<span class="nc bnc" id="L404" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+		{
+<span class="nc bnc" id="L406" title="All 2 branches missed.">			for (double realization : _sampleArray[sampleIndex].realizationArray())</span>
+			{
+<span class="nc bnc" id="L408" title="All 2 branches missed.">				if (!testStatisticAccumulator.addTestStatistic (realization))</span>
+				{
+<span class="nc" id="L410">					return null;</span>
+				}
+			}
+		}
+
+<span class="nc" id="L415">		return testStatisticAccumulator.probabilityIntegralTransform();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

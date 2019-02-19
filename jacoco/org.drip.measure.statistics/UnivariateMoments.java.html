@@ -235,6 +235,17 @@ public class UnivariateMoments {
 	}
 
 	/**
+	 * Retrieve the Series Standard Error
+	 * 
+	 * @return The Series Standard Error
+	 */
+
+	public double stdError()
+	{
+<span class="nc" id="L245">		return java.lang.Math.sqrt (_dblVariance);</span>
+	}
+
+	/**
 	 * Retrieve the Moments Map
 	 * 
 	 * @return The Map of Moments
@@ -242,7 +253,73 @@ public class UnivariateMoments {
 
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; momentMap()
 	{
-<span class="nc" id="L245">		return _mapMoment;</span>
+<span class="nc" id="L256">		return _mapMoment;</span>
+	}
+
+	/**
+	 * Compute the Series t-Statistic around the Series Hypothesis Pivot
+	 * 
+	 * @param hypothesisPivot The Series Hypothesis Pivot
+	 * 
+	 * @return The Series t-Statistic around the Series Hypothesis Pivot
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double tStatistic (
+		final double hypothesisPivot)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (hypothesisPivot))</span>
+		{
+<span class="nc" id="L275">			throw new java.lang.Exception (&quot;UnivariateMetrics::tStatistic =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L278">		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance);</span>
+	}
+
+	/**
+	 * Estimate the Offset in Terms of the NUmber of Standard Errors
+	 * 
+	 * @param x The Observation Point
+	 * 
+	 * @return The Offset in Terms of the NUmber of Standard Errors
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double standardErrorOffset (
+		final double x)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (x))</span>
+		{
+<span class="nc" id="L297">			throw new java.lang.Exception (&quot;UnivariateMetrics::standardErrorOffset =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L300">		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance);</span>
+	}
+
+	/**
+	 * Retrieve the Degrees of Freedom
+	 * 
+	 * @return The Degrees of Freedom
+	 */
+
+	public int degreesOfFreedom()
+	{
+<span class="nc" id="L311">		return _iNumSample - 1;</span>
+	}
+
+	/**
+	 * Compute the Predictive Confidence Level
+	 * 
+	 * @return The Predictive Confidence Level
+	 */
+
+	public double predictiveConfidenceLevel()
+	{
+<span class="nc" id="L322">		return java.lang.Math.sqrt (_dblVariance * (1. + 1. / (1. + _iNumSample)));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

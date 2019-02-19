@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardUniformTTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.hypothesistest</a> &gt; <span class="el_source">StandardUniformTTest.java</span></div><h1>StandardUniformTTest.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.hypothesistest;
+
+import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.TestStatisticEvaluator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;StandardUniformTTest&lt;/i&gt; illustrates t-Test for a Standard Uniform Ensemble.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  		Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  		Perspectives in Psychological Science 6 (3) 291-298
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+- *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core&quot;&gt;Core Model Validation Support Utilities&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L112">public class StandardUniformTTest</span>
+{
+
+	private static final double UnivariateRandom()
+		throws Exception
+	{
+<span class="nc" id="L118">		return R1UnivariateUniform.Standard().random();</span>
+	}
+
+	private static final Sample GenerateSample (
+		final int drawCount)
+		throws Exception
+	{
+<span class="nc" id="L125">		double[] univariateRandomArray = new double[drawCount];</span>
+
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+		{
+<span class="nc" id="L129">			univariateRandomArray[drawIndex] = UnivariateRandom();</span>
+		}
+
+<span class="nc" id="L132">		return new Sample (univariateRandomArray);</span>
+	}
+
+	private static final Sample[] GenerateSampleArray (
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+<span class="nc" id="L140">		Sample[] sampleArray = new Sample[sampleCount];</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+		{
+<span class="nc" id="L144">			sampleArray[sampleIndex] = GenerateSample (drawCount);</span>
+		}
+
+<span class="nc" id="L147">		return sampleArray;</span>
+	}
+
+	private static final TestStatisticEvaluator[] MakeTestStatisticEvaluatorArray()
+		throws Exception
+	{
+<span class="nc" id="L153">		return new TestStatisticEvaluator[]</span>
+		{
+			new TestStatisticEvaluator()
+<span class="nc" id="L156">			{</span>
+				public double evaluate (
+					final double[] drawArray)
+					throws Exception
+				{
+<span class="nc" id="L161">					double mean = 0.;</span>
+<span class="nc" id="L162">					int drawCount = drawArray.length;</span>
+
+<span class="nc bnc" id="L164" title="All 2 branches missed.">					for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+					{
+<span class="nc" id="L166">						mean += drawArray[drawIndex];</span>
+					}
+
+<span class="nc" id="L169">					return mean / drawCount;</span>
+				}
+			}
+		};
+	}
+
+	private static final void TTest (
+		final Ensemble ensemble,
+		final int drawCount,
+		final TestStatisticEvaluator testStatisticEvaluator)
+		throws Exception
+	{
+<span class="nc" id="L181">		Sample testSample = GenerateSample (drawCount);</span>
+
+<span class="nc" id="L183">		org.drip.validation.hypothesis.TTestOutcome[] tTestArray = ensemble.tTest (</span>
+<span class="nc" id="L184">			testSample.applyTestStatistic (testStatisticEvaluator)</span>
+		);
+
+<span class="nc" id="L187">		System.out.println (</span>
+<span class="nc" id="L188">			&quot;\t| &quot; + FormatUtil.FormatDouble (tTestArray[0].testStatistic(), 1, 4, 1.) +</span>
+<span class="nc" id="L189">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].sampleCount(), 3, 0, 1.) +</span>
+<span class="nc" id="L190">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleMean(), 1, 4, 1.) +</span>
+<span class="nc" id="L191">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleVariance(), 1, 8, 1.) +</span>
+<span class="nc" id="L192">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleStandardDeviation(), 1, 6, 1.) +</span>
+<span class="nc" id="L193">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleStandardError(), 1, 6, 1.) +</span>
+<span class="nc" id="L194">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleDegreesOfFreedom(), 2, 0, 1.) +</span>
+<span class="nc" id="L195">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensemblePredictiveConfidenceInterval(), 1, 6, 1.) +</span>
+<span class="nc" id="L196">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleTStatistics(), 1, 4, 1.) +</span>
+<span class="nc" id="L197">			&quot; | &quot; + FormatUtil.FormatDouble (tTestArray[0].ensembleStandardErrorOffset(), 1, 4, 1.) + &quot; ||&quot;</span>
+		);
+<span class="nc" id="L199">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L205">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L207">		int drawCount = 10000;</span>
+<span class="nc" id="L208">		int sampleCount = 100;</span>
+<span class="nc" id="L209">		int tTestCount = 25;</span>
+
+<span class="nc" id="L211">		TestStatisticEvaluator[] testStatisticEvaluatorArray = MakeTestStatisticEvaluatorArray();</span>
+
+<span class="nc" id="L213">		Ensemble ensemble = new Ensemble (</span>
+<span class="nc" id="L214">			GenerateSampleArray (</span>
+				drawCount,
+				sampleCount
+			),
+			testStatisticEvaluatorArray
+		);
+
+<span class="nc" id="L221">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L223">		System.out.println (&quot;\t|                                       STANDARD UNIFORM t-TEST                                        ||&quot;);</span>
+
+<span class="nc" id="L225">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L227">		System.out.println (&quot;\t|    L -&gt; R:                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L229">		System.out.println (&quot;\t|            - Test Statistic                                                                          ||&quot;);</span>
+
+<span class="nc" id="L231">		System.out.println (&quot;\t|            - Sample Count                                                                            ||&quot;);</span>
+
+<span class="nc" id="L233">		System.out.println (&quot;\t|            - Ensemble Mean                                                                           ||&quot;);</span>
+
+<span class="nc" id="L235">		System.out.println (&quot;\t|            - Ensemble Variance                                                                       ||&quot;);</span>
+
+<span class="nc" id="L237">		System.out.println (&quot;\t|            - Ensemble Standard Deviation                                                             ||&quot;);</span>
+
+<span class="nc" id="L239">		System.out.println (&quot;\t|            - Ensemble Standard Error                                                                 ||&quot;);</span>
+
+<span class="nc" id="L241">		System.out.println (&quot;\t|            - Ensemble Degrees of Freedom                                                             ||&quot;);</span>
+
+<span class="nc" id="L243">		System.out.println (&quot;\t|            - Ensemble Predictive Confidence Interval                                                 ||&quot;);</span>
+
+<span class="nc" id="L245">		System.out.println (&quot;\t|            - Ensemble Test Statistic                                                                 ||&quot;);</span>
+
+<span class="nc" id="L247">		System.out.println (&quot;\t|            - Ensemble Standard Error Offset                                                          ||&quot;);</span>
+
+<span class="nc" id="L249">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		for (int tTestIndex = 0; tTestIndex &lt; tTestCount; ++tTestIndex)</span>
+		{
+<span class="nc" id="L253">			TTest (</span>
+				ensemble,
+				drawCount,
+				testStatisticEvaluatorArray[0]
+			);
+		}
+
+<span class="nc" id="L260">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L262">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L263">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

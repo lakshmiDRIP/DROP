@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardUniformTStatistic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.samplestatistics</a> &gt; <span class="el_source">StandardUniformTStatistic.java</span></div><h1>StandardUniformTStatistic.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.samplestatistics;
+
+import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.statistics.PopulationCentralMeasures;
+import org.drip.measure.statistics.UnivariateMoments;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.StringUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;StandardUniformTStatistic&lt;/i&gt; illustrates the Computation of the t-statistic, z-score, and other
+ * related Metrics of the Sample/Population Mean for an Empirical Standard Uniform Distribution.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): t-statistic https://en.wikipedia.org/wiki/T-statistic
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypothesistest&quot;&gt;Statistical Hypothesis Tests&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L112">public class StandardUniformTStatistic</span>
+{
+
+	private static final double UnivariateRandom()
+		throws Exception
+	{
+<span class="nc" id="L118">		return R1UnivariateUniform.Standard().random();</span>
+	}
+
+	private static final PopulationCentralMeasures PopulationMeasures()
+	{
+<span class="nc" id="L123">		return R1UnivariateUniform.Standard().populationCentralMeasures();</span>
+	}
+
+	private static final double SampleMeanEstimate (
+		final int count)
+		throws Exception
+	{
+<span class="nc" id="L130">		double[] univariateRandomArray = new double[count];</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L134">			univariateRandomArray[index] = UnivariateRandom();</span>
+		}
+
+<span class="nc" id="L137">		return UnivariateMoments.Standard (</span>
+<span class="nc" id="L138">			StringUtil.GUID(),</span>
+			univariateRandomArray,
+			null
+<span class="nc" id="L141">		).mean();</span>
+	}
+
+	private static final UnivariateMoments SampleStatistics (
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+<span class="nc" id="L149">		double[] sampleMeanEstimateArray = new double[sampleCount];</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+		{
+<span class="nc" id="L153">			sampleMeanEstimateArray[sampleIndex] = SampleMeanEstimate (drawCount);</span>
+		}
+
+<span class="nc" id="L156">		return UnivariateMoments.Standard (</span>
+<span class="nc" id="L157">			StringUtil.GUID(),</span>
+			sampleMeanEstimateArray,
+			null
+		);
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L167">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L169">		int drawCount = 10000;</span>
+<span class="nc" id="L170">		int sampleCount = 200;</span>
+
+<span class="nc" id="L172">		UnivariateMoments sampleStatistics = SampleStatistics (</span>
+			drawCount,
+			sampleCount
+		);
+
+<span class="nc" id="L177">		PopulationCentralMeasures populationCentralMeasures = PopulationMeasures();</span>
+
+<span class="nc" id="L179">		double nextDraw = UnivariateRandom();</span>
+
+<span class="nc" id="L181">		double updatedMean = (sampleStatistics.mean() * sampleCount + nextDraw) / (sampleCount + 1);</span>
+
+<span class="nc" id="L183">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L185">		System.out.println (&quot;\t|          STANDARD UNIFORM DISTRIBUTION           ||&quot;);</span>
+
+<span class="nc" id="L187">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L189">		System.out.println (</span>
+			&quot;\t| Population Mean                =&gt; &quot; +
+<span class="nc" id="L191">			FormatUtil.FormatDouble (populationCentralMeasures.mean(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L194">		System.out.println (</span>
+			&quot;\t| Population Variance            =&gt; &quot; +
+<span class="nc" id="L196">			FormatUtil.FormatDouble (populationCentralMeasures.variance(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L199">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L201">		System.out.println (</span>
+			&quot;\t| Mean                           =&gt; &quot; +
+<span class="nc" id="L203">			FormatUtil.FormatDouble (sampleStatistics.mean(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L206">		System.out.println (</span>
+			&quot;\t| Variance                       =&gt; &quot; +
+<span class="nc" id="L208">			FormatUtil.FormatDouble (sampleStatistics.variance(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L211">		System.out.println (</span>
+			&quot;\t| Sample Count                   =&gt; &quot; +
+<span class="nc" id="L213">			FormatUtil.FormatDouble (sampleStatistics.numSample(), 3, 0, 1.)</span>
+		);
+
+<span class="nc" id="L216">		System.out.println (</span>
+			&quot;\t| Degrees Of Freedom             =&gt; &quot; +
+<span class="nc" id="L218">			FormatUtil.FormatDouble (sampleStatistics.degreesOfFreedom(), 3, 0, 1.)</span>
+		);
+
+<span class="nc" id="L221">		System.out.println (</span>
+			&quot;\t| Standard Deviation             =&gt; &quot; +
+<span class="nc" id="L223">			FormatUtil.FormatDouble (sampleStatistics.stdDev(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L226">		System.out.println (</span>
+			&quot;\t| Standard Error                 =&gt; &quot; +
+<span class="nc" id="L228">			FormatUtil.FormatDouble (sampleStatistics.stdError(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L231">		System.out.println (</span>
+			&quot;\t| Predictive Confidence Interval =&gt; &quot; +
+<span class="nc" id="L233">			FormatUtil.FormatDouble (sampleStatistics.predictiveConfidenceLevel(), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L236">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L238">		System.out.println (</span>
+			&quot;\t| Next Draw                      =&gt; &quot; +
+<span class="nc" id="L240">			FormatUtil.FormatDouble (nextDraw, 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L243">		System.out.println (</span>
+			&quot;\t| Next Draw T-Statistics         =&gt; &quot; +
+<span class="nc" id="L245">			FormatUtil.FormatDouble (sampleStatistics.tStatistic (updatedMean), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L248">		System.out.println (</span>
+			&quot;\t| Standard Error Offset          =&gt; &quot; +
+<span class="nc" id="L250">			FormatUtil.FormatDouble (sampleStatistics.standardErrorOffset (nextDraw), 1, 0, 1.)</span>
+		);
+
+<span class="nc" id="L253">		System.out.println (</span>
+			&quot;\t| Population Z-Score             =&gt; &quot; +
+<span class="nc" id="L255">			FormatUtil.FormatDouble (populationCentralMeasures.zScore (nextDraw), 1, 8, 1.)</span>
+		);
+
+<span class="nc" id="L258">		System.out.println (&quot;\t|--------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L260">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L261">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

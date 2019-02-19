@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HypothesisOutcomeSuite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.distance</a> &gt; <span class="el_source">HypothesisOutcomeSuite.java</span></div><h1>HypothesisOutcomeSuite.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.distance;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;HypothesisOutcomeSuite&lt;/i&gt; holds the Map of Hypotheses Outcomes to be subjected to Discriminatory Power
+ * Analysis.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance&quot;&gt;Hypothesis Target Distance Test Builders&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class HypothesisOutcomeSuite
+{
+<span class="nc" id="L108">	private java.util.Map&lt;java.lang.String, org.drip.validation.distance.GapTestOutcome&gt; _outcomeMap = new</span>
+		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.validation.distance.GapTestOutcome&gt;();
+
+<span class="nc" id="L111">	private java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt; _distanceHypothesisMap = new</span>
+		java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt;();
+
+	/**
+	 * Empty HypothesisOutcomeSuite Constructor
+	 */
+
+	public HypothesisOutcomeSuite()
+<span class="nc" id="L119">	{</span>
+<span class="nc" id="L120">	}</span>
+
+	/**
+	 * Retrieve the Outcome Map
+	 * 
+	 * @return The Outcome Map
+	 */
+
+	public java.util.Map&lt;java.lang.String, org.drip.validation.distance.GapTestOutcome&gt; outcomeMap()
+	{
+<span class="nc" id="L130">		return _outcomeMap;</span>
+	}
+
+	/**
+	 * Retrieve the Distance-Hypothesis Map
+	 * 
+	 * @return The Distance-Hypothesis Map
+	 */
+
+	public java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt; distanceHypothesisMap()
+	{
+<span class="nc" id="L141">		return _distanceHypothesisMap;</span>
+	}
+
+	/**
+	 * Add a Hypothesis - Outcome Instance
+	 * 
+	 * @param hypothesisID Hypothesis ID
+	 * @param gapTestOutcome Gap Test Outcome
+	 * 
+	 * @return TRUE - The Hypothesis - Outcome successfully added
+	 */
+
+	public boolean add (
+		final java.lang.String hypothesisID,
+		final org.drip.validation.distance.GapTestOutcome gapTestOutcome)
+	{
+<span class="nc bnc" id="L157" title="All 6 branches missed.">		if (null == hypothesisID || hypothesisID.isEmpty() ||</span>
+			null == gapTestOutcome)
+		{
+<span class="nc" id="L160">			return false;</span>
+		}
+
+<span class="nc" id="L163">		_outcomeMap.put (</span>
+			hypothesisID,
+			gapTestOutcome
+		);
+
+<span class="nc" id="L168">		_distanceHypothesisMap.put (</span>
+<span class="nc" id="L169">			gapTestOutcome.distance(),</span>
+			hypothesisID
+		);
+
+<span class="nc" id="L173">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Leading/Best Fit Hypothesis and its Test Outcome
+	 * 
+	 * @return The Leading/Best Fit Hypothesis and its Test Outcome
+	 */
+
+	public org.drip.validation.distance.HypothesisOutcome leadingHypothesis()
+	{
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (0 == _distanceHypothesisMap.size())</span>
+		{
+<span class="nc" id="L186">			return null;</span>
+		}
+
+<span class="nc" id="L189">		java.lang.String leadingHypothesisID = _distanceHypothesisMap.firstEntry().getValue();</span>
+
+		try
+		{
+<span class="nc" id="L193">			return new org.drip.validation.distance.HypothesisOutcome (</span>
+				leadingHypothesisID,
+<span class="nc" id="L195">				_outcomeMap.get (leadingHypothesisID)</span>
+			);
+		}
+<span class="nc" id="L198">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L200">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L203">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

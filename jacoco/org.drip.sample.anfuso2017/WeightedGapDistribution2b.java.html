@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WeightedGapDistribution2b.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.anfuso2017</a> &gt; <span class="el_source">WeightedGapDistribution2b.java</span></div><h1>WeightedGapDistribution2b.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.anfuso2017;
+
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.validation.distance.GapLossFunction;
+import org.drip.validation.distance.GapLossWeightFunction;
+import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
+import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
+import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;WeightedGapDistribution2b&lt;/i&gt; demonstrates the Weighted Gap Distribution illustrated in Table 2b of
+ * Anfuso, Karyampas, and Nawroth (2013).
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationLibrary.md&quot;&gt;Model Validation Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/anfuso2013&quot;&gt;Anfuso, Karyampas, and Nawroth (2013) Replications&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L119">public class WeightedGapDistribution2b</span>
+{
+
+	private static final double UnivariateRandom (
+		final double mean,
+		final double sigma)
+		throws Exception
+	{
+<span class="nc" id="L127">		return new R1UnivariateNormal (</span>
+			mean,
+			sigma
+<span class="nc" id="L130">		).random();</span>
+	}
+
+	private static final Sample GenerateSample (
+		final double mean,
+		final double sigma,
+		final int drawCount)
+		throws Exception
+	{
+<span class="nc" id="L139">		double[] univariateRandomArray = new double[drawCount];</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+		{
+<span class="nc" id="L143">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+				mean,
+				sigma
+			);
+		}
+
+<span class="nc" id="L149">		return new Sample (univariateRandomArray);</span>
+	}
+
+	private static final Sample[] GenerateSampleArray (
+		final double mean,
+		final double sigma,
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+<span class="nc" id="L159">		Sample[] sampleArray = new Sample[sampleCount];</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+		{
+<span class="nc" id="L163">			sampleArray[sampleIndex] = GenerateSample (</span>
+				mean,
+				sigma,
+				drawCount
+			);
+		}
+
+<span class="nc" id="L170">		return sampleArray;</span>
+	}
+
+	private static final Ensemble GenerateEnsemble (
+		final double mean,
+		final double sigma,
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+<span class="nc" id="L180">		return new Ensemble (</span>
+<span class="nc" id="L181">			GenerateSampleArray (</span>
+				mean,
+				sigma,
+				drawCount,
+				sampleCount
+			),
+			new TestStatisticEvaluator[]
+			{
+				new TestStatisticEvaluator()
+<span class="nc" id="L190">				{</span>
+					public double evaluate (
+						final double[] drawArray)
+						throws Exception
+					{
+<span class="nc" id="L195">						return 1.;</span>
+					}
+				}
+			}
+		);
+	}
+
+	private static final void DistanceTest (
+		final GapTestOutcome gapTestOutcome,
+		final int quantileCount,
+		final double pValueThreshold)
+		throws Exception
+	{
+<span class="nc" id="L208">		ProbabilityIntegralTransformHistogram histogram =</span>
+<span class="nc" id="L209">			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (</span>
+				quantileCount,
+				pValueThreshold
+			);
+
+<span class="nc" id="L214">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
+
+<span class="nc" id="L216">		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();</span>
+
+<span class="nc" id="L218">		double thresholdTestStatistic = histogram.thresholdTestStatistic();</span>
+
+<span class="nc" id="L220">		double[] gapArray = histogram.testStatisticArray();</span>
+
+<span class="nc" id="L222">		double distance = gapTestOutcome.distance();</span>
+
+<span class="nc" id="L224">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L226">		System.out.println (&quot;\t|           Normal Anfuso Karyampas Nawroth Distance Test            ||&quot;);</span>
+
+<span class="nc" id="L228">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L230">		System.out.println (&quot;\t|    L -&gt; R:                                                         ||&quot;);</span>
+
+<span class="nc" id="L232">		System.out.println (&quot;\t|        - Weighted Distance Metric                                  ||&quot;);</span>
+
+<span class="nc" id="L234">		System.out.println (&quot;\t|        - Cumulative p-Value                                        ||&quot;);</span>
+
+<span class="nc" id="L236">		System.out.println (&quot;\t|        - Incremental p-Value                                       ||&quot;);</span>
+
+<span class="nc" id="L238">		System.out.println (&quot;\t|        - Ensemble Weighted Distance                                ||&quot;);</span>
+
+<span class="nc" id="L240">		System.out.println (&quot;\t|        - p-Value Threshold Distance                                ||&quot;);</span>
+
+<span class="nc" id="L242">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (int quantileIndex = 0; quantileIndex &lt;= quantileCount; ++quantileIndex)</span>
+		{
+<span class="nc" id="L246">			System.out.println (</span>
+				&quot;\t|&quot; +
+<span class="nc" id="L248">				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L249">				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L250">				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L251">				FormatUtil.FormatDouble (distance, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L252">				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L256">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L257">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L263">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L265">		int drawCount = 3780;</span>
+<span class="nc" id="L266">		int sampleCount = 1000;</span>
+<span class="nc" id="L267">		double annualMean = 0.;</span>
+<span class="nc" id="L268">		int quantileCount = 20;</span>
+<span class="nc" id="L269">		double horizon = 3. / 12;</span>
+<span class="nc" id="L270">		double pValueThreshold = 0.99;</span>
+<span class="nc" id="L271">		double annualVolatility = 0.1;</span>
+
+<span class="nc" id="L273">		double horizonVolatility = annualVolatility * Math.sqrt (horizon);</span>
+
+<span class="nc" id="L275">		Sample sample = GenerateSample (</span>
+			annualMean,
+			horizonVolatility,
+			drawCount
+		);
+
+<span class="nc" id="L281">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
+			sample,
+			new DiscriminatoryPowerAnalyzerSetting (
+<span class="nc" id="L284">				GapLossFunction.AnfusoKaryampasNawroth(),</span>
+<span class="nc" id="L285">				GapLossWeightFunction.CramersVonMises()</span>
+			)
+		);
+
+<span class="nc" id="L289">		Ensemble hypothesis = GenerateEnsemble (</span>
+			annualMean,
+			horizonVolatility,
+			drawCount,
+			sampleCount
+		);
+
+<span class="nc" id="L296">		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);</span>
+
+<span class="nc" id="L298">		DistanceTest (</span>
+			gapTestOutcome,
+			quantileCount,
+			pValueThreshold
+		);
+
+<span class="nc" id="L304">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L305">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

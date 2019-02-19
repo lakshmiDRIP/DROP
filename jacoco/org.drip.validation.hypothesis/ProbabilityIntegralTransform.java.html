@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProbabilityIntegralTransform.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.hypothesis</a> &gt; <span class="el_source">ProbabilityIntegralTransform.java</span></div><h1>ProbabilityIntegralTransform.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.hypothesis;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ProbabilityIntegralTransform&lt;/i&gt; holds the PIT Distribution CDF of the Test-Statistic Response over the
+ * Outcome Instances.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis&quot;&gt;Statistical Hypothesis Validation Test Suite&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ProbabilityIntegralTransform
+{
+<span class="nc" id="L107">	private java.util.Map&lt;java.lang.Double, java.lang.Double&gt; _pValueTestStatisticMap = null;</span>
+<span class="nc" id="L108">	private java.util.Map&lt;java.lang.Double, java.lang.Double&gt; _testStatisticPValueMap = null;</span>
+
+	/**
+	 * ProbabilityIntegralTransform Constructor
+	 * 
+	 * @param testStatisticPValueMap Test Statistic - p Value Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ProbabilityIntegralTransform (
+		final java.util.Map&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueMap)
+		throws java.lang.Exception
+<span class="nc" id="L121">	{</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == (_testStatisticPValueMap = testStatisticPValueMap) ||</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">			0 == _testStatisticPValueMap.size())</span>
+		{
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ProbabilityIntegralTransform Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L128">		_pValueTestStatisticMap = new java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueMapEntry :
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			_testStatisticPValueMap.entrySet())</span>
+		{
+<span class="nc" id="L133">			_pValueTestStatisticMap.put (</span>
+<span class="nc" id="L134">				testStatisticPValueMapEntry.getValue(),</span>
+<span class="nc" id="L135">				testStatisticPValueMapEntry.getKey()</span>
+			);
+<span class="nc" id="L137">		}</span>
+<span class="nc" id="L138">	}</span>
+
+	/**
+	 * Retrieve the p Value - Test Statistic Map
+	 * 
+	 * @return The p Value - Test Statistic Map
+	 */
+
+	public java.util.Map&lt;java.lang.Double, java.lang.Double&gt; pValueTestStatisticMap()
+	{
+<span class="nc" id="L148">		return _pValueTestStatisticMap;</span>
+	}
+
+	/**
+	 * Retrieve the Test Statistic - p Value Map
+	 * 
+	 * @return The Test Statistic - p Value Map
+	 */
+
+	public java.util.Map&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueMap()
+	{
+<span class="nc" id="L159">		return _testStatisticPValueMap;</span>
+	}
+
+	/**
+	 * Compute the p-Value corresponding to the Test Statistic Instance
+	 * 
+	 * @param testStatistic The Test Statistic Instance
+	 * 
+	 * @return The p-Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double pValue (
+		final double testStatistic)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))</span>
+		{
+<span class="nc" id="L178">			throw new java.lang.Exception (&quot;ProbabilityIntegralTransform::pValue =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L181">		java.util.Set&lt;java.lang.Double&gt; testStatisticKeySet = _testStatisticPValueMap.keySet();</span>
+
+<span class="nc" id="L183">		double testStatisticKeyCurrent = java.lang.Double.NaN;</span>
+<span class="nc" id="L184">		double testStatisticKeyPrevious = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		for (double testStatisticKey : testStatisticKeySet)</span>
+		{
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (testStatistic == testStatisticKey)</span>
+			{
+<span class="nc" id="L190">				return _testStatisticPValueMap.get (testStatistic);</span>
+			}
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">			if (testStatistic &lt; testStatisticKey)</span>
+			{
+<span class="nc bnc" id="L195" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyPrevious))</span>
+				{
+<span class="nc" id="L197">					return 0.;</span>
+				}
+
+<span class="nc" id="L200">				testStatisticKeyCurrent = testStatisticKey;</span>
+<span class="nc" id="L201">				break;</span>
+			}
+
+<span class="nc" id="L204">			testStatisticKeyPrevious = testStatisticKey;</span>
+<span class="nc" id="L205">		}</span>
+
+<span class="nc bnc" id="L207" title="All 4 branches missed.">		return !org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||</span>
+			testStatistic &gt;= testStatisticKeyCurrent ? 1. :
+			((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
+<span class="nc" id="L210">				(testStatisticKeyCurrent) +</span>
+			(testStatisticKeyCurrent - testStatistic) * _testStatisticPValueMap.get
+<span class="nc" id="L212">				(testStatisticKeyPrevious)) /</span>
+			(testStatisticKeyCurrent - testStatisticKeyPrevious);
+	}
+
+	/**
+	 * Compute the Test Statistic Instance corresponding to the p-Value
+	 * 
+	 * @param pValue The p-Value
+	 * 
+	 * @return The Response Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double testStatistic (
+		final double pValue)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))</span>
+		{
+<span class="nc" id="L232">			throw new java.lang.Exception (&quot;ProbabilityIntegralTransform::testStatistic =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L235">		java.util.Set&lt;java.lang.Double&gt; pValueKeySet = _pValueTestStatisticMap.keySet();</span>
+
+<span class="nc" id="L237">		double pValueKeyCurrent = java.lang.Double.NaN;</span>
+<span class="nc" id="L238">		double pValueKeyPrevious = java.lang.Double.NaN;</span>
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		for (double pValueKey : pValueKeySet)</span>
+		{
+<span class="nc bnc" id="L242" title="All 2 branches missed.">			if (pValue == pValueKey)</span>
+			{
+<span class="nc" id="L244">				return _pValueTestStatisticMap.get (pValue);</span>
+			}
+
+<span class="nc bnc" id="L247" title="All 2 branches missed.">			if (pValue &lt; pValueKey)</span>
+			{
+<span class="nc bnc" id="L249" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (pValueKeyPrevious))</span>
+				{
+<span class="nc" id="L251">					return _pValueTestStatisticMap.get (pValueKey);</span>
+				}
+
+<span class="nc" id="L254">				pValueKeyCurrent = pValueKey;</span>
+<span class="nc" id="L255">				break;</span>
+			}
+
+<span class="nc" id="L258">			pValueKeyPrevious = pValueKey;</span>
+<span class="nc" id="L259">		}</span>
+
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		return pValue &gt;= pValueKeyCurrent ? _pValueTestStatisticMap.get (pValueKeyCurrent) :</span>
+<span class="nc" id="L262">			((pValue - pValueKeyPrevious) * _pValueTestStatisticMap.get (pValueKeyCurrent) +</span>
+<span class="nc" id="L263">			(pValueKeyCurrent - pValue) * _pValueTestStatisticMap.get (pValueKeyPrevious)) /</span>
+			(pValueKeyCurrent - pValueKeyPrevious);
+	}
+
+	/**
+	 * Generate the Histogram Corresponding to the Test Statistic and its p-Value
+	 * 
+	 * @param quantileCount The Number of Quantiles inside the Histogram
+	 * @param pValueThreshold The p-Value Threshold
+	 * 
+	 * @return The Histogram Corresponding to the Test Statistic and its p-Value
+	 */
+
+	public org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram histogram (
+		final int quantileCount,
+		final double pValueThreshold)
+	{
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (0 &gt;= quantileCount ||</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (pValueThreshold))</span>
+		{
+<span class="nc" id="L283">			return null;</span>
+		}
+
+<span class="nc" id="L286">		int mapSize = _pValueTestStatisticMap.size();</span>
+
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (mapSize &lt;= quantileCount)</span>
+		{
+<span class="nc" id="L290">			return null;</span>
+		}
+
+<span class="nc" id="L293">		double[] testStatisticArray = new double[quantileCount + 1];</span>
+<span class="nc" id="L294">		double[] pValueCumulativeArray = new double[quantileCount + 1];</span>
+<span class="nc" id="L295">		double[] pValueIncrementalArray = new double[quantileCount + 1];</span>
+
+		try
+		{
+<span class="nc" id="L299">			pValueIncrementalArray[0] = 0.;</span>
+
+<span class="nc" id="L301">			testStatisticArray[0] = testStatistic (pValueCumulativeArray[0] = 0.);</span>
+
+<span class="nc" id="L303">			testStatisticArray[quantileCount] = testStatistic (pValueCumulativeArray[quantileCount] = 1.);</span>
+		}
+<span class="nc" id="L305">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L307">			e.printStackTrace();</span>
+
+<span class="nc" id="L309">			return null;</span>
+<span class="nc" id="L310">		}</span>
+
+<span class="nc" id="L312">		double testStatisticIncrement = (testStatisticArray[quantileCount] - testStatisticArray[0]) /</span>
+			quantileCount;
+
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		for (int quantileIndex = 1; quantileIndex &lt; quantileCount; ++quantileIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L319">				pValueIncrementalArray[quantileIndex] = (pValueCumulativeArray[quantileIndex] = pValue</span>
+<span class="nc" id="L320">					(testStatisticArray[quantileIndex] = testStatisticArray[0] + testStatisticIncrement *</span>
+					quantileIndex)) - pValueCumulativeArray[quantileIndex - 1];
+			}
+<span class="nc" id="L323">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L325">				e.printStackTrace();</span>
+
+<span class="nc" id="L327">				return null;</span>
+<span class="nc" id="L328">			}</span>
+		}
+
+<span class="nc" id="L331">		pValueIncrementalArray[quantileCount] = pValueCumulativeArray[quantileCount] -</span>
+			pValueCumulativeArray[quantileCount - 1];
+
+		try
+		{
+<span class="nc" id="L336">			return new org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram (</span>
+				testStatisticArray,
+				pValueCumulativeArray,
+				pValueIncrementalArray,
+<span class="nc" id="L340">				testStatistic (pValueThreshold)</span>
+			);
+		}
+<span class="nc" id="L343">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L345">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L348">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
