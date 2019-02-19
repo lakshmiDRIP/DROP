@@ -107,6 +107,7 @@ public class ProbabilityIntegralTransformHistogram
 	private double[] _testStatisticArray = null;
 	private double[] _pValueCumulativeArray = null;
 	private double[] _pValueIncrementalArray = null;
+	private double _thresholdTestStatistic = java.lang.Double.NaN;
 
 	/**
 	 * ProbabilityIntegralTransformHistogram Constructor
@@ -114,6 +115,7 @@ public class ProbabilityIntegralTransformHistogram
 	 * @param testStatisticArray Array of Test Statistics
 	 * @param pValueCumulativeArray Array of Cumulative p-Values
 	 * @param pValueIncrementalArray Array of Incremental p-Values
+	 * @param thresholdTestStatistic The Threshold Test Statistic
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -121,12 +123,14 @@ public class ProbabilityIntegralTransformHistogram
 	public ProbabilityIntegralTransformHistogram (
 		final double[] testStatisticArray,
 		final double[] pValueCumulativeArray,
-		final double[] pValueIncrementalArray)
+		final double[] pValueIncrementalArray,
+		final double thresholdTestStatistic)
 		throws java.lang.Exception
 	{
 		if (null == (_testStatisticArray = testStatisticArray) ||
 			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
-			null == (_pValueIncrementalArray = pValueIncrementalArray))
+			null == (_pValueIncrementalArray = pValueIncrementalArray) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic))
 		{
 			throw new java.lang.Exception
 				("ProbabilityIntegralTransformHistogram Constructor => Invalid Inputs");
@@ -177,5 +181,16 @@ public class ProbabilityIntegralTransformHistogram
 	public double[] pValueIncrementalArray()
 	{
 		return _pValueIncrementalArray;
+	}
+
+	/**
+	 * Retrieve the Threshold Test Statistic
+	 * 
+	 * @return The Threshold Test Statistic
+	 */
+
+	public double thresholdTestStatistic()
+	{
+		return _thresholdTestStatistic;
 	}
 }

@@ -222,7 +222,8 @@ public class ExponentialCramersVonMisesGapAnalysis
 		final Sample sample,
 		final GapLossFunction gapLossFunction,
 		final GapLossWeightFunction gapLossWeightFunction,
-		final int quantileCount)
+		final int quantileCount,
+		final double pValueThreshold)
 		throws Exception
 	{
 		Ensemble hypothesis = GenerateEnsemble (
@@ -239,40 +240,47 @@ public class ExponentialCramersVonMisesGapAnalysis
 		);
 
 		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (quantileCount);
+			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
+				quantileCount,
+				pValueThreshold
+			);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
 
 		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
 
+		double thresholdTestStatistic = histogram.thresholdTestStatistic();
+
 		double[] gapArray = histogram.testStatisticArray();
 
 		double distance = gapTestOutcome.distance();
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|  Exponential Anfuso Karyampas Nawroth Distance Test  ||");
+		System.out.println ("\t|         Exponential Anfuso Karyampas Nawroth Distance Test         ||");
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		System.out.println (
 			"\t|   Lambda => [" + FormatUtil.FormatDouble (hypothesisLambda, 1, 8, 1.) +
-			"]                            ||"
+			"]                                          ||"
 		);
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|    L -> R:                                           ||");
+		System.out.println ("\t|    L -> R:                                                         ||");
 
-		System.out.println ("\t|        - Weighted Distance Metric                    ||");
+		System.out.println ("\t|        - Weighted Distance Metric                                  ||");
 
-		System.out.println ("\t|        - Cumulative p-Value                          ||");
+		System.out.println ("\t|        - Cumulative p-Value                                        ||");
 
-		System.out.println ("\t|        - Incremental p-Value                         ||");
+		System.out.println ("\t|        - Incremental p-Value                                       ||");
 
-		System.out.println ("\t|        - Ensemble Weighted Distance                  ||");
+		System.out.println ("\t|        - Ensemble Weighted Distance                                ||");
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|        - p-Value Threshold Distance                                ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
 		{
@@ -281,11 +289,12 @@ public class ExponentialCramersVonMisesGapAnalysis
 				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " ||"
+				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -298,6 +307,7 @@ public class ExponentialCramersVonMisesGapAnalysis
 		int sampleCount = 600;
 		double sampleLambda = 1.;
 		int quantileCount = 20;
+		double pValueThreshold = 0.99;
 		double[] hypothesisLambdaArray =
 		{
 			0.20,
@@ -344,7 +354,8 @@ public class ExponentialCramersVonMisesGapAnalysis
 				sample,
 				gapLossFunction,
 				gapLossWeightFunction,
-				quantileCount
+				quantileCount,
+				pValueThreshold
 			);
 		}
 

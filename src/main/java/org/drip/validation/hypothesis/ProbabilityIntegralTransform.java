@@ -268,14 +268,17 @@ public class ProbabilityIntegralTransform
 	 * Generate the Histogram Corresponding to the Test Statistic and its p-Value
 	 * 
 	 * @param quantileCount The Number of Quantiles inside the Histogram
+	 * @param pValueThreshold The p-Value Threshold
 	 * 
 	 * @return The Histogram Corresponding to the Test Statistic and its p-Value
 	 */
 
 	public org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram histogram (
-		int quantileCount)
+		final int quantileCount,
+		final double pValueThreshold)
 	{
-		if (0 >= quantileCount)
+		if (0 >= quantileCount ||
+			!org.drip.quant.common.NumberUtil.IsValid (pValueThreshold))
 		{
 			return null;
 		}
@@ -333,7 +336,8 @@ public class ProbabilityIntegralTransform
 			return new org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram (
 				testStatisticArray,
 				pValueCumulativeArray,
-				pValueIncrementalArray
+				pValueIncrementalArray,
+				testStatistic (pValueThreshold)
 			);
 		}
 		catch (java.lang.Exception e)

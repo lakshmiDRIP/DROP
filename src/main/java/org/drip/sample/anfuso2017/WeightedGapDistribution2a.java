@@ -201,37 +201,45 @@ public class WeightedGapDistribution2a
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int quantileCount)
+		final int quantileCount,
+		final double pValueThreshold)
 		throws Exception
 	{
 		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (quantileCount);
+			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
+				quantileCount,
+				pValueThreshold
+			);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
 
 		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
 
+		double thresholdTestStatistic = histogram.thresholdTestStatistic();
+
 		double[] gapArray = histogram.testStatisticArray();
 
 		double distance = gapTestOutcome.distance();
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|    Normal Anfuso Karyampas Nawroth Distance Test     ||");
+		System.out.println ("\t|           Normal Anfuso Karyampas Nawroth Distance Test            ||");
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|    L -> R:                                           ||");
+		System.out.println ("\t|    L -> R:                                                         ||");
 
-		System.out.println ("\t|        - Weighted Distance Metric                    ||");
+		System.out.println ("\t|        - Weighted Distance Metric                                  ||");
 
-		System.out.println ("\t|        - Cumulative p-Value                          ||");
+		System.out.println ("\t|        - Cumulative p-Value                                        ||");
 
-		System.out.println ("\t|        - Incremental p-Value                         ||");
+		System.out.println ("\t|        - Incremental p-Value                                       ||");
 
-		System.out.println ("\t|        - Ensemble Weighted Distance                  ||");
+		System.out.println ("\t|        - Ensemble Weighted Distance                                ||");
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|        - p-Value Threshold Distance                                ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
 		{
@@ -240,11 +248,12 @@ public class WeightedGapDistribution2a
 				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " ||"
+				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -258,6 +267,7 @@ public class WeightedGapDistribution2a
 		double annualMean = 0.;
 		int quantileCount = 20;
 		double horizon = 1. / 12;
+		double pValueThreshold = 0.99;
 		double annualVolatility = 0.1;
 
 		double horizonVolatility = annualVolatility * Math.sqrt (horizon);
@@ -287,7 +297,8 @@ public class WeightedGapDistribution2a
 
 		DistanceTest (
 			gapTestOutcome,
-			quantileCount
+			quantileCount,
+			pValueThreshold
 		);
 
 		EnvManager.TerminateEnv();

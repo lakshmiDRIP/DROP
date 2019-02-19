@@ -97,74 +97,79 @@ public class BuildManager
 		try {
 			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {
 				new org.drip.service.env.BuildRecord (
+					"4.05.0",
+					"1.8.0_112",
+					"Tue Feb 19 11:07:47 EST 2019"
+				),
+				new org.drip.service.env.BuildRecord (
 					"4.04.0",
 					"1.8.0_112",
-					"Thu Feb 14 09:38:49 EST 2018"
+					"Thu Feb 14 09:38:49 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"4.03.0",
 					"1.8.0_112",
-					"Mon Feb 11 08:55:21 EST 2018"
+					"Mon Feb 11 08:55:21 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"4.02.0",
 					"1.8.0_112",
-					"Thu Jan 31 23:20:25 EST 2018"
+					"Thu Jan 31 23:20:25 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"4.01.0",
 					"1.8.0_112",
-					"Mon Jan 28 20:28:11 EST 2018"
+					"Mon Jan 28 20:28:11 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"4.00.0",
 					"1.8.0_112",
-					"Sun Jan 20 19:56:44 EST 2018"
+					"Sun Jan 20 19:56:44 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.98.0",
 					"1.8.0_112",
-					"Thu Jan 03 12:59:38 EST 2018"
+					"Thu Jan 03 12:59:38 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.97.0",
 					"1.8.0_112",
-					"Fri Dec 21 10:15:16 EST 2018"
+					"Fri Dec 21 10:15:16 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.96.0",
 					"1.8.0_112",
-					"Wed Dec 19 21:02:03 EST 2018"
+					"Wed Dec 19 21:02:03 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.95.0",
 					"1.8.0_112",
-					"Wed Dec 19 15:54:46 EST 2018"
+					"Wed Dec 19 15:54:46 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.94.0",
 					"1.8.0_112",
-					"Tue Dec 18 14:29:43 EST 2018"
+					"Tue Dec 18 14:29:43 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.93.0",
 					"1.8.0_112",
-					"Mon Dec 17 18:34:10 EST 2018"
+					"Mon Dec 17 18:34:10 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.92.0",
 					"1.8.0_112",
-					"Wed Dec 12 21:15:06 EST 2018"
+					"Wed Dec 12 21:15:06 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.91.0",
 					"1.8.0_112",
-					"Sun Dec 09 23:52:23 EST 2018"
+					"Sun Dec 09 23:52:23 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.90.0",
 					"1.8.0_112",
-					"Fri Dec 07 23:42:09 EST 2018"
+					"Fri Dec 07 23:42:09 EST 2019"
 				),
 				new org.drip.service.env.BuildRecord (
 					"3.89.0",

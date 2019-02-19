@@ -235,7 +235,8 @@ public class UniformAndersonDarlingGapAnalysis
 		final Sample sample,
 		final GapLossFunction gapLossFunction,
 		final GapLossWeightFunction gapLossWeightFunction,
-		final int quantileCount)
+		final int quantileCount,
+		final double pValueThreshold)
 		throws Exception
 	{
 		Ensemble hypothesis = GenerateEnsemble (
@@ -253,40 +254,47 @@ public class UniformAndersonDarlingGapAnalysis
 		);
 
 		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (quantileCount);
+			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
+				quantileCount,
+				pValueThreshold
+			);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
 
 		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
 
+		double thresholdTestStatistic = histogram.thresholdTestStatistic();
+
 		double[] gapArray = histogram.testStatisticArray();
 
 		double distance = gapTestOutcome.distance();
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|    Uniform Anfuso Karyampas Nawroth Distance Test    ||");
+		System.out.println ("\t|           Uniform Anfuso Karyampas Nawroth Distance Test           ||");
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		System.out.println (
 			"\t|    Left => [" + FormatUtil.FormatDouble (hypothesisLeftSupport, 1, 8, 1.) +
-			"]  |  Right => [" + FormatUtil.FormatDouble (hypothesisRightSupport, 1, 8, 1.) + "]  ||"
+			"]  |  Right => [" + FormatUtil.FormatDouble (hypothesisRightSupport, 1, 8, 1.) + "]                ||"
 		);
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|    L -> R:                                           ||");
+		System.out.println ("\t|    L -> R:                                                         ||");
 
-		System.out.println ("\t|        - Weighted Distance Metric                    ||");
+		System.out.println ("\t|        - Weighted Distance Metric                                  ||");
 
-		System.out.println ("\t|        - Cumulative p-Value                          ||");
+		System.out.println ("\t|        - Cumulative p-Value                                        ||");
 
-		System.out.println ("\t|        - Incremental p-Value                         ||");
+		System.out.println ("\t|        - Incremental p-Value                                       ||");
 
-		System.out.println ("\t|        - Ensemble Weighted Distance                  ||");
+		System.out.println ("\t|        - Ensemble Weighted Distance                                ||");
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|        - p-Value Threshold Distance                                ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
 		{
@@ -295,11 +303,12 @@ public class UniformAndersonDarlingGapAnalysis
 				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " ||"
+				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -313,6 +322,7 @@ public class UniformAndersonDarlingGapAnalysis
 		double sampleLeftSupport = 0.;
 		double sampleRightSupport = 1.;
 		int quantileCount = 20;
+		double pValueThreshold = 0.99;
 		double[] hypothesisLeftSupportArray = {
 			-0.50,
 			-0.25,
@@ -350,7 +360,8 @@ public class UniformAndersonDarlingGapAnalysis
 					sample,
 					gapLossFunction,
 					gapLossWeightFunction,
-					quantileCount
+					quantileCount,
+					pValueThreshold
 				);
 			}
 		}

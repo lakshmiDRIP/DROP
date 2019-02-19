@@ -110,6 +110,103 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 	private org.drip.measure.stochastic.LabelCovariance _latentStateLabelCovariance = null;
 
 	/**
+	 * Generate a Correlated NormalSampleCohort
+	 * 
+	 * @param labelList Label List
+	 * @param annualMeanArray Array of Annual Means
+	 * @param annualVolatilityArray Array of Annual Volatilities
+	 * @param correlationMatrix Correlation Matrix
+	 * @param vertexCount Vertex Count
+	 * @param horizon Horizon
+	 * 
+	 * @return NormalSampleCohort Instance
+	 */
+
+	public static final NormalSampleCohort Correlated (
+		final java.util.List<java.lang.String> labelList,
+		final double[] annualMeanArray,
+		final double[] annualVolatilityArray,
+		final double[][] correlationMatrix,
+		final int vertexCount,
+		final double horizon)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (horizon))
+		{
+			return null;
+		}
+
+		org.drip.measure.discrete.CorrelatedPathVertexDimension correlatedPathVertexDimension = null;
+
+		try
+		{
+			correlatedPathVertexDimension = new org.drip.measure.discrete.CorrelatedPathVertexDimension (
+				new org.drip.measure.crng.RandomNumberGenerator(),
+				correlationMatrix,
+				vertexCount,
+				1,
+				false,
+				null
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		org.drip.measure.discrete.VertexRd[] vertexRdArray =
+			correlatedPathVertexDimension.straightMultiPathVertexRd();
+
+		if (null == vertexRdArray || null == vertexRdArray[0])
+		{
+			return null;
+		}
+
+		double[][] realization = vertexRdArray[0].flatform();
+
+		if (null == realization)
+		{
+			return null;
+		}
+
+		double horizonSQRT = Math.sqrt (horizon);
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			for (int entityIndex = 0; entityIndex < correlationMatrix.length; ++entityIndex)
+			{
+				realization[vertexIndex][entityIndex] =
+					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT +
+					annualMeanArray[entityIndex] * horizon;
+			}
+		}
+
+		try
+		{
+			return new NormalSampleCohort (
+				new org.drip.measure.stochastic.LabelRdVertex (
+					labelList,
+					realization
+				),
+				new org.drip.measure.stochastic.LabelCovariance (
+					labelList,
+					annualMeanArray,
+					annualVolatilityArray,
+					correlationMatrix
+				),
+				horizon
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * NormalSampleCohort Constructor
 	 * 
 	 * @param labelRdVertex R<sup>d</sup> Labeled Vertex

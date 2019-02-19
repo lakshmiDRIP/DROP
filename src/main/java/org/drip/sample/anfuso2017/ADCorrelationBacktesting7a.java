@@ -4,15 +4,20 @@ package org.drip.sample.anfuso2017;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.CorrelatedPathVertexDimension;
-import org.drip.measure.stochastic.LabelCovariance;
-import org.drip.measure.stochastic.LabelRdVertex;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.EntityEquityLabel;
 import org.drip.state.identifier.FXLabel;
+import org.drip.validation.distance.GapLossFunction;
+import org.drip.validation.distance.GapLossWeightFunction;
+import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
+import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
+import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,56 +121,118 @@ import org.drip.validation.riskfactorjoint.NormalSampleCohort;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ADCorrelationBacktesting7a {
+public class ADCorrelationBacktesting7a
+{
 
-	private static final Sample CorrelatedSample (
-		final List<String> labelList,
-		final double[] annualMeanArray,
-		final double[] annualVolatilityArray,
-		final double[][] correlationMatrix,
-		final int vertexCount,
-		final double horizon)
+	private static final double[][] CorrelationMatrix (
+		final double correlation)
+	{
+		return new double[][]
+		{
+			{1.,          correlation},
+			{correlation, 1.         }
+		};
+	}
+
+	private static final void DistanceTest (
+		final GapTestOutcome gapTestOutcome,
+		final int quantileCount,
+		final double pValueThreshold)
 		throws Exception
 	{
-		double horizonSQRT = Math.sqrt (horizon);
+		ProbabilityIntegralTransformHistogram histogram =
+			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
+				quantileCount,
+				pValueThreshold
+			);
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
-			new RandomNumberGenerator(),
-			correlationMatrix,
-			vertexCount,
-			1,
-			false,
-			null
-		);
+		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
 
-		double[][] realization =
-			correlatedPathVertexDimension.straightMultiPathVertexRd()[0].flatform();
+		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		double thresholdTestStatistic = histogram.thresholdTestStatistic();
+
+		double[] gapArray = histogram.testStatisticArray();
+
+		double distance = gapTestOutcome.distance();
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|             Anderson Darling Correlation Distance Test             ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                                                         ||");
+
+		System.out.println ("\t|        - Weighted Distance Metric                                  ||");
+
+		System.out.println ("\t|        - Cumulative p-Value                                        ||");
+
+		System.out.println ("\t|        - Incremental p-Value                                       ||");
+
+		System.out.println ("\t|        - Ensemble Weighted Distance                                ||");
+
+		System.out.println ("\t|        - p-Value Threshold Distance                                ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
 		{
-			for (int entityIndex = 0; entityIndex < correlationMatrix.length; ++entityIndex)
-			{
-				realization[vertexIndex][entityIndex] =
-					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT +
-					annualMeanArray[entityIndex] * horizon;
-			}
+			System.out.println (
+				"\t|" +
+				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
+			);
 		}
 
-		return new NormalSampleCohort (
-			new LabelRdVertex (
+		System.out.println ("\t|--------------------------------------------------------------------||");
+	}
+
+	private static final Ensemble Hypothesis (
+		final List<String> labelList,
+		final double[] annualStateMeanArray,
+		final double[] annualStateVolatilityArray,
+		final double[] correlationArray,
+		final int vertexCount,
+		final double horizon,
+		final String label1,
+		final String label2)
+		throws Exception
+	{
+		Sample[] sampleArray = new Sample[correlationArray.length];
+
+		for (int sampleIndex = 0; sampleIndex < correlationArray.length; ++sampleIndex)
+		{
+			sampleArray[sampleIndex] = NormalSampleCohort.Correlated (
 				labelList,
-				realization
-			),
-			new LabelCovariance (
-				labelList,
-				annualMeanArray,
-				annualVolatilityArray,
-				correlationMatrix
-			),
-			horizon
-		).reduce (
-			labelList.get (0),
-			labelList.get (1)
+				annualStateMeanArray,
+				annualStateVolatilityArray,
+				CorrelationMatrix (correlationArray[sampleIndex]),
+				vertexCount,
+				horizon
+			).reduce (
+				label1,
+				label2
+			);
+		}
+
+		return new Ensemble (
+			sampleArray,
+			new TestStatisticEvaluator[]
+			{
+				new TestStatisticEvaluator()
+				{
+					public double evaluate (
+						final double[] drawArray)
+						throws Exception
+					{
+						return 1.;
+					}
+				}
+			}
 		);
 	}
 
@@ -176,21 +243,19 @@ public class ADCorrelationBacktesting7a {
 		EnvManager.InitEnv ("");
 
 		int vertexCount = 390;
+		int quantileCount = 20;
 		String currency = "USD";
 		double horizon = 1. / 12.;
+		double correlation = 0.50;
+		double pValueThreshold = 0.95;
 		String equityEntity = "SNP500";
 		String fxCurrencyPair = "CHF/USD";
-		double[][] correlation = 
-		{
-			{1.000, 0.500},	// SNP500
-			{0.500, 1.000},	// CHFUSD
-		};
-		double[] annualMeanArray =
+		double[] annualStateMeanArray =
 		{
 			0.06,
 			0.01
 		};
-		double[] annualVolatilityArray =
+		double[] annualStateVolatilityArray =
 		{
 			0.1,
 			0.1
@@ -198,24 +263,54 @@ public class ADCorrelationBacktesting7a {
 
 		List<String> labelList = new ArrayList<String>();
 
-		labelList.add (
-			EntityEquityLabel.Standard (
-				equityEntity,
-				currency
-			).fullyQualifiedName()
+		String snp500Label = EntityEquityLabel.Standard (
+			equityEntity,
+			currency
+		).fullyQualifiedName();
+
+		String chfusdLabel = FXLabel.Standard (fxCurrencyPair).fullyQualifiedName();
+
+		labelList.add (snp500Label);
+
+		labelList.add (chfusdLabel);
+
+		Sample sample = NormalSampleCohort.Correlated (
+			labelList,
+			annualStateMeanArray,
+			annualStateVolatilityArray,
+			CorrelationMatrix (correlation),
+			vertexCount,
+			horizon
+		).reduce (
+			snp500Label,
+			chfusdLabel
 		);
 
-		labelList.add (FXLabel.Standard (fxCurrencyPair).fullyQualifiedName());
-
-		System.out.println (
-			CorrelatedSample (
-				labelList,
-				annualMeanArray,
-				annualVolatilityArray,
-				correlation,
-				vertexCount,
-				horizon
+		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
+			sample,
+			new DiscriminatoryPowerAnalyzerSetting (
+				GapLossFunction.AnfusoKaryampasNawroth(),
+				GapLossWeightFunction.AndersonDarling()
 			)
+		);
+
+		Ensemble hypothesis = Hypothesis (
+			labelList,
+			annualStateMeanArray,
+			annualStateVolatilityArray,
+			new double[] {correlation},
+			vertexCount,
+			horizon,
+			snp500Label,
+			chfusdLabel
+		);
+
+		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
+
+		DistanceTest (
+			gapTestOutcome,
+			quantileCount,
+			pValueThreshold
 		);
 
 		EnvManager.TerminateEnv();
