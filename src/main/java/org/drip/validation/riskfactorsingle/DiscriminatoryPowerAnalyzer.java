@@ -105,30 +105,28 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzer
 {
+	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;
 	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =
 		null;
-	private org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-		_discriminatoryPowerAnalyzerSetting = null;
 
 	/**
 	 * Construct a DiscriminatoryPowerAnalyzer Instance from the Sample
 	 * 
 	 * @param sample The Sample Instance
-	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @return The DiscriminatoryPowerAnalyzer Instance
 	 */
 
 	public static final DiscriminatoryPowerAnalyzer FromSample (
 		final org.drip.validation.evidence.Sample sample,
-		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-			discriminatoryPowerAnalyzerSetting)
+		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 	{
 		try
 		{
 			return null == sample ? null : new DiscriminatoryPowerAnalyzer (
 				sample.nativeProbabilityIntegralTransform(),
-				discriminatoryPowerAnalyzerSetting
+				gapTestSetting
 			);
 		}
 		catch (java.lang.Exception e)
@@ -143,19 +141,18 @@ public class DiscriminatoryPowerAnalyzer
 	 * DiscriminatoryPowerAnalyzer Constructor
 	 * 
 	 * @param sampleProbabilityIntegralTransform Sample Probability Integral Transform
-	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiscriminatoryPowerAnalyzer (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
-		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-			discriminatoryPowerAnalyzerSetting)
+		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 		throws java.lang.Exception
 	{
 		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||
-			null == (_discriminatoryPowerAnalyzerSetting = discriminatoryPowerAnalyzerSetting))
+			null == (_gapTestSetting = gapTestSetting))
 		{
 			throw new java.lang.Exception ("DiscriminatoryPowerAnalyzer Constructor => Invalid Inputs");
 		}
@@ -173,21 +170,20 @@ public class DiscriminatoryPowerAnalyzer
 	}
 
 	/**
-	 * Retrieve the Discriminatory Power Analyzer Setting
+	 * Retrieve the Gap Test Setting
 	 * 
-	 * @return The Discriminatory Power Analyzer Setting
+	 * @return The Gap Test Setting
 	 */
 
-	public org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-		discriminatoryPowerAnalyzerSetting()
+	public org.drip.validation.distance.GapTestSetting gapTestSetting()
 	{
-		return _discriminatoryPowerAnalyzerSetting;
+		return _gapTestSetting;
 	}
 
 	/**
 	 * Run the Gap Test for the Hypothesis
 	 * 
-	 * @param hypothesis The ENsemble Hypothesis
+	 * @param hypothesis The Ensemble Hypothesis
 	 * 
 	 * @return The Sample-Hypothesis Gap Test Outcome
 	 */
@@ -201,8 +197,7 @@ public class DiscriminatoryPowerAnalyzer
 				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
 					(hypothesis.nativeProbabilityIntegralTransform()).distanceTest (
 						_sampleProbabilityIntegralTransform,
-						_discriminatoryPowerAnalyzerSetting.gapLossFunction(),
-						_discriminatoryPowerAnalyzerSetting.gapLossWeightFunction()
+						_gapTestSetting
 					);
 		}
 		catch (java.lang.Exception e)
@@ -217,6 +212,7 @@ public class DiscriminatoryPowerAnalyzer
 	 * Generate the Gap Test Outcomes for the specified Hypothesis Suite
 	 * 
 	 * @param hypothesisSuite The Hypothesis Suite
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @return The Suite of Gap Test Outcomes
 	 */

@@ -1,5 +1,5 @@
 
-package org.drip.validation.riskfactorsingle;
+package org.drip.validation.distance;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,7 @@ package org.drip.validation.riskfactorsingle;
  */
 
 /**
- * <i>DiscriminatoryPowerAnalyzerSetting</i> contains the Settings needed for Customizing the Discriminatory
- * Power Analysis.
+ * <i>GapTestSetting</i> holds the Settings required to Control a Gap Test Run.
  *
  *  <br><br>
  *  <ul>
@@ -96,37 +95,67 @@ package org.drip.validation.riskfactorsingle;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorsingle">Single Risk Factor Aggregate Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance">Hypothesis Target Difference Distance Test</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscriminatoryPowerAnalyzerSetting
+public class GapTestSetting
 {
-	private org.drip.validation.distance.GapLossFunction _gapLossFunction = null;
-	private org.drip.validation.distance.GapLossWeightFunction _gapLossWeightFunction = null;
+	private double _pValueThreshold = java.lang.Double.NaN;
+	private org.drip.validation.distance.GapLossFunction _lossFunction = null;
+	private org.drip.validation.distance.GapLossWeightFunction _lossWeightFunction = null;
 
 	/**
-	 * DiscriminatoryPowerAnalyzerSetting Constructor
+	 * Construct the Anfuso Karyampas Nawroth (2017) Variant of the Gap Test Setting
 	 * 
-	 * @param gapLossFunction Gap Loss Function
-	 * @param gapLossWeightFunction Gap Loss Weight Function
+	 * @param lossWeightFunction The Loss Weight Function
+	 * 
+	 * @return The Anfuso Karyampas Nawroth (2017) Variant of the Gap Test Setting
+	 */
+
+	public static final GapTestSetting AnfusoKaryampasNawroth2017 (
+		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
+	{
+		try
+		{
+			return new GapTestSetting (
+				org.drip.validation.distance.GapLossFunction.AnfusoKaryampasNawroth2017(),
+				lossWeightFunction,
+				1. - org.drip.validation.hypothesis.SignificanceTestSetting.ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * GapTestSetting Constructor
+	 * 
+	 * @param lossFunction  Gap Loss Function
+	 * @param lossWeightFunction Gap Loss Weight Function
+	 * @param pValueThreshold p-ValueThreshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DiscriminatoryPowerAnalyzerSetting (
-		final org.drip.validation.distance.GapLossFunction gapLossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction)
+	public GapTestSetting (
+		final org.drip.validation.distance.GapLossFunction lossFunction,
+		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction,
+		final double pValueThreshold)
 		throws java.lang.Exception
 	{
-		if (null == (_gapLossFunction = gapLossFunction) ||
-			null == (_gapLossWeightFunction = gapLossWeightFunction))
+		if (null == (_lossFunction = lossFunction) ||
+			null == (_lossWeightFunction = lossWeightFunction) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold))
 		{
-			throw new java.lang.Exception
-				("DiscriminatoryPowerAnalyzerSetting Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("GapTestSetting Constructor => Invalid Inputs");
 		}
 	}
 
@@ -136,9 +165,9 @@ public class DiscriminatoryPowerAnalyzerSetting
 	 * @return The Gap Loss Function
 	 */
 
-	public org.drip.validation.distance.GapLossFunction gapLossFunction()
+	public org.drip.validation.distance.GapLossFunction lossFunction()
 	{
-		return _gapLossFunction;
+		return _lossFunction;
 	}
 
 	/**
@@ -147,8 +176,19 @@ public class DiscriminatoryPowerAnalyzerSetting
 	 * @return The Gap Loss Weight Function
 	 */
 
-	public org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction()
+	public org.drip.validation.distance.GapLossWeightFunction lossWeightFunction()
 	{
-		return _gapLossWeightFunction;
+		return _lossWeightFunction;
+	}
+
+	/**
+	 * Retrieve the p-Value Threshold
+	 * 
+	 * @return The p-Value Threshold
+	 */
+
+	public double pValueThreshold()
+	{
+		return _pValueThreshold;
 	}
 }

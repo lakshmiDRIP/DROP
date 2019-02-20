@@ -105,6 +105,7 @@ package org.drip.validation.distance;
 public class GapTestOutcome
 {
 	private double _distance = java.lang.Double.NaN;
+	private double _distanceThreshold = java.lang.Double.NaN;
 	private org.drip.validation.hypothesis.ProbabilityIntegralTransform
 		_probabilityIntegralTransformWeighted = null;
 	private org.drip.validation.hypothesis.ProbabilityIntegralTransform
@@ -117,6 +118,7 @@ public class GapTestOutcome
 	 * @param probabilityIntegralTransformWeighted The Probability Integral Transform of the Weighted Gap
 	 * 		Losses
 	 * @param distance Distance Metric
+	 * @param distanceThreshold Distance Threshold Metric
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -126,12 +128,14 @@ public class GapTestOutcome
 			probabilityIntegralTransformUnweighted,
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform
 			probabilityIntegralTransformWeighted,
-		final double distance)
+		final double distance,
+		final double distanceThreshold)
 		throws java.lang.Exception
 	{
 		if (null == (_probabilityIntegralTransformUnweighted = probabilityIntegralTransformUnweighted) ||
 			null == (_probabilityIntegralTransformWeighted = probabilityIntegralTransformWeighted) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_distance = distance))
+			!org.drip.quant.common.NumberUtil.IsValid (_distance = distance) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_distanceThreshold = distanceThreshold))
 		{
 			throw new java.lang.Exception ("GapTestOutcome Constructor => Invalid Inputs");
 		}
@@ -169,5 +173,16 @@ public class GapTestOutcome
 	public double distance()
 	{
 		return _distance;
+	}
+
+	/**
+	 * Retrieve the Distance Threshold Metric
+	 * 
+	 * @return The Distance Threshold Metric
+	 */
+
+	public double distanceThreshold()
+	{
+		return _distanceThreshold;
 	}
 }

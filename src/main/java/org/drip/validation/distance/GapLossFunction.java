@@ -107,12 +107,12 @@ public abstract class GapLossFunction
 {
 
 	/**
-	 * Construct the Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
+	 * Construct the Anfuso Karyampas Nawroth (2017) Version of the Gap Loss Function
 	 * 
-	 * @return The Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
+	 * @return The Anfuso Karyampas Nawroth (2017) Version of the Gap Loss Function
 	 */
 
-	public static final GapLossFunction AnfusoKaryampasNawroth()
+	public static final GapLossFunction AnfusoKaryampasNawroth2017()
 	{
 		return new GapLossFunction()
 		{

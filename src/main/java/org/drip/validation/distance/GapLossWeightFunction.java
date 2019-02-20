@@ -116,10 +116,10 @@ public abstract class GapLossWeightFunction
 		return new GapLossWeightFunction()
 		{
 			@Override public double weight (
-				final double gap)
+				final double pValueHypothesis)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
+				if (!org.drip.quant.common.NumberUtil.IsValid (pValueHypothesis))
 				{
 					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
 				}
@@ -140,24 +140,25 @@ public abstract class GapLossWeightFunction
 		return new GapLossWeightFunction()
 		{
 			@Override public double weight (
-				final double gap)
+				final double pValueHypothesis)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
+				if (!org.drip.quant.common.NumberUtil.IsValid (pValueHypothesis))
 				{
 					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
 				}
 
-				return 0. == gap ? 0. : 1. / gap;
+				return 0. == pValueHypothesis  || 1. == pValueHypothesis ? 0. :
+					1. / (pValueHypothesis * (1. - pValueHypothesis));
 			}
 		};
 	}
 
 	/**
 	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
+	 * Compute the Weight corresponding to the Hypothesis p-Value
 	 * 
-	 * @param gap The Empirical to Hypothesis Gap
+	 * @param pValueHypothesis The Hypothesis p-Value
 	 * 
 	 * @return The Weight
 	 * 
@@ -165,6 +166,6 @@ public abstract class GapLossWeightFunction
 	 */
 
 	public abstract double weight (
-		final double gap)
+		final double pValueHypothesis)
 		throws java.lang.Exception;
 }

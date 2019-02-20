@@ -233,24 +233,27 @@ public class ProbabilityIntegralTransformTest
 	 * Run a Distance Gap Test between the Hypothesis and the Sample
 	 * 
 	 * @param samplePIT The Sample Probability Integral Transform
-	 * @param empiricsGapLossFunction The Empirics Gap Loss Function
-	 * @param empiricsGapWeightFunction The Empirics Gap Weight Function
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @return The Distance Gap Test Outcome
 	 */
 
 	public org.drip.validation.distance.GapTestOutcome distanceTest (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
-		final org.drip.validation.distance.GapLossFunction empiricsGapLossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction empiricsGapWeightFunction)
+		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 	{
-		if (null == samplePIT || null == empiricsGapLossFunction || null == empiricsGapWeightFunction)
+		if (null == samplePIT || null == gapTestSetting)
 		{
 			return null;
 		}
 
 		double distance = 0.;
 		double hypothesisPValueLeft = 0.;
+
+		org.drip.validation.distance.GapLossFunction gapLossFunction = gapTestSetting.lossFunction();
+
+		org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction =
+			gapTestSetting.lossWeightFunction();
 
 		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new
 			org.drip.validation.evidence.TestStatisticAccumulator();
@@ -266,11 +269,10 @@ public class ProbabilityIntegralTransformTest
 				double hypothesisPValueRight = _probabilityIntegralTransform.pValue
 					(sampleTestStatisticPValue.getKey());
 
-				double gap = sampleTestStatisticPValue.getValue() - hypothesisPValueRight;
+				double gapLoss = gapLossFunction.loss (sampleTestStatisticPValue.getValue() -
+					hypothesisPValueRight);
 
-				double gapLoss = empiricsGapLossFunction.loss (gap);
-
-				double weightedGapLoss = empiricsGapLossFunction.loss (gap);
+				double weightedGapLoss = gapLoss * gapLossWeightFunction.weight (hypothesisPValueRight);
 
 				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);
 
@@ -292,10 +294,98 @@ public class ProbabilityIntegralTransformTest
 
 		try
 		{
+			double pValueThreshold = gapTestSetting.pValueThreshold();
+
 			return new org.drip.validation.distance.GapTestOutcome (
 				unweightedGapLossAccumulator.probabilityIntegralTransform(),
 				weightedGapLossAccumulator.probabilityIntegralTransform(),
-				distance
+				distance,
+				gapLossFunction.loss (_probabilityIntegralTransform.testStatistic (pValueThreshold) -
+					samplePIT.testStatistic (pValueThreshold)) *
+					gapLossWeightFunction.weight (pValueThreshold)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Run a Quantile Test on the Test Statistic
+	 * 
+	 * @param quantileCount The Number of Quantiles inside the Histogram
+	 * 
+	 * @return The Outcome of the Quantile Test
+	 */
+
+	public org.drip.validation.hypothesis.QuantileTestOutcome quantileTest (
+		final int quantileCount)
+	{
+		if (0 >= quantileCount)
+		{
+			return null;
+		}
+
+		int mapSize = _probabilityIntegralTransform.pValueTestStatisticMap().size();
+
+		if (mapSize <= quantileCount)
+		{
+			return null;
+		}
+
+		double[] testStatisticArray = new double[quantileCount + 1];
+		double[] pValueCumulativeArray = new double[quantileCount + 1];
+		double[] pValueIncrementalArray = new double[quantileCount + 1];
+
+		try
+		{
+			pValueIncrementalArray[0] = 0.;
+
+			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic
+				(pValueCumulativeArray[0] = 0.);
+
+			testStatisticArray[quantileCount] = _probabilityIntegralTransform.testStatistic
+				(pValueCumulativeArray[quantileCount] = 1.);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		double testStatisticIncrement = (testStatisticArray[quantileCount] - testStatisticArray[0]) /
+			quantileCount;
+
+		for (int quantileIndex = 1; quantileIndex < quantileCount; ++quantileIndex)
+		{
+			try
+			{
+				pValueIncrementalArray[quantileIndex] = (pValueCumulativeArray[quantileIndex] =
+					_probabilityIntegralTransform.pValue (testStatisticArray[quantileIndex] =
+					testStatisticArray[0] + testStatisticIncrement * quantileIndex)) -
+					pValueCumulativeArray[quantileIndex - 1];
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		pValueIncrementalArray[quantileCount] = pValueCumulativeArray[quantileCount] -
+			pValueCumulativeArray[quantileCount - 1];
+
+		try
+		{
+			return new org.drip.validation.hypothesis.QuantileTestOutcome (
+				testStatisticArray,
+				pValueCumulativeArray,
+				pValueIncrementalArray
 			);
 		}
 		catch (java.lang.Exception e)

@@ -14,7 +14,6 @@ import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
@@ -81,8 +80,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  */
 
 /**
- * <i>ADCorrelationBacktesting7a</i> demonstrates the Horizon Multi-Factor Gap PIT Quantiles set out in Table
- * 7a of Anfuso, Karyampas, and Nawroth (2017).
+ * <i>CVMCorrelationDiscriminatoryPowerAnalysis9a</i> demonstrates the Correlation Discriminatory Power
+ * Analysis on an Ensemble of Hypothesis as seen in Table 9a of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>
@@ -120,7 +119,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ADCorrelationBacktesting7a
+public class CVMCorrelationDiscriminatoryPowerAnalysis9a
 {
 
 	private static final double[][] CorrelationMatrix (
@@ -131,63 +130,6 @@ public class ADCorrelationBacktesting7a
 			{1.,          correlation},
 			{correlation, 1.         }
 		};
-	}
-
-	private static final void DistanceTest (
-		final GapTestOutcome gapTestOutcome,
-		final int quantileCount,
-		final double pValueThreshold)
-		throws Exception
-	{
-		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
-				quantileCount,
-				pValueThreshold
-			);
-
-		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
-
-		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();
-
-		double thresholdTestStatistic = histogram.thresholdTestStatistic();
-
-		double[] gapArray = histogram.testStatisticArray();
-
-		double distance = gapTestOutcome.distance();
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		System.out.println ("\t|             Anderson Darling Correlation Distance Test             ||");
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		System.out.println ("\t|    L -> R:                                                         ||");
-
-		System.out.println ("\t|        - Weighted Distance Metric                                  ||");
-
-		System.out.println ("\t|        - Cumulative p-Value                                        ||");
-
-		System.out.println ("\t|        - Incremental p-Value                                       ||");
-
-		System.out.println ("\t|        - Ensemble Weighted Distance                                ||");
-
-		System.out.println ("\t|        - p-Value Threshold Distance                                ||");
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
-		{
-			System.out.println (
-				"\t|" +
-				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
 	}
 
 	private static final Ensemble Hypothesis (
@@ -236,6 +178,13 @@ public class ADCorrelationBacktesting7a
 		);
 	}
 
+	private static final double DistanceTest (
+		final GapTestOutcome gapTestOutcome)
+		throws Exception
+	{
+		return gapTestOutcome.distance();
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
@@ -243,12 +192,10 @@ public class ADCorrelationBacktesting7a
 		EnvManager.InitEnv ("");
 
 		int sampleCount = 26;
-		int vertexCount = 390;
-		int quantileCount = 20;
+		int vertexCount = 780;
 		String currency = "USD";
 		double horizon = 1. / 12.;
-		double correlation = 0.50;
-		double pValueThreshold = 0.95;
+		double sampleCorrelation = 0.50;
 		String equityEntity = "SNP500";
 		String fxCurrencyPair = "CHF/USD";
 		double[] annualStateMeanArray =
@@ -260,6 +207,14 @@ public class ADCorrelationBacktesting7a
 		{
 			0.1,
 			0.1
+		};
+		double[] hypothesisCorrelationArray =
+		{
+			-0.99,
+			-0.50,
+			 0.00,
+			 0.50,
+			 0.99
 		};
 
 		List<String> labelList = new ArrayList<String>();
@@ -279,7 +234,7 @@ public class ADCorrelationBacktesting7a
 			labelList,
 			annualStateMeanArray,
 			annualStateVolatilityArray,
-			CorrelationMatrix (correlation),
+			CorrelationMatrix (sampleCorrelation),
 			vertexCount,
 			horizon
 		).reduce (
@@ -289,28 +244,47 @@ public class ADCorrelationBacktesting7a
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.AndersonDarling())
+			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.CramersVonMises())
 		);
 
-		Ensemble hypothesis = Hypothesis (
-			labelList,
-			annualStateMeanArray,
-			annualStateVolatilityArray,
-			CorrelationMatrix (correlation),
-			vertexCount,
-			sampleCount,
-			horizon,
-			snp500Label,
-			chfusdLabel
-		);
+		System.out.println ("\t|-----------------------||");
 
-		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
+		System.out.println ("\t|   CORRELATION SCAN    ||");
 
-		DistanceTest (
-			gapTestOutcome,
-			quantileCount,
-			pValueThreshold
-		);
+		System.out.println ("\t|-----------------------||");
+
+		System.out.println ("\t|    L -> R:            ||");
+
+		System.out.println ("\t|        - Correlation  ||");
+
+		System.out.println ("\t|        - Distance     ||");
+
+		System.out.println ("\t|-----------------------||");
+
+		for (double hypothesisCorrelation : hypothesisCorrelationArray)
+		{
+			Ensemble hypothesis = Hypothesis (
+				labelList,
+				annualStateMeanArray,
+				annualStateVolatilityArray,
+				CorrelationMatrix (hypothesisCorrelation),
+				vertexCount,
+				sampleCount,
+				horizon,
+				snp500Label,
+				chfusdLabel
+			);
+
+			GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
+
+			System.out.println (
+				"\t| " +
+				FormatUtil.FormatDouble (hypothesisCorrelation, 1, 3, 1.) + " => " +
+				FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|-----------------------||");
 
 		EnvManager.TerminateEnv();
 	}

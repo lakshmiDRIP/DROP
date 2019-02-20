@@ -8,15 +8,14 @@ import org.drip.analytics.support.Helper;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerAggregate;
-import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
 import org.drip.validation.riskfactorsingle.EventAggregationWeightFunction;
 import org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate;
 import org.drip.validation.riskfactorsingle.HypothesisOutcomeAggregate;
@@ -312,12 +311,6 @@ public class CVMDiscriminatoryPowerAggregation6a
 			0.150
 		};
 
-		DiscriminatoryPowerAnalyzerSetting discriminatoryPowerAnalyzerSetting = new
-			DiscriminatoryPowerAnalyzerSetting (
-				GapLossFunction.AnfusoKaryampasNawroth(),
-				GapLossWeightFunction.CramersVonMises()
-			);
-
 		EventAggregationWeightFunction eventAggregationWeightFunction =
 			EventAggregationWeightFunction.AnfusoKaryampasNawroth();
 
@@ -331,7 +324,7 @@ public class CVMDiscriminatoryPowerAggregation6a
 		DiscriminatoryPowerAnalyzerAggregate discriminatoryPowerAnalyzerAggregate = new
 			DiscriminatoryPowerAnalyzerAggregate (
 				eventSamplePITMap,
-				discriminatoryPowerAnalyzerSetting,
+				GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.CramersVonMises()),
 				eventAggregationWeightFunction
 			);
 

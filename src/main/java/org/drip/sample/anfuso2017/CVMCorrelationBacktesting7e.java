@@ -8,16 +8,15 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.EntityEquityLabel;
 import org.drip.state.identifier.FXLabel;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
-import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -195,22 +194,23 @@ public class CVMCorrelationBacktesting7e
 		final List<String> labelList,
 		final double[] annualStateMeanArray,
 		final double[] annualStateVolatilityArray,
-		final double[] correlationArray,
+		final double[][] correlationMatrix,
 		final int vertexCount,
+		final int sampleCount,
 		final double horizon,
 		final String label1,
 		final String label2)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[correlationArray.length];
+		Sample[] sampleArray = new Sample[sampleCount];
 
-		for (int sampleIndex = 0; sampleIndex < correlationArray.length; ++sampleIndex)
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
 			sampleArray[sampleIndex] = NormalSampleCohort.Correlated (
 				labelList,
 				annualStateMeanArray,
 				annualStateVolatilityArray,
-				CorrelationMatrix (correlationArray[sampleIndex]),
+				correlationMatrix,
 				vertexCount,
 				horizon
 			).reduce (
@@ -242,6 +242,7 @@ public class CVMCorrelationBacktesting7e
 	{
 		EnvManager.InitEnv ("");
 
+		int sampleCount = 26;
 		int vertexCount = 390;
 		int quantileCount = 20;
 		String currency = "USD";
@@ -288,18 +289,16 @@ public class CVMCorrelationBacktesting7e
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			new DiscriminatoryPowerAnalyzerSetting (
-				GapLossFunction.AnfusoKaryampasNawroth(),
-				GapLossWeightFunction.CramersVonMises()
-			)
+			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.CramersVonMises())
 		);
 
 		Ensemble hypothesis = Hypothesis (
 			labelList,
 			annualStateMeanArray,
 			annualStateVolatilityArray,
-			new double[] {correlation},
+			CorrelationMatrix (correlation),
 			vertexCount,
+			sampleCount,
 			horizon,
 			snp500Label,
 			chfusdLabel

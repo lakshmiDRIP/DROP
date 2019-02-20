@@ -64,23 +64,22 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>SignificanceTestSetting</i> contains the Control Settings that determine the Success/Failure of the
- * specified Statistical Hypothesis p-Test.
+ * <i>QuantileTestOutcome</i> contains the Quantile p-value Cumulative and Incremental Outcomes across the
+ * Test Statistic.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
- *  			Back-testing Credit Exposure Models
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
  *  	</li>
  *  	<li>
- *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
@@ -103,152 +102,78 @@ package org.drip.validation.hypothesis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SignificanceTestSetting
+public class QuantileTestOutcome
 {
+	private double[] _testStatisticArray = null;
+	private double[] _pValueCumulativeArray = null;
+	private double[] _pValueIncrementalArray = null;
 
 	/**
-	 * Left Tail Significance Test
-	 */
-
-	public static final int LEFT_TAIL_CHECK = 0;
-
-	/**
-	 * Right Tail Significance Test
-	 */
-
-	public static final int RIGHT_TAIL_CHECK = 1;
-
-	/**
-	 * Double Tail Significance Test
-	 */
-
-	public static final int DOUBLE_TAIL_CHECK = 2;
-
-	/**
-	 * Fisher (1925) Significance Test Threshold
-	 */
-
-	public static final double FISHER_1925_P_TEST_THRESHOLD = 0.05;
-
-	/**
-	 * Anfuso, Karyampas, and Nawroth (2017) Significance Test Threshold
-	 */
-
-	public static final double ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD = 0.01;
-
-	private int _tailCheck = RIGHT_TAIL_CHECK;
-	private double _threshold = java.lang.Double.NaN;
-
-	/**
-	 * Construct Right Tail Check Significance Test Setting using the Fisher Threshold
+	 * QuantileTestOutcome Constructor
 	 * 
-	 * @return The Right Tail Check Significance Test Setting
-	 */
-
-	public static final SignificanceTestSetting FisherRightTail()
-	{
-		try
-		{
-			return new SignificanceTestSetting (
-				FISHER_1925_P_TEST_THRESHOLD,
-				RIGHT_TAIL_CHECK
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct Left Tail Check Significance Test Setting using the Fisher Threshold
-	 * 
-	 * @return The Left Tail Check Significance Test Setting
-	 */
-
-	public static final SignificanceTestSetting FisherLeftTail()
-	{
-		try
-		{
-			return new SignificanceTestSetting (
-				FISHER_1925_P_TEST_THRESHOLD,
-				LEFT_TAIL_CHECK
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct Double Tail Check Significance Test Setting using the Fisher Threshold
-	 * 
-	 * @return The Double Tail Check Significance Test Setting
-	 */
-
-	public static final SignificanceTestSetting FisherDoubleTail()
-	{
-		try
-		{
-			return new SignificanceTestSetting (
-				2. * FISHER_1925_P_TEST_THRESHOLD,
-				DOUBLE_TAIL_CHECK
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * SignificanceTestSetting Constructor
-	 * 
-	 * @param threshold The Test Threshold
-	 * @param tailCheck Test Tail Check Flag
+	 * @param testStatisticArray Array of Test Statistics
+	 * @param pValueCumulativeArray Array of Cumulative p-Values
+	 * @param pValueIncrementalArray Array of Incremental p-Values
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SignificanceTestSetting (
-		final double threshold,
-		final int tailCheck)
+	public QuantileTestOutcome (
+		final double[] testStatisticArray,
+		final double[] pValueCumulativeArray,
+		final double[] pValueIncrementalArray)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_threshold = threshold))
+		if (null == (_testStatisticArray = testStatisticArray) ||
+			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
+			null == (_pValueIncrementalArray = pValueIncrementalArray))
 		{
-			throw new java.lang.Exception ("SignificanceTestSetting Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("QuantileTestOutcome Constructor => Invalid Inputs");
 		}
 
-		_tailCheck = tailCheck;
+		int count = _testStatisticArray.length;
+
+		if (0 == count ||
+			count != _pValueCumulativeArray.length ||
+			count != _pValueIncrementalArray.length ||
+			!org.drip.quant.common.NumberUtil.IsValid (_testStatisticArray) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_pValueIncrementalArray))
+		{
+			throw new java.lang.Exception ("QuantileTestOutcome Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Test Tail Check
+	 * Retrieve the Array of Test Statistics
 	 * 
-	 * @return The Test Tail Check
+	 * @return The Array of Test Statistics
 	 */
 
-	public int tailCheck()
+	public double[] testStatisticArray()
 	{
-		return _tailCheck;
+		return _testStatisticArray;
 	}
 
 	/**
-	 * Retrieve the Test Tail Threshold
+	 * Retrieve the Array of Cumulative p-Values
 	 * 
-	 * @return The Test Tail Threshold
+	 * @return The Array of Cumulative p-Values
 	 */
 
-	public double threshold()
+	public double[] pValueCumulativeArray()
 	{
-		return _threshold;
+		return _pValueCumulativeArray;
+	}
+
+	/**
+	 * Retrieve the Array of Incremental p-Values
+	 * 
+	 * @return The Array of Incremental p-Values
+	 */
+
+	public double[] pValueIncrementalArray()
+	{
+		return _pValueIncrementalArray;
 	}
 }

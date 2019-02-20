@@ -105,10 +105,9 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzerAggregate
 {
+	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;
 	private org.drip.validation.riskfactorsingle.EventAggregationWeightFunction _eventAggregationWeightFunction =
 		null;
-	private org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-		_discriminatoryPowerAnalyzerSetting = null;
 
 	private java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
 		_eventSamplePITMap = new
@@ -118,7 +117,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * DiscriminatoryPowerAnalyzerAggregate Constructor
 	 * 
 	 * @param eventSamplePITMap Event Sample PIT Map
-	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * @param eventAggregationWeightFunction Event Aggregation Weight Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -127,13 +126,12 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	public DiscriminatoryPowerAnalyzerAggregate (
 		final java.util.Map<java.lang.String, org.drip.validation.hypothesis.ProbabilityIntegralTransform>
 			eventSamplePITMap,
-		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-			discriminatoryPowerAnalyzerSetting,
+		final org.drip.validation.distance.GapTestSetting gapTestSetting,
 		final org.drip.validation.riskfactorsingle.EventAggregationWeightFunction eventAggregationWeightFunction)
 		throws java.lang.Exception
 	{
 		if (null == (_eventSamplePITMap = eventSamplePITMap) || 0 == _eventSamplePITMap.size() ||
-			null == (_discriminatoryPowerAnalyzerSetting = discriminatoryPowerAnalyzerSetting) ||
+			null == (_gapTestSetting = gapTestSetting) ||
 			null == (_eventAggregationWeightFunction = eventAggregationWeightFunction))
 		{
 			throw new java.lang.Exception
@@ -142,15 +140,14 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	}
 
 	/**
-	 * Retrieve the Discriminatory Power Analyzer Setting
+	 * Retrieve the Gap Test Setting
 	 * 
-	 * @return The Discriminatory Power Analyzer Setting
+	 * @return The Gap Test Setting
 	 */
 
-	public org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-		discriminatoryPowerAnalyzerSetting()
+	public org.drip.validation.distance.GapTestSetting gapTestSetting()
 	{
-		return _discriminatoryPowerAnalyzerSetting;
+		return _gapTestSetting;
 	}
 
 	/**
@@ -200,7 +197,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 				DiscriminatoryPowerAnalyzer discriminatoryPowerAnalyzer = new DiscriminatoryPowerAnalyzer
 				(
 					_eventSamplePITMap.get (eventID),
-					_discriminatoryPowerAnalyzerSetting
+					_gapTestSetting
 				);
 
 				org.drip.validation.distance.GapTestOutcome gapTestOutcome =

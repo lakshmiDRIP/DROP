@@ -279,6 +279,19 @@ public class UnivariateMoments {
 	}
 
 	/**
+	 * Compute the Series t-Statistic for Hypothesis Pivot = 0 (e.g., the False Positive NULL Hypothesis for
+	 * 	for Homoscedastic Univariate Linear Regression)
+	 * 
+	 * @return The Series t-Statistic
+	 */
+
+	public double tStatistic()
+		throws java.lang.Exception
+	{
+		return _dblMean / java.lang.Math.sqrt (_dblVariance);
+	}
+
+	/**
 	 * Estimate the Offset in Terms of the NUmber of Standard Errors
 	 * 
 	 * @param x The Observation Point

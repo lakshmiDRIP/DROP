@@ -4,9 +4,9 @@ package org.drip.sample.distancetest;
 import org.drip.measure.continuous.R1UnivariateUniform;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
@@ -213,42 +213,36 @@ public class UniformCramersVonMisesGapDiscriminant
 	private static final GapTestOutcome DistanceTest (
 		final Sample sample,
 		final Ensemble ensemble,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
 		return new ProbabilityIntegralTransformTest (
 			ensemble.nativeProbabilityIntegralTransform()
 		).distanceTest (
 			sample.nativeProbabilityIntegralTransform(),
-			gapLossFunction,
-			gapLossWeightFunction
+			gapTestSetting
 		);
 	}
 
 	private static final double DistanceTest (
-		final double hypothesisLeftSupport,
-		final double hypothesisRightSupport,
+		final double hypothesisMean,
+		final double hypothesisSigma,
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction,
+		final GapTestSetting gapTestSetting,
 		final int quantileCount)
 		throws Exception
 	{
-		Ensemble hypothesis = GenerateEnsemble (
-			hypothesisLeftSupport,
-			hypothesisRightSupport,
-			drawCount,
-			sampleCount
-		);
-
 		return DistanceTest (
 			sample,
-			hypothesis,
-			gapLossFunction,
-			gapLossWeightFunction
+			GenerateEnsemble (
+				hypothesisMean,
+				hypothesisSigma,
+				drawCount,
+				sampleCount
+			),
+			gapTestSetting
 		).distance();
 	}
 
@@ -278,9 +272,8 @@ public class UniformCramersVonMisesGapDiscriminant
 			1.75
 		};
 
-		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
-
-		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.CramersVonMises();
+		GapTestSetting gapTestSetting = GapTestSetting.AnfusoKaryampasNawroth2017
+			(GapLossWeightFunction.CramersVonMises());
 
 		Sample sample = GenerateSample (
 			sampleLeftSupport,
@@ -319,8 +312,7 @@ public class UniformCramersVonMisesGapDiscriminant
 							drawCount,
 							sampleCount,
 							sample,
-							gapLossFunction,
-							gapLossWeightFunction,
+							gapTestSetting,
 							quantileCount
 						),
 						1, 8, 1.

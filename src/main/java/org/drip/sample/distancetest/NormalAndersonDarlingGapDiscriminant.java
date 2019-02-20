@@ -4,8 +4,8 @@ package org.drip.sample.distancetest;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
@@ -213,16 +213,14 @@ public class NormalAndersonDarlingGapDiscriminant
 	private static final GapTestOutcome DistanceTest (
 		final Sample sample,
 		final Ensemble ensemble,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
 		return new ProbabilityIntegralTransformTest (
 			ensemble.nativeProbabilityIntegralTransform()
 		).distanceTest (
 			sample.nativeProbabilityIntegralTransform(),
-			gapLossFunction,
-			gapLossWeightFunction
+			gapTestSetting
 		);
 	}
 
@@ -232,8 +230,7 @@ public class NormalAndersonDarlingGapDiscriminant
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction,
+		final GapTestSetting gapTestSetting,
 		final int quantileCount)
 		throws Exception
 	{
@@ -245,8 +242,7 @@ public class NormalAndersonDarlingGapDiscriminant
 				drawCount,
 				sampleCount
 			),
-			gapLossFunction,
-			gapLossWeightFunction
+			gapTestSetting
 		).distance();
 	}
 
@@ -276,9 +272,8 @@ public class NormalAndersonDarlingGapDiscriminant
 			1.50
 		};
 
-		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();
-
-		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.AndersonDarling();
+		GapTestSetting gapTestSetting = GapTestSetting.AnfusoKaryampasNawroth2017
+			(GapLossWeightFunction.AndersonDarling());
 
 		Sample sample = GenerateSample (
 			sampleMean,
@@ -317,8 +312,7 @@ public class NormalAndersonDarlingGapDiscriminant
 							drawCount,
 							sampleCount,
 							sample,
-							gapLossFunction,
-							gapLossWeightFunction,
+							gapTestSetting,
 							quantileCount
 						),
 						1, 8, 1.
