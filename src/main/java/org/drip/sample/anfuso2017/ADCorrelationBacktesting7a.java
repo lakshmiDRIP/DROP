@@ -14,7 +14,9 @@ import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
+import org.drip.validation.hypothesis.HistogramTestOutcome;
+import org.drip.validation.hypothesis.HistogramTestSetting;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
@@ -135,15 +137,15 @@ public class ADCorrelationBacktesting7a
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int quantileCount,
+		final int histogramCount,
 		final double pValueThreshold)
 		throws Exception
 	{
-		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
-				quantileCount,
-				pValueThreshold
-			);
+		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
+			gapTestOutcome.probabilityIntegralTransformWeighted()
+		).histogramTest (
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
 
@@ -175,13 +177,13 @@ public class ADCorrelationBacktesting7a
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
+		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
-				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueCumulativeArray[histogramIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
 			);
@@ -244,7 +246,7 @@ public class ADCorrelationBacktesting7a
 
 		int sampleCount = 26;
 		int vertexCount = 390;
-		int quantileCount = 20;
+		int histogramCount = 20;
 		String currency = "USD";
 		double horizon = 1. / 12.;
 		double correlation = 0.50;
@@ -308,7 +310,7 @@ public class ADCorrelationBacktesting7a
 
 		DistanceTest (
 			gapTestOutcome,
-			quantileCount,
+			histogramCount,
 			pValueThreshold
 		);
 

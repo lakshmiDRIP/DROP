@@ -64,8 +64,8 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>ProbabilityIntegralTransformHistogram</i> contains the p-value Cumulative and Incremental Histograma
- * across the Test Statistic.
+ * <i>HistogramTestOutcome</i> contains the p-value Cumulative and Incremental Histograms across the Test
+ * Statistic.
  *
  *  <br><br>
  *  <ul>
@@ -102,7 +102,7 @@ package org.drip.validation.hypothesis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProbabilityIntegralTransformHistogram
+public class HistogramTestOutcome
 {
 	private double[] _testStatisticArray = null;
 	private double[] _pValueCumulativeArray = null;
@@ -110,7 +110,7 @@ public class ProbabilityIntegralTransformHistogram
 	private double _thresholdTestStatistic = java.lang.Double.NaN;
 
 	/**
-	 * ProbabilityIntegralTransformHistogram Constructor
+	 * HistogramTestOutcome Constructor
 	 * 
 	 * @param testStatisticArray Array of Test Statistics
 	 * @param pValueCumulativeArray Array of Cumulative p-Values
@@ -120,7 +120,7 @@ public class ProbabilityIntegralTransformHistogram
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ProbabilityIntegralTransformHistogram (
+	public HistogramTestOutcome (
 		final double[] testStatisticArray,
 		final double[] pValueCumulativeArray,
 		final double[] pValueIncrementalArray,
@@ -132,8 +132,7 @@ public class ProbabilityIntegralTransformHistogram
 			null == (_pValueIncrementalArray = pValueIncrementalArray) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic))
 		{
-			throw new java.lang.Exception
-				("ProbabilityIntegralTransformHistogram Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
 		}
 
 		int count = _testStatisticArray.length;
@@ -145,8 +144,7 @@ public class ProbabilityIntegralTransformHistogram
 			!org.drip.quant.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_pValueIncrementalArray))
 		{
-			throw new java.lang.Exception
-				("ProbabilityIntegralTransformHistogram Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
 		}
 	}
 

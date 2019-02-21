@@ -64,22 +64,22 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>QuantileTestOutcome</i> contains the Quantile p-value Cumulative and Incremental Outcomes across the
- * Test Statistic.
+ * <i>HistogramTestSetting</i> holds the Settings required to conduct a Histogram Test.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
- *  			American Statistician 56 (3) 202-206
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
  *  	</li>
  *  	<li>
- *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
- *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
  *  	</li>
  *  	<li>
- *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
- *  			and Purpose American Statistician 70 (2) 129-133
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
  *  	</li>
  *  	<li>
  *  		Wikipedia (2018): Probability Integral Transform
@@ -102,78 +102,78 @@ package org.drip.validation.hypothesis;
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuantileTestOutcome
+public class HistogramTestSetting
 {
-	private double[] _testStatisticArray = null;
-	private double[] _pValueCumulativeArray = null;
-	private double[] _pValueIncrementalArray = null;
+	private int _histogramCount = -1;
+	private double _pValueThreshold = java.lang.Double.NaN;
 
 	/**
-	 * QuantileTestOutcome Constructor
+	 * Construct the Anfuso Karyampas Nawroth (2017) Instance of the Histogram Test Setting
 	 * 
-	 * @param testStatisticArray Array of Test Statistics
-	 * @param pValueCumulativeArray Array of Cumulative p-Values
-	 * @param pValueIncrementalArray Array of Incremental p-Values
+	 * @param histogramCount Count of the Histograms
+	 * 
+	 * @return The Anfuso Karyampas Nawroth (2017) Instance of the Histogram Test Setting
+	 */
+
+	public static final HistogramTestSetting AnfusoKaryampasNawroth2017 (
+		final int histogramCount)
+	{
+		try
+		{
+			return new HistogramTestSetting (
+				histogramCount,
+				1. - org.drip.validation.hypothesis.SignificanceTestSetting.ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * HistogramTestSetting Constructor
+	 * 
+	 * @param histogramCount Count of Histograms
+	 * @param pValueThreshold Histogram Test p-Value Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public QuantileTestOutcome (
-		final double[] testStatisticArray,
-		final double[] pValueCumulativeArray,
-		final double[] pValueIncrementalArray)
+	public HistogramTestSetting (
+		final int histogramCount,
+		final double pValueThreshold)
 		throws java.lang.Exception
 	{
-		if (null == (_testStatisticArray = testStatisticArray) ||
-			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
-			null == (_pValueIncrementalArray = pValueIncrementalArray))
+		if (1 >= (_histogramCount = histogramCount) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold) ||
+				0. >= _pValueThreshold)
 		{
-			throw new java.lang.Exception ("QuantileTestOutcome Constructor => Invalid Inputs");
-		}
-
-		int count = _testStatisticArray.length;
-
-		if (0 == count ||
-			count != _pValueCumulativeArray.length ||
-			count != _pValueIncrementalArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_testStatisticArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueIncrementalArray))
-		{
-			throw new java.lang.Exception ("QuantileTestOutcome Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("HistogramTestSetting Constructor => Invalid Setting");
 		}
 	}
 
 	/**
-	 * Retrieve the Array of Test Statistics
+	 * Retrieve the Count of Histograms
 	 * 
-	 * @return The Array of Test Statistics
+	 * @return The Count of Histograms
 	 */
 
-	public double[] testStatisticArray()
+	public int histogramCount()
 	{
-		return _testStatisticArray;
+		return _histogramCount;
 	}
 
 	/**
-	 * Retrieve the Array of Cumulative p-Values
+	 * Retrieve the Histogram Test p-Value Threshold
 	 * 
-	 * @return The Array of Cumulative p-Values
+	 * @return The Histogram Test p-Value Threshold
 	 */
 
-	public double[] pValueCumulativeArray()
+	public double pValueThreshold()
 	{
-		return _pValueCumulativeArray;
-	}
-
-	/**
-	 * Retrieve the Array of Incremental p-Values
-	 * 
-	 * @return The Array of Incremental p-Values
-	 */
-
-	public double[] pValueIncrementalArray()
-	{
-		return _pValueIncrementalArray;
+		return _pValueThreshold;
 	}
 }

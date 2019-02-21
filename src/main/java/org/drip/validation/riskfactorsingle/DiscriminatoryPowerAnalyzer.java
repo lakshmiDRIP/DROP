@@ -194,11 +194,12 @@ public class DiscriminatoryPowerAnalyzer
 		try
 		{
 			return null == hypothesis ? null : new
-				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
-					(hypothesis.nativeProbabilityIntegralTransform()).distanceTest (
-						_sampleProbabilityIntegralTransform,
-						_gapTestSetting
-					);
+				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest (
+					hypothesis.nativeProbabilityIntegralTransform()
+				).distanceTest (
+					_sampleProbabilityIntegralTransform,
+					_gapTestSetting
+				);
 		}
 		catch (java.lang.Exception e)
 		{

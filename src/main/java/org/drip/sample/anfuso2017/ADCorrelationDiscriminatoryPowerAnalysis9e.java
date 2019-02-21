@@ -8,15 +8,14 @@ import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.EntityEquityLabel;
 import org.drip.state.identifier.FXLabel;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
-import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -245,10 +244,7 @@ public class ADCorrelationDiscriminatoryPowerAnalysis9e
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			new DiscriminatoryPowerAnalyzerSetting (
-				GapLossFunction.AnfusoKaryampasNawroth(),
-				GapLossWeightFunction.AndersonDarling()
-			)
+			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.AndersonDarling())
 		);
 
 		System.out.println ("\t|-----------------------||");

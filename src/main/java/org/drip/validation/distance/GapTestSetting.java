@@ -104,7 +104,6 @@ package org.drip.validation.distance;
 
 public class GapTestSetting
 {
-	private double _pValueThreshold = java.lang.Double.NaN;
 	private org.drip.validation.distance.GapLossFunction _lossFunction = null;
 	private org.drip.validation.distance.GapLossWeightFunction _lossWeightFunction = null;
 
@@ -123,8 +122,7 @@ public class GapTestSetting
 		{
 			return new GapTestSetting (
 				org.drip.validation.distance.GapLossFunction.AnfusoKaryampasNawroth2017(),
-				lossWeightFunction,
-				1. - org.drip.validation.hypothesis.SignificanceTestSetting.ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD
+				lossWeightFunction
 			);
 		}
 		catch (java.lang.Exception e)
@@ -140,20 +138,17 @@ public class GapTestSetting
 	 * 
 	 * @param lossFunction  Gap Loss Function
 	 * @param lossWeightFunction Gap Loss Weight Function
-	 * @param pValueThreshold p-ValueThreshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GapTestSetting (
 		final org.drip.validation.distance.GapLossFunction lossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction,
-		final double pValueThreshold)
+		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
 		throws java.lang.Exception
 	{
 		if (null == (_lossFunction = lossFunction) ||
-			null == (_lossWeightFunction = lossWeightFunction) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold))
+			null == (_lossWeightFunction = lossWeightFunction))
 		{
 			throw new java.lang.Exception ("GapTestSetting Constructor => Invalid Inputs");
 		}
@@ -179,16 +174,5 @@ public class GapTestSetting
 	public org.drip.validation.distance.GapLossWeightFunction lossWeightFunction()
 	{
 		return _lossWeightFunction;
-	}
-
-	/**
-	 * Retrieve the p-Value Threshold
-	 * 
-	 * @return The p-Value Threshold
-	 */
-
-	public double pValueThreshold()
-	{
-		return _pValueThreshold;
 	}
 }

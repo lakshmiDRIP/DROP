@@ -10,7 +10,8 @@ import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
+import org.drip.validation.hypothesis.HistogramTestOutcome;
+import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 
 /*
@@ -219,7 +220,7 @@ public class ExponentialAndersonDarlingGapAnalysis
 		final int sampleCount,
 		final Sample sample,
 		final GapTestSetting gapTestSetting,
-		final int quantileCount,
+		final int histogramCount,
 		final double pValueThreshold)
 		throws Exception
 	{
@@ -235,11 +236,11 @@ public class ExponentialAndersonDarlingGapAnalysis
 			gapTestSetting
 		);
 
-		ProbabilityIntegralTransformHistogram histogram =
-			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (
-				quantileCount,
-				pValueThreshold
-			);
+		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
+			gapTestOutcome.probabilityIntegralTransformWeighted()
+		).histogramTest (
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
 
@@ -279,13 +280,13 @@ public class ExponentialAndersonDarlingGapAnalysis
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int quantileIndex = 0; quantileIndex <= quantileCount; ++quantileIndex)
+		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
-				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueCumulativeArray[histogramIndex], 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (distance, 1, 8, 1.) + " | " +
 				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + " ||"
 			);
@@ -303,7 +304,7 @@ public class ExponentialAndersonDarlingGapAnalysis
 		int drawCount = 2000;
 		int sampleCount = 600;
 		double sampleLambda = 1.;
-		int quantileCount = 20;
+		int histogramCount = 20;
 		double pValueThreshold = 0.99;
 		double[] hypothesisLambdaArray =
 		{
@@ -349,7 +350,7 @@ public class ExponentialAndersonDarlingGapAnalysis
 				sampleCount,
 				sample,
 				gapTestSetting,
-				quantileCount,
+				histogramCount,
 				pValueThreshold
 			);
 		}

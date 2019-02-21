@@ -294,15 +294,10 @@ public class ProbabilityIntegralTransformTest
 
 		try
 		{
-			double pValueThreshold = gapTestSetting.pValueThreshold();
-
 			return new org.drip.validation.distance.GapTestOutcome (
 				unweightedGapLossAccumulator.probabilityIntegralTransform(),
 				weightedGapLossAccumulator.probabilityIntegralTransform(),
-				distance,
-				gapLossFunction.loss (_probabilityIntegralTransform.testStatistic (pValueThreshold) -
-					samplePIT.testStatistic (pValueThreshold)) *
-					gapLossWeightFunction.weight (pValueThreshold)
+				distance
 			);
 		}
 		catch (java.lang.Exception e)
@@ -314,31 +309,33 @@ public class ProbabilityIntegralTransformTest
 	}
 
 	/**
-	 * Run a Quantile Test on the Test Statistic
+	 * Run a Histogram Test Corresponding to the Test Statistic and its p-Value
 	 * 
-	 * @param quantileCount The Number of Quantiles inside the Histogram
+	 * @param histogramTestSetting The Histogram Test Setting
 	 * 
-	 * @return The Outcome of the Quantile Test
+	 * @return The Histogram Test Corresponding to the Test Statistic and its p-Value
 	 */
 
-	public org.drip.validation.hypothesis.QuantileTestOutcome quantileTest (
-		final int quantileCount)
+	public org.drip.validation.hypothesis.HistogramTestOutcome histogramTest (
+		final org.drip.validation.hypothesis.HistogramTestSetting histogramTestSetting)
 	{
-		if (0 >= quantileCount)
+		if (null == histogramTestSetting)
 		{
 			return null;
 		}
+
+		int histogramCount = histogramTestSetting.histogramCount();
 
 		int mapSize = _probabilityIntegralTransform.pValueTestStatisticMap().size();
 
-		if (mapSize <= quantileCount)
+		if (mapSize <= histogramCount)
 		{
 			return null;
 		}
 
-		double[] testStatisticArray = new double[quantileCount + 1];
-		double[] pValueCumulativeArray = new double[quantileCount + 1];
-		double[] pValueIncrementalArray = new double[quantileCount + 1];
+		double[] testStatisticArray = new double[histogramCount + 1];
+		double[] pValueCumulativeArray = new double[histogramCount + 1];
+		double[] pValueIncrementalArray = new double[histogramCount + 1];
 
 		try
 		{
@@ -347,8 +344,8 @@ public class ProbabilityIntegralTransformTest
 			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic
 				(pValueCumulativeArray[0] = 0.);
 
-			testStatisticArray[quantileCount] = _probabilityIntegralTransform.testStatistic
-				(pValueCumulativeArray[quantileCount] = 1.);
+			testStatisticArray[histogramCount] = _probabilityIntegralTransform.testStatistic
+				(pValueCumulativeArray[histogramCount] = 1.);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -357,17 +354,17 @@ public class ProbabilityIntegralTransformTest
 			return null;
 		}
 
-		double testStatisticIncrement = (testStatisticArray[quantileCount] - testStatisticArray[0]) /
-			quantileCount;
+		double testStatisticIncrement = (testStatisticArray[histogramCount] - testStatisticArray[0]) /
+			histogramCount;
 
-		for (int quantileIndex = 1; quantileIndex < quantileCount; ++quantileIndex)
+		for (int histogramIndex = 1; histogramIndex < histogramCount; ++histogramIndex)
 		{
 			try
 			{
-				pValueIncrementalArray[quantileIndex] = (pValueCumulativeArray[quantileIndex] =
-					_probabilityIntegralTransform.pValue (testStatisticArray[quantileIndex] =
-					testStatisticArray[0] + testStatisticIncrement * quantileIndex)) -
-					pValueCumulativeArray[quantileIndex - 1];
+				pValueIncrementalArray[histogramIndex] = (pValueCumulativeArray[histogramIndex] =
+					_probabilityIntegralTransform.pValue (testStatisticArray[histogramIndex] =
+					testStatisticArray[0] + testStatisticIncrement * histogramIndex)) -
+					pValueCumulativeArray[histogramIndex - 1];
 			}
 			catch (java.lang.Exception e)
 			{
@@ -377,15 +374,16 @@ public class ProbabilityIntegralTransformTest
 			}
 		}
 
-		pValueIncrementalArray[quantileCount] = pValueCumulativeArray[quantileCount] -
-			pValueCumulativeArray[quantileCount - 1];
+		pValueIncrementalArray[histogramCount] = pValueCumulativeArray[histogramCount] -
+			pValueCumulativeArray[histogramCount - 1];
 
 		try
 		{
-			return new org.drip.validation.hypothesis.QuantileTestOutcome (
+			return new org.drip.validation.hypothesis.HistogramTestOutcome (
 				testStatisticArray,
 				pValueCumulativeArray,
-				pValueIncrementalArray
+				pValueIncrementalArray,
+				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())
 			);
 		}
 		catch (java.lang.Exception e)
