@@ -291,7 +291,7 @@ public class CVMCorrelationBacktesting7e
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.CramersVonMises())
+			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises())
 		);
 
 		Ensemble hypothesis = Hypothesis (

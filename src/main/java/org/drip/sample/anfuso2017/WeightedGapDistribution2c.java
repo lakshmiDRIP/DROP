@@ -281,7 +281,7 @@ public class WeightedGapDistribution2c
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.CramersVonMises())
+			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises())
 		);
 
 		Ensemble hypothesis = GenerateEnsemble (

@@ -244,7 +244,7 @@ public class CVMCorrelationDiscriminatoryPowerAnalysis9c
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.AnfusoKaryampasNawroth2017 (GapLossWeightFunction.CramersVonMises())
+			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises())
 		);
 
 		System.out.println ("\t|-----------------------||");

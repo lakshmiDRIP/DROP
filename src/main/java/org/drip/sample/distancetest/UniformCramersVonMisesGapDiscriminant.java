@@ -272,7 +272,7 @@ public class UniformCramersVonMisesGapDiscriminant
 			1.75
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.AnfusoKaryampasNawroth2017
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
 			(GapLossWeightFunction.CramersVonMises());
 
 		Sample sample = GenerateSample (

@@ -335,7 +335,7 @@ public class UniformAndersonDarlingGapAnalysis
 			1.75
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.AnfusoKaryampasNawroth2017
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
 			(GapLossWeightFunction.AndersonDarling());
 
 		Sample sample = GenerateSample (

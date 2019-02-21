@@ -108,20 +108,48 @@ public class GapTestSetting
 	private org.drip.validation.distance.GapLossWeightFunction _lossWeightFunction = null;
 
 	/**
-	 * Construct the Anfuso Karyampas Nawroth (2017) Variant of the Gap Test Setting
+	 * Construct the Anfuso Karyampas Nawroth (2017) Risk Factor Loss Test Variant of the Gap Test Setting
 	 * 
 	 * @param lossWeightFunction The Loss Weight Function
 	 * 
-	 * @return The Anfuso Karyampas Nawroth (2017) Variant of the Gap Test Setting
+	 * @return The Anfuso Karyampas Nawroth (2017) Risk Factor Loss Test Variant of the Gap Test Setting
 	 */
 
-	public static final GapTestSetting AnfusoKaryampasNawroth2017 (
+	public static final GapTestSetting RiskFactorLossTest (
 		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
 	{
 		try
 		{
 			return new GapTestSetting (
-				org.drip.validation.distance.GapLossFunction.AnfusoKaryampasNawroth2017(),
+				org.drip.validation.distance.GapLossFunction.RiskFactorTest(),
+				lossWeightFunction
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Anfuso Karyampas Nawroth (2017) Conservative Portfolio Loss Test Variant of the Gap Test
+	 * 	Setting
+	 * 
+	 * @param lossWeightFunction The Loss Weight Function
+	 * 
+	 * @return The Anfuso Karyampas Nawroth (2017) Conservative Portfolio Loss Test Variant of the Gap Test
+	 * 	Setting
+	 */
+
+	public static final GapTestSetting ConservativePortfolioLossTest (
+		final org.drip.validation.distance.GapLossWeightFunction lossWeightFunction)
+	{
+		try
+		{
+			return new GapTestSetting (
+				org.drip.validation.distance.GapLossFunction.ConservativePortfolioTest(),
 				lossWeightFunction
 			);
 		}

@@ -10,6 +10,9 @@ import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.HistogramTestOutcome;
+import org.drip.validation.hypothesis.HistogramTestSetting;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -75,8 +78,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  */
 
 /**
- * <i>ADDiscriminatoryPowerAnalysis4c</i> demonstrates the Discriminatory Power Analysis illustrated in Table
- * 4c of Anfuso, Karyampas, and Nawroth (2013).
+ * <i>MTMVolatilityComparison11d</i> illustrates the Impact on Gap Distribution of Hypothesis Parameters as
+ * laid out in Table 11d of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>
@@ -114,7 +117,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ADDiscriminatoryPowerAnalysis4c
+public class MTMVolatilityComparison11d
 {
 
 	private static final double UnivariateRandom (
@@ -197,11 +200,37 @@ public class ADDiscriminatoryPowerAnalysis4c
 		);
 	}
 
-	private static final double DistanceTest (
-		final GapTestOutcome gapTestOutcome)
+	private static final void DistanceTest (
+		final GapTestOutcome gapTestOutcome,
+		final int histogramCount)
 		throws Exception
 	{
-		return gapTestOutcome.distance();
+		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
+			gapTestOutcome.probabilityIntegralTransformWeighted()
+		).histogramTest (
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+		);
+
+		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
+
+		double[] gapArray = histogram.testStatisticArray();
+
+		System.out.println ("\t|----------------------------||");
+
+		System.out.println ("\t| CPT Integrand Distribution ||");
+
+		System.out.println ("\t|----------------------------||");
+
+		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		{
+			System.out.println (
+				"\t|" +
+				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 9, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|----------------------------||");
 	}
 
 	public static final void main (
@@ -210,78 +239,48 @@ public class ADDiscriminatoryPowerAnalysis4c
 	{
 		EnvManager.InitEnv ("");
 
-		int drawCount = 3780;
-		int sampleCount = 100;
-		double horizon = 1.;
-		double sampleAnnualMean = 0.;
-		double sampleAnnualVolatility = 0.1;
-		double[] hypothesisAnnualMeanArray = {
-			-0.050,
-			-0.025,
-			 0.000,
-			 0.025,
-			 0.050
-		};
-		double[] hypothesisAnnualVolatilityArray = {
-			0.050,
-			0.075,
-			0.100,
-			0.125,
-			0.150
-		};
-
-		double hypothesisHorizonSQRT = Math.sqrt (horizon);
+		int drawCount = 100000;
+		int sampleCount = 10;
+		double sampleMean = 0.20;
+		double volatility = 2.;
+		int histogramCount = 10;
+		double hypothesis1Mean = 0.10;
+		double hypothesis2Mean = 0.30;
 
 		Sample sample = GenerateSample (
-			sampleAnnualMean,
-			sampleAnnualVolatility * hypothesisHorizonSQRT,
+			sampleMean,
+			volatility,
 			drawCount
 		);
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling())
+			GapTestSetting.ConservativePortfolioLossTest (GapLossWeightFunction.CramersVonMises())
 		);
 
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t|     DISCRIMINANT GRID SCAN     ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t|    L -> R:                     ||");
-
-		System.out.println ("\t|        - Hypothesis Mean       ||");
-
-		System.out.println ("\t|        - Hypothesis Sigma      ||");
-
-		System.out.println ("\t|        - Distance Metric       ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)
-		{
-			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)
-			{
-				Ensemble hypothesis = GenerateEnsemble (
-					hypothesisAnnualMean * horizon,
-					hypothesisAnnualVolatility * hypothesisHorizonSQRT,
+		DistanceTest (
+			discriminatoryPowerAnalysis.gapTest (
+				GenerateEnsemble (
+					hypothesis1Mean,
+					volatility,
 					drawCount,
 					sampleCount
-				);
+				)
+			),
+			histogramCount
+		);
 
-				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
-
-				System.out.println (
-					"\t| " +
-					FormatUtil.FormatDouble (hypothesisAnnualMean, 1, 3, 1.) + " | " +
-					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 1, 3, 1.) + " => " +
-					FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + " ||"
-				);
-			}
-		}
-
-		System.out.println ("\t|--------------------------------||");
+		DistanceTest (
+			discriminatoryPowerAnalysis.gapTest (
+				GenerateEnsemble (
+					hypothesis2Mean,
+					volatility,
+					drawCount,
+					sampleCount
+				)
+			),
+			histogramCount
+		);
 
 		EnvManager.TerminateEnv();
 	}

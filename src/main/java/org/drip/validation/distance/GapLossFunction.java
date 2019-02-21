@@ -107,12 +107,12 @@ public abstract class GapLossFunction
 {
 
 	/**
-	 * Construct the Anfuso Karyampas Nawroth (2017) Version of the Gap Loss Function
+	 * Construct the Anfuso Karyampas Nawroth (2017) Risk Factor Test Version of the Gap Loss Function
 	 * 
-	 * @return The Anfuso Karyampas Nawroth (2017) Version of the Gap Loss Function
+	 * @return The Anfuso Karyampas Nawroth (2017) Risk Factor Test Version of the Gap Loss Function
 	 */
 
-	public static final GapLossFunction AnfusoKaryampasNawroth2017()
+	public static final GapLossFunction RiskFactorTest()
 	{
 		return new GapLossFunction()
 		{
@@ -126,6 +126,32 @@ public abstract class GapLossFunction
 				}
 
 				return gap * gap;
+			}
+		};
+	}
+
+	/**
+	 * Construct the Anfuso Karyampas Nawroth (2017) Conservative Portfolio Test Version of the Gap Loss
+	 * 	Function
+	 * 
+	 * @return The Anfuso Karyampas Nawroth (2017) Conservative Portfolio Test Version of the Gap Loss
+	 * 	Function
+	 */
+
+	public static final GapLossFunction ConservativePortfolioTest()
+	{
+		return new GapLossFunction()
+		{
+			@Override public double loss (
+				final double gap)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
+				{
+					throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
+				}
+
+				return gap < 0. ? 0. : gap * gap;
 			}
 		};
 	}

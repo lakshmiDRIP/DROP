@@ -4,13 +4,6 @@ package org.drip.sample.anfuso2017;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossWeightFunction;
-import org.drip.validation.distance.GapTestOutcome;
-import org.drip.validation.distance.GapTestSetting;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,8 +68,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  */
 
 /**
- * <i>ADDiscriminatoryPowerAnalysis4c</i> demonstrates the Discriminatory Power Analysis illustrated in Table
- * 4c of Anfuso, Karyampas, and Nawroth (2013).
+ * <i>ExpectedPositiveExposure12</i> computes the Expected Positive Exposure as a Function of the MTM
+ * Volatility as laid out in Table 12 of Anfuso, Karyampas, and Nawroth (2017).
  *
  *  <br><br>
  *  <ul>
@@ -114,94 +107,54 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ADDiscriminatoryPowerAnalysis4c
+public class ExpectedPositiveExposure12
 {
 
-	private static final double UnivariateRandom (
-		final double mean,
-		final double sigma)
-		throws Exception
-	{
-		return new R1UnivariateNormal (
-			mean,
-			sigma
-		).random();
-	}
-
-	private static final Sample GenerateSample (
+	private static final double ExpectedPositiveRealization (
 		final double mean,
 		final double sigma,
 		final int drawCount)
 		throws Exception
 	{
-		double[] univariateRandomArray = new double[drawCount];
+		double expectedPositiveRealization = 0.;
 
 		for (int drawIndex = 0; drawIndex < drawCount; ++drawIndex)
 		{
-			univariateRandomArray[drawIndex] = UnivariateRandom (
+			double realization = new R1UnivariateNormal (
 				mean,
 				sigma
-			);
+			).random();
+
+			expectedPositiveRealization = expectedPositiveRealization +
+				(realization > 0. ? realization : 0.);
 		}
 
-		return new Sample (univariateRandomArray);
+		return expectedPositiveRealization / drawCount;
 	}
 
-	private static final Sample[] GenerateSampleArray (
+	private static final void ExpectedPositiveRealization (
 		final double mean,
-		final double sigma,
-		final int drawCount,
-		final int sampleCount)
+		final double[] sigmaArray,
+		final int drawCount)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[sampleCount];
-
-		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+		for (double sigma : sigmaArray)
 		{
-			sampleArray[sampleIndex] = GenerateSample (
-				mean,
-				sigma,
-				drawCount
+			System.out.println (
+				"\t| " +
+				FormatUtil.FormatDouble (mean, 1, 1, 1.) + " | " +
+				FormatUtil.FormatDouble (sigma, 1, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (
+					ExpectedPositiveRealization (
+						mean,
+						sigma,
+						drawCount
+					), 1, 4, 1.
+				) + " ||"
 			);
 		}
 
-		return sampleArray;
-	}
-
-	private static final Ensemble GenerateEnsemble (
-		final double mean,
-		final double sigma,
-		final int drawCount,
-		final int sampleCount)
-		throws Exception
-	{
-		return new Ensemble (
-			GenerateSampleArray (
-				mean,
-				sigma,
-				drawCount,
-				sampleCount
-			),
-			new TestStatisticEvaluator[]
-			{
-				new TestStatisticEvaluator()
-				{
-					public double evaluate (
-						final double[] drawArray)
-						throws Exception
-					{
-						return 1.;
-					}
-				}
-			}
-		);
-	}
-
-	private static final double DistanceTest (
-		final GapTestOutcome gapTestOutcome)
-		throws Exception
-	{
-		return gapTestOutcome.distance();
+		System.out.println ("\t|------------------------||");
 	}
 
 	public static final void main (
@@ -210,78 +163,45 @@ public class ADDiscriminatoryPowerAnalysis4c
 	{
 		EnvManager.InitEnv ("");
 
-		int drawCount = 3780;
-		int sampleCount = 100;
-		double horizon = 1.;
-		double sampleAnnualMean = 0.;
-		double sampleAnnualVolatility = 0.1;
-		double[] hypothesisAnnualMeanArray = {
-			-0.050,
-			-0.025,
-			 0.000,
-			 0.025,
-			 0.050
-		};
-		double[] hypothesisAnnualVolatilityArray = {
-			0.050,
-			0.075,
-			0.100,
-			0.125,
-			0.150
-		};
-
-		double hypothesisHorizonSQRT = Math.sqrt (horizon);
-
-		Sample sample = GenerateSample (
-			sampleAnnualMean,
-			sampleAnnualVolatility * hypothesisHorizonSQRT,
-			drawCount
-		);
-
-		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
-			sample,
-			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling())
-		);
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t|     DISCRIMINANT GRID SCAN     ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		System.out.println ("\t|    L -> R:                     ||");
-
-		System.out.println ("\t|        - Hypothesis Mean       ||");
-
-		System.out.println ("\t|        - Hypothesis Sigma      ||");
-
-		System.out.println ("\t|        - Distance Metric       ||");
-
-		System.out.println ("\t|--------------------------------||");
-
-		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)
+		int drawCount = 100000;
+		double[] meanArray =
 		{
-			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)
-			{
-				Ensemble hypothesis = GenerateEnsemble (
-					hypothesisAnnualMean * horizon,
-					hypothesisAnnualVolatility * hypothesisHorizonSQRT,
-					drawCount,
-					sampleCount
-				);
+			-5.0,
+			 0.0,
+			 5.0
+		};
+		double[] sigmaArray = {
+			1.0,
+			2.0,
+			3.0,
+			4.0,
+			5.0
+		};
 
-				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
+		System.out.println ("\t|------------------------||");
 
-				System.out.println (
-					"\t| " +
-					FormatUtil.FormatDouble (hypothesisAnnualMean, 1, 3, 1.) + " | " +
-					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 1, 3, 1.) + " => " +
-					FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + " ||"
-				);
-			}
+		System.out.println ("\t|  EPE for Model Params  ||");
+
+		System.out.println ("\t|------------------------||");
+
+		System.out.println ("\t|    L -> R:             ||");
+
+		System.out.println ("\t|        - Mean          ||");
+
+		System.out.println ("\t|        - Volatility    ||");
+
+		System.out.println ("\t|        - EPE           ||");
+
+		System.out.println ("\t|------------------------||");
+
+		for (double mean : meanArray)
+		{
+			ExpectedPositiveRealization (
+				mean,
+				sigmaArray,
+				drawCount
+			);
 		}
-
-		System.out.println ("\t|--------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
