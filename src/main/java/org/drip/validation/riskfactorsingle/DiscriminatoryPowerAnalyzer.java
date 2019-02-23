@@ -213,7 +213,6 @@ public class DiscriminatoryPowerAnalyzer
 	 * Generate the Gap Test Outcomes for the specified Hypothesis Suite
 	 * 
 	 * @param hypothesisSuite The Hypothesis Suite
-	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @return The Suite of Gap Test Outcomes
 	 */

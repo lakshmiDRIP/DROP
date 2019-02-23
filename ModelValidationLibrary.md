@@ -11,7 +11,7 @@ Model Validation Library contains Statistical Hypotheses Validation and Testing 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidation_v4.06.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidation_v4.07.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -51,6 +51,17 @@ Model Validation Library contains Statistical Hypotheses Validation and Testing 
 	* Sample Size Dependence
 	* Alternating Coin Flips
 	* Generic Coin Flipping
+	* References
+ * Q-Q Plot
+	* Introduction and Overview
+	* Definition and Construction
+	* Intepretation
+	* Plotting Positions
+	* Expected Value of the Order Statistic for a Uniform Distribution
+	* Expected Value of the Order Statistic for a Standard Normal Distribution
+	* Median of the Order Statistics
+	* Heuristics
+	* Filliben’s Estimate
 	* References
  * Basel III Framework for Backtesting Exposure Models
 	* Abstract

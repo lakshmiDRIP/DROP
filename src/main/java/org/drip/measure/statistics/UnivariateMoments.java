@@ -282,6 +282,8 @@ public class UnivariateMoments {
 	 * Compute the Series t-Statistic for Hypothesis Pivot = 0 (e.g., the False Positive NULL Hypothesis for
 	 * 	for Homoscedastic Univariate Linear Regression)
 	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * 
 	 * @return The Series t-Statistic
 	 */
 

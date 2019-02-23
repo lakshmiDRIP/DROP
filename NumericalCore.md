@@ -22,6 +22,7 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Probability Integral Transform
  * t-Statistic
  * p-value
+ * Q-Q Plot
  * Basel III Framework for Backtesting Exposure Models
  * Initial Margin Backtesting Framework
  * Model Risk Management Framework
