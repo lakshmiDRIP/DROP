@@ -4,8 +4,8 @@ package org.drip.sample.distancetest;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
@@ -213,16 +213,14 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 	private static final GapTestOutcome DistanceTest (
 		final Sample sample,
 		final Ensemble ensemble,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-<span class="nc" id="L220">		return new ProbabilityIntegralTransformTest (</span>
-<span class="nc" id="L221">			ensemble.nativeProbabilityIntegralTransform()</span>
-<span class="nc" id="L222">		).distanceTest (</span>
-<span class="nc" id="L223">			sample.nativeProbabilityIntegralTransform(),</span>
-			gapLossFunction,
-			gapLossWeightFunction
+<span class="nc" id="L219">		return new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L220">			ensemble.nativeProbabilityIntegralTransform()</span>
+<span class="nc" id="L221">		).distanceTest (</span>
+<span class="nc" id="L222">			sample.nativeProbabilityIntegralTransform(),</span>
+			gapTestSetting
 		);
 	}
 
@@ -232,43 +230,41 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction,
+		final GapTestSetting gapTestSetting,
 		final int quantileCount)
 		throws Exception
 	{
-<span class="nc" id="L240">		return DistanceTest (</span>
+<span class="nc" id="L237">		return DistanceTest (</span>
 			sample,
-<span class="nc" id="L242">			GenerateEnsemble (</span>
+<span class="nc" id="L239">			GenerateEnsemble (</span>
 				hypothesisMean,
 				hypothesisSigma,
 				drawCount,
 				sampleCount
 			),
-			gapLossFunction,
-			gapLossWeightFunction
-<span class="nc" id="L250">		).distance();</span>
+			gapTestSetting
+<span class="nc" id="L246">		).distance();</span>
 	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L257">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L253">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L259">		int drawCount = 2000;</span>
-<span class="nc" id="L260">		int sampleCount = 600;</span>
-<span class="nc" id="L261">		double sampleMean = 0.;</span>
-<span class="nc" id="L262">		double sampleSigma = 1.;</span>
-<span class="nc" id="L263">		int quantileCount = 20;</span>
-<span class="nc" id="L264">		double[] hypothesisMeanArray = {</span>
+<span class="nc" id="L255">		int drawCount = 2000;</span>
+<span class="nc" id="L256">		int sampleCount = 600;</span>
+<span class="nc" id="L257">		double sampleMean = 0.;</span>
+<span class="nc" id="L258">		double sampleSigma = 1.;</span>
+<span class="nc" id="L259">		int quantileCount = 20;</span>
+<span class="nc" id="L260">		double[] hypothesisMeanArray = {</span>
 			-0.50,
 			-0.25,
 			 0.00,
 			 0.25,
 			 0.50
 		};
-<span class="nc" id="L271">		double[] hypothesisSigmaArray = {</span>
+<span class="nc" id="L267">		double[] hypothesisSigmaArray = {</span>
 			0.50,
 			0.75,
 			1.00,
@@ -276,49 +272,47 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			1.50
 		};
 
-<span class="nc" id="L279">		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();</span>
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
+<span class="nc" id="L276">			(GapLossWeightFunction.CramersVonMises());</span>
 
-<span class="nc" id="L281">		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.CramersVonMises();</span>
-
-<span class="nc" id="L283">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L278">		Sample sample = GenerateSample (</span>
 			sampleMean,
 			sampleSigma,
 			drawCount
 		);
 
-<span class="nc" id="L289">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L284">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L291">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
+<span class="nc" id="L286">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
 
-<span class="nc" id="L293">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L288">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L295">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
+<span class="nc" id="L290">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
 
-<span class="nc" id="L297">		System.out.println (&quot;\t|        - Hypothesis Mean     ||&quot;);</span>
+<span class="nc" id="L292">		System.out.println (&quot;\t|        - Hypothesis Mean     ||&quot;);</span>
 
-<span class="nc" id="L299">		System.out.println (&quot;\t|        - Hypothesis Sigma    ||&quot;);</span>
+<span class="nc" id="L294">		System.out.println (&quot;\t|        - Hypothesis Sigma    ||&quot;);</span>
 
-<span class="nc" id="L301">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
+<span class="nc" id="L296">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
 
-<span class="nc" id="L303">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L298">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		for (double hypothesisMean : hypothesisMeanArray)</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">		for (double hypothesisMean : hypothesisMeanArray)</span>
 		{
-<span class="nc bnc" id="L307" title="All 2 branches missed.">			for (double hypothesisSigma : hypothesisSigmaArray)</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">			for (double hypothesisSigma : hypothesisSigmaArray)</span>
 			{
-<span class="nc" id="L309">				System.out.println (</span>
+<span class="nc" id="L304">				System.out.println (</span>
 					&quot;\t| &quot; +
-<span class="nc" id="L311">					FormatUtil.FormatDouble (hypothesisMean, 1, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L312">					FormatUtil.FormatDouble (hypothesisSigma, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L313">					FormatUtil.FormatDouble (</span>
-<span class="nc" id="L314">						DistanceTest (</span>
+<span class="nc" id="L306">					FormatUtil.FormatDouble (hypothesisMean, 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L307">					FormatUtil.FormatDouble (hypothesisSigma, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L308">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L309">						DistanceTest (</span>
 							hypothesisMean,
 							hypothesisSigma,
 							drawCount,
 							sampleCount,
 							sample,
-							gapLossFunction,
-							gapLossWeightFunction,
+							gapTestSetting,
 							quantileCount
 						),
 						1, 8, 1.
@@ -327,9 +321,9 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			}
 		}
 
-<span class="nc" id="L330">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L324">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L332">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L333">	}</span>
+<span class="nc" id="L326">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L327">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

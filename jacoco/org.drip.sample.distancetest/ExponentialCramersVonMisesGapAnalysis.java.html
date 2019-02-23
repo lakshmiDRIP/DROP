@@ -4,13 +4,14 @@ package org.drip.sample.distancetest;
 import org.drip.measure.continuous.R1UnivariateExponential;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformHistogram;
+import org.drip.validation.hypothesis.HistogramTestOutcome;
+import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 
 /*
@@ -128,14 +129,14 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L131">public class ExponentialCramersVonMisesGapAnalysis</span>
+<span class="nc" id="L132">public class ExponentialCramersVonMisesGapAnalysis</span>
 {
 
 	private static final double UnivariateRandom (
 		final double lambda)
 		throws Exception
 	{
-<span class="nc" id="L138">		return new R1UnivariateExponential (lambda).random();</span>
+<span class="nc" id="L139">		return new R1UnivariateExponential (lambda).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -143,14 +144,14 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L146">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L147">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L150">			univariateRandomArray[drawIndex] = UnivariateRandom (lambda);</span>
+<span class="nc" id="L151">			univariateRandomArray[drawIndex] = UnivariateRandom (lambda);</span>
 		}
 
-<span class="nc" id="L153">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L154">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final Sample[] GenerateSampleArray (
@@ -159,17 +160,17 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L162">		Sample[] sampleArray = new Sample[sampleCount];</span>
+<span class="nc" id="L163">		Sample[] sampleArray = new Sample[sampleCount];</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
 		{
-<span class="nc" id="L166">			sampleArray[sampleIndex] = GenerateSample (</span>
+<span class="nc" id="L167">			sampleArray[sampleIndex] = GenerateSample (</span>
 				lambda,
 				drawCount
 			);
 		}
 
-<span class="nc" id="L172">		return sampleArray;</span>
+<span class="nc" id="L173">		return sampleArray;</span>
 	}
 
 	private static final Ensemble GenerateEnsemble (
@@ -178,8 +179,8 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L181">		return new Ensemble (</span>
-<span class="nc" id="L182">			GenerateSampleArray (</span>
+<span class="nc" id="L182">		return new Ensemble (</span>
+<span class="nc" id="L183">			GenerateSampleArray (</span>
 				lambda,
 				drawCount,
 				sampleCount
@@ -187,12 +188,12 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			new TestStatisticEvaluator[]
 			{
 				new TestStatisticEvaluator()
-<span class="nc" id="L190">				{</span>
+<span class="nc" id="L191">				{</span>
 					public double evaluate (
 						final double[] drawArray)
 						throws Exception
 					{
-<span class="nc" id="L195">						return 1.;</span>
+<span class="nc" id="L196">						return 1.;</span>
 					}
 				}
 			}
@@ -202,16 +203,14 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 	private static final GapTestOutcome DistanceTest (
 		final Sample sample,
 		final Ensemble ensemble,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
 <span class="nc" id="L209">		return new ProbabilityIntegralTransformTest (</span>
 <span class="nc" id="L210">			ensemble.nativeProbabilityIntegralTransform()</span>
 <span class="nc" id="L211">		).distanceTest (</span>
 <span class="nc" id="L212">			sample.nativeProbabilityIntegralTransform(),</span>
-			gapLossFunction,
-			gapLossWeightFunction
+			gapTestSetting
 		);
 	}
 
@@ -220,95 +219,93 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction,
-		final int quantileCount,
+		final GapTestSetting gapTestSetting,
+		final int histogramCount,
 		final double pValueThreshold)
 		throws Exception
 	{
-<span class="nc" id="L229">		Ensemble hypothesis = GenerateEnsemble (</span>
+<span class="nc" id="L227">		Ensemble hypothesis = GenerateEnsemble (</span>
 			hypothesisLambda,
 			drawCount,
 			sampleCount
 		);
 
-<span class="nc" id="L235">		GapTestOutcome gapTestOutcome = DistanceTest (</span>
+<span class="nc" id="L233">		GapTestOutcome gapTestOutcome = DistanceTest (</span>
 			sample,
 			hypothesis,
-			gapLossFunction,
-			gapLossWeightFunction
+			gapTestSetting
 		);
 
-<span class="nc" id="L242">		ProbabilityIntegralTransformHistogram histogram =</span>
-<span class="nc" id="L243">			gapTestOutcome.probabilityIntegralTransformWeighted().histogram (</span>
-				quantileCount,
-				pValueThreshold
-			);
+<span class="nc" id="L239">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L240">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
+<span class="nc" id="L241">		).histogramTest (</span>
+<span class="nc" id="L242">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)</span>
+		);
 
-<span class="nc" id="L248">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
+<span class="nc" id="L245">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
 
-<span class="nc" id="L250">		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();</span>
+<span class="nc" id="L247">		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();</span>
 
-<span class="nc" id="L252">		double thresholdTestStatistic = histogram.thresholdTestStatistic();</span>
+<span class="nc" id="L249">		double thresholdTestStatistic = histogram.thresholdTestStatistic();</span>
 
-<span class="nc" id="L254">		double[] gapArray = histogram.testStatisticArray();</span>
+<span class="nc" id="L251">		double[] gapArray = histogram.testStatisticArray();</span>
 
-<span class="nc" id="L256">		double distance = gapTestOutcome.distance();</span>
+<span class="nc" id="L253">		double distance = gapTestOutcome.distance();</span>
 
-<span class="nc" id="L258">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L255">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L260">		System.out.println (&quot;\t|         Exponential Anfuso Karyampas Nawroth Distance Test         ||&quot;);</span>
+<span class="nc" id="L257">		System.out.println (&quot;\t|         Exponential Anfuso Karyampas Nawroth Distance Test         ||&quot;);</span>
 
-<span class="nc" id="L262">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L259">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L264">		System.out.println (</span>
-<span class="nc" id="L265">			&quot;\t|   Lambda =&gt; [&quot; + FormatUtil.FormatDouble (hypothesisLambda, 1, 8, 1.) +</span>
+<span class="nc" id="L261">		System.out.println (</span>
+<span class="nc" id="L262">			&quot;\t|   Lambda =&gt; [&quot; + FormatUtil.FormatDouble (hypothesisLambda, 1, 8, 1.) +</span>
 			&quot;]                                          ||&quot;
 		);
 
-<span class="nc" id="L269">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L266">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L271">		System.out.println (&quot;\t|    L -&gt; R:                                                         ||&quot;);</span>
+<span class="nc" id="L268">		System.out.println (&quot;\t|    L -&gt; R:                                                         ||&quot;);</span>
 
-<span class="nc" id="L273">		System.out.println (&quot;\t|        - Weighted Distance Metric                                  ||&quot;);</span>
+<span class="nc" id="L270">		System.out.println (&quot;\t|        - Weighted Distance Metric                                  ||&quot;);</span>
 
-<span class="nc" id="L275">		System.out.println (&quot;\t|        - Cumulative p-Value                                        ||&quot;);</span>
+<span class="nc" id="L272">		System.out.println (&quot;\t|        - Cumulative p-Value                                        ||&quot;);</span>
 
-<span class="nc" id="L277">		System.out.println (&quot;\t|        - Incremental p-Value                                       ||&quot;);</span>
+<span class="nc" id="L274">		System.out.println (&quot;\t|        - Incremental p-Value                                       ||&quot;);</span>
 
-<span class="nc" id="L279">		System.out.println (&quot;\t|        - Ensemble Weighted Distance                                ||&quot;);</span>
+<span class="nc" id="L276">		System.out.println (&quot;\t|        - Ensemble Weighted Distance                                ||&quot;);</span>
 
-<span class="nc" id="L281">		System.out.println (&quot;\t|        - p-Value Threshold Distance                                ||&quot;);</span>
+<span class="nc" id="L278">		System.out.println (&quot;\t|        - p-Value Threshold Distance                                ||&quot;);</span>
 
-<span class="nc" id="L283">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L280">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L285" title="All 2 branches missed.">		for (int quantileIndex = 0; quantileIndex &lt;= quantileCount; ++quantileIndex)</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		for (int histogramIndex = 0; histogramIndex &lt;= histogramCount; ++histogramIndex)</span>
 		{
-<span class="nc" id="L287">			System.out.println (</span>
+<span class="nc" id="L284">			System.out.println (</span>
 				&quot;\t|&quot; +
-<span class="nc" id="L289">				FormatUtil.FormatDouble (gapArray[quantileIndex], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L290">				FormatUtil.FormatDouble (pValueCumulativeArray[quantileIndex], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L291">				FormatUtil.FormatDouble (pValueIncrementalArray[quantileIndex], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L292">				FormatUtil.FormatDouble (distance, 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L293">				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L286">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L287">				FormatUtil.FormatDouble (pValueCumulativeArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L288">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L289">				FormatUtil.FormatDouble (distance, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L290">				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L297">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L298">	}</span>
+<span class="nc" id="L294">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L295">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L304">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L301">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L306">		int drawCount = 2000;</span>
-<span class="nc" id="L307">		int sampleCount = 600;</span>
-<span class="nc" id="L308">		double sampleLambda = 1.;</span>
-<span class="nc" id="L309">		int quantileCount = 20;</span>
-<span class="nc" id="L310">		double pValueThreshold = 0.99;</span>
-<span class="nc" id="L311">		double[] hypothesisLambdaArray =</span>
+<span class="nc" id="L303">		int drawCount = 2000;</span>
+<span class="nc" id="L304">		int sampleCount = 600;</span>
+<span class="nc" id="L305">		double sampleLambda = 1.;</span>
+<span class="nc" id="L306">		int histogramCount = 20;</span>
+<span class="nc" id="L307">		double pValueThreshold = 0.99;</span>
+<span class="nc" id="L308">		double[] hypothesisLambdaArray =</span>
 		{
 			0.20,
 			0.30,
@@ -336,30 +333,28 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			2.50
 		};
 
-<span class="nc" id="L339">		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();</span>
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
+<span class="nc" id="L337">			(GapLossWeightFunction.CramersVonMises());</span>
 
-<span class="nc" id="L341">		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.CramersVonMises();</span>
-
-<span class="nc" id="L343">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L339">		Sample sample = GenerateSample (</span>
 			sampleLambda,
 			drawCount
 		);
 
-<span class="nc bnc" id="L348" title="All 2 branches missed.">		for (double hypothesisLambda : hypothesisLambdaArray)</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">		for (double hypothesisLambda : hypothesisLambdaArray)</span>
 		{
-<span class="nc" id="L350">			DistanceTest (</span>
+<span class="nc" id="L346">			DistanceTest (</span>
 				hypothesisLambda,
 				drawCount,
 				sampleCount,
 				sample,
-				gapLossFunction,
-				gapLossWeightFunction,
-				quantileCount,
+				gapTestSetting,
+				histogramCount,
 				pValueThreshold
 			);
 		}
 
-<span class="nc" id="L362">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L363">	}</span>
+<span class="nc" id="L357">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L358">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

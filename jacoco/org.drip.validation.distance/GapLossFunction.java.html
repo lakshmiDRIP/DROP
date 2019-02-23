@@ -107,12 +107,12 @@ package org.drip.validation.distance;
 {
 
 	/**
-	 * Construct the Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
+	 * Construct the Anfuso Karyampas Nawroth (2017) Risk Factor Test Version of the Gap Loss Function
 	 * 
-	 * @return The Anfuso-Karyampas-Nawroth Version of the Gap Loss Function
+	 * @return The Anfuso Karyampas Nawroth (2017) Risk Factor Test Version of the Gap Loss Function
 	 */
 
-	public static final GapLossFunction AnfusoKaryampasNawroth()
+	public static final GapLossFunction RiskFactorTest()
 	{
 <span class="nc" id="L117">		return new GapLossFunction()</span>
 <span class="nc" id="L118">		{</span>
@@ -126,6 +126,32 @@ package org.drip.validation.distance;
 				}
 
 <span class="nc" id="L128">				return gap * gap;</span>
+			}
+		};
+	}
+
+	/**
+	 * Construct the Anfuso Karyampas Nawroth (2017) Conservative Portfolio Test Version of the Gap Loss
+	 * 	Function
+	 * 
+	 * @return The Anfuso Karyampas Nawroth (2017) Conservative Portfolio Test Version of the Gap Loss
+	 * 	Function
+	 */
+
+	public static final GapLossFunction ConservativePortfolioTest()
+	{
+<span class="nc" id="L143">		return new GapLossFunction()</span>
+<span class="nc" id="L144">		{</span>
+			@Override public double loss (
+				final double gap)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (gap))</span>
+				{
+<span class="nc" id="L151">					throw new java.lang.Exception (&quot;GapLossFunction::loss =&gt; Invalid Inputs&quot;);</span>
+				}
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">				return gap &lt; 0. ? 0. : gap * gap;</span>
 			}
 		};
 	}

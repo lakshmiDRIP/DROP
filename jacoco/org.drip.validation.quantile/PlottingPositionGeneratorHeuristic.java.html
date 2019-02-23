@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlottingPositionGeneratorHeuristic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.quantile</a> &gt; <span class="el_source">PlottingPositionGeneratorHeuristic.java</span></div><h1>PlottingPositionGeneratorHeuristic.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.quantile;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;PlottingPositionGeneratorHeuristic&lt;/i&gt; holds the Expected Order Statistic Based Heuristic Plotting
+ * Position Generation Schemes.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Gibbons, J. D., and S. Chakraborti (2003): &lt;i&gt;Non-parametric Statistical Inference 4th
+ *  			Edition&lt;/i&gt; &lt;b&gt;CRC Press&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Filliben, J. J. (1975): The Probability Plot Correlation Coefficient Test for Normality
+ *  			&lt;i&gt;Technometrics, American Society for Quality&lt;/i&gt; &lt;b&gt;17 (1)&lt;/b&gt; 111-117
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gnanadesikan, R. (1977): &lt;i&gt;Methods for Statistical Analysis of Multivariate Observations&lt;/i&gt;
+ *  			&lt;b&gt;Wiley&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Thode, H. C. (2002): &lt;i&gt;Testing for Normality&lt;/i&gt; &lt;b&gt;Marcel Dekker&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Q-Q Plot https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PlottingPositionGeneratorHeuristic extends
+	org.drip.validation.quantile.PlottingPositionGenerator
+{
+
+	/**
+	 * Standard Heuristic
+	 */
+
+	public static final double RELIEF_STANDARD = 0.;
+
+	/**
+	 * Bernard and Bos-Levenbach (1953) Heuristic
+	 */
+
+	public static final double RELIEF_BERNARD_BOS_LEVENBACH_1953 = 0.3;
+
+	/**
+	 * NIST (2013) Heuristic
+	 */
+
+	public static final double RELIEF_NIST_2013 = 0.3175;
+
+	/**
+	 * Yu and Huang (2001) Heuristic
+	 */
+
+	public static final double RELIEF_YU_HUANG_2001 = 0.326;
+
+	/**
+	 * BMDP (2018) Heuristic
+	 */
+
+	public static final double RELIEF_BMDP_2018 = 0.333333;
+
+	/**
+	 * Blom (1958) Heuristic
+	 */
+
+	public static final double RELIEF_BLOM_1958 = 0.375;
+
+	/**
+	 * Cunnane (1978) Heuristic
+	 */
+
+	public static final double RELIEF_CUNNANE_1978 = 0.4;
+
+	/**
+	 * Gringorten (1963) Heuristic
+	 */
+
+	public static final double RELIEF_GRINGORTEN_1963 = 0.44;
+
+	/**
+	 * Hazen (1913) Heuristic
+	 */
+
+	public static final double RELIEF_HAZEN_1913 = 0.5;
+
+	/**
+	 * Larsen, Currant, and Hunt (1980) Heuristic
+	 */
+
+	public static final double RELIEF_LARSEN_CURRANT_HUNT_1980 = 0.567;
+
+	/**
+	 * Filliben (1975) Heuristic
+	 */
+
+	public static final double RELIEF_FILLIBEN_1975 = 1.;
+
+	/**
+	 * Construct the Standard Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Standard Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic Standard (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L187">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_STANDARD
+			);
+		}
+<span class="nc" id="L192">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L194">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L197">		return null;</span>
+	}
+
+	/**
+	 * Construct the Bernard Bos-Levenbach (1953) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Bernard Bos-Levenbach (1953) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic BernardBosLevenbach1953 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L213">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_BERNARD_BOS_LEVENBACH_1953
+			);
+		}
+<span class="nc" id="L218">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L220">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L223">		return null;</span>
+	}
+
+	/**
+	 * Construct the NIST (2013) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return NIST (2013) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic NIST2013 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L239">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_NIST_2013
+			);
+		}
+<span class="nc" id="L244">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L246">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L249">		return null;</span>
+	}
+
+	/**
+	 * Construct the Yu and Huang (2001) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Yu and Huang (2001) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic YuHuang2001 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L265">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_YU_HUANG_2001
+			);
+		}
+<span class="nc" id="L270">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L272">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L275">		return null;</span>
+	}
+
+	/**
+	 * Construct the BMDP (2018) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return BMDP (2018) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic BMDP2018 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L291">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_BMDP_2018
+			);
+		}
+<span class="nc" id="L296">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L298">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L301">		return null;</span>
+	}
+
+	/**
+	 * Construct the Blom (1958) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Blom (1958) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic Blom1958 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L317">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_BLOM_1958
+			);
+		}
+<span class="nc" id="L322">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L324">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L327">		return null;</span>
+	}
+
+	/**
+	 * Construct the Cunnane (1978) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Cunnane (1978) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic Cunnane1978 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L343">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_CUNNANE_1978
+			);
+		}
+<span class="nc" id="L348">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L350">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L353">		return null;</span>
+	}
+
+	/**
+	 * Construct the Gringorten (1963) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Gringorten (1963) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic Gringorten1963 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L369">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_GRINGORTEN_1963
+			);
+		}
+<span class="nc" id="L374">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L376">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L379">		return null;</span>
+	}
+
+	/**
+	 * Construct the Hazen (1913) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Hazen (1913) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic Hazen1913 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L395">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_HAZEN_1913
+			);
+		}
+<span class="nc" id="L400">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L402">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L405">		return null;</span>
+	}
+
+	/**
+	 * Construct the Larsen, Currant, and Hunt (1980) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Larsen, Currant, and Hunt (1980) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic LarsenCurrantHunt1980 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L421">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_LARSEN_CURRANT_HUNT_1980
+			);
+		}
+<span class="nc" id="L426">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L428">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L431">		return null;</span>
+	}
+
+	/**
+	 * Construct the Filliben (1975) Version of the PlottingPositionGeneratorHeuristic
+	 * 
+	 * @param orderStatisticCount The Order Statistic Count
+	 * 
+	 * @return Filliben (1975) Version of the PlottingPositionGeneratorHeuristic
+	 */
+
+	public static final PlottingPositionGeneratorHeuristic Filliben1975 (
+		final int orderStatisticCount)
+	{
+		try
+		{
+<span class="nc" id="L447">			return new PlottingPositionGeneratorHeuristic (</span>
+				orderStatisticCount,
+				RELIEF_FILLIBEN_1975
+			);
+		}
+<span class="nc" id="L452">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L454">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L457">		return null;</span>
+	}
+
+<span class="nc" id="L460">	private double _relief = java.lang.Double.NaN;</span>
+
+	/**
+	 * PlottingPositionGeneratorHeuristic Constructor
+	 * 
+	 * @param orderStatisticCount Count of Order Statistics
+	 * @param relief Leading Relief
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PlottingPositionGeneratorHeuristic (
+		final int orderStatisticCount,
+		final double relief)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L476">		super (orderStatisticCount);</span>
+
+<span class="nc bnc" id="L478" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_relief = relief) || 0. &gt; _relief || 1. &lt; _relief)</span>
+		{
+<span class="nc" id="L480">			throw new java.lang.Exception</span>
+				(&quot;PlottingPositionGeneratorHeuristic Constructor =&gt; Invalid Inputs&quot;);
+		}
+<span class="nc" id="L483">	}</span>
+
+	/**
+	 * Retrieve the Leading Relief
+	 * 
+	 * @return The Leading Relief
+	 */
+
+	public double relief()
+	{
+<span class="nc" id="L493">		return _relief;</span>
+	}
+
+	@Override public org.drip.validation.quantile.PlottingPosition[] generate()
+	{
+<span class="nc" id="L498">		int orderStatisticCount = orderStatisticCount();</span>
+
+<span class="nc" id="L500">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray = new</span>
+			org.drip.validation.quantile.PlottingPosition[orderStatisticCount];
+
+<span class="nc bnc" id="L503" title="All 2 branches missed.">		for (int orderStatisticIndex = 1; orderStatisticIndex &lt;= orderStatisticCount; ++orderStatisticIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L507">				plottingPositionArray[orderStatisticIndex - 1] =</span>
+					new org.drip.validation.quantile.PlottingPosition (
+						orderStatisticIndex,
+						(((double) orderStatisticIndex) - _relief) /
+							(1. + orderStatisticCount - 2. * _relief)
+					);
+			}
+<span class="nc" id="L514">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L516">				e.printStackTrace();</span>
+
+<span class="nc" id="L518">				return null;</span>
+<span class="nc" id="L519">			}</span>
+		}
+
+<span class="nc" id="L522">		return plottingPositionArray;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

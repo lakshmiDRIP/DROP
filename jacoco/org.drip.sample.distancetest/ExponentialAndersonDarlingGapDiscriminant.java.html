@@ -4,8 +4,8 @@ package org.drip.sample.distancetest;
 import org.drip.measure.continuous.R1UnivariateExponential;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapLossFunction;
 import org.drip.validation.distance.GapTestOutcome;
+import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
@@ -201,16 +201,14 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 	private static final GapTestOutcome DistanceTest (
 		final Sample sample,
 		final Ensemble ensemble,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-<span class="nc" id="L208">		return new ProbabilityIntegralTransformTest (</span>
-<span class="nc" id="L209">			ensemble.nativeProbabilityIntegralTransform()</span>
-<span class="nc" id="L210">		).distanceTest (</span>
-<span class="nc" id="L211">			sample.nativeProbabilityIntegralTransform(),</span>
-			gapLossFunction,
-			gapLossWeightFunction
+<span class="nc" id="L207">		return new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L208">			ensemble.nativeProbabilityIntegralTransform()</span>
+<span class="nc" id="L209">		).distanceTest (</span>
+<span class="nc" id="L210">			sample.nativeProbabilityIntegralTransform(),</span>
+			gapTestSetting
 		);
 	}
 
@@ -219,34 +217,32 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapLossFunction gapLossFunction,
-		final GapLossWeightFunction gapLossWeightFunction,
+		final GapTestSetting gapTestSetting,
 		final int quantileCount)
 		throws Exception
 	{
-<span class="nc" id="L227">		return DistanceTest (</span>
+<span class="nc" id="L224">		return DistanceTest (</span>
 			sample,
-<span class="nc" id="L229">			GenerateEnsemble (</span>
+<span class="nc" id="L226">			GenerateEnsemble (</span>
 				hypothesisLambda,
 				drawCount,
 				sampleCount
 			),
-			gapLossFunction,
-			gapLossWeightFunction
-<span class="nc" id="L236">		).distance();</span>
+			gapTestSetting
+<span class="nc" id="L232">		).distance();</span>
 	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L243">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L239">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L245">		int drawCount = 2000;</span>
-<span class="nc" id="L246">		int sampleCount = 600;</span>
-<span class="nc" id="L247">		double sampleLambda = 1.;</span>
-<span class="nc" id="L248">		int quantileCount = 20;</span>
-<span class="nc" id="L249">		double[] hypothesisLambdaArray =</span>
+<span class="nc" id="L241">		int drawCount = 2000;</span>
+<span class="nc" id="L242">		int sampleCount = 600;</span>
+<span class="nc" id="L243">		double sampleLambda = 1.;</span>
+<span class="nc" id="L244">		int quantileCount = 20;</span>
+<span class="nc" id="L245">		double[] hypothesisLambdaArray =</span>
 		{
 			0.20,
 			0.30,
@@ -274,42 +270,40 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			2.50
 		};
 
-<span class="nc" id="L277">		GapLossFunction gapLossFunction = GapLossFunction.AnfusoKaryampasNawroth();</span>
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
+<span class="nc" id="L274">			(GapLossWeightFunction.AndersonDarling());</span>
 
-<span class="nc" id="L279">		GapLossWeightFunction gapLossWeightFunction = GapLossWeightFunction.AndersonDarling();</span>
-
-<span class="nc" id="L281">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L276">		Sample sample = GenerateSample (</span>
 			sampleLambda,
 			drawCount
 		);
 
-<span class="nc" id="L286">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L281">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L288">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
+<span class="nc" id="L283">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
 
-<span class="nc" id="L290">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L285">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L292">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
+<span class="nc" id="L287">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
 
-<span class="nc" id="L294">		System.out.println (&quot;\t|        - Hypothesis Lambda   ||&quot;);</span>
+<span class="nc" id="L289">		System.out.println (&quot;\t|        - Hypothesis Lambda   ||&quot;);</span>
 
-<span class="nc" id="L296">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
+<span class="nc" id="L291">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
 
-<span class="nc" id="L298">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L293">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		for (double hypothesisLambda : hypothesisLambdaArray)</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		for (double hypothesisLambda : hypothesisLambdaArray)</span>
 		{
-<span class="nc" id="L302">			System.out.println (</span>
+<span class="nc" id="L297">			System.out.println (</span>
 				&quot;\t| &quot; +
-<span class="nc" id="L304">				FormatUtil.FormatDouble (hypothesisLambda, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L305">				FormatUtil.FormatDouble (</span>
-<span class="nc" id="L306">					DistanceTest (</span>
+<span class="nc" id="L299">				FormatUtil.FormatDouble (hypothesisLambda, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L300">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L301">					DistanceTest (</span>
 						hypothesisLambda,
 						drawCount,
 						sampleCount,
 						sample,
-						gapLossFunction,
-						gapLossWeightFunction,
+						gapTestSetting,
 						quantileCount
 					),
 					1, 8, 1.
@@ -317,9 +311,9 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			);
 		}
 
-<span class="nc" id="L320">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L314">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L322">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L323">	}</span>
+<span class="nc" id="L316">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L317">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

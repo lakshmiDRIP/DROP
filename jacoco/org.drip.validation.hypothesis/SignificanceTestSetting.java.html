@@ -125,13 +125,19 @@ public class SignificanceTestSetting
 	public static final int DOUBLE_TAIL_CHECK = 2;
 
 	/**
-	 * Fisher Significance Test Threshold
+	 * Fisher (1925) Significance Test Threshold
 	 */
 
-	public static final double FISHER_P_TEST_THRESHOLD = 0.05;
+	public static final double FISHER_1925_P_TEST_THRESHOLD = 0.05;
 
-<span class="nc" id="L133">	private int _tailCheck = RIGHT_TAIL_CHECK;</span>
-<span class="nc" id="L134">	private double _threshold = java.lang.Double.NaN;</span>
+	/**
+	 * Anfuso, Karyampas, and Nawroth (2017) Significance Test Threshold
+	 */
+
+	public static final double ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD = 0.01;
+
+<span class="nc" id="L139">	private int _tailCheck = RIGHT_TAIL_CHECK;</span>
+<span class="nc" id="L140">	private double _threshold = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct Right Tail Check Significance Test Setting using the Fisher Threshold
@@ -143,17 +149,17 @@ public class SignificanceTestSetting
 	{
 		try
 		{
-<span class="nc" id="L146">			return new SignificanceTestSetting (</span>
-				FISHER_P_TEST_THRESHOLD,
+<span class="nc" id="L152">			return new SignificanceTestSetting (</span>
+				FISHER_1925_P_TEST_THRESHOLD,
 				RIGHT_TAIL_CHECK
 			);
 		}
-<span class="nc" id="L151">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L157">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L153">			e.printStackTrace();</span>
+<span class="nc" id="L159">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L156">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	/**
@@ -166,17 +172,17 @@ public class SignificanceTestSetting
 	{
 		try
 		{
-<span class="nc" id="L169">			return new SignificanceTestSetting (</span>
-				FISHER_P_TEST_THRESHOLD,
+<span class="nc" id="L175">			return new SignificanceTestSetting (</span>
+				FISHER_1925_P_TEST_THRESHOLD,
 				LEFT_TAIL_CHECK
 			);
 		}
-<span class="nc" id="L174">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L180">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L176">			e.printStackTrace();</span>
+<span class="nc" id="L182">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L179">		return null;</span>
+<span class="nc" id="L185">		return null;</span>
 	}
 
 	/**
@@ -189,17 +195,17 @@ public class SignificanceTestSetting
 	{
 		try
 		{
-<span class="nc" id="L192">			return new SignificanceTestSetting (</span>
-				2. * FISHER_P_TEST_THRESHOLD,
+<span class="nc" id="L198">			return new SignificanceTestSetting (</span>
+				2. * FISHER_1925_P_TEST_THRESHOLD,
 				DOUBLE_TAIL_CHECK
 			);
 		}
-<span class="nc" id="L197">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L203">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L199">			e.printStackTrace();</span>
+<span class="nc" id="L205">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L202">		return null;</span>
+<span class="nc" id="L208">		return null;</span>
 	}
 
 	/**
@@ -215,14 +221,14 @@ public class SignificanceTestSetting
 		final double threshold,
 		final int tailCheck)
 		throws java.lang.Exception
-<span class="nc" id="L218">	{</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_threshold = threshold))</span>
+<span class="nc" id="L224">	{</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_threshold = threshold))</span>
 		{
-<span class="nc" id="L221">			throw new java.lang.Exception (&quot;SignificanceTestSetting Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L227">			throw new java.lang.Exception (&quot;SignificanceTestSetting Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L224">		_tailCheck = tailCheck;</span>
-<span class="nc" id="L225">	}</span>
+<span class="nc" id="L230">		_tailCheck = tailCheck;</span>
+<span class="nc" id="L231">	}</span>
 
 	/**
 	 * Retrieve the Test Tail Check
@@ -232,7 +238,7 @@ public class SignificanceTestSetting
 
 	public int tailCheck()
 	{
-<span class="nc" id="L235">		return _tailCheck;</span>
+<span class="nc" id="L241">		return _tailCheck;</span>
 	}
 
 	/**
@@ -243,7 +249,7 @@ public class SignificanceTestSetting
 
 	public double threshold()
 	{
-<span class="nc" id="L246">		return _threshold;</span>
+<span class="nc" id="L252">		return _threshold;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

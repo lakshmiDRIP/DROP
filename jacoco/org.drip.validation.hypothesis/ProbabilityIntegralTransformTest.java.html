@@ -233,77 +233,165 @@ public class ProbabilityIntegralTransformTest
 	 * Run a Distance Gap Test between the Hypothesis and the Sample
 	 * 
 	 * @param samplePIT The Sample Probability Integral Transform
-	 * @param empiricsGapLossFunction The Empirics Gap Loss Function
-	 * @param empiricsGapWeightFunction The Empirics Gap Weight Function
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @return The Distance Gap Test Outcome
 	 */
 
 	public org.drip.validation.distance.GapTestOutcome distanceTest (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
-		final org.drip.validation.distance.GapLossFunction empiricsGapLossFunction,
-		final org.drip.validation.distance.GapLossWeightFunction empiricsGapWeightFunction)
+		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 	{
-<span class="nc bnc" id="L247" title="All 6 branches missed.">		if (null == samplePIT || null == empiricsGapLossFunction || null == empiricsGapWeightFunction)</span>
+<span class="nc bnc" id="L245" title="All 4 branches missed.">		if (null == samplePIT || null == gapTestSetting)</span>
 		{
-<span class="nc" id="L249">			return null;</span>
+<span class="nc" id="L247">			return null;</span>
 		}
 
-<span class="nc" id="L252">		double distance = 0.;</span>
-<span class="nc" id="L253">		double hypothesisPValueLeft = 0.;</span>
+<span class="nc" id="L250">		double distance = 0.;</span>
+<span class="nc" id="L251">		double hypothesisPValueLeft = 0.;</span>
 
-<span class="nc" id="L255">		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new</span>
+<span class="nc" id="L253">		org.drip.validation.distance.GapLossFunction gapLossFunction = gapTestSetting.lossFunction();</span>
+
+<span class="nc" id="L255">		org.drip.validation.distance.GapLossWeightFunction gapLossWeightFunction =</span>
+<span class="nc" id="L256">			gapTestSetting.lossWeightFunction();</span>
+
+<span class="nc" id="L258">		org.drip.validation.evidence.TestStatisticAccumulator weightedGapLossAccumulator = new</span>
 			org.drip.validation.evidence.TestStatisticAccumulator();
 
-<span class="nc" id="L258">		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new</span>
+<span class="nc" id="L261">		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new</span>
 			org.drip.validation.evidence.TestStatisticAccumulator();
 
 		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; sampleTestStatisticPValue :
-<span class="nc bnc" id="L262" title="All 2 branches missed.">			samplePIT.testStatisticPValueMap().entrySet())</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">			samplePIT.testStatisticPValueMap().entrySet())</span>
 		{
 			try
 			{
-<span class="nc" id="L266">				double hypothesisPValueRight = _probabilityIntegralTransform.pValue</span>
-<span class="nc" id="L267">					(sampleTestStatisticPValue.getKey());</span>
+<span class="nc" id="L269">				double hypothesisPValueRight = _probabilityIntegralTransform.pValue</span>
+<span class="nc" id="L270">					(sampleTestStatisticPValue.getKey());</span>
 
-<span class="nc" id="L269">				double gap = sampleTestStatisticPValue.getValue() - hypothesisPValueRight;</span>
+<span class="nc" id="L272">				double gapLoss = gapLossFunction.loss (sampleTestStatisticPValue.getValue() -</span>
+					hypothesisPValueRight);
 
-<span class="nc" id="L271">				double gapLoss = empiricsGapLossFunction.loss (gap);</span>
+<span class="nc" id="L275">				double weightedGapLoss = gapLoss * gapLossWeightFunction.weight (hypothesisPValueRight);</span>
 
-<span class="nc" id="L273">				double weightedGapLoss = empiricsGapLossFunction.loss (gap);</span>
+<span class="nc" id="L277">				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);</span>
 
-<span class="nc" id="L275">				distance = distance + weightedGapLoss * (hypothesisPValueRight - hypothesisPValueLeft);</span>
-
-<span class="nc bnc" id="L277" title="All 2 branches missed.">				if (!unweightedGapLossAccumulator.addTestStatistic (gapLoss) ||</span>
-<span class="nc bnc" id="L278" title="All 2 branches missed.">					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss))</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">				if (!unweightedGapLossAccumulator.addTestStatistic (gapLoss) ||</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">					!weightedGapLossAccumulator.addTestStatistic (weightedGapLoss))</span>
 				{
-<span class="nc" id="L280">					return null;</span>
+<span class="nc" id="L282">					return null;</span>
 				}
 
-<span class="nc" id="L283">				hypothesisPValueLeft = hypothesisPValueRight;</span>
+<span class="nc" id="L285">				hypothesisPValueLeft = hypothesisPValueRight;</span>
 			}
-<span class="nc" id="L285">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L287">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L287">				e.printStackTrace();</span>
+<span class="nc" id="L289">				e.printStackTrace();</span>
 
-<span class="nc" id="L289">				return null;</span>
-<span class="nc" id="L290">			}</span>
-<span class="nc" id="L291">		}</span>
+<span class="nc" id="L291">				return null;</span>
+<span class="nc" id="L292">			}</span>
+<span class="nc" id="L293">		}</span>
 
 		try
 		{
-<span class="nc" id="L295">			return new org.drip.validation.distance.GapTestOutcome (</span>
-<span class="nc" id="L296">				unweightedGapLossAccumulator.probabilityIntegralTransform(),</span>
-<span class="nc" id="L297">				weightedGapLossAccumulator.probabilityIntegralTransform(),</span>
+<span class="nc" id="L297">			return new org.drip.validation.distance.GapTestOutcome (</span>
+<span class="nc" id="L298">				unweightedGapLossAccumulator.probabilityIntegralTransform(),</span>
+<span class="nc" id="L299">				weightedGapLossAccumulator.probabilityIntegralTransform(),</span>
 				distance
 			);
 		}
-<span class="nc" id="L301">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L303">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L303">			e.printStackTrace();</span>
+<span class="nc" id="L305">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L306">		return null;</span>
+<span class="nc" id="L308">		return null;</span>
+	}
+
+	/**
+	 * Run a Histogram Test Corresponding to the Test Statistic and its p-Value
+	 * 
+	 * @param histogramTestSetting The Histogram Test Setting
+	 * 
+	 * @return The Histogram Test Corresponding to the Test Statistic and its p-Value
+	 */
+
+	public org.drip.validation.hypothesis.HistogramTestOutcome histogramTest (
+		final org.drip.validation.hypothesis.HistogramTestSetting histogramTestSetting)
+	{
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		if (null == histogramTestSetting)</span>
+		{
+<span class="nc" id="L324">			return null;</span>
+		}
+
+<span class="nc" id="L327">		int histogramCount = histogramTestSetting.histogramCount();</span>
+
+<span class="nc" id="L329">		int mapSize = _probabilityIntegralTransform.pValueTestStatisticMap().size();</span>
+
+<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (mapSize &lt;= histogramCount)</span>
+		{
+<span class="nc" id="L333">			return null;</span>
+		}
+
+<span class="nc" id="L336">		double[] testStatisticArray = new double[histogramCount + 1];</span>
+<span class="nc" id="L337">		double[] pValueCumulativeArray = new double[histogramCount + 1];</span>
+<span class="nc" id="L338">		double[] pValueIncrementalArray = new double[histogramCount + 1];</span>
+
+		try
+		{
+<span class="nc" id="L342">			pValueIncrementalArray[0] = 0.;</span>
+
+<span class="nc" id="L344">			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L345">				(pValueCumulativeArray[0] = 0.);</span>
+
+<span class="nc" id="L347">			testStatisticArray[histogramCount] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L348">				(pValueCumulativeArray[histogramCount] = 1.);</span>
+		}
+<span class="nc" id="L350">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L352">			e.printStackTrace();</span>
+
+<span class="nc" id="L354">			return null;</span>
+<span class="nc" id="L355">		}</span>
+
+<span class="nc" id="L357">		double testStatisticIncrement = (testStatisticArray[histogramCount] - testStatisticArray[0]) /</span>
+			histogramCount;
+
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		for (int histogramIndex = 1; histogramIndex &lt; histogramCount; ++histogramIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L364">				pValueIncrementalArray[histogramIndex] = (pValueCumulativeArray[histogramIndex] =</span>
+<span class="nc" id="L365">					_probabilityIntegralTransform.pValue (testStatisticArray[histogramIndex] =</span>
+					testStatisticArray[0] + testStatisticIncrement * histogramIndex)) -
+					pValueCumulativeArray[histogramIndex - 1];
+			}
+<span class="nc" id="L369">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L371">				e.printStackTrace();</span>
+
+<span class="nc" id="L373">				return null;</span>
+<span class="nc" id="L374">			}</span>
+		}
+
+<span class="nc" id="L377">		pValueIncrementalArray[histogramCount] = pValueCumulativeArray[histogramCount] -</span>
+			pValueCumulativeArray[histogramCount - 1];
+
+		try
+		{
+<span class="nc" id="L382">			return new org.drip.validation.hypothesis.HistogramTestOutcome (</span>
+				testStatisticArray,
+				pValueCumulativeArray,
+				pValueIncrementalArray,
+<span class="nc" id="L386">				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())</span>
+			);
+		}
+<span class="nc" id="L389">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L391">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L394">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HistogramTestOutcome.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.hypothesis</a> &gt; <span class="el_source">HistogramTestOutcome.java</span></div><h1>HistogramTestOutcome.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.hypothesis;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;HistogramTestOutcome&lt;/i&gt; contains the p-value Cumulative and Incremental Histograms across the Test
+ * Statistic.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			American Statistician 56 (3) 202-206
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose American Statistician 70 (2) 129-133
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis&quot;&gt;Statistical Hypothesis Validation Test Suite&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class HistogramTestOutcome
+{
+<span class="nc" id="L107">	private double[] _testStatisticArray = null;</span>
+<span class="nc" id="L108">	private double[] _pValueCumulativeArray = null;</span>
+<span class="nc" id="L109">	private double[] _pValueIncrementalArray = null;</span>
+<span class="nc" id="L110">	private double _thresholdTestStatistic = java.lang.Double.NaN;</span>
+
+	/**
+	 * HistogramTestOutcome Constructor
+	 * 
+	 * @param testStatisticArray Array of Test Statistics
+	 * @param pValueCumulativeArray Array of Cumulative p-Values
+	 * @param pValueIncrementalArray Array of Incremental p-Values
+	 * @param thresholdTestStatistic The Threshold Test Statistic
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public HistogramTestOutcome (
+		final double[] testStatisticArray,
+		final double[] pValueCumulativeArray,
+		final double[] pValueIncrementalArray,
+		final double thresholdTestStatistic)
+		throws java.lang.Exception
+<span class="nc" id="L129">	{</span>
+<span class="nc bnc" id="L130" title="All 6 branches missed.">		if (null == (_testStatisticArray = testStatisticArray) ||</span>
+			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
+			null == (_pValueIncrementalArray = pValueIncrementalArray) ||
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic))</span>
+		{
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;HistogramTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L138">		int count = _testStatisticArray.length;</span>
+
+<span class="nc bnc" id="L140" title="All 6 branches missed.">		if (0 == count ||</span>
+			count != _pValueCumulativeArray.length ||
+			count != _pValueIncrementalArray.length ||
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_testStatisticArray) ||</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_pValueCumulativeArray) ||</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_pValueIncrementalArray))</span>
+		{
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;HistogramTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L149">	}</span>
+
+	/**
+	 * Retrieve the Array of Test Statistics
+	 * 
+	 * @return The Array of Test Statistics
+	 */
+
+	public double[] testStatisticArray()
+	{
+<span class="nc" id="L159">		return _testStatisticArray;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Cumulative p-Values
+	 * 
+	 * @return The Array of Cumulative p-Values
+	 */
+
+	public double[] pValueCumulativeArray()
+	{
+<span class="nc" id="L170">		return _pValueCumulativeArray;</span>
+	}
+
+	/**
+	 * Retrieve the Array of Incremental p-Values
+	 * 
+	 * @return The Array of Incremental p-Values
+	 */
+
+	public double[] pValueIncrementalArray()
+	{
+<span class="nc" id="L181">		return _pValueIncrementalArray;</span>
+	}
+
+	/**
+	 * Retrieve the Threshold Test Statistic
+	 * 
+	 * @return The Threshold Test Statistic
+	 */
+
+	public double thresholdTestStatistic()
+	{
+<span class="nc" id="L192">		return _thresholdTestStatistic;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

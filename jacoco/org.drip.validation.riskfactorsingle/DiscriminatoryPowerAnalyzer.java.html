@@ -105,61 +105,58 @@ package org.drip.validation.riskfactorsingle;
 
 public class DiscriminatoryPowerAnalyzer
 {
-<span class="nc" id="L108">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =</span>
+<span class="nc" id="L108">	private org.drip.validation.distance.GapTestSetting _gapTestSetting = null;</span>
+<span class="nc" id="L109">	private org.drip.validation.hypothesis.ProbabilityIntegralTransform _sampleProbabilityIntegralTransform =</span>
 		null;
-<span class="nc" id="L110">	private org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting</span>
-		_discriminatoryPowerAnalyzerSetting = null;
 
 	/**
 	 * Construct a DiscriminatoryPowerAnalyzer Instance from the Sample
 	 * 
 	 * @param sample The Sample Instance
-	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @return The DiscriminatoryPowerAnalyzer Instance
 	 */
 
 	public static final DiscriminatoryPowerAnalyzer FromSample (
 		final org.drip.validation.evidence.Sample sample,
-		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-			discriminatoryPowerAnalyzerSetting)
+		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 	{
 		try
 		{
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			return null == sample ? null : new DiscriminatoryPowerAnalyzer (</span>
-<span class="nc" id="L130">				sample.nativeProbabilityIntegralTransform(),</span>
-				discriminatoryPowerAnalyzerSetting
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			return null == sample ? null : new DiscriminatoryPowerAnalyzer (</span>
+<span class="nc" id="L128">				sample.nativeProbabilityIntegralTransform(),</span>
+				gapTestSetting
 			);
 		}
-<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L132">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L136">			e.printStackTrace();</span>
+<span class="nc" id="L134">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L137">		return null;</span>
 	}
 
 	/**
 	 * DiscriminatoryPowerAnalyzer Constructor
 	 * 
 	 * @param sampleProbabilityIntegralTransform Sample Probability Integral Transform
-	 * @param discriminatoryPowerAnalyzerSetting Discriminatory Power Analyzer Setting
+	 * @param gapTestSetting The Distance Gap Test Setting
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiscriminatoryPowerAnalyzer (
 		final org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
-		final org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-			discriminatoryPowerAnalyzerSetting)
+		final org.drip.validation.distance.GapTestSetting gapTestSetting)
 		throws java.lang.Exception
-<span class="nc" id="L156">	{</span>
-<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||</span>
-			null == (_discriminatoryPowerAnalyzerSetting = discriminatoryPowerAnalyzerSetting))
+<span class="nc" id="L153">	{</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (null == (_sampleProbabilityIntegralTransform = sampleProbabilityIntegralTransform) ||</span>
+			null == (_gapTestSetting = gapTestSetting))
 		{
-<span class="nc" id="L160">			throw new java.lang.Exception (&quot;DiscriminatoryPowerAnalyzer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;DiscriminatoryPowerAnalyzer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L162">	}</span>
+<span class="nc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Sample Probability Integral Transform
@@ -169,25 +166,24 @@ public class DiscriminatoryPowerAnalyzer
 
 	public org.drip.validation.hypothesis.ProbabilityIntegralTransform sampleProbabilityIntegralTransform()
 	{
-<span class="nc" id="L172">		return _sampleProbabilityIntegralTransform;</span>
+<span class="nc" id="L169">		return _sampleProbabilityIntegralTransform;</span>
 	}
 
 	/**
-	 * Retrieve the Discriminatory Power Analyzer Setting
+	 * Retrieve the Gap Test Setting
 	 * 
-	 * @return The Discriminatory Power Analyzer Setting
+	 * @return The Gap Test Setting
 	 */
 
-	public org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerSetting
-		discriminatoryPowerAnalyzerSetting()
+	public org.drip.validation.distance.GapTestSetting gapTestSetting()
 	{
-<span class="nc" id="L184">		return _discriminatoryPowerAnalyzerSetting;</span>
+<span class="nc" id="L180">		return _gapTestSetting;</span>
 	}
 
 	/**
 	 * Run the Gap Test for the Hypothesis
 	 * 
-	 * @param hypothesis The ENsemble Hypothesis
+	 * @param hypothesis The Ensemble Hypothesis
 	 * 
 	 * @return The Sample-Hypothesis Gap Test Outcome
 	 */
@@ -197,20 +193,20 @@ public class DiscriminatoryPowerAnalyzer
 	{
 		try
 		{
-<span class="nc bnc" id="L200" title="All 2 branches missed.">			return null == hypothesis ? null : new</span>
-				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
-<span class="nc" id="L202">					(hypothesis.nativeProbabilityIntegralTransform()).distanceTest (</span>
-						_sampleProbabilityIntegralTransform,
-<span class="nc" id="L204">						_discriminatoryPowerAnalyzerSetting.gapLossFunction(),</span>
-<span class="nc" id="L205">						_discriminatoryPowerAnalyzerSetting.gapLossWeightFunction()</span>
-					);
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			return null == hypothesis ? null : new</span>
+				org.drip.validation.hypothesis.ProbabilityIntegralTransformTest (
+<span class="nc" id="L198">					hypothesis.nativeProbabilityIntegralTransform()</span>
+<span class="nc" id="L199">				).distanceTest (</span>
+					_sampleProbabilityIntegralTransform,
+					_gapTestSetting
+				);
 		}
-<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L210">			e.printStackTrace();</span>
+<span class="nc" id="L206">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L213">		return null;</span>
+<span class="nc" id="L209">		return null;</span>
 	}
 
 	/**
@@ -224,40 +220,40 @@ public class DiscriminatoryPowerAnalyzer
 	public org.drip.validation.distance.HypothesisOutcomeSuite hypothesisGapTest (
 		final org.drip.validation.distance.HypothesisSuite hypothesisSuite)
 	{
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		if (null == hypothesisSuite)</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (null == hypothesisSuite)</span>
 		{
-<span class="nc" id="L229">			return null;</span>
+<span class="nc" id="L225">			return null;</span>
 		}
 
-<span class="nc" id="L232">		java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMap =</span>
-<span class="nc" id="L233">			hypothesisSuite.hypothesisMap();</span>
+<span class="nc" id="L228">		java.util.Map&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMap =</span>
+<span class="nc" id="L229">			hypothesisSuite.hypothesisMap();</span>
 
-<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (0 == hypothesisMap.size())</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (0 == hypothesisMap.size())</span>
 		{
-<span class="nc" id="L237">			return null;</span>
+<span class="nc" id="L233">			return null;</span>
 		}
 
-<span class="nc" id="L240">		org.drip.validation.distance.HypothesisOutcomeSuite hypothesisOutcomeSuite = new</span>
+<span class="nc" id="L236">		org.drip.validation.distance.HypothesisOutcomeSuite hypothesisOutcomeSuite = new</span>
 			org.drip.validation.distance.HypothesisOutcomeSuite();
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.validation.evidence.Ensemble&gt; hypothesisMapEntry
-<span class="nc bnc" id="L244" title="All 2 branches missed.">			: hypothesisMap.entrySet())</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			: hypothesisMap.entrySet())</span>
 		{
-<span class="nc" id="L246">			org.drip.validation.distance.GapTestOutcome gapTestOutcome = gapTest</span>
-<span class="nc" id="L247">				(hypothesisMapEntry.getValue());</span>
+<span class="nc" id="L242">			org.drip.validation.distance.GapTestOutcome gapTestOutcome = gapTest</span>
+<span class="nc" id="L243">				(hypothesisMapEntry.getValue());</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">			if (null == gapTestOutcome)</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">			if (null == gapTestOutcome)</span>
 			{
-<span class="nc" id="L251">				continue;</span>
+<span class="nc" id="L247">				continue;</span>
 			}
 
-<span class="nc" id="L254">			hypothesisOutcomeSuite.add (</span>
-<span class="nc" id="L255">				hypothesisMapEntry.getKey(),</span>
+<span class="nc" id="L250">			hypothesisOutcomeSuite.add (</span>
+<span class="nc" id="L251">				hypothesisMapEntry.getKey(),</span>
 				gapTestOutcome
 			);
-<span class="nc" id="L258">		}</span>
+<span class="nc" id="L254">		}</span>
 
-<span class="nc" id="L260">		return hypothesisOutcomeSuite;</span>
+<span class="nc" id="L256">		return hypothesisOutcomeSuite;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

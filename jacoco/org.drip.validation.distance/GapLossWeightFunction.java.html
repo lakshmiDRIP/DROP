@@ -116,10 +116,10 @@ package org.drip.validation.distance;
 <span class="nc" id="L116">		return new GapLossWeightFunction()</span>
 <span class="nc" id="L117">		{</span>
 			@Override public double weight (
-				final double gap)
+				final double pValueHypothesis)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (gap))</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (pValueHypothesis))</span>
 				{
 <span class="nc" id="L124">					throw new java.lang.Exception (&quot;GapLossWeightFunction::weight =&gt; Invalid Inputs&quot;);</span>
 				}
@@ -140,24 +140,25 @@ package org.drip.validation.distance;
 <span class="nc" id="L140">		return new GapLossWeightFunction()</span>
 <span class="nc" id="L141">		{</span>
 			@Override public double weight (
-				final double gap)
+				final double pValueHypothesis)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (gap))</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (pValueHypothesis))</span>
 				{
 <span class="nc" id="L148">					throw new java.lang.Exception (&quot;GapLossWeightFunction::weight =&gt; Invalid Inputs&quot;);</span>
 				}
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">				return 0. == gap ? 0. : 1. / gap;</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">				return 0. == pValueHypothesis  || 1. == pValueHypothesis ? 0. :</span>
+					1. / (pValueHypothesis * (1. - pValueHypothesis));
 			}
 		};
 	}
 
 	/**
 	 * 
-	 * Compute the Weight corresponding to the Empirical to Hypothesis Gap
+	 * Compute the Weight corresponding to the Hypothesis p-Value
 	 * 
-	 * @param gap The Empirical to Hypothesis Gap
+	 * @param pValueHypothesis The Hypothesis p-Value
 	 * 
 	 * @return The Weight
 	 * 
@@ -165,7 +166,7 @@ package org.drip.validation.distance;
 	 */
 
 	public abstract double weight (
-		final double gap)
+		final double pValueHypothesis)
 		throws java.lang.Exception;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
