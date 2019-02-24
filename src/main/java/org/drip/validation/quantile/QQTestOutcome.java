@@ -64,8 +64,7 @@ package org.drip.validation.quantile;
  */
 
 /**
- * <i>QQVertex</i> holds the Elements in a single QQ Vertex - the Plotting Position and the Expected Order
- * Statistics .
+ * <i>QQTestOutcome</i> holds the Elements of the QQ Vertexes that come from a QQ Plot Run.
  *
  *  <br><br>
  *  <ul>
@@ -101,66 +100,51 @@ package org.drip.validation.quantile;
  * @author Lakshmi Krishnamurthy
  */
 
-public class QQVertex
+public class QQTestOutcome
 {
-	private double _orderStatisticX = java.lang.Double.NaN;
-	private double _orderStatisticY = java.lang.Double.NaN;
-	private org.drip.validation.quantile.PlottingPosition _plottingPosition = null;
+	private org.drip.validation.quantile.QQVertex[] _qqVertexArray = null;
 
 	/**
-	 * QQVertex Constructor
+	 * QQTestOutcome Constructor
 	 * 
-	 * @param plottingPosition Vertex Plotting Position
-	 * @param orderStatisticX X Order Statistic
-	 * @param orderStatisticY Y Order Statistic
+	 * @param qqVertexArray Array of Q-Q Vertexes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public QQVertex (
-		final org.drip.validation.quantile.PlottingPosition plottingPosition,
-		final double orderStatisticX,
-		final double orderStatisticY)
+	public QQTestOutcome (
+		final org.drip.validation.quantile.QQVertex[] qqVertexArray)
 		throws java.lang.Exception
 	{
-		if (null == (_plottingPosition = plottingPosition) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticY = orderStatisticY))
+		if (null == (_qqVertexArray = qqVertexArray))
 		{
-			throw new java.lang.Exception ("QQVertex Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("QQTestOutcome Constructor => Invalid Inputs");
+		}
+
+		int qqVertexCount = _qqVertexArray.length;
+
+		if (0 == qqVertexCount)
+		{
+			throw new java.lang.Exception ("QQTestOutcome Constructor => Invalid Inputs");
+		}
+
+		for (int qqVertexIndex = 0; qqVertexIndex < qqVertexCount; ++qqVertexIndex)
+		{
+			if (null == _qqVertexArray[qqVertexIndex])
+			{
+				throw new java.lang.Exception ("QQTestOutcome Constructor => Invalid Inputs");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Vertex Plotting Position
+	 * Retrieve the Array of Q-Q Vertexes
 	 * 
-	 * @return The Vertex Plotting Position
+	 * @return Array of Q-Q Vertexes
 	 */
 
-	public org.drip.validation.quantile.PlottingPosition plottingPosition()
+	public org.drip.validation.quantile.QQVertex[] qqVertexArray()
 	{
-		return _plottingPosition;
-	}
-
-	/**
-	 * Retrieve the X Order Statistic
-	 * 
-	 * @return The X Order Statistic
-	 */
-
-	public double orderStatisticX()
-	{
-		return _orderStatisticX;
-	}
-
-	/**
-	 * Retrieve the Y Order Statistic
-	 * 
-	 * @return The Y Order Statistic
-	 */
-
-	public double orderStatisticY()
-	{
-		return _orderStatisticY;
+		return _qqVertexArray;
 	}
 }

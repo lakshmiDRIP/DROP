@@ -121,7 +121,7 @@ public class PlottingPosition
 		throws java.lang.Exception
 	{
 		if (0 >= (_orderStatisticOrdinal = orderStatisticOrdinal) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_quantile = quantile) || 0. >= _quantile)
+			!org.drip.quant.common.NumberUtil.IsValid (_quantile = quantile) || 0. > _quantile)
 		{
 			throw new java.lang.Exception ("PlottingPosition Constructor => Invalid Inputs");
 		}

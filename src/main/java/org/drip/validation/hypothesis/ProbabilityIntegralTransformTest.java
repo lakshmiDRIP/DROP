@@ -393,4 +393,66 @@ public class ProbabilityIntegralTransformTest
 
 		return null;
 	}
+
+	/**
+	 * Run the Quantile-Quantile Test
+	 * 
+	 * @param samplePIT The Sample Probability Integral Transform
+	 * @param plottingPositionGenerator The Quantile-Quantile Test Plotting Position Generator
+	 * 
+	 * @return The Quantile-Quantile Test Outcome
+	 */
+
+	public org.drip.validation.quantile.QQTestOutcome qqTest (
+		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
+		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator)
+	{
+		if (null == samplePIT || null == plottingPositionGenerator)
+		{
+			return null;
+		}
+
+		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =
+			plottingPositionGenerator.generate();
+
+		if (null == plottingPositionArray)
+		{
+			return null;
+		}
+
+		int orderStatisticCount = plottingPositionArray.length;
+		org.drip.validation.quantile.QQVertex[] qqVertexArray = new
+			org.drip.validation.quantile.QQVertex[orderStatisticCount];
+
+		for (int orderStatisticIndex = 0; orderStatisticIndex < orderStatisticCount; ++orderStatisticIndex)
+		{
+			try
+			{
+				double pValue = plottingPositionArray[orderStatisticIndex].quantile();
+		
+				qqVertexArray[orderStatisticIndex] = new org.drip.validation.quantile.QQVertex (
+					plottingPositionArray[orderStatisticIndex],
+					samplePIT.testStatistic (pValue),
+					_probabilityIntegralTransform.testStatistic (pValue)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		try
+		{
+			return new org.drip.validation.quantile.QQTestOutcome (qqVertexArray);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

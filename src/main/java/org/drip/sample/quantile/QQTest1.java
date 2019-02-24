@@ -1,5 +1,16 @@
 
-package org.drip.validation.quantile;
+package org.drip.sample.quantile;
+
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
+import org.drip.validation.quantile.QQTestOutcome;
+import org.drip.validation.quantile.QQVertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +75,8 @@ package org.drip.validation.quantile;
  */
 
 /**
- * <i>QQVertex</i> holds the Elements in a single QQ Vertex - the Plotting Position and the Expected Order
- * Statistics .
+ * <i>QQTest1</i> compares the Order Statistics between 2 identical Normal Distributions using the Filliben
+ * (1975) Mean Based Plotting Position Generator.
  *
  *  <br><br>
  *  <ul>
@@ -101,66 +112,145 @@ package org.drip.validation.quantile;
  * @author Lakshmi Krishnamurthy
  */
 
-public class QQVertex
+public class QQTest1
 {
-	private double _orderStatisticX = java.lang.Double.NaN;
-	private double _orderStatisticY = java.lang.Double.NaN;
-	private org.drip.validation.quantile.PlottingPosition _plottingPosition = null;
 
-	/**
-	 * QQVertex Constructor
-	 * 
-	 * @param plottingPosition Vertex Plotting Position
-	 * @param orderStatisticX X Order Statistic
-	 * @param orderStatisticY Y Order Statistic
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public QQVertex (
-		final org.drip.validation.quantile.PlottingPosition plottingPosition,
-		final double orderStatisticX,
-		final double orderStatisticY)
-		throws java.lang.Exception
+	private static final double UnivariateRandom (
+		final double mean,
+		final double sigma)
+		throws Exception
 	{
-		if (null == (_plottingPosition = plottingPosition) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticY = orderStatisticY))
+		return new R1UnivariateNormal (
+			mean,
+			sigma
+		).random();
+	}
+
+	private static final Sample GenerateSample (
+		final double mean,
+		final double sigma,
+		final int drawCount)
+		throws Exception
+	{
+		double[] univariateRandomArray = new double[drawCount];
+
+		for (int drawIndex = 0; drawIndex < drawCount; ++drawIndex)
 		{
-			throw new java.lang.Exception ("QQVertex Constructor => Invalid Inputs");
+			univariateRandomArray[drawIndex] = UnivariateRandom (
+				mean,
+				sigma
+			);
+		}
+
+		return new Sample (univariateRandomArray);
+	}
+
+	private static final Sample[] GenerateSampleArray (
+		final double mean,
+		final double sigma,
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+		Sample[] sampleArray = new Sample[sampleCount];
+
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
+		{
+			sampleArray[sampleIndex] = GenerateSample (
+				mean,
+				sigma,
+				drawCount
+			);
+		}
+
+		return sampleArray;
+	}
+
+	private static final Ensemble GenerateEnsemble (
+		final double mean,
+		final double sigma,
+		final int drawCount,
+		final int sampleCount)
+		throws Exception
+	{
+		return new Ensemble (
+			GenerateSampleArray (
+				mean,
+				sigma,
+				drawCount,
+				sampleCount
+			),
+			new TestStatisticEvaluator[]
+			{
+				new TestStatisticEvaluator()
+				{
+					public double evaluate (
+						final double[] drawArray)
+						throws Exception
+					{
+						return 1.;
+					}
+				}
+			}
+		);
+	}
+
+	private static final void QQPlot (
+		final QQTestOutcome qqTestOutcome)
+		throws Exception
+	{
+		QQVertex[] qqVertexArray = qqTestOutcome.qqVertexArray();
+
+		for (QQVertex qqVertex : qqVertexArray)
+		{
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (
+					qqVertex.plottingPosition().orderStatisticOrdinal(), 2, 0, 1.
+				) + " => " +
+				FormatUtil.FormatDouble (qqVertex.plottingPosition().quantile(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (qqVertex.orderStatisticX(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (qqVertex.orderStatisticY(), 1, 4, 1.) + " ||"
+			);
 		}
 	}
 
-	/**
-	 * Retrieve the Vertex Plotting Position
-	 * 
-	 * @return The Vertex Plotting Position
-	 */
-
-	public org.drip.validation.quantile.PlottingPosition plottingPosition()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		return _plottingPosition;
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve the X Order Statistic
-	 * 
-	 * @return The X Order Statistic
-	 */
+		int drawCount = 1000000;
+		int sampleCount = 1;
+		double mean = 0.;
+		int orderStatisticCount = 25;
+		double volatility = 1.0;
 
-	public double orderStatisticX()
-	{
-		return _orderStatisticX;
-	}
+		PlottingPositionGeneratorHeuristic plottingPositionGenerator =
+			PlottingPositionGeneratorHeuristic.Filliben1975 (orderStatisticCount);
 
-	/**
-	 * Retrieve the Y Order Statistic
-	 * 
-	 * @return The Y Order Statistic
-	 */
+		Sample sample = GenerateSample (
+			mean,
+			volatility,
+			drawCount
+		);
 
-	public double orderStatisticY()
-	{
-		return _orderStatisticY;
+		Ensemble hypothesis = GenerateEnsemble (
+			mean,
+			volatility,
+			drawCount,
+			sampleCount
+		);
+
+		QQPlot (
+			new ProbabilityIntegralTransformTest (
+				hypothesis.nativeProbabilityIntegralTransform()
+			).qqTest (
+				sample.nativeProbabilityIntegralTransform(),
+				plottingPositionGenerator
+			)
+		);
+
+		EnvManager.TerminateEnv();
 	}
 }
