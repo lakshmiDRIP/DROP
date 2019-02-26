@@ -13,6 +13,8 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -233,8 +235,7 @@ public class UniformCramersVonMisesGapAnalysis
 		final int sampleCount,
 		final Sample sample,
 		final GapTestSetting gapTestSetting,
-		final int histogramCount,
-		final double pValueThreshold)
+		final PlottingPositionGenerator plottingPositionGenerator)
 		throws Exception
 	{
 		Ensemble hypothesis = GenerateEnsemble (
@@ -253,7 +254,9 @@ public class UniformCramersVonMisesGapAnalysis
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				plottingPositionGenerator
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -293,7 +296,9 @@ public class UniformCramersVonMisesGapAnalysis
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0;
+			histogramIndex <= plottingPositionGenerator.orderStatisticCount() + 1;
+			++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -318,8 +323,7 @@ public class UniformCramersVonMisesGapAnalysis
 		int sampleCount = 600;
 		double sampleLeftSupport = 0.;
 		double sampleRightSupport = 1.;
-		int histogramCount = 20;
-		double pValueThreshold = 0.99;
+		int orderStatisticsCount = 20;
 		double[] hypothesisLeftSupportArray = {
 			-0.50,
 			-0.25,
@@ -335,8 +339,12 @@ public class UniformCramersVonMisesGapAnalysis
 			1.75
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
-			(GapLossWeightFunction.CramersVonMises());
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (
+			GapLossWeightFunction.AndersonDarling()
+		);
+
+		PlottingPositionGenerator plottingPositionGenerator = PlottingPositionGeneratorHeuristic.NIST2013
+			(orderStatisticsCount);
 
 		Sample sample = GenerateSample (
 			sampleLeftSupport,
@@ -355,8 +363,7 @@ public class UniformCramersVonMisesGapAnalysis
 					sampleCount,
 					sample,
 					gapTestSetting,
-					histogramCount,
-					pValueThreshold
+					plottingPositionGenerator
 				);
 			}
 		}

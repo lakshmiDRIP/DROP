@@ -104,24 +104,24 @@ package org.drip.validation.hypothesis;
 
 public class HistogramTestSetting
 {
-	private int _histogramCount = -1;
 	private double _pValueThreshold = java.lang.Double.NaN;
+	private org.drip.validation.quantile.PlottingPositionGenerator _plottingPositionGenerator = null;
 
 	/**
 	 * Construct the Anfuso Karyampas Nawroth (2017) Instance of the Histogram Test Setting
 	 * 
-	 * @param histogramCount Count of the Histograms
+	 * @param plottingPositionGenerator The Plotting Position Generator
 	 * 
 	 * @return The Anfuso Karyampas Nawroth (2017) Instance of the Histogram Test Setting
 	 */
 
 	public static final HistogramTestSetting AnfusoKaryampasNawroth2017 (
-		final int histogramCount)
+		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator)
 	{
 		try
 		{
 			return new HistogramTestSetting (
-				histogramCount,
+				plottingPositionGenerator,
 				1. - org.drip.validation.hypothesis.SignificanceTestSetting.ANFUSO_KARYAMPAS_NAWROTH_2017_P_TEST_THRESHOLD
 			);
 		}
@@ -136,18 +136,18 @@ public class HistogramTestSetting
 	/**
 	 * HistogramTestSetting Constructor
 	 * 
-	 * @param histogramCount Count of Histograms
+	 * @param plottingPositionGenerator The Plotting Position Generator
 	 * @param pValueThreshold Histogram Test p-Value Threshold
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public HistogramTestSetting (
-		final int histogramCount,
+		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator,
 		final double pValueThreshold)
 		throws java.lang.Exception
 	{
-		if (1 >= (_histogramCount = histogramCount) ||
+		if (null == (_plottingPositionGenerator = plottingPositionGenerator) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold) ||
 				0. >= _pValueThreshold)
 		{
@@ -156,14 +156,14 @@ public class HistogramTestSetting
 	}
 
 	/**
-	 * Retrieve the Count of Histograms
+	 * Retrieve the Plotting Position Generator
 	 * 
-	 * @return The Count of Histograms
+	 * @return The Plotting Position Generator
 	 */
 
-	public int histogramCount()
+	public org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator()
 	{
-		return _histogramCount;
+		return _plottingPositionGenerator;
 	}
 
 	/**

@@ -261,15 +261,15 @@ public class ProbabilityIntegralTransformTest
 		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new
 			org.drip.validation.evidence.TestStatisticAccumulator();
 
-		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> sampleTestStatisticPValue :
+		for (java.util.Map.Entry<java.lang.Double, java.lang.Double> testStatisticPValueEntry :
 			samplePIT.testStatisticPValueMap().entrySet())
 		{
 			try
 			{
 				double hypothesisPValueRight = _probabilityIntegralTransform.pValue
-					(sampleTestStatisticPValue.getKey());
+					(testStatisticPValueEntry.getKey());
 
-				double gapLoss = gapLossFunction.loss (sampleTestStatisticPValue.getValue() -
+				double gapLoss = gapLossFunction.loss (testStatisticPValueEntry.getValue() -
 					hypothesisPValueRight);
 
 				double weightedGapLoss = gapLoss * gapLossWeightFunction.weight (hypothesisPValueRight);
@@ -324,18 +324,16 @@ public class ProbabilityIntegralTransformTest
 			return null;
 		}
 
-		int histogramCount = histogramTestSetting.histogramCount();
+		org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator =
+			histogramTestSetting.plottingPositionGenerator();
 
-		int mapSize = _probabilityIntegralTransform.pValueTestStatisticMap().size();
+		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =
+			plottingPositionGenerator.generate();
 
-		if (mapSize <= histogramCount)
-		{
-			return null;
-		}
-
-		double[] testStatisticArray = new double[histogramCount + 1];
-		double[] pValueCumulativeArray = new double[histogramCount + 1];
-		double[] pValueIncrementalArray = new double[histogramCount + 1];
+		int qqVertexCount = plottingPositionArray.length + 2;
+		double[] testStatisticArray = new double[qqVertexCount];
+		double[] pValueCumulativeArray = new double[qqVertexCount];
+		double[] pValueIncrementalArray = new double[qqVertexCount];
 
 		try
 		{
@@ -344,8 +342,8 @@ public class ProbabilityIntegralTransformTest
 			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic
 				(pValueCumulativeArray[0] = 0.);
 
-			testStatisticArray[histogramCount] = _probabilityIntegralTransform.testStatistic
-				(pValueCumulativeArray[histogramCount] = 1.);
+			testStatisticArray[qqVertexCount - 1] = _probabilityIntegralTransform.testStatistic
+				(pValueCumulativeArray[qqVertexCount - 1] = 1.);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -354,17 +352,16 @@ public class ProbabilityIntegralTransformTest
 			return null;
 		}
 
-		double testStatisticIncrement = (testStatisticArray[histogramCount] - testStatisticArray[0]) /
-			histogramCount;
-
-		for (int histogramIndex = 1; histogramIndex < histogramCount; ++histogramIndex)
+		for (int qqVertexIndex = 1; qqVertexIndex < qqVertexCount - 1; ++qqVertexIndex)
 		{
 			try
 			{
-				pValueIncrementalArray[histogramIndex] = (pValueCumulativeArray[histogramIndex] =
-					_probabilityIntegralTransform.pValue (testStatisticArray[histogramIndex] =
-					testStatisticArray[0] + testStatisticIncrement * histogramIndex)) -
-					pValueCumulativeArray[histogramIndex - 1];
+				testStatisticArray[qqVertexIndex] = _probabilityIntegralTransform.testStatistic
+					(pValueCumulativeArray[qqVertexIndex] =
+						plottingPositionArray[qqVertexIndex - 1].quantile());
+
+				pValueIncrementalArray[qqVertexIndex] = pValueCumulativeArray[qqVertexIndex] -
+					pValueCumulativeArray[qqVertexIndex - 1];
 			}
 			catch (java.lang.Exception e)
 			{
@@ -374,8 +371,8 @@ public class ProbabilityIntegralTransformTest
 			}
 		}
 
-		pValueIncrementalArray[histogramCount] = pValueCumulativeArray[histogramCount] -
-			pValueCumulativeArray[histogramCount - 1];
+		pValueIncrementalArray[qqVertexCount - 1] = pValueCumulativeArray[qqVertexCount - 1] -
+			pValueCumulativeArray[qqVertexCount - 2];
 
 		try
 		{

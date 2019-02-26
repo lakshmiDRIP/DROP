@@ -1,16 +1,16 @@
 
-package org.drip.sample.distancetest;
+package org.drip.sample.quantile;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.distance.GapTestOutcome;
-import org.drip.validation.distance.GapTestSetting;
-import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
+import org.drip.validation.quantile.QQTestOutcome;
+import org.drip.validation.quantile.QQVertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -75,43 +75,28 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  */
 
 /**
- * <i>NormalCramersVonMisesGapDiscriminant</i> demonstrates the Generation of the Sample Distance
- * Discriminant Metrics for Different Ensemble Hypotheses.
- * 
- *  <br><br>
- *  <ul>
- *  	<li>
- *  		<b>Reference Distribution  </b> - <i>Univariate Normal</i>
- *  	</li>
- *  	<li>
- *  		<b>Gap Loss Function       </b> - <i>Anfuso, Karyampas, and Nawroth (2017)</i>
- *  	</li>
- *  	<li>
- *  		<b>Gap Loss Weight Function</b> - <i>Cramers and von Mises</i>
- *  	</li>
- *  </ul>
+ * <i>QQTest4</i> compares the Order Statistics between 2 Similar Normal Distributions using the NIST (2013)
+ * Mean Based Plotting Position Generator.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
- *  			Back-testing Credit Exposure Models
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  		Gibbons, J. D., and S. Chakraborti (2003): <i>Non-parametric Statistical Inference 4th
+ *  			Edition</i> <b>CRC Press</b>
  *  	</li>
  *  	<li>
- *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  		Filliben, J. J. (1975): The Probability Plot Correlation Coefficient Test for Normality
+ *  			<i>Technometrics, American Society for Quality</i> <b>17 (1)</b> 111-117
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Gnanadesikan, R. (1977): <i>Methods for Statistical Analysis of Multivariate Observations</i>
+ *  			<b>Wiley</b>
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): Probability Integral Transform
- *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  		Thode, H. C. (2002): <i>Testing for Normality</i> <b>Marcel Dekker</b> New York
  *  	</li>
  *  	<li>
- *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  		Wikipedia (2018): Q-Q Plot https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot
  *  	</li>
  *  </ul>
  *
@@ -120,14 +105,14 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation">Model Validation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/core">Core Model Validation Support Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile">Quantile Based Graphical Numerical Validators</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalCramersVonMisesGapDiscriminant
+public class QQTest4
 {
 
 	private static final double UnivariateRandom (
@@ -210,39 +195,52 @@ public class NormalCramersVonMisesGapDiscriminant
 		);
 	}
 
-	private static final GapTestOutcome DistanceTest (
-		final Sample sample,
-		final Ensemble ensemble,
-		final GapTestSetting gapTestSetting)
+	private static final void QQPlot (
+		final QQTestOutcome qqTestOutcome)
 		throws Exception
 	{
-		return new ProbabilityIntegralTransformTest (
-			ensemble.nativeProbabilityIntegralTransform()
-		).distanceTest (
-			sample.nativeProbabilityIntegralTransform(),
-			gapTestSetting
-		);
-	}
+		QQVertex[] qqVertexArray = qqTestOutcome.qqVertexArray();
 
-	private static final double DistanceTest (
-		final double hypothesisMean,
-		final double hypothesisSigma,
-		final int drawCount,
-		final int sampleCount,
-		final Sample sample,
-		final GapTestSetting gapTestSetting)
-		throws Exception
-	{
-		return DistanceTest (
-			sample,
-			GenerateEnsemble (
-				hypothesisMean,
-				hypothesisSigma,
-				drawCount,
-				sampleCount
-			),
-			gapTestSetting
-		).distance();
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|          Q-Q TEST OUTCOME          ||");
+
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                         ||");
+
+		System.out.println ("\t|        - Order Statistic Ordinal   ||");
+
+		System.out.println ("\t|        - Order Statistic Quantile  ||");
+
+		System.out.println ("\t|        - Order Statistic X         ||");
+
+		System.out.println ("\t|        - Order Statistic Y         ||");
+
+		System.out.println ("\t|------------------------------------||");
+
+		for (QQVertex qqVertex : qqVertexArray)
+		{
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (
+					qqVertex.plottingPosition().orderStatisticOrdinal(), 2, 0, 1.
+				) + " => " +
+				FormatUtil.FormatDouble (qqVertex.plottingPosition().quantile(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (qqVertex.orderStatisticX(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (qqVertex.orderStatisticY(), 1, 4, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println (
+			"\t| Probability Plot Correlation Coefficient => " +
+			FormatUtil.FormatDouble (qqTestOutcome.probabilityPlotCorrelationCoefficient(), 1, 4, 1.) + " ||"
+		);
+
+		System.out.println ("\t|-----------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -251,75 +249,38 @@ public class NormalCramersVonMisesGapDiscriminant
 	{
 		EnvManager.InitEnv ("");
 
-		int drawCount = 2000;
-		int sampleCount = 600;
+		int drawCount = 1000000;
+		int sampleCount = 1;
 		double sampleMean = 0.;
-		double sampleSigma = 1.;
-		double[] hypothesisMeanArray = {
-			-0.50,
-			-0.25,
-			 0.00,
-			 0.25,
-			 0.50
-		};
-		double[] hypothesisSigmaArray = {
-			0.50,
-			0.75,
-			1.00,
-			1.25,
-			1.50
-		};
+		double hypothesisMean = -1.;
+		int orderStatisticCount = 25;
+		double sampleVolatility = 1.0;
+		double hypothesisVolatility = 1.0;
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (
-			GapLossWeightFunction.AndersonDarling()
-		);
+		PlottingPositionGeneratorHeuristic plottingPositionGenerator =
+			PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticCount);
 
 		Sample sample = GenerateSample (
 			sampleMean,
-			sampleSigma,
+			sampleVolatility,
 			drawCount
 		);
 
-		System.out.println ("\t|------------------------------||");
+		Ensemble hypothesis = GenerateEnsemble (
+			hypothesisMean,
+			hypothesisVolatility,
+			drawCount,
+			sampleCount
+		);
 
-		System.out.println ("\t|    DISCRIMINANT GRID SCAN    ||");
-
-		System.out.println ("\t|------------------------------||");
-
-		System.out.println ("\t|    L -> R:                   ||");
-
-		System.out.println ("\t|        - Hypothesis Mean     ||");
-
-		System.out.println ("\t|        - Hypothesis Sigma    ||");
-
-		System.out.println ("\t|        - Distance Metric     ||");
-
-		System.out.println ("\t|------------------------------||");
-
-		for (double hypothesisMean : hypothesisMeanArray)
-		{
-			for (double hypothesisSigma : hypothesisSigmaArray)
-			{
-				System.out.println (
-					"\t| " +
-					FormatUtil.FormatDouble (hypothesisMean, 1, 2, 1.) + " | " +
-					FormatUtil.FormatDouble (hypothesisSigma, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (
-						DistanceTest (
-							hypothesisMean,
-							hypothesisSigma,
-							drawCount,
-							sampleCount,
-							sample,
-							gapTestSetting
-						),
-						1, 8, 1.
-					) + " ||"
-				);
-			}
-		}
-
-		System.out.println ("\t|------------------------------||");
+		QQPlot (
+			new ProbabilityIntegralTransformTest (
+				hypothesis.nativeProbabilityIntegralTransform()
+			).qqTest (
+				sample.nativeProbabilityIntegralTransform(),
+				plottingPositionGenerator
+			)
+		);
 
 		EnvManager.TerminateEnv();
 	}

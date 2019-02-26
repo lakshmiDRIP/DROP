@@ -324,7 +324,9 @@ public class ADDiscriminatoryPowerAggregation6b
 		DiscriminatoryPowerAnalyzerAggregate discriminatoryPowerAnalyzerAggregate = new
 			DiscriminatoryPowerAnalyzerAggregate (
 				eventSamplePITMap,
-				GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling()),
+				GapTestSetting.RiskFactorLossTest (
+					GapLossWeightFunction.AndersonDarling()
+				),
 				eventAggregationWeightFunction
 			);
 

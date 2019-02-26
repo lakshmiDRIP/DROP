@@ -17,6 +17,8 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
@@ -137,14 +139,15 @@ public class ADCorrelationBacktesting7a
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount,
-		final double pValueThreshold)
+		final PlottingPositionGenerator plottingPositionGenerator)
 		throws Exception
 	{
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				plottingPositionGenerator
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -177,7 +180,9 @@ public class ADCorrelationBacktesting7a
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0;
+			histogramIndex <= plottingPositionGenerator.orderStatisticCount() + 1;
+			++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -246,11 +251,10 @@ public class ADCorrelationBacktesting7a
 
 		int sampleCount = 26;
 		int vertexCount = 390;
-		int histogramCount = 20;
 		String currency = "USD";
 		double horizon = 1. / 12.;
 		double correlation = 0.50;
-		double pValueThreshold = 0.95;
+		int orderStatisticsCount = 20;
 		String equityEntity = "SNP500";
 		String fxCurrencyPair = "CHF/USD";
 		double[] annualStateMeanArray =
@@ -291,7 +295,9 @@ public class ADCorrelationBacktesting7a
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling())
+			GapTestSetting.RiskFactorLossTest (
+				GapLossWeightFunction.AndersonDarling()
+			)
 		);
 
 		Ensemble hypothesis = Hypothesis (
@@ -310,8 +316,7 @@ public class ADCorrelationBacktesting7a
 
 		DistanceTest (
 			gapTestOutcome,
-			histogramCount,
-			pValueThreshold
+			PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)
 		);
 
 		EnvManager.TerminateEnv();

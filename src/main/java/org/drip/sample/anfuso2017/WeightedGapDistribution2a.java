@@ -13,6 +13,8 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -202,14 +204,15 @@ public class WeightedGapDistribution2a
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount,
-		final double pValueThreshold)
+		final PlottingPositionGenerator plottingPositionGenerator)
 		throws Exception
 	{
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				plottingPositionGenerator
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -242,7 +245,9 @@ public class WeightedGapDistribution2a
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0;
+			histogramIndex <= plottingPositionGenerator.orderStatisticCount() + 1;
+			++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -266,10 +271,9 @@ public class WeightedGapDistribution2a
 		int drawCount = 3780;
 		int sampleCount = 1000;
 		double annualMean = 0.;
-		int histogramCount = 20;
 		double horizon = 1. / 12;
-		double pValueThreshold = 0.99;
 		double annualVolatility = 0.1;
+		int orderStatisticsCount = 20;
 
 		double horizonVolatility = annualVolatility * Math.sqrt (horizon);
 
@@ -281,7 +285,9 @@ public class WeightedGapDistribution2a
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises())
+			GapTestSetting.RiskFactorLossTest (
+				GapLossWeightFunction.AndersonDarling()
+			)
 		);
 
 		Ensemble hypothesis = GenerateEnsemble (
@@ -291,12 +297,14 @@ public class WeightedGapDistribution2a
 			sampleCount
 		);
 
+		PlottingPositionGenerator plottingPositionGenerator = PlottingPositionGeneratorHeuristic.NIST2013
+			(orderStatisticsCount);
+
 		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);
 
 		DistanceTest (
 			gapTestOutcome,
-			histogramCount,
-			pValueThreshold
+			plottingPositionGenerator
 		);
 
 		EnvManager.TerminateEnv();

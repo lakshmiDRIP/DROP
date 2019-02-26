@@ -324,7 +324,9 @@ public class CVMDiscriminatoryPowerAggregation6a
 		DiscriminatoryPowerAnalyzerAggregate discriminatoryPowerAnalyzerAggregate = new
 			DiscriminatoryPowerAnalyzerAggregate (
 				eventSamplePITMap,
-				GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises()),
+				GapTestSetting.RiskFactorLossTest (
+					GapLossWeightFunction.AndersonDarling()
+				),
 				eventAggregationWeightFunction
 			);
 

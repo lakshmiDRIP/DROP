@@ -230,8 +230,7 @@ public class UniformAndersonDarlingGapDiscriminant
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapTestSetting gapTestSetting,
-		final int quantileCount)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
 		return DistanceTest (
@@ -256,7 +255,6 @@ public class UniformAndersonDarlingGapDiscriminant
 		int sampleCount = 600;
 		double sampleLeftSupport = 0.;
 		double sampleRightSupport = 1.;
-		int quantileCount = 20;
 		double[] hypothesisLeftSupportArray = {
 			-0.50,
 			-0.25,
@@ -272,8 +270,9 @@ public class UniformAndersonDarlingGapDiscriminant
 			1.75
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
-			(GapLossWeightFunction.AndersonDarling());
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (
+			GapLossWeightFunction.AndersonDarling()
+		);
 
 		Sample sample = GenerateSample (
 			sampleLeftSupport,
@@ -312,8 +311,7 @@ public class UniformAndersonDarlingGapDiscriminant
 							drawCount,
 							sampleCount,
 							sample,
-							gapTestSetting,
-							quantileCount
+							gapTestSetting
 						),
 						1, 8, 1.
 					) + " ||"

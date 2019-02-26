@@ -17,6 +17,7 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
@@ -137,14 +138,16 @@ public class CVMCorrelationBacktesting7d
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount,
+		final int orderStatisticsCount,
 		final double pValueThreshold)
 		throws Exception
 	{
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -177,7 +180,7 @@ public class CVMCorrelationBacktesting7d
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0; histogramIndex <= orderStatisticsCount + 1; ++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -246,7 +249,7 @@ public class CVMCorrelationBacktesting7d
 
 		int sampleCount = 26;
 		int vertexCount = 390;
-		int histogramCount = 20;
+		int orderStatisticsCount = 20;
 		String currency = "USD";
 		double horizon = 1. / 12.;
 		double correlation = 0.50;
@@ -310,7 +313,7 @@ public class CVMCorrelationBacktesting7d
 
 		DistanceTest (
 			gapTestOutcome,
-			histogramCount,
+			orderStatisticsCount,
 			pValueThreshold
 		);
 

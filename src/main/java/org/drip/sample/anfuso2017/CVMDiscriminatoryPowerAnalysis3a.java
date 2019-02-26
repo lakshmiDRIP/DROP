@@ -240,7 +240,9 @@ public class CVMDiscriminatoryPowerAnalysis3a
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises())
+			GapTestSetting.RiskFactorLossTest (
+				GapLossWeightFunction.AndersonDarling()
+			)
 		);
 
 		System.out.println ("\t|--------------------------------||");

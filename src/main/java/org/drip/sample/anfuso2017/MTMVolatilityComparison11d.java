@@ -13,6 +13,7 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -202,13 +203,15 @@ public class MTMVolatilityComparison11d
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount)
+		final int orderStatisticsCount)
 		throws Exception
 	{
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -221,7 +224,7 @@ public class MTMVolatilityComparison11d
 
 		System.out.println ("\t|----------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0; histogramIndex <= orderStatisticsCount + 1; ++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -243,7 +246,7 @@ public class MTMVolatilityComparison11d
 		int sampleCount = 10;
 		double sampleMean = 0.20;
 		double volatility = 2.;
-		int histogramCount = 10;
+		int orderStatisticsCount = 10;
 		double hypothesis1Mean = 0.10;
 		double hypothesis2Mean = 0.30;
 
@@ -267,7 +270,7 @@ public class MTMVolatilityComparison11d
 					sampleCount
 				)
 			),
-			histogramCount
+			orderStatisticsCount
 		);
 
 		DistanceTest (
@@ -279,7 +282,7 @@ public class MTMVolatilityComparison11d
 					sampleCount
 				)
 			),
-			histogramCount
+			orderStatisticsCount
 		);
 
 		EnvManager.TerminateEnv();

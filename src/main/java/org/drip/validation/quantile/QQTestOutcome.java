@@ -147,4 +147,38 @@ public class QQTestOutcome
 	{
 		return _qqVertexArray;
 	}
+
+	/**
+	 * Compute the Probability Plot Correlation Coefficient (PPCC)
+	 * 
+	 * @return The Probability Plot Correlation Coefficient (PPCC)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double probabilityPlotCorrelationCoefficient()
+		throws java.lang.Exception
+	{
+		int vertexCount = _qqVertexArray.length;
+		double[][] orderStatisticsSequence = new double[2][vertexCount];
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			orderStatisticsSequence[0][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticX();
+
+			orderStatisticsSequence[1][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticY();
+		}
+
+		return org.drip.measure.statistics.MultivariateMoments.Standard (
+			new java.lang.String[]
+			{
+				"x",
+				"y"
+			},
+			orderStatisticsSequence
+		).correlation (
+			"x",
+			"y"
+		);
+	}
 }

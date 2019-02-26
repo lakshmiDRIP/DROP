@@ -230,8 +230,7 @@ public class NormalAndersonDarlingGapDiscriminant
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapTestSetting gapTestSetting,
-		final int quantileCount)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
 		return DistanceTest (
@@ -256,7 +255,6 @@ public class NormalAndersonDarlingGapDiscriminant
 		int sampleCount = 600;
 		double sampleMean = 0.;
 		double sampleSigma = 1.;
-		int quantileCount = 20;
 		double[] hypothesisMeanArray = {
 			-0.50,
 			-0.25,
@@ -272,8 +270,9 @@ public class NormalAndersonDarlingGapDiscriminant
 			1.50
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
-			(GapLossWeightFunction.AndersonDarling());
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (
+			GapLossWeightFunction.AndersonDarling()
+		);
 
 		Sample sample = GenerateSample (
 			sampleMean,
@@ -312,8 +311,7 @@ public class NormalAndersonDarlingGapDiscriminant
 							drawCount,
 							sampleCount,
 							sample,
-							gapTestSetting,
-							quantileCount
+							gapTestSetting
 						),
 						1, 8, 1.
 					) + " ||"

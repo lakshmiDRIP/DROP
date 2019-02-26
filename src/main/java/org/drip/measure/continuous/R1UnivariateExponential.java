@@ -116,7 +116,7 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
 		{
-			throw new java.lang.Exception ("R1UnivariateExponential Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("R1UnivariateExponential Constructor => Invalid Inputs: " + _lambda);
 		}
 	}
 

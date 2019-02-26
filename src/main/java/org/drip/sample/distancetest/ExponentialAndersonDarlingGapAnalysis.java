@@ -13,6 +13,8 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -220,8 +222,7 @@ public class ExponentialAndersonDarlingGapAnalysis
 		final int sampleCount,
 		final Sample sample,
 		final GapTestSetting gapTestSetting,
-		final int histogramCount,
-		final double pValueThreshold)
+		final PlottingPositionGenerator plottingPositionGenerator)
 		throws Exception
 	{
 		Ensemble hypothesis = GenerateEnsemble (
@@ -239,7 +240,9 @@ public class ExponentialAndersonDarlingGapAnalysis
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				plottingPositionGenerator
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -280,7 +283,9 @@ public class ExponentialAndersonDarlingGapAnalysis
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0;
+			histogramIndex <= plottingPositionGenerator.orderStatisticCount() + 1;
+			++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -304,8 +309,7 @@ public class ExponentialAndersonDarlingGapAnalysis
 		int drawCount = 2000;
 		int sampleCount = 600;
 		double sampleLambda = 1.;
-		int histogramCount = 20;
-		double pValueThreshold = 0.99;
+		int orderStatisticsCount = 20;
 		double[] hypothesisLambdaArray =
 		{
 			0.20,
@@ -334,8 +338,9 @@ public class ExponentialAndersonDarlingGapAnalysis
 			2.50
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
-			(GapLossWeightFunction.AndersonDarling());
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (
+			GapLossWeightFunction.AndersonDarling()
+		);
 
 		Sample sample = GenerateSample (
 			sampleLambda,
@@ -350,8 +355,7 @@ public class ExponentialAndersonDarlingGapAnalysis
 				sampleCount,
 				sample,
 				gapTestSetting,
-				histogramCount,
-				pValueThreshold
+				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)
 			);
 		}
 

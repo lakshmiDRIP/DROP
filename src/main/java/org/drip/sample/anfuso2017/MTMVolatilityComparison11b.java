@@ -13,6 +13,7 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -202,13 +203,15 @@ public class MTMVolatilityComparison11b
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount)
+		final int orderStatisticsCount)
 		throws Exception
 	{
 		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
-			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)
+			HistogramTestSetting.AnfusoKaryampasNawroth2017 (
+				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)
+			)
 		);
 
 		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();
@@ -221,7 +224,7 @@ public class MTMVolatilityComparison11b
 
 		System.out.println ("\t|----------------------------||");
 
-		for (int histogramIndex = 0; histogramIndex <= histogramCount; ++histogramIndex)
+		for (int histogramIndex = 0; histogramIndex <= orderStatisticsCount + 1; ++histogramIndex)
 		{
 			System.out.println (
 				"\t|" +
@@ -243,7 +246,7 @@ public class MTMVolatilityComparison11b
 		int sampleCount = 10;
 		double mean = 0.;
 		double sampleVolatility = 2.;
-		int histogramCount = 20;
+		int orderStatisticsCount = 20;
 		double hypothesis1Volatility = 1.;
 		double hypothesis2Volatility = 3.;
 
@@ -267,7 +270,7 @@ public class MTMVolatilityComparison11b
 					sampleCount
 				)
 			),
-			histogramCount
+			orderStatisticsCount
 		);
 
 		DistanceTest (
@@ -279,7 +282,7 @@ public class MTMVolatilityComparison11b
 					sampleCount
 				)
 			),
-			histogramCount
+			orderStatisticsCount
 		);
 
 		EnvManager.TerminateEnv();

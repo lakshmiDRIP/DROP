@@ -240,7 +240,9 @@ public class ADDiscriminatoryPowerAnalysis4b
 
 		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (
 			sample,
-			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling())
+			GapTestSetting.RiskFactorLossTest (
+				GapLossWeightFunction.AndersonDarling()
+			)
 		);
 
 		System.out.println ("\t|--------------------------------||");

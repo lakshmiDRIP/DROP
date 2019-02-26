@@ -217,8 +217,7 @@ public class ExponentialAndersonDarlingGapDiscriminant
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapTestSetting gapTestSetting,
-		final int quantileCount)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
 		return DistanceTest (
@@ -241,7 +240,6 @@ public class ExponentialAndersonDarlingGapDiscriminant
 		int drawCount = 2000;
 		int sampleCount = 600;
 		double sampleLambda = 1.;
-		int quantileCount = 20;
 		double[] hypothesisLambdaArray =
 		{
 			0.20,
@@ -270,8 +268,9 @@ public class ExponentialAndersonDarlingGapDiscriminant
 			2.50
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
-			(GapLossWeightFunction.AndersonDarling());
+		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (
+			GapLossWeightFunction.AndersonDarling()
+		);
 
 		Sample sample = GenerateSample (
 			sampleLambda,
@@ -303,8 +302,7 @@ public class ExponentialAndersonDarlingGapDiscriminant
 						drawCount,
 						sampleCount,
 						sample,
-						gapTestSetting,
-						quantileCount
+						gapTestSetting
 					),
 					1, 8, 1.
 				) + "         ||"

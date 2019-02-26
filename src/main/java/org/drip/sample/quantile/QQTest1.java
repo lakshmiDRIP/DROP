@@ -75,7 +75,7 @@ import org.drip.validation.quantile.QQVertex;
  */
 
 /**
- * <i>QQTest1</i> compares the Order Statistics between 2 identical Normal Distributions using the Filliben
+ * <i>QQTest1</i> compares the Order Statistics between 2 Similar Normal Distributions using the Filliben
  * (1975) Mean Based Plotting Position Generator.
  *
  *  <br><br>
@@ -201,6 +201,24 @@ public class QQTest1
 	{
 		QQVertex[] qqVertexArray = qqTestOutcome.qqVertexArray();
 
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|          Q-Q TEST OUTCOME          ||");
+
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                         ||");
+
+		System.out.println ("\t|        - Order Statistic Ordinal   ||");
+
+		System.out.println ("\t|        - Order Statistic Quantile  ||");
+
+		System.out.println ("\t|        - Order Statistic X         ||");
+
+		System.out.println ("\t|        - Order Statistic Y         ||");
+
+		System.out.println ("\t|------------------------------------||");
+
 		for (QQVertex qqVertex : qqVertexArray)
 		{
 			System.out.println (
@@ -212,6 +230,17 @@ public class QQTest1
 				FormatUtil.FormatDouble (qqVertex.orderStatisticY(), 1, 4, 1.) + " ||"
 			);
 		}
+
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println (
+			"\t| Probability Plot Correlation Coefficient => " +
+			FormatUtil.FormatDouble (qqTestOutcome.probabilityPlotCorrelationCoefficient(), 1, 4, 1.) + " ||"
+		);
+
+		System.out.println ("\t|-----------------------------------------------------||");
 	}
 
 	public static final void main (
@@ -222,22 +251,24 @@ public class QQTest1
 
 		int drawCount = 1000000;
 		int sampleCount = 1;
-		double mean = 0.;
+		double sampleMean = 0.;
+		double hypothesisMean = 0.;
 		int orderStatisticCount = 25;
-		double volatility = 1.0;
+		double sampleVolatility = 1.0;
+		double hypothesisVolatility = 0.5;
 
 		PlottingPositionGeneratorHeuristic plottingPositionGenerator =
 			PlottingPositionGeneratorHeuristic.Filliben1975 (orderStatisticCount);
 
 		Sample sample = GenerateSample (
-			mean,
-			volatility,
+			sampleMean,
+			sampleVolatility,
 			drawCount
 		);
 
 		Ensemble hypothesis = GenerateEnsemble (
-			mean,
-			volatility,
+			hypothesisMean,
+			hypothesisVolatility,
 			drawCount,
 			sampleCount
 		);
