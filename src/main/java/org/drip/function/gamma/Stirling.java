@@ -1,5 +1,5 @@
 
-package org.drip.function.rdtor1descent;
+package org.drip.function.gamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,9 +7,6 @@ package org.drip.function.rdtor1descent;
 
 /*!
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
@@ -67,13 +64,29 @@ package org.drip.function.rdtor1descent;
  */
 
 /**
- * <i>ArmijoEvolutionVerifier</i> implements the Armijo Criterion used for the Inexact Line Search Increment
- * Generation to ascertain that the Function has reduced sufficiently. The Reference is:
+ * <i>Stirling</i> implements the Stirling's Approximation of the Gamma and the Factorial Functions. The
+ * References are:
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Armijo, L. (1966): Minimization of Functions having Lipschitz-Continuous First Partial
- * 				Derivatives <i>Pacific Journal of Mathematics</i> <b>16 (1)</b> 1-3
+ * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
+ * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 		</li>
+ * 		<li>
+ * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
+ * 				Functions https://dlmf.nist.gov/5.11
+ * 		</li>
+ * 		<li>
+ * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
+ * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 		</li>
+ * 		<li>
+ * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
+ * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Stirling's Approximation
+ * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
  *
@@ -88,95 +101,33 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
+public class Stirling extends org.drip.function.definition.R1ToR1
+{
 
 	/**
-	 * The Nocedal-Wright Armijo Parameter
-	 */
-
-	public static final double NOCEDAL_WRIGHT_ARMIJO_PARAMETER = 0.0001;
-
-	private boolean _bMaximizerCheck = false;
-	private double _dblArmijoParameter = java.lang.Double.NaN;
-
-	/**
-	 * Construct the Nocedal-Wright Armijo Evolution Verifier
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * Stirling Constructor
 	 * 
-	 * @return The Nocedal-Wright Armijo Evolution Verifier Instance
+	 * @param dc The Derivative Control
 	 */
 
-	public static final ArmijoEvolutionVerifier NocedalWrightStandard (
-		final boolean bMaximizerCheck)
+	public Stirling (
+		final org.drip.quant.calculus.DerivativeControl dc)
 	{
-		try {
-			return new ArmijoEvolutionVerifier (NOCEDAL_WRIGHT_ARMIJO_PARAMETER, bMaximizerCheck);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		super (dc);
 	}
 
-	/**
-	 * ArmijoEvolutionVerifier Constructor
-	 * 
-	 * @param dblArmijoParameter The Armijo Parameter
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public ArmijoEvolutionVerifier (
-		final double dblArmijoParameter,
-		final boolean bMaximizerCheck)
+	@Override public double evaluate (
+		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))
-			throw new java.lang.Exception ("ArmijoEvolutionVerifier Constructor => Invalid Inputs");
-
-		_bMaximizerCheck = bMaximizerCheck;
-	}
-
-	/**
-	 * Indicate if the Check is for Minimizer/Maximizer
-	 * 
-	 * @return TRUE - The Check is for Maximizer
-	 */
-
-	public boolean maximizerCheck()
-	{
-		return _bMaximizerCheck;
-	}
-
-	/**
-	 * Retrieve the Armijo Parameter
-	 * 
-	 * @return The Armijo Parameter
-	 */
-
-	public double armijoParameter()
-	{
-		return _dblArmijoParameter;
-	}
-
-	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
-	{
-		try {
-			return null == funcRdToR1 ? null : new
-				org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (_dblArmijoParameter,
-					_bMaximizerCheck, uvTargetDirection, adblCurrentVariate, dblStepLength,
-						funcRdToR1.evaluate (adblCurrentVariate), funcRdToR1.evaluate (NextVariate
-							(uvTargetDirection, adblCurrentVariate, dblStepLength)), funcRdToR1.jacobian
-								(adblCurrentVariate));
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
+		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
+		{
+			throw new java.lang.Exception ("Stirling::evaluate => Invalid Inputs");
 		}
 
-		return null;
+		return java.lang.Math.sqrt (2. * java.lang.Math.PI * x) * java.lang.Math.pow (
+			x / java.lang.Math.E,
+			x
+		);
 	}
 }

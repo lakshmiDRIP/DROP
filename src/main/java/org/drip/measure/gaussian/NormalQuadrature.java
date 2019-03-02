@@ -122,11 +122,11 @@ public class NormalQuadrature {
     }
 
     /**
-     * Compute the Cumulative Distribution Function up to the specified variate
+     * Compute the Cumulative Distribution Function up to the specified Variate
      * 
      * @param dblX The Variate
      * 
-     * @return The Cumulative Distribution Function up to the specified variate
+     * @return The Cumulative Distribution Function up to the specified Variate
      * 
      * @throws java.lang.Exception thrown if the Inputs are Invalid
      */
