@@ -1,5 +1,5 @@
 
-package org.drip.function.gamma;
+package org.drip.function.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,9 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>Stirling</i> implements the Stirling's Approximation of the Gamma and the Factorial Functions. The
+ * <i>R1NumericalEstimate</i> holds the Bounded R<sup>1</sup> Numerical Estimate of a Function. The
  * References are:
+ * 
  * <br><br>
  * 	<ul>
  * 		<li>
@@ -101,33 +102,156 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Stirling extends org.drip.function.definition.R1ToR1
+public class R1NumericalEstimate
 {
+	private double _zeroOrder = java.lang.Double.NaN;
+	private double _lowerBound = java.lang.Double.NaN;
+	private double _upperBound = java.lang.Double.NaN;
+
+	private java.util.Map<java.lang.Integer, java.lang.Double> _orderedCorrection = new
+		java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
 	/**
-	 * Stirling Constructor
+	 * Construct a Zero Order Version without Bounds of NumericalApproximation
 	 * 
-	 * @param dc The Derivative Control
+	 * @param zeroOrder The Zero Order Numerical Estimate
+	 * 
+	 * @return The Zero Order Version without Bounds of NumericalApproximation
 	 */
 
-	public Stirling (
-		final org.drip.quant.calculus.DerivativeControl dc)
+	public static final R1NumericalEstimate ZeroOrderOnly (
+		final double zeroOrder)
 	{
-		super (dc);
-	}
-
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
+		try
 		{
-			throw new java.lang.Exception ("Stirling::evaluate => Invalid Inputs");
+			return new R1NumericalEstimate (
+				zeroOrder,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI * x) * java.lang.Math.pow (
-			x / java.lang.Math.E,
-			x
+		return null;
+	}
+
+	/**
+	 * R1NumericalEstimate Constructor
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param lowerBound The Lower Bound
+	 * @param upperBound The Upper Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1NumericalEstimate (
+		final double zeroOrder,
+		final double lowerBound,
+		final double upperBound)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_zeroOrder = zeroOrder))
+		{
+			throw new java.lang.Exception ("R1NumericalEstimate Constructor => Invalid Inputs");
+		}
+
+		_lowerBound = lowerBound;
+		_upperBound = upperBound;
+	}
+
+	/**
+	 * Retrieve the Zero Order Numerical Estimate
+	 * 
+	 * @return The Zero Order Numerical Estimate
+	 */
+
+	public double zeroOrder()
+	{
+		return _zeroOrder;
+	}
+
+	/**
+	 * Retrieve the Lower Bound
+	 * 
+	 * @return The Lower Bound
+	 */
+
+	public double lowerBound()
+	{
+		return _lowerBound;
+	}
+
+	/**
+	 * Retrieve the Upper Bound
+	 * 
+	 * @return The Upper Bound
+	 */
+
+	public double upperBound()
+	{
+		return _upperBound;
+	}
+
+	/**
+	 * Retrieve the Higher Order Correction Map
+	 * 
+	 * @return The Higher Order Correction Map
+	 */
+
+	public java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrection()
+	{
+		return _orderedCorrection;
+	}
+
+	/**
+	 * Add an Ordered Correction
+	 * 
+	 * @param correctionOrder The Correction Order
+	 * @param correction The Correction
+	 * 
+	 * @return TRUE - The Correction Order successfully added
+	 */
+
+	public boolean addCorrection (
+		final int correctionOrder,
+		final double correction)
+	{
+		if (0 >= correctionOrder || !org.drip.quant.common.NumberUtil.IsValid (correction))
+		{
+			return false;
+		}
+
+		_orderedCorrection.put (
+			correctionOrder,
+			correction
 		);
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Correction corresponding to the Specified Order
+	 * 
+	 * @param correctionOrder The Order
+	 * 
+	 * @return The Correction corresponding to the Specified Order
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double orderCorrection (
+		final int correctionOrder)
+		throws java.lang.Exception
+	{
+		if (!_orderedCorrection.containsKey (correctionOrder))
+		{
+			throw new java.lang.Exception ("R1NumericalEstimate::orderCorrection => Invalid Inputs");
+		}
+
+		return _orderedCorrection.get (correctionOrder);
 	}
 }

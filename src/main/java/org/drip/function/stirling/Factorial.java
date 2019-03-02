@@ -1,5 +1,7 @@
 
-package org.drip.function.gamma;
+package org.drip.function.stirling;
+
+import org.drip.function.definition.R1NumericalEstimate;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +66,7 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>NumericalApproximation</i> holds the Bounded Estimate of the Gamma Functions. The References are:
- * 
+ * <i>Factorial</i> implements the Stirling's Approximation of the Factorial Functions. The References are:
  * <br><br>
  * 	<ul>
  * 		<li>
@@ -101,29 +102,66 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NumericalApproximation
+public class Factorial extends org.drip.function.definition.R1ToR1NumericalEstimator
 {
-	private double _estimate = java.lang.Double.NaN;
-	private double _lowerBound = java.lang.Double.NaN;
-	private double _upperBound = java.lang.Double.NaN;
 
 	/**
-	 * Construct an "Estimate Only" Version without Bounds of NumericalApproximation
+	 * Factorial Constructor
 	 * 
-	 * @param estimate The Numerical Estimate
-	 * 
-	 * @return The "Estimate Only" Version without Bounds of NumericalApproximation
+	 * @param dc The Derivative Control
 	 */
 
-	public static final NumericalApproximation EstimateOnly (
-		final double estimate)
+	public Factorial (
+		final org.drip.quant.calculus.DerivativeControl dc)
+	{
+		super (dc);
+	}
+
+	/**
+	 * Compute the de-Moivre Term
+	 * 
+	 * @param x X
+	 * 
+	 * @return The de-Moivre Term
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double deMoivreTerm (
+		final double x)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
+		{
+			throw new java.lang.Exception ("Stirling::deMoivreTerm => Invalid Inputs");
+		}
+
+		return java.lang.Math.exp (-x) * java.lang.Math.pow (
+			x,
+			x + 0.5
+		);
+	}
+
+	@Override public double evaluate (
+		final double x)
+		throws java.lang.Exception
+	{
+		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);
+	}
+
+	@Override public org.drip.function.definition.R1NumericalEstimate estimate (
+		final double x)
 	{
 		try
 		{
-			return new NumericalApproximation (
+			double deMoivreTerm = deMoivreTerm (x);
+
+			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
+
+			return new R1NumericalEstimate (
 				estimate,
-				java.lang.Double.NaN,
-				java.lang.Double.NaN
+				estimate,
+				java.lang.Math.E * deMoivreTerm
 			);
 		}
 		catch (java.lang.Exception e)
@@ -135,60 +173,21 @@ public class NumericalApproximation
 	}
 
 	/**
-	 * NumericalApproximation Constructor
+	 * Compute the Bounded Function Estimates along with the First Order Laplace Correction
 	 * 
-	 * @param estimate The Estimate
-	 * @param lowerBound The Lower Bound
-	 * @param upperBound The Upper Bound
+	 * @param x X
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Bounded Function Estimates along with the First Order Laplace Correction
 	 */
 
-	public NumericalApproximation (
-		final double estimate,
-		final double lowerBound,
-		final double upperBound)
-		throws java.lang.Exception
+	public org.drip.function.definition.R1NumericalEstimate laplaceCorrectionEstimate (
+		final double x)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_estimate = estimate))
-		{
-			throw new java.lang.Exception ("NumericalApproximation Constructor => Invalid Inputs");
-		}
+		org.drip.function.definition.R1NumericalEstimate r1NumericalEstimate = estimate (x);
 
-		_lowerBound = lowerBound;
-		_upperBound = upperBound;
-	}
-
-	/**
-	 * Retrieve the Estimate
-	 * 
-	 * @return The Estimate
-	 */
-
-	public double estimate()
-	{
-		return _estimate;
-	}
-
-	/**
-	 * Retrieve the Lower Bound
-	 * 
-	 * @return The Lower Bound
-	 */
-
-	public double lowerBound()
-	{
-		return _lowerBound;
-	}
-
-	/**
-	 * Retrieve the Upper Bound
-	 * 
-	 * @return The Upper Bound
-	 */
-
-	public double upperBound()
-	{
-		return _upperBound;
+		return null == r1NumericalEstimate || !r1NumericalEstimate.addCorrection (
+			1,
+			r1NumericalEstimate.zeroOrder() / (12. * x)
+		) ? null : r1NumericalEstimate;
 	}
 }
