@@ -128,6 +128,15 @@ public abstract class R1ToR1NumericalEstimator extends org.drip.function.definit
 	public org.drip.function.definition.R1NumericalEstimate estimate (
 		final double x)
 	{
+		try
+		{
+			return org.drip.function.definition.R1NumericalEstimate.ZeroOrderOnly (evaluate (x));
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }

@@ -1,6 +1,12 @@
 
 package org.drip.sample.gamma;
 
+import org.drip.function.definition.R1NumericalEstimate;
+import org.drip.function.stirling.Factorial;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.NumberUtil;
+import org.drip.service.env.EnvManager;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -96,7 +102,7 @@ package org.drip.sample.gamma;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent/README.md">R<sup>d</sup> To R<sup>1</sup></a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/gamma/README.md">Numerical Estimates of Gamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
@@ -105,4 +111,56 @@ package org.drip.sample.gamma;
 public class StirlingFactorialLaplaceCorrection
 {
 
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int factorialCount = 12;
+
+		Factorial stirlingFactorial = new Factorial (null);
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|              STIRLING FACTORIAL APPROXIMATION              ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|      L -> R:                                               ||");
+
+		System.out.println ("\t|              - Factorial Index                             ||");
+
+		System.out.println ("\t|              - Stirling's Estimate                         ||");
+
+		System.out.println ("\t|              - Laplace's Correction                        ||");
+
+		System.out.println ("\t|              - Corrected Stirling's Estimate               ||");
+
+		System.out.println ("\t|              - Factorial Value                             ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
+		{
+			R1NumericalEstimate numericalApproximation = stirlingFactorial.laplaceCorrectionEstimate
+				(factorialIndex);
+
+			double zeroOrder = numericalApproximation.zeroOrder();
+
+			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
+
+			System.out.println (
+				"\t| " + factorialIndex + " => " +
+				FormatUtil.FormatDouble (zeroOrder + 0.5, 1, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (firstOrderCorrection + 0.5, 1, 0, 1.) + " | " +
+				FormatUtil.FormatDouble (zeroOrder + firstOrderCorrection + 0.5, 1, 0, 1.) + " | " +
+				NumberUtil.Factorial (factorialIndex) + " ||"
+			);
+		}
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
+	}
 }

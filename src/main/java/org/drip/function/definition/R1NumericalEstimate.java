@@ -239,19 +239,31 @@ public class R1NumericalEstimate
 	 * @param correctionOrder The Order
 	 * 
 	 * @return The Correction corresponding to the Specified Order
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double orderCorrection (
 		final int correctionOrder)
-		throws java.lang.Exception
 	{
-		if (!_orderedCorrection.containsKey (correctionOrder))
+		return _orderedCorrection.containsKey (correctionOrder) ? _orderedCorrection.get (correctionOrder) :
+			0.;
+	}
+
+	/**
+	 * Compute the Total Correction
+	 * 
+	 * @return The Total Correction
+	 */
+
+	public double correction()
+	{
+		double correction = 0.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> orderedCorrectionEntry :
+			_orderedCorrection.entrySet())
 		{
-			throw new java.lang.Exception ("R1NumericalEstimate::orderCorrection => Invalid Inputs");
+			correction = correction + orderedCorrectionEntry.getValue();
 		}
 
-		return _orderedCorrection.get (correctionOrder);
+		return correction;
 	}
 }

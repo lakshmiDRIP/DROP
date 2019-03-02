@@ -1,6 +1,6 @@
 
 /**
- * Stirling's Approximation of Gamma/Factorial
+ * Stirling Variants Gamma/Factorial Implementation
  *
  * @author Lakshmi Krishnamurthy
  */
