@@ -1,9 +1,8 @@
 
-package org.drip.sample.gamma;
+package org.drip.sample.stirling;
 
 import org.drip.function.definition.R1NumericalEstimate;
-import org.drip.function.stirling.Factorial;
-import org.drip.function.stirling.RobbinsFactorial;
+import org.drip.function.stirling.RamanujanGamma;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -71,8 +70,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StirlingFactorialRobbinsExtension</i> illustrates the Robbin's Extension to Stirling's Approximation
- * Bounds of the Factorial Function. The References are:
+ * <i>RamanujanGammaMorticiBounds</i> illustrates the Mortici Bounds applied to Ramanujan Approximation of
+ * the Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,13 +102,13 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/gamma/README.md">Numerical Estimates of Gamma Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StirlingFactorialRobbinsExtension
+public class RamanujanGammaMorticiBounds
 {
 
 	public static final void main (
@@ -120,29 +119,29 @@ public class StirlingFactorialRobbinsExtension
 
 		int factorialCount = 12;
 
-		Factorial robbinsFactorial = new RobbinsFactorial (null);
+		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		System.out.println ("\t|            STIRLING FACTORIAL ROBBINS EXTENSION            ||");
+		System.out.println ("\t|               RAMANUJAN GAMMA MORTICI BOUNDS               ||");
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
 		System.out.println ("\t|      L -> R:                                               ||");
 
-		System.out.println ("\t|              - Factorial Index                             ||");
+		System.out.println ("\t|              - Gamma Index                                 ||");
 
-		System.out.println ("\t|              - Factorial Value                             ||");
+		System.out.println ("\t|              - Gamma Value                                 ||");
 
-		System.out.println ("\t|              - Stirling's Estimate                         ||");
+		System.out.println ("\t|              - Ramanujan Estimate                          ||");
 
-		System.out.println ("\t|              - Robbin's Bounds [Lower - Upper]             ||");
+		System.out.println ("\t|              - Mortici Bounds [Lower - Upper]              ||");
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
+		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = robbinsFactorial.estimate (factorialIndex);
+			R1NumericalEstimate numericalApproximation = ramanujanGamma.estimate (factorialIndex);
 
 			System.out.println (
 				"\t| " + factorialIndex + " => " +

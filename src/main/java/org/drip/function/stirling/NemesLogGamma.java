@@ -1,11 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.definition.R1NumericalEstimate;
-import org.drip.function.stirling.Factorial;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.stirling;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StirlingFactorialLaplaceCorrection</i> illustrates the Laplace Correction applied to the Stirling's
- * Approximation of the Factorial Function. The References are:
+ * <i>NemesLogGamma</i> implements the Nemes Version of Stirling's Approximation of the Log Gamma Function.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,65 +96,37 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/gamma/README.md">Numerical Estimates of Gamma Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StirlingFactorialLaplaceCorrection
+public class NemesLogGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * NemesLogGamma Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 */
+
+	public NemesLogGamma (
+		final org.drip.quant.calculus.DerivativeControl dc)
 	{
-		EnvManager.InitEnv ("");
+		super (dc);
+	}
 
-		int factorialCount = 12;
-
-		Factorial stirlingFactorial = new Factorial (null);
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|              STIRLING FACTORIAL APPROXIMATION              ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                               ||");
-
-		System.out.println ("\t|              - Factorial Index                             ||");
-
-		System.out.println ("\t|              - Stirling's Estimate                         ||");
-
-		System.out.println ("\t|              - Laplace's Correction                        ||");
-
-		System.out.println ("\t|              - Corrected Stirling's Estimate               ||");
-
-		System.out.println ("\t|              - Factorial Value                             ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
+	@Override public double evaluate (
+		final double x)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
 		{
-			R1NumericalEstimate numericalApproximation = stirlingFactorial.laplaceCorrectionEstimate
-				(factorialIndex);
-
-			double zeroOrder = numericalApproximation.zeroOrder();
-
-			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
-
-			System.out.println (
-				"\t| " + factorialIndex + " => " +
-				FormatUtil.FormatDouble (zeroOrder + 0.5, 1, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (firstOrderCorrection + 0.5, 1, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (zeroOrder + firstOrderCorrection + 0.5, 1, 0, 1.) + " | " +
-				NumberUtil.Factorial (factorialIndex) + " ||"
-			);
+			throw new java.lang.Exception ("NemesLogGamma::evaluate => Invalid Inputs");
 		}
 
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x) +
+			x * (java.lang.Math.log (x + (1. / (12. * x - (0.1 / x)))) - 1.);
 	}
 }

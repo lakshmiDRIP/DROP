@@ -64,8 +64,8 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>WindschitlTothGamma</i> implements the Windschitl-Toth Version of Stirling's Approximation of the Gamma
- * Function. The References are:
+ * <i>RamanujanGamma</i> implements the Ramanujan Version of Stirling's Approximation of the Gamma Function.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,16 +102,16 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class RamanujanGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
 {
 
 	/**
-	 * WindschitlTothGamma Constructor
+	 * RamanujanGamma Constructor
 	 * 
 	 * @param dc The Derivative Control
 	 */
 
-	public WindschitlTothGamma (
+	public RamanujanGamma (
 		final org.drip.quant.calculus.DerivativeControl dc)
 	{
 		super (dc);
@@ -123,13 +123,52 @@ public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1Nume
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
 		{
-			throw new java.lang.Exception ("WindschitlTothGamma::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("RamanujanGamma::evaluate => Invalid Inputs");
 		}
 
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI / x) * java.lang.Math.pow (
-			java.lang.Math.sqrt (x * java.lang.Math.sinh (1. / x) + 1. / (810. * x * x * x * x * x * x)) *
-				x / java.lang.Math.E,
+		return java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (
+			x / java.lang.Math.E,
+			x
+		) * java.lang.Math.pow (
+			8. * x * x * x + 4. * x * x + x + (1./ 30.),
+			1. / 6.
+		);
+	}
+
+	@Override public org.drip.function.definition.R1NumericalEstimate estimate (
+		final double x)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
+		{
+			return null;
+		}
+
+		double exponentialComponent = java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (
+			x / java.lang.Math.E,
 			x
 		);
+
+		double upperBound = exponentialComponent * java.lang.Math.pow (
+			8. * x * x * x + 4. * x * x + x + (1./ 30.),
+			1. / 6.
+		);
+
+		try
+		{
+			return new org.drip.function.definition.R1NumericalEstimate (
+				upperBound,
+				exponentialComponent * java.lang.Math.pow (
+					8. * x * x * x + 4. * x * x + x + (1./ 100.),
+					1. / 6.
+				),
+				upperBound
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

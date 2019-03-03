@@ -1,5 +1,5 @@
 
-package org.drip.sample.gamma;
+package org.drip.sample.stirling;
 
 import org.drip.function.definition.R1NumericalEstimate;
 import org.drip.function.stirling.Factorial;
@@ -70,7 +70,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StirlingFactorialNemesCorrection</i> illustrates the Nemes Correction applied to the Stirling's
+ * <i>FactorialEstimateNemesCorrection</i> illustrates the Nemes Correction applied to the Stirling's
  * Approximation of the Factorial Function. The References are:
  * 
  * <br><br>
@@ -102,13 +102,13 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/gamma/README.md">Numerical Estimates of Gamma Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StirlingFactorialNemesCorrection
+public class FactorialEstimateNemesCorrection
 {
 
 	public static final void main (

@@ -1,8 +1,8 @@
 
-package org.drip.sample.gamma;
+package org.drip.sample.stirling;
 
 import org.drip.function.definition.R1NumericalEstimate;
-import org.drip.function.stirling.LogFactorial;
+import org.drip.function.stirling.RamanujanLogFactorial;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -70,8 +70,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StirlingLogFactorialNemesCorrection</i> illustrates the Nemes Correction applied to the Stirling's
- * Approximation of the Log Factorial Function. The References are:
+ * <i>RamanujanLogFactorialCorrection</i> illustrates the Correction applied to the Ramanujan's Approximation
+ * of the Log Factorial Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,13 +102,13 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/gamma/README.md">Numerical Estimates of Gamma Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StirlingLogFactorialNemesCorrection
+public class RamanujanLogFactorialCorrection
 {
 
 	public static final void main (
@@ -119,11 +119,11 @@ public class StirlingLogFactorialNemesCorrection
 
 		int factorialCount = 12;
 
-		LogFactorial logFactorial = new LogFactorial (null);
+		RamanujanLogFactorial ramanujanLogFactorial = new RamanujanLogFactorial (null);
 
 		System.out.println ("\t|--------------------------------------------------||");
 
-		System.out.println ("\t|      STIRLING LOG FACTORIAL NEMES CORRECTION     ||");
+		System.out.println ("\t|      RAMANUJAN LOG FACTORIAL APPROXIMATION       ||");
 
 		System.out.println ("\t|--------------------------------------------------||");
 
@@ -131,11 +131,11 @@ public class StirlingLogFactorialNemesCorrection
 
 		System.out.println ("\t|              - Factorial Index                   ||");
 
-		System.out.println ("\t|              - Stirling's Estimate               ||");
+		System.out.println ("\t|              - Ramanujan Estimate                ||");
 
-		System.out.println ("\t|              - Nemes' Correction                 ||");
+		System.out.println ("\t|              - Ramanujan Correction              ||");
 
-		System.out.println ("\t|              - Corrected Stirling's Estimate     ||");
+		System.out.println ("\t|              - Corrected Ramanujan Estimate      ||");
 
 		System.out.println ("\t|              - Log Factorial Value               ||");
 
@@ -143,73 +143,23 @@ public class StirlingLogFactorialNemesCorrection
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = logFactorial.nemesCorrectionEstimate
+			R1NumericalEstimate numericalApproximation = ramanujanLogFactorial.correctionEstimate
 				(factorialIndex);
 
 			double zeroOrder = numericalApproximation.zeroOrder();
 
-			double totalCorrection = numericalApproximation.correction();
+			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + " => " +
 				FormatUtil.FormatDouble (zeroOrder, 2, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (totalCorrection, 2, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (zeroOrder + totalCorrection, 2, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (thirdOrderCorrection, 2, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (zeroOrder + thirdOrderCorrection, 2, 4, 1.) + " | " +
 				FormatUtil.FormatDouble (Math.log (NumberUtil.Factorial (factorialIndex)), 2, 4, 1.) + " ||"
 			);
 		}
 
 		System.out.println ("\t|--------------------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|             STIRLING FACTORIAL NEMES CORRECTION            ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                               ||");
-
-		System.out.println ("\t|              - Factorial Index                             ||");
-
-		System.out.println ("\t|              - Nemes' First Order Correction               ||");
-
-		System.out.println ("\t|              - Nemes' Third Order Correction               ||");
-
-		System.out.println ("\t|              - Nemes' Fifth Order Correction               ||");
-
-		System.out.println ("\t|              - Nemes' Seventh Order Correction             ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
-		{
-			R1NumericalEstimate numericalApproximation = logFactorial.nemesCorrectionEstimate
-				(factorialIndex);
-
-			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
-
-			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);
-
-			double fifthOrderCorrection = numericalApproximation.orderCorrection (5);
-
-			double seventhOrderCorrection = numericalApproximation.orderCorrection (7);
-
-			double totalCorrection = firstOrderCorrection + thirdOrderCorrection + fifthOrderCorrection +
-				seventhOrderCorrection;
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (firstOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (thirdOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (fifthOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (seventhOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (totalCorrection, 1, 5, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t|------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

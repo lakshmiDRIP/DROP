@@ -64,8 +64,8 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>WindschitlTothGamma</i> implements the Windschitl-Toth Version of Stirling's Approximation of the Gamma
- * Function. The References are:
+ * <i>NemesGamma</i> implements the Nemes Version of Stirling's Approximation of the Gamma Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,16 +102,16 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class NemesGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
 {
 
 	/**
-	 * WindschitlTothGamma Constructor
+	 * NemesGamma Constructor
 	 * 
 	 * @param dc The Derivative Control
 	 */
 
-	public WindschitlTothGamma (
+	public NemesGamma (
 		final org.drip.quant.calculus.DerivativeControl dc)
 	{
 		super (dc);
@@ -123,12 +123,11 @@ public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1Nume
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
 		{
-			throw new java.lang.Exception ("WindschitlTothGamma::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("NemesGamma::evaluate => Invalid Inputs");
 		}
 
 		return java.lang.Math.sqrt (2. * java.lang.Math.PI / x) * java.lang.Math.pow (
-			java.lang.Math.sqrt (x * java.lang.Math.sinh (1. / x) + 1. / (810. * x * x * x * x * x * x)) *
-				x / java.lang.Math.E,
+			(x + (1. / (12. * x - (0.1 / x)))) / java.lang.Math.E,
 			x
 		);
 	}

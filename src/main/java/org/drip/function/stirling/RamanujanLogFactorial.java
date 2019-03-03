@@ -64,8 +64,8 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>WindschitlTothGamma</i> implements the Windschitl-Toth Version of Stirling's Approximation of the Gamma
- * Function. The References are:
+ * <i>RamanujanLogFactorial</i> implements the Ramanujan Version of Stirling's Approximation of the Log
+ * Factorial Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,16 +102,16 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class RamanujanLogFactorial extends org.drip.function.definition.R1ToR1NumericalEstimator
 {
 
 	/**
-	 * WindschitlTothGamma Constructor
+	 * RamanujanLogFactorial Constructor
 	 * 
 	 * @param dc The Derivative Control
 	 */
 
-	public WindschitlTothGamma (
+	public RamanujanLogFactorial (
 		final org.drip.quant.calculus.DerivativeControl dc)
 	{
 		super (dc);
@@ -123,13 +123,39 @@ public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1Nume
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
 		{
-			throw new java.lang.Exception ("WindschitlTothGamma::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("RamanujanLogFactorial::evaluate => Invalid Inputs");
 		}
 
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI / x) * java.lang.Math.pow (
-			java.lang.Math.sqrt (x * java.lang.Math.sinh (1. / x) + 1. / (810. * x * x * x * x * x * x)) *
-				x / java.lang.Math.E,
-			x
-		);
+		return x * java.lang.Math.log (x) - x + 0.5 * java.lang.Math.log (java.lang.Math.PI) +
+			(java.lang.Math.log (8. * x * x * x + 4. * x * x + x + (1./ 30.))) / 6.;
+	}
+
+	/**
+	 * Compute the Bounded Function Estimates along with the Higher Order Correction
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Bounded Function Estimates along with the Higher Order Correction
+	 */
+
+	public org.drip.function.definition.R1NumericalEstimate correctionEstimate (
+		final double x)
+	{
+		org.drip.function.definition.R1NumericalEstimate r1NumericalEstimate = estimate (x);
+
+		if (null == r1NumericalEstimate)
+		{
+			return null;
+		}
+
+		if (0. >= x)
+		{
+			return r1NumericalEstimate;
+		}
+
+		return !r1NumericalEstimate.addCorrection (
+			3,
+			1. / (1400. * x * x * x)
+		) ? null : r1NumericalEstimate;
 	}
 }

@@ -63,6 +63,20 @@ Model Validation Library contains Statistical Hypotheses Validation and Testing 
 	* Heuristics
 	* Filliben’s Estimate
 	* References
+ * Stirling's Approximation
+	* Introduction and Overview
+	* Derivation
+	* An Alternative Derivation
+	* Speed of Convergence and Error Estimates
+	* Stirling’s Formula for the Gamma Function
+	* Error Bounds
+	* A Convergent Version of the Sterling’s Formula
+	* Versions Suitable for Calculators
+	* References
+ * Lanczos Approximation
+	* Introduction
+	* Coefficients
+	* References
  * Basel III Framework for Backtesting Exposure Models
 	* Abstract
 	* Introduction

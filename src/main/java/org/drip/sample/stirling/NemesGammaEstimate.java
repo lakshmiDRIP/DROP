@@ -1,5 +1,10 @@
 
-package org.drip.function.stirling;
+package org.drip.sample.stirling;
+
+import org.drip.function.stirling.NemesGamma;
+import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.NumberUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +69,7 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>WindschitlTothGamma</i> implements the Windschitl-Toth Version of Stirling's Approximation of the Gamma
- * Function. The References are:
+ * <i>NemesGammaEstimate</i> illustrates the Nemes Approximation of the Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,40 +100,52 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class WindschitlTothGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class NemesGammaEstimate
 {
 
-	/**
-	 * WindschitlTothGamma Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public WindschitlTothGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
+		int factorialCount = 12;
+
+		NemesGamma nemesGamma = new NemesGamma (null);
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|                  NEMES GAMMA APPROXIMATION                 ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|      L -> R:                                               ||");
+
+		System.out.println ("\t|              - Gamma Index                                 ||");
+
+		System.out.println ("\t|              - Gamma Value                                 ||");
+
+		System.out.println ("\t|              - Nemes Estimate                              ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			throw new java.lang.Exception ("WindschitlTothGamma::evaluate => Invalid Inputs");
+			System.out.println (
+				"\t| " + factorialIndex + " => " +
+				NumberUtil.Factorial (factorialIndex - 1) + " |" +
+				FormatUtil.FormatDouble (nemesGamma.evaluate (factorialIndex), 1, 0, 1.) + " ||"
+			);
 		}
 
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI / x) * java.lang.Math.pow (
-			java.lang.Math.sqrt (x * java.lang.Math.sinh (1. / x) + 1. / (810. * x * x * x * x * x * x)) *
-				x / java.lang.Math.E,
-			x
-		);
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

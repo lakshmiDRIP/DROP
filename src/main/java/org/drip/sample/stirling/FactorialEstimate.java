@@ -1,8 +1,8 @@
 
-package org.drip.sample.gamma;
+package org.drip.sample.stirling;
 
 import org.drip.function.definition.R1NumericalEstimate;
-import org.drip.function.stirling.RaabeLogGamma;
+import org.drip.function.stirling.Factorial;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -70,9 +70,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>InvertedRisingExponentialLogGamma</i> illustrates the Convergent Corrections using the Inverted Rising
- * Exponentials applied to the Rabbe's Enhancement to the Stirling's Approximation of the Log Gamma Function.
- * The References are:
+ * <i>FactorialEstimate</i> illustrates the Stirling's Approximation of the Factorial Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,13 +102,13 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/gamma/README.md">Numerical Estimates of Gamma Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class InvertedRisingExponentialLogGamma
+public class FactorialEstimate
 {
 
 	public static final void main (
@@ -120,53 +119,11 @@ public class InvertedRisingExponentialLogGamma
 
 		int factorialCount = 12;
 
-		RaabeLogGamma raabeLogGamma = new RaabeLogGamma (null);
-
-		System.out.println ("\t|--------------------------------------------------||");
-
-		System.out.println ("\t|   RAABE INVERTED RISING EXPONENTIAL LOG GAMMA    ||");
-
-		System.out.println ("\t|--------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                     ||");
-
-		System.out.println ("\t|              - Factorial Index                   ||");
-
-		System.out.println ("\t|              - Stirling's Estimate               ||");
-
-		System.out.println ("\t|              - Raabe's Correction                ||");
-
-		System.out.println ("\t|              - Corrected Stirling's Estimate     ||");
-
-		System.out.println ("\t|              - Log Gamma Value                   ||");
-
-		System.out.println ("\t|--------------------------------------------------||");
-
-		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
-		{
-			R1NumericalEstimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
-				(factorialIndex);
-
-			double zeroOrder = numericalApproximation.zeroOrder();
-
-			double totalCorrection = numericalApproximation.correction();
-
-			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (zeroOrder, 2, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (totalCorrection, 2, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (zeroOrder + totalCorrection, 2, 4, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.log (NumberUtil.Factorial (factorialIndex - 1)), 2, 4, 1.) + " ||"
-			);
-		}
-
-		System.out.println ("\t|--------------------------------------------------||");
-
-		System.out.println();
+		Factorial stirlingFactorial = new Factorial (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		System.out.println ("\t|   RAABE INVERTED RISING EXPONENTIAL LOG GAMMA CORRECTION   ||");
+		System.out.println ("\t|              STIRLING FACTORIAL APPROXIMATION              ||");
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
@@ -174,39 +131,24 @@ public class InvertedRisingExponentialLogGamma
 
 		System.out.println ("\t|              - Factorial Index                             ||");
 
-		System.out.println ("\t|              - Raabe's First Order Correction              ||");
+		System.out.println ("\t|              - Factorial Value                             ||");
 
-		System.out.println ("\t|              - Raabe's Second Order Correction             ||");
+		System.out.println ("\t|              - Stirling's Estimate                         ||");
 
-		System.out.println ("\t|              - Raabe's Third Order Correction              ||");
-
-		System.out.println ("\t|              - Raabe's Fourth Order Correction             ||");
+		System.out.println ("\t|              - Stirling's Estimate Bounds [Lower - Upper]  ||");
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
+		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
-				(factorialIndex);
-
-			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
-
-			double secondOrderCorrection = numericalApproximation.orderCorrection (2);
-
-			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);
-
-			double fourthOrderCorrection = numericalApproximation.orderCorrection (4);
-
-			double totalCorrection = firstOrderCorrection + secondOrderCorrection + thirdOrderCorrection +
-				fourthOrderCorrection;
+			R1NumericalEstimate numericalApproximation = stirlingFactorial.estimate (factorialIndex);
 
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (firstOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (secondOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (thirdOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (fourthOrderCorrection, 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (totalCorrection, 1, 5, 1.) + " ||"
+				"\t| " + factorialIndex + " => " +
+				NumberUtil.Factorial (factorialIndex) + " |" +
+				FormatUtil.FormatDouble (numericalApproximation.zeroOrder() + 0.5, 1, 0, 1.) + " | [" +
+				FormatUtil.FormatDouble (numericalApproximation.lowerBound() + 0.5, 1, 0, 1.) + " -" +
+				FormatUtil.FormatDouble (numericalApproximation.upperBound() + 0.5, 1, 0, 1.) + " ||"
 			);
 		}
 
