@@ -324,11 +324,13 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 <span class="nc" id="L324">		DiscriminatoryPowerAnalyzerAggregate discriminatoryPowerAnalyzerAggregate = new</span>
 			DiscriminatoryPowerAnalyzerAggregate (
 				eventSamplePITMap,
-<span class="nc" id="L327">				GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling()),</span>
+<span class="nc" id="L327">				GapTestSetting.RiskFactorLossTest (</span>
+<span class="nc" id="L328">					GapLossWeightFunction.AndersonDarling()</span>
+				),
 				eventAggregationWeightFunction
 			);
 
-<span class="nc" id="L331">		HypothesisSuiteAggregate hypothesisSuiteAggregate = HypothesisEventMap (</span>
+<span class="nc" id="L333">		HypothesisSuiteAggregate hypothesisSuiteAggregate = HypothesisEventMap (</span>
 			hypothesisAnnualMeanArray,
 			hypothesisAnnualVolatilityArray,
 			horizonTenorArray,
@@ -336,91 +338,91 @@ import org.drip.validation.riskfactorsingle.HypothesisSuiteAggregate;
 			sampleCount
 		);
 
-<span class="nc" id="L339">		HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate =</span>
-<span class="nc" id="L340">			discriminatoryPowerAnalyzerAggregate.hypothesisGapTest (hypothesisSuiteAggregate);</span>
+<span class="nc" id="L341">		HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate =</span>
+<span class="nc" id="L342">			discriminatoryPowerAnalyzerAggregate.hypothesisGapTest (hypothesisSuiteAggregate);</span>
 
-<span class="nc" id="L342">		Map&lt;String, GapTestOutcomeAggregate&gt; hypothesisOutcomeAggregateMap =</span>
-<span class="nc" id="L343">			hypothesisOutcomeSuiteAggregate.hypothesisOutcomeAggregate();</span>
+<span class="nc" id="L344">		Map&lt;String, GapTestOutcomeAggregate&gt; hypothesisOutcomeAggregateMap =</span>
+<span class="nc" id="L345">			hypothesisOutcomeSuiteAggregate.hypothesisOutcomeAggregate();</span>
 
-<span class="nc" id="L345">		HypothesisOutcomeAggregate leadingHypothesis = hypothesisOutcomeSuiteAggregate.leadingHypothesis();</span>
+<span class="nc" id="L347">		HypothesisOutcomeAggregate leadingHypothesis = hypothesisOutcomeSuiteAggregate.leadingHypothesis();</span>
 
-<span class="nc" id="L347">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L349">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L349">		System.out.println (&quot;\t|                     Disciminatory Power Analysis Multi Horizon Distance Test                      ||&quot;);</span>
+<span class="nc" id="L351">		System.out.println (&quot;\t|                     Disciminatory Power Analysis Multi Horizon Distance Test                      ||&quot;);</span>
 
-<span class="nc" id="L351">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L353">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L353">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
+<span class="nc" id="L355">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L355">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
+<span class="nc" id="L357">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
 
-<span class="nc" id="L357">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
+<span class="nc" id="L359">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
 
-<span class="nc" id="L359">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
+<span class="nc" id="L361">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
 
-<span class="nc" id="L361">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
+<span class="nc" id="L363">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
 
-<span class="nc" id="L363">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L365">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
 		for (Map.Entry&lt;String, GapTestOutcomeAggregate&gt; gapTestOutcomeAggregateEntry :
-<span class="nc bnc" id="L366" title="All 2 branches missed.">			hypothesisOutcomeAggregateMap.entrySet())</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">			hypothesisOutcomeAggregateMap.entrySet())</span>
 		{
-<span class="nc" id="L368">			GapTestOutcomeAggregate gapTestOutcomeAggregate = gapTestOutcomeAggregateEntry.getValue();</span>
+<span class="nc" id="L370">			GapTestOutcomeAggregate gapTestOutcomeAggregate = gapTestOutcomeAggregateEntry.getValue();</span>
 
-<span class="nc" id="L370">			String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + gapTestOutcomeAggregateEntry.getKey() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L371">				FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
+<span class="nc" id="L372">			String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + gapTestOutcomeAggregateEntry.getKey() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L373">				FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
 
 			for (Map.Entry&lt;String, GapTestOutcome&gt; gapTestOutcomeEntry :
-<span class="nc bnc" id="L374" title="All 2 branches missed.">				gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">				gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
 			{
-<span class="nc" id="L376">				gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
-<span class="nc" id="L377">					gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
-<span class="nc" id="L378">					FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
-<span class="nc" id="L379">			}</span>
+<span class="nc" id="L378">				gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
+<span class="nc" id="L379">					gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
+<span class="nc" id="L380">					FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
+<span class="nc" id="L381">			}</span>
 
-<span class="nc" id="L381">			System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
-<span class="nc" id="L382">		}</span>
+<span class="nc" id="L383">			System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
+<span class="nc" id="L384">		}</span>
 
-<span class="nc" id="L384">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L386">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L386">		System.out.println();</span>
+<span class="nc" id="L388">		System.out.println();</span>
 
-<span class="nc" id="L388">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L390">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L390">		System.out.println (&quot;\t|            Leading Hypothesis Disciminatory Power Analysis Multi Horizon Distance Test            ||&quot;);</span>
+<span class="nc" id="L392">		System.out.println (&quot;\t|            Leading Hypothesis Disciminatory Power Analysis Multi Horizon Distance Test            ||&quot;);</span>
 
-<span class="nc" id="L392">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L394">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L394">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
+<span class="nc" id="L396">		System.out.println (&quot;\t|    L -&gt; R:                                                                                        ||&quot;);</span>
 
-<span class="nc" id="L396">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
+<span class="nc" id="L398">		System.out.println (&quot;\t|                                                                                                   ||&quot;);</span>
 
-<span class="nc" id="L398">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
+<span class="nc" id="L400">		System.out.println (&quot;\t|            - Hypothesis Key                                                                       ||&quot;);</span>
 
-<span class="nc" id="L400">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
+<span class="nc" id="L402">		System.out.println (&quot;\t|            - Hypothesis Distance Metric                                                           ||&quot;);</span>
 
-<span class="nc" id="L402">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
+<span class="nc" id="L404">		System.out.println (&quot;\t|            - Horizon Gap Outcomes [ Horizon1 = Distance1 | ... ]                                  ||&quot;);</span>
 
-<span class="nc" id="L404">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L406">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L406">		GapTestOutcomeAggregate gapTestOutcomeAggregate = leadingHypothesis.gapTestOutcomeAggregate();</span>
+<span class="nc" id="L408">		GapTestOutcomeAggregate gapTestOutcomeAggregate = leadingHypothesis.gapTestOutcomeAggregate();</span>
 
-<span class="nc" id="L408">		String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + leadingHypothesis.hypothesisID() + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L409">			FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
+<span class="nc" id="L410">		String gapTestOutcomeAggregateDisplay = &quot;\t| &quot; + leadingHypothesis.hypothesisID() + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L411">			FormatUtil.FormatDouble (gapTestOutcomeAggregate.distance(), 1, 6, 1.) + &quot; | [&quot;;</span>
 
 		for (Map.Entry&lt;String, GapTestOutcome&gt; gapTestOutcomeEntry :
-<span class="nc bnc" id="L412" title="All 2 branches missed.">			gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">			gapTestOutcomeAggregate.eventOutcomeMap().entrySet())</span>
 		{
-<span class="nc" id="L414">			gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
-<span class="nc" id="L415">				gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
-<span class="nc" id="L416">				FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
-<span class="nc" id="L417">		}</span>
+<span class="nc" id="L416">			gapTestOutcomeAggregateDisplay = gapTestOutcomeAggregateDisplay + &quot; &quot; +</span>
+<span class="nc" id="L417">				gapTestOutcomeEntry.getKey() + &quot; = &quot; +</span>
+<span class="nc" id="L418">				FormatUtil.FormatDouble (gapTestOutcomeEntry.getValue().distance(), 1, 6, 1.) + &quot; |&quot;;</span>
+<span class="nc" id="L419">		}</span>
 
-<span class="nc" id="L419">		System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
+<span class="nc" id="L421">		System.out.println (gapTestOutcomeAggregateDisplay + &quot;] ||&quot;);</span>
 
-<span class="nc" id="L421">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L423">		System.out.println (&quot;\t|---------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L423">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L424">	}</span>
+<span class="nc" id="L425">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L426">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

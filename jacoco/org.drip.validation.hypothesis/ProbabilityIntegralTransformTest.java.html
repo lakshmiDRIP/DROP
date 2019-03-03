@@ -261,15 +261,15 @@ public class ProbabilityIntegralTransformTest
 <span class="nc" id="L261">		org.drip.validation.evidence.TestStatisticAccumulator unweightedGapLossAccumulator = new</span>
 			org.drip.validation.evidence.TestStatisticAccumulator();
 
-		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; sampleTestStatisticPValue :
+		for (java.util.Map.Entry&lt;java.lang.Double, java.lang.Double&gt; testStatisticPValueEntry :
 <span class="nc bnc" id="L265" title="All 2 branches missed.">			samplePIT.testStatisticPValueMap().entrySet())</span>
 		{
 			try
 			{
 <span class="nc" id="L269">				double hypothesisPValueRight = _probabilityIntegralTransform.pValue</span>
-<span class="nc" id="L270">					(sampleTestStatisticPValue.getKey());</span>
+<span class="nc" id="L270">					(testStatisticPValueEntry.getKey());</span>
 
-<span class="nc" id="L272">				double gapLoss = gapLossFunction.loss (sampleTestStatisticPValue.getValue() -</span>
+<span class="nc" id="L272">				double gapLoss = gapLossFunction.loss (testStatisticPValueEntry.getValue() -</span>
 					hypothesisPValueRight);
 
 <span class="nc" id="L275">				double weightedGapLoss = gapLoss * gapLossWeightFunction.weight (hypothesisPValueRight);</span>
@@ -324,74 +324,133 @@ public class ProbabilityIntegralTransformTest
 <span class="nc" id="L324">			return null;</span>
 		}
 
-<span class="nc" id="L327">		int histogramCount = histogramTestSetting.histogramCount();</span>
+<span class="nc" id="L327">		org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator =</span>
+<span class="nc" id="L328">			histogramTestSetting.plottingPositionGenerator();</span>
 
-<span class="nc" id="L329">		int mapSize = _probabilityIntegralTransform.pValueTestStatisticMap().size();</span>
+<span class="nc" id="L330">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =</span>
+<span class="nc" id="L331">			plottingPositionGenerator.generate();</span>
 
-<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (mapSize &lt;= histogramCount)</span>
-		{
-<span class="nc" id="L333">			return null;</span>
-		}
-
-<span class="nc" id="L336">		double[] testStatisticArray = new double[histogramCount + 1];</span>
-<span class="nc" id="L337">		double[] pValueCumulativeArray = new double[histogramCount + 1];</span>
-<span class="nc" id="L338">		double[] pValueIncrementalArray = new double[histogramCount + 1];</span>
+<span class="nc" id="L333">		int qqVertexCount = plottingPositionArray.length + 2;</span>
+<span class="nc" id="L334">		double[] testStatisticArray = new double[qqVertexCount];</span>
+<span class="nc" id="L335">		double[] pValueCumulativeArray = new double[qqVertexCount];</span>
+<span class="nc" id="L336">		double[] pValueIncrementalArray = new double[qqVertexCount];</span>
 
 		try
 		{
-<span class="nc" id="L342">			pValueIncrementalArray[0] = 0.;</span>
+<span class="nc" id="L340">			pValueIncrementalArray[0] = 0.;</span>
 
-<span class="nc" id="L344">			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic</span>
-<span class="nc" id="L345">				(pValueCumulativeArray[0] = 0.);</span>
+<span class="nc" id="L342">			testStatisticArray[0] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L343">				(pValueCumulativeArray[0] = 0.);</span>
 
-<span class="nc" id="L347">			testStatisticArray[histogramCount] = _probabilityIntegralTransform.testStatistic</span>
-<span class="nc" id="L348">				(pValueCumulativeArray[histogramCount] = 1.);</span>
+<span class="nc" id="L345">			testStatisticArray[qqVertexCount - 1] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L346">				(pValueCumulativeArray[qqVertexCount - 1] = 1.);</span>
 		}
-<span class="nc" id="L350">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L348">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L352">			e.printStackTrace();</span>
+<span class="nc" id="L350">			e.printStackTrace();</span>
 
-<span class="nc" id="L354">			return null;</span>
-<span class="nc" id="L355">		}</span>
+<span class="nc" id="L352">			return null;</span>
+<span class="nc" id="L353">		}</span>
 
-<span class="nc" id="L357">		double testStatisticIncrement = (testStatisticArray[histogramCount] - testStatisticArray[0]) /</span>
-			histogramCount;
-
-<span class="nc bnc" id="L360" title="All 2 branches missed.">		for (int histogramIndex = 1; histogramIndex &lt; histogramCount; ++histogramIndex)</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		for (int qqVertexIndex = 1; qqVertexIndex &lt; qqVertexCount - 1; ++qqVertexIndex)</span>
 		{
 			try
 			{
-<span class="nc" id="L364">				pValueIncrementalArray[histogramIndex] = (pValueCumulativeArray[histogramIndex] =</span>
-<span class="nc" id="L365">					_probabilityIntegralTransform.pValue (testStatisticArray[histogramIndex] =</span>
-					testStatisticArray[0] + testStatisticIncrement * histogramIndex)) -
-					pValueCumulativeArray[histogramIndex - 1];
-			}
-<span class="nc" id="L369">			catch (java.lang.Exception e)</span>
-			{
-<span class="nc" id="L371">				e.printStackTrace();</span>
+<span class="nc" id="L359">				testStatisticArray[qqVertexIndex] = _probabilityIntegralTransform.testStatistic</span>
+<span class="nc" id="L360">					(pValueCumulativeArray[qqVertexIndex] =</span>
+<span class="nc" id="L361">						plottingPositionArray[qqVertexIndex - 1].quantile());</span>
 
-<span class="nc" id="L373">				return null;</span>
-<span class="nc" id="L374">			}</span>
+<span class="nc" id="L363">				pValueIncrementalArray[qqVertexIndex] = pValueCumulativeArray[qqVertexIndex] -</span>
+					pValueCumulativeArray[qqVertexIndex - 1];
+			}
+<span class="nc" id="L366">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L368">				e.printStackTrace();</span>
+
+<span class="nc" id="L370">				return null;</span>
+<span class="nc" id="L371">			}</span>
 		}
 
-<span class="nc" id="L377">		pValueIncrementalArray[histogramCount] = pValueCumulativeArray[histogramCount] -</span>
-			pValueCumulativeArray[histogramCount - 1];
+<span class="nc" id="L374">		pValueIncrementalArray[qqVertexCount - 1] = pValueCumulativeArray[qqVertexCount - 1] -</span>
+			pValueCumulativeArray[qqVertexCount - 2];
 
 		try
 		{
-<span class="nc" id="L382">			return new org.drip.validation.hypothesis.HistogramTestOutcome (</span>
+<span class="nc" id="L379">			return new org.drip.validation.hypothesis.HistogramTestOutcome (</span>
 				testStatisticArray,
 				pValueCumulativeArray,
 				pValueIncrementalArray,
-<span class="nc" id="L386">				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())</span>
+<span class="nc" id="L383">				_probabilityIntegralTransform.testStatistic (histogramTestSetting.pValueThreshold())</span>
 			);
 		}
-<span class="nc" id="L389">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L386">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L391">			e.printStackTrace();</span>
+<span class="nc" id="L388">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L394">		return null;</span>
+<span class="nc" id="L391">		return null;</span>
+	}
+
+	/**
+	 * Run the Quantile-Quantile Test
+	 * 
+	 * @param samplePIT The Sample Probability Integral Transform
+	 * @param plottingPositionGenerator The Quantile-Quantile Test Plotting Position Generator
+	 * 
+	 * @return The Quantile-Quantile Test Outcome
+	 */
+
+	public org.drip.validation.quantile.QQTestOutcome qqTest (
+		final org.drip.validation.hypothesis.ProbabilityIntegralTransform samplePIT,
+		final org.drip.validation.quantile.PlottingPositionGenerator plottingPositionGenerator)
+	{
+<span class="nc bnc" id="L407" title="All 4 branches missed.">		if (null == samplePIT || null == plottingPositionGenerator)</span>
+		{
+<span class="nc" id="L409">			return null;</span>
+		}
+
+<span class="nc" id="L412">		org.drip.validation.quantile.PlottingPosition[] plottingPositionArray =</span>
+<span class="nc" id="L413">			plottingPositionGenerator.generate();</span>
+
+<span class="nc bnc" id="L415" title="All 2 branches missed.">		if (null == plottingPositionArray)</span>
+		{
+<span class="nc" id="L417">			return null;</span>
+		}
+
+<span class="nc" id="L420">		int orderStatisticCount = plottingPositionArray.length;</span>
+<span class="nc" id="L421">		org.drip.validation.quantile.QQVertex[] qqVertexArray = new</span>
+			org.drip.validation.quantile.QQVertex[orderStatisticCount];
+
+<span class="nc bnc" id="L424" title="All 2 branches missed.">		for (int orderStatisticIndex = 0; orderStatisticIndex &lt; orderStatisticCount; ++orderStatisticIndex)</span>
+		{
+			try
+			{
+<span class="nc" id="L428">				double pValue = plottingPositionArray[orderStatisticIndex].quantile();</span>
+		
+<span class="nc" id="L430">				qqVertexArray[orderStatisticIndex] = new org.drip.validation.quantile.QQVertex (</span>
+					plottingPositionArray[orderStatisticIndex],
+<span class="nc" id="L432">					samplePIT.testStatistic (pValue),</span>
+<span class="nc" id="L433">					_probabilityIntegralTransform.testStatistic (pValue)</span>
+				);
+			}
+<span class="nc" id="L436">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L438">				e.printStackTrace();</span>
+
+<span class="nc" id="L440">				return null;</span>
+<span class="nc" id="L441">			}</span>
+		}
+
+		try
+		{
+<span class="nc" id="L446">			return new org.drip.validation.quantile.QQTestOutcome (qqVertexArray);</span>
+		}
+<span class="nc" id="L448">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L450">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L453">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
