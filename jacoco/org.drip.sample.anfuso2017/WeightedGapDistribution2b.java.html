@@ -13,6 +13,8 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGenerator;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -117,7 +119,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L120">public class WeightedGapDistribution2b</span>
+<span class="nc" id="L122">public class WeightedGapDistribution2b</span>
 {
 
 	private static final double UnivariateRandom (
@@ -125,10 +127,10 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final double sigma)
 		throws Exception
 	{
-<span class="nc" id="L128">		return new R1UnivariateNormal (</span>
+<span class="nc" id="L130">		return new R1UnivariateNormal (</span>
 			mean,
 			sigma
-<span class="nc" id="L131">		).random();</span>
+<span class="nc" id="L133">		).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -137,17 +139,17 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L140">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L142">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L144">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+<span class="nc" id="L146">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
 				mean,
 				sigma
 			);
 		}
 
-<span class="nc" id="L150">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L152">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final Sample[] GenerateSampleArray (
@@ -157,18 +159,18 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L160">		Sample[] sampleArray = new Sample[sampleCount];</span>
+<span class="nc" id="L162">		Sample[] sampleArray = new Sample[sampleCount];</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
 		{
-<span class="nc" id="L164">			sampleArray[sampleIndex] = GenerateSample (</span>
+<span class="nc" id="L166">			sampleArray[sampleIndex] = GenerateSample (</span>
 				mean,
 				sigma,
 				drawCount
 			);
 		}
 
-<span class="nc" id="L171">		return sampleArray;</span>
+<span class="nc" id="L173">		return sampleArray;</span>
 	}
 
 	private static final Ensemble GenerateEnsemble (
@@ -178,8 +180,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L181">		return new Ensemble (</span>
-<span class="nc" id="L182">			GenerateSampleArray (</span>
+<span class="nc" id="L183">		return new Ensemble (</span>
+<span class="nc" id="L184">			GenerateSampleArray (</span>
 				mean,
 				sigma,
 				drawCount,
@@ -188,12 +190,12 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 			new TestStatisticEvaluator[]
 			{
 				new TestStatisticEvaluator()
-<span class="nc" id="L191">				{</span>
+<span class="nc" id="L193">				{</span>
 					public double evaluate (
 						final double[] drawArray)
 						throws Exception
 					{
-<span class="nc" id="L196">						return 1.;</span>
+<span class="nc" id="L198">						return 1.;</span>
 					}
 				}
 			}
@@ -202,104 +204,110 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount,
-		final double pValueThreshold)
+		final PlottingPositionGenerator plottingPositionGenerator)
 		throws Exception
 	{
-<span class="nc" id="L209">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
-<span class="nc" id="L210">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
-<span class="nc" id="L211">		).histogramTest (</span>
-<span class="nc" id="L212">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)</span>
+<span class="nc" id="L210">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L211">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
+<span class="nc" id="L212">		).histogramTest (</span>
+<span class="nc" id="L213">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (</span>
+				plottingPositionGenerator
+			)
 		);
 
-<span class="nc" id="L215">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
+<span class="nc" id="L218">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
 
-<span class="nc" id="L217">		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();</span>
+<span class="nc" id="L220">		double[] pValueCumulativeArray = histogram.pValueCumulativeArray();</span>
 
-<span class="nc" id="L219">		double thresholdTestStatistic = histogram.thresholdTestStatistic();</span>
+<span class="nc" id="L222">		double thresholdTestStatistic = histogram.thresholdTestStatistic();</span>
 
-<span class="nc" id="L221">		double[] gapArray = histogram.testStatisticArray();</span>
+<span class="nc" id="L224">		double[] gapArray = histogram.testStatisticArray();</span>
 
-<span class="nc" id="L223">		double distance = gapTestOutcome.distance();</span>
+<span class="nc" id="L226">		double distance = gapTestOutcome.distance();</span>
 
-<span class="nc" id="L225">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L228">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L227">		System.out.println (&quot;\t|           Normal Anfuso Karyampas Nawroth Distance Test            ||&quot;);</span>
+<span class="nc" id="L230">		System.out.println (&quot;\t|           Normal Anfuso Karyampas Nawroth Distance Test            ||&quot;);</span>
 
-<span class="nc" id="L229">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L232">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L231">		System.out.println (&quot;\t|    L -&gt; R:                                                         ||&quot;);</span>
+<span class="nc" id="L234">		System.out.println (&quot;\t|    L -&gt; R:                                                         ||&quot;);</span>
 
-<span class="nc" id="L233">		System.out.println (&quot;\t|        - Weighted Distance Metric                                  ||&quot;);</span>
+<span class="nc" id="L236">		System.out.println (&quot;\t|        - Weighted Distance Metric                                  ||&quot;);</span>
 
-<span class="nc" id="L235">		System.out.println (&quot;\t|        - Cumulative p-Value                                        ||&quot;);</span>
+<span class="nc" id="L238">		System.out.println (&quot;\t|        - Cumulative p-Value                                        ||&quot;);</span>
 
-<span class="nc" id="L237">		System.out.println (&quot;\t|        - Incremental p-Value                                       ||&quot;);</span>
+<span class="nc" id="L240">		System.out.println (&quot;\t|        - Incremental p-Value                                       ||&quot;);</span>
 
-<span class="nc" id="L239">		System.out.println (&quot;\t|        - Ensemble Weighted Distance                                ||&quot;);</span>
+<span class="nc" id="L242">		System.out.println (&quot;\t|        - Ensemble Weighted Distance                                ||&quot;);</span>
 
-<span class="nc" id="L241">		System.out.println (&quot;\t|        - p-Value Threshold Distance                                ||&quot;);</span>
+<span class="nc" id="L244">		System.out.println (&quot;\t|        - p-Value Threshold Distance                                ||&quot;);</span>
 
-<span class="nc" id="L243">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L246">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">		for (int histogramIndex = 0; histogramIndex &lt;= histogramCount; ++histogramIndex)</span>
+<span class="nc" id="L248">		for (int histogramIndex = 0;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">			histogramIndex &lt;= plottingPositionGenerator.orderStatisticCount() + 1;</span>
+<span class="nc" id="L250">			++histogramIndex)</span>
 		{
-<span class="nc" id="L247">			System.out.println (</span>
+<span class="nc" id="L252">			System.out.println (</span>
 				&quot;\t|&quot; +
-<span class="nc" id="L249">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L250">				FormatUtil.FormatDouble (pValueCumulativeArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L251">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L252">				FormatUtil.FormatDouble (distance, 1, 8, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L253">				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L254">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L255">				FormatUtil.FormatDouble (pValueCumulativeArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L256">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L257">				FormatUtil.FormatDouble (distance, 1, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L258">				FormatUtil.FormatDouble (thresholdTestStatistic, 1, 8, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L257">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
-<span class="nc" id="L258">	}</span>
+<span class="nc" id="L262">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L263">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L264">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L269">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L266">		int drawCount = 3780;</span>
-<span class="nc" id="L267">		int sampleCount = 1000;</span>
-<span class="nc" id="L268">		double annualMean = 0.;</span>
-<span class="nc" id="L269">		int histogramCount = 20;</span>
-<span class="nc" id="L270">		double horizon = 3. / 12;</span>
-<span class="nc" id="L271">		double pValueThreshold = 0.99;</span>
-<span class="nc" id="L272">		double annualVolatility = 0.1;</span>
+<span class="nc" id="L271">		int drawCount = 3780;</span>
+<span class="nc" id="L272">		int sampleCount = 1000;</span>
+<span class="nc" id="L273">		double annualMean = 0.;</span>
+<span class="nc" id="L274">		double horizon = 3. / 12;</span>
+<span class="nc" id="L275">		double annualVolatility = 0.1;</span>
+<span class="nc" id="L276">		int orderStatisticsCount = 20;</span>
 
-<span class="nc" id="L274">		double horizonVolatility = annualVolatility * Math.sqrt (horizon);</span>
+<span class="nc" id="L278">		double horizonVolatility = annualVolatility * Math.sqrt (horizon);</span>
 
-<span class="nc" id="L276">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L280">		Sample sample = GenerateSample (</span>
 			annualMean,
 			horizonVolatility,
 			drawCount
 		);
 
-<span class="nc" id="L282">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
+<span class="nc" id="L286">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
 			sample,
-<span class="nc" id="L284">			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.CramersVonMises())</span>
+<span class="nc" id="L288">			GapTestSetting.RiskFactorLossTest (</span>
+<span class="nc" id="L289">				GapLossWeightFunction.AndersonDarling()</span>
+			)
 		);
 
-<span class="nc" id="L287">		Ensemble hypothesis = GenerateEnsemble (</span>
+<span class="nc" id="L293">		Ensemble hypothesis = GenerateEnsemble (</span>
 			annualMean,
 			horizonVolatility,
 			drawCount,
 			sampleCount
 		);
 
-<span class="nc" id="L294">		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);</span>
+<span class="nc" id="L300">		PlottingPositionGenerator plottingPositionGenerator = PlottingPositionGeneratorHeuristic.NIST2013</span>
+<span class="nc" id="L301">			(orderStatisticsCount);</span>
 
-<span class="nc" id="L296">		DistanceTest (</span>
+<span class="nc" id="L303">		GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);</span>
+
+<span class="nc" id="L305">		DistanceTest (</span>
 			gapTestOutcome,
-			histogramCount,
-			pValueThreshold
+			plottingPositionGenerator
 		);
 
-<span class="nc" id="L302">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L303">	}</span>
+<span class="nc" id="L310">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L311">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

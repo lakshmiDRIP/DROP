@@ -240,50 +240,52 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 <span class="nc" id="L241">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
 			sample,
-<span class="nc" id="L243">			GapTestSetting.RiskFactorLossTest (GapLossWeightFunction.AndersonDarling())</span>
+<span class="nc" id="L243">			GapTestSetting.RiskFactorLossTest (</span>
+<span class="nc" id="L244">				GapLossWeightFunction.AndersonDarling()</span>
+			)
 		);
 
-<span class="nc" id="L246">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
+<span class="nc" id="L248">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
 
-<span class="nc" id="L248">		System.out.println (&quot;\t|     DISCRIMINANT GRID SCAN     ||&quot;);</span>
+<span class="nc" id="L250">		System.out.println (&quot;\t|     DISCRIMINANT GRID SCAN     ||&quot;);</span>
 
-<span class="nc" id="L250">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
+<span class="nc" id="L252">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
 
-<span class="nc" id="L252">		System.out.println (&quot;\t|    L -&gt; R:                     ||&quot;);</span>
+<span class="nc" id="L254">		System.out.println (&quot;\t|    L -&gt; R:                     ||&quot;);</span>
 
-<span class="nc" id="L254">		System.out.println (&quot;\t|        - Hypothesis Mean       ||&quot;);</span>
+<span class="nc" id="L256">		System.out.println (&quot;\t|        - Hypothesis Mean       ||&quot;);</span>
 
-<span class="nc" id="L256">		System.out.println (&quot;\t|        - Hypothesis Sigma      ||&quot;);</span>
+<span class="nc" id="L258">		System.out.println (&quot;\t|        - Hypothesis Sigma      ||&quot;);</span>
 
-<span class="nc" id="L258">		System.out.println (&quot;\t|        - Distance Metric       ||&quot;);</span>
+<span class="nc" id="L260">		System.out.println (&quot;\t|        - Distance Metric       ||&quot;);</span>
 
-<span class="nc" id="L260">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
+<span class="nc" id="L262">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L262" title="All 2 branches missed.">		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		for (double hypothesisAnnualMean : hypothesisAnnualMeanArray)</span>
 		{
-<span class="nc bnc" id="L264" title="All 2 branches missed.">			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">			for (double hypothesisAnnualVolatility : hypothesisAnnualVolatilityArray)</span>
 			{
-<span class="nc" id="L266">				Ensemble hypothesis = GenerateEnsemble (</span>
+<span class="nc" id="L268">				Ensemble hypothesis = GenerateEnsemble (</span>
 					hypothesisAnnualMean * horizon,
 					hypothesisAnnualVolatility * hypothesisHorizonSQRT,
 					drawCount,
 					sampleCount
 				);
 
-<span class="nc" id="L273">				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);</span>
+<span class="nc" id="L275">				GapTestOutcome gapTestOutcome = discriminatoryPowerAnalysis.gapTest (hypothesis);</span>
 
-<span class="nc" id="L275">				System.out.println (</span>
+<span class="nc" id="L277">				System.out.println (</span>
 					&quot;\t| &quot; +
-<span class="nc" id="L277">					FormatUtil.FormatDouble (hypothesisAnnualMean, 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L278">					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 1, 3, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L279">					FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L279">					FormatUtil.FormatDouble (hypothesisAnnualMean, 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L280">					FormatUtil.FormatDouble (hypothesisAnnualVolatility, 1, 3, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L281">					FormatUtil.FormatDouble (DistanceTest (gapTestOutcome), 1, 8, 1.) + &quot; ||&quot;</span>
 				);
 			}
 		}
 
-<span class="nc" id="L284">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
+<span class="nc" id="L286">		System.out.println (&quot;\t|--------------------------------||&quot;);</span>
 
-<span class="nc" id="L286">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L287">	}</span>
+<span class="nc" id="L288">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L289">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

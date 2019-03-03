@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QQTestOutcome.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.quantile</a> &gt; <span class="el_source">QQTestOutcome.java</span></div><h1>QQTestOutcome.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.quantile;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;QQTestOutcome&lt;/i&gt; holds the Elements of the QQ Vertexes that come from a QQ Plot Run.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Gibbons, J. D., and S. Chakraborti (2003): &lt;i&gt;Non-parametric Statistical Inference 4th
+ *  			Edition&lt;/i&gt; &lt;b&gt;CRC Press&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Filliben, J. J. (1975): The Probability Plot Correlation Coefficient Test for Normality
+ *  			&lt;i&gt;Technometrics, American Society for Quality&lt;/i&gt; &lt;b&gt;17 (1)&lt;/b&gt; 111-117
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Gnanadesikan, R. (1977): &lt;i&gt;Methods for Statistical Analysis of Multivariate Observations&lt;/i&gt;
+ *  			&lt;b&gt;Wiley&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Thode, H. C. (2002): &lt;i&gt;Testing for Normality&lt;/i&gt; &lt;b&gt;Marcel Dekker&lt;/b&gt; New York
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Q-Q Plot https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/quantile&quot;&gt;Quantile Based Graphical Numerical Validators&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class QQTestOutcome
+{
+<span class="nc" id="L105">	private org.drip.validation.quantile.QQVertex[] _qqVertexArray = null;</span>
+
+	/**
+	 * QQTestOutcome Constructor
+	 * 
+	 * @param qqVertexArray Array of Q-Q Vertexes
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public QQTestOutcome (
+		final org.drip.validation.quantile.QQVertex[] qqVertexArray)
+		throws java.lang.Exception
+<span class="nc" id="L118">	{</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == (_qqVertexArray = qqVertexArray))</span>
+		{
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L124">		int qqVertexCount = _qqVertexArray.length;</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 == qqVertexCount)</span>
+		{
+<span class="nc" id="L128">			throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int qqVertexIndex = 0; qqVertexIndex &lt; qqVertexCount; ++qqVertexIndex)</span>
+		{
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (null == _qqVertexArray[qqVertexIndex])</span>
+			{
+<span class="nc" id="L135">				throw new java.lang.Exception (&quot;QQTestOutcome Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="nc" id="L138">	}</span>
+
+	/**
+	 * Retrieve the Array of Q-Q Vertexes
+	 * 
+	 * @return Array of Q-Q Vertexes
+	 */
+
+	public org.drip.validation.quantile.QQVertex[] qqVertexArray()
+	{
+<span class="nc" id="L148">		return _qqVertexArray;</span>
+	}
+
+	/**
+	 * Compute the Probability Plot Correlation Coefficient (PPCC)
+	 * 
+	 * @return The Probability Plot Correlation Coefficient (PPCC)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double probabilityPlotCorrelationCoefficient()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L162">		int vertexCount = _qqVertexArray.length;</span>
+<span class="nc" id="L163">		double[][] orderStatisticsSequence = new double[2][vertexCount];</span>
+
+<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (int vertexIndex = 0; vertexIndex &lt; vertexCount; ++vertexIndex)</span>
+		{
+<span class="nc" id="L167">			orderStatisticsSequence[0][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticX();</span>
+
+<span class="nc" id="L169">			orderStatisticsSequence[1][vertexIndex] = _qqVertexArray[vertexIndex].orderStatisticY();</span>
+		}
+
+<span class="nc" id="L172">		return org.drip.measure.statistics.MultivariateMoments.Standard (</span>
+			new java.lang.String[]
+			{
+				&quot;x&quot;,
+				&quot;y&quot;
+			},
+			orderStatisticsSequence
+<span class="nc" id="L179">		).correlation (</span>
+			&quot;x&quot;,
+			&quot;y&quot;
+		);
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

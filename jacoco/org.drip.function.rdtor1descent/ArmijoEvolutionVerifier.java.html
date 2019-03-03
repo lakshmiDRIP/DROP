@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArmijoEvolutionVerifier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.rdtor1descent</a> &gt; <span class="el_source">ArmijoEvolutionVerifier.java</span></div><h1>ArmijoEvolutionVerifier.java</h1><pre class="source lang-java linenums">
 package org.drip.function.rdtor1descent;
 
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -97,8 +96,8 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public static final double NOCEDAL_WRIGHT_ARMIJO_PARAMETER = 0.0001;
 
-<span class="fc" id="L100">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L101">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private boolean _bMaximizerCheck = false;</span>
+<span class="fc" id="L100">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Nocedal-Wright Armijo Evolution Verifier
@@ -111,12 +110,12 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 		final boolean bMaximizerCheck)
 	{
 		try {
-<span class="fc" id="L114">			return new ArmijoEvolutionVerifier (NOCEDAL_WRIGHT_ARMIJO_PARAMETER, bMaximizerCheck);</span>
-<span class="nc" id="L115">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L116">			e.printStackTrace();</span>
+<span class="fc" id="L113">			return new ArmijoEvolutionVerifier (NOCEDAL_WRIGHT_ARMIJO_PARAMETER, bMaximizerCheck);</span>
+<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L115">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L119">		return null;</span>
+<span class="nc" id="L118">		return null;</span>
 	}
 
 	/**
@@ -132,12 +131,12 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 		final double dblArmijoParameter,
 		final boolean bMaximizerCheck)
 		throws java.lang.Exception
-<span class="fc" id="L135">	{</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))</span>
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L134">	{</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L139">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L140">	}</span>
+<span class="fc" id="L138">		_bMaximizerCheck = bMaximizerCheck;</span>
+<span class="fc" id="L139">	}</span>
 
 	/**
 	 * Indicate if the Check is for Minimizer/Maximizer
@@ -147,7 +146,7 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L150">		return _bMaximizerCheck;</span>
+<span class="nc" id="L149">		return _bMaximizerCheck;</span>
 	}
 
 	/**
@@ -158,7 +157,7 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L161">		return _dblArmijoParameter;</span>
+<span class="nc" id="L160">		return _dblArmijoParameter;</span>
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
@@ -168,17 +167,17 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 		final double dblStepLength)
 	{
 		try {
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			return null == funcRdToR1 ? null : new</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			return null == funcRdToR1 ? null : new</span>
 				org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (_dblArmijoParameter,
 					_bMaximizerCheck, uvTargetDirection, adblCurrentVariate, dblStepLength,
-<span class="fc" id="L174">						funcRdToR1.evaluate (adblCurrentVariate), funcRdToR1.evaluate (NextVariate</span>
-<span class="fc" id="L175">							(uvTargetDirection, adblCurrentVariate, dblStepLength)), funcRdToR1.jacobian</span>
-<span class="fc" id="L176">								(adblCurrentVariate));</span>
-<span class="nc" id="L177">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L178">			e.printStackTrace();</span>
+<span class="fc" id="L173">						funcRdToR1.evaluate (adblCurrentVariate), funcRdToR1.evaluate (NextVariate</span>
+<span class="fc" id="L174">							(uvTargetDirection, adblCurrentVariate, dblStepLength)), funcRdToR1.jacobian</span>
+<span class="fc" id="L175">								(adblCurrentVariate));</span>
+<span class="nc" id="L176">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L177">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L181">		return null;</span>
+<span class="nc" id="L180">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

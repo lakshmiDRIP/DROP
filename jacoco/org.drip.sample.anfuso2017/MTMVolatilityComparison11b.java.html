@@ -13,6 +13,7 @@ import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -117,7 +118,7 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L120">public class MTMVolatilityComparison11b</span>
+<span class="nc" id="L121">public class MTMVolatilityComparison11b</span>
 {
 
 	private static final double UnivariateRandom (
@@ -125,10 +126,10 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final double sigma)
 		throws Exception
 	{
-<span class="nc" id="L128">		return new R1UnivariateNormal (</span>
+<span class="nc" id="L129">		return new R1UnivariateNormal (</span>
 			mean,
 			sigma
-<span class="nc" id="L131">		).random();</span>
+<span class="nc" id="L132">		).random();</span>
 	}
 
 	private static final Sample GenerateSample (
@@ -137,17 +138,17 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int drawCount)
 		throws Exception
 	{
-<span class="nc" id="L140">		double[] univariateRandomArray = new double[drawCount];</span>
+<span class="nc" id="L141">		double[] univariateRandomArray = new double[drawCount];</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; drawCount; ++drawIndex)</span>
 		{
-<span class="nc" id="L144">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
+<span class="nc" id="L145">			univariateRandomArray[drawIndex] = UnivariateRandom (</span>
 				mean,
 				sigma
 			);
 		}
 
-<span class="nc" id="L150">		return new Sample (univariateRandomArray);</span>
+<span class="nc" id="L151">		return new Sample (univariateRandomArray);</span>
 	}
 
 	private static final Sample[] GenerateSampleArray (
@@ -157,18 +158,18 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L160">		Sample[] sampleArray = new Sample[sampleCount];</span>
+<span class="nc" id="L161">		Sample[] sampleArray = new Sample[sampleCount];</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int sampleIndex = 0; sampleIndex &lt; sampleCount; ++sampleIndex)</span>
 		{
-<span class="nc" id="L164">			sampleArray[sampleIndex] = GenerateSample (</span>
+<span class="nc" id="L165">			sampleArray[sampleIndex] = GenerateSample (</span>
 				mean,
 				sigma,
 				drawCount
 			);
 		}
 
-<span class="nc" id="L171">		return sampleArray;</span>
+<span class="nc" id="L172">		return sampleArray;</span>
 	}
 
 	private static final Ensemble GenerateEnsemble (
@@ -178,8 +179,8 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 		final int sampleCount)
 		throws Exception
 	{
-<span class="nc" id="L181">		return new Ensemble (</span>
-<span class="nc" id="L182">			GenerateSampleArray (</span>
+<span class="nc" id="L182">		return new Ensemble (</span>
+<span class="nc" id="L183">			GenerateSampleArray (</span>
 				mean,
 				sigma,
 				drawCount,
@@ -188,12 +189,12 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 			new TestStatisticEvaluator[]
 			{
 				new TestStatisticEvaluator()
-<span class="nc" id="L191">				{</span>
+<span class="nc" id="L192">				{</span>
 					public double evaluate (
 						final double[] drawArray)
 						throws Exception
 					{
-<span class="nc" id="L196">						return 1.;</span>
+<span class="nc" id="L197">						return 1.;</span>
 					}
 				}
 			}
@@ -202,87 +203,89 @@ import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 	private static final void DistanceTest (
 		final GapTestOutcome gapTestOutcome,
-		final int histogramCount)
+		final int orderStatisticsCount)
 		throws Exception
 	{
-<span class="nc" id="L208">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
-<span class="nc" id="L209">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
-<span class="nc" id="L210">		).histogramTest (</span>
-<span class="nc" id="L211">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (histogramCount)</span>
+<span class="nc" id="L209">		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (</span>
+<span class="nc" id="L210">			gapTestOutcome.probabilityIntegralTransformWeighted()</span>
+<span class="nc" id="L211">		).histogramTest (</span>
+<span class="nc" id="L212">			HistogramTestSetting.AnfusoKaryampasNawroth2017 (</span>
+<span class="nc" id="L213">				PlottingPositionGeneratorHeuristic.NIST2013 (orderStatisticsCount)</span>
+			)
 		);
 
-<span class="nc" id="L214">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
+<span class="nc" id="L217">		double[] pValueIncrementalArray = histogram.pValueIncrementalArray();</span>
 
-<span class="nc" id="L216">		double[] gapArray = histogram.testStatisticArray();</span>
+<span class="nc" id="L219">		double[] gapArray = histogram.testStatisticArray();</span>
 
-<span class="nc" id="L218">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="nc" id="L221">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
 
-<span class="nc" id="L220">		System.out.println (&quot;\t| CPT Integrand Distribution ||&quot;);</span>
+<span class="nc" id="L223">		System.out.println (&quot;\t| CPT Integrand Distribution ||&quot;);</span>
 
-<span class="nc" id="L222">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="nc" id="L225">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int histogramIndex = 0; histogramIndex &lt;= histogramCount; ++histogramIndex)</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (int histogramIndex = 0; histogramIndex &lt;= orderStatisticsCount + 1; ++histogramIndex)</span>
 		{
-<span class="nc" id="L226">			System.out.println (</span>
+<span class="nc" id="L229">			System.out.println (</span>
 				&quot;\t|&quot; +
-<span class="nc" id="L228">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 9, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L229">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 9, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L231">				FormatUtil.FormatDouble (gapArray[histogramIndex], 1, 9, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L232">				FormatUtil.FormatDouble (pValueIncrementalArray[histogramIndex], 1, 9, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L233">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
-<span class="nc" id="L234">	}</span>
+<span class="nc" id="L236">		System.out.println (&quot;\t|----------------------------||&quot;);</span>
+<span class="nc" id="L237">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L240">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L243">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L242">		int drawCount = 100000;</span>
-<span class="nc" id="L243">		int sampleCount = 10;</span>
-<span class="nc" id="L244">		double mean = 0.;</span>
-<span class="nc" id="L245">		double sampleVolatility = 2.;</span>
-<span class="nc" id="L246">		int histogramCount = 20;</span>
-<span class="nc" id="L247">		double hypothesis1Volatility = 1.;</span>
-<span class="nc" id="L248">		double hypothesis2Volatility = 3.;</span>
+<span class="nc" id="L245">		int drawCount = 100000;</span>
+<span class="nc" id="L246">		int sampleCount = 10;</span>
+<span class="nc" id="L247">		double mean = 0.;</span>
+<span class="nc" id="L248">		double sampleVolatility = 2.;</span>
+<span class="nc" id="L249">		int orderStatisticsCount = 20;</span>
+<span class="nc" id="L250">		double hypothesis1Volatility = 1.;</span>
+<span class="nc" id="L251">		double hypothesis2Volatility = 3.;</span>
 
-<span class="nc" id="L250">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L253">		Sample sample = GenerateSample (</span>
 			mean,
 			sampleVolatility,
 			drawCount
 		);
 
-<span class="nc" id="L256">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
+<span class="nc" id="L259">		DiscriminatoryPowerAnalyzer discriminatoryPowerAnalysis = DiscriminatoryPowerAnalyzer.FromSample (</span>
 			sample,
-<span class="nc" id="L258">			GapTestSetting.ConservativePortfolioLossTest (GapLossWeightFunction.CramersVonMises())</span>
+<span class="nc" id="L261">			GapTestSetting.ConservativePortfolioLossTest (GapLossWeightFunction.CramersVonMises())</span>
 		);
 
-<span class="nc" id="L261">		DistanceTest (</span>
-<span class="nc" id="L262">			discriminatoryPowerAnalysis.gapTest (</span>
-<span class="nc" id="L263">				GenerateEnsemble (</span>
+<span class="nc" id="L264">		DistanceTest (</span>
+<span class="nc" id="L265">			discriminatoryPowerAnalysis.gapTest (</span>
+<span class="nc" id="L266">				GenerateEnsemble (</span>
 					mean,
 					hypothesis1Volatility,
 					drawCount,
 					sampleCount
 				)
 			),
-			histogramCount
+			orderStatisticsCount
 		);
 
-<span class="nc" id="L273">		DistanceTest (</span>
-<span class="nc" id="L274">			discriminatoryPowerAnalysis.gapTest (</span>
-<span class="nc" id="L275">				GenerateEnsemble (</span>
+<span class="nc" id="L276">		DistanceTest (</span>
+<span class="nc" id="L277">			discriminatoryPowerAnalysis.gapTest (</span>
+<span class="nc" id="L278">				GenerateEnsemble (</span>
 					mean,
 					hypothesis2Volatility,
 					drawCount,
 					sampleCount
 				)
 			),
-			histogramCount
+			orderStatisticsCount
 		);
 
-<span class="nc" id="L285">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L286">	}</span>
+<span class="nc" id="L288">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L289">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

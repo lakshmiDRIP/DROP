@@ -101,11 +101,35 @@ package org.drip.validation.quantile;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class QQVertex</span>
+public class QQVertex
 {
 <span class="nc" id="L106">	private double _orderStatisticX = java.lang.Double.NaN;</span>
 <span class="nc" id="L107">	private double _orderStatisticY = java.lang.Double.NaN;</span>
 <span class="nc" id="L108">	private org.drip.validation.quantile.PlottingPosition _plottingPosition = null;</span>
+
+	/**
+	 * QQVertex Constructor
+	 * 
+	 * @param plottingPosition Vertex Plotting Position
+	 * @param orderStatisticX X Order Statistic
+	 * @param orderStatisticY Y Order Statistic
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public QQVertex (
+		final org.drip.validation.quantile.PlottingPosition plottingPosition,
+		final double orderStatisticX,
+		final double orderStatisticY)
+		throws java.lang.Exception
+<span class="nc" id="L125">	{</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == (_plottingPosition = plottingPosition) ||</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticY = orderStatisticY))</span>
+		{
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;QQVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Vertex Plotting Position
@@ -115,7 +139,7 @@ package org.drip.validation.quantile;
 
 	public org.drip.validation.quantile.PlottingPosition plottingPosition()
 	{
-<span class="nc" id="L118">		return _plottingPosition;</span>
+<span class="nc" id="L142">		return _plottingPosition;</span>
 	}
 
 	/**
@@ -126,7 +150,7 @@ package org.drip.validation.quantile;
 
 	public double orderStatisticX()
 	{
-<span class="nc" id="L129">		return _orderStatisticX;</span>
+<span class="nc" id="L153">		return _orderStatisticX;</span>
 	}
 
 	/**
@@ -137,7 +161,7 @@ package org.drip.validation.quantile;
 
 	public double orderStatisticY()
 	{
-<span class="nc" id="L140">		return _orderStatisticY;</span>
+<span class="nc" id="L164">		return _orderStatisticY;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

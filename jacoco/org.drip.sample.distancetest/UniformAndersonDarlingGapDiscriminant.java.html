@@ -230,41 +230,39 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 		final int drawCount,
 		final int sampleCount,
 		final Sample sample,
-		final GapTestSetting gapTestSetting,
-		final int quantileCount)
+		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-<span class="nc" id="L237">		return DistanceTest (</span>
+<span class="nc" id="L236">		return DistanceTest (</span>
 			sample,
-<span class="nc" id="L239">			GenerateEnsemble (</span>
+<span class="nc" id="L238">			GenerateEnsemble (</span>
 				hypothesisMean,
 				hypothesisSigma,
 				drawCount,
 				sampleCount
 			),
 			gapTestSetting
-<span class="nc" id="L246">		).distance();</span>
+<span class="nc" id="L245">		).distance();</span>
 	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L253">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L252">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L255">		int drawCount = 2000;</span>
-<span class="nc" id="L256">		int sampleCount = 600;</span>
-<span class="nc" id="L257">		double sampleLeftSupport = 0.;</span>
-<span class="nc" id="L258">		double sampleRightSupport = 1.;</span>
-<span class="nc" id="L259">		int quantileCount = 20;</span>
-<span class="nc" id="L260">		double[] hypothesisLeftSupportArray = {</span>
+<span class="nc" id="L254">		int drawCount = 2000;</span>
+<span class="nc" id="L255">		int sampleCount = 600;</span>
+<span class="nc" id="L256">		double sampleLeftSupport = 0.;</span>
+<span class="nc" id="L257">		double sampleRightSupport = 1.;</span>
+<span class="nc" id="L258">		double[] hypothesisLeftSupportArray = {</span>
 			-0.50,
 			-0.25,
 			 0.00,
 			 0.25,
 			 0.50
 		};
-<span class="nc" id="L267">		double[] hypothesisRightSupportArray = {</span>
+<span class="nc" id="L265">		double[] hypothesisRightSupportArray = {</span>
 			0.75,
 			1.00,
 			1.25,
@@ -272,48 +270,48 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			1.75
 		};
 
-		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest
-<span class="nc" id="L276">			(GapLossWeightFunction.AndersonDarling());</span>
+<span class="nc" id="L273">		GapTestSetting gapTestSetting = GapTestSetting.RiskFactorLossTest (</span>
+<span class="nc" id="L274">			GapLossWeightFunction.AndersonDarling()</span>
+		);
 
-<span class="nc" id="L278">		Sample sample = GenerateSample (</span>
+<span class="nc" id="L277">		Sample sample = GenerateSample (</span>
 			sampleLeftSupport,
 			sampleRightSupport,
 			drawCount
 		);
 
-<span class="nc" id="L284">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L283">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L286">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
+<span class="nc" id="L285">		System.out.println (&quot;\t|    DISCRIMINANT GRID SCAN    ||&quot;);</span>
 
-<span class="nc" id="L288">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L287">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L290">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
+<span class="nc" id="L289">		System.out.println (&quot;\t|    L -&gt; R:                   ||&quot;);</span>
 
-<span class="nc" id="L292">		System.out.println (&quot;\t|        - Hypothesis Left     ||&quot;);</span>
+<span class="nc" id="L291">		System.out.println (&quot;\t|        - Hypothesis Left     ||&quot;);</span>
 
-<span class="nc" id="L294">		System.out.println (&quot;\t|        - Hypothesis Right    ||&quot;);</span>
+<span class="nc" id="L293">		System.out.println (&quot;\t|        - Hypothesis Right    ||&quot;);</span>
 
-<span class="nc" id="L296">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
+<span class="nc" id="L295">		System.out.println (&quot;\t|        - Distance Metric     ||&quot;);</span>
 
-<span class="nc" id="L298">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L297">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		for (double hypothesisLeftSupport : hypothesisLeftSupportArray)</span>
+<span class="nc bnc" id="L299" title="All 2 branches missed.">		for (double hypothesisLeftSupport : hypothesisLeftSupportArray)</span>
 		{
-<span class="nc bnc" id="L302" title="All 2 branches missed.">			for (double hypothesisRightSupport : hypothesisRightSupportArray)</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			for (double hypothesisRightSupport : hypothesisRightSupportArray)</span>
 			{
-<span class="nc" id="L304">				System.out.println (</span>
+<span class="nc" id="L303">				System.out.println (</span>
 					&quot;\t| &quot; +
-<span class="nc" id="L306">					FormatUtil.FormatDouble (hypothesisLeftSupport, 1, 2, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L307">					FormatUtil.FormatDouble (hypothesisRightSupport, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L308">					FormatUtil.FormatDouble (</span>
-<span class="nc" id="L309">						DistanceTest (</span>
+<span class="nc" id="L305">					FormatUtil.FormatDouble (hypothesisLeftSupport, 1, 2, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L306">					FormatUtil.FormatDouble (hypothesisRightSupport, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L307">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L308">						DistanceTest (</span>
 							hypothesisLeftSupport,
 							hypothesisRightSupport,
 							drawCount,
 							sampleCount,
 							sample,
-							gapTestSetting,
-							quantileCount
+							gapTestSetting
 						),
 						1, 8, 1.
 					) + &quot; ||&quot;
@@ -321,9 +319,9 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 			}
 		}
 
-<span class="nc" id="L324">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="nc" id="L322">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="nc" id="L326">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L327">	}</span>
+<span class="nc" id="L324">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L325">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
