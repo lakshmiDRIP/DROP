@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogFactorial extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 {
 
 	/**
@@ -154,10 +154,10 @@ public class LogFactorial extends org.drip.function.definition.R1ToR1NumericalEs
 	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
 	 */
 
-	public org.drip.function.definition.R1NumericalEstimate nemesCorrectionEstimate (
+	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-		org.drip.function.definition.R1NumericalEstimate r1NumericalEstimate = estimate (x);
+		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
 
 		if (null == r1NumericalEstimate)
 		{

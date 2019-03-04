@@ -1,5 +1,5 @@
 
-package org.drip.function.definition;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.function.definition;
  */
 
 /**
- * <i>R1NumericalEstimate</i> holds the Bounded R<sup>1</sup> Numerical Estimate of a Function. The
- * References are:
+ * <i>ErrorSeriesGenerator</i> generates the Series of Error Terms in the Ordered Series of the Numerical
+ * Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,174 +96,127 @@ package org.drip.function.definition;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/rdtor1descent/README.md">R<sup>d</sup> To R<sup>1</sup></a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1NumericalEstimate
+public class ErrorSeriesGenerator
 {
-	private double _zeroOrder = java.lang.Double.NaN;
-	private double _lowerBound = java.lang.Double.NaN;
-	private double _upperBound = java.lang.Double.NaN;
-
-	private java.util.Map<java.lang.Integer, java.lang.Double> _orderedCorrection = new
-		java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+	private boolean _proportional = false;
+	private org.drip.function.numerical.ErrorTerm _errorTerm = null;
+	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
 
 	/**
-	 * Construct a Zero Order Version without Bounds of NumericalApproximation
+	 * ErrorSeriesGenerator Constructor
 	 * 
-	 * @param zeroOrder The Zero Order Numerical Estimate
-	 * 
-	 * @return The Zero Order Version without Bounds of NumericalApproximation
-	 */
-
-	public static final R1NumericalEstimate ZeroOrderOnly (
-		final double zeroOrder)
-	{
-		try
-		{
-			return new R1NumericalEstimate (
-				zeroOrder,
-				java.lang.Double.NaN,
-				java.lang.Double.NaN
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * R1NumericalEstimate Constructor
-	 * 
-	 * @param zeroOrder The Zero Order Estimate
-	 * @param lowerBound The Lower Bound
-	 * @param upperBound The Upper Bound
+	 * @param errorTerm Error Term
+	 * @param proportional TRUE - The Error is Proportional
+	 * @param termWeightMap Error Term Weight Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1NumericalEstimate (
-		final double zeroOrder,
-		final double lowerBound,
-		final double upperBound)
+	public ErrorSeriesGenerator (
+		final org.drip.function.numerical.ErrorTerm errorTerm,
+		final boolean proportional,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_zeroOrder = zeroOrder))
+		if (null == (_errorTerm = errorTerm))
 		{
-			throw new java.lang.Exception ("R1NumericalEstimate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("ErrorSeriesGenerator Constructor => Invalid Inputs");
 		}
 
-		_lowerBound = lowerBound;
-		_upperBound = upperBound;
+		_proportional = proportional;
+		_termWeightMap = termWeightMap;
 	}
 
 	/**
-	 * Retrieve the Zero Order Numerical Estimate
+	 * Retrieve the Error Term
 	 * 
-	 * @return The Zero Order Numerical Estimate
+	 * @return The Error Term
 	 */
 
-	public double zeroOrder()
+	public org.drip.function.numerical.ErrorTerm errorTerm()
 	{
-		return _zeroOrder;
+		return _errorTerm;
 	}
 
 	/**
-	 * Retrieve the Lower Bound
+	 * Indicate if the Error is Proportional
 	 * 
-	 * @return The Lower Bound
+	 * @return TRUE - The Error is Proportional
 	 */
 
-	public double lowerBound()
+	public boolean proportional()
 	{
-		return _lowerBound;
+		return _proportional;
 	}
 
 	/**
-	 * Retrieve the Upper Bound
+	 * Retrieve the Error Term Weight Map
 	 * 
-	 * @return The Upper Bound
+	 * @return The Error Term Weight Map
 	 */
 
-	public double upperBound()
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
 	{
-		return _upperBound;
+		return _termWeightMap;
 	}
 
 	/**
-	 * Retrieve the Higher Order Correction Map
+	 * Generate the Error Series using the Error term
 	 * 
-	 * @return The Higher Order Correction Map
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * 
+	 * @return The Error Series
 	 */
 
-	public java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrection()
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> generate (
+		final double zeroOrder, 
+		final double x)
 	{
-		return _orderedCorrection;
-	}
-
-	/**
-	 * Add an Ordered Correction
-	 * 
-	 * @param correctionOrder The Correction Order
-	 * @param correction The Correction
-	 * 
-	 * @return TRUE - The Correction Order successfully added
-	 */
-
-	public boolean addCorrection (
-		final int correctionOrder,
-		final double correction)
-	{
-		if (0 >= correctionOrder || !org.drip.quant.common.NumberUtil.IsValid (correction))
+		if (!org.drip.quant.common.NumberUtil.IsValid (zeroOrder))
 		{
-			return false;
+			return null;
 		}
 
-		_orderedCorrection.put (
-			correctionOrder,
-			correction
-		);
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> correctionMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		return true;
-	}
-
-	/**
-	 * Retrieve the Correction corresponding to the Specified Order
-	 * 
-	 * @param correctionOrder The Order
-	 * 
-	 * @return The Correction corresponding to the Specified Order
-	 */
-
-	public double orderCorrection (
-		final int correctionOrder)
-	{
-		return _orderedCorrection.containsKey (correctionOrder) ? _orderedCorrection.get (correctionOrder) :
-			0.;
-	}
-
-	/**
-	 * Compute the Total Correction
-	 * 
-	 * @return The Total Correction
-	 */
-
-	public double correction()
-	{
-		double correction = 0.;
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> orderedCorrectionEntry :
-			_orderedCorrection.entrySet())
+		if (null == _termWeightMap || 0 == _termWeightMap.size())
 		{
-			correction = correction + orderedCorrectionEntry.getValue();
+			return correctionMap;
 		}
 
-		return correction;
+		double scale = _proportional ? zeroOrder : 1.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			_termWeightMap.entrySet())
+		{
+			int order = termWeightEntry.getKey();
+
+			try
+			{
+				correctionMap.put (
+					order,
+					scale * termWeightEntry.getValue() * _errorTerm.value (
+						order,
+						x
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return correctionMap;
 	}
 }

@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.definition.R1NumericalEstimate;
+import org.drip.function.numerical.R1Estimate;
 import org.drip.function.stirling.LogFactorial;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
@@ -143,7 +143,7 @@ public class LogFactorialEstimateNemesCorrection
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = logFactorial.nemesCorrectionEstimate
+			R1Estimate numericalApproximation = logFactorial.nemesCorrectionEstimate
 				(factorialIndex);
 
 			double zeroOrder = numericalApproximation.zeroOrder();
@@ -185,7 +185,7 @@ public class LogFactorialEstimateNemesCorrection
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = logFactorial.nemesCorrectionEstimate
+			R1Estimate numericalApproximation = logFactorial.nemesCorrectionEstimate
 				(factorialIndex);
 
 			double firstOrderCorrection = numericalApproximation.orderCorrection (1);

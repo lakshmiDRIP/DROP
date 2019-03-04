@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RamanujanGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
 {
 
 	/**
@@ -135,7 +135,7 @@ public class RamanujanGamma extends org.drip.function.definition.R1ToR1Numerical
 		);
 	}
 
-	@Override public org.drip.function.definition.R1NumericalEstimate estimate (
+	@Override public org.drip.function.numerical.R1Estimate estimate (
 		final double x)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
@@ -155,7 +155,7 @@ public class RamanujanGamma extends org.drip.function.definition.R1ToR1Numerical
 
 		try
 		{
-			return new org.drip.function.definition.R1NumericalEstimate (
+			return new org.drip.function.numerical.R1Estimate (
 				upperBound,
 				exponentialComponent * java.lang.Math.pow (
 					8. * x * x * x + 4. * x * x + x + (1./ 100.),

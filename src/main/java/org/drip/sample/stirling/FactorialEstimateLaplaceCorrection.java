@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.definition.R1NumericalEstimate;
+import org.drip.function.numerical.R1Estimate;
 import org.drip.function.stirling.Factorial;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
@@ -141,9 +141,9 @@ public class FactorialEstimateLaplaceCorrection
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
+		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = stirlingFactorial.laplaceCorrectionEstimate
+			R1Estimate numericalApproximation = stirlingFactorial.laplaceCorrectionEstimate
 				(factorialIndex);
 
 			double zeroOrder = numericalApproximation.zeroOrder();

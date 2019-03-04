@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.definition.R1NumericalEstimate;
+import org.drip.function.numerical.R1Estimate;
 import org.drip.function.stirling.Factorial;
 import org.drip.function.stirling.RobbinsFactorial;
 import org.drip.quant.common.FormatUtil;
@@ -142,7 +142,7 @@ public class FactorialEstimateRobbinsBounds
 
 		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = robbinsFactorial.estimate (factorialIndex);
+			R1Estimate numericalApproximation = robbinsFactorial.estimate (factorialIndex);
 
 			System.out.println (
 				"\t| " + factorialIndex + " => " +

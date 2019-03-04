@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.definition.R1NumericalEstimate;
+import org.drip.function.numerical.R1Estimate;
 import org.drip.function.stirling.RamanujanLogFactorial;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
@@ -143,7 +143,7 @@ public class RamanujanLogFactorialCorrection
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = ramanujanLogFactorial.correctionEstimate
+			R1Estimate numericalApproximation = ramanujanLogFactorial.correctionEstimate
 				(factorialIndex);
 
 			double zeroOrder = numericalApproximation.zeroOrder();

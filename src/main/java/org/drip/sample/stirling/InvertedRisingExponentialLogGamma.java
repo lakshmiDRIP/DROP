@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.definition.R1NumericalEstimate;
+import org.drip.function.numerical.R1Estimate;
 import org.drip.function.stirling.RaabeLogGamma;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.common.NumberUtil;
@@ -144,7 +144,7 @@ public class InvertedRisingExponentialLogGamma
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
+			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
 				(factorialIndex);
 
 			double zeroOrder = numericalApproximation.zeroOrder();
@@ -186,7 +186,7 @@ public class InvertedRisingExponentialLogGamma
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1NumericalEstimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
+			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
 				(factorialIndex);
 
 			double firstOrderCorrection = numericalApproximation.orderCorrection (1);

@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WindschitlTothLogGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class WindschitlTothLogGamma extends org.drip.function.numerical.R1ToR1Estimator
 {
 
 	/**

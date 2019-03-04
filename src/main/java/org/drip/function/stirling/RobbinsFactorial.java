@@ -117,7 +117,7 @@ public class RobbinsFactorial extends org.drip.function.stirling.Factorial
 		super (dc);
 	}
 
-	@Override public org.drip.function.definition.R1NumericalEstimate estimate (
+	@Override public org.drip.function.numerical.R1Estimate estimate (
 		final double x)
 	{
 		try
@@ -126,7 +126,7 @@ public class RobbinsFactorial extends org.drip.function.stirling.Factorial
 
 			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
 
-			return new org.drip.function.definition.R1NumericalEstimate (
+			return new org.drip.function.numerical.R1Estimate (
 				estimate,
 				estimate * java.lang.Math.exp (1. / (12. * x + 1.)),
 				estimate * java.lang.Math.exp (1. / (12. * x))

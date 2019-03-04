@@ -1,11 +1,5 @@
 
-package org.drip.sample.stirling;
-
-import org.drip.function.numerical.R1Estimate;
-import org.drip.function.stirling.RamanujanGamma;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>RamanujanGammaMorticiBounds</i> illustrates the Mortici Bounds applied to Ramanujan Approximation of
- * the Gamma Function. The References are:
+ * <i>R1ToR1Estimator</i> exposes the Stubs behind R<sup>1</sup> - R<sup>1</sup> Approximate Numerical
+ * Estimators. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,58 +96,47 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RamanujanGammaMorticiBounds
+public abstract class R1ToR1Estimator extends org.drip.function.definition.R1ToR1
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * R<sup>1</sup> - R<sup>1</sup> Estimator Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 */
+
+	public R1ToR1Estimator (
+		final org.drip.quant.calculus.DerivativeControl dc)
 	{
-		EnvManager.InitEnv ("");
+		super (dc);
+	}
 
-		int factorialCount = 12;
+	/**
+	 * Estimate a Bounded Numerical Approximation of the Function Value
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Bounded Numerical Approximation
+	 */
 
-		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|               RAMANUJAN GAMMA MORTICI BOUNDS               ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                               ||");
-
-		System.out.println ("\t|              - Gamma Index                                 ||");
-
-		System.out.println ("\t|              - Gamma Value                                 ||");
-
-		System.out.println ("\t|              - Ramanujan Estimate                          ||");
-
-		System.out.println ("\t|              - Mortici Bounds [Lower - Upper]              ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
+	public org.drip.function.numerical.R1Estimate estimate (
+		final double x)
+	{
+		try
 		{
-			R1Estimate numericalApproximation = ramanujanGamma.estimate (factorialIndex);
-
-			System.out.println (
-				"\t| " + factorialIndex + " => " +
-				NumberUtil.Factorial (factorialIndex) + " |" +
-				FormatUtil.FormatDouble (numericalApproximation.zeroOrder() + 0.5, 1, 0, 1.) + " | [" +
-				FormatUtil.FormatDouble (numericalApproximation.lowerBound() + 0.5, 1, 0, 1.) + " -" +
-				FormatUtil.FormatDouble (numericalApproximation.upperBound() + 0.5, 1, 0, 1.) + " ||"
-			);
+			return org.drip.function.numerical.R1Estimate.ZeroOrderOnly (evaluate (x));
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return null;
 	}
 }

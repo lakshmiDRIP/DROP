@@ -100,7 +100,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factorial extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 {
 
 	/**
@@ -147,7 +147,7 @@ public class Factorial extends org.drip.function.definition.R1ToR1NumericalEstim
 		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);
 	}
 
-	@Override public org.drip.function.definition.R1NumericalEstimate estimate (
+	@Override public org.drip.function.numerical.R1Estimate estimate (
 		final double x)
 	{
 		try
@@ -156,7 +156,7 @@ public class Factorial extends org.drip.function.definition.R1ToR1NumericalEstim
 
 			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
 
-			return new org.drip.function.definition.R1NumericalEstimate (
+			return new org.drip.function.numerical.R1Estimate (
 				estimate,
 				estimate,
 				java.lang.Math.E * deMoivreTerm
@@ -178,15 +178,49 @@ public class Factorial extends org.drip.function.definition.R1ToR1NumericalEstim
 	 * @return The Bounded Function Estimates along with the First Order Laplace Correction
 	 */
 
-	public org.drip.function.definition.R1NumericalEstimate laplaceCorrectionEstimate (
+	public org.drip.function.numerical.R1Estimate laplaceCorrectionEstimate (
 		final double x)
 	{
-		org.drip.function.definition.R1NumericalEstimate r1NumericalEstimate = estimate (x);
+		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
 
-		return null == r1NumericalEstimate || !r1NumericalEstimate.addCorrection (
+		if (null == r1NumericalEstimate)
+		{
+			return null;
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
 			1,
-			0. == x ? 0. : r1NumericalEstimate.zeroOrder() / (12. * x)
-		) ? null : r1NumericalEstimate;
+			1. / 12.
+		);
+
+		org.drip.function.numerical.ErrorSeriesGenerator errorSeriesGenerator = null;
+
+		try
+		{
+			errorSeriesGenerator = new org.drip.function.numerical.ErrorSeriesGenerator (
+				org.drip.function.numerical.ErrorTerm.Asymptotic(),
+				true,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		r1NumericalEstimate.addCorrectionMap (
+			errorSeriesGenerator.generate (
+				r1NumericalEstimate.zeroOrder(),
+				x
+			)
+		);
+
+		return r1NumericalEstimate;
 	}
 
 	/**
@@ -197,35 +231,68 @@ public class Factorial extends org.drip.function.definition.R1ToR1NumericalEstim
 	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
 	 */
 
-	public org.drip.function.definition.R1NumericalEstimate nemesCorrectionEstimate (
+	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-		org.drip.function.definition.R1NumericalEstimate r1NumericalEstimate = estimate (x);
+		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
 
 		if (null == r1NumericalEstimate)
 		{
 			return null;
 		}
 
-		double zeroOrder = r1NumericalEstimate.zeroOrder();
-
 		if (0. >= x)
 		{
 			return r1NumericalEstimate;
 		}
 
-		return !r1NumericalEstimate.addCorrection (
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
 			1,
-			zeroOrder / (12. * x)
-		) || !r1NumericalEstimate.addCorrection (
+			1. / 12.
+		);
+
+		termWeightMap.put (
 			2,
-			zeroOrder / (288. * x * x)
-		) || !r1NumericalEstimate.addCorrection (
+			1. / 288.
+		);
+
+		termWeightMap.put (
 			3,
-			-139. * zeroOrder / (51840. * x * x * x)
-		) || !r1NumericalEstimate.addCorrection (
+			-139. / 51840.
+		);
+
+		termWeightMap.put (
 			4,
-			-571. * zeroOrder / (2488320. * x * x * x * x)
-		) ? null : r1NumericalEstimate;
+			-571. / 2488320.
+		);
+
+		org.drip.function.numerical.ErrorSeriesGenerator errorSeriesGenerator = null;
+
+		try
+		{
+			errorSeriesGenerator = new org.drip.function.numerical.ErrorSeriesGenerator (
+				org.drip.function.numerical.ErrorTerm.Asymptotic(),
+				true,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		r1NumericalEstimate.addCorrectionMap (
+			errorSeriesGenerator.generate (
+				r1NumericalEstimate.zeroOrder(),
+				x
+			)
+		);
+
+		return r1NumericalEstimate;
 	}
 }

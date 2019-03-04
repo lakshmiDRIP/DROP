@@ -1,11 +1,5 @@
 
-package org.drip.sample.stirling;
-
-import org.drip.function.numerical.R1Estimate;
-import org.drip.function.stirling.RamanujanGamma;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>RamanujanGammaMorticiBounds</i> illustrates the Mortici Bounds applied to Ramanujan Approximation of
- * the Gamma Function. The References are:
+ * <i>ErrorTerm</i> computes the Error Term in the Ordered Series of the Numerical Estimate for a Function.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,58 +96,116 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Approximation Based Gamma Estimates</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RamanujanGammaMorticiBounds
+public class ErrorTerm
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Asymptotic Error Term
+	 * 
+	 * @return The Asymptotic Error Term
+	 */
+
+	public static final ErrorTerm Asymptotic()
 	{
-		EnvManager.InitEnv ("");
-
-		int factorialCount = 12;
-
-		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|               RAMANUJAN GAMMA MORTICI BOUNDS               ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                               ||");
-
-		System.out.println ("\t|              - Gamma Index                                 ||");
-
-		System.out.println ("\t|              - Gamma Value                                 ||");
-
-		System.out.println ("\t|              - Ramanujan Estimate                          ||");
-
-		System.out.println ("\t|              - Mortici Bounds [Lower - Upper]              ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
+		return new ErrorTerm()
 		{
-			R1Estimate numericalApproximation = ramanujanGamma.estimate (factorialIndex);
+			@Override public double value (
+				final int order,
+				final double x)
+				throws java.lang.Exception
+			{
+				if (0 >= order ||
+					!org.drip.quant.common.NumberUtil.IsValid (x) || 0. == x)
+				{
+					throw new java.lang.Exception ("Asymptotic::ErrorTerm::value => Invalid Inputs");
+				}
 
-			System.out.println (
-				"\t| " + factorialIndex + " => " +
-				NumberUtil.Factorial (factorialIndex) + " |" +
-				FormatUtil.FormatDouble (numericalApproximation.zeroOrder() + 0.5, 1, 0, 1.) + " | [" +
-				FormatUtil.FormatDouble (numericalApproximation.lowerBound() + 0.5, 1, 0, 1.) + " -" +
-				FormatUtil.FormatDouble (numericalApproximation.upperBound() + 0.5, 1, 0, 1.) + " ||"
-			);
+				return java.lang.Math.pow (
+					x,
+					-1. * order
+				);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Inverted Rising Exponential Error Term
+	 * 
+	 * @return The Inverted Rising Exponential Error Term
+	 */
+
+	public static final ErrorTerm InvertedRisingExponential()
+	{
+		return new ErrorTerm()
+		{
+			@Override public double value (
+				final int order,
+				final double x)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (x))
+				{
+					throw new java.lang.Exception
+						("InvertedRisingExponential::ErrorTerm::evaluate => Invalid Inputs");
+				}
+
+				double risingExponential = 1.;
+
+				for (int orderIndex = 1; orderIndex <= order; ++orderIndex)
+				{
+					risingExponential = risingExponential * (x + orderIndex);
+				}
+
+				if (0. == risingExponential)
+				{
+					throw new java.lang.Exception
+						("InvertedRisingExponential::ErrorTerm::evaluate => Invalid Inputs");
+				}
+
+				return 1. / risingExponential;
+			}
+		};
+	}
+
+	/**
+	 * Empty ErrorTerm Constructor
+	 */
+
+	public ErrorTerm()
+	{
+	}
+
+	/**
+	 * Compute the Value of the Error Term
+	 * 
+	 * @param order Order of the Error Term
+	 * @param x X
+	 * 
+	 * @return The Value of the Error Term
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double value (
+		final int order,
+		final double x)
+		throws java.lang.Exception
+	{
+		if (0 >= order ||
+			!org.drip.quant.common.NumberUtil.IsValid (x))
+		{
+			throw new java.lang.Exception ("ErrorTerm::value => Invalid Inputs");
 		}
 
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return 0. == x ? 0. : java.lang.Math.pow (
+			x,
+			order
+		);
 	}
 }
