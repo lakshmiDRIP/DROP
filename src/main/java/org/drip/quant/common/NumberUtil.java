@@ -564,6 +564,15 @@ public class NumberUtil {
 		return true;
 	}
 
+	/**
+	 * Print the Matrix Contents
+	 * 
+	 * @param strName Name of the Matrix
+	 * @param aadblA Matrix
+	 * 
+	 * @return TRUE - Matrix Contents Successfully printed
+	 */
+
 	public static final boolean PrintMatrix (
 		final java.lang.String strName,
 		final double[][] aadblA)
@@ -582,5 +591,34 @@ public class NumberUtil {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Compute (n - 0.5)!
+	 * 
+	 * @param n n
+	 * 
+	 * @return (n - 0.5)! Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double HalfDownShiftedFactorial (
+		final int n)
+		throws java.lang.Exception
+	{
+		if (-1 >= n)
+		{
+			throw new java.lang.Exception ("NumberUtil::HalfDownShiftedFactorial => Invalid Inputs");
+		}
+
+		double halfDownShiftedFactorial = -2. * java.lang.Math.sqrt (java.lang.Math.PI);
+
+		for (double index = 0; index < n; ++index)
+		{
+			halfDownShiftedFactorial = halfDownShiftedFactorial * (index - 0.5);
+		}
+
+		return halfDownShiftedFactorial;
 	}
 }

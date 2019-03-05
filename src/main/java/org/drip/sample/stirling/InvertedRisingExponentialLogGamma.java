@@ -144,7 +144,7 @@ public class InvertedRisingExponentialLogGamma
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
+			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialCorrectionEstimate
 				(factorialIndex);
 
 			double zeroOrder = numericalApproximation.zeroOrder();
@@ -186,7 +186,7 @@ public class InvertedRisingExponentialLogGamma
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialEstimate
+			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialCorrectionEstimate
 				(factorialIndex);
 
 			double firstOrderCorrection = numericalApproximation.orderCorrection (1);

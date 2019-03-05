@@ -1,5 +1,5 @@
 
-package org.drip.function.numerical;
+package org.drip.function.lanczos;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +64,29 @@ package org.drip.function.numerical;
  */
 
 /**
- * <i>ErrorSeriesGenerator</i> generates the Series of Error Terms in the Ordered Series of the Numerical
- * Estimate for a Function. The References are:
+ * <i>ChebyshevCoefficientMatrix</i> holds the Chebyshev Polynomial Coefficient Matrix Entries. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Godfrey, P. (2001): Lanczos Implementation of the Gamma Function
+ * 				http://www.numericana.com/answer/info/godfrey.htm
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
+ * 				The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Pugh, G. R. (2004): <i>An Analysis of the Lanczos Gamma Approximation</i> Ph. D. <b>University of
+ * 				British Columbia</b>
  * 		</li>
  * 		<li>
  * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
  * 				http://www.rskey.org/CMS/index.php/the-library/11
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
  *
@@ -96,127 +95,59 @@ package org.drip.function.numerical;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ErrorSeriesGenerator
+public class ChebyshevCoefficientMatrix
 {
-	private boolean _proportional = false;
-	private org.drip.function.numerical.ErrorTerm _errorTerm = null;
-	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
 
 	/**
-	 * ErrorSeriesGenerator Constructor
+	 * Generate a n X n Chebyshev Coefficient Polynomial Matrix
 	 * 
-	 * @param errorTerm Error Term
-	 * @param proportional TRUE - The Error is Proportional
-	 * @param termWeightMap Error Term Weight Map
+	 * @param size Size of the Matrix
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The n X n Chebyshev Coefficient Polynomial Matrix
 	 */
 
-	public ErrorSeriesGenerator (
-		final org.drip.function.numerical.ErrorTerm errorTerm,
-		final boolean proportional,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
-		throws java.lang.Exception
+	public static final double[][] Rollout (
+		final int size)
 	{
-		if (null == (_errorTerm = errorTerm))
-		{
-			throw new java.lang.Exception ("ErrorSeriesGenerator Constructor => Invalid Inputs");
-		}
-
-		_proportional = proportional;
-		_termWeightMap = termWeightMap;
-	}
-
-	/**
-	 * Retrieve the Error Term
-	 * 
-	 * @return The Error Term
-	 */
-
-	public org.drip.function.numerical.ErrorTerm errorTerm()
-	{
-		return _errorTerm;
-	}
-
-	/**
-	 * Indicate if the Error is Proportional
-	 * 
-	 * @return TRUE - The Error is Proportional
-	 */
-
-	public boolean proportional()
-	{
-		return _proportional;
-	}
-
-	/**
-	 * Retrieve the Error Term Weight Map
-	 * 
-	 * @return The Error Term Weight Map
-	 */
-
-	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
-	{
-		return _termWeightMap;
-	}
-
-	/**
-	 * Generate the Error Series using the Error term
-	 * 
-	 * @param zeroOrder The Zero Order Estimate
-	 * @param x X
-	 * 
-	 * @return The Error Series
-	 */
-
-	public java.util.TreeMap<java.lang.Integer, java.lang.Double> generate (
-		final double zeroOrder, 
-		final double x)
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (zeroOrder))
+		if (3 >= size)
 		{
 			return null;
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> correctionMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		double[][] coefficientMatrix = new double[size][size];
 
-		if (null == _termWeightMap || 0 == _termWeightMap.size())
+		for (int indexJ = 0; indexJ < size; ++indexJ)
 		{
-			return correctionMap;
-		}
-
-		double scale = _proportional ? zeroOrder : 1.;
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
-			_termWeightMap.entrySet())
-		{
-			int order = termWeightEntry.getKey();
-
-			try
+			for (int indexI = 0; indexI < size; ++indexI)
 			{
-				correctionMap.put (
-					order,
-					scale * termWeightEntry.getValue() * _errorTerm.value (
-						order,
-						x
-					)
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
+				coefficientMatrix[indexI][indexJ] = 0.;
 			}
 		}
 
-		return correctionMap;
+		coefficientMatrix[0][0] = 1.;
+		coefficientMatrix[1][1] = 1.;
+
+		for (int index = 2; index < size; ++index)
+		{
+			coefficientMatrix[index][0] = -1. * coefficientMatrix[index - 2][0];
+			coefficientMatrix[index][index] = 2. * coefficientMatrix[index - 1][index - 1];
+		}
+
+		for (int indexJ = 1; indexJ < size; ++indexJ)
+		{
+			for (int indexI = indexJ + 1; indexI < size; ++indexI)
+			{
+				coefficientMatrix[indexI][indexJ] = 2. * coefficientMatrix[indexI - 1][indexJ - 1] -
+					coefficientMatrix[indexI - 2][indexJ];
+			}
+		}
+
+		return coefficientMatrix;
 	}
 }

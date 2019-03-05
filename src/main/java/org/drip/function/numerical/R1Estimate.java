@@ -107,7 +107,7 @@ public class R1Estimate
 	private double _lowerBound = java.lang.Double.NaN;
 	private double _upperBound = java.lang.Double.NaN;
 
-	private java.util.Map<java.lang.Integer, java.lang.Double> _orderedCorrection = new
+	private java.util.Map<java.lang.Integer, java.lang.Double> _orderedCorrectionMap = new
 		java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
 	/**
@@ -201,54 +201,28 @@ public class R1Estimate
 	 * @return The Higher Order Correction Map
 	 */
 
-	public java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrection()
+	public java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrectionMap()
 	{
-		return _orderedCorrection;
+		return _orderedCorrectionMap;
 	}
 
 	/**
 	 * Add the Ordered Correction Map
 	 * 
-	 * @param correctionMap The Ordered Correction Map
+	 * @param orderedCorrectionMap The Ordered Correction Map
 	 * 
 	 * @return TRUE - The Ordered Correction Map successfully added
 	 */
 
-	public boolean addCorrectionMap (
-		final java.util.Map<java.lang.Integer, java.lang.Double> correctionMap)
+	public boolean addOrderedCorrectionMap (
+		final java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrectionMap)
 	{
-		if (null == correctionMap)
+		if (null == orderedCorrectionMap)
 		{
 			return false;
 		}
 
-		_orderedCorrection = correctionMap;
-		return true;
-	}
-
-	/**
-	 * Add an Ordered Correction
-	 * 
-	 * @param correctionOrder The Correction Order
-	 * @param correction The Correction
-	 * 
-	 * @return TRUE - The Correction Order successfully added
-	 */
-
-	public boolean addCorrection (
-		final int correctionOrder,
-		final double correction)
-	{
-		if (0 >= correctionOrder || !org.drip.quant.common.NumberUtil.IsValid (correction))
-		{
-			return false;
-		}
-
-		_orderedCorrection.put (
-			correctionOrder,
-			correction
-		);
-
+		_orderedCorrectionMap = orderedCorrectionMap;
 		return true;
 	}
 
@@ -263,8 +237,8 @@ public class R1Estimate
 	public double orderCorrection (
 		final int correctionOrder)
 	{
-		return _orderedCorrection.containsKey (correctionOrder) ? _orderedCorrection.get (correctionOrder) :
-			0.;
+		return _orderedCorrectionMap.containsKey (correctionOrder) ? _orderedCorrectionMap.get
+			(correctionOrder) : 0.;
 	}
 
 	/**
@@ -278,7 +252,7 @@ public class R1Estimate
 		double correction = 0.;
 
 		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> orderedCorrectionEntry :
-			_orderedCorrection.entrySet())
+			_orderedCorrectionMap.entrySet())
 		{
 			correction = correction + orderedCorrectionEntry.getValue();
 		}

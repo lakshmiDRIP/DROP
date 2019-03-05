@@ -1,5 +1,9 @@
 
-package org.drip.function.stirling;
+package org.drip.sample.lanczos;
+
+import org.drip.function.lanczos.ChebyshevCoefficientMatrix;
+import org.drip.quant.common.NumberUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +68,29 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>RaabeLogGamma</i> implements the Raabe's Version of Stirling's Approximation of the Log Gamma Function.
- * This Version is Series Convergent. The References are:
+ * <i>ChebyshevCoefficientPolynomialMatrix</i> illustrates the Computation of the Chebyshev Polynomial
+ * Coefficient Matrix Entries. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Godfrey, P. (2001): Lanczos Implementation of the Gamma Function
+ * 				http://www.numericana.com/answer/info/godfrey.htm
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
+ * 				The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Pugh, G. R. (2004): <i>An Analysis of the Lanczos Gamma Approximation</i> Ph. D. <b>University of
+ * 				British Columbia</b>
  * 		</li>
  * 		<li>
  * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
  * 				http://www.rskey.org/CMS/index.php/the-library/11
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
  *
@@ -95,91 +98,36 @@ package org.drip.function.stirling;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/lanczos/README.md">Lanczos Gamma Calculation Scheme Illustration</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RaabeLogGamma extends org.drip.function.numerical.R1ToR1Estimator
+public class ChebyshevCoefficientPolynomialMatrix
 {
 
-	/**
-	 * RaabeLogGamma Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public RaabeLogGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. >= x)
-		{
-			throw new java.lang.Exception ("RaabeLogGamma::evaluate => Invalid Inputs");
-		}
+		int size = 5;
 
-		return x * java.lang.Math.log (x) - x + 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x);
-	}
+		double[][] chebyshevCoefficientMatrix = ChebyshevCoefficientMatrix.Rollout (size);
 
-	/**
-	 * Compute the Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
-	 */
+		System.out.println ("\t|-----------------------------------------|");
 
-	public org.drip.function.numerical.R1Estimate invertedRisingExponentialCorrectionEstimate (
-		final double x)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			1. / 12.
+		NumberUtil.Print2DArray (
+			"\t| Chebyshev Coefficient",
+			chebyshevCoefficientMatrix,
+			false
 		);
 
-		termWeightMap.put (
-			2,
-			1. / 12.
-		);
+		System.out.println ("\t|-----------------------------------------|");
 
-		termWeightMap.put (
-			3,
-			59. / 360.
-		);
-
-		termWeightMap.put (
-			4,
-			29. / 60.
-		);
-
-		try
-		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.ExpansionSeriesGenerator (
-					org.drip.function.numerical.ExpansionSeriesTerm.InvertedRisingExponential(),
-					false,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

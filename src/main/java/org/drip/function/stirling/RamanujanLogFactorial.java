@@ -141,21 +141,31 @@ public class RamanujanLogFactorial extends org.drip.function.numerical.R1ToR1Est
 	public org.drip.function.numerical.R1Estimate correctionEstimate (
 		final double x)
 	{
-		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		if (null == r1NumericalEstimate)
-		{
-			return null;
-		}
-
-		if (0. >= x)
-		{
-			return r1NumericalEstimate;
-		}
-
-		return !r1NumericalEstimate.addCorrection (
+		termWeightMap.put (
 			3,
-			1. / (1400. * x * x * x)
-		) ? null : r1NumericalEstimate;
+			1. / 1400.
+		);
+
+		try
+		{
+			return correctionEstimate (
+				x,
+				termWeightMap,
+				new org.drip.function.numerical.ExpansionSeriesGenerator (
+					org.drip.function.numerical.ExpansionSeriesTerm.Asymptotic(),
+					false,
+					termWeightMap
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

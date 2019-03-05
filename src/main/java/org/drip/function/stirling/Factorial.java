@@ -181,13 +181,6 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 	public org.drip.function.numerical.R1Estimate laplaceCorrectionEstimate (
 		final double x)
 	{
-		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
-
-		if (null == r1NumericalEstimate)
-		{
-			return null;
-		}
-
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
@@ -196,31 +189,24 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 			1. / 12.
 		);
 
-		org.drip.function.numerical.ErrorSeriesGenerator errorSeriesGenerator = null;
-
 		try
 		{
-			errorSeriesGenerator = new org.drip.function.numerical.ErrorSeriesGenerator (
-				org.drip.function.numerical.ErrorTerm.Asymptotic(),
-				true,
-				termWeightMap
+			return correctionEstimate (
+				x,
+				termWeightMap,
+				new org.drip.function.numerical.ExpansionSeriesGenerator (
+					org.drip.function.numerical.ExpansionSeriesTerm.Asymptotic(),
+					true,
+					termWeightMap
+				)
 			);
 		}
 		catch (java.lang.Exception e)
 		{
 			e.printStackTrace();
-
-			return null;
 		}
 
-		r1NumericalEstimate.addCorrectionMap (
-			errorSeriesGenerator.generate (
-				r1NumericalEstimate.zeroOrder(),
-				x
-			)
-		);
-
-		return r1NumericalEstimate;
+		return null;
 	}
 
 	/**
@@ -234,18 +220,6 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
-
-		if (null == r1NumericalEstimate)
-		{
-			return null;
-		}
-
-		if (0. >= x)
-		{
-			return r1NumericalEstimate;
-		}
-
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
@@ -269,30 +243,23 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 			-571. / 2488320.
 		);
 
-		org.drip.function.numerical.ErrorSeriesGenerator errorSeriesGenerator = null;
-
 		try
 		{
-			errorSeriesGenerator = new org.drip.function.numerical.ErrorSeriesGenerator (
-				org.drip.function.numerical.ErrorTerm.Asymptotic(),
-				true,
-				termWeightMap
+			return correctionEstimate (
+				x,
+				termWeightMap,
+				new org.drip.function.numerical.ExpansionSeriesGenerator (
+					org.drip.function.numerical.ExpansionSeriesTerm.Asymptotic(),
+					true,
+					termWeightMap
+				)
 			);
 		}
 		catch (java.lang.Exception e)
 		{
 			e.printStackTrace();
-
-			return null;
 		}
 
-		r1NumericalEstimate.addCorrectionMap (
-			errorSeriesGenerator.generate (
-				r1NumericalEstimate.zeroOrder(),
-				x
-			)
-		);
-
-		return r1NumericalEstimate;
+		return null;
 	}
 }

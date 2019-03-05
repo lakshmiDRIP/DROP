@@ -139,4 +139,36 @@ public abstract class R1ToR1Estimator extends org.drip.function.definition.R1ToR
 
 		return null;
 	}
+
+	/**
+	 * Compute the Higher Order Error Correction Estimates
+	 * 
+	 * @param x X
+	 * @param termWeightMap Error Term Weight Map
+	 * @param errorSeriesGenerator Error Series Generator
+	 * 
+	 * @return The Higher Order Error Correction Estimates
+	 */
+
+	public org.drip.function.numerical.R1Estimate correctionEstimate (
+		final double x,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
+		final org.drip.function.numerical.ExpansionSeriesGenerator errorSeriesGenerator)
+	{
+		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
+
+		if (null == r1NumericalEstimate ||
+			null == termWeightMap || 0 == termWeightMap.size() ||
+			null == errorSeriesGenerator)
+		{
+			return r1NumericalEstimate;
+		}
+
+		return r1NumericalEstimate.addOrderedCorrectionMap (
+			errorSeriesGenerator.generate (
+				r1NumericalEstimate.zeroOrder(),
+				x
+			)
+		) ? r1NumericalEstimate : null;
+	}
 }

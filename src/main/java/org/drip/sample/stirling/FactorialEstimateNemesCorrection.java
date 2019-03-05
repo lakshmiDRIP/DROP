@@ -141,7 +141,7 @@ public class FactorialEstimateNemesCorrection
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
+		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
 			R1Estimate numericalApproximation = stirlingFactorial.nemesCorrectionEstimate
 				(factorialIndex);
@@ -183,7 +183,7 @@ public class FactorialEstimateNemesCorrection
 
 		System.out.println ("\t|------------------------------------------------------------||");
 
-		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
+		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
 			R1Estimate numericalApproximation = stirlingFactorial.nemesCorrectionEstimate
 				(factorialIndex);

@@ -1,5 +1,5 @@
 
-package org.drip.function.stirling;
+package org.drip.function.lanczos;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +64,28 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>RaabeLogGamma</i> implements the Raabe's Version of Stirling's Approximation of the Log Gamma Function.
- * This Version is Series Convergent. The References are:
+ * <i>PSeriesTerm</i> holds a Single Term of the Lanczos P Series. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Godfrey, P. (2001): Lanczos Implementation of the Gamma Function
+ * 				http://www.numericana.com/answer/info/godfrey.htm
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
+ * 				The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Pugh, G. R. (2004): <i>An Analysis of the Lanczos Gamma Approximation</i> Ph. D. <b>University of
+ * 				British Columbia</b>
  * 		</li>
  * 		<li>
  * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
  * 				http://www.rskey.org/CMS/index.php/the-library/11
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
  *
@@ -96,90 +94,87 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RaabeLogGamma extends org.drip.function.numerical.R1ToR1Estimator
+public class PSeriesTerm extends org.drip.function.numerical.ExpansionSeriesTerm
 {
+	private int _g = -1;
+	private int _termCount = -1;
+	private int _termIndex = -1;
 
 	/**
-	 * RaabeLogGamma Constructor
+	 * PSeriesTerm Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param termIndex Term Index
+	 * @param termCount Total Number of Terms
+	 * @param g Lanczos g Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RaabeLogGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
+	public PSeriesTerm (
+		final int termIndex,
+		final int termCount,
+		final int g)
+		throws java.lang.Exception
 	{
-		super (dc);
+		if (0 > (_termIndex = termIndex) ||
+			0 >= (_termCount = termCount) || _termIndex >= _termCount ||
+			0 >= (_g = g))
+		{
+			throw new java.lang.Exception ("PSeriesTerm Constructor => Invalid Inputs");
+		}
 	}
 
-	@Override public double evaluate (
+	/**
+	 * Retrieve the Term Index
+	 * 
+	 * @return The Term Index
+	 */
+
+	public int termIndex()
+	{
+		return _termIndex;
+	}
+
+	/**
+	 * Retrieve the Term Count
+	 * 
+	 * @return The Term Count
+	 */
+
+	public int termCount()
+	{
+		return _termCount;
+	}
+
+	/**
+	 * Retrieve Lanczos g Control
+	 * 
+	 * @return The Lanczos g Control
+	 */
+
+	public int g()
+	{
+		return _g;
+	}
+
+	@Override public double value (
+		final int order,
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. >= x)
-		{
-			throw new java.lang.Exception ("RaabeLogGamma::evaluate => Invalid Inputs");
-		}
+		double aPlusGPlusHalf = 0.5 + _termIndex + _g;
 
-		return x * java.lang.Math.log (x) - x + 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x);
-	}
-
-	/**
-	 * Compute the Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
-	 */
-
-	public org.drip.function.numerical.R1Estimate invertedRisingExponentialCorrectionEstimate (
-		final double x)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			2,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			3,
-			59. / 360.
-		);
-
-		termWeightMap.put (
-			4,
-			29. / 60.
-		);
-
-		try
-		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.ExpansionSeriesGenerator (
-					org.drip.function.numerical.ExpansionSeriesTerm.InvertedRisingExponential(),
-					false,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return org.drip.quant.common.NumberUtil.HalfDownShiftedFactorial (_termIndex) *
+			java.lang.Math.pow (
+				aPlusGPlusHalf,
+				-0.5 - _termIndex
+			) *
+			java.lang.Math.exp (aPlusGPlusHalf);
 	}
 }

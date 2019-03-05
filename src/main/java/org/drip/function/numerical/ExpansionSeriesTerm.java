@@ -1,5 +1,5 @@
 
-package org.drip.function.stirling;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>RaabeLogGamma</i> implements the Raabe's Version of Stirling's Approximation of the Log Gamma Function.
- * This Version is Series Convergent. The References are:
+ * <i>ExpansionSeriesTerm</i> computes the Expansion Series Term in the Ordered Series of the Numerical
+ * Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,90 +96,117 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RaabeLogGamma extends org.drip.function.numerical.R1ToR1Estimator
+public class ExpansionSeriesTerm
 {
 
 	/**
-	 * RaabeLogGamma Constructor
+	 * Construct the Asymptotic Expansion Series Term
 	 * 
-	 * @param dc The Derivative Control
+	 * @return The Asymptotic Expansion Series Term
 	 */
 
-	public RaabeLogGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
+	public static final ExpansionSeriesTerm Asymptotic()
 	{
-		super (dc);
-	}
-
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. >= x)
+		return new ExpansionSeriesTerm()
 		{
-			throw new java.lang.Exception ("RaabeLogGamma::evaluate => Invalid Inputs");
-		}
+			@Override public double value (
+				final int order,
+				final double x)
+				throws java.lang.Exception
+			{
+				if (0 >= order ||
+					!org.drip.quant.common.NumberUtil.IsValid (x) || 0. == x)
+				{
+					throw new java.lang.Exception
+						("Asymptotic::ExpansionSeriesTerm::value => Invalid Inputs");
+				}
 
-		return x * java.lang.Math.log (x) - x + 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x);
+				return java.lang.Math.pow (
+					x,
+					-1. * order
+				);
+			}
+		};
 	}
 
 	/**
-	 * Compute the Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
+	 * Construct the Inverted Rising Exponential Expansion Series Term
 	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
+	 * @return The Inverted Rising Exponential Expansion Series Term
 	 */
 
-	public org.drip.function.numerical.R1Estimate invertedRisingExponentialCorrectionEstimate (
-		final double x)
+	public static final ExpansionSeriesTerm InvertedRisingExponential()
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			2,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			3,
-			59. / 360.
-		);
-
-		termWeightMap.put (
-			4,
-			29. / 60.
-		);
-
-		try
+		return new ExpansionSeriesTerm()
 		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.ExpansionSeriesGenerator (
-					org.drip.function.numerical.ExpansionSeriesTerm.InvertedRisingExponential(),
-					false,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
+			@Override public double value (
+				final int order,
+				final double x)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (x))
+				{
+					throw new java.lang.Exception
+						("InvertedRisingExponential::ExpansionSeriesTerm::evaluate => Invalid Inputs");
+				}
+
+				double risingExponential = 1.;
+
+				for (int orderIndex = 1; orderIndex <= order; ++orderIndex)
+				{
+					risingExponential = risingExponential * (x + orderIndex);
+				}
+
+				if (0. == risingExponential)
+				{
+					throw new java.lang.Exception
+						("InvertedRisingExponential::ExpansionSeriesTerm::evaluate => Invalid Inputs");
+				}
+
+				return 1. / risingExponential;
+			}
+		};
+	}
+
+	/**
+	 * Empty ErrorTerm Constructor
+	 */
+
+	public ExpansionSeriesTerm()
+	{
+	}
+
+	/**
+	 * Compute the Value of the Error Term
+	 * 
+	 * @param order Order of the Error Term
+	 * @param x X
+	 * 
+	 * @return The Value of the Error Term
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double value (
+		final int order,
+		final double x)
+		throws java.lang.Exception
+	{
+		if (0 >= order ||
+			!org.drip.quant.common.NumberUtil.IsValid (x))
 		{
-			e.printStackTrace();
+			throw new java.lang.Exception ("ErrorTerm::value => Invalid Inputs");
 		}
 
-		return null;
+		return 0. == x ? 0. : java.lang.Math.pow (
+			x,
+			order
+		);
 	}
 }

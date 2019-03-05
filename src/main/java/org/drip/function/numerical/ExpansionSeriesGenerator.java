@@ -1,5 +1,5 @@
 
-package org.drip.function.stirling;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>RaabeLogGamma</i> implements the Raabe's Version of Stirling's Approximation of the Log Gamma Function.
- * This Version is Series Convergent. The References are:
+ * <i>ExpansionSeriesGenerator</i> generates the Expansion Terms in the Ordered Series of the Numerical
+ * Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,90 +96,127 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RaabeLogGamma extends org.drip.function.numerical.R1ToR1Estimator
+public class ExpansionSeriesGenerator
 {
+	private boolean _proportional = false;
+	private org.drip.function.numerical.ExpansionSeriesTerm _expansionSeriesTerm = null;
+	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
 
 	/**
-	 * RaabeLogGamma Constructor
+	 * ExpansionSeriesGenerator Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param expansionSeriesTerm Expansion Series Term
+	 * @param proportional TRUE - The Expansion Term is Proportional
+	 * @param termWeightMap Error Term Weight Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RaabeLogGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-	}
-
-	@Override public double evaluate (
-		final double x)
+	public ExpansionSeriesGenerator (
+		final org.drip.function.numerical.ExpansionSeriesTerm expansionSeriesTerm,
+		final boolean proportional,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. >= x)
+		if (null == (_expansionSeriesTerm = expansionSeriesTerm))
 		{
-			throw new java.lang.Exception ("RaabeLogGamma::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("ExpansionSeriesGenerator Constructor => Invalid Inputs");
 		}
 
-		return x * java.lang.Math.log (x) - x + 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x);
+		_proportional = proportional;
+		_termWeightMap = termWeightMap;
 	}
 
 	/**
-	 * Compute the Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
+	 * Retrieve the Expansion Series Term
 	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
+	 * @return The Expansion Series Term
 	 */
 
-	public org.drip.function.numerical.R1Estimate invertedRisingExponentialCorrectionEstimate (
+	public org.drip.function.numerical.ExpansionSeriesTerm expansionSeriesTerm()
+	{
+		return _expansionSeriesTerm;
+	}
+
+	/**
+	 * Indicate if the Expansion Term is Proportional
+	 * 
+	 * @return TRUE - The Expansion Term is Proportional
+	 */
+
+	public boolean proportional()
+	{
+		return _proportional;
+	}
+
+	/**
+	 * Retrieve the Expansion Term Weight Map
+	 * 
+	 * @return The Expansion Term Weight Map
+	 */
+
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
+	{
+		return _termWeightMap;
+	}
+
+	/**
+	 * Generate the Series using the Expansion Term
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * 
+	 * @return The Expansion Series
+	 */
+
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> generate (
+		final double zeroOrder, 
 		final double x)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+		if (!org.drip.quant.common.NumberUtil.IsValid (zeroOrder))
+		{
+			return null;
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> correctionMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			2,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			3,
-			59. / 360.
-		);
-
-		termWeightMap.put (
-			4,
-			29. / 60.
-		);
-
-		try
+		if (null == _termWeightMap || 0 == _termWeightMap.size())
 		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.ExpansionSeriesGenerator (
-					org.drip.function.numerical.ExpansionSeriesTerm.InvertedRisingExponential(),
-					false,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			return correctionMap;
 		}
 
-		return null;
+		double scale = _proportional ? zeroOrder : 1.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			_termWeightMap.entrySet())
+		{
+			int order = termWeightEntry.getKey();
+
+			try
+			{
+				correctionMap.put (
+					order,
+					scale * termWeightEntry.getValue() * _expansionSeriesTerm.value (
+						order,
+						x
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return correctionMap;
 	}
 }

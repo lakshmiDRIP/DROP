@@ -157,30 +157,46 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		if (null == r1NumericalEstimate)
-		{
-			return null;
-		}
-
-		if (0. >= x)
-		{
-			return r1NumericalEstimate;
-		}
-
-		return !r1NumericalEstimate.addCorrection (
+		termWeightMap.put (
 			1,
-			1. / (12. * x)
-		) || !r1NumericalEstimate.addCorrection (
+			1. / 12.
+		);
+
+		termWeightMap.put (
 			3,
-			-1. / (360. * x * x * x)
-		) || !r1NumericalEstimate.addCorrection (
+			-1. / 360.
+		);
+
+		termWeightMap.put (
 			5,
-			1. / (1260. * x * x * x * x * x)
-		) || !r1NumericalEstimate.addCorrection (
+			1. / 1260.
+		);
+
+		termWeightMap.put (
 			7,
-			-1. / (1680. * x * x * x * x * x * x * x)
-		) ? null : r1NumericalEstimate;
+			-1. / 1680.
+		);
+
+		try
+		{
+			return correctionEstimate (
+				x,
+				termWeightMap,
+				new org.drip.function.numerical.ExpansionSeriesGenerator (
+					org.drip.function.numerical.ExpansionSeriesTerm.Asymptotic(),
+					false,
+					termWeightMap
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
