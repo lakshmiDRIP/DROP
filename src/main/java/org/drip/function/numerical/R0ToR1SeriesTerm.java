@@ -1,5 +1,5 @@
 
-package org.drip.function.stirling;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,9 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>Factorial</i> implements the Stirling's Approximation of the Factorial Functions. The References are:
+ * <i>R0ToR1SeriesTerm</i> exposes a R<sup>0</sup> To R<sup>1</sup> Term of a Numerical Series. The
+ * References are:
+ * 
  * <br><br>
  * 	<ul>
  * 		<li>
@@ -94,172 +96,26 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
+public interface R0ToR1SeriesTerm
 {
 
 	/**
-	 * Factorial Constructor
+	 * Compute the Ordered Term in the Series
 	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public Factorial (
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-	}
-
-	/**
-	 * Compute the de-Moivre Term
+	 * @param order Order of the Term
 	 * 
-	 * @param x X
-	 * 
-	 * @return The de-Moivre Term
+	 * @return The Value of the Ordered Term in the Series
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double deMoivreTerm (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
-		{
-			throw new java.lang.Exception ("Stirling::deMoivreTerm => Invalid Inputs");
-		}
-
-		return java.lang.Math.exp (-x) * java.lang.Math.pow (
-			x,
-			x + 0.5
-		);
-	}
-
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate estimate (
-		final double x)
-	{
-		try
-		{
-			double deMoivreTerm = deMoivreTerm (x);
-
-			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
-
-			return new org.drip.function.numerical.R1Estimate (
-				estimate,
-				estimate,
-				java.lang.Math.E * deMoivreTerm
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Compute the Bounded Function Estimates along with the First Order Laplace Correction
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the First Order Laplace Correction
-	 */
-
-	public org.drip.function.numerical.R1Estimate laplaceCorrectionEstimate (
-		final double x)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
-
-		try
-		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),
-					true,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Compute the Bounded Function Estimates along with the Higher Order Nemes Correction
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
-	 */
-
-	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
-		final double x)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
-
-		termWeightMap.put (
-			2,
-			1. / 288.
-		);
-
-		termWeightMap.put (
-			3,
-			-139. / 51840.
-		);
-
-		termWeightMap.put (
-			4,
-			-571. / 2488320.
-		);
-
-		try
-		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),
-					true,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public abstract double value (
+		final int order)
+		throws java.lang.Exception;
 }

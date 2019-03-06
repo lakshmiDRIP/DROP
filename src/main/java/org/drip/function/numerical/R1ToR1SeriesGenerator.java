@@ -1,5 +1,5 @@
 
-package org.drip.function.stirling;
+package org.drip.function.numerical;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,9 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>Factorial</i> implements the Stirling's Approximation of the Factorial Functions. The References are:
+ * <i>R1ToR1SeriesGenerator</i> generates the R<sup>1</sup> To R<sup>1</sup> Expansion Terms in the Ordered
+ * Series of the Numerical Estimate for a Function. The References are:
+ * 
  * <br><br>
  * 	<ul>
  * 		<li>
@@ -94,172 +96,107 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/numerical/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
+public class R1ToR1SeriesGenerator extends org.drip.function.numerical.RxToR1SeriesGenerator
 {
+	private org.drip.function.numerical.R1ToR1SeriesTerm _r1ToR1SeriesTerm = null;
 
 	/**
-	 * Factorial Constructor
+	 * R1ToR1SeriesGenerator Constructor
 	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public Factorial (
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-	}
-
-	/**
-	 * Compute the de-Moivre Term
-	 * 
-	 * @param x X
-	 * 
-	 * @return The de-Moivre Term
+	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * @param proportional TRUE - The Expansion Term is Proportional
+	 * @param termWeightMap Error Term Weight Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double deMoivreTerm (
-		final double x)
+	public R1ToR1SeriesGenerator (
+		final org.drip.function.numerical.R1ToR1SeriesTerm r1ToR1SeriesTerm,
+		final boolean proportional,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
-		{
-			throw new java.lang.Exception ("Stirling::deMoivreTerm => Invalid Inputs");
-		}
-
-		return java.lang.Math.exp (-x) * java.lang.Math.pow (
-			x,
-			x + 0.5
+		super (
+			proportional,
+			termWeightMap
 		);
-	}
 
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate estimate (
-		final double x)
-	{
-		try
+		if (null == (_r1ToR1SeriesTerm = r1ToR1SeriesTerm))
 		{
-			double deMoivreTerm = deMoivreTerm (x);
-
-			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
-
-			return new org.drip.function.numerical.R1Estimate (
-				estimate,
-				estimate,
-				java.lang.Math.E * deMoivreTerm
-			);
+			throw new java.lang.Exception ("R1ToR1SeriesGenerator Constructor => Invalid Inputs");
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	/**
-	 * Compute the Bounded Function Estimates along with the First Order Laplace Correction
+	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
 	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Function Estimates along with the First Order Laplace Correction
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
 	 */
 
-	public org.drip.function.numerical.R1Estimate laplaceCorrectionEstimate (
-		final double x)
+	public org.drip.function.numerical.R1ToR1SeriesTerm r1ToR1SeriesTerm()
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
-
-		try
-		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),
-					true,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _r1ToR1SeriesTerm;
 	}
 
 	/**
-	 * Compute the Bounded Function Estimates along with the Higher Order Nemes Correction
+	 * Generate the R<sup>1</sup> To R<sup>1</sup> Series Expansion using the Term
 	 * 
+	 * @param zeroOrder The Zero Order Estimate
 	 * @param x X
 	 * 
-	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Series Expansion
 	 */
 
-	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> generate (
+		final double zeroOrder, 
 		final double x)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+		if (!org.drip.quant.common.NumberUtil.IsValid (zeroOrder))
+		{
+			return null;
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> seriesExpansionMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = termWeightMap();
 
-		termWeightMap.put (
-			2,
-			1. / 288.
-		);
-
-		termWeightMap.put (
-			3,
-			-139. / 51840.
-		);
-
-		termWeightMap.put (
-			4,
-			-571. / 2488320.
-		);
-
-		try
+		if (null == termWeightMap || 0 == termWeightMap.size())
 		{
-			return correctionEstimate (
-				x,
-				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),
-					true,
-					termWeightMap
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			return seriesExpansionMap;
 		}
 
-		return null;
+		double scale = proportional() ? zeroOrder : 1.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			termWeightMap.entrySet())
+		{
+			int order = termWeightEntry.getKey();
+
+			try
+			{
+				seriesExpansionMap.put (
+					order,
+					scale * termWeightEntry.getValue() * _r1ToR1SeriesTerm.value (
+						order,
+						x
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return seriesExpansionMap;
 	}
 }

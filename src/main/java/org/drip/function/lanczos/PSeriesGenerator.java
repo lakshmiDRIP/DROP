@@ -100,27 +100,105 @@ package org.drip.function.lanczos;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PSeriesGenerator extends org.drip.function.numerical.ExpansionSeriesGenerator
+public class PSeriesGenerator extends org.drip.function.numerical.R0ToR1SeriesGenerator
 {
+	private double[][] _chebyshevCoefficientMatrix = null;
+
+	/**
+	 * Construct a Standard Instance of the Lanczos P Series Generator
+	 * 
+	 * @param g Lanczos g Control
+	 * @param termCount Lanczos Series Term Count
+	 * 
+	 * @return Standard Instance of the Lanczos P Series Generator
+	 */
+
+	public static final PSeriesGenerator Standard (
+		final int g,
+		final int termCount)
+	{
+		double[][] chebyshevCoefficientMatrix = org.drip.function.lanczos.ChebyshevCoefficientMatrix.Rollout
+			(2 * termCount);
+
+		if (null == chebyshevCoefficientMatrix)
+		{
+			return null;
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> chebyshevCoefficientWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		double sqrt2OverPI = java.lang.Math.sqrt (2.) / java.lang.Math.PI;
+
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		{
+			chebyshevCoefficientWeightMap.put (
+				termIndex,
+				sqrt2OverPI * chebyshevCoefficientMatrix[2 * termCount][2 * termIndex]
+			);
+		}
+
+		try
+		{
+			return new PSeriesGenerator (
+				new org.drip.function.lanczos.PSeriesTerm (g),
+				chebyshevCoefficientWeightMap,
+				chebyshevCoefficientMatrix
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * PSeriesGenerator Constructor
 	 * 
 	 * @param pSeriesTerm Lanczos P Series Term
 	 * @param chebyshevCoefficientWeightMap Chebyshev Coefficient Term Weight Map
+	 * @param chebyshevCoefficientMatrix Chebyshev Coefficient Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PSeriesGenerator (
 		final org.drip.function.lanczos.PSeriesTerm pSeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> chebyshevCoefficientWeightMap)
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> chebyshevCoefficientWeightMap,
+		final double[][] chebyshevCoefficientMatrix)
 		throws java.lang.Exception
 	{
 		super (
 			pSeriesTerm,
 			false,
-			chebyshevCoefficientWeightMap
+			chebyshevCoefficientWeightMap,
+			true
 		);
+
+		_chebyshevCoefficientMatrix = chebyshevCoefficientMatrix;
+	}
+
+	/**
+	 * Retrieve the Chebyshev Coefficient Matrix
+	 * 
+	 * @return The Chebyshev Coefficient Matrix
+	 */
+
+	public double[][] _chebyshevCoefficientMatrix()
+	{
+		return _chebyshevCoefficientMatrix;
+	}
+
+	/**
+	 * Retrieve the Series Term Count
+	 * 
+	 * @return The Series Term Count
+	 */
+
+	public int termCount()
+	{
+		return _chebyshevCoefficientMatrix.length;
 	}
 }

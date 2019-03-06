@@ -614,7 +614,7 @@ public class NumberUtil {
 
 		double halfDownShiftedFactorial = -2. * java.lang.Math.sqrt (java.lang.Math.PI);
 
-		for (double index = 0; index < n; ++index)
+		for (double index = 1; index < n; ++index)
 		{
 			halfDownShiftedFactorial = halfDownShiftedFactorial * (index - 0.5);
 		}

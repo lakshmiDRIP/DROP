@@ -153,7 +153,7 @@ public abstract class R1ToR1Estimator extends org.drip.function.definition.R1ToR
 	public org.drip.function.numerical.R1Estimate correctionEstimate (
 		final double x,
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
-		final org.drip.function.numerical.ExpansionSeriesGenerator errorSeriesGenerator)
+		final org.drip.function.numerical.R1ToR1SeriesGenerator errorSeriesGenerator)
 	{
 		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
 

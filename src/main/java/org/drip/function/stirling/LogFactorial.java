@@ -185,8 +185,8 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 			return correctionEstimate (
 				x,
 				termWeightMap,
-				new org.drip.function.numerical.ExpansionSeriesGenerator (
-					org.drip.function.numerical.ExpansionSeriesTerm.Asymptotic(),
+				new org.drip.function.numerical.R1ToR1SeriesGenerator (
+					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),
 					false,
 					termWeightMap
 				)

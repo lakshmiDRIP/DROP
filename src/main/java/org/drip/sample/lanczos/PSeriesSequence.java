@@ -1,5 +1,11 @@
 
-package org.drip.function.lanczos;
+package org.drip.sample.lanczos;
+
+import java.util.Map;
+
+import org.drip.function.lanczos.PSeriesGenerator;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +70,8 @@ package org.drip.function.lanczos;
  */
 
 /**
- * <i>PSeriesTerm</i> holds a Single Term of the Lanczos P Series. The References are:
+ * <i>PSeriesSequence</i> illustrates the Generation of the Lanczos P Series for different Values of the g
+ * Control. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -93,62 +100,85 @@ package org.drip.function.lanczos;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/lanczos/README.md">Lanczos Gamma Calculation Scheme Illustration</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PSeriesTerm implements org.drip.function.numerical.R0ToR1SeriesTerm
+public class PSeriesSequence
 {
-	private int _g = -1;
 
-	/**
-	 * PSeriesTerm Constructor
-	 * 
-	 * @param g Lanczos g Control
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public PSeriesTerm (
-		final int g)
-		throws java.lang.Exception
+	private static final void DisplaySeries (
+		final int g,
+		final Map<Integer, Double> orderedSeries)
+		throws Exception
 	{
-		if (0 >= (_g = g))
+		String series = "\t|" + FormatUtil.FormatDouble (g, 2, 0, 1.) + " => ";
+
+		for (Map.Entry<Integer, Double> seriesEntry : orderedSeries.entrySet())
 		{
-			throw new java.lang.Exception ("PSeriesTerm Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve Lanczos g Control
-	 * 
-	 * @return The Lanczos g Control
-	 */
-
-	public int g()
-	{
-		return _g;
-	}
-
-	@Override public double value (
-		final int order)
-		throws java.lang.Exception
-	{
-		if (0 > order)
-		{
-			throw new java.lang.Exception ("PSeriesTerm::value => Invalid Inputs");
+			series = series + " " + FormatUtil.FormatDouble (seriesEntry.getValue(), 8, 0, 1.) + " |";
 		}
 
-		double aPlusGPlusHalf = 0.5 + order + _g;
+		System.out.println (series + "|");
+	}
 
-		return org.drip.quant.common.NumberUtil.HalfDownShiftedFactorial (order) *
-			java.lang.Math.pow (
-				aPlusGPlusHalf,
-				-0.5 - order
-			) *
-			java.lang.Math.exp (aPlusGPlusHalf);
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int termCount = 10;
+		int[] gArray = 
+		{
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9,
+			10
+		};
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t|                                                            P-SERIES SEQUENCE                                                             ||");
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t|        L -> R:                                                                                                                           ||");
+
+		System.out.println
+			("\t|                - g                                                                                                                       ||");
+
+		System.out.println
+			("\t|                - P Series Coefficients                                                                                                   ||");
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		for (int g : gArray)
+		{
+			DisplaySeries (
+				g,
+				PSeriesGenerator.Standard (
+					g,
+					termCount
+				).generate (0.)
+			);
+		}
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

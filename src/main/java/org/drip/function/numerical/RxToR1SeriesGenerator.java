@@ -64,8 +64,8 @@ package org.drip.function.numerical;
  */
 
 /**
- * <i>ExpansionSeriesTerm</i> computes the Expansion Series Term in the Ordered Series of the Numerical
- * Estimate for a Function. The References are:
+ * <i>RxToR1SeriesGenerator</i> generates the R<sup>x</sup> To R<sup>1</sup> Expansion Terms in the Ordered
+ * Series of the Numerical Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,111 +102,39 @@ package org.drip.function.numerical;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpansionSeriesTerm
+public class RxToR1SeriesGenerator
 {
+	private boolean _proportional = false;
+	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
 
-	/**
-	 * Construct the Asymptotic Expansion Series Term
-	 * 
-	 * @return The Asymptotic Expansion Series Term
-	 */
-
-	public static final ExpansionSeriesTerm Asymptotic()
+	protected RxToR1SeriesGenerator (
+		final boolean proportional,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 	{
-		return new ExpansionSeriesTerm()
-		{
-			@Override public double value (
-				final int order,
-				final double x)
-				throws java.lang.Exception
-			{
-				if (0 >= order ||
-					!org.drip.quant.common.NumberUtil.IsValid (x) || 0. == x)
-				{
-					throw new java.lang.Exception
-						("Asymptotic::ExpansionSeriesTerm::value => Invalid Inputs");
-				}
-
-				return java.lang.Math.pow (
-					x,
-					-1. * order
-				);
-			}
-		};
+		_proportional = proportional;
+		_termWeightMap = termWeightMap;
 	}
 
 	/**
-	 * Construct the Inverted Rising Exponential Expansion Series Term
+	 * Indicate if the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
 	 * 
-	 * @return The Inverted Rising Exponential Expansion Series Term
+	 * @return TRUE - The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
 	 */
 
-	public static final ExpansionSeriesTerm InvertedRisingExponential()
+	public boolean proportional()
 	{
-		return new ExpansionSeriesTerm()
-		{
-			@Override public double value (
-				final int order,
-				final double x)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (x))
-				{
-					throw new java.lang.Exception
-						("InvertedRisingExponential::ExpansionSeriesTerm::evaluate => Invalid Inputs");
-				}
-
-				double risingExponential = 1.;
-
-				for (int orderIndex = 1; orderIndex <= order; ++orderIndex)
-				{
-					risingExponential = risingExponential * (x + orderIndex);
-				}
-
-				if (0. == risingExponential)
-				{
-					throw new java.lang.Exception
-						("InvertedRisingExponential::ExpansionSeriesTerm::evaluate => Invalid Inputs");
-				}
-
-				return 1. / risingExponential;
-			}
-		};
+		return _proportional;
 	}
 
 	/**
-	 * Empty ErrorTerm Constructor
+	 * Retrieve the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
+	 * 
+	 * @return The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
 	 */
 
-	public ExpansionSeriesTerm()
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
 	{
+		return _termWeightMap;
 	}
 
-	/**
-	 * Compute the Value of the Error Term
-	 * 
-	 * @param order Order of the Error Term
-	 * @param x X
-	 * 
-	 * @return The Value of the Error Term
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double value (
-		final int order,
-		final double x)
-		throws java.lang.Exception
-	{
-		if (0 >= order ||
-			!org.drip.quant.common.NumberUtil.IsValid (x))
-		{
-			throw new java.lang.Exception ("ErrorTerm::value => Invalid Inputs");
-		}
-
-		return 0. == x ? 0. : java.lang.Math.pow (
-			x,
-			order
-		);
-	}
 }

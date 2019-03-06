@@ -115,16 +115,16 @@ public class ChebyshevCoefficientMatrix
 	public static final double[][] Rollout (
 		final int size)
 	{
-		if (3 >= size)
+		if (2 >= size)
 		{
 			return null;
 		}
 
-		double[][] coefficientMatrix = new double[size][size];
+		double[][] coefficientMatrix = new double[size + 1][size + 1];
 
-		for (int indexJ = 0; indexJ < size; ++indexJ)
+		for (int indexJ = 0; indexJ <= size; ++indexJ)
 		{
-			for (int indexI = 0; indexI < size; ++indexI)
+			for (int indexI = 0; indexI <= size; ++indexI)
 			{
 				coefficientMatrix[indexI][indexJ] = 0.;
 			}
@@ -133,15 +133,15 @@ public class ChebyshevCoefficientMatrix
 		coefficientMatrix[0][0] = 1.;
 		coefficientMatrix[1][1] = 1.;
 
-		for (int index = 2; index < size; ++index)
+		for (int index = 2; index <= size; ++index)
 		{
 			coefficientMatrix[index][0] = -1. * coefficientMatrix[index - 2][0];
 			coefficientMatrix[index][index] = 2. * coefficientMatrix[index - 1][index - 1];
 		}
 
-		for (int indexJ = 1; indexJ < size; ++indexJ)
+		for (int indexJ = 1; indexJ <= size; ++indexJ)
 		{
-			for (int indexI = indexJ + 1; indexI < size; ++indexI)
+			for (int indexI = indexJ + 1; indexI <= size; ++indexI)
 			{
 				coefficientMatrix[indexI][indexJ] = 2. * coefficientMatrix[indexI - 1][indexJ - 1] -
 					coefficientMatrix[indexI - 2][indexJ];
