@@ -199,4 +199,40 @@ public class R1ToR1SeriesGenerator extends org.drip.function.numerical.RxToR1Ser
 
 		return seriesExpansionMap;
 	}
+
+	/**
+	 * Compute the Cumulative Series Value
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * 
+	 * @return The Cumulative Series Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double cumulative (
+		final double zeroOrder, 
+		final double x)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> seriesMap = generate (
+			zeroOrder, 
+			x
+		);
+
+		if (null == seriesMap)
+		{
+			throw new java.lang.Exception ("R1ToR1SeriesGenerator::cumulative => Invalid Inputs");
+		}
+
+		double cumulative = 0.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> seriesEntry : seriesMap.entrySet())
+		{
+			cumulative = cumulative + seriesEntry.getValue();
+		}
+
+		return cumulative;
+	}
 }

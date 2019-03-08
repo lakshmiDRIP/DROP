@@ -11,7 +11,7 @@ Model Validation Library contains Statistical Hypotheses Validation and Testing 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidation_v4.07.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation/ModelValidationAnalytics_v4.11.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/ModelValidation) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -76,6 +76,28 @@ Model Validation Library contains Statistical Hypotheses Validation and Testing 
  * Lanczos Approximation
 	* Introduction
 	* Coefficients
+	* References
+ * Error Function
+	* Introduction and Overview
+	* Name
+	* Applications
+	* Properties
+	* Taylor Series
+	* Derivative and Integral
+	* Burmann Series
+	* Inverse Functions
+	* Asymptotic Expansion
+	* Continued Fraction Expansion
+	* Integral of Error Function with Gaussian Density Function
+	* Factorial Series
+	* Numerical Approximations – Approximation with Elementary Functions
+	* Polynomial
+	* Table of Values
+	* Related Functions – Complementary Error Function
+	* Imaginary Error Function
+	* Cumulative Distribution Function
+	* Generalized Error Functions
+	* Iterated Integrals of the Complementary Error Function
 	* References
  * Basel III Framework for Backtesting Exposure Models
 	* Abstract

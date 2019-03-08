@@ -174,6 +174,23 @@ public class NormalQuadrature {
     } 
 
     /**
+     * Compute the Probit of the Distribution up to the specified p
+     * 
+     * @param p p
+     * 
+     * @return The Probit of the Distribution up to the specified p
+     * 
+     * @throws java.lang.Exception Thrown if Inputs are Invalid
+     */
+
+    public static final double Probit (
+    	final double p)
+    	throws java.lang.Exception
+    {
+        return InverseCDF (p);
+    } 
+
+    /**
      * Generate a Random Univariate Number following a Gaussian Distribution
      * 
      * @return The Random Univariate Number
@@ -197,10 +214,27 @@ public class NormalQuadrature {
      * @throws java.lang.Exception Thrown if the Inputs are Invalid
      */
 
-    public static final double ErrorFunction (
+    public static final double ERF (
     	final double x)
     	throws java.lang.Exception
 	{
     	return 2. * CDF (x * java.lang.Math.sqrt (2.)) - 1.;
+	}
+
+    /**
+     * Compute the Error Function Complement of x
+     * 
+     * @param x x
+     * 
+     * @return The Error Function Complement of x
+     * 
+     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     */
+
+    public static final double ERFC (
+    	final double x)
+    	throws java.lang.Exception
+	{
+    	return 2. * CDF (1. - x * java.lang.Math.sqrt (2.));
 	}
 }

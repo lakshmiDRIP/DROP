@@ -612,11 +612,11 @@ public class NumberUtil {
 			throw new java.lang.Exception ("NumberUtil::HalfDownShiftedFactorial => Invalid Inputs");
 		}
 
-		double halfDownShiftedFactorial = -2. * java.lang.Math.sqrt (java.lang.Math.PI);
+		double halfDownShiftedFactorial = java.lang.Math.sqrt (java.lang.Math.PI);
 
 		for (double index = 1; index < n; ++index)
 		{
-			halfDownShiftedFactorial = halfDownShiftedFactorial * (index - 0.5);
+			halfDownShiftedFactorial = halfDownShiftedFactorial * (index + 0.5);
 		}
 
 		return halfDownShiftedFactorial;

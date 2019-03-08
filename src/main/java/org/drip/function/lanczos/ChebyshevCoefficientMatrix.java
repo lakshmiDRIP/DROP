@@ -115,7 +115,7 @@ public class ChebyshevCoefficientMatrix
 	public static final double[][] Rollout (
 		final int size)
 	{
-		if (2 >= size)
+		if (0 > size)
 		{
 			return null;
 		}
@@ -131,7 +131,18 @@ public class ChebyshevCoefficientMatrix
 		}
 
 		coefficientMatrix[0][0] = 1.;
+
+		if (0 == size)
+		{
+			return coefficientMatrix;
+		}
+
 		coefficientMatrix[1][1] = 1.;
+
+		if (1 == size)
+		{
+			return coefficientMatrix;
+		}
 
 		for (int index = 2; index <= size; ++index)
 		{
