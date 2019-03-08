@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RaabeLogGamma extends org.drip.function.definition.R1ToR1NumericalEstimator
+public class RaabeLogGamma extends org.drip.function.numerical.R1ToR1Estimator
 {
 
 	/**
@@ -137,34 +137,50 @@ public class RaabeLogGamma extends org.drip.function.definition.R1ToR1NumericalE
 	 * @return The Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
 	 */
 
-	public org.drip.function.definition.R1NumericalEstimate invertedRisingExponentialEstimate (
+	public org.drip.function.numerical.R1Estimate invertedRisingExponentialCorrectionEstimate (
 		final double x)
 	{
-<span class="nc" id="L143">		org.drip.function.definition.R1NumericalEstimate r1NumericalEstimate = estimate (x);</span>
+<span class="nc" id="L143">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == r1NumericalEstimate)</span>
+<span class="nc" id="L146">		termWeightMap.put (</span>
+<span class="nc" id="L147">			1,</span>
+<span class="nc" id="L148">			1. / 12.</span>
+		);
+
+<span class="nc" id="L151">		termWeightMap.put (</span>
+<span class="nc" id="L152">			2,</span>
+<span class="nc" id="L153">			1. / 12.</span>
+		);
+
+<span class="nc" id="L156">		termWeightMap.put (</span>
+<span class="nc" id="L157">			3,</span>
+<span class="nc" id="L158">			59. / 360.</span>
+		);
+
+<span class="nc" id="L161">		termWeightMap.put (</span>
+<span class="nc" id="L162">			4,</span>
+<span class="nc" id="L163">			29. / 60.</span>
+		);
+
+		try
 		{
-<span class="nc" id="L147">			return null;</span>
+<span class="nc" id="L168">			return correctionEstimate (</span>
+				x,
+				termWeightMap,
+				new org.drip.function.numerical.R1ToR1SeriesGenerator (
+<span class="nc" id="L172">					org.drip.function.numerical.R1ToR1SeriesTerm.InvertedRisingExponential(),</span>
+					false,
+					termWeightMap
+				)
+			);
+		}
+<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L180">			e.printStackTrace();</span>
 		}
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (0. &gt;= x)</span>
-		{
-<span class="nc" id="L152">			return r1NumericalEstimate;</span>
-		}
-
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		return !r1NumericalEstimate.addCorrection (</span>
-			1,
-			1. / (12. * (x + 1.))
-<span class="nc bnc" id="L158" title="All 2 branches missed.">		) || !r1NumericalEstimate.addCorrection (</span>
-			2,
-			1. / (12. * (x + 1.) * (x + 2.))
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		) || !r1NumericalEstimate.addCorrection (</span>
-			3,
-			59. / (360. * (x + 1.) * (x + 2.) * (x + 3.))
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		) || !r1NumericalEstimate.addCorrection (</span>
-			4,
-			29. / (60. * (x + 1.) * (x + 2.) * (x + 3.) * (x + 4.))
-		) ? null : r1NumericalEstimate;
+<span class="nc" id="L183">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

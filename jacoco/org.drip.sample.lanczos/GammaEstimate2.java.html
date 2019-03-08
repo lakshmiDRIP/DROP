@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GammaEstimate2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.lanczos</a> &gt; <span class="el_source">GammaEstimate2.java</span></div><h1>GammaEstimate2.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.lanczos;
+
+import org.drip.function.lanczos.ASeriesGenerator;
+import org.drip.function.lanczos.Gamma;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;GammaEstimate2&lt;/i&gt; illustrates the Generation of the Estimate for the Gamma Function under the Lanczos
+ * Scheme. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Godfrey, P. (2001): Lanczos Implementation of the Gamma Function
+ * 				http://www.numericana.com/answer/info/godfrey.htm
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): &lt;i&gt;Numerical Recipes:
+ * 				The Art of Scientific Computing 3rd Edition&lt;/i&gt; &lt;b&gt;Cambridge University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Pugh, G. R. (2004): &lt;i&gt;An Analysis of the Lanczos Gamma Approximation&lt;/i&gt; Ph. D. &lt;b&gt;University of
+ * 				British Columbia&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
+ * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/lanczos/README.md&quot;&gt;Lanczos Gamma Calculation Scheme Illustration&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L109">public class GammaEstimate2</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L116">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L118">		double z = 2.;</span>
+<span class="nc" id="L119">		int[] termCountArray =</span>
+		{
+			3,
+			5,
+			7,
+			9,
+			11,
+			13,
+			15,
+			17,
+			19
+		};
+<span class="nc" id="L131">		int[] gArray = </span>
+		{
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9,
+			10
+		};
+
+<span class="nc" id="L143">		System.out.println (&quot;\t|------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L145">		System.out.println (&quot;\t|                  LANCZOS BASED GAMMA FUNCTION APPROXIMATION                  ||&quot;);</span>
+
+<span class="nc" id="L147">		System.out.println (&quot;\t|------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L149">		System.out.println (&quot;\t|        L -&gt; R:                                                               ||&quot;);</span>
+
+<span class="nc" id="L151">		System.out.println (&quot;\t|                - Term Count                                                  ||&quot;);</span>
+
+<span class="nc" id="L153">		System.out.println (&quot;\t|                - Gamma Value for g = 3 -&gt; 10                                 ||&quot;);</span>
+
+<span class="nc" id="L155">		System.out.println (&quot;\t|------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		for (int termCount : termCountArray)</span>
+		{
+<span class="nc" id="L159">			String display = &quot;\t|&quot; + FormatUtil.FormatDouble (termCount, 2, 0, 1.) + &quot; =&gt; &quot;;</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">			for (int g : gArray)</span>
+			{
+<span class="nc" id="L163">				Gamma gammaFunction = new Gamma (</span>
+<span class="nc" id="L164">					ASeriesGenerator.Standard (</span>
+						g,
+						termCount
+					),
+					null
+				);
+
+<span class="nc" id="L171">				display = display + FormatUtil.FormatDouble (gammaFunction.evaluate (z), 3, 2, 1.) + &quot; |&quot;;</span>
+			}
+
+<span class="nc" id="L174">			System.out.println (display + &quot;|&quot;);</span>
+		}
+
+<span class="nc" id="L177">		System.out.println (&quot;\t|------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L179">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L180">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
