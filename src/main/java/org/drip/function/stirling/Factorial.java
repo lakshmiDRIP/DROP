@@ -147,7 +147,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate estimate (
+	@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
 		final double x)
 	{
 		try
@@ -191,7 +191,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 
 		try
 		{
-			return correctionEstimate (
+			return seriesEstimate (
 				x,
 				termWeightMap,
 				new org.drip.function.numerical.R1ToR1SeriesGenerator (
@@ -245,7 +245,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 
 		try
 		{
-			return correctionEstimate (
+			return seriesEstimate (
 				x,
 				termWeightMap,
 				new org.drip.function.numerical.R1ToR1SeriesGenerator (

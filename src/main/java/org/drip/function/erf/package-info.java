@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.function.errorfunction;
+package org.drip.function.erf;

@@ -135,7 +135,7 @@ public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
 		);
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate estimate (
+	@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
 		final double x)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)

@@ -103,28 +103,28 @@ package org.drip.function.numerical;
 
 public class R1Estimate
 {
-	private double _zeroOrder = java.lang.Double.NaN;
+	private double _baseline = java.lang.Double.NaN;
 	private double _lowerBound = java.lang.Double.NaN;
 	private double _upperBound = java.lang.Double.NaN;
 
-	private java.util.Map<java.lang.Integer, java.lang.Double> _orderedCorrectionMap = new
+	private java.util.Map<java.lang.Integer, java.lang.Double> _orderedSeriesMap = new
 		java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
 	/**
-	 * Construct a Zero Order Version without Bounds
+	 * Construct a Base Line Version without Bounds
 	 * 
-	 * @param zeroOrder The Zero Order Numerical Estimate
+	 * @param baseline The Base Line Numerical Estimate
 	 * 
-	 * @return The Zero Order Version without Bounds
+	 * @return The Base Line Version without Bounds
 	 */
 
-	public static final R1Estimate ZeroOrderOnly (
-		final double zeroOrder)
+	public static final R1Estimate BaselineOnly (
+		final double baseline)
 	{
 		try
 		{
 			return new R1Estimate (
-				zeroOrder,
+				baseline,
 				java.lang.Double.NaN,
 				java.lang.Double.NaN
 			);
@@ -140,7 +140,7 @@ public class R1Estimate
 	/**
 	 * R1Estimate Constructor
 	 * 
-	 * @param zeroOrder The Zero Order Estimate
+	 * @param baseline The Base Line Estimate
 	 * @param lowerBound The Lower Bound
 	 * @param upperBound The Upper Bound
 	 * 
@@ -148,12 +148,12 @@ public class R1Estimate
 	 */
 
 	public R1Estimate (
-		final double zeroOrder,
+		final double baseline,
 		final double lowerBound,
 		final double upperBound)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_zeroOrder = zeroOrder))
+		if (!org.drip.quant.common.NumberUtil.IsValid (_baseline = baseline))
 		{
 			throw new java.lang.Exception ("R1Estimate Constructor => Invalid Inputs");
 		}
@@ -163,14 +163,14 @@ public class R1Estimate
 	}
 
 	/**
-	 * Retrieve the Zero Order Numerical Estimate
+	 * Retrieve the Base Line Numerical Estimate
 	 * 
-	 * @return The Zero Order Numerical Estimate
+	 * @return The Base Line Numerical Estimate
 	 */
 
-	public double zeroOrder()
+	public double baseline()
 	{
-		return _zeroOrder;
+		return _baseline;
 	}
 
 	/**
@@ -196,67 +196,66 @@ public class R1Estimate
 	}
 
 	/**
-	 * Retrieve the Higher Order Correction Map
+	 * Retrieve the Higher Order Series Map
 	 * 
-	 * @return The Higher Order Correction Map
+	 * @return The Higher Order Series Map
 	 */
 
-	public java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrectionMap()
+	public java.util.Map<java.lang.Integer, java.lang.Double> orderedSeriesMap()
 	{
-		return _orderedCorrectionMap;
+		return _orderedSeriesMap;
 	}
 
 	/**
-	 * Add the Ordered Correction Map
+	 * Add the Ordered Series Map
 	 * 
-	 * @param orderedCorrectionMap The Ordered Correction Map
+	 * @param orderedSeriesMap The Ordered Series Map
 	 * 
-	 * @return TRUE - The Ordered Correction Map successfully added
+	 * @return TRUE - The Ordered Series Map successfully added
 	 */
 
-	public boolean addOrderedCorrectionMap (
-		final java.util.Map<java.lang.Integer, java.lang.Double> orderedCorrectionMap)
+	public boolean addOrderedSeriesMap (
+		final java.util.Map<java.lang.Integer, java.lang.Double> orderedSeriesMap)
 	{
-		if (null == orderedCorrectionMap)
+		if (null == orderedSeriesMap)
 		{
 			return false;
 		}
 
-		_orderedCorrectionMap = orderedCorrectionMap;
+		_orderedSeriesMap = orderedSeriesMap;
 		return true;
 	}
 
 	/**
-	 * Retrieve the Correction corresponding to the Specified Order
+	 * Retrieve the Series corresponding to the Specified Order
 	 * 
-	 * @param correctionOrder The Order
+	 * @param order The Series Order
 	 * 
-	 * @return The Correction corresponding to the Specified Order
+	 * @return The Series corresponding to the Specified Order
 	 */
 
-	public double orderCorrection (
-		final int correctionOrder)
+	public double orderSeries (
+		final int order)
 	{
-		return _orderedCorrectionMap.containsKey (correctionOrder) ? _orderedCorrectionMap.get
-			(correctionOrder) : 0.;
+		return _orderedSeriesMap.containsKey (order) ? _orderedSeriesMap.get (order) : 0.;
 	}
 
 	/**
-	 * Compute the Total Correction
+	 * Compute the Series Cumulative
 	 * 
-	 * @return The Total Correction
+	 * @return The Series Cumulative
 	 */
 
-	public double correction()
+	public double seriesCumulative()
 	{
-		double correction = 0.;
+		double seriesCumulative = 0.;
 
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> orderedCorrectionEntry :
-			_orderedCorrectionMap.entrySet())
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> orderedSeriesEntry :
+			_orderedSeriesMap.entrySet())
 		{
-			correction = correction + orderedCorrectionEntry.getValue();
+			seriesCumulative = seriesCumulative + orderedSeriesEntry.getValue();
 		}
 
-		return correction;
+		return seriesCumulative;
 	}
 }

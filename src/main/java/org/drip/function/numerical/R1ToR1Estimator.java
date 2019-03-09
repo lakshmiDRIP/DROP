@@ -125,12 +125,12 @@ public abstract class R1ToR1Estimator extends org.drip.function.definition.R1ToR
 	 * @return The Bounded Numerical Approximation
 	 */
 
-	public org.drip.function.numerical.R1Estimate estimate (
+	public org.drip.function.numerical.R1Estimate boundedEstimate (
 		final double x)
 	{
 		try
 		{
-			return org.drip.function.numerical.R1Estimate.ZeroOrderOnly (evaluate (x));
+			return org.drip.function.numerical.R1Estimate.BaselineOnly (evaluate (x));
 		}
 		catch (java.lang.Exception e)
 		{
@@ -141,34 +141,52 @@ public abstract class R1ToR1Estimator extends org.drip.function.definition.R1ToR
 	}
 
 	/**
-	 * Compute the Higher Order Error Correction Estimates
+	 * Compute the Higher Order Series Estimates
 	 * 
 	 * @param x X
 	 * @param termWeightMap Error Term Weight Map
-	 * @param errorSeriesGenerator Error Series Generator
+	 * @param r1ToR1SeriesGenerator R<sup>1</sup> To R<sup>1</sup> Series Generator
 	 * 
-	 * @return The Higher Order Error Correction Estimates
+	 * @return The Higher Order Series Estimates
 	 */
 
-	public org.drip.function.numerical.R1Estimate correctionEstimate (
+	public org.drip.function.numerical.R1Estimate seriesEstimate (
 		final double x,
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
-		final org.drip.function.numerical.R1ToR1SeriesGenerator errorSeriesGenerator)
+		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator)
 	{
-		org.drip.function.numerical.R1Estimate r1NumericalEstimate = estimate (x);
+		org.drip.function.numerical.R1Estimate r1NumericalEstimate = boundedEstimate (x);
 
 		if (null == r1NumericalEstimate ||
 			null == termWeightMap || 0 == termWeightMap.size() ||
-			null == errorSeriesGenerator)
+			null == r1ToR1SeriesGenerator)
 		{
 			return r1NumericalEstimate;
 		}
 
-		return r1NumericalEstimate.addOrderedCorrectionMap (
-			errorSeriesGenerator.generate (
-				r1NumericalEstimate.zeroOrder(),
+		return r1NumericalEstimate.addOrderedSeriesMap (
+			r1ToR1SeriesGenerator.generate (
+				r1NumericalEstimate.baseline(),
 				x
 			)
 		) ? r1NumericalEstimate : null;
+	}
+
+	/**
+	 * Compute the Built-in Higher Order Series Estimates
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Built-in Higher Order Series Estimates
+	 */
+
+	public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return seriesEstimate (
+			x,
+			null,
+			null
+		);
 	}
 }

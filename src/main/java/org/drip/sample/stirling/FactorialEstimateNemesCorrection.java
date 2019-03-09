@@ -146,9 +146,9 @@ public class FactorialEstimateNemesCorrection
 			R1Estimate numericalApproximation = stirlingFactorial.nemesCorrectionEstimate
 				(factorialIndex);
 
-			double zeroOrder = numericalApproximation.zeroOrder();
+			double zeroOrder = numericalApproximation.baseline();
 
-			double totalCorrection = numericalApproximation.correction();
+			double totalCorrection = numericalApproximation.seriesCumulative();
 
 			System.out.println (
 				"\t| " + factorialIndex + " => " +
@@ -188,13 +188,13 @@ public class FactorialEstimateNemesCorrection
 			R1Estimate numericalApproximation = stirlingFactorial.nemesCorrectionEstimate
 				(factorialIndex);
 
-			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
+			double firstOrderCorrection = numericalApproximation.orderSeries (1);
 
-			double secondOrderCorrection = numericalApproximation.orderCorrection (2);
+			double secondOrderCorrection = numericalApproximation.orderSeries (2);
 
-			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);
+			double thirdOrderCorrection = numericalApproximation.orderSeries (3);
 
-			double fourthOrderCorrection = numericalApproximation.orderCorrection (4);
+			double fourthOrderCorrection = numericalApproximation.orderSeries (4);
 
 			double totalCorrection = firstOrderCorrection + secondOrderCorrection + thirdOrderCorrection +
 				fourthOrderCorrection;

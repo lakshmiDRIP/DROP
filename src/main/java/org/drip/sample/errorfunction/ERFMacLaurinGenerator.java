@@ -1,5 +1,10 @@
 
-package org.drip.function.stirling;
+package org.drip.sample.errorfunction;
+
+import java.util.TreeMap;
+
+import org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +69,31 @@ package org.drip.function.stirling;
  */
 
 /**
- * <i>RobbinsFactorial</i> implements the Robbins (1955) Extension of the Stirling's Approximation of the
- * Factorial Functions. The References are:
+ * <i>ERFMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficients for the Error Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error
+ * 				Function <i>IEEE Transactions on Communications</i> <b>59 (11)</b> 2939-2944
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function
+ * 				Routines and Test Drivers <i>ACM Transactions on Mathematical Software</i> <b>19 (1)</b>
+ * 				22-32
  * 		</li>
  * 		<li>
- * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
- * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 			Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of
+ * 				Linear and Non-linear Heat Transfer and Diffusion
+ * 				https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
  * 		</li>
  * 	</ul>
  *
@@ -96,47 +102,33 @@ package org.drip.function.stirling;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md">Stirling Variants Gamma/Factorial Implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RobbinsFactorial extends org.drip.function.stirling.Factorial
+public class ERFMacLaurinGenerator
 {
 
-	/**
-	 * RobbinsFactorial Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public RobbinsFactorial (
-		final org.drip.quant.calculus.DerivativeControl dc)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
-		final double x)
-	{
-		try
+		int termCount = 20;
+
+		ErrorFunctionMacLaurinSeriesGenerator errorFunctionMacLaurinSeriesGenerator =
+			ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
+
+		TreeMap<Integer, Double> termWeightMap = errorFunctionMacLaurinSeriesGenerator.termWeightMap();
+
+		for (int termIndex = 0; termIndex < termCount; ++termIndex)
 		{
-			double deMoivreTerm = deMoivreTerm (x);
-
-			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
-
-			return new org.drip.function.numerical.R1Estimate (
-				estimate,
-				estimate * java.lang.Math.exp (1. / (12. * x + 1.)),
-				estimate * java.lang.Math.exp (1. / (12. * x))
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			System.out.println (termIndex + " => " + termWeightMap.get (termIndex));
 		}
 
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

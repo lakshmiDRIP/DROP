@@ -146,9 +146,9 @@ public class FactorialEstimateLaplaceCorrection
 			R1Estimate numericalApproximation = stirlingFactorial.laplaceCorrectionEstimate
 				(factorialIndex);
 
-			double zeroOrder = numericalApproximation.zeroOrder();
+			double zeroOrder = numericalApproximation.baseline();
 
-			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
+			double firstOrderCorrection = numericalApproximation.orderSeries (1);
 
 			System.out.println (
 				"\t| " + factorialIndex + " => " +

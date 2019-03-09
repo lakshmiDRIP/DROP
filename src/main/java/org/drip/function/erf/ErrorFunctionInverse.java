@@ -1,5 +1,5 @@
 
-package org.drip.function.errorfunction;
+package org.drip.function.erf;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.function.errorfunction;
  */
 
 /**
- * <i>ERF</i> implements the Error Function Term (erf). The References are:
+ * <i>ErrorFunctionInverse</i> implements the Error Function Inverse erf<sup>-1</sup>. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,49 +96,63 @@ package org.drip.function.errorfunction;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Implementation of Error Function Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ERF extends org.drip.function.numerical.R1ToR1SeriesGenerator
+public abstract class ErrorFunctionInverse extends org.drip.function.numerical.R1ToR1Estimator
 {
 
-	protected ERF (
-		final org.drip.function.numerical.R1ToR1SeriesTerm r1ToR1SeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
+	protected ErrorFunctionInverse (
+		final org.drip.quant.calculus.DerivativeControl dc)
 		throws java.lang.Exception
 	{
-		super (
-			r1ToR1SeriesTerm,
-			false,
-			termWeightMap
-		);
+		super (dc);
 	}
 
 	/**
-	 * Compute the Q Value for the given X
+	 * Compute the Probit Value for the given p
 	 * 
-	 * @param x X
+	 * @param p P
 	 * 
-	 * @return The Q Value for ERF
+	 * @return The Probit Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double q (
-		final double x)
+	public double probit (
+		final double p)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		if (!org.drip.quant.common.NumberUtil.IsValid (p))
 		{
-			throw new java.lang.Exception ("ERF::q => Invalid Inputs");
+			throw new java.lang.Exception ("ErrorFunctionInverse::probit => Invalid Inputs");
 		}
 
-		return 0.5 * (1. - cumulative (
-			0.,
-			x / java.lang.Math.sqrt (x)
-		));
+		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
+	}
+
+	/**
+	 * Compute the Inverse CDF Value for the given p
+	 * 
+	 * @param p P
+	 * 
+	 * @return The Inverse CDF Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double inverseCDF (
+		final double p)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		{
+			throw new java.lang.Exception ("ErrorFunctionInverse::inverseCDF => Invalid Inputs");
+		}
+
+		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
 	}
 }

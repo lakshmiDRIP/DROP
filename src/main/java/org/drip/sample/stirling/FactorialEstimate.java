@@ -141,12 +141,12 @@ public class FactorialEstimate
 
 		for (int factorialIndex = 0; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1Estimate numericalApproximation = stirlingFactorial.estimate (factorialIndex);
+			R1Estimate numericalApproximation = stirlingFactorial.boundedEstimate (factorialIndex);
 
 			System.out.println (
 				"\t| " + factorialIndex + " => " +
 				NumberUtil.Factorial (factorialIndex) + " |" +
-				FormatUtil.FormatDouble (numericalApproximation.zeroOrder() + 0.5, 1, 0, 1.) + " | [" +
+				FormatUtil.FormatDouble (numericalApproximation.baseline() + 0.5, 1, 0, 1.) + " | [" +
 				FormatUtil.FormatDouble (numericalApproximation.lowerBound() + 0.5, 1, 0, 1.) + " -" +
 				FormatUtil.FormatDouble (numericalApproximation.upperBound() + 0.5, 1, 0, 1.) + " ||"
 			);

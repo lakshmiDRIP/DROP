@@ -182,7 +182,7 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 
 		try
 		{
-			return correctionEstimate (
+			return seriesEstimate (
 				x,
 				termWeightMap,
 				new org.drip.function.numerical.R1ToR1SeriesGenerator (

@@ -146,9 +146,9 @@ public class RamanujanLogFactorialCorrection
 			R1Estimate numericalApproximation = ramanujanLogFactorial.correctionEstimate
 				(factorialIndex);
 
-			double zeroOrder = numericalApproximation.zeroOrder();
+			double zeroOrder = numericalApproximation.baseline();
 
-			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);
+			double thirdOrderCorrection = numericalApproximation.orderSeries (3);
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + " => " +

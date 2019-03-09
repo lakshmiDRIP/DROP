@@ -141,12 +141,12 @@ public class RamanujanGammaMorticiBounds
 
 		for (int factorialIndex = 1; factorialIndex <= factorialCount; ++factorialIndex)
 		{
-			R1Estimate numericalApproximation = ramanujanGamma.estimate (factorialIndex);
+			R1Estimate numericalApproximation = ramanujanGamma.boundedEstimate (factorialIndex);
 
 			System.out.println (
 				"\t| " + factorialIndex + " => " +
 				NumberUtil.Factorial (factorialIndex) + " |" +
-				FormatUtil.FormatDouble (numericalApproximation.zeroOrder() + 0.5, 1, 0, 1.) + " | [" +
+				FormatUtil.FormatDouble (numericalApproximation.baseline() + 0.5, 1, 0, 1.) + " | [" +
 				FormatUtil.FormatDouble (numericalApproximation.lowerBound() + 0.5, 1, 0, 1.) + " -" +
 				FormatUtil.FormatDouble (numericalApproximation.upperBound() + 0.5, 1, 0, 1.) + " ||"
 			);

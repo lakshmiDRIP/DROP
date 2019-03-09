@@ -151,7 +151,7 @@ public class RamanujanLogFactorial extends org.drip.function.numerical.R1ToR1Est
 
 		try
 		{
-			return correctionEstimate (
+			return seriesEstimate (
 				x,
 				termWeightMap,
 				new org.drip.function.numerical.R1ToR1SeriesGenerator (

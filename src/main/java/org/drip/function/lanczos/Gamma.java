@@ -159,4 +159,14 @@ public class Gamma extends org.drip.function.numerical.R1ToR1Estimator
 			z
 		);
 	}
+
+	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return seriesEstimate (
+			x,
+			_aSeriesGenerator.termWeightMap(),
+			_aSeriesGenerator
+		);
+	}
 }

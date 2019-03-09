@@ -146,9 +146,9 @@ public class LogFactorialEstimateNemesCorrection
 			R1Estimate numericalApproximation = logFactorial.nemesCorrectionEstimate
 				(factorialIndex);
 
-			double zeroOrder = numericalApproximation.zeroOrder();
+			double zeroOrder = numericalApproximation.baseline();
 
-			double totalCorrection = numericalApproximation.correction();
+			double totalCorrection = numericalApproximation.seriesCumulative();
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + " => " +
@@ -188,13 +188,13 @@ public class LogFactorialEstimateNemesCorrection
 			R1Estimate numericalApproximation = logFactorial.nemesCorrectionEstimate
 				(factorialIndex);
 
-			double firstOrderCorrection = numericalApproximation.orderCorrection (1);
+			double firstOrderCorrection = numericalApproximation.orderSeries (1);
 
-			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);
+			double thirdOrderCorrection = numericalApproximation.orderSeries (3);
 
-			double fifthOrderCorrection = numericalApproximation.orderCorrection (5);
+			double fifthOrderCorrection = numericalApproximation.orderSeries (5);
 
-			double seventhOrderCorrection = numericalApproximation.orderCorrection (7);
+			double seventhOrderCorrection = numericalApproximation.orderSeries (7);
 
 			double totalCorrection = firstOrderCorrection + thirdOrderCorrection + fifthOrderCorrection +
 				seventhOrderCorrection;
