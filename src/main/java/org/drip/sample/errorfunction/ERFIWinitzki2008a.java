@@ -1,5 +1,12 @@
 
-package org.drip.function.erf;
+package org.drip.sample.errorfunction;
+
+import java.util.Map;
+
+import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erfi.ErrorFunctionInverse;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +71,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunction</i> implements the Error Function (erf). The References are:
+ * <i>ERFIWinitzki2008a</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008a)
+ * Analytical Inverse Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,132 +104,61 @@ package org.drip.function.erf;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public class ERFIWinitzki2008a
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
-	/**
-	 * Construct the Euler-MacLaurin Instance of the ErrorFunction
-	 * 
-	 * @param termCount The Count of Approximation Terms
-	 * 
-	 * @return The Euler-MacLaurin Instance of the ErrorFunction
-	 */
-
-	public static final ErrorFunction MacLaurin (
-		final int termCount)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		final org.drip.function.erf.MacLaurinSeriesGenerator
-			errorFunctionMacLaurinSeriesGenerator = org.drip.function.erf.MacLaurinSeriesGenerator.ERF
-				(termCount);
+		EnvManager.InitEnv ("");
 
-		if (null == errorFunctionMacLaurinSeriesGenerator)
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+
+		ErrorFunctionInverse erfiWinitzki = ErrorFunctionInverse.Winitzki2008a();
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|                   Winitzki erfi Estimate                   ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                             ||");
+
+		System.out.println ("\t|                - x                                         ||");
+
+		System.out.println ("\t|                - Built-in Estimate                         ||");
+
+		System.out.println ("\t|                - Winitzki Estimate                         ||");
+
+		System.out.println ("\t|                - Winitzki Error                            ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			return null;
+			double erf = builtInTableEntry.getValue().erf();
+
+			double erfi = builtInTableEntry.getKey();
+
+			double erfiEstimate = erfiWinitzki.evaluate (erf);
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (erf, 1, 9, 1.) + " => " +
+				FormatUtil.FormatDouble (erfi, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfiEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfiEstimate - erfi), 1, 9, 1.) + " ||"
+			);
 		}
 
-		return new ErrorFunction (
-			errorFunctionMacLaurinSeriesGenerator,
-			null
-		)
-		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
-				}
+		System.out.println ("\t|------------------------------------------------------------||");
 
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					errorFunctionMacLaurinSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
-	}
-
-	protected ErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-
-		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
-		final double x)
-	{
-		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1SeriesGenerator.termWeightMap(),
-			_r1ToR1SeriesGenerator
-		);
-	}
-
-	/**
-	 * Compute the Q Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Q Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double q (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. - evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the CDF Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double cdf (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. + evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the erfc Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The erfc Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double erfc (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 1. - evaluate (x);
+		EnvManager.TerminateEnv();
 	}
 }

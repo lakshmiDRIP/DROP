@@ -64,7 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunction</i> implements the Error Function (erf). The References are:
+ * <i>MacLaurinSeriesTerm</i> implements the MacLaurin Series Term. This is used for both erf and erfi. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,126 +103,31 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public class MacLaurinSeriesTerm extends org.drip.function.numerical.R1ToR1SeriesTerm
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Construct the Euler-MacLaurin Instance of the ErrorFunction
-	 * 
-	 * @param termCount The Count of Approximation Terms
-	 * 
-	 * @return The Euler-MacLaurin Instance of the ErrorFunction
+	 * Empty MacLaurinSeriesTerm Constructor
 	 */
 
-	public static final ErrorFunction MacLaurin (
-		final int termCount)
+	public MacLaurinSeriesTerm()
 	{
-		final org.drip.function.erf.MacLaurinSeriesGenerator
-			errorFunctionMacLaurinSeriesGenerator = org.drip.function.erf.MacLaurinSeriesGenerator.ERF
-				(termCount);
+	}
 
-		if (null == errorFunctionMacLaurinSeriesGenerator)
+	@Override public double value (
+		final int order,
+		final double z)
+		throws java.lang.Exception
+	{
+		if (0 > order ||
+			!org.drip.quant.common.NumberUtil.IsValid (z))
 		{
-			return null;
+			throw new java.lang.Exception ("MacLaurinSeriesTerm::value => Invalid Inputs");
 		}
 
-		return new ErrorFunction (
-			errorFunctionMacLaurinSeriesGenerator,
-			null
-		)
-		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
-				}
-
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					errorFunctionMacLaurinSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
-	}
-
-	protected ErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-
-		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
-		final double x)
-	{
-		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1SeriesGenerator.termWeightMap(),
-			_r1ToR1SeriesGenerator
+		return java.lang.Math.pow (
+			z,
+			2 * order + 1
 		);
-	}
-
-	/**
-	 * Compute the Q Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Q Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double q (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. - evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the CDF Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double cdf (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. + evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the erfc Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The erfc Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double erfc (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 1. - evaluate (x);
 	}
 }

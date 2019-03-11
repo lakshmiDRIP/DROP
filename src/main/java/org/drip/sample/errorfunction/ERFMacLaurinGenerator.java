@@ -3,7 +3,7 @@ package org.drip.sample.errorfunction;
 
 import java.util.TreeMap;
 
-import org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator;
+import org.drip.function.erf.MacLaurinSeriesGenerator;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -120,8 +120,8 @@ public class ERFMacLaurinGenerator
 
 		int termCount = 20;
 
-		ErrorFunctionMacLaurinSeriesGenerator errorFunctionMacLaurinSeriesGenerator =
-			ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
+		MacLaurinSeriesGenerator errorFunctionMacLaurinSeriesGenerator = MacLaurinSeriesGenerator.ERF
+			(termCount);
 
 		TreeMap<Integer, Double> termWeightMap = errorFunctionMacLaurinSeriesGenerator.termWeightMap();
 

@@ -64,7 +64,7 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunction</i> implements the Error Function (erf). The References are:
+ * <i>MacLaurinSeriesGenerator</i> implements the MacLaurin Series Term Generator. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,126 +102,96 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public class MacLaurinSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Construct the Euler-MacLaurin Instance of the ErrorFunction
+	 * Generate the ERFI MacLaurin Coefficient corresponding to the specified Series Index
 	 * 
-	 * @param termCount The Count of Approximation Terms
+	 * @param seriesIndex Series Index
 	 * 
-	 * @return The Euler-MacLaurin Instance of the ErrorFunction
+	 * @return The ERFI MacLaurin Coefficient corresponding to the specified Series Index
 	 */
 
-	public static final ErrorFunction MacLaurin (
-		final int termCount)
+	public static final double ERFICoefficient (
+		final int seriesIndex)
 	{
-		final org.drip.function.erf.MacLaurinSeriesGenerator
-			errorFunctionMacLaurinSeriesGenerator = org.drip.function.erf.MacLaurinSeriesGenerator.ERF
-				(termCount);
-
-		if (null == errorFunctionMacLaurinSeriesGenerator)
+		if (0 >= seriesIndex)
 		{
-			return null;
+			return 1.;
 		}
 
-		return new ErrorFunction (
-			errorFunctionMacLaurinSeriesGenerator,
-			null
-		)
+		double seriesIndexLoader = 0.;
+
+		for (int termIndex = 0; termIndex < seriesIndex; ++termIndex)
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
-				}
+			seriesIndexLoader = seriesIndexLoader +
+				ERFICoefficient (termIndex) * ERFICoefficient (seriesIndex - 1 - termIndex)
+				/ ((1. + termIndex) * (1. + 2. * termIndex));
+		}
 
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					errorFunctionMacLaurinSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
+		return seriesIndexLoader;
 	}
 
-	protected ErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
+	/**
+	 * Construct the Error Function MacLaurinSeriesGenerator Error Function Version
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return Error Function MacLaurinSeriesGenerator Version
+	 */
 
-		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
+	public static final MacLaurinSeriesGenerator ERF (
+		final int termCount)
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		double signedInverseFactorial = 1.;
+
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		{
+			signedInverseFactorial = 0 == termIndex ? 1. : signedInverseFactorial * -1. / termIndex;
+
+			termWeightMap.put (
+				termIndex,
+				signedInverseFactorial / (2. * termIndex + 1.)
+			);
+		}
+
+		try
+		{
+			return new MacLaurinSeriesGenerator (
+				new org.drip.function.erf.MacLaurinSeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
-		final double x)
+	/**
+	 * MacLaurinSeriesGenerator Constructor
+	 * 
+	 * @param macLaurinSeriesGenerator MacLaurin Series Term
+	 * @param termWeightMap Series Term Weight Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MacLaurinSeriesGenerator (
+		final org.drip.function.erf.MacLaurinSeriesTerm macLaurinSeriesGenerator,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
+		throws java.lang.Exception
 	{
-		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1SeriesGenerator.termWeightMap(),
-			_r1ToR1SeriesGenerator
+		super (
+			macLaurinSeriesGenerator,
+			false,
+			termWeightMap
 		);
-	}
-
-	/**
-	 * Compute the Q Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Q Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double q (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. - evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the CDF Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double cdf (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. + evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the erfc Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The erfc Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double erfc (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 1. - evaluate (x);
 	}
 }

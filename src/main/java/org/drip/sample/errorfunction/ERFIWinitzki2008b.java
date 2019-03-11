@@ -1,5 +1,12 @@
 
-package org.drip.function.erf;
+package org.drip.sample.errorfunction;
+
+import java.util.Map;
+
+import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erfi.ErrorFunctionInverse;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +71,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunctionMacLaurinSeriesTerm</i> implements the Error Function MacLaurin Series Term. The
- * References are:
+ * <i>ERFIWinitzki2008b</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008b)
+ * Analytical Inverse Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -97,37 +104,61 @@ package org.drip.function.erf;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ErrorFunctionMacLaurinSeriesTerm extends org.drip.function.numerical.R1ToR1SeriesTerm
+public class ERFIWinitzki2008b
 {
 
-	/**
-	 * Empty ErrorFunctionMacLaurinSeriesTerm Constructor
-	 */
-
-	public ErrorFunctionMacLaurinSeriesTerm()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double value (
-		final int order,
-		final double z)
-		throws java.lang.Exception
-	{
-		if (0 > order ||
-			!org.drip.quant.common.NumberUtil.IsValid (z))
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+
+		ErrorFunctionInverse erfiWinitzki = ErrorFunctionInverse.Winitzki2008b();
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|                   Winitzki erfi Estimate                   ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                             ||");
+
+		System.out.println ("\t|                - x                                         ||");
+
+		System.out.println ("\t|                - Built-in Estimate                         ||");
+
+		System.out.println ("\t|                - Winitzki Estimate                         ||");
+
+		System.out.println ("\t|                - Winitzki Error                            ||");
+
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			throw new java.lang.Exception ("ErrorFunctionMacLaurinSeriesTerm::value => Invalid Inputs");
+			double erf = builtInTableEntry.getValue().erf();
+
+			double erfi = builtInTableEntry.getKey();
+
+			double erfiEstimate = erfiWinitzki.evaluate (erf);
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (erf, 1, 9, 1.) + " => " +
+				FormatUtil.FormatDouble (erfi, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfiEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfiEstimate - erfi), 1, 9, 1.) + " ||"
+			);
 		}
 
-		return java.lang.Math.pow (
-			z,
-			2 * order + 1
-		);
+		System.out.println ("\t|------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

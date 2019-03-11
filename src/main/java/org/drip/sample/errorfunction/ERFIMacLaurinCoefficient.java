@@ -1,5 +1,9 @@
 
-package org.drip.function.erf;
+package org.drip.sample.errorfunction;
+
+import org.drip.function.erf.MacLaurinSeriesGenerator;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +68,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunctionMacLaurinSeriesGenerator</i> implements the Error Function MacLaurin Series Term
- * Generator. The References are:
+ * <i>ERFIMacLaurinCoefficient</i> illustrates the MacLaurin Series Coefficient Loaders for the Error
+ * Function Inverse. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -97,74 +101,47 @@ package org.drip.function.erf;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ErrorFunctionMacLaurinSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
+public class ERFIMacLaurinCoefficient
 {
 
-	/**
-	 * Construct a Standard Instance of the ErrorFunctionMacLaurinSeriesGenerator
-	 * 
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return Standard Instance of ErrorFunctionMacLaurinSeriesGenerator
-	 */
-
-	public static final ErrorFunctionMacLaurinSeriesGenerator Standard (
-		final int termCount)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		EnvManager.InitEnv ("");
 
-		double signedInverseFactorial = 1.;
+		int termCount = 15;
+
+		System.out.println ("\t|---------------------||");
+
+		System.out.println ("\t|  ERFI COEFFICIENTS  ||");
+
+		System.out.println ("\t|---------------------||");
+
+		System.out.println ("\t|    L -> R:          ||");
+
+		System.out.println ("\t|        - Index      ||");
+
+		System.out.println ("\t|        - Value      ||");
+
+		System.out.println ("\t|---------------------||");
 
 		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
 		{
-			signedInverseFactorial = 0 == termIndex ? 1. : signedInverseFactorial * -1. / termIndex;
-
-			termWeightMap.put (
-				termIndex,
-				signedInverseFactorial / (2. * termIndex + 1.)
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (termIndex, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (MacLaurinSeriesGenerator.ERFICoefficient (termIndex), 2, 9, 1.) + " ||"
 			);
 		}
 
-		try
-		{
-			return new ErrorFunctionMacLaurinSeriesGenerator (
-				new org.drip.function.erf.ErrorFunctionMacLaurinSeriesTerm(),
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
+		System.out.println ("\t|---------------------||");
 
-		return null;
-	}
-
-	/**
-	 * ErrorFunctionMacLaurinSeriesGenerator Constructor
-	 * 
-	 * @param errorFunctionMacLaurinSeriesTerm Error Function MacLaurin Series Term
-	 * @param termWeightMap Error Term Weight Map
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public ErrorFunctionMacLaurinSeriesGenerator (
-		final org.drip.function.erf.ErrorFunctionMacLaurinSeriesTerm errorFunctionMacLaurinSeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
-		throws java.lang.Exception
-	{
-		super (
-			errorFunctionMacLaurinSeriesTerm,
-			false,
-			termWeightMap
-		);
+		EnvManager.TerminateEnv();
 	}
 }
