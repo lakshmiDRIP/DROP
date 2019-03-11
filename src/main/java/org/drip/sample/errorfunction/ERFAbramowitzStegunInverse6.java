@@ -1,5 +1,12 @@
 
-package org.drip.function.erf;
+package org.drip.sample.errorfunction;
+
+import java.util.Map;
+
+import org.drip.function.erf.AbramowitzStegun;
+import org.drip.function.erf.BuiltInEntry;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +71,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunctionComplement</i> implements the Error Function Complement (erfc). The References are:
+ * <i>ERFAbramowitzStegunInverse6</i> illustrates the Error Function Estimation based on the
+ * Abramowitz-Stegun 6th Degree Inverse Polynomial. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -96,63 +104,66 @@ package org.drip.function.erf;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionComplement extends org.drip.function.numerical.R1ToR1Estimator
+public class ERFAbramowitzStegunInverse6
 {
 
-	protected ErrorFunctionComplement (
-		final org.drip.quant.calculus.DerivativeControl dc)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Compute the Q Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Q Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-	public double q (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		AbramowitzStegun erfAbramowitzStegun = AbramowitzStegun.InversePolynomial6();
+
+		double maximumError = erfAbramowitzStegun.maximumError();
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|                   Abramowitz-Stegun erf Estimate                   ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                     ||");
+
+		System.out.println ("\t|                - x                                                 ||");
+
+		System.out.println ("\t|                - Built-in Estimate                                 ||");
+
+		System.out.println ("\t|                - Abramowitz-Stegun Estimate                        ||");
+
+		System.out.println ("\t|                - Abramowitz-Stegun Error                           ||");
+
+		System.out.println ("\t|                - Abramowitz-Stegun Error Maximum                   ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			throw new java.lang.Exception ("ErrorFunctionComplement::q => Invalid Inputs");
+			double x = builtInTableEntry.getKey();
+
+			double erfTable = builtInTableEntry.getValue().erf();
+
+			double erfEstimate = erfAbramowitzStegun.evaluate (x);
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfEstimate - erfTable), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (maximumError, 1, 9, 1.) + " ||"
+			);
 		}
 
-		return 0.5 * evaluate (x / java.lang.Math.sqrt (2.));
-	}
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-	/**
-	 * Compute the CDF Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double cdf (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
-		{
-			throw new java.lang.Exception ("ErrorFunctionComplement::cdf => Invalid Inputs");
-		}
-
-		return 0.5 * evaluate (-1. * x / java.lang.Math.sqrt (2.));
+		EnvManager.TerminateEnv();
 	}
 }

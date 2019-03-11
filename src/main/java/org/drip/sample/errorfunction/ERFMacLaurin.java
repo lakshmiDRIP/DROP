@@ -1,9 +1,10 @@
 
 package org.drip.sample.errorfunction;
 
-import java.util.TreeMap;
+import java.util.Map;
 
-import org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator;
+import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erf.ErrorFunction;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -70,7 +71,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficients for the Error Function. The
+ * <i>ERFMacLaurin</i> illustrates the MacLaurin Series Based Estimates for the Error Function. The
  * References are:
  * 
  * <br><br>
@@ -109,7 +110,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFMacLaurinGenerator
+public class ERFMacLaurin
 {
 
 	public static final void main (
@@ -118,41 +119,52 @@ public class ERFMacLaurinGenerator
 	{
 		EnvManager.InitEnv ("");
 
-		int termCount = 20;
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-		ErrorFunctionMacLaurinSeriesGenerator errorFunctionMacLaurinSeriesGenerator =
-			ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
+		int termCount1 = 10;
+		int termCount2 = 30;
+		int termCount3 = 50;
 
-		TreeMap<Integer, Double> termWeightMap = errorFunctionMacLaurinSeriesGenerator.termWeightMap();
+		ErrorFunction erf1 = ErrorFunction.MacLaurin (termCount1);
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		ErrorFunction erf2 = ErrorFunction.MacLaurin (termCount2);
 
-		System.out.println ("\t|    ERROR FUNCTION MACLAURIN SERIES COEFFICIENTS     ||");
+		ErrorFunction erf3 = ErrorFunction.MacLaurin (termCount3);
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|      L -> R:                                        ||");
+		System.out.println ("\t|                       MacLaurin erf Estimate                       ||");
 
-		System.out.println ("\t|            - Term Index                             ||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|            - MacLaurin Series Coefficient           ||");
+		System.out.println ("\t|        L -> R:                                                     ||");
 
-		System.out.println ("\t|            - MacLaurin Series Coefficient Inverse   ||");
+		System.out.println ("\t|                - x                                                 ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|                - Built-in Estimate                                 ||");
 
-		for (int termIndex = 0; termIndex < termCount; ++termIndex)
+		System.out.println ("\t|                - MacLaurin Estimate (10 terms)                     ||");
+
+		System.out.println ("\t|                - MacLaurin Estimate (30 terms)                     ||");
+
+		System.out.println ("\t|                - MacLaurin Estimate (50 terms)                     ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			double coefficient = termWeightMap.get (termIndex);
+			double x = builtInTableEntry.getKey();
 
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (termIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (coefficient, 1, 19, 1.) + " | " +
-				FormatUtil.FormatDouble (1. / coefficient, 19, 0, 1.) + " ||"
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (builtInTableEntry.getValue().erf(), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erf1.evaluate (x), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erf2.evaluate (x), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erf3.evaluate (x), 1, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

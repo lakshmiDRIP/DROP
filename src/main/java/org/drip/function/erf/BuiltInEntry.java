@@ -64,7 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunction</i> implements the Error Function (erf). The References are:
+ * <i>BuiltInEntry</i> implements the Entries of the Built-in Table of erf and erfc Values. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,126 +103,330 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public class BuiltInEntry
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private double _erf = java.lang.Double.NaN;
+	private double _erfc = java.lang.Double.NaN;
 
 	/**
-	 * Construct the Euler-MacLaurin Instance of the ErrorFunction
+	 * Generate a Table of Built-in erf/erfc Entries
 	 * 
-	 * @param termCount The Count of Approximation Terms
-	 * 
-	 * @return The Euler-MacLaurin Instance of the ErrorFunction
+	 * @return The Table of Built-in erf/erfc Entries
 	 */
 
-	public static final ErrorFunction MacLaurin (
-		final int termCount)
+	public static final java.util.Map<java.lang.Double, BuiltInEntry> Table()
 	{
-		final org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator
-			errorFunctionMacLaurinSeriesGenerator = 
-				org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
+		java.util.Map<java.lang.Double, BuiltInEntry> builtInEntryTable = new
+			java.util.TreeMap<java.lang.Double, BuiltInEntry>();
 
-		if (null == errorFunctionMacLaurinSeriesGenerator)
+		try
 		{
-			return null;
+			builtInEntryTable.put (
+				0.00,
+				new BuiltInEntry (
+					0.000000000,
+					1.000000000
+				)
+			);
+
+			builtInEntryTable.put (
+				0.02,
+				new BuiltInEntry (
+					0.022564575,
+					0.977435425
+				)
+			);
+
+			builtInEntryTable.put (
+				0.04,
+				new BuiltInEntry (
+					0.045111106,
+					0.954888894
+				)
+			);
+
+			builtInEntryTable.put (
+				0.06,
+				new BuiltInEntry (
+					0.067621594,
+					0.932378406
+				)
+			);
+
+			builtInEntryTable.put (
+				0.08,
+				new BuiltInEntry (
+					0.090078126,
+					0.909921874
+				)
+			);
+
+			builtInEntryTable.put (
+				0.10,
+				new BuiltInEntry (
+					0.112462916,
+					0.887537084
+				)
+			);
+
+			builtInEntryTable.put (
+				0.20,
+				new BuiltInEntry (
+					0.222792589,
+					0.777297411
+				)
+			);
+
+			builtInEntryTable.put (
+				0.30,
+				new BuiltInEntry (
+					0.328626759,
+					0.671373241
+				)
+			);
+
+			builtInEntryTable.put (
+				0.40,
+				new BuiltInEntry (
+					0.428392355,
+					0.571607645
+				)
+			);
+
+			builtInEntryTable.put (
+				0.50,
+				new BuiltInEntry (
+					0.520499878,
+					0.479500122
+				)
+			);
+
+			builtInEntryTable.put (
+				0.60,
+				new BuiltInEntry (
+					0.603856091,
+					0.396143909
+				)
+			);
+
+			builtInEntryTable.put (
+				0.70,
+				new BuiltInEntry (
+					0.677801194,
+					0.322198806
+				)
+			);
+
+			builtInEntryTable.put (
+				0.80,
+				new BuiltInEntry (
+					0.742100965,
+					0.257899035
+				)
+			);
+
+			builtInEntryTable.put (
+				0.90,
+				new BuiltInEntry (
+					0.796908212,
+					0.203091788
+				)
+			);
+
+			builtInEntryTable.put (
+				1.00,
+				new BuiltInEntry (
+					0.842700793,
+					0.157299207
+				)
+			);
+
+			builtInEntryTable.put (
+				1.10,
+				new BuiltInEntry (
+					0.880205070,
+					0.119794930
+				)
+			);
+
+			builtInEntryTable.put (
+				1.20,
+				new BuiltInEntry (
+					0.910313978,
+					0.089686022
+				)
+			);
+
+			builtInEntryTable.put (
+				1.30,
+				new BuiltInEntry (
+					0.934007945,
+					0.065992055
+				)
+			);
+
+			builtInEntryTable.put (
+				1.40,
+				new BuiltInEntry (
+					0.952285120,
+					0.047714880
+				)
+			);
+
+			builtInEntryTable.put (
+				1.50,
+				new BuiltInEntry (
+					0.966105146,
+					0.033894854
+				)
+			);
+
+			builtInEntryTable.put (
+				1.60,
+				new BuiltInEntry (
+					0.976348383,
+					0.023651617
+				)
+			);
+
+			builtInEntryTable.put (
+				1.70,
+				new BuiltInEntry (
+					0.983790459,
+					0.016209541
+				)
+			);
+
+			builtInEntryTable.put (
+				1.80,
+				new BuiltInEntry (
+					0.989090502,
+					0.010909498
+				)
+			);
+
+			builtInEntryTable.put (
+				1.90,
+				new BuiltInEntry (
+					0.992790429,
+					0.007209571
+				)
+			);
+
+			builtInEntryTable.put (
+				2.00,
+				new BuiltInEntry (
+					0.995322265,
+					0.004677735
+				)
+			);
+
+			builtInEntryTable.put (
+				2.10,
+				new BuiltInEntry (
+					0.997020533,
+					0.002979467
+				)
+			);
+
+			builtInEntryTable.put (
+				2.20,
+				new BuiltInEntry (
+					0.998137154,
+					0.001862846
+				)
+			);
+
+			builtInEntryTable.put (
+				2.30,
+				new BuiltInEntry (
+					0.998856823,
+					0.001143177
+				)
+			);
+
+			builtInEntryTable.put (
+				2.40,
+				new BuiltInEntry (
+					0.999311486,
+					0.000688514
+				)
+			);
+
+			builtInEntryTable.put (
+				2.50,
+				new BuiltInEntry (
+					0.999593048,
+					0.000406952
+				)
+			);
+
+			builtInEntryTable.put (
+				3.00,
+				new BuiltInEntry (
+					0.999977910,
+					0.000022090
+				)
+			);
+
+			builtInEntryTable.put (
+				3.50,
+				new BuiltInEntry (
+					0.999999257,
+					0.000000743
+				)
+			);
+
+			return builtInEntryTable;
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		return new ErrorFunction (
-			errorFunctionMacLaurinSeriesGenerator,
-			null
-		)
+		return null;
+	}
+
+	/**
+	 * BuiltInEntry Constructor
+	 * 
+	 * @param erf erf Value
+	 * @param erfc erfc Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BuiltInEntry (
+		final double erf,
+		final double erfc)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (_erf = erf) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_erfc = erfc))
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
-				}
-
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					errorFunctionMacLaurinSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
-	}
-
-	protected ErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-
-		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
-		final double x)
-	{
-		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1SeriesGenerator.termWeightMap(),
-			_r1ToR1SeriesGenerator
-		);
+			throw new java.lang.Exception ("BuiltInEntry Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Compute the Q Value for the given X
+	 * Retrieve the erf
 	 * 
-	 * @param x X
-	 * 
-	 * @return The Q Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The erf
 	 */
 
-	public double q (
-		final double x)
-		throws java.lang.Exception
+	public double erf()
 	{
-		return 0.5 * (1. - evaluate (x / java.lang.Math.sqrt (2.)));
+		return _erf;
 	}
 
 	/**
-	 * Compute the CDF Value for the given X
+	 * Retrieve the erfc
 	 * 
-	 * @param x X
-	 * 
-	 * @return The CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The erfc
 	 */
 
-	public double cdf (
-		final double x)
-		throws java.lang.Exception
+	public double erfc()
 	{
-		return 0.5 * (1. + evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the erfc Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The erfc Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double erfc (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 1. - evaluate (x);
+		return _erfc;
 	}
 }

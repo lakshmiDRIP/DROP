@@ -1,11 +1,5 @@
 
-package org.drip.sample.errorfunction;
-
-import java.util.TreeMap;
-
-import org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.erfc;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficients for the Error Function. The
- * References are:
+ * <i>ErrorFunctionComplementAnalytical</i> implements Analytical Versions of the Error Function Complement
+ * (erfc) Estimate. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,57 +97,114 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFMacLaurinGenerator
+public class ErrorFunctionComplementAnalytical
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 * 
+	 * @param A A
+	 * @param B B
+	 * 
+	 * @return Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 */
+
+	public static final ErrorFunctionComplement KaragiannidisLioumpas2007 (
+		final double A,
+		final double B)
 	{
-		EnvManager.InitEnv ("");
-
-		int termCount = 20;
-
-		ErrorFunctionMacLaurinSeriesGenerator errorFunctionMacLaurinSeriesGenerator =
-			ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
-
-		TreeMap<Integer, Double> termWeightMap = errorFunctionMacLaurinSeriesGenerator.termWeightMap();
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|    ERROR FUNCTION MACLAURIN SERIES COEFFICIENTS     ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                        ||");
-
-		System.out.println ("\t|            - Term Index                             ||");
-
-		System.out.println ("\t|            - MacLaurin Series Coefficient           ||");
-
-		System.out.println ("\t|            - MacLaurin Series Coefficient Inverse   ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		for (int termIndex = 0; termIndex < termCount; ++termIndex)
+		return !org.drip.quant.common.NumberUtil.IsValid (A) || !org.drip.quant.common.NumberUtil.IsValid (B)
+			? null : new org.drip.function.erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
 		{
-			double coefficient = termWeightMap.get (termIndex);
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunctionComplementAnalytical::KaragiannidisLioumpas2007::evaluate => Invalid Inputs");
+				}
 
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (termIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (coefficient, 1, 19, 1.) + " | " +
-				FormatUtil.FormatDouble (1. / coefficient, 19, 0, 1.) + " ||"
-			);
-		}
+				if (0. == z)
+				{
+					return 1.;
+				}
 
-		System.out.println ("\t|-----------------------------------------------------||");
+				if (z < 0)
+				{
+					return 2. - evaluate (-1. * z);
+				}
 
-		EnvManager.TerminateEnv();
+				return (1. - java.lang.Math.exp (-1. * A * z)) * java.lang.Math.exp (-1. * z * z) /
+					(B * z * java.lang.Math.sqrt (java.lang.Math.PI));
+			}
+		};
+	}
+
+	/**
+	 * Construct Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 * 
+	 * @return Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 */
+
+	public static final ErrorFunctionComplement KaragiannidisLioumpas2007()
+	{
+		return KaragiannidisLioumpas2007 (
+			1.980,
+			1.135
+		);
+	}
+
+	/**
+	 * Construct the Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
+	 * 
+	 * @param Beta Beta
+	 * 
+	 * @return The Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
+	 */
+
+	public static final ErrorFunctionComplement ChangCosmanMilstein2011 (
+		final double beta)
+	{
+		return !org.drip.quant.common.NumberUtil.IsValid (beta) || 1. >= beta ? null :
+			new org.drip.function.erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunctionComplementAnalytical::ChangCosmanMilstein2011::evaluate => Invalid Inputs");
+				}
+
+				if (0. == z)
+				{
+					return 1.;
+				}
+
+				if (z < 0)
+				{
+					return 2. - evaluate (-1. * z);
+				}
+
+				return java.lang.Math.sqrt (2. * java.lang.Math.E * (beta - 1.) / java.lang.Math.PI) *
+					java.lang.Math.exp (-1. * beta * z * z) / beta;
+			}
+		};
 	}
 }

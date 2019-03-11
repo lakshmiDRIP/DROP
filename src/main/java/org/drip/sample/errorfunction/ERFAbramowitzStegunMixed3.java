@@ -1,9 +1,10 @@
 
 package org.drip.sample.errorfunction;
 
-import java.util.TreeMap;
+import java.util.Map;
 
-import org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator;
+import org.drip.function.erf.AbramowitzStegun;
+import org.drip.function.erf.BuiltInEntry;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -70,8 +71,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficients for the Error Function. The
- * References are:
+ * <i>ERFAbramowitzStegunMixed3</i> illustrates the Error Function Estimation based on the Abramowitz-Stegun
+ * 3rd Degree Mixed Polynomial. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -109,7 +110,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFMacLaurinGenerator
+public class ERFAbramowitzStegunMixed3
 {
 
 	public static final void main (
@@ -118,41 +119,50 @@ public class ERFMacLaurinGenerator
 	{
 		EnvManager.InitEnv ("");
 
-		int termCount = 20;
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-		ErrorFunctionMacLaurinSeriesGenerator errorFunctionMacLaurinSeriesGenerator =
-			ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
+		AbramowitzStegun erfAbramowitzStegun = AbramowitzStegun.MixedPolynomial3();
 
-		TreeMap<Integer, Double> termWeightMap = errorFunctionMacLaurinSeriesGenerator.termWeightMap();
+		double maximumError = erfAbramowitzStegun.maximumError();
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|    ERROR FUNCTION MACLAURIN SERIES COEFFICIENTS     ||");
+		System.out.println ("\t|                   Abramowitz-Stegun erf Estimate                   ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|      L -> R:                                        ||");
+		System.out.println ("\t|        L -> R:                                                     ||");
 
-		System.out.println ("\t|            - Term Index                             ||");
+		System.out.println ("\t|                - x                                                 ||");
 
-		System.out.println ("\t|            - MacLaurin Series Coefficient           ||");
+		System.out.println ("\t|                - Built-in Estimate                                 ||");
 
-		System.out.println ("\t|            - MacLaurin Series Coefficient Inverse   ||");
+		System.out.println ("\t|                - Abramowitz-Stegun Estimate                        ||");
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|                - Abramowitz-Stegun Error                           ||");
 
-		for (int termIndex = 0; termIndex < termCount; ++termIndex)
+		System.out.println ("\t|                - Abramowitz-Stegun Error Maximum                   ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			double coefficient = termWeightMap.get (termIndex);
+			double x = builtInTableEntry.getKey();
+
+			double erfTable = builtInTableEntry.getValue().erf();
+
+			double erfEstimate = erfAbramowitzStegun.evaluate (x);
 
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (termIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (coefficient, 1, 19, 1.) + " | " +
-				FormatUtil.FormatDouble (1. / coefficient, 19, 0, 1.) + " ||"
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfEstimate - erfTable), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (maximumError, 1, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

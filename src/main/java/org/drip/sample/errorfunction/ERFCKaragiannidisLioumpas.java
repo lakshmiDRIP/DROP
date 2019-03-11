@@ -1,5 +1,13 @@
 
-package org.drip.function.erf;
+package org.drip.sample.errorfunction;
+
+import java.util.Map;
+
+import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erfc.ErrorFunctionComplement;
+import org.drip.function.erfc.ErrorFunctionComplementAnalytical;
+import org.drip.quant.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +72,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunctionComplementInverse</i> implements the Error Function Complement Inverse erfc<sup>-1</sup>.
- * The References are:
+ * <i>ERFCKaragiannidisLioumpas</i> illustrates the Error Function Complement Estimation based on the
+ * Karagiannidis-Lioumpas Analytical Error Function Complement Expression. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -97,63 +105,62 @@ package org.drip.function.erf;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionComplementInverse extends org.drip.function.numerical.R1ToR1Estimator
+public class ERFCKaragiannidisLioumpas
 {
 
-	protected ErrorFunctionComplementInverse (
-		final org.drip.quant.calculus.DerivativeControl dc)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Compute the Probit Value for the given p
-	 * 
-	 * @param p P
-	 * 
-	 * @return The Probit Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-	public double probit (
-		final double p)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		ErrorFunctionComplement erfKaragiannidisLioumpas =
+			ErrorFunctionComplementAnalytical.KaragiannidisLioumpas2007();
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t|           Karagiannidis-Lioumpas erfc Estimate      ||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                      ||");
+
+		System.out.println ("\t|                - x                                  ||");
+
+		System.out.println ("\t|                - Built-in Estimate                  ||");
+
+		System.out.println ("\t|                - Karagiannidis-Lioumpas Estimate    ||");
+
+		System.out.println ("\t|                - Karagiannidis-Lioumpas Error       ||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			throw new java.lang.Exception ("ErrorFunctionComplementInverse::probit => Invalid Inputs");
+			double x = builtInTableEntry.getKey();
+
+			double erfcTable = builtInTableEntry.getValue().erfc();
+
+			double erfcEstimate = erfKaragiannidisLioumpas.evaluate (x);
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfcEstimate - erfcTable), 1, 9, 1.) + " ||"
+			);
 		}
 
-		return -1. * java.lang.Math.sqrt (2.) * evaluate (2. * p);
-	}
+		System.out.println ("\t|-----------------------------------------------------||");
 
-	/**
-	 * Compute the Inverse CDF Value for the given p
-	 * 
-	 * @param p P
-	 * 
-	 * @return The Inverse CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double inverseCDF (
-		final double p)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (p))
-		{
-			throw new java.lang.Exception ("ErrorFunctionComplementInverse::inverseCDF => Invalid Inputs");
-		}
-
-		return -1. * java.lang.Math.sqrt (2.) * evaluate (2. * p);
+		EnvManager.TerminateEnv();
 	}
 }

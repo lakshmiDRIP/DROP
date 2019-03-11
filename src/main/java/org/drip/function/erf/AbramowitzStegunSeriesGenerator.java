@@ -64,7 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunction</i> implements the Error Function (erf). The References are:
+ * <i>AbramowitzStegunSeriesGenerator</i> implements the Error Function Abramowitz-Stegun Variant of Series
+ * Term Generator. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,126 +103,231 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Construct the Euler-MacLaurin Instance of the ErrorFunction
+	 * Construct a Inverse Polynomial Degree 4 Instance of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @param termCount The Count of Approximation Terms
-	 * 
-	 * @return The Euler-MacLaurin Instance of the ErrorFunction
+	 * @return Inverse Polynomial Degree 4 Instance of AbramowitzStegunSeriesGenerator
 	 */
 
-	public static final ErrorFunction MacLaurin (
-		final int termCount)
+	public static final AbramowitzStegunSeriesGenerator InversePolynomial4()
 	{
-		final org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator
-			errorFunctionMacLaurinSeriesGenerator = 
-				org.drip.function.erf.ErrorFunctionMacLaurinSeriesGenerator.Standard (termCount);
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		if (null == errorFunctionMacLaurinSeriesGenerator)
+		termWeightMap.put (
+			0,
+			1.000000
+		);
+
+		termWeightMap.put (
+			1,
+			0.278393
+		);
+
+		termWeightMap.put (
+			2,
+			0.230289
+		);
+
+		termWeightMap.put (
+			3,
+			0.000972
+		);
+
+		termWeightMap.put (
+			4,
+			0.078108
+		);
+
+		try
 		{
-			return null;
+			return new AbramowitzStegunSeriesGenerator (
+				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		return new ErrorFunction (
-			errorFunctionMacLaurinSeriesGenerator,
-			null
-		)
-		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
-				}
-
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					errorFunctionMacLaurinSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
+		return null;
 	}
 
-	protected ErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
+	/**
+	 * Construct a Mixed Polynomial Degree 3 Instance of the AbramowitzStegunSeriesGenerator
+	 * 
+	 * @return Mixed Polynomial Degree 3 Instance of AbramowitzStegunSeriesGenerator
+	 */
 
-		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
-		final double x)
+	public static final AbramowitzStegunSeriesGenerator MixedPolynomial3()
 	{
-		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1SeriesGenerator.termWeightMap(),
-			_r1ToR1SeriesGenerator
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
+			1,
+			0.3480242
 		);
+
+		termWeightMap.put (
+			2,
+			-0.0958798
+		);
+
+		termWeightMap.put (
+			3,
+			0.7478556
+		);
+
+		try
+		{
+			return new AbramowitzStegunSeriesGenerator (
+				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Compute the Q Value for the given X
+	 * Construct a Inverse Polynomial Degree 6 Instance of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @param x X
+	 * @return Inverse Polynomial Degree 6 Instance of AbramowitzStegunSeriesGenerator
+	 */
+
+	public static final AbramowitzStegunSeriesGenerator InversePolynomial6()
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
+			0,
+			1.0000000000
+		);
+
+		termWeightMap.put (
+			1,
+			0.0705230784
+		);
+
+		termWeightMap.put (
+			2,
+			0.0422820123
+		);
+
+		termWeightMap.put (
+			3,
+			0.0092705272
+		);
+
+		termWeightMap.put (
+			4,
+			0.0001520143
+		);
+
+		termWeightMap.put (
+			5,
+			0.0002765672
+		);
+
+		termWeightMap.put (
+			6,
+			0.0000430638
+		);
+
+		try
+		{
+			return new AbramowitzStegunSeriesGenerator (
+				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Mixed Polynomial Degree 5 Instance of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @return The Q Value
+	 * @return Mixed Polynomial Degree 5 Instance of AbramowitzStegunSeriesGenerator
+	 */
+
+	public static final AbramowitzStegunSeriesGenerator MixedPolynomial5()
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
+			1,
+			0.254829592
+		);
+
+		termWeightMap.put (
+			2,
+			-0.284496736
+		);
+
+		termWeightMap.put (
+			3,
+			1.421413741
+		);
+
+		termWeightMap.put (
+			4,
+			-1.453152027
+		);
+
+		termWeightMap.put (
+			5,
+			1.061405429
+		);
+
+		try
+		{
+			return new AbramowitzStegunSeriesGenerator (
+				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * AbramowitzStegunSeriesGenerator Constructor
+	 * 
+	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * @param termWeightMap Error Term Weight Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double q (
-		final double x)
+	public AbramowitzStegunSeriesGenerator (
+		final org.drip.function.numerical.R1ToR1SeriesTerm r1ToR1SeriesTerm,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 		throws java.lang.Exception
 	{
-		return 0.5 * (1. - evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the CDF Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double cdf (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 0.5 * (1. + evaluate (x / java.lang.Math.sqrt (2.)));
-	}
-
-	/**
-	 * Compute the erfc Value for the given X
-	 * 
-	 * @param x X
-	 * 
-	 * @return The erfc Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double erfc (
-		final double x)
-		throws java.lang.Exception
-	{
-		return 1. - evaluate (x);
+		super (
+			r1ToR1SeriesTerm,
+			false,
+			termWeightMap
+		);
 	}
 }
