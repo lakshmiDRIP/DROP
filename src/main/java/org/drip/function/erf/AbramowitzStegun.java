@@ -318,6 +318,61 @@ public abstract class AbramowitzStegun extends org.drip.function.erf.ErrorFuncti
 	}
 
 	/**
+	 * Construct the Numerical Recipe Version of Abramowitz-Stegun Error Function Estimator
+	 * 
+	 * @return The Numerical Recipe Version of Abramowitz-Stegun Error Function Estimator
+	 */
+
+	public static final AbramowitzStegun NumericalRecipe2007()
+	{
+		final AbramowitzStegunSeriesGenerator abramowitzStegunSeriesGenerator =
+			AbramowitzStegunSeriesGenerator.NumericalRecipe2007();
+
+		try
+		{
+			return new AbramowitzStegun (
+				abramowitzStegunSeriesGenerator,
+				null,
+				0.00000012
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("AbramowitzStegun::NumericalRecipe2007::evaluate => Invalid Inputs");
+					}
+
+					if (z < 0)
+					{
+						return -1. * evaluate (-1. * z);
+					}
+
+					double t = 1. / (1. + 0.5 * z);
+
+					double erf = 1. - t * java.lang.Math.exp (
+						abramowitzStegunSeriesGenerator.cumulative (
+							0.,
+							t
+						) - z * z
+					);
+
+					return erf > 1. ? 1. : erf;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * AbramowitzStegun Constructor
 	 * 
 	 * @param abramowitzStegunSeriesGenerator Abramowitz Stegun Series Generator

@@ -115,7 +115,7 @@ public class ErrorFunctionComplementAnalytical
 	 * @return Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
 	 */
 
-	public static final ErrorFunctionComplement KaragiannidisLioumpas2007 (
+	public static final org.drip.function.erfc.ErrorFunctionComplement KaragiannidisLioumpas2007 (
 		final double A,
 		final double B)
 	{
@@ -157,12 +157,109 @@ public class ErrorFunctionComplementAnalytical
 	 * @return Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
 	 */
 
-	public static final ErrorFunctionComplement KaragiannidisLioumpas2007()
+	public static final org.drip.function.erfc.ErrorFunctionComplement KaragiannidisLioumpas2007()
 	{
 		return KaragiannidisLioumpas2007 (
 			1.980,
 			1.135
 		);
+	}
+
+	/**
+	 * Construct the Chiani-Dardari-Simon (2012a) Version of the Analytical Error Function Complement
+	 * 
+	 * @return The Chiani-Dardari-Simon (2012a) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement ChianiDardariSimon2012a()
+	{
+		return new org.drip.function.erfc.ErrorFunctionComplement (
+			null,
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012a::evaluate => Invalid Inputs");
+				}
+
+				if (0. == z)
+				{
+					return 1.;
+				}
+
+				if (z < 0)
+				{
+					return 2. - evaluate (-1. * z);
+				}
+
+				return 0.5 * java.lang.Math.exp (-2. * z * z) + 0.5 * java.lang.Math.exp (-1. * z * z);
+			}
+
+			@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
+				final double z)
+			{
+				try
+				{
+					double baseline = evaluate (z);
+
+					return new org.drip.function.numerical.R1Estimate (
+						baseline,
+						baseline,
+						java.lang.Math.exp (-1. * z * z)
+					);
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				return null;
+			}
+		};
+	}
+
+	/**
+	 * Construct the Chiani-Dardari-Simon (2012b) Version of the Analytical Error Function Complement
+	 * 
+	 * @return The Chiani-Dardari-Simon (2012b) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement ChianiDardariSimon2012b()
+	{
+		return new org.drip.function.erfc.ErrorFunctionComplement (
+			null,
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012b::evaluate => Invalid Inputs");
+				}
+
+				if (0. == z)
+				{
+					return 1.;
+				}
+
+				if (z < 0)
+				{
+					return 2. - evaluate (-1. * z);
+				}
+
+				return java.lang.Math.exp (-1. * z * z) / 6. + 0.5 * java.lang.Math.exp (-4. * z * z / 3.);
+			}
+		};
 	}
 
 	/**
@@ -173,7 +270,7 @@ public class ErrorFunctionComplementAnalytical
 	 * @return The Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
 	 */
 
-	public static final ErrorFunctionComplement ChangCosmanMilstein2011 (
+	public static final org.drip.function.erfc.ErrorFunctionComplement ChangCosmanMilstein2011 (
 		final double beta)
 	{
 		return !org.drip.quant.common.NumberUtil.IsValid (beta) || 1. >= beta ? null :

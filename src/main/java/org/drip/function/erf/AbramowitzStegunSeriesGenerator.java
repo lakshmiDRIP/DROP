@@ -107,9 +107,9 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 {
 
 	/**
-	 * Construct a Inverse Polynomial Degree 4 Instance of the AbramowitzStegunSeriesGenerator
+	 * Construct a Inverse Polynomial Degree 4 Version of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @return Inverse Polynomial Degree 4 Instance of AbramowitzStegunSeriesGenerator
+	 * @return Inverse Polynomial Degree 4 Version of AbramowitzStegunSeriesGenerator
 	 */
 
 	public static final AbramowitzStegunSeriesGenerator InversePolynomial4()
@@ -158,9 +158,9 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 	}
 
 	/**
-	 * Construct a Mixed Polynomial Degree 3 Instance of the AbramowitzStegunSeriesGenerator
+	 * Construct a Mixed Polynomial Degree 3 Version of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @return Mixed Polynomial Degree 3 Instance of AbramowitzStegunSeriesGenerator
+	 * @return Mixed Polynomial Degree 3 Version of AbramowitzStegunSeriesGenerator
 	 */
 
 	public static final AbramowitzStegunSeriesGenerator MixedPolynomial3()
@@ -199,9 +199,9 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 	}
 
 	/**
-	 * Construct a Inverse Polynomial Degree 6 Instance of the AbramowitzStegunSeriesGenerator
+	 * Construct a Inverse Polynomial Degree 6 Version of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @return Inverse Polynomial Degree 6 Instance of AbramowitzStegunSeriesGenerator
+	 * @return Inverse Polynomial Degree 6 Version of AbramowitzStegunSeriesGenerator
 	 */
 
 	public static final AbramowitzStegunSeriesGenerator InversePolynomial6()
@@ -260,9 +260,9 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 	}
 
 	/**
-	 * Construct a Mixed Polynomial Degree 5 Instance of the AbramowitzStegunSeriesGenerator
+	 * Construct a Mixed Polynomial Degree 5 Version of the AbramowitzStegunSeriesGenerator
 	 * 
-	 * @return Mixed Polynomial Degree 5 Instance of AbramowitzStegunSeriesGenerator
+	 * @return Mixed Polynomial Degree 5 Version of AbramowitzStegunSeriesGenerator
 	 */
 
 	public static final AbramowitzStegunSeriesGenerator MixedPolynomial5()
@@ -293,6 +293,82 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		termWeightMap.put (
 			5,
 			1.061405429
+		);
+
+		try
+		{
+			return new AbramowitzStegunSeriesGenerator (
+				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Numerical Recipes Version of the AbramowitzStegunSeriesGenerator
+	 * 
+	 * @return Numerical Recipes Version of AbramowitzStegunSeriesGenerator
+	 */
+
+	public static final AbramowitzStegunSeriesGenerator NumericalRecipe2007()
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
+			0,
+			-1.26551223
+		);
+
+		termWeightMap.put (
+			1,
+			1.00002368
+		);
+
+		termWeightMap.put (
+			2,
+			0.37409196
+		);
+
+		termWeightMap.put (
+			3,
+			0.09678418
+		);
+
+		termWeightMap.put (
+			4,
+			-0.18628806
+		);
+
+		termWeightMap.put (
+			5,
+			0.27886807
+		);
+
+		termWeightMap.put (
+			6,
+			-1.13520398
+		);
+
+		termWeightMap.put (
+			7,
+			1.48851587
+		);
+
+		termWeightMap.put (
+			8,
+			-0.82215223
+		);
+
+		termWeightMap.put (
+			9,
+			0.17087277
 		);
 
 		try
