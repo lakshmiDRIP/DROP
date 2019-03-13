@@ -146,9 +146,9 @@ import org.drip.service.env.EnvManager;
 <span class="nc" id="L146">			R1Estimate numericalApproximation = stirlingFactorial.nemesCorrectionEstimate</span>
 <span class="nc" id="L147">				(factorialIndex);</span>
 
-<span class="nc" id="L149">			double zeroOrder = numericalApproximation.zeroOrder();</span>
+<span class="nc" id="L149">			double zeroOrder = numericalApproximation.baseline();</span>
 
-<span class="nc" id="L151">			double totalCorrection = numericalApproximation.correction();</span>
+<span class="nc" id="L151">			double totalCorrection = numericalApproximation.seriesCumulative();</span>
 
 <span class="nc" id="L153">			System.out.println (</span>
 				&quot;\t| &quot; + factorialIndex + &quot; =&gt; &quot; +
@@ -188,13 +188,13 @@ import org.drip.service.env.EnvManager;
 <span class="nc" id="L188">			R1Estimate numericalApproximation = stirlingFactorial.nemesCorrectionEstimate</span>
 <span class="nc" id="L189">				(factorialIndex);</span>
 
-<span class="nc" id="L191">			double firstOrderCorrection = numericalApproximation.orderCorrection (1);</span>
+<span class="nc" id="L191">			double firstOrderCorrection = numericalApproximation.orderSeries (1);</span>
 
-<span class="nc" id="L193">			double secondOrderCorrection = numericalApproximation.orderCorrection (2);</span>
+<span class="nc" id="L193">			double secondOrderCorrection = numericalApproximation.orderSeries (2);</span>
 
-<span class="nc" id="L195">			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);</span>
+<span class="nc" id="L195">			double thirdOrderCorrection = numericalApproximation.orderSeries (3);</span>
 
-<span class="nc" id="L197">			double fourthOrderCorrection = numericalApproximation.orderCorrection (4);</span>
+<span class="nc" id="L197">			double fourthOrderCorrection = numericalApproximation.orderSeries (4);</span>
 
 <span class="nc" id="L199">			double totalCorrection = firstOrderCorrection + secondOrderCorrection + thirdOrderCorrection +</span>
 				fourthOrderCorrection;

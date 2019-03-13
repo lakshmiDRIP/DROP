@@ -142,12 +142,12 @@ import org.drip.service.env.EnvManager;
 
 <span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int factorialIndex = 0; factorialIndex &lt;= factorialCount; ++factorialIndex)</span>
 		{
-<span class="nc" id="L145">			R1Estimate numericalApproximation = robbinsFactorial.estimate (factorialIndex);</span>
+<span class="nc" id="L145">			R1Estimate numericalApproximation = robbinsFactorial.boundedEstimate (factorialIndex);</span>
 
 <span class="nc" id="L147">			System.out.println (</span>
 				&quot;\t| &quot; + factorialIndex + &quot; =&gt; &quot; +
 <span class="nc" id="L149">				NumberUtil.Factorial (factorialIndex) + &quot; |&quot; +</span>
-<span class="nc" id="L150">				FormatUtil.FormatDouble (numericalApproximation.zeroOrder() + 0.5, 1, 0, 1.) + &quot; | [&quot; +</span>
+<span class="nc" id="L150">				FormatUtil.FormatDouble (numericalApproximation.baseline() + 0.5, 1, 0, 1.) + &quot; | [&quot; +</span>
 <span class="nc" id="L151">				FormatUtil.FormatDouble (numericalApproximation.lowerBound() + 0.5, 1, 0, 1.) + &quot; -&quot; +</span>
 <span class="nc" id="L152">				FormatUtil.FormatDouble (numericalApproximation.upperBound() + 0.5, 1, 0, 1.) + &quot; ||&quot;</span>
 			);
