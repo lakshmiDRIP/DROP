@@ -4,7 +4,7 @@ package org.drip.sample.errorfunction;
 import java.util.Map;
 
 import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunctionInverse;
+import org.drip.function.erf.ErrorFunction;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -71,8 +71,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIWinitzki2008a</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008a)
- * Analytical Inverse Error Function Estimator. The References are:
+ * <i>ERFHansHeinrichBurmannSchopfSupancic</i> illustrates the Error Function Estimation based on the Schopf
+ * Supancic (2014) Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,7 +110,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIWinitzki2008a
+public class ERFHansHeinrichBurmannSchopfSupancic
 {
 
 	public static final void main (
@@ -121,43 +121,44 @@ public class ERFIWinitzki2008a
 
 		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-		ErrorFunctionInverse erfiWinitzki = ErrorFunctionInverse.Winitzki2008a();
+		ErrorFunction erfHansHeinrichBurmannSchopfSupancic =
+			ErrorFunction.HansHeinrichBurmannSchopfSupancic2014();
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                   Winitzki erfi Estimate                   ||");
+		System.out.println ("\t|         Hans Heinrich Burmann erf Estimate          ||");
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                             ||");
+		System.out.println ("\t|        L -> R:                                      ||");
 
-		System.out.println ("\t|                - x                                         ||");
+		System.out.println ("\t|                - x                                  ||");
 
-		System.out.println ("\t|                - Built-in Estimate                         ||");
+		System.out.println ("\t|                - Built-in Estimate                  ||");
 
-		System.out.println ("\t|                - Winitzki Estimate                         ||");
+		System.out.println ("\t|                - Hans Heinrich Burmann Estimate     ||");
 
-		System.out.println ("\t|                - Winitzki Error                            ||");
+		System.out.println ("\t|                - Hans Heinrich Burmann Error        ||");
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			double erf = builtInTableEntry.getValue().erf();
+			double x = builtInTableEntry.getKey();
 
-			double erfi = builtInTableEntry.getKey();
+			double erfTable = builtInTableEntry.getValue().erf();
 
-			double erfiEstimate = erfiWinitzki.evaluate (erf);
+			double erfEstimate = erfHansHeinrichBurmannSchopfSupancic.evaluate (x);
 
 			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (erf, 1, 9, 1.) + " => " +
-				FormatUtil.FormatDouble (erfi, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfiEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfiEstimate - erfi), 1, 9, 1.) + " ||"
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfEstimate - erfTable), 1, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

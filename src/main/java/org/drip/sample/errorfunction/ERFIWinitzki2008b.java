@@ -4,7 +4,7 @@ package org.drip.sample.errorfunction;
 import java.util.Map;
 
 import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erfi.ErrorFunctionInverse;
+import org.drip.function.erf.ErrorFunctionInverse;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

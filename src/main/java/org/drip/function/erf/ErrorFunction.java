@@ -151,6 +151,92 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		};
 	}
 
+	/**
+	 * Construct the Convergent Hans Heinrich Burmann Version of the ErrorFunction
+	 * 
+	 * @return The Convergent Hans Heinrich Burmann Version of the ErrorFunction
+	 */
+
+	public static final ErrorFunction HansHeinrichBurmannConvergent()
+	{
+		final org.drip.function.numerical.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
+			= org.drip.function.erf.HansHeinrichBurmannGenerator.Convergent();
+
+		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
+		{
+			return null;
+		}
+
+		return new ErrorFunction (
+			hansHeinrichBurmannConvergentSeriesGenerator,
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunction::HansHeinrichBurmannConvergent::evaluate => Invalid Inputs");
+				}
+
+				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
+					java.lang.Math.sqrt (1. - java.lang.Math.exp (-1. * z * z)) *
+					hansHeinrichBurmannConvergentSeriesGenerator.cumulative (
+						0.,
+						z
+					);
+
+				return erf > 1. ? 1. : erf;
+			}
+		};
+	}
+
+	/**
+	 * Construct the Schopf-Supancic (2014) Hans Heinrich Burmann Version of the ErrorFunction
+	 * 
+	 * @return The Schopf-Supancic (2014) Hans Heinrich Burmann Version of the ErrorFunction
+	 */
+
+	public static final ErrorFunction HansHeinrichBurmannSchopfSupancic2014()
+	{
+		final org.drip.function.numerical.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
+			= org.drip.function.erf.HansHeinrichBurmannGenerator.SchopfSupancic2014();
+
+		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
+		{
+			return null;
+		}
+
+		return new ErrorFunction (
+			hansHeinrichBurmannConvergentSeriesGenerator,
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunction::HansHeinrichBurmannSchopfSupancic2014::evaluate => Invalid Inputs");
+				}
+
+				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
+					java.lang.Math.sqrt (1. - java.lang.Math.exp (-1. * z * z)) *
+					hansHeinrichBurmannConvergentSeriesGenerator.cumulative (
+						0.,
+						z
+					);
+
+				return erf > 1. ? 1. : erf;
+			}
+		};
+	}
+
 	protected ErrorFunction (
 		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
 		final org.drip.quant.calculus.DerivativeControl dc)
@@ -158,6 +244,44 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		super (dc);
 
 		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
+	}
+
+	@Override public double derivative (
+		final double z,
+		final int order)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (z) ||
+			1 > order)
+		{
+			throw new java.lang.Exception ("ErrorFunction::derivative => Invalid Inputs");
+		}
+
+		return 1 == order ? 2. * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI) :
+			super.derivative (
+				z,
+				order
+			);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 antiDerivative()
+	{
+		return new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double x)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (x))
+				{
+					throw new java.lang.Exception
+						("ErrorFunction::antiDerivative::evaluate => Invalid Inputs");
+				}
+
+				return x * this.evaluate (x) + java.lang.Math.exp (-1. * x * x) / java.lang.Math.sqrt
+					(java.lang.Math.PI);
+			}
+		};
 	}
 
 	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (

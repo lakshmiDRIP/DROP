@@ -3,8 +3,7 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunctionInverse;
+import org.drip.function.erf.MacLaurinSeriesGenerator;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -71,8 +70,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIWinitzki2008a</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008a)
- * Analytical Inverse Error Function Estimator. The References are:
+ * <i>ERFIMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficient Generation for the Error
+ * Function Inverse. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,7 +109,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIWinitzki2008a
+public class ERFIMacLaurinGenerator
 {
 
 	public static final void main (
@@ -119,45 +118,73 @@ public class ERFIWinitzki2008a
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		int seriesTermCount = 5;
+		int coefficientTermCount = 15;
 
-		ErrorFunctionInverse erfiWinitzki = ErrorFunctionInverse.Winitzki2008a();
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|                   Winitzki erfi Estimate                   ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                             ||");
-
-		System.out.println ("\t|                - x                                         ||");
-
-		System.out.println ("\t|                - Built-in Estimate                         ||");
-
-		System.out.println ("\t|                - Winitzki Estimate                         ||");
-
-		System.out.println ("\t|                - Winitzki Error                            ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		double[] termWeightCount =
 		{
-			double erf = builtInTableEntry.getValue().erf();
+			Math.pow (Math.PI, 0.5) / 2.,
+			-Math.pow (Math.PI, 1.5) / 24.,
+			7. * Math.pow (Math.PI, 2.5) / 960.,
+			-127. * Math.pow (Math.PI, 3.5) / 80640.,
+			0.5 * 4369. * Math.pow (Math.PI, 4.5) / 5806080.,
+			-0.5 * 34807. * Math.pow (Math.PI, 5.5) / 182476800.
+		};
 
-			double erfi = builtInTableEntry.getKey();
+		System.out.println ("\t|---------------------||");
 
-			double erfiEstimate = erfiWinitzki.evaluate (erf);
+		System.out.println ("\t|  ERFI COEFFICIENTS  ||");
 
+		System.out.println ("\t|---------------------||");
+
+		System.out.println ("\t|    L -> R:          ||");
+
+		System.out.println ("\t|        - Index      ||");
+
+		System.out.println ("\t|        - Value      ||");
+
+		System.out.println ("\t|---------------------||");
+
+		for (int coefficientTermIndex = 0; coefficientTermIndex <= coefficientTermCount; ++coefficientTermIndex)
+		{
 			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (erf, 1, 9, 1.) + " => " +
-				FormatUtil.FormatDouble (erfi, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfiEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfiEstimate - erfi), 1, 9, 1.) + " ||"
+				"\t|" + FormatUtil.FormatDouble (coefficientTermIndex, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (MacLaurinSeriesGenerator.ERFICoefficient (coefficientTermIndex), 2, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|---------------------||");
+
+		System.out.println();
+
+		Map<Integer, Double> termWeightMap = MacLaurinSeriesGenerator.ERFI (seriesTermCount).termWeightMap();
+
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|   MacLaurin Series Coefficients    ||");
+
+		System.out.println ("\t|------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                         ||");
+
+		System.out.println ("\t|        - Index                     ||");
+
+		System.out.println ("\t|        - Value                     ||");
+
+		System.out.println ("\t|        - Reconciler                ||");
+
+		System.out.println ("\t|------------------------------------||");
+
+		for (int seriesTermIndex = 0; seriesTermIndex <= seriesTermCount; ++seriesTermIndex)
+		{
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (seriesTermIndex, 1, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (termWeightMap.get (seriesTermIndex), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (termWeightCount[seriesTermIndex], 1, 10, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

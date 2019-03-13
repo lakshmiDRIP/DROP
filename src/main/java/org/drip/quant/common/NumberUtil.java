@@ -621,4 +621,33 @@ public class NumberUtil {
 
 		return halfDownShiftedFactorial;
 	}
+
+	/**
+	 * Compute (2n - 1)!!
+	 * 
+	 * @param n n
+	 * 
+	 * @return (2n - 1)!!
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double DoubleFactorial (
+		final int n)
+		throws java.lang.Exception
+	{
+		if (-1 >= n)
+		{
+			throw new java.lang.Exception ("NumberUtil::DoubleFactorial => Invalid Inputs");
+		}
+
+		double doubleFactorial = 1.;
+
+		for (int index = 1; index <= n; ++index)
+		{
+			doubleFactorial = doubleFactorial * (2. * n + 1.);
+		}
+
+		return doubleFactorial;
+	}
 }

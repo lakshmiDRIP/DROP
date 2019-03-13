@@ -1,9 +1,5 @@
 
-package org.drip.sample.errorfunction;
-
-import org.drip.function.erf.MacLaurinSeriesGenerator;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.erfc;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIMacLaurinCoefficient</i> illustrates the MacLaurin Series Coefficient Loaders for the Error
- * Function Inverse. The References are:
+ * <i>AsymptoticExpansion</i> implements a Term in the Asymptotic Expansion of Error Function Complement
+ * (erfc). The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,47 +97,82 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIMacLaurinCoefficient
+public class AsymptoticExpansion
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Asymptotic Version of Error Function Complement Series Term
+	 * 
+	 * @return The Asymptotic Version of Error Function Complement Series Term
+	 */
+
+	public static final org.drip.function.numerical.R1ToR1SeriesTerm SeriesTerm()
 	{
-		EnvManager.InitEnv ("");
-
-		int termCount = 15;
-
-		System.out.println ("\t|---------------------||");
-
-		System.out.println ("\t|  ERFI COEFFICIENTS  ||");
-
-		System.out.println ("\t|---------------------||");
-
-		System.out.println ("\t|    L -> R:          ||");
-
-		System.out.println ("\t|        - Index      ||");
-
-		System.out.println ("\t|        - Value      ||");
-
-		System.out.println ("\t|---------------------||");
-
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		return new org.drip.function.numerical.R1ToR1SeriesTerm()
 		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (termIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (MacLaurinSeriesGenerator.ERFICoefficient (termIndex), 2, 9, 1.) + " ||"
+
+			@Override public double value (
+				final int order,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("AsymptoticExpansion::SeriesTerm::value => Invalid Inputs");
+				}
+
+				return 0 == order ? 1. : java.lang.Math.pow (
+					0.5 * z * z,
+					-1 * order
+				);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Asymptotic Version of Error Function Complement Series Generator
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The Asymptotic Version of Error Function Complement Series Generator
+	 */
+
+	public static final org.drip.function.numerical.R1ToR1SeriesGenerator SeriesGenerator (
+		final int termCount)
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		try
+		{
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					(1 == termIndex % 2 ? -1. : 1.) * org.drip.quant.common.NumberUtil.DoubleFactorial
+						(termIndex)
+				);
+			}
+
+			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+				SeriesTerm(),
+				false,
+				termWeightMap
 			);
 		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		System.out.println ("\t|---------------------||");
-
-		EnvManager.TerminateEnv();
+		return null;
 	}
 }

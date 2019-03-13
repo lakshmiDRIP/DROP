@@ -1,12 +1,5 @@
 
-package org.drip.sample.errorfunction;
-
-import java.util.Map;
-
-import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunctionInverse;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.erf;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -71,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIWinitzki2008a</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008a)
- * Analytical Inverse Error Function Estimator. The References are:
+ * <i>HansHeinrichBurmannTerm</i> implements the Term in the Hans-Heinrich-Burmann Series Variants. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,61 +97,71 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIWinitzki2008a
+public class HansHeinrichBurmannTerm
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Generate the Convergent Version of Hans-Heinrich-Burmann Series Term
+	 * 
+	 * @return The Convergent Version of Hans-Heinrich-Burmann Series Term
+	 */
+
+	public static final org.drip.function.numerical.R1ToR1SeriesTerm Convergent()
 	{
-		EnvManager.InitEnv ("");
-
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
-
-		ErrorFunctionInverse erfiWinitzki = ErrorFunctionInverse.Winitzki2008a();
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|                   Winitzki erfi Estimate                   ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                             ||");
-
-		System.out.println ("\t|                - x                                         ||");
-
-		System.out.println ("\t|                - Built-in Estimate                         ||");
-
-		System.out.println ("\t|                - Winitzki Estimate                         ||");
-
-		System.out.println ("\t|                - Winitzki Error                            ||");
-
-		System.out.println ("\t|------------------------------------------------------------||");
-
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		return new org.drip.function.numerical.R1ToR1SeriesTerm()
 		{
-			double erf = builtInTableEntry.getValue().erf();
 
-			double erfi = builtInTableEntry.getKey();
+			@Override public double value (
+				final int order,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("HansHeinrichBurmannTerm::Convergent::value => Invalid Inputs");
+				}
 
-			double erfiEstimate = erfiWinitzki.evaluate (erf);
+				return 0 == order ? 1. : java.lang.Math.pow (
+					1. - java.lang.Math.exp (-1. * z * z),
+					order
+				);
+			}
+		};
+	}
 
-			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (erf, 1, 9, 1.) + " => " +
-				FormatUtil.FormatDouble (erfi, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfiEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfiEstimate - erfi), 1, 9, 1.) + " ||"
-			);
-		}
+	/**
+	 * Generate the Schopf-Supancic (2014) Version of Hans-Heinrich-Burmann Series Term
+	 * 
+	 * @return The Schopf-Supancic (2014) Version of Hans-Heinrich-Burmann Series Term
+	 */
 
-		System.out.println ("\t|------------------------------------------------------------||");
+	public static final org.drip.function.numerical.R1ToR1SeriesTerm SchopfSupancic2014()
+	{
+		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		{
 
-		EnvManager.TerminateEnv();
+			@Override public double value (
+				final int order,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("HansHeinrichBurmannTerm::SchopfSupancic2014::value => Invalid Inputs");
+				}
+
+				return 0 == order ? 1. : java.lang.Math.exp (-1. * order * z * z);
+			}
+		};
 	}
 }

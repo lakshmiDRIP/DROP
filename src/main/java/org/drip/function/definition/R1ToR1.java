@@ -377,4 +377,15 @@ public abstract class R1ToR1 {
 
 		return null;
 	}
+
+	/**
+	 * Compute the Anti-Derivative Function
+	 * 
+	 * @return The Anti-Derivative Function
+	 */
+
+	public R1ToR1 antiDerivative()
+	{
+		return null;
+	}
 }

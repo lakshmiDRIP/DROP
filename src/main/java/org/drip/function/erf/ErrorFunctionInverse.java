@@ -64,7 +64,7 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>MacLaurinSeriesGenerator</i> implements the MacLaurin Series Term Generator. The References are:
+ * <i>ErrorFunctionInverse</i> implements the Error Function Inverse erf<sup>-1</sup>. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,69 +102,55 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MacLaurinSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
+public abstract class ErrorFunctionInverse extends org.drip.function.numerical.R1ToR1Estimator
 {
+	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Generate the ERFI MacLaurin Coefficient corresponding to the specified Series Index
+	 * Construct Winitzki (2008) Version of the Analytical Error Function Inverse
 	 * 
-	 * @param seriesIndex Series Index
+	 * @param a a
 	 * 
-	 * @return The ERFI MacLaurin Coefficient corresponding to the specified Series Index
+	 * @return Winitzki (2008) Version of the Analytical Error Function Inverse
 	 */
 
-	public static final double ERFICoefficient (
-		final int seriesIndex)
+	public static final org.drip.function.erf.ErrorFunctionInverse Winitzki2008 (
+		final double a)
 	{
-		if (0 >= seriesIndex)
-		{
-			return 1.;
-		}
-
-		double seriesIndexLoader = 0.;
-
-		for (int termIndex = 0; termIndex < seriesIndex; ++termIndex)
-		{
-			seriesIndexLoader = seriesIndexLoader +
-				ERFICoefficient (termIndex) * ERFICoefficient (seriesIndex - 1 - termIndex)
-				/ ((1. + termIndex) * (1. + 2. * termIndex));
-		}
-
-		return seriesIndexLoader;
-	}
-
-	/**
-	 * Construct the Error Function MacLaurinSeriesGenerator Version
-	 * 
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return Error Function MacLaurinSeriesGenerator Version
-	 */
-
-	public static final MacLaurinSeriesGenerator ERF (
-		final int termCount)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		double signedInverseFactorial = 1.;
-
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
-			signedInverseFactorial = 0 == termIndex ? 1. : signedInverseFactorial * -1. / termIndex;
-
-			termWeightMap.put (
-				termIndex,
-				signedInverseFactorial / (2. * termIndex + 1.)
-			);
-		}
-
 		try
 		{
-			return new MacLaurinSeriesGenerator (
-				new org.drip.function.erf.MacLaurinSeriesTerm(),
-				termWeightMap
-			);
+			return !org.drip.quant.common.NumberUtil.IsValid (a) ? null :
+				new org.drip.function.erf.ErrorFunctionInverse (
+					null,
+					null
+				)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.quant.common.NumberUtil.IsValid (z) || z <= -1. || z >= 1.)
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionInverse::Winitzki2008::evaluate => Invalid Inputs");
+					}
+
+					double twoOverPIA = 2. / (java.lang.Math.PI * a);
+
+					double lnOneMinusZ2 = java.lang.Math.log (1. - z * z);
+
+					double halfLnOneMinusZ2 = 0.5 * lnOneMinusZ2;
+					double twoOverPIAPlusHalfLnOneMinusZ2 = twoOverPIA + halfLnOneMinusZ2;
+
+					double erfi = java.lang.Math.sqrt (
+						java.lang.Math.sqrt (
+							twoOverPIAPlusHalfLnOneMinusZ2 * twoOverPIAPlusHalfLnOneMinusZ2 - (lnOneMinusZ2 / a)
+						) - twoOverPIAPlusHalfLnOneMinusZ2
+					);
+
+					return erfi < 0. ? -1. * erfi : erfi;
+				}
+			};
 		}
 		catch (java.lang.Exception e)
 		{
@@ -175,67 +161,138 @@ public class MacLaurinSeriesGenerator extends org.drip.function.numerical.R1ToR1
 	}
 
 	/**
-	 * Construct the Error Function Inverse MacLaurinSeriesGenerator Version
+	 * Construct Winitzki (2008a) Version of the Analytical Error Function Inverse
 	 * 
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return Error Function Inverse MacLaurinSeriesGenerator Version
+	 * @return Winitzki (2008a) Version of the Analytical Error Function Inverse
 	 */
 
-	public static final MacLaurinSeriesGenerator ERFI (
-		final int termCount)
+	public static final org.drip.function.erf.ErrorFunctionInverse Winitzki2008a()
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		double sqrtPIOver2 = 0.5 * java.lang.Math.sqrt (java.lang.Math.PI);
-
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
-			int twoKPlusOne = 2 * termIndex + 1;
-
-			termWeightMap.put (
-				termIndex,
-				(termIndex % 2 == 0 ? 1. : -1.) * ERFICoefficient (termIndex) * java.lang.Math.pow (
-					sqrtPIOver2,
-					twoKPlusOne
-				) / twoKPlusOne
-			);
-		}
-
-		try
-		{
-			return new MacLaurinSeriesGenerator (
-				new org.drip.function.erf.MacLaurinSeriesTerm(),
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return Winitzki2008 (
+			8. * (java.lang.Math.PI - 3.) / (3. * java.lang.Math.PI * (4. - java.lang.Math.PI))
+		);
 	}
 
 	/**
-	 * MacLaurinSeriesGenerator Constructor
+	 * Construct Winitzki (2008b) Version of the Analytical Error Function Inverse
 	 * 
-	 * @param macLaurinSeriesGenerator MacLaurin Series Term
-	 * @param termWeightMap Series Term Weight Map
+	 * @return Winitzki (2008b) Version of the Analytical Error Function Inverse
+	 */
+
+	public static final org.drip.function.erf.ErrorFunctionInverse Winitzki2008b()
+	{
+		return Winitzki2008 (0.147);
+	}
+
+	/**
+	 * Construct the Euler-MacLaurin Instance of the Error Function Inverse
+	 * 
+	 * @param termCount The Count of Approximation Terms
+	 * 
+	 * @return The Euler-MacLaurin Instance of the Error Function Inverse
+	 */
+
+	public static final ErrorFunctionInverse MacLaurin (
+		final int termCount)
+	{
+		final org.drip.function.erf.MacLaurinSeriesGenerator
+			errorFunctionInverseMacLaurinSeriesGenerator =
+				org.drip.function.erf.MacLaurinSeriesGenerator.ERFI (termCount);
+
+		if (null == errorFunctionInverseMacLaurinSeriesGenerator)
+		{
+			return null;
+		}
+
+		return new ErrorFunctionInverse (
+			errorFunctionInverseMacLaurinSeriesGenerator,
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z) || -1. >= z || 1. <= z)
+				{
+					throw new java.lang.Exception
+						("ErrorFunctionInverse::MacLaurin::evaluate => Invalid Inputs");
+				}
+
+				double erfi = errorFunctionInverseMacLaurinSeriesGenerator.cumulative (
+					0.,
+					z
+				);
+
+				return erfi > 1. ? 1. : erfi;
+			}
+		};
+	}
+
+	protected ErrorFunctionInverse (
+		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.quant.calculus.DerivativeControl dc)
+	{
+		super (dc);
+
+		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
+	}
+
+	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
+			x,
+			null,
+			null
+		) : seriesEstimate (
+			x,
+			_r1ToR1SeriesGenerator.termWeightMap(),
+			_r1ToR1SeriesGenerator
+		);
+	}
+
+	/**
+	 * Compute the Probit Value for the given p
+	 * 
+	 * @param p P
+	 * 
+	 * @return The Probit Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MacLaurinSeriesGenerator (
-		final org.drip.function.erf.MacLaurinSeriesTerm macLaurinSeriesGenerator,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
+	public double probit (
+		final double p)
 		throws java.lang.Exception
 	{
-		super (
-			macLaurinSeriesGenerator,
-			false,
-			termWeightMap
-		);
+		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		{
+			throw new java.lang.Exception ("ErrorFunctionInverse::probit => Invalid Inputs");
+		}
+
+		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
+	}
+
+	/**
+	 * Compute the Inverse CDF Value for the given p
+	 * 
+	 * @param p P
+	 * 
+	 * @return The Inverse CDF Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double inverseCDF (
+		final double p)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		{
+			throw new java.lang.Exception ("ErrorFunctionInverse::inverseCDF => Invalid Inputs");
+		}
+
+		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
 	}
 }

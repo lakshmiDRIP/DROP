@@ -71,8 +71,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIWinitzki2008a</i> illustrates the Inverse Error Function Estimation based on the Winitzki (2008a)
- * Analytical Inverse Error Function Estimator. The References are:
+ * <i>ERFIMacLaurin</i> illustrates the Inverse Error Function Estimation using the Euler-MacLaurin Series
+ * Inverse Error Function Estimator. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,7 +110,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIWinitzki2008a
+public class ERFIMacLaurin
 {
 
 	public static final void main (
@@ -119,27 +119,37 @@ public class ERFIWinitzki2008a
 	{
 		EnvManager.InitEnv ("");
 
+		int termCount5 = 5;
+		int termCount10 = 10;
+		int termCount15 = 15;
+
 		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-		ErrorFunctionInverse erfiWinitzki = ErrorFunctionInverse.Winitzki2008a();
+		ErrorFunctionInverse erfiMacLaurin5 = ErrorFunctionInverse.MacLaurin (termCount5);
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		ErrorFunctionInverse erfiMacLaurin10 = ErrorFunctionInverse.MacLaurin (termCount10);
 
-		System.out.println ("\t|                   Winitzki erfi Estimate                   ||");
+		ErrorFunctionInverse erfiMacLaurin15 = ErrorFunctionInverse.MacLaurin (termCount15);
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                             ||");
+		System.out.println ("\t|                           MacLaurin erfi Estimate                         ||");
 
-		System.out.println ("\t|                - x                                         ||");
+		System.out.println ("\t|---------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                - Built-in Estimate                         ||");
+		System.out.println ("\t|        L -> R:                                                            ||");
 
-		System.out.println ("\t|                - Winitzki Estimate                         ||");
+		System.out.println ("\t|                - erf                                                      ||");
 
-		System.out.println ("\t|                - Winitzki Error                            ||");
+		System.out.println ("\t|                - erfi Estimate Built-in                                   ||");
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|                - erfi Estimate MacLaurin ( 5 Terms)                       ||");
+
+		System.out.println ("\t|                - erfi Estimate MacLaurin (10 Terms)                       ||");
+
+		System.out.println ("\t|                - erfi Estimate MacLaurin (15 Terms)                       ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------------||");
 
 		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
@@ -147,17 +157,22 @@ public class ERFIWinitzki2008a
 
 			double erfi = builtInTableEntry.getKey();
 
-			double erfiEstimate = erfiWinitzki.evaluate (erf);
+			double erfiEstimate5 = erfiMacLaurin5.evaluate (erf);
+
+			double erfiEstimate10 = erfiMacLaurin10.evaluate (erf);
+
+			double erfiEstimate15 = erfiMacLaurin15.evaluate (erf);
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (erf, 1, 9, 1.) + " => " +
 				FormatUtil.FormatDouble (erfi, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfiEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfiEstimate - erfi), 1, 9, 1.) + " ||"
+				FormatUtil.FormatDouble (erfiEstimate5, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfiEstimate10, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfiEstimate15, 1, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------------||");
+		System.out.println ("\t|---------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
