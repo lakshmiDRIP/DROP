@@ -64,8 +64,7 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>HansHeinrichBurmannTerm</i> implements the Term in the Hans-Heinrich-Burmann Series Variants. The
- * References are:
+ * <i>E2Inverse</i> implements the E<sub>2</sub> erf Inverse erf<sup>-1</sup>. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,65 +102,196 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HansHeinrichBurmannTerm
+public abstract class E2Inverse extends org.drip.function.numerical.R1ToR1Estimator
 {
+	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Generate the Convergent Version of Hans-Heinrich-Burmann Series Term
+	 * Construct Winitzki (2008) Version of the Analytical E<sub>2</sub> erf Inverse
 	 * 
-	 * @return The Convergent Version of Hans-Heinrich-Burmann Series Term
+	 * @param a a
+	 * 
+	 * @return Winitzki (2008) Version of the Analytical E<sub>2</sub> erf Inverse
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesTerm Convergent()
+	public static final org.drip.function.erf.E2Inverse Winitzki2008 (
+		final double a)
 	{
-		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		try
 		{
+			return !org.drip.quant.common.NumberUtil.IsValid (a) ? null :
+				new org.drip.function.erf.E2Inverse (
+					null,
+					null
+				)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.quant.common.NumberUtil.IsValid (z) || z <= -1. || z >= 1.)
+					{
+						throw new java.lang.Exception
+							("E2Inverse::Winitzki2008::evaluate => Invalid Inputs");
+					}
 
-			@Override public double value (
-				final int order,
+					double twoOverPIA = 2. / (java.lang.Math.PI * a);
+
+					double lnOneMinusZ2 = java.lang.Math.log (1. - z * z);
+
+					double halfLnOneMinusZ2 = 0.5 * lnOneMinusZ2;
+					double twoOverPIAPlusHalfLnOneMinusZ2 = twoOverPIA + halfLnOneMinusZ2;
+
+					double erfi = java.lang.Math.sqrt (
+						java.lang.Math.sqrt (
+							twoOverPIAPlusHalfLnOneMinusZ2 * twoOverPIAPlusHalfLnOneMinusZ2 -
+								(lnOneMinusZ2 / a)
+						) - twoOverPIAPlusHalfLnOneMinusZ2
+					);
+
+					return erfi < 0. ? -1. * erfi : erfi;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct Winitzki (2008a) Version of the Analytical E<sub>2</sub> erf Inverse
+	 * 
+	 * @return Winitzki (2008a) Version of the Analytical E<sub>2</sub> erf Inverse
+	 */
+
+	public static final org.drip.function.erf.E2Inverse Winitzki2008a()
+	{
+		return Winitzki2008 (
+			8. * (java.lang.Math.PI - 3.) / (3. * java.lang.Math.PI * (4. - java.lang.Math.PI))
+		);
+	}
+
+	/**
+	 * Construct Winitzki (2008b) Version of the Analytical E<sub>2</sub> erf Inverse
+	 * 
+	 * @return Winitzki (2008b) Version of the Analytical E<sub>2</sub> erf Inverse
+	 */
+
+	public static final org.drip.function.erf.E2Inverse Winitzki2008b()
+	{
+		return Winitzki2008 (0.147);
+	}
+
+	/**
+	 * Construct the Euler-MacLaurin Instance of the E<sub>2</sub> erf Inverse
+	 * 
+	 * @param termCount The Count of Approximation Terms
+	 * 
+	 * @return The Euler-MacLaurin Instance of the E<sub>2</sub> erf Inverse
+	 */
+
+	public static final E2Inverse MacLaurin (
+		final int termCount)
+	{
+		final org.drip.function.erf.E2MacLaurinSeriesGenerator e2InverseMacLaurinSeriesGenerator =
+			org.drip.function.erf.E2MacLaurinSeriesGenerator.ERFI (termCount);
+
+		if (null == e2InverseMacLaurinSeriesGenerator)
+		{
+			return null;
+		}
+
+		return new E2Inverse (
+			e2InverseMacLaurinSeriesGenerator,
+			null
+		)
+		{
+			@Override public double evaluate (
 				final double z)
 				throws java.lang.Exception
 			{
-				if (0 > order ||
-					!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.quant.common.NumberUtil.IsValid (z) || -1. >= z || 1. <= z)
 				{
-					throw new java.lang.Exception
-						("HansHeinrichBurmannTerm::Convergent::value => Invalid Inputs");
+					throw new java.lang.Exception ("E2Inverse::MacLaurin::evaluate => Invalid Inputs");
 				}
 
-				return 0 == order ? 1. : java.lang.Math.pow (
-					1. - java.lang.Math.exp (-1. * z * z),
-					order
+				double erfi = e2InverseMacLaurinSeriesGenerator.cumulative (
+					0.,
+					z
 				);
+
+				return erfi > 1. ? 1. : erfi;
 			}
 		};
 	}
 
+	protected E2Inverse (
+		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.quant.calculus.DerivativeControl dc)
+	{
+		super (dc);
+
+		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
+	}
+
+	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
+			x,
+			null,
+			null
+		) : seriesEstimate (
+			x,
+			_r1ToR1SeriesGenerator.termWeightMap(),
+			_r1ToR1SeriesGenerator
+		);
+	}
+
 	/**
-	 * Generate the Schopf-Supancic (2014) Version of Hans-Heinrich-Burmann Series Term
+	 * Compute the Probit Value for the given p
 	 * 
-	 * @return The Schopf-Supancic (2014) Version of Hans-Heinrich-Burmann Series Term
+	 * @param p P
+	 * 
+	 * @return The Probit Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesTerm SchopfSupancic2014()
+	public double probit (
+		final double p)
+		throws java.lang.Exception
 	{
-		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		if (!org.drip.quant.common.NumberUtil.IsValid (p))
 		{
+			throw new java.lang.Exception ("E2Inverse::probit => Invalid Inputs");
+		}
 
-			@Override public double value (
-				final int order,
-				final double z)
-				throws java.lang.Exception
-			{
-				if (0 > order ||
-					!org.drip.quant.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("HansHeinrichBurmannTerm::SchopfSupancic2014::value => Invalid Inputs");
-				}
+		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
+	}
 
-				return 0 == order ? 1. : java.lang.Math.exp (-1. * order * z * z);
-			}
-		};
+	/**
+	 * Compute the Inverse CDF Value for the given p
+	 * 
+	 * @param p P
+	 * 
+	 * @return The Inverse CDF Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double inverseCDF (
+		final double p)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		{
+			throw new java.lang.Exception ("E2Inverse::inverseCDF => Invalid Inputs");
+		}
+
+		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
 	}
 }

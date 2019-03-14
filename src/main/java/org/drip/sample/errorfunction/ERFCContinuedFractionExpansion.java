@@ -4,7 +4,8 @@ package org.drip.sample.errorfunction;
 import java.util.Map;
 
 import org.drip.function.erf.BuiltInE2Entry;
-import org.drip.function.erf.E2;
+import org.drip.function.erfc.ErrorFunctionComplement;
+import org.drip.function.erfc.ErrorFunctionComplementAnalytical;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -71,8 +72,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFHansHeinrichBurmannConvergent</i> illustrates the Error Function Estimation based on the Convergent
- * Hans-Heinrich-Burmann Series. The References are:
+ * <i>ERFCContinuedFractionExpansion</i> illustrates the Error Function Complement Estimation based on the
+ * Continued Fraction Expansion Analytical Error Function Complement Expression. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,7 +111,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFHansHeinrichBurmannConvergent
+public class ERFCContinuedFractionExpansion
 {
 
 	public static final void main (
@@ -121,11 +122,14 @@ public class ERFHansHeinrichBurmannConvergent
 
 		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
-		E2 erfHansHeinrichBurmannConvergent = E2.HansHeinrichBurmannConvergent();
+		int termCount = 40;
+
+		ErrorFunctionComplement erfContinuedFractionExpansion =
+			ErrorFunctionComplementAnalytical.ContinuedFractionExpansion (termCount);
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|         Hans Heinrich Burmann erf Estimate          ||");
+		System.out.println ("\t|      Continued-Fraction-Expansion erfc Estimate     ||");
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
@@ -135,9 +139,9 @@ public class ERFHansHeinrichBurmannConvergent
 
 		System.out.println ("\t|                - Built-in Estimate                  ||");
 
-		System.out.println ("\t|                - Hans Heinrich Burmann Estimate     ||");
+		System.out.println ("\t|                - CFE Estimate                       ||");
 
-		System.out.println ("\t|                - Hans Heinrich Burmann Error        ||");
+		System.out.println ("\t|                - CFE Estimate Error                 ||");
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
@@ -145,15 +149,15 @@ public class ERFHansHeinrichBurmannConvergent
 		{
 			double x = builtInTableEntry.getKey();
 
-			double erfTable = builtInTableEntry.getValue().erf();
+			double erfcTable = builtInTableEntry.getValue().erfc();
 
-			double erfEstimate = erfHansHeinrichBurmannConvergent.evaluate (x);
+			double erfcEstimate = erfContinuedFractionExpansion.evaluate (x);
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfEstimate - erfTable), 1, 9, 1.) + " ||"
+				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.abs (erfcEstimate - erfcTable), 1, 9, 1.) + " ||"
 			);
 		}
 

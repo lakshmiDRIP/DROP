@@ -3,8 +3,8 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunction;
+import org.drip.function.erf.BuiltInE2Entry;
+import org.drip.function.erf.E2;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -119,17 +119,17 @@ public class ERFMacLaurin
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
 		int termCount1 = 10;
 		int termCount2 = 30;
 		int termCount3 = 50;
 
-		ErrorFunction erf1 = ErrorFunction.MacLaurin (termCount1);
+		E2 erf1 = E2.MacLaurin (termCount1);
 
-		ErrorFunction erf2 = ErrorFunction.MacLaurin (termCount2);
+		E2 erf2 = E2.MacLaurin (termCount2);
 
-		ErrorFunction erf3 = ErrorFunction.MacLaurin (termCount3);
+		E2 erf3 = E2.MacLaurin (termCount3);
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
@@ -151,7 +151,7 @@ public class ERFMacLaurin
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double x = builtInTableEntry.getKey();
 

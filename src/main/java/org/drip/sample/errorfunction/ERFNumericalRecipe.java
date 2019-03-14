@@ -3,8 +3,8 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.AbramowitzStegun;
-import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erf.E2AbramowitzStegun;
+import org.drip.function.erf.BuiltInE2Entry;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -119,9 +119,9 @@ public class ERFNumericalRecipe
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
-		AbramowitzStegun erfAbramowitzStegun = AbramowitzStegun.NumericalRecipe2007();
+		E2AbramowitzStegun erfAbramowitzStegun = E2AbramowitzStegun.NumericalRecipe2007();
 
 		double maximumError = erfAbramowitzStegun.maximumError();
 
@@ -145,7 +145,7 @@ public class ERFNumericalRecipe
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double x = builtInTableEntry.getKey();
 

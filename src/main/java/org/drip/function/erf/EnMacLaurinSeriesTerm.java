@@ -1,12 +1,5 @@
 
-package org.drip.sample.errorfunction;
-
-import java.util.Map;
-
-import org.drip.function.erf.BuiltInE2Entry;
-import org.drip.function.erf.E2;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.erf;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -71,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFHansHeinrichBurmannConvergent</i> illustrates the Error Function Estimation based on the Convergent
- * Hans-Heinrich-Burmann Series. The References are:
+ * <i>EnMacLaurinSeriesTerm</i> implements the Generalized E<sub>n</sub> Error Function MacLaurin Series
+ * Term. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,61 +97,59 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFHansHeinrichBurmannConvergent
+public class EnMacLaurinSeriesTerm extends org.drip.function.numerical.R1ToR1SeriesTerm
 {
+	private int _degree = -1;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * EnMacLaurinSeriesTerm Constructor
+	 * 
+	 * @param degree Generalized E<sub>n</sub> Degree
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EnMacLaurinSeriesTerm (
+		final int degree)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
-
-		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
-
-		E2 erfHansHeinrichBurmannConvergent = E2.HansHeinrichBurmannConvergent();
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|         Hans Heinrich Burmann erf Estimate          ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                      ||");
-
-		System.out.println ("\t|                - x                                  ||");
-
-		System.out.println ("\t|                - Built-in Estimate                  ||");
-
-		System.out.println ("\t|                - Hans Heinrich Burmann Estimate     ||");
-
-		System.out.println ("\t|                - Hans Heinrich Burmann Error        ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
+		if (0 > (_degree = degree))
 		{
-			double x = builtInTableEntry.getKey();
+			throw new java.lang.Exception ("EnMacLaurinSeriesTerm Constructor => Invalid Inputs");
+		}
+	}
 
-			double erfTable = builtInTableEntry.getValue().erf();
+	/**
+	 * Retrieve the Degree of the Generalized E<sub>n</sub> Series Term
+	 * 
+	 * @return Degree of the Generalized E<sub>n</sub> Series Term
+	 */
 
-			double erfEstimate = erfHansHeinrichBurmannConvergent.evaluate (x);
+	public int degree()
+	{
+		return _degree;
+	}
 
-			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfEstimate - erfTable), 1, 9, 1.) + " ||"
-			);
+	@Override public double value (
+		final int order,
+		final double z)
+		throws java.lang.Exception
+	{
+		if (0 > order ||
+			!org.drip.quant.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("EnMacLaurinSeriesTerm::value => Invalid Inputs");
 		}
 
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return java.lang.Math.pow (
+			z,
+			_degree * order + 1
+		);
 	}
 }

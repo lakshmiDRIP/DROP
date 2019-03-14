@@ -64,8 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunctionAnalytical</i> implements Analytical Versions of the Error Function Complement (erf)
- * Estimate. The References are:
+ * <i>EnMacLaurinSeriesGenerator</i> implements the E<sub>n</sub> MacLaurin Series Term Generator. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,59 +103,44 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ErrorFunctionAnalytical
+public class EnMacLaurinSeriesGenerator
 {
 
 	/**
-	 * Construct Winitzki (2008) Version of the Analytical Error Function
+	 * Construct the E<sub>n</sub> erf MacLaurin Series Generator
 	 * 
-	 * @param a a
-	 * @param maximumError Maximum Absolute Error
+	 * @param degree Generalized E<sub>n</sub> Degree
+	 * @param termCount Count of the Number of Terms
 	 * 
-	 * @return Winitzki (2008) Version of the Analytical Error Function
+	 * @return E<sub>n</sub> erf MacLaurin Series Generator
 	 */
 
-	public static final org.drip.function.erf.AbramowitzStegun Winitzki2008 (
-		final double a,
-		final double maximumError)
+	public static final org.drip.function.numerical.R1ToR1SeriesGenerator ERF (
+		final int degree,
+		final int termCount)
 	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		double signedInverseFactorial = 1.;
+
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		{
+			signedInverseFactorial = 0 == termIndex ? 1. : signedInverseFactorial * -1. / termIndex;
+
+			termWeightMap.put (
+				termIndex,
+				signedInverseFactorial / (degree * termIndex + 1.)
+			);
+		}
+
 		try
 		{
-			return !org.drip.quant.common.NumberUtil.IsValid (a) ? null :
-				new org.drip.function.erf.AbramowitzStegun (
-					null,
-					null,
-					maximumError
-				)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("ErrorFunctionAnalytical::Winitzki2008::evaluate => Invalid Inputs");
-					}
-
-					if (0. == z)
-					{
-						return 0.;
-					}
-
-					if (z < 0)
-					{
-						return -1. * evaluate (-1. * z);
-					}
-
-					double z2 = z * z;
-					double az2 = a * z * z;
-
-					return java.lang.Math.sqrt (1. - java.lang.Math.exp (
-						-1. * z2 * (az2 + (4. / java.lang.Math.PI)) / (az2 + 1.))
-					);
-				}
-			};
+			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+				new org.drip.function.erf.EnMacLaurinSeriesTerm (degree),
+				false,
+				termWeightMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -163,33 +148,5 @@ public class ErrorFunctionAnalytical
 		}
 
 		return null;
-	}
-
-	/**
-	 * Construct Winitzki (2008a) Version of the Analytical Error Function
-	 * 
-	 * @return Winitzki (2008a) Version of the Analytical Error Function
-	 */
-
-	public static final org.drip.function.erf.AbramowitzStegun Winitzki2008a()
-	{
-		return Winitzki2008 (
-			8. * (java.lang.Math.PI - 3.) / (3. * java.lang.Math.PI * (4. - java.lang.Math.PI)),
-			0.00035
-		);
-	}
-
-	/**
-	 * Construct Winitzki (2008b) Version of the Analytical Error Function
-	 * 
-	 * @return Winitzki (2008b) Version of the Analytical Error Function
-	 */
-
-	public static final org.drip.function.erf.AbramowitzStegun Winitzki2008b()
-	{
-		return Winitzki2008 (
-			0.147,
-			0.00012
-		);
 	}
 }

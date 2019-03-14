@@ -64,8 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>AbramowitzStegunSeriesGenerator</i> implements the Error Function Abramowitz-Stegun Variant of Series
- * Term Generator. The References are:
+ * <i>E2HansHeinrichBurmannGenerator</i> generates the Terms in the E<sub>2</sub> erf Hans-Heinrich-Burmann
+ * Series Variants. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,49 +103,50 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
+public class E2HansHeinrichBurmannGenerator
 {
 
 	/**
-	 * Construct a Inverse Polynomial Degree 4 Version of the AbramowitzStegunSeriesGenerator
+	 * Construct the Convergent E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
 	 * 
-	 * @return Inverse Polynomial Degree 4 Version of AbramowitzStegunSeriesGenerator
+	 * @return The Convergent E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
 	 */
 
-	public static final AbramowitzStegunSeriesGenerator InversePolynomial4()
+	public static final org.drip.function.numerical.R1ToR1SeriesGenerator Convergent()
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
 		termWeightMap.put (
 			0,
-			1.000000
+			1.
 		);
 
 		termWeightMap.put (
 			1,
-			0.278393
+			-1. / 12.
 		);
 
 		termWeightMap.put (
 			2,
-			0.230289
+			-7. / 480.
 		);
 
 		termWeightMap.put (
 			3,
-			0.000972
+			-5. / 896.
 		);
 
 		termWeightMap.put (
 			4,
-			0.078108
+			-787. / 276480.
 		);
 
 		try
 		{
-			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+				org.drip.function.erf.E2HansHeinrichBurmannTerm.Convergent(),
+				false,
 				termWeightMap
 			);
 		}
@@ -158,96 +159,36 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 	}
 
 	/**
-	 * Construct a Mixed Polynomial Degree 3 Version of the AbramowitzStegunSeriesGenerator
+	 * Construct the Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
 	 * 
-	 * @return Mixed Polynomial Degree 3 Version of AbramowitzStegunSeriesGenerator
+	 * @return The Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
 	 */
 
-	public static final AbramowitzStegunSeriesGenerator MixedPolynomial3()
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			0.3480242
-		);
-
-		termWeightMap.put (
-			2,
-			-0.0958798
-		);
-
-		termWeightMap.put (
-			3,
-			0.7478556
-		);
-
-		try
-		{
-			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct a Inverse Polynomial Degree 6 Version of the AbramowitzStegunSeriesGenerator
-	 * 
-	 * @return Inverse Polynomial Degree 6 Version of AbramowitzStegunSeriesGenerator
-	 */
-
-	public static final AbramowitzStegunSeriesGenerator InversePolynomial6()
+	public static final org.drip.function.numerical.R1ToR1SeriesGenerator SchopfSupancic2014()
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
 		termWeightMap.put (
 			0,
-			1.0000000000
+			0.5 * java.lang.Math.sqrt (java.lang.Math.PI)
 		);
 
 		termWeightMap.put (
 			1,
-			0.0705230784
+			31. / 200.
 		);
 
 		termWeightMap.put (
 			2,
-			0.0422820123
-		);
-
-		termWeightMap.put (
-			3,
-			0.0092705272
-		);
-
-		termWeightMap.put (
-			4,
-			0.0001520143
-		);
-
-		termWeightMap.put (
-			5,
-			0.0002765672
-		);
-
-		termWeightMap.put (
-			6,
-			0.0000430638
+			-341. / 8000.
 		);
 
 		try
 		{
-			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+				org.drip.function.erf.E2HansHeinrichBurmannTerm.SchopfSupancic2014(),
+				false,
 				termWeightMap
 			);
 		}
@@ -257,153 +198,5 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		}
 
 		return null;
-	}
-
-	/**
-	 * Construct a Mixed Polynomial Degree 5 Version of the AbramowitzStegunSeriesGenerator
-	 * 
-	 * @return Mixed Polynomial Degree 5 Version of AbramowitzStegunSeriesGenerator
-	 */
-
-	public static final AbramowitzStegunSeriesGenerator MixedPolynomial5()
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			1,
-			0.254829592
-		);
-
-		termWeightMap.put (
-			2,
-			-0.284496736
-		);
-
-		termWeightMap.put (
-			3,
-			1.421413741
-		);
-
-		termWeightMap.put (
-			4,
-			-1.453152027
-		);
-
-		termWeightMap.put (
-			5,
-			1.061405429
-		);
-
-		try
-		{
-			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the Numerical Recipes Version of the AbramowitzStegunSeriesGenerator
-	 * 
-	 * @return Numerical Recipes Version of AbramowitzStegunSeriesGenerator
-	 */
-
-	public static final AbramowitzStegunSeriesGenerator NumericalRecipe2007()
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			0,
-			-1.26551223
-		);
-
-		termWeightMap.put (
-			1,
-			1.00002368
-		);
-
-		termWeightMap.put (
-			2,
-			0.37409196
-		);
-
-		termWeightMap.put (
-			3,
-			0.09678418
-		);
-
-		termWeightMap.put (
-			4,
-			-0.18628806
-		);
-
-		termWeightMap.put (
-			5,
-			0.27886807
-		);
-
-		termWeightMap.put (
-			6,
-			-1.13520398
-		);
-
-		termWeightMap.put (
-			7,
-			1.48851587
-		);
-
-		termWeightMap.put (
-			8,
-			-0.82215223
-		);
-
-		termWeightMap.put (
-			9,
-			0.17087277
-		);
-
-		try
-		{
-			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * AbramowitzStegunSeriesGenerator Constructor
-	 * 
-	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
-	 * @param termWeightMap Error Term Weight Map
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public AbramowitzStegunSeriesGenerator (
-		final org.drip.function.numerical.R1ToR1SeriesTerm r1ToR1SeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
-		throws java.lang.Exception
-	{
-		super (
-			r1ToR1SeriesTerm,
-			false,
-			termWeightMap
-		);
 	}
 }

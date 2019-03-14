@@ -64,8 +64,8 @@ package org.drip.function.erfc;
  */
 
 /**
- * <i>AsymptoticExpansion</i> implements a Term in the Asymptotic Expansion of Error Function Complement
- * (erfc). The References are:
+ * <i>AsymptoticExpansion</i> implements the Term and the Generator in the Asymptotic Expansion of Error
+ * Function Complement (erfc). The References are:
  * 
  * <br><br>
  * 	<ul>

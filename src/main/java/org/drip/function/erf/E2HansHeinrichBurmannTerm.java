@@ -64,8 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>HansHeinrichBurmannGenerator</i> generates the Terms in the Hans-Heinrich-Burmann Series Variants. The
- * References are:
+ * <i>E2HansHeinrichBurmannTerm</i> implements the Term in the E<sub>2</sub> erf Hans-Heinrich-Burmann Series
+ * Variants. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,100 +103,65 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HansHeinrichBurmannGenerator
+public class E2HansHeinrichBurmannTerm
 {
 
 	/**
-	 * Construct the Convergent Hans Heinrich Burmann Generator Version
+	 * Generate the Convergent Version of E<sub>2</sub> erf Hans-Heinrich-Burmann Series Term
 	 * 
-	 * @return The Convergent Hans Heinrich Burmann Generator Version
+	 * @return The Convergent Version of E<sub>2</sub> erf Hans-Heinrich-Burmann Series Term
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesGenerator Convergent()
+	public static final org.drip.function.numerical.R1ToR1SeriesTerm Convergent()
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			0,
-			1.
-		);
-
-		termWeightMap.put (
-			1,
-			-1. / 12.
-		);
-
-		termWeightMap.put (
-			2,
-			-7. / 480.
-		);
-
-		termWeightMap.put (
-			3,
-			-5. / 896.
-		);
-
-		termWeightMap.put (
-			4,
-			-787. / 276480.
-		);
-
-		try
+		return new org.drip.function.numerical.R1ToR1SeriesTerm()
 		{
-			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
-				org.drip.function.erf.HansHeinrichBurmannTerm.Convergent(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+			@Override public double value (
+				final int order,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("E2HansHeinrichBurmannTerm::Convergent::value => Invalid Inputs");
+				}
+
+				return 0 == order ? 1. : java.lang.Math.pow (
+					1. - java.lang.Math.exp (-1. * z * z),
+					order
+				);
+			}
+		};
 	}
 
 	/**
-	 * Construct the Schopf-Supancic (2014) Hans Heinrich Burmann Generator Version
+	 * Generate the Schopf-Supancic (2014) Version of E<sub>2</sub> erf Hans-Heinrich-Burmann Series Term
 	 * 
-	 * @return The Schopf-Supancic (2014) Hans Heinrich Burmann Generator Version
+	 * @return The Schopf-Supancic (2014) Version of E<sub>2</sub> erf Hans-Heinrich-Burmann Series Term
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesGenerator SchopfSupancic2014()
+	public static final org.drip.function.numerical.R1ToR1SeriesTerm SchopfSupancic2014()
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		termWeightMap.put (
-			0,
-			0.5 * java.lang.Math.sqrt (java.lang.Math.PI)
-		);
-
-		termWeightMap.put (
-			1,
-			31. / 200.
-		);
-
-		termWeightMap.put (
-			2,
-			-341. / 8000.
-		);
-
-		try
+		return new org.drip.function.numerical.R1ToR1SeriesTerm()
 		{
-			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
-				org.drip.function.erf.HansHeinrichBurmannTerm.SchopfSupancic2014(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+			@Override public double value (
+				final int order,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("E2HansHeinrichBurmannTerm::SchopfSupancic2014::value => Invalid Inputs");
+				}
+
+				return 0 == order ? 1. : java.lang.Math.exp (-1. * order * z * z);
+			}
+		};
 	}
 }

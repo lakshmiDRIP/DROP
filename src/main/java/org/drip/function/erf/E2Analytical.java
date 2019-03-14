@@ -64,7 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunctionInverse</i> implements the Error Function Inverse erf<sup>-1</sup>. The References are:
+ * <i>E2Analytical</i> implements Analytical Versions of the E<sub>2</sub> Error Function (erf) Estimate. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,53 +103,57 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionInverse extends org.drip.function.numerical.R1ToR1Estimator
+public class E2Analytical
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Construct Winitzki (2008) Version of the Analytical Error Function Inverse
+	 * Construct Winitzki (2008) Version of the E<sub>2</sub> erf Analytical
 	 * 
 	 * @param a a
+	 * @param maximumError Maximum Absolute Error
 	 * 
-	 * @return Winitzki (2008) Version of the Analytical Error Function Inverse
+	 * @return Winitzki (2008) Version of the E<sub>2</sub> erf Analytical
 	 */
 
-	public static final org.drip.function.erf.ErrorFunctionInverse Winitzki2008 (
-		final double a)
+	public static final org.drip.function.erf.E2AbramowitzStegun Winitzki2008 (
+		final double a,
+		final double maximumError)
 	{
 		try
 		{
 			return !org.drip.quant.common.NumberUtil.IsValid (a) ? null :
-				new org.drip.function.erf.ErrorFunctionInverse (
+				new org.drip.function.erf.E2AbramowitzStegun (
 					null,
-					null
+					null,
+					maximumError
 				)
 			{
 				@Override public double evaluate (
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z) || z <= -1. || z >= 1.)
+					if (!org.drip.quant.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
-							("ErrorFunctionInverse::Winitzki2008::evaluate => Invalid Inputs");
+							("E2Analytical::Winitzki2008::evaluate => Invalid Inputs");
 					}
 
-					double twoOverPIA = 2. / (java.lang.Math.PI * a);
+					if (0. == z)
+					{
+						return 0.;
+					}
 
-					double lnOneMinusZ2 = java.lang.Math.log (1. - z * z);
+					if (z < 0)
+					{
+						return -1. * evaluate (-1. * z);
+					}
 
-					double halfLnOneMinusZ2 = 0.5 * lnOneMinusZ2;
-					double twoOverPIAPlusHalfLnOneMinusZ2 = twoOverPIA + halfLnOneMinusZ2;
+					double z2 = z * z;
+					double az2 = a * z * z;
 
-					double erfi = java.lang.Math.sqrt (
-						java.lang.Math.sqrt (
-							twoOverPIAPlusHalfLnOneMinusZ2 * twoOverPIAPlusHalfLnOneMinusZ2 - (lnOneMinusZ2 / a)
-						) - twoOverPIAPlusHalfLnOneMinusZ2
+					return java.lang.Math.sqrt (1. - java.lang.Math.exp (
+						-1. * z2 * (az2 + (4. / java.lang.Math.PI)) / (az2 + 1.))
 					);
-
-					return erfi < 0. ? -1. * erfi : erfi;
 				}
 			};
 		}
@@ -161,138 +166,30 @@ public abstract class ErrorFunctionInverse extends org.drip.function.numerical.R
 	}
 
 	/**
-	 * Construct Winitzki (2008a) Version of the Analytical Error Function Inverse
+	 * Construct Winitzki (2008a) Version of E<sub>2</sub> erf Analytical
 	 * 
-	 * @return Winitzki (2008a) Version of the Analytical Error Function Inverse
+	 * @return Winitzki (2008a) Version of E<sub>2</sub> erf Analytical
 	 */
 
-	public static final org.drip.function.erf.ErrorFunctionInverse Winitzki2008a()
+	public static final org.drip.function.erf.E2AbramowitzStegun Winitzki2008a()
 	{
 		return Winitzki2008 (
-			8. * (java.lang.Math.PI - 3.) / (3. * java.lang.Math.PI * (4. - java.lang.Math.PI))
+			8. * (java.lang.Math.PI - 3.) / (3. * java.lang.Math.PI * (4. - java.lang.Math.PI)),
+			0.00035
 		);
 	}
 
 	/**
-	 * Construct Winitzki (2008b) Version of the Analytical Error Function Inverse
+	 * Construct Winitzki (2008b) Version of E<sub>2</sub> erf Analytical
 	 * 
-	 * @return Winitzki (2008b) Version of the Analytical Error Function Inverse
+	 * @return Winitzki (2008b) Version of E<sub>2</sub> erf Analytical
 	 */
 
-	public static final org.drip.function.erf.ErrorFunctionInverse Winitzki2008b()
+	public static final org.drip.function.erf.E2AbramowitzStegun Winitzki2008b()
 	{
-		return Winitzki2008 (0.147);
-	}
-
-	/**
-	 * Construct the Euler-MacLaurin Instance of the Error Function Inverse
-	 * 
-	 * @param termCount The Count of Approximation Terms
-	 * 
-	 * @return The Euler-MacLaurin Instance of the Error Function Inverse
-	 */
-
-	public static final ErrorFunctionInverse MacLaurin (
-		final int termCount)
-	{
-		final org.drip.function.erf.MacLaurinSeriesGenerator
-			errorFunctionInverseMacLaurinSeriesGenerator =
-				org.drip.function.erf.MacLaurinSeriesGenerator.ERFI (termCount);
-
-		if (null == errorFunctionInverseMacLaurinSeriesGenerator)
-		{
-			return null;
-		}
-
-		return new ErrorFunctionInverse (
-			errorFunctionInverseMacLaurinSeriesGenerator,
-			null
-		)
-		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z) || -1. >= z || 1. <= z)
-				{
-					throw new java.lang.Exception
-						("ErrorFunctionInverse::MacLaurin::evaluate => Invalid Inputs");
-				}
-
-				double erfi = errorFunctionInverseMacLaurinSeriesGenerator.cumulative (
-					0.,
-					z
-				);
-
-				return erfi > 1. ? 1. : erfi;
-			}
-		};
-	}
-
-	protected ErrorFunctionInverse (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
-	{
-		super (dc);
-
-		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
-	}
-
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
-		final double x)
-	{
-		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1SeriesGenerator.termWeightMap(),
-			_r1ToR1SeriesGenerator
+		return Winitzki2008 (
+			0.147,
+			0.00012
 		);
-	}
-
-	/**
-	 * Compute the Probit Value for the given p
-	 * 
-	 * @param p P
-	 * 
-	 * @return The Probit Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double probit (
-		final double p)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (p))
-		{
-			throw new java.lang.Exception ("ErrorFunctionInverse::probit => Invalid Inputs");
-		}
-
-		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
-	}
-
-	/**
-	 * Compute the Inverse CDF Value for the given p
-	 * 
-	 * @param p P
-	 * 
-	 * @return The Inverse CDF Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double inverseCDF (
-		final double p)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (p))
-		{
-			throw new java.lang.Exception ("ErrorFunctionInverse::inverseCDF => Invalid Inputs");
-		}
-
-		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);
 	}
 }

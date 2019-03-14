@@ -64,7 +64,7 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>ErrorFunction</i> implements the Error Function (erf). The References are:
+ * <i>EnMacLaurinSeriesTerm</i> implements the E<sub>2</sub> Error Function (erf). The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,32 +102,31 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public abstract class E2 extends org.drip.function.numerical.R1ToR1Estimator
 {
 	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
-	 * Construct the Euler-MacLaurin Instance of the ErrorFunction
+	 * Construct the Euler-MacLaurin Instance of the E<sub>2</sub> erf
 	 * 
 	 * @param termCount The Count of Approximation Terms
 	 * 
-	 * @return The Euler-MacLaurin Instance of the ErrorFunction
+	 * @return The Euler-MacLaurin Instance of the E<sub>2</sub> erf
 	 */
 
-	public static final ErrorFunction MacLaurin (
+	public static final E2 MacLaurin (
 		final int termCount)
 	{
-		final org.drip.function.erf.MacLaurinSeriesGenerator
-			errorFunctionMacLaurinSeriesGenerator = org.drip.function.erf.MacLaurinSeriesGenerator.ERF
-				(termCount);
+		final org.drip.function.erf.E2MacLaurinSeriesGenerator e2MacLaurinSeriesGenerator =
+			org.drip.function.erf.E2MacLaurinSeriesGenerator.ERF (termCount);
 
-		if (null == errorFunctionMacLaurinSeriesGenerator)
+		if (null == e2MacLaurinSeriesGenerator)
 		{
 			return null;
 		}
 
-		return new ErrorFunction (
-			errorFunctionMacLaurinSeriesGenerator,
+		return new E2 (
+			e2MacLaurinSeriesGenerator,
 			null
 		)
 		{
@@ -137,11 +136,11 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 			{
 				if (!org.drip.quant.common.NumberUtil.IsValid (z))
 				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
+					throw new java.lang.Exception ("E2::MacLaurin::evaluate => Invalid Inputs");
 				}
 
 				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					errorFunctionMacLaurinSeriesGenerator.cumulative (
+					e2MacLaurinSeriesGenerator.cumulative (
 						0.,
 						z
 					);
@@ -152,22 +151,22 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 	}
 
 	/**
-	 * Construct the Convergent Hans Heinrich Burmann Version of the ErrorFunction
+	 * Construct the Convergent Hans Heinrich Burmann Version of the E<sub>2</sub> erf
 	 * 
-	 * @return The Convergent Hans Heinrich Burmann Version of the ErrorFunction
+	 * @return The Convergent Hans Heinrich Burmann Version of the E<sub>2</sub> erf
 	 */
 
-	public static final ErrorFunction HansHeinrichBurmannConvergent()
+	public static final E2 HansHeinrichBurmannConvergent()
 	{
 		final org.drip.function.numerical.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
-			= org.drip.function.erf.HansHeinrichBurmannGenerator.Convergent();
+			= org.drip.function.erf.E2HansHeinrichBurmannGenerator.Convergent();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
 		{
 			return null;
 		}
 
-		return new ErrorFunction (
+		return new E2 (
 			hansHeinrichBurmannConvergentSeriesGenerator,
 			null
 		)
@@ -179,7 +178,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 				if (!org.drip.quant.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
-						("ErrorFunction::HansHeinrichBurmannConvergent::evaluate => Invalid Inputs");
+						("E2::HansHeinrichBurmannConvergent::evaluate => Invalid Inputs");
 				}
 
 				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
@@ -195,22 +194,22 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 	}
 
 	/**
-	 * Construct the Schopf-Supancic (2014) Hans Heinrich Burmann Version of the ErrorFunction
+	 * Construct the Schopf-Supancic (2014) Hans Heinrich Burmann Version of the E<sub>2</sub> erf
 	 * 
-	 * @return The Schopf-Supancic (2014) Hans Heinrich Burmann Version of the ErrorFunction
+	 * @return The Schopf-Supancic (2014) Hans Heinrich Burmann Version of the E<sub>2</sub> erf
 	 */
 
-	public static final ErrorFunction HansHeinrichBurmannSchopfSupancic2014()
+	public static final E2 HansHeinrichBurmannSchopfSupancic2014()
 	{
 		final org.drip.function.numerical.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
-			= org.drip.function.erf.HansHeinrichBurmannGenerator.SchopfSupancic2014();
+			= org.drip.function.erf.E2HansHeinrichBurmannGenerator.SchopfSupancic2014();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
 		{
 			return null;
 		}
 
-		return new ErrorFunction (
+		return new E2 (
 			hansHeinrichBurmannConvergentSeriesGenerator,
 			null
 		)
@@ -222,7 +221,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 				if (!org.drip.quant.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
-						("ErrorFunction::HansHeinrichBurmannSchopfSupancic2014::evaluate => Invalid Inputs");
+						("E2::HansHeinrichBurmannSchopfSupancic2014::evaluate => Invalid Inputs");
 				}
 
 				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
@@ -237,7 +236,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		};
 	}
 
-	protected ErrorFunction (
+	protected E2 (
 		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
 		final org.drip.quant.calculus.DerivativeControl dc)
 	{
@@ -254,7 +253,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		if (!org.drip.quant.common.NumberUtil.IsValid (z) ||
 			1 > order)
 		{
-			throw new java.lang.Exception ("ErrorFunction::derivative => Invalid Inputs");
+			throw new java.lang.Exception ("E2::derivative => Invalid Inputs");
 		}
 
 		return 1 == order ? 2. * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI) :
@@ -347,5 +346,37 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		throws java.lang.Exception
 	{
 		return 1. - evaluate (x);
+	}
+
+	/**
+	 * Compute the E<sub>2</sub> erf Gaussian Density Integral over -inf to +inf
+	 * 
+	 * @param a The Scale Parameter
+	 * @param b The Displacement Parameter
+	 * @param r1UnivariateNormal The R<sup>1</sup> Gaussian Distribution Parameters
+	 * 
+	 * @return The E<sub>2</sub> erf Gaussian Density Integral over -inf to +inf
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double gaussianDensityIntegral (
+		final double a,
+		final double b,
+		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (a) ||
+			!org.drip.quant.common.NumberUtil.IsValid (b) ||
+			null == r1UnivariateNormal)
+		{
+			throw new java.lang.Exception ("E2::gaussianDensityIntegral => Invalid Inputs");
+		}
+
+		double sigma = r1UnivariateNormal.variance();
+
+		return evaluate (
+			(a * r1UnivariateNormal.mean() + b) / java.lang.Math.sqrt (1. + 2 * sigma * sigma * a * a)
+		);
 	}
 }

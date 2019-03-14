@@ -3,7 +3,7 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erf.BuiltInE2Entry;
 import org.drip.function.erfc.ErrorFunctionComplement;
 import org.drip.function.erfc.ErrorFunctionComplementAnalytical;
 import org.drip.quant.common.FormatUtil;
@@ -120,14 +120,14 @@ public class ERFCKaragiannidisLioumpas
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
 		ErrorFunctionComplement erfKaragiannidisLioumpas =
 			ErrorFunctionComplementAnalytical.KaragiannidisLioumpas2007();
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|           Karagiannidis-Lioumpas erfc Estimate      ||");
+		System.out.println ("\t|         Karagiannidis-Lioumpas erfc Estimate        ||");
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
@@ -143,7 +143,7 @@ public class ERFCKaragiannidisLioumpas
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double x = builtInTableEntry.getKey();
 

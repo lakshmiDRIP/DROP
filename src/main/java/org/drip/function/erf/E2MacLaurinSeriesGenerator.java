@@ -1,12 +1,5 @@
 
-package org.drip.sample.errorfunction;
-
-import java.util.Map;
-
-import org.drip.function.erf.BuiltInE2Entry;
-import org.drip.function.erf.E2;
-import org.drip.quant.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.erf;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -71,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFHansHeinrichBurmannConvergent</i> illustrates the Error Function Estimation based on the Convergent
- * Hans-Heinrich-Burmann Series. The References are:
+ * <i>E2MacLaurinSeriesGenerator</i> implements the E<sub>2</sub> MacLaurin Series Term Generator. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,61 +97,146 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/errorfunction/README.md">Error Function Variants Numerical Estimate</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">Implementation of Error Function Variants</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFHansHeinrichBurmannConvergent
+public class E2MacLaurinSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Generate the ERFI E<sub>2</sub> MacLaurin Coefficient corresponding to the specified Series Index
+	 * 
+	 * @param seriesIndex Series Index
+	 * 
+	 * @return The ERFI E<sub>2</sub> MacLaurin Coefficient corresponding to the specified Series Index
+	 */
+
+	public static final double ERFICoefficient (
+		final int seriesIndex)
 	{
-		EnvManager.InitEnv ("");
-
-		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
-
-		E2 erfHansHeinrichBurmannConvergent = E2.HansHeinrichBurmannConvergent();
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|         Hans Heinrich Burmann erf Estimate          ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                      ||");
-
-		System.out.println ("\t|                - x                                  ||");
-
-		System.out.println ("\t|                - Built-in Estimate                  ||");
-
-		System.out.println ("\t|                - Hans Heinrich Burmann Estimate     ||");
-
-		System.out.println ("\t|                - Hans Heinrich Burmann Error        ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
+		if (0 >= seriesIndex)
 		{
-			double x = builtInTableEntry.getKey();
+			return 1.;
+		}
 
-			double erfTable = builtInTableEntry.getValue().erf();
+		double seriesIndexLoader = 0.;
 
-			double erfEstimate = erfHansHeinrichBurmannConvergent.evaluate (x);
+		for (int termIndex = 0; termIndex < seriesIndex; ++termIndex)
+		{
+			seriesIndexLoader = seriesIndexLoader +
+				ERFICoefficient (termIndex) * ERFICoefficient (seriesIndex - 1 - termIndex)
+				/ ((1. + termIndex) * (1. + 2. * termIndex));
+		}
 
-			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfEstimate, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (Math.abs (erfEstimate - erfTable), 1, 9, 1.) + " ||"
+		return seriesIndexLoader;
+	}
+
+	/**
+	 * Construct the E<sub>2</sub> erf E2MacLaurinSeriesGenerator Version
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return E<sub>2</sub> erf E2MacLaurinSeriesGenerator Version
+	 */
+
+	public static final E2MacLaurinSeriesGenerator ERF (
+		final int termCount)
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		double signedInverseFactorial = 1.;
+
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		{
+			signedInverseFactorial = 0 == termIndex ? 1. : signedInverseFactorial * -1. / termIndex;
+
+			termWeightMap.put (
+				termIndex,
+				signedInverseFactorial / (2. * termIndex + 1.)
 			);
 		}
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		try
+		{
+			return new E2MacLaurinSeriesGenerator (
+				new org.drip.function.erf.E2MacLaurinSeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		EnvManager.TerminateEnv();
+		return null;
+	}
+
+	/**
+	 * Construct the E<sub>2</sub> erfi E2MacLaurinSeriesGenerator Version
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The E<sub>2</sub> erfi E2MacLaurinSeriesGenerator Version
+	 */
+
+	public static final E2MacLaurinSeriesGenerator ERFI (
+		final int termCount)
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		double sqrtPIOver2 = 0.5 * java.lang.Math.sqrt (java.lang.Math.PI);
+
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		{
+			int twoKPlusOne = 2 * termIndex + 1;
+
+			termWeightMap.put (
+				termIndex,
+				(termIndex % 2 == 0 ? 1. : -1.) * ERFICoefficient (termIndex) * java.lang.Math.pow (
+					sqrtPIOver2,
+					twoKPlusOne
+				) / twoKPlusOne
+			);
+		}
+
+		try
+		{
+			return new E2MacLaurinSeriesGenerator (
+				new org.drip.function.erf.E2MacLaurinSeriesTerm(),
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * E2MacLaurinSeriesGenerator Constructor
+	 * 
+	 * @param e2MacLaurinSeriesGenerator E<sub>2</sub> erf MacLaurin Series Term
+	 * @param termWeightMap Series Term Weight Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public E2MacLaurinSeriesGenerator (
+		final org.drip.function.erf.E2MacLaurinSeriesTerm e2MacLaurinSeriesGenerator,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
+		throws java.lang.Exception
+	{
+		super (
+			e2MacLaurinSeriesGenerator,
+			false,
+			termWeightMap
+		);
 	}
 }

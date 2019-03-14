@@ -3,9 +3,9 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.AbramowitzStegun;
-import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunctionAnalytical;
+import org.drip.function.erf.E2AbramowitzStegun;
+import org.drip.function.erf.BuiltInE2Entry;
+import org.drip.function.erf.E2Analytical;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -120,9 +120,9 @@ public class ERFWinitzki2008b
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
-		AbramowitzStegun erfWinitzki = ErrorFunctionAnalytical.Winitzki2008b();
+		E2AbramowitzStegun erfWinitzki = E2Analytical.Winitzki2008b();
 
 		double maximumError = erfWinitzki.maximumError();
 
@@ -146,7 +146,7 @@ public class ERFWinitzki2008b
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double x = builtInTableEntry.getKey();
 

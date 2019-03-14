@@ -3,7 +3,7 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.MacLaurinSeriesGenerator;
+import org.drip.function.erf.E2MacLaurinSeriesGenerator;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -149,7 +149,7 @@ public class ERFIMacLaurinGenerator
 		{
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (coefficientTermIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (MacLaurinSeriesGenerator.ERFICoefficient (coefficientTermIndex), 2, 9, 1.) + " ||"
+				FormatUtil.FormatDouble (E2MacLaurinSeriesGenerator.ERFICoefficient (coefficientTermIndex), 2, 9, 1.) + " ||"
 			);
 		}
 
@@ -157,7 +157,7 @@ public class ERFIMacLaurinGenerator
 
 		System.out.println();
 
-		Map<Integer, Double> termWeightMap = MacLaurinSeriesGenerator.ERFI (seriesTermCount).termWeightMap();
+		Map<Integer, Double> termWeightMap = E2MacLaurinSeriesGenerator.ERFI (seriesTermCount).termWeightMap();
 
 		System.out.println ("\t|------------------------------------||");
 

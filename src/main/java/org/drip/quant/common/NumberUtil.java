@@ -645,7 +645,7 @@ public class NumberUtil {
 
 		for (int index = 1; index <= n; ++index)
 		{
-			doubleFactorial = doubleFactorial * (2. * n + 1.);
+			doubleFactorial = doubleFactorial * (2. * n - 1.);
 		}
 
 		return doubleFactorial;

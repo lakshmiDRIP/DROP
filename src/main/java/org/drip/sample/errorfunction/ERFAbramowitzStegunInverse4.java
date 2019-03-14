@@ -3,8 +3,8 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.AbramowitzStegun;
-import org.drip.function.erf.BuiltInEntry;
+import org.drip.function.erf.E2AbramowitzStegun;
+import org.drip.function.erf.BuiltInE2Entry;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -119,9 +119,9 @@ public class ERFAbramowitzStegunInverse4
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
-		AbramowitzStegun erfAbramowitzStegun = AbramowitzStegun.InversePolynomial4();
+		E2AbramowitzStegun erfAbramowitzStegun = E2AbramowitzStegun.InversePolynomial4();
 
 		double maximumError = erfAbramowitzStegun.maximumError();
 
@@ -145,7 +145,7 @@ public class ERFAbramowitzStegunInverse4
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double x = builtInTableEntry.getKey();
 

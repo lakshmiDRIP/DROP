@@ -3,8 +3,8 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunction;
+import org.drip.function.erf.BuiltInE2Entry;
+import org.drip.function.erf.E2;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -119,10 +119,10 @@ public class ERFHansHeinrichBurmannSchopfSupancic
 	{
 		EnvManager.InitEnv ("");
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
-		ErrorFunction erfHansHeinrichBurmannSchopfSupancic =
-			ErrorFunction.HansHeinrichBurmannSchopfSupancic2014();
+		E2 erfHansHeinrichBurmannSchopfSupancic =
+			E2.HansHeinrichBurmannSchopfSupancic2014();
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
@@ -142,7 +142,7 @@ public class ERFHansHeinrichBurmannSchopfSupancic
 
 		System.out.println ("\t|-----------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double x = builtInTableEntry.getKey();
 

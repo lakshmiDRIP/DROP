@@ -1,5 +1,5 @@
 
-package org.drip.function.erf;
+package org.drip.function.erfc;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>MacLaurinSeriesTerm</i> implements the MacLaurin Series Term. This is used for both erf and erfi. The
- * References are:
+ * <i>InverseFactorialExpansion</i> implements the Term and the Generator in the Inverse Factorial Expansion
+ * of Error Function Complement (erfc). The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,31 +103,83 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MacLaurinSeriesTerm extends org.drip.function.numerical.R1ToR1SeriesTerm
+public class InverseFactorialExpansion
 {
 
 	/**
-	 * Empty MacLaurinSeriesTerm Constructor
+	 * Construct the Inverse Factorial Version of Error Function Complement Series Term
+	 * 
+	 * @return The Inverse Factorial Version of Error Function Complement Series Term
 	 */
 
-	public MacLaurinSeriesTerm()
+	public static final org.drip.function.numerical.R1ToR1SeriesTerm SeriesTerm()
 	{
+		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		{
+
+			@Override public double value (
+				final int order,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("InverseFactorialExpansion::SeriesTerm::value => Invalid Inputs");
+				}
+
+				double z2 = z * z;
+				double seriesTerm = 1.;
+
+				for (int seriesTermIndex = 1; seriesTermIndex <= order; ++seriesTermIndex)
+				{
+					seriesTerm = seriesTerm * (z2 + seriesTermIndex);
+				}
+
+				return 0 == order ? 1. : 1. / seriesTerm;
+			}
+		};
 	}
 
-	@Override public double value (
-		final int order,
-		final double z)
-		throws java.lang.Exception
+	/**
+	 * Construct the Inverse Factorial Version of Error Function Complement Series Generator
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The Inverse Factorial Version of Error Function Complement Series Generator
+	 */
+
+	public static final org.drip.function.numerical.R1ToR1SeriesGenerator SeriesGenerator (
+		final int termCount)
 	{
-		if (0 > order ||
-			!org.drip.quant.common.NumberUtil.IsValid (z))
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		try
 		{
-			throw new java.lang.Exception ("MacLaurinSeriesTerm::value => Invalid Inputs");
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					(1 == termIndex % 2 ? -1. : 1.) * java.lang.Math.pow (
+						0.5,
+						termIndex
+					)
+				);
+			}
+
+			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+				SeriesTerm(),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		return java.lang.Math.pow (
-			z,
-			2 * order + 1
-		);
+		return null;
 	}
 }

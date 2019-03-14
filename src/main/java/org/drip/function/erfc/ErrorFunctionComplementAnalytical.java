@@ -106,6 +106,25 @@ package org.drip.function.erfc;
 public class ErrorFunctionComplementAnalytical
 {
 
+	private static final double ContinuedFractionRecursor (
+		final double z,
+		final int termIndex,
+		final int termCount)
+	{
+		if (termIndex == termCount)
+		{
+			return 0.;
+		}
+
+		return ((1 == termIndex % 2) ? z * z : 1.) + 0.5 * termIndex / (
+			1. + ContinuedFractionRecursor (
+				z,
+				termIndex + 1,
+				termCount
+			)
+		);
+	}
+
 	/**
 	 * Construct Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
 	 * 
@@ -301,6 +320,52 @@ public class ErrorFunctionComplementAnalytical
 
 				return java.lang.Math.sqrt (2. * java.lang.Math.E * (beta - 1.) / java.lang.Math.PI) *
 					java.lang.Math.exp (-1. * beta * z * z) / beta;
+			}
+		};
+	}
+
+	/**
+	 * Construct the Continued Fraction Expansion Version of the Analytical Error Function Complement
+	 * 
+	 * @param termCount Term Count
+	 * 
+	 * @return The Continued Fraction Expansion Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement ContinuedFractionExpansion (
+		final int termCount)
+	{
+		return 0 >= termCount ? null : new org.drip.function.erfc.ErrorFunctionComplement (
+			null,
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ErrorFunctionComplementAnalytical::ContinuedFractionExpansion::evaluate => Invalid Inputs");
+				}
+
+				if (0. == z)
+				{
+					return 1.;
+				}
+
+				if (z < 0)
+				{
+					return 2. - evaluate (-1. * z);
+				}
+
+				return z * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI) /
+					ContinuedFractionRecursor (
+						z,
+						1,
+						termCount
+					);
 			}
 		};
 	}

@@ -3,8 +3,8 @@ package org.drip.sample.errorfunction;
 
 import java.util.Map;
 
-import org.drip.function.erf.BuiltInEntry;
-import org.drip.function.erf.ErrorFunctionInverse;
+import org.drip.function.erf.BuiltInE2Entry;
+import org.drip.function.erf.E2Inverse;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -123,13 +123,13 @@ public class ERFIMacLaurin
 		int termCount10 = 10;
 		int termCount15 = 15;
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+		Map<Double, BuiltInE2Entry> builtInTable = BuiltInE2Entry.Table();
 
-		ErrorFunctionInverse erfiMacLaurin5 = ErrorFunctionInverse.MacLaurin (termCount5);
+		E2Inverse erfiMacLaurin5 = E2Inverse.MacLaurin (termCount5);
 
-		ErrorFunctionInverse erfiMacLaurin10 = ErrorFunctionInverse.MacLaurin (termCount10);
+		E2Inverse erfiMacLaurin10 = E2Inverse.MacLaurin (termCount10);
 
-		ErrorFunctionInverse erfiMacLaurin15 = ErrorFunctionInverse.MacLaurin (termCount15);
+		E2Inverse erfiMacLaurin15 = E2Inverse.MacLaurin (termCount15);
 
 		System.out.println ("\t|---------------------------------------------------------------------------||");
 
@@ -151,7 +151,7 @@ public class ERFIMacLaurin
 
 		System.out.println ("\t|---------------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		for (Map.Entry<Double, BuiltInE2Entry> builtInTableEntry : builtInTable.entrySet())
 		{
 			double erf = builtInTableEntry.getValue().erf();
 

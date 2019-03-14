@@ -64,8 +64,8 @@ package org.drip.function.erf;
  */
 
 /**
- * <i>BuiltInEntry</i> implements the Entries of the Built-in Table of erf and erfc Values. The References
- * are:
+ * <i>BuiltInE2Entry</i> implements E<sub>2</sub> Entries of the Built-in Table of erf and erfc Values. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,27 +103,27 @@ package org.drip.function.erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BuiltInEntry
+public class BuiltInE2Entry
 {
 	private double _erf = java.lang.Double.NaN;
 	private double _erfc = java.lang.Double.NaN;
 
 	/**
-	 * Generate a Table of Built-in erf/erfc Entries
+	 * Generate a Table of Built-in E<sub>2</sub> erf/erfc Entries
 	 * 
-	 * @return The Table of Built-in erf/erfc Entries
+	 * @return The Table of Built-in E<sub>2</sub> erf/erfc Entries
 	 */
 
-	public static final java.util.Map<java.lang.Double, BuiltInEntry> Table()
+	public static final java.util.Map<java.lang.Double, BuiltInE2Entry> Table()
 	{
-		java.util.Map<java.lang.Double, BuiltInEntry> builtInEntryTable = new
-			java.util.TreeMap<java.lang.Double, BuiltInEntry>();
+		java.util.Map<java.lang.Double, BuiltInE2Entry> builtInEntryTable = new
+			java.util.TreeMap<java.lang.Double, BuiltInE2Entry>();
 
 		try
 		{
 			builtInEntryTable.put (
 				0.00,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.000000000,
 					1.000000000
 				)
@@ -131,7 +131,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.02,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.022564575,
 					0.977435425
 				)
@@ -139,7 +139,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.04,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.045111106,
 					0.954888894
 				)
@@ -147,7 +147,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.06,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.067621594,
 					0.932378406
 				)
@@ -155,7 +155,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.08,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.090078126,
 					0.909921874
 				)
@@ -163,7 +163,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.10,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.112462916,
 					0.887537084
 				)
@@ -171,7 +171,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.20,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.222792589,
 					0.777297411
 				)
@@ -179,7 +179,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.30,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.328626759,
 					0.671373241
 				)
@@ -187,7 +187,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.40,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.428392355,
 					0.571607645
 				)
@@ -195,7 +195,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.50,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.520499878,
 					0.479500122
 				)
@@ -203,7 +203,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.60,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.603856091,
 					0.396143909
 				)
@@ -211,7 +211,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.70,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.677801194,
 					0.322198806
 				)
@@ -219,7 +219,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.80,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.742100965,
 					0.257899035
 				)
@@ -227,7 +227,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				0.90,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.796908212,
 					0.203091788
 				)
@@ -235,7 +235,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.00,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.842700793,
 					0.157299207
 				)
@@ -243,7 +243,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.10,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.880205070,
 					0.119794930
 				)
@@ -251,7 +251,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.20,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.910313978,
 					0.089686022
 				)
@@ -259,7 +259,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.30,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.934007945,
 					0.065992055
 				)
@@ -267,7 +267,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.40,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.952285120,
 					0.047714880
 				)
@@ -275,7 +275,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.50,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.966105146,
 					0.033894854
 				)
@@ -283,7 +283,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.60,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.976348383,
 					0.023651617
 				)
@@ -291,7 +291,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.70,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.983790459,
 					0.016209541
 				)
@@ -299,7 +299,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.80,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.989090502,
 					0.010909498
 				)
@@ -307,7 +307,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				1.90,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.992790429,
 					0.007209571
 				)
@@ -315,7 +315,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				2.00,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.995322265,
 					0.004677735
 				)
@@ -323,7 +323,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				2.10,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.997020533,
 					0.002979467
 				)
@@ -331,7 +331,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				2.20,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.998137154,
 					0.001862846
 				)
@@ -339,7 +339,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				2.30,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.998856823,
 					0.001143177
 				)
@@ -347,7 +347,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				2.40,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.999311486,
 					0.000688514
 				)
@@ -355,7 +355,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				2.50,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.999593048,
 					0.000406952
 				)
@@ -363,7 +363,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				3.00,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.999977910,
 					0.000022090
 				)
@@ -371,7 +371,7 @@ public class BuiltInEntry
 
 			builtInEntryTable.put (
 				3.50,
-				new BuiltInEntry (
+				new BuiltInE2Entry (
 					0.999999257,
 					0.000000743
 				)
@@ -390,13 +390,13 @@ public class BuiltInEntry
 	/**
 	 * BuiltInEntry Constructor
 	 * 
-	 * @param erf erf Value
-	 * @param erfc erfc Value
+	 * @param erf E<sub>2</sub> erf Value
+	 * @param erfc E<sub>2</sub> erfc Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BuiltInEntry (
+	public BuiltInE2Entry (
 		final double erf,
 		final double erfc)
 		throws java.lang.Exception
@@ -404,14 +404,14 @@ public class BuiltInEntry
 		if (!org.drip.quant.common.NumberUtil.IsValid (_erf = erf) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_erfc = erfc))
 		{
-			throw new java.lang.Exception ("BuiltInEntry Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BuiltInE2Entry Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the erf
+	 * Retrieve the E<sub>2</sub> erf
 	 * 
-	 * @return The erf
+	 * @return The E<sub>2</sub> erf
 	 */
 
 	public double erf()
@@ -420,9 +420,9 @@ public class BuiltInEntry
 	}
 
 	/**
-	 * Retrieve the erfc
+	 * Retrieve the E<sub>2</sub> erfc
 	 * 
-	 * @return The erfc
+	 * @return The E<sub>2</sub> erfc
 	 */
 
 	public double erfc()
