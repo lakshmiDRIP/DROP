@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorFunctionComplementAnalytical.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.erfc</a> &gt; <span class="el_source">ErrorFunctionComplementAnalytical.java</span></div><h1>ErrorFunctionComplementAnalytical.java</h1><pre class="source lang-java linenums">
+package org.drip.function.erfc;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ErrorFunctionComplementAnalytical&lt;/i&gt; implements Analytical Versions of the Error Function Complement
+ * (erfc) Estimate. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error
+ * 				Function &lt;i&gt;IEEE Transactions on Communications&lt;/i&gt; &lt;b&gt;59 (11)&lt;/b&gt; 2939-2944
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function
+ * 				Routines and Test Drivers &lt;i&gt;ACM Transactions on Mathematical Software&lt;/i&gt; &lt;b&gt;19 (1)&lt;/b&gt;
+ * 				22-32
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of
+ * 				Linear and Non-linear Heat Transfer and Diffusion
+ * 				https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md&quot;&gt;Implementation of Error Function Variants&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L106">public class ErrorFunctionComplementAnalytical</span>
+{
+
+	/**
+	 * Construct Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 * 
+	 * @param A A
+	 * @param B B
+	 * 
+	 * @return Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement KaragiannidisLioumpas2007 (
+		final double A,
+		final double B)
+	{
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		return !org.drip.quant.common.NumberUtil.IsValid (A) || !org.drip.quant.common.NumberUtil.IsValid (B)</span>
+			? null : new org.drip.function.erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
+<span class="nc" id="L127">		{</span>
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L132" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L134">					throw new java.lang.Exception</span>
+						(&quot;ErrorFunctionComplementAnalytical::KaragiannidisLioumpas2007::evaluate =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (0. == z)</span>
+				{
+<span class="nc" id="L140">					return 1.;</span>
+				}
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">				if (z &lt; 0)</span>
+				{
+<span class="nc" id="L145">					return 2. - evaluate (-1. * z);</span>
+				}
+
+<span class="nc" id="L148">				return (1. - java.lang.Math.exp (-1. * A * z)) * java.lang.Math.exp (-1. * z * z) /</span>
+<span class="nc" id="L149">					(B * z * java.lang.Math.sqrt (java.lang.Math.PI));</span>
+			}
+		};
+	}
+
+	/**
+	 * Construct Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 * 
+	 * @return Karagiannidis-Lioumpas (2007) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement KaragiannidisLioumpas2007()
+	{
+<span class="nc" id="L162">		return KaragiannidisLioumpas2007 (</span>
+			1.980,
+			1.135
+		);
+	}
+
+	/**
+	 * Construct the Chiani-Dardari-Simon (2012a) Version of the Analytical Error Function Complement
+	 * 
+	 * @return The Chiani-Dardari-Simon (2012a) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement ChianiDardariSimon2012a()
+	{
+<span class="nc" id="L176">		return new org.drip.function.erfc.ErrorFunctionComplement (</span>
+			null,
+			null
+		)
+<span class="nc" id="L180">		{</span>
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L185" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L187">					throw new java.lang.Exception</span>
+						(&quot;ErrorFunctionComplementAnalytical::ChianiDardariSimon2012a::evaluate =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc bnc" id="L191" title="All 2 branches missed.">				if (0. == z)</span>
+				{
+<span class="nc" id="L193">					return 1.;</span>
+				}
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">				if (z &lt; 0)</span>
+				{
+<span class="nc" id="L198">					return 2. - evaluate (-1. * z);</span>
+				}
+
+<span class="nc" id="L201">				return 0.5 * java.lang.Math.exp (-2. * z * z) + 0.5 * java.lang.Math.exp (-1. * z * z);</span>
+			}
+
+			@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
+				final double z)
+			{
+				try
+				{
+<span class="nc" id="L209">					double baseline = evaluate (z);</span>
+
+<span class="nc" id="L211">					return new org.drip.function.numerical.R1Estimate (</span>
+						baseline,
+						baseline,
+<span class="nc" id="L214">						java.lang.Math.exp (-1. * z * z)</span>
+					);
+				}
+<span class="nc" id="L217">				catch (java.lang.Exception e)</span>
+				{
+<span class="nc" id="L219">					e.printStackTrace();</span>
+				}
+
+<span class="nc" id="L222">				return null;</span>
+			}
+		};
+	}
+
+	/**
+	 * Construct the Chiani-Dardari-Simon (2012b) Version of the Analytical Error Function Complement
+	 * 
+	 * @return The Chiani-Dardari-Simon (2012b) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement ChianiDardariSimon2012b()
+	{
+<span class="nc" id="L235">		return new org.drip.function.erfc.ErrorFunctionComplement (</span>
+			null,
+			null
+		)
+<span class="nc" id="L239">		{</span>
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L244" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L246">					throw new java.lang.Exception</span>
+						(&quot;ErrorFunctionComplementAnalytical::ChianiDardariSimon2012b::evaluate =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc bnc" id="L250" title="All 2 branches missed.">				if (0. == z)</span>
+				{
+<span class="nc" id="L252">					return 1.;</span>
+				}
+
+<span class="nc bnc" id="L255" title="All 2 branches missed.">				if (z &lt; 0)</span>
+				{
+<span class="nc" id="L257">					return 2. - evaluate (-1. * z);</span>
+				}
+
+<span class="nc" id="L260">				return java.lang.Math.exp (-1. * z * z) / 6. + 0.5 * java.lang.Math.exp (-4. * z * z / 3.);</span>
+			}
+		};
+	}
+
+	/**
+	 * Construct the Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
+	 * 
+	 * @param Beta Beta
+	 * 
+	 * @return The Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
+	 */
+
+	public static final org.drip.function.erfc.ErrorFunctionComplement ChangCosmanMilstein2011 (
+		final double beta)
+	{
+<span class="nc bnc" id="L276" title="All 4 branches missed.">		return !org.drip.quant.common.NumberUtil.IsValid (beta) || 1. &gt;= beta ? null :</span>
+			new org.drip.function.erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
+<span class="nc" id="L281">		{</span>
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L286" title="All 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L288">					throw new java.lang.Exception</span>
+						(&quot;ErrorFunctionComplementAnalytical::ChangCosmanMilstein2011::evaluate =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc bnc" id="L292" title="All 2 branches missed.">				if (0. == z)</span>
+				{
+<span class="nc" id="L294">					return 1.;</span>
+				}
+
+<span class="nc bnc" id="L297" title="All 2 branches missed.">				if (z &lt; 0)</span>
+				{
+<span class="nc" id="L299">					return 2. - evaluate (-1. * z);</span>
+				}
+
+<span class="nc" id="L302">				return java.lang.Math.sqrt (2. * java.lang.Math.E * (beta - 1.) / java.lang.Math.PI) *</span>
+<span class="nc" id="L303">					java.lang.Math.exp (-1. * beta * z * z) / beta;</span>
+			}
+		};
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

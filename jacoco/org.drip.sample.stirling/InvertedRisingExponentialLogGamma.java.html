@@ -147,9 +147,9 @@ import org.drip.service.env.EnvManager;
 <span class="nc" id="L147">			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialCorrectionEstimate</span>
 <span class="nc" id="L148">				(factorialIndex);</span>
 
-<span class="nc" id="L150">			double zeroOrder = numericalApproximation.zeroOrder();</span>
+<span class="nc" id="L150">			double zeroOrder = numericalApproximation.baseline();</span>
 
-<span class="nc" id="L152">			double totalCorrection = numericalApproximation.correction();</span>
+<span class="nc" id="L152">			double totalCorrection = numericalApproximation.seriesCumulative();</span>
 
 <span class="nc" id="L154">			System.out.println (</span>
 <span class="nc" id="L155">				&quot;\t| &quot; + FormatUtil.FormatDouble (factorialIndex, 2, 0, 1.) + &quot; =&gt; &quot; +</span>
@@ -189,13 +189,13 @@ import org.drip.service.env.EnvManager;
 <span class="nc" id="L189">			R1Estimate numericalApproximation = raabeLogGamma.invertedRisingExponentialCorrectionEstimate</span>
 <span class="nc" id="L190">				(factorialIndex);</span>
 
-<span class="nc" id="L192">			double firstOrderCorrection = numericalApproximation.orderCorrection (1);</span>
+<span class="nc" id="L192">			double firstOrderCorrection = numericalApproximation.orderSeries (1);</span>
 
-<span class="nc" id="L194">			double secondOrderCorrection = numericalApproximation.orderCorrection (2);</span>
+<span class="nc" id="L194">			double secondOrderCorrection = numericalApproximation.orderSeries (2);</span>
 
-<span class="nc" id="L196">			double thirdOrderCorrection = numericalApproximation.orderCorrection (3);</span>
+<span class="nc" id="L196">			double thirdOrderCorrection = numericalApproximation.orderSeries (3);</span>
 
-<span class="nc" id="L198">			double fourthOrderCorrection = numericalApproximation.orderCorrection (4);</span>
+<span class="nc" id="L198">			double fourthOrderCorrection = numericalApproximation.orderSeries (4);</span>
 
 <span class="nc" id="L200">			double totalCorrection = firstOrderCorrection + secondOrderCorrection + thirdOrderCorrection +</span>
 				fourthOrderCorrection;
