@@ -130,7 +130,7 @@ public class BasisSplineTermStructure extends org.drip.analytics.definition.Node
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iPredictorOrdinate))
 			throw new java.lang.Exception ("BasisSplineTermStructure::nodeDerivative => Invalid Inputs");
 
 		double dblSpanLeft = _span.left();

@@ -1,8 +1,8 @@
 
 package org.drip.sample.simmvariance;
 
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.commodity.CTSettingsContainer20;
 import org.drip.simm.commodity.CTSettingsContainer21;

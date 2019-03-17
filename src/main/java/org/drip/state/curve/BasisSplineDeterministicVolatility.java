@@ -148,7 +148,7 @@ public class BasisSplineDeterministicVolatility extends org.drip.state.volatilit
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iDate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate))
 			throw new java.lang.Exception
 				("BasisSplineDeterministicVolatility::nodeDerivative => Invalid Inputs");
 

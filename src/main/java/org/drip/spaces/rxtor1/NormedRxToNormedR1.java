@@ -153,7 +153,7 @@ public abstract class NormedRxToNormedR1 {
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
 			throw new java.lang.Exception ("NormedRxToNormedR1::sampleCoveringNumber => Invalid Inputs");
 
 		return sampleMetricNorm (gvvi) / dblCover;
@@ -175,7 +175,7 @@ public abstract class NormedRxToNormedR1 {
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
 			throw new java.lang.Exception
 				("NormedRxToNormedR1::sampleSupremumCoveringNumber => Invalid Inputs");
 
@@ -232,7 +232,7 @@ public abstract class NormedRxToNormedR1 {
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
 			throw new java.lang.Exception ("NormedRxToNormedR1::populationCoveringNumber => Invalid Inputs");
 
 		return populationMetricNorm() / dblCover;
@@ -252,7 +252,7 @@ public abstract class NormedRxToNormedR1 {
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
 			throw new java.lang.Exception
 				("NormedRxToNormedR1::populationSupremumCoveringNumber => Invalid Inputs");
 

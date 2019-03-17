@@ -124,7 +124,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aadblAlphaUncertainty[i] || !org.drip.quant.common.NumberUtil.IsValid
+			if (null == _aadblAlphaUncertainty[i] || !org.drip.numerical.common.NumberUtil.IsValid
 				(_aadblAlphaUncertainty[i]) || iNumAsset != _aadblAlphaUncertainty[i].length)
 				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
 		}
@@ -134,7 +134,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aadblAssetCovariance[i] || !org.drip.quant.common.NumberUtil.IsValid
+			if (null == _aadblAssetCovariance[i] || !org.drip.numerical.common.NumberUtil.IsValid
 				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)
 				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
 		}

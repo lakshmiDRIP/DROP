@@ -141,7 +141,7 @@ public class LimitTradesTermIssuerSell extends
 				int iNumAsset = adblIssuerSelection.length;
 				double dblTradeCount = 0;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitTradesTermIssuerSell::rdToR1::evaluate => Invalid Variate Dimension");

@@ -103,8 +103,8 @@ public class CTDEntry {
 		final double dblForwardPrice)
 		throws java.lang.Exception
 	{
-		if (null == (_bond = bond) || !org.drip.quant.common.NumberUtil.IsValid (_dblConversionFactor =
-			dblConversionFactor) || !org.drip.quant.common.NumberUtil.IsValid (_dblForwardPrice =
+		if (null == (_bond = bond) || !org.drip.numerical.common.NumberUtil.IsValid (_dblConversionFactor =
+			dblConversionFactor) || !org.drip.numerical.common.NumberUtil.IsValid (_dblForwardPrice =
 				dblForwardPrice))
 			throw new java.lang.Exception ("CTDEntry Constructor => Invalid Inputs");
 	}

@@ -102,9 +102,9 @@ package org.drip.function.e2erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public abstract class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct the Euler-MacLaurin Instance of the E<sub>2</sub> erf
@@ -134,7 +134,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
 				}
@@ -158,7 +158,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 
 	public static final ErrorFunction HansHeinrichBurmannConvergent()
 	{
-		final org.drip.function.numerical.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
 			= org.drip.function.e2erf.HansHeinrichBurmannGenerator.Convergent();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
@@ -175,7 +175,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunction::HansHeinrichBurmannConvergent::evaluate => Invalid Inputs");
@@ -201,7 +201,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 
 	public static final ErrorFunction HansHeinrichBurmannSchopfSupancic2014()
 	{
-		final org.drip.function.numerical.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
 			= org.drip.function.e2erf.HansHeinrichBurmannGenerator.SchopfSupancic2014();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
@@ -218,7 +218,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunction::HansHeinrichBurmannSchopfSupancic2014::evaluate => Invalid Inputs");
@@ -237,8 +237,8 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 	}
 
 	protected ErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 		super (dc);
 
@@ -250,7 +250,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		final int order)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (z) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
 			1 > order)
 		{
 			throw new java.lang.Exception ("ErrorFunction::derivative => Invalid Inputs");
@@ -271,7 +271,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 				final double x)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (x))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 				{
 					throw new java.lang.Exception
 						("ErrorFunction::antiDerivative::evaluate => Invalid Inputs");
@@ -283,7 +283,7 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		};
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
 		final double x)
 	{
 		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
@@ -366,8 +366,8 @@ public abstract class ErrorFunction extends org.drip.function.numerical.R1ToR1Es
 		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (a) ||
-			!org.drip.quant.common.NumberUtil.IsValid (b) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (b) ||
 			null == r1UnivariateNormal)
 		{
 			throw new java.lang.Exception ("ErrorFunction::gaussianDensityIntegral => Invalid Inputs");

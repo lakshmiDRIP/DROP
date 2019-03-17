@@ -175,7 +175,7 @@ public class QuadraticResampler {
 	public double[][] transform (
 		final double[][] aadblSequence)
 	{
-		double[][] aadblFlippedSequence = org.drip.quant.linearalgebra.Matrix.Transpose (aadblSequence);
+		double[][] aadblFlippedSequence = org.drip.numerical.linearalgebra.Matrix.Transpose (aadblSequence);
 
 		if (null == aadblFlippedSequence) return null;
 
@@ -185,6 +185,6 @@ public class QuadraticResampler {
 		for (int i = 0; i < iDimension; ++i)
 			aadblFlippedTransformedSequence[i] = transform (aadblFlippedSequence[i]);
 		
-		return org.drip.quant.linearalgebra.Matrix.Transpose (aadblFlippedTransformedSequence);
+		return org.drip.numerical.linearalgebra.Matrix.Transpose (aadblFlippedTransformedSequence);
 	}
 }

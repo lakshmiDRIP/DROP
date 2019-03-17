@@ -123,14 +123,14 @@ public abstract class BurgardKjaerEdge
 		final double derivativeXVACollateralGrowth)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_positionValueBump = positionValueBump) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthDown =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_positionValueBump = positionValueBump) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthDown =
 				derivativeXVAStochasticGrowthDown) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowth =
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowth =
 				derivativeXVAStochasticGrowth) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthUp =
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAStochasticGrowthUp =
 				derivativeXVAStochasticGrowthUp) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVACollateralGrowth =
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVACollateralGrowth =
 				derivativeXVACollateralGrowth))
 		{
 			throw new java.lang.Exception ("BurgardKjaerEdge Constructor => Invalid Inputs");

@@ -1,7 +1,7 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.random.*;
 import org.drip.service.env.EnvManager;
 

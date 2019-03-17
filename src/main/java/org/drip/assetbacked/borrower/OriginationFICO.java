@@ -96,7 +96,7 @@ public class OriginationFICO {
 		final double dblFICO)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFICO = dblFICO))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFICO = dblFICO))
 			throw new java.lang.Exception ("OriginationFICO Constructor => Invalid Inputs");
 	}
 

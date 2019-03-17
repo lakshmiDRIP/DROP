@@ -420,9 +420,9 @@ public class BlackLittermanCombinationEngine {
 		for (int i = 0; i < iNumView; ++i)
 			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;
 
-		double[][] aadblProjectionSpaceAssetCovariance = org.drip.quant.linearalgebra.Matrix.Product
-			(org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,
-				aadblAssetExcessReturnsCovariance), org.drip.quant.linearalgebra.Matrix.Transpose
+		double[][] aadblProjectionSpaceAssetCovariance = org.drip.numerical.linearalgebra.Matrix.Product
+			(org.drip.numerical.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,
+				aadblAssetExcessReturnsCovariance), org.drip.numerical.linearalgebra.Matrix.Transpose
 					(aadblProjectionSpaceLoading));
 
 		if (null == aadblProjectionSpaceAssetCovariance) return null;
@@ -437,9 +437,9 @@ public class BlackLittermanCombinationEngine {
 						dblAssetConfidenceScaler;
 		}
 
-		double[][] aadblCompositePrecisionProjectionScoping = org.drip.quant.linearalgebra.Matrix.Product
-			(org.drip.quant.linearalgebra.Matrix.Product
-				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
+		double[][] aadblCompositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.Matrix.Product
+			(org.drip.numerical.linearalgebra.Matrix.Product
+				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
 					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),
 						aadblAssetExcessReturnsCovariance);
 
@@ -453,12 +453,12 @@ public class BlackLittermanCombinationEngine {
 
 		try {
 			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,
-				org.drip.quant.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,
+				org.drip.numerical.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,
 					_frooUnadjusted.optimalPortfolio().weights()),
-						org.drip.quant.linearalgebra.Matrix.Product
-							(org.drip.quant.linearalgebra.Matrix.Product
+						org.drip.numerical.linearalgebra.Matrix.Product
+							(org.drip.numerical.linearalgebra.Matrix.Product
 								(aadblCompositePrecisionProjectionScoping,
-									org.drip.quant.linearalgebra.Matrix.Transpose
+									org.drip.numerical.linearalgebra.Matrix.Transpose
 										(aadblProjectionSpaceLoading)), adblIntraViewComponent),
 											aadblCompositeConfidenceCovariance);
 		} catch (java.lang.Exception e) {
@@ -522,7 +522,7 @@ public class BlackLittermanCombinationEngine {
 		final double dblProjectionVariance)
 		throws java.lang.Exception
 	{
-		if (null == adblUserConfidenceProjectionTilt || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == adblUserConfidenceProjectionTilt || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblProjectionVariance))
 			throw new java.lang.Exception
 				("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
@@ -562,7 +562,7 @@ public class BlackLittermanCombinationEngine {
 				("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
 
 		for (int i = 0; i < iNumAsset; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))
 				throw new java.lang.Exception
 					("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
 

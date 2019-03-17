@@ -104,7 +104,7 @@ public class SegmentFlexurePenaltyControl {
 		final double dblAmplitude)
 		throws java.lang.Exception
 	{
-		if (0 >= (_iDerivativeOrder = iDerivativeOrder) || !org.drip.quant.common.NumberUtil.IsValid
+		if (0 >= (_iDerivativeOrder = iDerivativeOrder) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblAmplitude = dblAmplitude))
 			throw new java.lang.Exception ("SegmentFlexurePenaltyControl ctr: Invalid Inputs");
 	}

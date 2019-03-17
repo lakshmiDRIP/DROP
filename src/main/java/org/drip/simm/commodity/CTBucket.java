@@ -132,8 +132,8 @@ public class CTBucket
 		throws java.lang.Exception
 	{
 		if (null == (_entity = entity) || _entity.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation))
+			!org.drip.numerical.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation))
 		{
 			throw new java.lang.Exception ("CTBucket Constructor => Invalid Inputs");
 		}

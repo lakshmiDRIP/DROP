@@ -136,9 +136,9 @@ public class CoordinatedVariationRollingHorizon extends
 
 		if (null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) || null ==
 			(_adblNonDimensionalTradeRate = adblNonDimensionalTradeRate) || null == (_adblNonDimensionalCost
-				= adblNonDimensionalCost) || !org.drip.quant.common.NumberUtil.IsValid
-					(_adblNonDimensionalHoldings) || !org.drip.quant.common.NumberUtil.IsValid
-						(_adblNonDimensionalTradeRate) || !org.drip.quant.common.NumberUtil.IsValid
+				= adblNonDimensionalCost) || !org.drip.numerical.common.NumberUtil.IsValid
+					(_adblNonDimensionalHoldings) || !org.drip.numerical.common.NumberUtil.IsValid
+						(_adblNonDimensionalTradeRate) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_adblNonDimensionalCost))
 			throw new java.lang.Exception
 				("CoordinatedVariationRollingHorizon Constructor => Invalid Inputs");

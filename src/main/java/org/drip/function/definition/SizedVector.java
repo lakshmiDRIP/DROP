@@ -105,7 +105,7 @@ public class SizedVector {
 		if (0 == iDimension) return null;
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adbl[i])) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adbl[i])) return null;
 
 			dblModulus += adbl[i] * adbl[i];
 		}
@@ -140,7 +140,7 @@ public class SizedVector {
 		final double dblMagnitude)
 		throws java.lang.Exception
 	{
-		if (null == (_uv = uv) || !org.drip.quant.common.NumberUtil.IsValid (_dblMagnitude = dblMagnitude))
+		if (null == (_uv = uv) || !org.drip.numerical.common.NumberUtil.IsValid (_dblMagnitude = dblMagnitude))
 			throw new java.lang.Exception ("SizedVector Constructor => Invalid Inputs");
 	}
 

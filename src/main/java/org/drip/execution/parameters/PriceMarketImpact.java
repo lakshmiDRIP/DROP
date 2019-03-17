@@ -117,9 +117,9 @@ public abstract class PriceMarketImpact {
 		final double dblTemporaryImpactFactor)
 		throws java.lang.Exception
 	{
-		if (null == (_ats = ats) || !org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpactFactor =
+		if (null == (_ats = ats) || !org.drip.numerical.common.NumberUtil.IsValid (_dblPermanentImpactFactor =
 			dblPermanentImpactFactor) || 0. > _dblPermanentImpactFactor ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpactFactor =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblTemporaryImpactFactor =
 					dblTemporaryImpactFactor) || 0. >= _dblTemporaryImpactFactor)
 			throw new java.lang.Exception ("PriceMarketImpact Constructor => Invalid Inputs");
 	}

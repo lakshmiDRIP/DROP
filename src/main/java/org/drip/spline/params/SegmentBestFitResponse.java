@@ -133,7 +133,7 @@ public class SegmentBestFitResponse {
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblPredictorOrdinate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPredictorOrdinate)) return null;
 
 		int iNumWeight = adblPredictorOrdinate.length;
 		double[] adblWeight = new double[iNumWeight];
@@ -150,9 +150,9 @@ public class SegmentBestFitResponse {
 		final double[] adblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_adblWeight = adblWeight) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblResponse = adblResponse) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblPredictorOrdinate = adblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblWeight = adblWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblResponse = adblResponse) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblPredictorOrdinate = adblPredictorOrdinate))
 			throw new java.lang.Exception ("SegmentBestFitResponse ctr: Invalid Inputs");
 
 		int iNumPointsToFit = _adblWeight.length;

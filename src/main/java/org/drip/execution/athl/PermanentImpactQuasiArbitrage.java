@@ -155,7 +155,7 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::regularize => Invalid Inputs");
 
 		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);
@@ -165,7 +165,7 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::modulate => Invalid Inputs");
 
 		return dblTradeInterval * _afp.dailyVolatility();
@@ -186,7 +186,7 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
 			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::evaluate => Invalid Inputs");
 
 		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;
@@ -201,7 +201,7 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (0 >= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))
+		if (0 >= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
 			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::derivative => Invalid Inputs");
 
 		double dblCoefficient = 1.;

@@ -118,7 +118,7 @@ public class AndersenPiterbargMeanReverter extends org.drip.function.definition.
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("AndersenPiterbargMeanReverter::evaluate => Invalid Inputs");
 
 		return (1. - _auExpDecay.evaluate (dblVariate)) * _auSteadyState.evaluate (dblVariate);

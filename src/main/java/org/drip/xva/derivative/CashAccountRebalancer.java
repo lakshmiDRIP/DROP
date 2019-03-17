@@ -128,7 +128,7 @@ public class CashAccountRebalancer
 		throws java.lang.Exception
 	{
 		if (null == (_cashAccountEdge = cashAccountEdge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAValueEdge = derivativeXVAValueEdge))
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAValueEdge = derivativeXVAValueEdge))
 		{
 			throw new java.lang.Exception ("CashAccountRebalancer Constructor => Invalid Inputs");
 		}

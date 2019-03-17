@@ -307,23 +307,23 @@ public class InitializationHeuristics {
 		throws java.lang.Exception
 	{
 		if (BRACKETING_EDGE_HINTS == (_iDeterminant = iDeterminant)) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblStartingBracketLeft = dblStartingBracketLeft)
-				|| !org.drip.quant.common.NumberUtil.IsValid (_dblStartingBracketRight =
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketLeft = dblStartingBracketLeft)
+				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketRight =
 					dblStartingBracketRight))
 				throw new java.lang.Exception
 					("InitializationHeuristics constructor: Invalid BRACKETING_EDGE_HINTS params!");
 		} else if (BRACKETING_MID_HINT == _iDeterminant) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblStartingBracketMid = dblStartingBracketMid))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartingBracketMid = dblStartingBracketMid))
 				throw new java.lang.Exception
 					("InitializationHeuristics constructor: Invalid BRACKETING_MID_HINT params!");
 		} else if (BRACKETING_FLOOR_CEILING == _iDeterminant) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblBracketFloor = dblBracketFloor) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblBracketCeiling = dblBracketCeiling))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketFloor = dblBracketFloor) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketCeiling = dblBracketCeiling))
 				throw new java.lang.Exception
 					("InitializationHeuristics constructor: Invalid BRACKETING_FLOOR_CEILING params!");
 		} else if (SEARCH_HARD_BRACKETS == _iDeterminant) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblSearchStartLeft = dblSearchStartLeft) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblSearchStartRight = dblSearchStartRight))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSearchStartLeft = dblSearchStartLeft) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblSearchStartRight = dblSearchStartRight))
 				throw new java.lang.Exception
 					("InitializationHeuristics constructor: Invalid SEARCH_HARD_BRACKETS params!");
 		} else if (BRACKETING_CUSTOM_BCP == _iDeterminant) {

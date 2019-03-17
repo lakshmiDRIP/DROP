@@ -2,7 +2,7 @@
 package org.drip.sample.hypothesistest;
 
 import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
 import org.drip.validation.evidence.Ensemble;

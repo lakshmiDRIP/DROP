@@ -196,63 +196,63 @@ public class SensitivityAggregateIR
 		final double cumulativeMarginSensitivity)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_OIS =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_OIS =
 				marginCovariance_OIS_OIS) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR1M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR1M =
 				marginCovariance_OIS_LIBOR1M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR3M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR3M =
 				marginCovariance_OIS_LIBOR3M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR6M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR6M =
 				marginCovariance_OIS_LIBOR6M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR12M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR12M =
 				marginCovariance_OIS_LIBOR12M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_PRIME =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_PRIME =
 				marginCovariance_OIS_PRIME) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_OIS_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_MUNICIPAL =
 				marginCovariance_OIS_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR1M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR1M =
 				marginCovariance_LIBOR1M_LIBOR1M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR3M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR3M =
 				marginCovariance_LIBOR1M_LIBOR3M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR6M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR6M =
 				marginCovariance_LIBOR1M_LIBOR6M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR12M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR12M =
 				marginCovariance_LIBOR1M_LIBOR12M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_PRIME =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_PRIME =
 				marginCovariance_LIBOR1M_PRIME) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_MUNICIPAL =
 				marginCovariance_LIBOR1M_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR3M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR3M =
 				marginCovariance_LIBOR3M_LIBOR3M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR6M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR6M =
 				marginCovariance_LIBOR3M_LIBOR6M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR12M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR12M =
 				marginCovariance_LIBOR3M_LIBOR12M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_PRIME =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_PRIME =
 				marginCovariance_LIBOR3M_PRIME) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_MUNICIPAL =
 				marginCovariance_LIBOR3M_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR6M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR6M =
 				marginCovariance_LIBOR6M_LIBOR6M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR12M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR12M =
 				marginCovariance_LIBOR6M_LIBOR12M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_PRIME =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_PRIME =
 				marginCovariance_LIBOR6M_PRIME) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_MUNICIPAL =
 				marginCovariance_LIBOR6M_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_LIBOR12M =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_LIBOR12M =
 				marginCovariance_LIBOR12M_LIBOR12M) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_PRIME =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_PRIME =
 				marginCovariance_LIBOR12M_PRIME) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_MUNICIPAL =
 				marginCovariance_LIBOR12M_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_PRIME_PRIME =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_PRIME_PRIME =
 				marginCovariance_PRIME_PRIME) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_PRIME_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_PRIME_MUNICIPAL =
 				marginCovariance_PRIME_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_marginCovariance_MUNICIPAL_MUNICIPAL =
+			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_MUNICIPAL_MUNICIPAL =
 				marginCovariance_MUNICIPAL_MUNICIPAL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
+			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
 				cumulativeMarginSensitivity))
 		{
 			throw new java.lang.Exception ("SensitivityAggregateIR Constructor => Invalid Inputs");

@@ -104,11 +104,11 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblVolatility) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))
 			throw new java.lang.Exception ("BlackNormalAlgorithm::payoff => Invalid Inputs");
 
 		double dblD1D2Diff = dblVolatility * java.lang.Math.sqrt (dblTimeToExpiry);
@@ -136,11 +136,11 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 		final boolean bIsForward,
 		final double dblVolatility)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblVolatility) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))
 			return null;
 
 		double dblD1D2Diff = dblVolatility * java.lang.Math.sqrt (dblTimeToExpiry);

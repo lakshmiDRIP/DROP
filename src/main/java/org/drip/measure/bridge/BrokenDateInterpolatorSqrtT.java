@@ -104,10 +104,10 @@ public class BrokenDateInterpolatorSqrtT implements org.drip.measure.bridge.Brok
 		final double dblV2)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblT1 = dblT1) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblT2 = dblT2) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblV1 = dblV1) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblV2 = dblV2)|| _dblT1 >= _dblT2)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblT1 = dblT1) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblT2 = dblT2) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblV1 = dblV1) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblV2 = dblV2)|| _dblT1 >= _dblT2)
 			throw new java.lang.Exception ("BrokenDateInterpolatorSqrtT Constructor => Invalid Inputs");
 	}
 
@@ -159,7 +159,7 @@ public class BrokenDateInterpolatorSqrtT implements org.drip.measure.bridge.Brok
 		final double dblT)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblT) || dblT < _dblT1 || dblT > _dblT2)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT) || dblT < _dblT1 || dblT > _dblT2)
 			throw new java.lang.Exception ("BrokenDateInterpolatorSqrtT::interpolate => Invalid Inputs");
 
 		return (java.lang.Math.sqrt (_dblT2 - dblT) * _dblV1 + java.lang.Math.sqrt (dblT - _dblT1) * _dblV2)

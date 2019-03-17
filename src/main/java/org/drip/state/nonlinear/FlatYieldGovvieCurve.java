@@ -136,7 +136,7 @@ public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovv
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		int iNumDate = _aiDate.length;
 
@@ -152,7 +152,7 @@ public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovv
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		int iNumDate = _aiDate.length;
 
@@ -167,7 +167,7 @@ public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovv
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		int iNumDate = _aiDate.length;
 
@@ -177,7 +177,7 @@ public class FlatYieldGovvieCurve extends org.drip.state.govvie.ExplicitBootGovv
 		return true;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{

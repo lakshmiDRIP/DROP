@@ -173,7 +173,7 @@ public class BurgardKjaerOperator
 	{
 		if (null == marketEdge ||
 			null == initialTrajectoryVertex ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateral))
+			!org.drip.numerical.common.NumberUtil.IsValid (collateral))
 		{
 			return null;
 		}

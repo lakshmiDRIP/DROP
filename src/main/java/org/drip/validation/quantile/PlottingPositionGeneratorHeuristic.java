@@ -475,7 +475,7 @@ public class PlottingPositionGeneratorHeuristic extends
 	{
 		super (orderStatisticCount);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_relief = relief) || 0. > _relief || 1. < _relief)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_relief = relief) || 0. > _relief || 1. < _relief)
 		{
 			throw new java.lang.Exception
 				("PlottingPositionGeneratorHeuristic Constructor => Invalid Inputs");

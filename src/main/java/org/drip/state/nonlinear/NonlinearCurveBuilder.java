@@ -326,7 +326,7 @@ public class NonlinearCurveBuilder {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
 		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblBump))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblBump))
 			return false;
 
 		int iNumCalibComp = aCalibComp.length;
@@ -337,7 +337,7 @@ public class NonlinearCurveBuilder {
 
 		for (int i = 0; i < iNumCalibComp; ++i) {
 			try {
-				if (!org.drip.quant.common.NumberUtil.IsValid (DiscountCurveNode (valParams, aCalibComp[i],
+				if (!org.drip.numerical.common.NumberUtil.IsValid (DiscountCurveNode (valParams, aCalibComp[i],
 					adblCalibValue[i] + dblBump, astrCalibMeasure[i], bFlat, i, ebdc, gc, lsfc, vcp)))
 					return false;
 			} catch (java.lang.Exception e) {
@@ -457,7 +457,7 @@ public class NonlinearCurveBuilder {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
 		if (null == adblCalibValue || null == aCalibComp || null == astrCalibMeasure ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblBump))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblBump))
 			return false;
 
 		int iNumCalibComp = aCalibComp.length;
@@ -468,7 +468,7 @@ public class NonlinearCurveBuilder {
 
 		for (int i = 0; i < iNumCalibComp; ++i) {
 			try {
-				if (!org.drip.quant.common.NumberUtil.IsValid (VolatilityCurveNode (valParams, aCalibComp[i],
+				if (!org.drip.numerical.common.NumberUtil.IsValid (VolatilityCurveNode (valParams, aCalibComp[i],
 					adblCalibValue[i] + dblBump, astrCalibMeasure[i], bFlat, i, ebvc, dc, fc, lsfc, vcp)))
 					return false;
 			} catch (java.lang.Exception e) {

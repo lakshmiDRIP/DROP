@@ -3,7 +3,7 @@ package org.drip.sample.rdtor1;
 
 import org.drip.function.definition.RdToR1;
 import org.drip.function.rdtor1.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

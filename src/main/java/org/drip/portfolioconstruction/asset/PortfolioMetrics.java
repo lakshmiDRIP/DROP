@@ -107,10 +107,10 @@ public class PortfolioMetrics {
 		final double[] adblImpliedBeta)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExcessReturnsMean = dblExcessReturnsMean) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblExcessReturnsVariance = dblExcessReturnsVariance)
-				|| !org.drip.quant.common.NumberUtil.IsValid (_dblExcessReturnsStandardDeviation =
-					dblExcessReturnsStandardDeviation)|| !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExcessReturnsMean = dblExcessReturnsMean) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblExcessReturnsVariance = dblExcessReturnsVariance)
+				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblExcessReturnsStandardDeviation =
+					dblExcessReturnsStandardDeviation)|| !org.drip.numerical.common.NumberUtil.IsValid
 						(_dblSharpeRatio = dblSharpeRatio) || null == (_adblImpliedBeta = adblImpliedBeta) ||
 							0 == _adblImpliedBeta.length)
 			throw new java.lang.Exception ("PortfolioMetrics Constructor => Invalid Inputs!");

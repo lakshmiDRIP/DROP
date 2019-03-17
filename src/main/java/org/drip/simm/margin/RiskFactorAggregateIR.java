@@ -139,7 +139,7 @@ public class RiskFactorAggregateIR
 				0 == _municipalSensitivityMargin.size() ||
 			null == (_primeSensitivityMargin = primeSensitivityMargin) ||
 				0 == _primeSensitivityMargin.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
+			!org.drip.numerical.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		 {
 			 throw new java.lang.Exception ("RiskFactorAggregateIR Constructor => Invalid Inputs");
 		 }

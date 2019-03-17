@@ -134,7 +134,7 @@ public class DateTime {
 		final long lTime)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate))
 			throw new java.lang.Exception ("DateTime ctr: Invalid Inputs!");
 
 		_lTime = lTime;

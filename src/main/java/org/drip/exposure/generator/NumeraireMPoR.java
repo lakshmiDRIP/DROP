@@ -126,7 +126,7 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		throws java.lang.Exception
 	{
 		if (null == (_latentStateLabel = latentStateLabel) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
+			!org.drip.numerical.common.NumberUtil.IsValid (_notional = notional))
 		{
 			throw new java.lang.Exception ("NumeraireMPoR Constructor => Invalid Inputs");
 		}

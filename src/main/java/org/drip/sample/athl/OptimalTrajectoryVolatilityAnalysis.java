@@ -7,7 +7,7 @@ import org.drip.execution.nonadaptive.ContinuousPowerImpact;
 import org.drip.execution.optimum.PowerImpactContinuous;
 import org.drip.execution.parameters.AssetFlowSettings;
 import org.drip.function.definition.R1ToR1;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

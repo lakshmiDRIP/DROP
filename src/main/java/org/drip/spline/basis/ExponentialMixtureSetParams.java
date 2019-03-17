@@ -100,7 +100,7 @@ public class ExponentialMixtureSetParams implements org.drip.spline.basis.Functi
 		final double[] adblTension)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_adblTension = adblTension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblTension = adblTension))
 			throw new java.lang.Exception ("ExponentialMixtureSetParams ctr: Invalid Inputs");
 	}
 

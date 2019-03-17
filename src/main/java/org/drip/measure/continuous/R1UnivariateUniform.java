@@ -120,8 +120,8 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 		final double rightSupport)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_leftSupport = leftSupport) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_rightSupport = rightSupport) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_leftSupport = leftSupport) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_rightSupport = rightSupport) ||
 			_leftSupport >= _rightSupport)
 		{
 			throw new java.lang.Exception ("R1UnivariateUniform Constructor => Invalid Inputs");
@@ -161,7 +161,7 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 	public boolean supported (
 		final double x)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (x) && x >= _leftSupport || x <= _rightSupport;			
+		return org.drip.numerical.common.NumberUtil.IsValid (x) && x >= _leftSupport || x <= _rightSupport;			
 	}
 
 	@Override public double cumulative (
@@ -186,7 +186,7 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 		final double y)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
 			throw new java.lang.Exception ("R1UnivariateUniform::invCumulative => Cannot calculate");
 
 	    return y * (_rightSupport - _leftSupport) + _leftSupport;
@@ -217,7 +217,7 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 	    return java.lang.Math.random() * (_rightSupport - _leftSupport) + _leftSupport;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		return null;
 	}

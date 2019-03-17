@@ -139,9 +139,9 @@ public class TreasuryFuturesConvention {
 		if (null == (_strName = strName) || _strName.isEmpty() || null == (_astrCode = astrCode) || 0 ==
 			_astrCode.length || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null ==
 				(_strMaturityTenor = strMaturityTenor) || _strMaturityTenor.isEmpty() ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblBasketNotional = dblBasketNotional) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPriceMovement =
-							dblMinimumPriceMovement) || !org.drip.quant.common.NumberUtil.IsValid
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblBasketNotional = dblBasketNotional) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumPriceMovement =
+							dblMinimumPriceMovement) || !org.drip.numerical.common.NumberUtil.IsValid
 								(_dblComponentNotionalMinimum = dblComponentNotionalMinimum) || null ==
 									(_astrExchange = astrExchange) || 0 == _astrExchange.length || null ==
 										(_strUnderlierType = strUnderlierType) || _strUnderlierType.isEmpty()
@@ -352,7 +352,7 @@ public class TreasuryFuturesConvention {
 		final double dblFuturesQuotedIndex)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuotedIndex))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFuturesQuotedIndex))
 			throw new java.lang.Exception ("TreasuryFuturesConvention::referencePrice => Invalid Inputs!");
 
 		double dblPeriodReferenceYield = 0.5 * (1. - dblFuturesQuotedIndex);
@@ -384,7 +384,7 @@ public class TreasuryFuturesConvention {
 	{
 		if (null == dtValue || null == bond) return referencePrice (dblFuturesQuotedIndex);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuotedIndex))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFuturesQuotedIndex))
 			throw new java.lang.Exception ("AnalyticsHelper::referencePrice => Invalid Inputs");
 
 		return bond.priceFromYield (new org.drip.param.valuation.ValuationParams (dtValue, dtValue, null),

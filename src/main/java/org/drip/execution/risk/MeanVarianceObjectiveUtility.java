@@ -121,7 +121,7 @@ public class MeanVarianceObjectiveUtility implements org.drip.execution.risk.Obj
 		final double dblRiskAversion)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || 0. >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || 0. >
 			_dblRiskAversion)
 			throw new java.lang.Exception ("MeanVarianceObjectiveUtility Constructor => Invalid Inputs!");
 	}

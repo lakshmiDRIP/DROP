@@ -142,7 +142,7 @@ public class Almgren2003Estimator extends org.drip.execution.principal.GrossProf
 		final double dblD)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblD))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblD))
 			throw new java.lang.Exception
 				("Almgren2003Estimator::optimalInformationRatioHorizon => Invalid Inputs");
 
@@ -177,7 +177,7 @@ public class Almgren2003Estimator extends org.drip.execution.principal.GrossProf
 		final double dblD)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblD))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblD))
 			throw new java.lang.Exception
 				("Almgren2003Estimator::optimalInformationRatio => Invalid Inputs");
 
@@ -217,7 +217,7 @@ public class Almgren2003Estimator extends org.drip.execution.principal.GrossProf
 		final double dblI)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblI))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblI))
 			throw new java.lang.Exception
 				("Almgren2003Estimator::principalDiscountHurdle => Invalid Inputs");
 

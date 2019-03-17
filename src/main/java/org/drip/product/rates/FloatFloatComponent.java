@@ -489,7 +489,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		}
 
 		try {
-			if (org.drip.quant.common.NumberUtil.IsValid (dblValueNotional)) {
+			if (org.drip.numerical.common.NumberUtil.IsValid (dblValueNotional)) {
 				double dblCleanPrice = 100. * (1. + (dblCleanPV / initialNotional() / dblValueNotional));
 
 				mapResult.put ("CleanPrice", dblCleanPrice);
@@ -607,7 +607,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		return mapFloatReferenceStreamResult.get ("DirtyPV") + mapFloatDerivedStreamResult.get ("DirtyPV");
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -616,7 +616,7 @@ public class FloatFloatComponent extends org.drip.product.rates.DualStreamCompon
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,

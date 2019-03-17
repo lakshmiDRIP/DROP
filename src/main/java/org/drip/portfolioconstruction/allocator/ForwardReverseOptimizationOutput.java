@@ -108,7 +108,7 @@ public class ForwardReverseOptimizationOutput extends
 
 		int iNumAsset = adblAssetWeight.length;
 
-		double[] adblExpectedAssetExcessReturns = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblExpectedAssetExcessReturns = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblAssetExcessReturnsCovariance, pfEquilibrium.weights());
 
 		if (null == adblExpectedAssetExcessReturns);
@@ -141,8 +141,8 @@ public class ForwardReverseOptimizationOutput extends
 
 		int iNumAsset = astrAssetID.length;
 
-		double[] adblAssetWeight = org.drip.quant.linearalgebra.Matrix.Product
-			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
+		double[] adblAssetWeight = org.drip.numerical.linearalgebra.Matrix.Product
+			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
 				(aadblAssetExcessReturnsCovariance), adblExpectedAssetExcessReturns);
 
 		if (null == adblAssetWeight || iNumAsset != adblAssetWeight.length) return null;
@@ -182,7 +182,7 @@ public class ForwardReverseOptimizationOutput extends
 
 		if (iNumAsset != adblExpectedAssetExcessReturns.length) return null;
 
-		double[] adblImpliedBeta = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblImpliedBeta = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblAssetExcessReturnsCovariance, adblAssetWeight);
 
 		if (null == adblImpliedBeta) return null;
@@ -237,7 +237,7 @@ public class ForwardReverseOptimizationOutput extends
 		super (pfOptimal, pmOptimal);
 
 		if (null == (_aadblAssetExcessReturnsCovariance = aadblAssetExcessReturnsCovariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || null ==
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || null ==
 				(_adblExpectedAssetExcessReturns = adblExpectedAssetExcessReturns))
 			throw new java.lang.Exception ("ForwardReverseOptimizationOutput Constructor => Invalid Inputs");
 	}
@@ -291,7 +291,7 @@ public class ForwardReverseOptimizationOutput extends
 		org.drip.portfolioconstruction.asset.PortfolioMetrics pm = optimalMetrics();
 
 		try {
-			double dblBeta = org.drip.quant.linearalgebra.Matrix.DotProduct (optimalPortfolio().weights(),
+			double dblBeta = org.drip.numerical.linearalgebra.Matrix.DotProduct (optimalPortfolio().weights(),
 				pmBenchmark.impliedBeta());
 
 			double dblActiveBeta = dblBeta - 1.;

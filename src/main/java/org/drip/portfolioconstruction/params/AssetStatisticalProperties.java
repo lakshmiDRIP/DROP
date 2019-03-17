@@ -106,8 +106,8 @@ public class AssetStatisticalProperties {
 		throws java.lang.Exception
 	{
 		if (null == (_strName = strName) || _strName.isEmpty() || null == (_strID = strID) ||
-			_strID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (_dblExpectedReturn =
-				dblExpectedReturn) || !org.drip.quant.common.NumberUtil.IsValid (_dblVariance = dblVariance))
+			_strID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (_dblExpectedReturn =
+				dblExpectedReturn) || !org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance))
 			throw new java.lang.Exception ("AssetStatisticalProperties Constructor => Invalid Inputs");
 	}
 

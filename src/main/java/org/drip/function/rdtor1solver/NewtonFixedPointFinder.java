@@ -111,8 +111,8 @@ public class NewtonFixedPointFinder extends org.drip.function.rdtor1solver.Fixed
 
 		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();
 
-		double[] adblVariateIncrement = org.drip.quant.linearalgebra.Matrix.Product
-			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
+		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.Matrix.Product
+			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
 				(rdToR1ObjectiveFunction.hessian (adblVariate)), rdToR1ObjectiveFunction.jacobian
 					(adblVariate));
 

@@ -144,7 +144,7 @@ public class RightHatShapeControl extends org.drip.spline.bspline.BasisHatShapeC
 		double dblWidth = right() - left();
 
 		if (SHAPE_CONTROL_RATIONAL_LINEAR.equalsIgnoreCase (shapeControlType()))
-			return (org.drip.quant.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow (-tension(),
+			return (org.drip.numerical.common.NumberUtil.Factorial (iOrder) * java.lang.Math.pow (-tension(),
 				iOrder) * java.lang.Math.pow (1. + tension() * (dblPredictorOrdinate - left()), -iOrder - 1))
 					/ (dblWidth * (6. + 6. * tension() * dblWidth + 2. * tension() * dblWidth * dblWidth));
 
@@ -161,13 +161,13 @@ public class RightHatShapeControl extends org.drip.spline.bspline.BasisHatShapeC
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("RightHatShapeControl::integrate => Invalid Inputs");
 
-		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());
+		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());
 
-		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());
+		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());
 
 		if (dblBoundedBegin >= dblBoundedEnd) return 0.;
 

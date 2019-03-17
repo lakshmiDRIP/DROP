@@ -118,8 +118,8 @@ public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1T
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) || _dblA == _dblB)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || _dblA == _dblB)
 			throw new java.lang.Exception ("AlmgrenEnhancedEulerUpdate Constructor => Inbalid Inputs");
 	}
 
@@ -149,7 +149,7 @@ public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1T
 		final double dblT)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblT))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))
 			throw new java.lang.Exception ("AlmgrenEnhancedEulerUpdate::evaluate => Invalid Inputs");
 
 		double dblInvExpAT = java.lang.Math.exp (-1. * _dblA * dblT);

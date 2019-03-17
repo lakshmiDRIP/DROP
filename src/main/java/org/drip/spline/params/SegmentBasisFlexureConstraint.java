@@ -114,7 +114,7 @@ public class SegmentBasisFlexureConstraint {
 		double dblConstraintValue)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstraintValue = dblConstraintValue) || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblConstraintValue = dblConstraintValue) || null ==
 			(_adblResponseBasisCoeffWeight = adblResponseBasisCoeffWeight) || 0 ==
 				_adblResponseBasisCoeffWeight.length)
 			throw new java.lang.Exception ("SegmentBasisFlexureConstraint ctr: Invalid Inputs");

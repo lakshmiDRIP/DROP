@@ -100,7 +100,7 @@ public class TenorQuote {
 		throws java.lang.Exception
 	{
 		if (null == (_strTenor = strTenor) || _strTenor.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblQuote = dblQuote))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblQuote = dblQuote))
 			throw new java.lang.Exception ("TenorQuote Constructor => Invalid Inputs");
 	}
 

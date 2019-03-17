@@ -331,10 +331,10 @@ public class BucketSensitivitySettingsCR extends org.drip.simm.parameters.Liquid
 		super (concentrationThreshold);
 
 		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =
+			!org.drip.numerical.common.NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation =
 				intraFamilyCrossTenorCorrelation) ||
 				1. <= _intraFamilyCrossTenorCorrelation || -1. >= _intraFamilyCrossTenorCorrelation ||
-			!org.drip.quant.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =
+			!org.drip.numerical.common.NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation =
 				extraFamilyCrossTenorCorrelation) ||
 				1. <= _extraFamilyCrossTenorCorrelation || -1. >= _extraFamilyCrossTenorCorrelation)
 		{

@@ -142,7 +142,7 @@ public class VertexRd {
 		final double[] adblRealization)
 	{
 		if (-1 >= iVertex || null == adblRealization || 0 == adblRealization.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (adblRealization))
+			!org.drip.numerical.common.NumberUtil.IsValid (adblRealization))
 			return false;
 
 		_lsVertexRd.add (iVertex, adblRealization);

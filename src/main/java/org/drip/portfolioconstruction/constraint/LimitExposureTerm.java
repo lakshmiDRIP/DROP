@@ -106,7 +106,7 @@ public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.o
 			dblMaximum
 		);
 
-		if (null == (_adblPrice = adblPrice) || !org.drip.quant.common.NumberUtil.IsValid (_adblPrice))
+		if (null == (_adblPrice = adblPrice) || !org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))
 			throw new java.lang.Exception ("LimitExposureTerm Constructor => Invalid Inputs");
 	}
 

@@ -121,7 +121,7 @@ public class ErrorFunctionAnalytical
 	{
 		try
 		{
-			return !org.drip.quant.common.NumberUtil.IsValid (a) ? null :
+			return !org.drip.numerical.common.NumberUtil.IsValid (a) ? null :
 				new org.drip.function.e2erf.AbramowitzStegun (
 					null,
 					null,
@@ -132,7 +132,7 @@ public class ErrorFunctionAnalytical
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("ErrorFunctionAnalytical::Winitzki2008::evaluate => Invalid Inputs");

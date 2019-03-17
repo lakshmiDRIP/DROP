@@ -125,7 +125,7 @@ public class CurvatureEvolutionVerifierMetrics extends
 	{
 		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||
 			null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
 				adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
 			throw new java.lang.Exception
@@ -178,11 +178,11 @@ public class CurvatureEvolutionVerifierMetrics extends
 		double[] adblDirectionVector = targetDirection().component();
 
 		try {
-			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct
+			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct
 				(adblDirectionVector, _adblNextVariateFunctionJacobian);
 
 			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *
-				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,
+				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,
 					currentVariateFunctionJacobian());
 
 			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) <=

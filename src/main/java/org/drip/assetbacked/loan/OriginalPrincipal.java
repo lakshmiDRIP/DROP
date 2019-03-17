@@ -96,7 +96,7 @@ public class OriginalPrincipal {
 		final double dblAmount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAmount = dblAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAmount = dblAmount))
 			throw new java.lang.Exception ("OriginalPrincipal Constructor => Invalid Inputs");
 	}
 

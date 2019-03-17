@@ -137,7 +137,7 @@ public class IteratedBracket {
 	public boolean setVariateLeft (
 		final double dblVariateLeft)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariateLeft)) return false;
 
 		_dblVariateLeft = dblVariateLeft;
 		return true;
@@ -165,7 +165,7 @@ public class IteratedBracket {
 	public boolean setVariateRight (
 		final double dblVariateRight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariateRight)) return false;
 
 		_dblVariateRight = dblVariateRight;
 		return true;
@@ -193,7 +193,7 @@ public class IteratedBracket {
 	public boolean setOFLeft (
 		final double dblOFLeft)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFLeft)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft)) return false;
 
 		_dblOFLeft = dblOFLeft;
 		return true;
@@ -221,7 +221,7 @@ public class IteratedBracket {
 	public boolean setOFRight (
 		final double dblOFRight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFRight)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFRight)) return false;
 
 		_dblOFRight = dblOFRight;
 		return true;

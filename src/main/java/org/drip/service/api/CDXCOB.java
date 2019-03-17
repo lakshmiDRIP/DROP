@@ -103,7 +103,7 @@ public class CDXCOB {
 		throws java.lang.Exception
 	{
 		if (null == (_strCDXName = strCDXName) || _strCDXName.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblPrice = dblPrice))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblPrice = dblPrice))
 			throw new java.lang.Exception ("CDXCOB ctr: Invalid Inputs");
 	}
 

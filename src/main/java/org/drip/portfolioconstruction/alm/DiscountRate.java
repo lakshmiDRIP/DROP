@@ -105,11 +105,11 @@ public class DiscountRate {
 		final double dblBasicConsumptionSpread)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblYield = dblYield) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblWorkingAgeIncomeSpread =
-				dblWorkingAgeIncomeSpread) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblYield = dblYield) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncomeSpread =
+				dblWorkingAgeIncomeSpread) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblBasicConsumptionSpread = dblBasicConsumptionSpread) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblPensionBenefitsIncomeSpread =
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsIncomeSpread =
 							dblPensionBenefitsIncomeSpread))
 			throw new java.lang.Exception ("DiscountRate Constructor => Invalid Inputs");
 	}
@@ -161,7 +161,7 @@ public class DiscountRate {
 		final double dblHorizon)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblHorizon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))
 			throw new java.lang.Exception ("DiscountRate::workingAgeIncomeDF => Invalid Inputs");
 
 		return java.lang.Math.exp (-1. * dblHorizon * (_dblYield + _dblWorkingAgeIncomeSpread));
@@ -203,7 +203,7 @@ public class DiscountRate {
 		final double dblHorizon)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblHorizon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))
 			throw new java.lang.Exception ("DiscountRate::pensionBenefitsIncomeDF => Invalid Inputs");
 
 		return java.lang.Math.exp (-1. * dblHorizon * (_dblYield + _dblPensionBenefitsIncomeSpread));
@@ -245,7 +245,7 @@ public class DiscountRate {
 		final double dblHorizon)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblHorizon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))
 			throw new java.lang.Exception ("DiscountRate::basicConsumptionDF => Invalid Inputs");
 
 		return java.lang.Math.exp (-1. * dblHorizon * (_dblYield + _dblBasicConsumptionSpread));

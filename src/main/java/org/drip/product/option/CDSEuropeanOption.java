@@ -175,8 +175,8 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 
 		double dblATMManifestMeasure = mapCDSOutput.get (strManifestMeasure);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCDSDV01))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblCDSDV01))
 			return null;
 
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState
@@ -199,7 +199,7 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 					("QuantoAdjustedParSpread"))
 				dblManifestMeasurePriceTransformer = dblCDSDV01;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
 
 			double dblTTE = (iExerciseDate - iValueDate) / 365.25;
 
@@ -496,7 +496,7 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 
 		double dblATMManifestMeasure = mapCDSOutput.get (strManifestMeasure);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure))
 			throw new java.lang.Exception ("CDSEuropeanOption::pv => Invalid Inputs");
 
 		double dblIntegratedSurfaceVariance =
@@ -504,7 +504,7 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 				(org.drip.state.identifier.CustomLabel.Standard (_cds.name() + "_" + strManifestMeasure)),
 					iValueDate, iExerciseDate);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))
 			throw new java.lang.Exception ("CDSEuropeanOption::pv => Invalid Inputs");
 
 		double dblIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblIntegratedSurfaceVariance);
@@ -537,7 +537,7 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 			("ParSpread") || strManifestMeasure.equalsIgnoreCase ("Rate"))
 			dblManifestMeasurePriceTransformer = dblFixedCleanDV01;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
 			throw new java.lang.Exception ("CDSEuropeanOption::pv => Invalid Inputs");
 
 		if (_bIsReceiver)

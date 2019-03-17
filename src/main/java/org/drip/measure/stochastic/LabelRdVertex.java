@@ -141,7 +141,7 @@ public class LabelRdVertex extends org.drip.measure.stochastic.LabelBase
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
 		{
 			if (null == _vertexRd[vertexIndex] || labelCount != _vertexRd[vertexIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_vertexRd[vertexIndex]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_vertexRd[vertexIndex]))
 			{
 				throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
 			}

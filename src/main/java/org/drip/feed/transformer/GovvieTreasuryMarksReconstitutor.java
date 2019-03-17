@@ -187,7 +187,7 @@ public class GovvieTreasuryMarksReconstitutor {
 
 			for (int j = 0; j < iNumOutputBenchmark; ++j) {
 				try {
-					strCleansedInput += "," + org.drip.quant.common.FormatUtil.FormatDouble
+					strCleansedInput += "," + org.drip.numerical.common.FormatUtil.FormatDouble
 						(aOutputBenchmarkTreasury[j].yieldFromPrice (valParamsSpot, null, null,
 							aOutputBenchmarkTreasury[j].priceFromYield (valParamsSpot, null, null, gc.yield
 								(aOutputBenchmarkTreasury[j].maturityDate()))), 1, 6, 1.);
@@ -199,7 +199,7 @@ public class GovvieTreasuryMarksReconstitutor {
 			}
 
 			for (int j = 0; j < iNumInputBenchmark; ++j)
-				strCleansedInput += "," + org.drip.quant.common.FormatUtil.FormatDouble
+				strCleansedInput += "," + org.drip.numerical.common.FormatUtil.FormatDouble
 					(adblInputTreasuryYield[j], 1, 6, 1.);
 
 			System.out.println (strCleansedInput);

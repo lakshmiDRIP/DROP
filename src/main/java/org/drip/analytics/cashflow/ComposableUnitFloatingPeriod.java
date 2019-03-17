@@ -302,7 +302,7 @@ public class ComposableUnitFloatingPeriod extends org.drip.analytics.cashflow.Co
 			rip.floaterLabel().ucas()
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSpread = dblSpread))
 			throw new java.lang.Exception ("ComposableUnitFloatingPeriod Constructor => Invalid Inputs");
 
 		_rip = rip;

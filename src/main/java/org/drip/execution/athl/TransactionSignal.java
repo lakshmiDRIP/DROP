@@ -126,9 +126,9 @@ public class TransactionSignal {
 		final double dblJWander)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblJWander = dblJWander))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblJWander = dblJWander))
 			throw new java.lang.Exception ("TransactionSignal Constructor => Invalid Inputs");
 	}
 

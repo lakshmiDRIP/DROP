@@ -109,7 +109,7 @@ public class SensitivityAggregateCR
 	{
 		if (null == (_componentMarginCovarianceMap = componentMarginCovarianceMap) ||
 				0 == _componentMarginCovarianceMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
+			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =
 				cumulativeMarginSensitivity))
 		{
 			throw new java.lang.Exception ("SensitivityAggregateCR Constructor => Invalid Inputs");

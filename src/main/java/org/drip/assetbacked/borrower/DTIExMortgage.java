@@ -96,7 +96,7 @@ public class DTIExMortgage {
 		final double dblRatio)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRatio = dblRatio))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRatio = dblRatio))
 			throw new java.lang.Exception ("DTIExMortgage Constructor => Invalid Inputs");
 	}
 

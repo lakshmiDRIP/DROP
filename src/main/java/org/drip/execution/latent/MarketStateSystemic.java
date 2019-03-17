@@ -121,7 +121,7 @@ public class MarketStateSystemic implements org.drip.execution.latent.MarketStat
 		final double dblCommon)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCommon = dblCommon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCommon = dblCommon))
 			throw new java.lang.Exception ("MarketStateSystemic Constructor => Invalid Inpus");
 	}
 

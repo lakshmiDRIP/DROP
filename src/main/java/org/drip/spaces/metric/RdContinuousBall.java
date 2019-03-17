@@ -138,7 +138,7 @@ public class RdContinuousBall extends org.drip.spaces.metric.RdContinuousBanach 
 	{
 		super (aR1CV, distRd, iPNorm);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
 			_dblNormRadius)
 			throw new java.lang.Exception ("RdContinuousBall Constructor: Invalid Inputs");
 	}

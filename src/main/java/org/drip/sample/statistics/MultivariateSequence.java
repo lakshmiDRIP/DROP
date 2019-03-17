@@ -3,7 +3,7 @@ package org.drip.sample.statistics;
 
 import org.drip.feed.loader.*;
 import org.drip.measure.statistics.MultivariateMoments;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

@@ -330,7 +330,7 @@ public class CollateralAmountEstimator
 		final org.drip.analytics.date.JulianDate valuationDateJulian)
 		throws java.lang.Exception
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
+		return org.drip.numerical.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
 			dealerPostingRequirement (valuationDateJulian) + clientPostingRequirement (valuationDateJulian);
 	}
 
@@ -397,7 +397,7 @@ public class CollateralAmountEstimator
 				clientWindowMarginValue,
 				clientThresholdValue,
 				clientPostingRequirement,
-				org.drip.quant.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
+				org.drip.numerical.common.NumberUtil.IsValid (_currentBalance) ? _currentBalance :
 					dealerPostingRequirement + clientPostingRequirement);
 		}
 		catch (java.lang.Exception e)

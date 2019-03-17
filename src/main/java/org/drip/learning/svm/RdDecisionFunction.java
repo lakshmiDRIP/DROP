@@ -128,7 +128,7 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 		super (null);
 
 		if (null == (_rdPredictor = rdPredictor) || null == (_rdInverseMargin = rdInverseMargin) || null ==
-			(_adblInverseMarginWeight = adblInverseMarginWeight) || !org.drip.quant.common.NumberUtil.IsValid
+			(_adblInverseMarginWeight = adblInverseMarginWeight) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblB = dblB))
 			throw new java.lang.Exception ("RdDecisionFunction ctr: Invalid Inputs");
 

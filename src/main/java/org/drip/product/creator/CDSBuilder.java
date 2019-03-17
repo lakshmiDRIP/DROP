@@ -115,7 +115,7 @@ public class CDSBuilder {
 		final boolean bAdjustDates)
 	{
 		if (null == dtEffective || null == dtMaturity || null == strCurrency || strCurrency.isEmpty() || null
-			== cs || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+			== cs || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return null;
 
 		try {
@@ -164,7 +164,7 @@ public class CDSBuilder {
 		final boolean bAdjustDates)
 	{
 		if (null == dtEffective || null == dtMaturity || null == strCurrency || strCurrency.isEmpty() || null
-			== strCredit || strCredit.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+			== strCredit || strCredit.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return null;
 
 		org.drip.product.params.CreditSetting cs = new org.drip.product.params.CreditSetting (30,
@@ -197,7 +197,7 @@ public class CDSBuilder {
 		final java.lang.String strCalendar)
 	{
 		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strCurrency ||
-			strCurrency.isEmpty() || null == cs || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+			strCurrency.isEmpty() || null == cs || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return null;
 
 		try {
@@ -240,7 +240,7 @@ public class CDSBuilder {
 	{
 		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strCurrency ||
 			strCurrency.isEmpty() || null == strCredit || strCredit.isEmpty() ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+				!org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return null;
 
 		org.drip.product.params.CreditSetting cs = new org.drip.product.params.CreditSetting (30,

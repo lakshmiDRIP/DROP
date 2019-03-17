@@ -131,7 +131,7 @@ public class GapTestOutcome
 	{
 		if (null == (_probabilityIntegralTransformUnweighted = probabilityIntegralTransformUnweighted) ||
 			null == (_probabilityIntegralTransformWeighted = probabilityIntegralTransformWeighted) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_distance = distance))
+			!org.drip.numerical.common.NumberUtil.IsValid (_distance = distance))
 		{
 			throw new java.lang.Exception ("GapTestOutcome Constructor => Invalid Inputs");
 		}

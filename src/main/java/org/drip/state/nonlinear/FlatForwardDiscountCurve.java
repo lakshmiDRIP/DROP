@@ -138,7 +138,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	private FlatForwardDiscountCurve shiftManifestMeasure (
 		final double[] adblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblShift) || null == _ccis) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblShift) || null == _ccis) return null;
 
 		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();
 
@@ -383,7 +383,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;
 
 		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();
 
@@ -401,7 +401,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;
 
 		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();
 
@@ -427,7 +427,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	@Override public FlatForwardDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
 
 		int iNumDate = _adblForwardRate.length;
 		double[] adblForwardRate = new double[iNumDate];
@@ -492,19 +492,19 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iDate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate)) return null;
 
 		int i = 0;
 		double dblDF = java.lang.Double.NaN;
 		double iStartDate = _iEpochDate;
-		org.drip.quant.calculus.WengertJacobian wj = null;
+		org.drip.numerical.differentiation.WengertJacobian wj = null;
 
 		try {
-			wj = new org.drip.quant.calculus.WengertJacobian (1, _adblForwardRate.length);
+			wj = new org.drip.numerical.differentiation.WengertJacobian (1, _adblForwardRate.length);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -542,7 +542,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblForwardRate.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblForwardRate.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblForwardRate.length; ++i)
@@ -555,7 +555,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblForwardRate.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblForwardRate.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblForwardRate.length; ++i)
@@ -567,7 +567,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		for (int i = 0; i < _adblForwardRate.length; ++i)
 			_adblForwardRate[i] = dblValue;

@@ -134,8 +134,8 @@ public class DiffusionEvaluatorLinear extends org.drip.measure.dynamics.Diffusio
 	{
 		super (leDrift, leVolatility);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
 			throw new java.lang.Exception ("DiffusionEvaluatorLinear Constructor => Invalid Inputs");
 	}
 

@@ -91,7 +91,7 @@ public class HestonOptionPricerParams {
 	private double _dblTheta = java.lang.Double.NaN;
 	private double _dblLambda = java.lang.Double.NaN;
 	private int _iMultiValuePhaseTrackerType =
-		org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL;
+		org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL;
 
 	/**
 	 * HestonOptionPricerParams constructor
@@ -117,11 +117,11 @@ public class HestonOptionPricerParams {
 		final int iMultiValuePhaseTrackerType)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRho = dblRho) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblKappa = dblKappa) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblTheta = dblTheta) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRho = dblRho) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblKappa = dblKappa) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblTheta = dblTheta) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda))
 			throw new java.lang.Exception ("HestonOptionPricerParams ctr: Invalid Inputs!");
 
 		_iPayoffTransformScheme = iPayoffTransformScheme;

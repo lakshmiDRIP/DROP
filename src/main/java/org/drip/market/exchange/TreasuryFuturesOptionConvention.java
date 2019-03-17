@@ -110,7 +110,7 @@ public class TreasuryFuturesOptionConvention {
 		throws java.lang.Exception
 	{
 		if (null == (_astrCode = astrCode) || null == (_strTreasuryFuturesIndex = strTreasuryFuturesIndex) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional) || null == (_aLTDS =
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional) || null == (_aLTDS =
 				aLTDS))
 			throw new java.lang.Exception ("TreasuryFuturesOptionConvention ctr: Invalid Inputs!");
 

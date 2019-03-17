@@ -102,8 +102,8 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 		final double dblRightPredictorOrdinateEdge)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeftPredictorOrdinateEdge =
-			dblLeftPredictorOrdinateEdge) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeftPredictorOrdinateEdge =
+			dblLeftPredictorOrdinateEdge) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblRightPredictorOrdinateEdge = dblRightPredictorOrdinateEdge) ||
 					_dblRightPredictorOrdinateEdge <= _dblLeftPredictorOrdinateEdge)
 			throw new java.lang.Exception ("R1Uniform Constructor: Invalid Inputs");
@@ -135,7 +135,7 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1Uniform::cumulative => Invalid Inputs");
 
 		if (dblX <= _dblLeftPredictorOrdinateEdge) return 0.;
@@ -158,7 +158,7 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
 			throw new java.lang.Exception ("R1Uniform::invCumulative => Invalid inputs");
 
 	    return dblY * (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) +
@@ -184,7 +184,7 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 	    	(_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) / 12.;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		double[] adblX = new double[GRID_WIDTH];
 		double[] adblY = new double[GRID_WIDTH];
@@ -195,6 +195,6 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 			adblX[i] = _dblLeftPredictorOrdinateEdge + (i + 1) * dblWidth;
 		}
 
-		return org.drip.quant.common.Array2D.FromArray (adblX, adblY);
+		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);
 	}
 }

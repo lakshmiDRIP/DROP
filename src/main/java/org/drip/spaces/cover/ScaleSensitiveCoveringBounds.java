@@ -158,7 +158,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception
 				("ScaleSensitiveCoveringBounds::sampleSizeLowerBound => Invalid Inputs");
 
@@ -183,7 +183,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception
 				("ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs");
 
@@ -223,7 +223,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception
 				("ScaleSensitiveCoveringBounds::upperProbabilityBoundWeight => Invalid Inputs");
 

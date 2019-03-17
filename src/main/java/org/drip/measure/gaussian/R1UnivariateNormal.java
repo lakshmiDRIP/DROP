@@ -119,16 +119,27 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblSigma)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMean = dblMean) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblSigma = dblSigma) || 0. > _dblSigma)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMean = dblMean) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) || 0. > _dblSigma)
 			throw new java.lang.Exception ("R1UnivariateNormal Constructor: Invalid Inputs");
+	}
+
+	/**
+	 * Retrieve the Sigma
+	 * 
+	 * @return The Sigma
+	 */
+
+	public double sigma()
+	{
+	    return _dblSigma;
 	}
 
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1UnivariateNormal::cumulative => Invalid Inputs");
 
 		if (0. == _dblSigma) return dblX >= _dblMean ? 1. : 0.;
@@ -148,7 +159,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)
 			throw new java.lang.Exception ("R1UnivariateNormal::invCumulative => Cannot calculate");
 
 	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;
@@ -158,7 +169,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1UnivariateNormal::density => Invalid Inputs");
 
 		if (0. == _dblSigma) return dblX == _dblMean ? 1. : 0.;
@@ -178,7 +189,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 	    return _dblSigma * _dblSigma;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		return null;
 	}
@@ -211,7 +222,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1UnivariateNormal::errorFunction => Invalid Inputs");
 
 		double dblWidth = java.lang.Math.abs (dblX);
@@ -250,7 +261,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblConfidence)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblConfidence) || 0. >= dblConfidence || 1. <=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblConfidence) || 0. >= dblConfidence || 1. <=
 			dblConfidence)
 			throw new java.lang.Exception ("R1UnivariateNormal::confidenceInterval => Invalid Inputs");
 

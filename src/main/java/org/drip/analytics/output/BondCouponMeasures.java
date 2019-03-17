@@ -120,9 +120,9 @@ public class BondCouponMeasures {
 		final double dblPV)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDV01 = dblDV01) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponPV = dblCouponPV) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblPV = dblPV))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDV01 = dblDV01) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponPV = dblCouponPV) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblPV = dblPV))
 			throw new java.lang.Exception ("BondCouponMeasures ctr: Invalid Inputs!");
 
 		_dblIndexCouponPV = dblIndexCouponPV;
@@ -139,7 +139,7 @@ public class BondCouponMeasures {
 	public boolean adjustForSettlement (
 		final double dblCashPayDF)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCashPayDF)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCashPayDF)) return false;
 
 		_dblDV01 /= dblCashPayDF;
 		_dblIndexCouponPV /= dblCashPayDF;
@@ -209,8 +209,8 @@ public class BondCouponMeasures {
 		final double dblIndex,
 		final boolean bDirtyFromClean)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAccrued01) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAccrued01) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return false;
 
 		if (bDirtyFromClean)

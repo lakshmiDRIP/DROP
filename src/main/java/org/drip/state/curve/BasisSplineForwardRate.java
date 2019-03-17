@@ -132,7 +132,7 @@ public class BasisSplineForwardRate extends org.drip.state.forward.ForwardCurve 
 		return _span.calcResponseValue (iDate);
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{

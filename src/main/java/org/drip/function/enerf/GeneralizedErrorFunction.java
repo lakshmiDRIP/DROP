@@ -103,10 +103,10 @@ package org.drip.function.enerf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GeneralizedErrorFunction extends org.drip.function.numerical.R1ToR1Estimator
+public abstract class GeneralizedErrorFunction extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 	private int _degree = -1;
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct the Euler-MacLaurin Instance of the E<sub>n</sub> erf
@@ -120,7 +120,7 @@ public abstract class GeneralizedErrorFunction extends org.drip.function.numeric
 		final int degree,
 		final int termCount)
 	{
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
 			org.drip.function.enerf.GeneralizedMacLaurinSeriesGenerator.ERF (
 				degree,
 				termCount
@@ -143,13 +143,13 @@ public abstract class GeneralizedErrorFunction extends org.drip.function.numeric
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("GeneralizedErrorFunction::MacLaurin::evaluate => Invalid Inputs");
 					}
 
-					double erf = org.drip.quant.common.NumberUtil.Factorial (degree) /
+					double erf = org.drip.numerical.common.NumberUtil.Factorial (degree) /
 						java.lang.Math.sqrt (java.lang.Math.PI) *
 						r1ToR1SeriesGenerator.cumulative (
 							0.,
@@ -169,8 +169,8 @@ public abstract class GeneralizedErrorFunction extends org.drip.function.numeric
 	}
 
 	protected GeneralizedErrorFunction (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc,
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.differentiation.DerivativeControl dc,
 		final int degree)
 		throws java.lang.Exception
 	{
@@ -195,7 +195,7 @@ public abstract class GeneralizedErrorFunction extends org.drip.function.numeric
 		return _degree;
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
 		final double x)
 	{
 		return null == _r1ToR1SeriesGenerator ? seriesEstimate (

@@ -122,7 +122,7 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception ("ShortTiltTerm::rdToR1::evaluate => Invalid Inputs");
 
 				double dblValue = 0.;
@@ -150,7 +150,7 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid
+				if (0 == iOrder || null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblVariate))
 					throw new java.lang.Exception ("ShortTiltTerm::rdToR1::derivative => Invalid Inputs");
 

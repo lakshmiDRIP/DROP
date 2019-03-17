@@ -98,7 +98,7 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
 			throw new java.lang.Exception ("PoissonDistribution constructor: Invalid inputs");
 
 		_dblExponentialLambda = java.lang.Math.exp (-1. * _dblLambda);
@@ -119,7 +119,7 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("PoissonDistribution::cumulative => Invalid inputs");
 
 		int iEnd = (int) dblX;
@@ -147,7 +147,7 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
 			throw new java.lang.Exception ("PoissonDistribution::invCumulative => Invalid inputs");
 
 		int i = 0;
@@ -181,7 +181,7 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 	    return _dblLambda;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		return null;
 	}

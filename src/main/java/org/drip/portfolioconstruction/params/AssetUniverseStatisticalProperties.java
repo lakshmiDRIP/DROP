@@ -145,7 +145,7 @@ public class AssetUniverseStatisticalProperties {
 		final double dblRiskFreeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate))
 			throw new java.lang.Exception
 				("AssetUniverseStatisticalProperties Constructor => Invalid Inputs");
 	}
@@ -184,7 +184,7 @@ public class AssetUniverseStatisticalProperties {
 		final double dblCorrelation)
 	{
 		if (null == strID1 || strID1.isEmpty() || null == strID2 || strID2.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCorrelation) || 1. < dblCorrelation || -1. >
+			!org.drip.numerical.common.NumberUtil.IsValid (dblCorrelation) || 1. < dblCorrelation || -1. >
 				dblCorrelation)
 			return false;
 

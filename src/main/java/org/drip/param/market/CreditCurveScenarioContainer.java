@@ -166,8 +166,8 @@ public class CreditCurveScenarioContainer {
 		throws java.lang.Exception
 	{
 		if (null == (_aCalibInst = aCalibInst) || 0 == _aCalibInst.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponBump = dblCouponBump) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblRecoveryBump = dblRecoveryBump))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponBump = dblCouponBump) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblRecoveryBump = dblRecoveryBump))
 			throw new java.lang.Exception ("CreditCurveScenarioContainer ctr => Invalid Inputs!");
 	}
 

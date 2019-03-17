@@ -114,7 +114,7 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 		final double lambda)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
 		{
 			throw new java.lang.Exception ("R1UnivariateExponential Constructor => Invalid Inputs: " + _lambda);
 		}
@@ -135,7 +135,7 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || x < 0.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x < 0.)
 			throw new java.lang.Exception ("R1UnivariateExponential::cumulative => Invalid Inputs");
 
 		return 1. - java.lang.Math.exp (-1. * _lambda * x);
@@ -153,7 +153,7 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 		final double y)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
 			throw new java.lang.Exception ("R1UnivariateExponential::invCumulative => Cannot calculate");
 
 	    return -1. / _lambda * java.lang.Math.log (1. - y);
@@ -163,7 +163,7 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || x < 0.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x < 0.)
 			throw new java.lang.Exception ("R1UnivariateExponential::density => Invalid Inputs");
 
 		return _lambda * java.lang.Math.exp (-1. * _lambda * x);
@@ -179,7 +179,7 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 	    return 1. / (_lambda * _lambda);
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		return null;
 	}

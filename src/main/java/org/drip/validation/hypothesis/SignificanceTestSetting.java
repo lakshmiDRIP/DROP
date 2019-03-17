@@ -222,7 +222,7 @@ public class SignificanceTestSetting
 		final int tailCheck)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_threshold = threshold))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_threshold = threshold))
 		{
 			throw new java.lang.Exception ("SignificanceTestSetting Constructor => Invalid Inputs");
 		}

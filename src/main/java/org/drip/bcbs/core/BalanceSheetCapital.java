@@ -131,12 +131,12 @@ public class BalanceSheetCapital
 		final double totalExposure)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_cet1 = cet1) || 0. > _cet1 ||
-			!org.drip.quant.common.NumberUtil.IsValid (_at1 = at1) || 0. > _at1 ||
-			!org.drip.quant.common.NumberUtil.IsValid (_additionalCapital = additionalCapital) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_cet1 = cet1) || 0. > _cet1 ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_at1 = at1) || 0. > _at1 ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_additionalCapital = additionalCapital) ||
 				0. > _additionalCapital ||
-			!org.drip.quant.common.NumberUtil.IsValid (_rwa = rwa) || 0. > _rwa ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalExposure = totalExposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_rwa = rwa) || 0. > _rwa ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_totalExposure = totalExposure) ||
 				0. > _totalExposure)
 		{
 			throw new java.lang.Exception ("BalanceSheetCapital Constructor => Invalid Inputs");

@@ -138,7 +138,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 			throw new java.lang.Exception ("BondFutures ctr: Invalid Inputs");
 
 		for (int i = 0; i < iNumBond; ++i) {
-			if (null == _aBond[i] || !org.drip.quant.common.NumberUtil.IsValid (_adblConversionFactor[i]))
+			if (null == _aBond[i] || !org.drip.numerical.common.NumberUtil.IsValid (_adblConversionFactor[i]))
 				throw new java.lang.Exception ("BondFutures ctr: Invalid Inputs");
 		}
 	}
@@ -179,7 +179,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setNotionalValue (
 		final double dblNotionalValue)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblNotionalValue = dblNotionalValue);
+		return org.drip.numerical.common.NumberUtil.IsValid (_dblNotionalValue = dblNotionalValue);
 	}
 
 	/**
@@ -204,7 +204,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setReferenceCoupon (
 		final double dblReferenceCoupon)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblReferenceCoupon = dblReferenceCoupon);
+		return org.drip.numerical.common.NumberUtil.IsValid (_dblReferenceCoupon = dblReferenceCoupon);
 	}
 
 	/**
@@ -331,7 +331,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setMinimumPriceMovement (
 		final double dblMinimumPriceMovement)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPriceMovement = dblMinimumPriceMovement);
+		return org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumPriceMovement = dblMinimumPriceMovement);
 	}
 
 	/**
@@ -356,7 +356,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 	public boolean setTickValue (
 		final double dblTickValue)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblTickValue = dblTickValue);
+		return org.drip.numerical.common.NumberUtil.IsValid (_dblTickValue = dblTickValue);
 	}
 
 	/**
@@ -447,7 +447,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		if (iBasketSize != _aBond.length) return null;
 
 		for (int i = 0; i < iBasketSize; ++i) {
-			if (org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i])) {
+			if (org.drip.numerical.common.NumberUtil.IsValid (adblCleanPrice[i])) {
 				iStartIndex = i;
 				break;
 			}
@@ -469,7 +469,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 			org.drip.param.valuation.ValuationParams.Spot (iExpiryDate);
 
 		for (int i = iStartIndex; i < iBasketSize; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i])) continue;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblCleanPrice[i])) continue;
 
 			double dblForwardPrice = java.lang.Double.NaN;
 
@@ -747,7 +747,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 			org.drip.param.definition.ProductQuote pqBond = csqc.productQuote (_aBond[i].name());
 
 			if (null == pqBond || !pqBond.containsQuote ("Price") ||
-				!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i] = pqBond.quote ("Price").value
+				!org.drip.numerical.common.NumberUtil.IsValid (adblCleanPrice[i] = pqBond.quote ("Price").value
 					("mid")))
 				return null;
 		}
@@ -762,7 +762,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 			bondCTD.value (valParams, pricerParams, csqc, vcp);
 
 		if (null == mapBondFuturesMeasure || null == (mapBondFuturesMeasure =
-			org.drip.quant.common.CollectionUtil.PrefixKeys (bondCTD.value (valParams, pricerParams, csqc,
+			org.drip.numerical.common.CollectionUtil.PrefixKeys (bondCTD.value (valParams, pricerParams, csqc,
 				vcp), "CTD::")))
 			return null;
 
@@ -797,8 +797,8 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 		mapBondFuturesMeasure.put ("CTDSpotPrice", dblCTDSpotPrice);
 
-		if (org.drip.quant.common.NumberUtil.IsValid (dblCTDRepoRate) &&
-			org.drip.quant.common.NumberUtil.IsValid (dblCTDTreasuryYield))
+		if (org.drip.numerical.common.NumberUtil.IsValid (dblCTDRepoRate) &&
+			org.drip.numerical.common.NumberUtil.IsValid (dblCTDTreasuryYield))
 			mapBondFuturesMeasure.put ("CostOfCarry", dblCTDRepoRate - dblCTDTreasuryYield);
 
 		org.drip.param.definition.ProductQuote pqFutures = csqc.productQuote (name());
@@ -806,7 +806,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 		if (null != pqFutures && pqFutures.containsQuote ("Price")) {
 			double dblFuturesQuote = pqFutures.quote ("Price").value ("mid");
 
-			if (org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuote)) {
+			if (org.drip.numerical.common.NumberUtil.IsValid (dblFuturesQuote)) {
 				if (iExpiryDate > iValueDate) {
 					double dblImpliedRepoRate = 365.25 * (((dblFuturesQuote - dblCTDSpotPrice) /
 						dblCTDSpotPrice) - 1.) / (iExpiryDate - iValueDate);
@@ -815,7 +815,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 					mapBondFuturesMeasure.put ("ImpliedRepoRate", dblImpliedRepoRate);
 
-					if (org.drip.quant.common.NumberUtil.IsValid (dblCTDRepoRate))
+					if (org.drip.numerical.common.NumberUtil.IsValid (dblCTDRepoRate))
 						mapBondFuturesMeasure.put ("NetBasis", dblImpliedRepoRate - dblCTDRepoRate);
 				}
 
@@ -893,7 +893,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 			org.drip.param.definition.ProductQuote pqBond = csqc.productQuote (_aBond[i].name());
 
 			if (null == pqBond || !pqBond.containsQuote ("Price") ||
-				!org.drip.quant.common.NumberUtil.IsValid (adblCleanPrice[i] = pqBond.quote ("Price").value
+				!org.drip.numerical.common.NumberUtil.IsValid (adblCleanPrice[i] = pqBond.quote ("Price").value
 					("mid")))
 				throw new java.lang.Exception ("BondFutures::pv - Invalid Inputs");
 		}
@@ -916,7 +916,7 @@ public class TreasuryFutures extends org.drip.product.definition.Component {
 
 		double dblAccrued = ctdEntry.bond().accrued (iValueDate, csqc);
 
-		return org.drip.quant.common.NumberUtil.IsValid (dblFuturesQuote) ? dblFuturesQuote *
+		return org.drip.numerical.common.NumberUtil.IsValid (dblFuturesQuote) ? dblFuturesQuote *
 			dblCTDConversionFactor + dblAccrued : dblCTDForwardPrice + dblAccrued;
 	}
 }

@@ -140,8 +140,8 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 		final double dblMarketStateExponentiation,
 		final double dblNonDimensionalTime)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblMarketStateExponentiation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTime) || 0. >= dblNonDimensionalTime)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketStateExponentiation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalTime) || 0. >= dblNonDimensionalTime)
 			return null;
 
 		double dblNonDimensionalUrgency = 1. / dblNonDimensionalTime;
@@ -172,9 +172,9 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 		final double dblNonDimensionalCost,
 		final double dblNonDimensionalCostCross)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblMarketState) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalCost) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalCostCross))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketState) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalCost) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalCostCross))
 			return null;
 
 		try {
@@ -208,8 +208,8 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 	{
 		super (dblRealization, dblNonDimensionalTradeRate);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblGradient = dblGradient) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblJacobian = dblJacobian))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblGradient = dblGradient) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblJacobian = dblJacobian))
 			throw new java.lang.Exception ("NonDimensionalCostSystemic Constructor => Invalid Inputs");
 	}
 

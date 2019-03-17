@@ -106,7 +106,7 @@ public class Turn {
 		final double dblSpread)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread) || (_iFinishDate =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSpread = dblSpread) || (_iFinishDate =
 			iFinishDate) <= (_iStartDate = iStartDate))
 			throw new java.lang.Exception ("Turn Ctr: Invalid Inputs");
 	}

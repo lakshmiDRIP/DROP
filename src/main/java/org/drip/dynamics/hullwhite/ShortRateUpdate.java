@@ -162,9 +162,9 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 	{
 		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);
 
-		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_lslFunding = lslFunding) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblExpectedFinalShortRate = dblExpectedFinalShortRate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblFinalShortRateVariance =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblFinalShortRateVariance =
 					dblFinalShortRateVariance)) {
 			System.out.println (_lslFunding.fullyQualifiedName());
 
@@ -256,7 +256,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 		final double dblFinalInitialZeroRatio)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblFinalInitialZeroRatio))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFinalInitialZeroRatio))
 			throw new java.lang.Exception ("ShortRateUpdate::zeroCouponBondPrice => Invalid Inputs");
 
 		return dblFinalInitialZeroRatio * snapshot().qm (_lslFunding,

@@ -174,28 +174,28 @@ public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1
 
 			double dblPredictorRightBound = runsInput.rightEdge();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorLowerBound))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorLowerBound))
 				dblPredictorLowerBound = dblPredictorLeftBound;
 			else {
 				if (dblPredictorLowerBound > dblPredictorLeftBound)
 					dblPredictorLowerBound = dblPredictorLeftBound;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorUpperBound))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorUpperBound))
 				dblPredictorUpperBound = dblPredictorRightBound;
 			else {
 				if (dblPredictorUpperBound < dblPredictorRightBound)
 					dblPredictorUpperBound = dblPredictorRightBound;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseLowerBound))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseLowerBound))
 				dblResponseLowerBound = dblResponseLeftBound;
 			else {
 				if (dblResponseLowerBound > dblResponseLeftBound)
 					dblResponseLowerBound = dblResponseLeftBound;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseUpperBound))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseUpperBound))
 				dblResponseUpperBound = dblResponseRightBound;
 			else {
 				if (dblResponseUpperBound < dblResponseRightBound)

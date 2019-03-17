@@ -309,7 +309,7 @@ public class CSVGrid {
 		final int iColumn,
 		final double dblScaler)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || 0 > iColumn) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblScaler) || 0 > iColumn) return null;
 
 		int iRow = 0;
 
@@ -377,7 +377,7 @@ public class CSVGrid {
 			doubleMap (
 				final double dblScaler)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;
 
 		int iNumClose = _lsastr.size();
 
@@ -405,7 +405,7 @@ public class CSVGrid {
 				return null;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblHeader)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblHeader)) return null;
 
 			adblHeader[i] = dblHeader;;
 		}
@@ -432,7 +432,7 @@ public class CSVGrid {
 				} catch (java.lang.Exception e) {
 				}
 
-				if (org.drip.quant.common.NumberUtil.IsValid (dblClosingMark))
+				if (org.drip.numerical.common.NumberUtil.IsValid (dblClosingMark))
 					mapClosingMark.put (adblHeader[j], dblScaler * dblClosingMark);
 			}
 
@@ -456,7 +456,7 @@ public class CSVGrid {
 		groupedOrderedDouble (
 			final double dblScaler)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblScaler) || null == _lsastr) return null;
 
 		int iNumClose = _lsastr.size();
 
@@ -473,7 +473,7 @@ public class CSVGrid {
 
 			if (null == astrHeader[i] || astrHeader[i].isEmpty()) astrHeader[i] = "@:#";
 
-			java.lang.String[] astrInstrumentTenor = org.drip.quant.common.StringUtil.Split
+			java.lang.String[] astrInstrumentTenor = org.drip.numerical.common.StringUtil.Split
 				(astrHeader[i].trim(), ":");
 
 			if (null == astrInstrumentTenor || 2 != astrInstrumentTenor.length) return null;

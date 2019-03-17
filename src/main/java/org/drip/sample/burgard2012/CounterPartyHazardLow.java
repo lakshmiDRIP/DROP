@@ -1,7 +1,7 @@
 
 package org.drip.sample.burgard2012;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

@@ -115,11 +115,11 @@ public class G2PlusPlus {
 		final org.drip.function.definition.R1ToR1 auIFRInitial)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblEta = dblEta) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) || null == (_aRSG = aRSG) || 2
-						!= _aRSG.length || !org.drip.quant.common.NumberUtil.IsValid (_dblRho = dblRho) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblEta = dblEta) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || null == (_aRSG = aRSG) || 2
+						!= _aRSG.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblRho = dblRho) ||
 							null == (_auIFRInitial = auIFRInitial))
 			throw new java.lang.Exception ("G2PlusPlus ctr: Invalid Inputs");
 	}
@@ -249,7 +249,7 @@ public class G2PlusPlus {
 		final int iSpotTimeIncrement)
 		throws java.lang.Exception
 	{
-		if (iSpotDate > iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (iSpotDate > iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("G2PlusPlus::deltaX => Invalid Inputs");
 
 		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;
@@ -278,7 +278,7 @@ public class G2PlusPlus {
 		final int iSpotTimeIncrement)
 		throws java.lang.Exception
 	{
-		if (iSpotDate > iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblY))
+		if (iSpotDate > iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblY))
 			throw new java.lang.Exception ("G2PlusPlus::deltaY => Invalid Inputs");
 
 		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;

@@ -396,7 +396,7 @@ public class CapitalMetricsStandard extends org.drip.bcbs.core.CapitalMetrics
 			totalPlusConservationBufferRatio
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_cet1DeductionsPhaseIn = cet1DeductionsPhaseIn) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_cet1DeductionsPhaseIn = cet1DeductionsPhaseIn) ||
 			0. > _cet1DeductionsPhaseIn)
 		{
 			throw new java.lang.Exception ("CapitalMetricsStandard Contructor => Invalid Inputs");

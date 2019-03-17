@@ -142,7 +142,7 @@ public class R1ContinuousBall extends org.drip.spaces.metric.R1Continuous {
 	{
 		super (dblLeftEdge, dblRightEdge, distR1, iPNorm);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
 			_dblNormRadius)
 			throw new java.lang.Exception ("R1ContinuousBall Constructor: Invalid Inputs");
 	}

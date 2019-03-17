@@ -177,13 +177,13 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		double[] adblPopulationCoveringNumber = _aNormedRxToNormedRd[0].populationCoveringNumber
 			(adblCover[0]);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationCoveringNumber)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationCoveringNumber)) return null;
 
 		for (int i = 1; i < iFunctionSpaceSize; ++i) {
 			double[] adblFunctionPopulationCoveringNumber = _aNormedRxToNormedRd[i].populationCoveringNumber
 				(adblCover[i]);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionPopulationCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionPopulationCoveringNumber))
 				return null;
 
 			int iDimension = adblFunctionPopulationCoveringNumber.length;
@@ -238,13 +238,13 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		double[] adblPopulationSupremumCoveringNumber =
 			_aNormedRxToNormedRd[0].populationSupremumCoveringNumber (adblCover[0]);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationSupremumCoveringNumber)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationSupremumCoveringNumber)) return null;
 
 		for (int i = 1; i < iFunctionSpaceSize; ++i) {
 			double[] adblFunctionPopulationSupremumCoveringNumber =
 				_aNormedRxToNormedRd[i].populationSupremumCoveringNumber (adblCover[i]);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionPopulationSupremumCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionPopulationSupremumCoveringNumber))
 				return null;
 
 			int iDimension = adblFunctionPopulationSupremumCoveringNumber.length;
@@ -303,13 +303,13 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		double[] adblSampleCoveringNumber = _aNormedRxToNormedRd[0].sampleCoveringNumber (gvvi,
 			adblCover[0]);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleCoveringNumber)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleCoveringNumber)) return null;
 
 		for (int i = 1; i < iFunctionSpaceSize; ++i) {
 			double[] adblFunctionSampleCoveringNumber = _aNormedRxToNormedRd[i].sampleCoveringNumber (gvvi,
 				adblCover[i]);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionSampleCoveringNumber)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionSampleCoveringNumber)) return null;
 
 			int iDimension = adblFunctionSampleCoveringNumber.length;
 
@@ -367,13 +367,13 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		double[] adblSampleSupremumCoveringNumber = _aNormedRxToNormedRd[0].sampleSupremumCoveringNumber
 			(gvvi, adblCover[0]);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleSupremumCoveringNumber)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleSupremumCoveringNumber)) return null;
 
 		for (int i = 1; i < iFunctionSpaceSize; ++i) {
 			double[] adblFunctionSampleSupremumCoveringNumber =
 				_aNormedRxToNormedRd[i].sampleSupremumCoveringNumber (gvvi, adblCover[i]);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblFunctionSampleSupremumCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionSampleSupremumCoveringNumber))
 				return null;
 
 			int iDimension = adblFunctionSampleSupremumCoveringNumber.length;
@@ -424,12 +424,12 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 		double[] adblPopulationRdMetricNorm = _aNormedRxToNormedRd[0].populationMetricNorm();
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationRdMetricNorm)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationRdMetricNorm)) return null;
 
 		for (int i = 1; i < iNumFunction; ++i) {
 			double[] adblPopulationMetricNorm = _aNormedRxToNormedRd[i].populationMetricNorm();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationMetricNorm)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationMetricNorm)) return null;
 
 			int iDimension = adblPopulationMetricNorm.length;
 
@@ -456,12 +456,12 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 		double[] adblPopulationRdSupremumNorm = _aNormedRxToNormedRd[0].populationESS();
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationRdSupremumNorm)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationRdSupremumNorm)) return null;
 
 		for (int i = 1; i < iNumFunction; ++i) {
 			double[] adblPopulationSupremumNorm = _aNormedRxToNormedRd[i].populationESS();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblPopulationSupremumNorm)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationSupremumNorm)) return null;
 
 			int iDimension = adblPopulationSupremumNorm.length;
 
@@ -491,12 +491,12 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 		double[] adblSampleRdMetricNorm = _aNormedRxToNormedRd[0].sampleMetricNorm (gvvi);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleRdMetricNorm)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleRdMetricNorm)) return null;
 
 		for (int i = 1; i < iNumFunction; ++i) {
 			double[] adblSampleMetricNorm = _aNormedRxToNormedRd[i].sampleMetricNorm (gvvi);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleMetricNorm)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleMetricNorm)) return null;
 
 			int iDimension = adblSampleMetricNorm.length;
 
@@ -526,12 +526,12 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 
 		double[] adblSampleRdSupremumNorm = _aNormedRxToNormedRd[0].sampleSupremumNorm (gvvi);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleRdSupremumNorm)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleRdSupremumNorm)) return null;
 
 		for (int i = 1; i < iNumFunction; ++i) {
 			double[] adblSampleSupremumNorm = _aNormedRxToNormedRd[i].sampleSupremumNorm (gvvi);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleSupremumNorm)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleSupremumNorm)) return null;
 
 			int iDimension = adblSampleSupremumNorm.length;
 

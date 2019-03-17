@@ -96,7 +96,7 @@ public class TickerPriceStatistics
 		final double price)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (price) || 0. >= price)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (price) || 0. >= price)
 		{
 			throw new java.lang.Exception ("TickerPriceStatistics Constructor => Invalid Inputs");
 		}
@@ -173,7 +173,7 @@ public class TickerPriceStatistics
 	public boolean addInstance (
 		final double price)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (price) || 0. >= price)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (price) || 0. >= price)
 		{
 			return false;
 		}

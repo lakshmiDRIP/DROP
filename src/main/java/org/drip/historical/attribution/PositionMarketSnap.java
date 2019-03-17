@@ -112,7 +112,7 @@ public class PositionMarketSnap {
 		final double dblMarketValue)
 		throws java.lang.Exception
 	{
-		if (null == (_dtSnap = dtSnap) || !org.drip.quant.common.NumberUtil.IsValid (_dblMarketValue =
+		if (null == (_dtSnap = dtSnap) || !org.drip.numerical.common.NumberUtil.IsValid (_dblMarketValue =
 			dblMarketValue))
 			throw new java.lang.Exception ("PositionMarketSnap Constructor: Invalid Inputs");
 	}
@@ -279,7 +279,7 @@ public class PositionMarketSnap {
 		final double dblR1,
 		final boolean bIgnoreNaN)
 	{
-		if (null == strKey || strKey.isEmpty() || (!bIgnoreNaN && !org.drip.quant.common.NumberUtil.IsValid
+		if (null == strKey || strKey.isEmpty() || (!bIgnoreNaN && !org.drip.numerical.common.NumberUtil.IsValid
 			(dblR1)))
 			return false;
 
@@ -441,7 +441,7 @@ public class PositionMarketSnap {
 		java.lang.String strContent = "";
 
 		for (java.lang.String strR1Key : _mapCustomR1.keySet())
-			strContent = strContent + org.drip.quant.common.FormatUtil.FormatDouble (_mapCustomR1.get
+			strContent = strContent + org.drip.numerical.common.FormatUtil.FormatDouble (_mapCustomR1.get
 				(strR1Key), 1, 8, 1.) + ",";
 
 		for (java.lang.String strC1Key : _mapCustomC1.keySet())

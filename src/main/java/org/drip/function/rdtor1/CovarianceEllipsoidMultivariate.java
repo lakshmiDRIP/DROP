@@ -108,7 +108,7 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 
 		for (int i = 0; i < iSize; ++i) {
 			if (null == _aadblCovarianceMatrix[i] || iSize != _aadblCovarianceMatrix[i].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]))
 				throw new java.lang.Exception
 					("CovarianceEllipsoidMultivariate Constructor => Invalid Inputs");
 		}
@@ -140,7 +140,7 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 			throw new java.lang.Exception ("CovarianceEllipsoidMultivariate::evaluate => Invalid Inputs");
 
 		double dblCovariance = 0.;
@@ -160,7 +160,7 @@ public class CovarianceEllipsoidMultivariate extends org.drip.function.definitio
 	@Override public double[] jacobian (
 		final double[] adblVariate)
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate)) return null;
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate)) return null;
 
 		int iDimension = adblVariate.length;
 		double[] adblJacobian = new double[iDimension];

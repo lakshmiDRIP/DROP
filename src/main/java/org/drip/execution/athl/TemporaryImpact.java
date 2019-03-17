@@ -139,7 +139,7 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("TemporaryImpact::regularize => Invalid Inputs");
 
 		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);
@@ -166,7 +166,7 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
 			throw new java.lang.Exception ("TemporaryImpact::evaluate => Invalid Inputs");
 
 		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;
@@ -181,7 +181,7 @@ public class TemporaryImpact extends org.drip.execution.impact.TransactionFuncti
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (0 >= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))
+		if (0 >= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
 			throw new java.lang.Exception ("TemporaryImpact::derivative => Invalid Inputs");
 
 		double dblCoefficient = 1.;

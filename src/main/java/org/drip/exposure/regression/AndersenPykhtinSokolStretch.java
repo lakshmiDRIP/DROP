@@ -144,7 +144,7 @@ public class AndersenPykhtinSokolStretch
 
 		if (0 == sparseExposureDateCount ||
 			sparseExposureDateCount != _sparseExposureArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_sparseExposureArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_sparseExposureArray) ||
 			sparseExposureDateCount != _sparseLocalVolatilityArray.length ||
 			sparseExposureDateCount > denseExposureDateCount)
 		{

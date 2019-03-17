@@ -96,7 +96,7 @@ public class ExpectedNonFinancialIncome {
 		final double dblIncomeReplacementRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIncomeReplacementRate = dblIncomeReplacementRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblIncomeReplacementRate = dblIncomeReplacementRate))
 			throw new java.lang.Exception ("ExpectedNonFinancialIncome Constructor => Invalid Inputs");
 	}
 

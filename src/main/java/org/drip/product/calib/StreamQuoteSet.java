@@ -107,7 +107,7 @@ public class StreamQuoteSet {
 	public boolean setPV (
 		final double dblPV)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPV)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPV)) return false;
 
 		_mapQuote.put ("PV", dblPV);
 
@@ -152,7 +152,7 @@ public class StreamQuoteSet {
 	public boolean setCouponSpread (
 		final double dblCouponSpread)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCouponSpread)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCouponSpread)) return false;
 
 		_mapQuote.put ("CouponSpread", dblCouponSpread);
 
@@ -198,7 +198,7 @@ public class StreamQuoteSet {
 	public boolean setBasis (
 		final double dblBasis)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasis)) return false;
 
 		_mapQuote.put ("Basis", dblBasis);
 

@@ -129,9 +129,9 @@ public abstract class Component implements org.drip.product.definition.Component
 		final int iSettleDate,
 		final double dblPV,
 		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack)
+		final org.drip.numerical.differentiation.WengertJacobian wjPVDFMicroJack)
 	{
-		org.drip.quant.calculus.WengertJacobian wjCashSettleDFDF = dc.jackDDFDManifestMeasure (iSettleDate,
+		org.drip.numerical.differentiation.WengertJacobian wjCashSettleDFDF = dc.jackDDFDManifestMeasure (iSettleDate,
 			"Rate");
 
 		if (null == wjCashSettleDFDF) return false;

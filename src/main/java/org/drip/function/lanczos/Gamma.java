@@ -100,7 +100,7 @@ package org.drip.function.lanczos;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Gamma extends org.drip.function.numerical.R1ToR1Estimator
+public class Gamma extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 	private org.drip.function.lanczos.ASeriesGenerator _aSeriesGenerator = null;
 
@@ -115,7 +115,7 @@ public class Gamma extends org.drip.function.numerical.R1ToR1Estimator
 
 	public Gamma (
 		final org.drip.function.lanczos.ASeriesGenerator aSeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{
 		super (dc);
@@ -141,7 +141,7 @@ public class Gamma extends org.drip.function.numerical.R1ToR1Estimator
 		final double z)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (z) || 0. >= z)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
 		{
 			throw new java.lang.Exception ("Gamma::evaluate => Invalid Inputs");
 		}
@@ -160,7 +160,7 @@ public class Gamma extends org.drip.function.numerical.R1ToR1Estimator
 		);
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
 		final double x)
 	{
 		return seriesEstimate (

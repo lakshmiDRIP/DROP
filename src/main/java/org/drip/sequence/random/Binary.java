@@ -101,7 +101,7 @@ public class Binary extends org.drip.sequence.random.Bounded {
 	{
 		super (0.,1.);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPositiveProbability = dblPositiveProbability) || 0.
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPositiveProbability = dblPositiveProbability) || 0.
 			> _dblPositiveProbability || 1. < _dblPositiveProbability)
 			throw new java.lang.Exception ("BoundedUniform ctr: Invalid Inputs!");
 	}

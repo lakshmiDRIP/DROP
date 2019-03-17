@@ -239,7 +239,7 @@ public abstract class ExecutionInitializationOutput {
 	public boolean setStartingVariate (
 		final double dblStartingVariate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingVariate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartingVariate)) return false;
 
 		_dblStartingVariate = dblStartingVariate;
 		return true;

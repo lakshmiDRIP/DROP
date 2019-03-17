@@ -102,7 +102,7 @@ public class SoftConstraint {
 		throws java.lang.Exception
 	{
 		if (null == (_strPenaltyType = strPenaltyType) || _strPenaltyType.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblPenaltyAmount = dblPenaltyAmount))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblPenaltyAmount = dblPenaltyAmount))
 			throw new java.lang.Exception ("SoftConstraint Constructor => Invalid Inputs");
 
 		_dblViolationEdgeLimit = dblViolationEdgeLimit;

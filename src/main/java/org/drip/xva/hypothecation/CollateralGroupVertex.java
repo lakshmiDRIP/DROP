@@ -125,7 +125,7 @@ public abstract class CollateralGroupVertex
 		);
 
 		if (null == (_vertexDate = vertexDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))
+			!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting))
 		{
 			throw new java.lang.Exception ("CollateralGroupVertex Constructor => Invalid Inputs");
 		}

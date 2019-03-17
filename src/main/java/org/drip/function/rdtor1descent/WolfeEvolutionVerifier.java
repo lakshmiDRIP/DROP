@@ -150,8 +150,8 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 		final boolean bStrongCurvatureCriterion)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))
 			throw new java.lang.Exception ("WolfeEvolutionVerifier Constructor => Invalid Inputs");
 
 		_bMaximizerCheck = bMaximizerCheck;

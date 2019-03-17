@@ -377,7 +377,7 @@ public class BucketCurvatureSettings extends org.drip.simm.parameters.BucketVega
 			1.
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_tenorScalingFactor = tenorScalingFactor))
 		{
 			throw new java.lang.Exception ("BucketCurvatureSettings Constructor => Invalid Inputs");
 		}

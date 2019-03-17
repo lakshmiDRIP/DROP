@@ -7,7 +7,7 @@ import org.drip.execution.nonadaptive.ContinuousConstantTradingEnhanced;
 import org.drip.execution.optimum.EfficientTradingTrajectoryContinuous;
 import org.drip.execution.profiletime.UniformParticipationRateLinear;
 import org.drip.function.definition.R1ToR1;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

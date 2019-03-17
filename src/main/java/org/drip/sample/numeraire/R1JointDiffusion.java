@@ -5,8 +5,8 @@ import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.linearalgebra.Matrix;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 
 /*

@@ -102,9 +102,9 @@ public class PositionManifestMeasureSnap {
 		final double dblRollDown)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRealization = dblRealization) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblSensitivity = dblSensitivity) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblRollDown = dblRollDown))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRealization = dblRealization) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblSensitivity = dblSensitivity) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblRollDown = dblRollDown))
 			throw new java.lang.Exception ("PositionManifestMeasureSnap ctr: Invalid Inputs");
 	}
 

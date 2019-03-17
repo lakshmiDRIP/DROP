@@ -104,7 +104,7 @@ public class KLKHyperbolicTensionPsy extends org.drip.function.definition.R1ToR1
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
 			throw new java.lang.Exception ("KLKHyperbolicTensionPsy ctr: Invalid Inputs");
 	}
 
@@ -112,7 +112,7 @@ public class KLKHyperbolicTensionPsy extends org.drip.function.definition.R1ToR1
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("KLKHyperbolicTensionPsy::evaluate => Invalid Inputs");
 
 		return java.lang.Math.sinh (_dblTension * (1. - dblVariate)) / java.lang.Math.sinh (_dblTension);
@@ -123,7 +123,7 @@ public class KLKHyperbolicTensionPsy extends org.drip.function.definition.R1ToR1
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
 			throw new java.lang.Exception ("KLKHyperbolicTensionPsy::derivative => Invalid Inputs");
 
 		return java.lang.Math.pow (-_dblTension, iOrder) * java.lang.Math.sinh (_dblTension * (1. -
@@ -135,7 +135,7 @@ public class KLKHyperbolicTensionPsy extends org.drip.function.definition.R1ToR1
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("KLKHyperbolicTensionPsy::integrate => Invalid Inputs");
 

@@ -156,8 +156,8 @@ public class CustomRiskUtilitySettings {
 		final double dblRiskTolerance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblRiskTolerance = dblRiskTolerance) || 0. >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskTolerance = dblRiskTolerance) || 0. >
 				_dblRiskTolerance)
 			throw new java.lang.Exception ("CustomRiskUtilitySettings Constructor => Invalid Inputs");
 	}

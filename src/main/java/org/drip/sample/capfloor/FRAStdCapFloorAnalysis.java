@@ -757,13 +757,13 @@ public class FRAStdCapFloorAnalysis {
 					);
 
 					System.out.println ("\t[" +
-						org.drip.quant.common.FormatUtil.FormatDouble (dblSigmaFwd, 2, 0, 100.) + "%," +
-						org.drip.quant.common.FormatUtil.FormatDouble (dblSigmaFwd2DomX, 2, 0, 100.) + "%," +
-						org.drip.quant.common.FormatUtil.FormatDouble (dblCorrFwdFwd2DomX, 2, 0, 100.) + "%] =" +
-						org.drip.quant.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("Price"), 1, 4, 1.) + " | " +
-						org.drip.quant.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("FlatVolatility"), 1, 1, 100.) + "% | " +
-						org.drip.quant.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("Price"), 1, 4, 1.) + " | " +
-						org.drip.quant.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("FlatVolatility"), 1, 1, 100.) + "% || "
+						org.drip.numerical.common.FormatUtil.FormatDouble (dblSigmaFwd, 2, 0, 100.) + "%," +
+						org.drip.numerical.common.FormatUtil.FormatDouble (dblSigmaFwd2DomX, 2, 0, 100.) + "%," +
+						org.drip.numerical.common.FormatUtil.FormatDouble (dblCorrFwdFwd2DomX, 2, 0, 100.) + "%] =" +
+						org.drip.numerical.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("Price"), 1, 4, 1.) + " | " +
+						org.drip.numerical.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("FlatVolatility"), 1, 1, 100.) + "% | " +
+						org.drip.numerical.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("Price"), 1, 4, 1.) + " | " +
+						org.drip.numerical.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("FlatVolatility"), 1, 1, 100.) + "% || "
 					);
 				}
 			}

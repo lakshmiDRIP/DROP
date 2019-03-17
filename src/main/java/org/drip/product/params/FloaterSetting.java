@@ -118,8 +118,8 @@ public class FloaterSetting implements org.drip.product.params.Validatable {
 
 	@Override public boolean validate()
 	{
-		return (org.drip.quant.common.NumberUtil.IsValid (_dblSpread) ||
-			org.drip.quant.common.NumberUtil.IsValid (_dblCurrentFullCoupon)) && null != _floaterLabel;
+		return (org.drip.numerical.common.NumberUtil.IsValid (_dblSpread) ||
+			org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentFullCoupon)) && null != _floaterLabel;
 	}
 
 	/**

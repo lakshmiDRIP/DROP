@@ -138,7 +138,7 @@ public class Equity extends org.drip.exposure.evolver.PrimarySecurity
 			dblRepoRate
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dividendRate = dividendRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dividendRate = dividendRate))
 		{
 			throw new java.lang.Exception ("Equity Constructor => Invalid Inputs");
 		}

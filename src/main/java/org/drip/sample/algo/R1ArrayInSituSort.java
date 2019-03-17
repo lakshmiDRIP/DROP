@@ -1,7 +1,7 @@
 
 package org.drip.sample.algo;
 
-import org.drip.quant.common.*;
+import org.drip.numerical.common.*;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.big.BigR1Array;
 

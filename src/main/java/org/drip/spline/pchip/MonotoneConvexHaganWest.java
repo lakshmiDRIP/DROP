@@ -137,7 +137,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate > _dblPredictorOrdinateRight)
 				throw new java.lang.Exception ("Case1Univariate::evaluate => Invalid Inputs");
 
@@ -152,7 +152,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+			return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 		}
 	}
 
@@ -183,7 +183,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate > _dblPredictorOrdinateRight)
 				throw new java.lang.Exception ("Case2Univariate::evaluate => Invalid Inputs");
 
@@ -201,7 +201,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+			return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 		}
 	}
 
@@ -232,7 +232,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate > _dblPredictorOrdinateRight)
 				throw new java.lang.Exception ("Case3Univariate::evaluate => Invalid Inputs");
 
@@ -250,7 +250,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+			return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 		}
 	}
 
@@ -289,7 +289,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblPredictorOrdinate)
 			throws java.lang.Exception
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || dblPredictorOrdinate <
 				_dblPredictorOrdinateLeft || dblPredictorOrdinate > _dblPredictorOrdinateRight)
 				throw new java.lang.Exception ("Case4Univariate::evaluate => Invalid Inputs");
 
@@ -307,7 +307,7 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 			final double dblEnd)
 			throws java.lang.Exception
 		{
-			return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+			return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 		}
 	}
 
@@ -531,16 +531,16 @@ public class MonotoneConvexHaganWest extends org.drip.function.definition.R1ToR1
 	public boolean enforcePositivity()
 	{
 		try {
-			_adblResponseValue[0] = org.drip.quant.common.NumberUtil.Bound (_adblResponseValue[0], 0., 2. *
+			_adblResponseValue[0] = org.drip.numerical.common.NumberUtil.Bound (_adblResponseValue[0], 0., 2. *
 				_adblObservation[0]);
 
 			int iNumObservation = _adblObservation.length;
 
 			for (int i = 1; i < iNumObservation; ++i)
-				_adblResponseValue[i] = org.drip.quant.common.NumberUtil.Bound (_adblResponseValue[i], 0., 2.
+				_adblResponseValue[i] = org.drip.numerical.common.NumberUtil.Bound (_adblResponseValue[i], 0., 2.
 					* java.lang.Math.min (_adblObservation[i - 1], _adblObservation[i]));
 
-			_adblResponseValue[iNumObservation] = org.drip.quant.common.NumberUtil.Bound
+			_adblResponseValue[iNumObservation] = org.drip.numerical.common.NumberUtil.Bound
 				(_adblResponseValue[iNumObservation], 0., 2. * _adblObservation[iNumObservation - 1]);
 
 			return inferResponseZScores() && generateUnivariate();

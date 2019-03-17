@@ -139,8 +139,8 @@ public class AlmgrenChrissDiscrete extends org.drip.execution.optimum.EfficientT
 		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,
 			dblTransactionCostVariance, dblMarketPower);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblKappaTilda = dblKappaTilda) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblKappa = dblKappa))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblKappaTilda = dblKappaTilda) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblKappa = dblKappa))
 			throw new java.lang.Exception ("AlmgrenChrissDiscrete Constructor => Invalid Inputs");
 	}
 

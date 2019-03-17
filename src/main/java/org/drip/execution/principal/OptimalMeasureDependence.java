@@ -132,11 +132,11 @@ public class OptimalMeasureDependence {
 		final double dblAdjustedPrincipalDiscountExponent)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityExponent = dblLiquidityExponent) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblBlockSizeExponent = dblBlockSizeExponent) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityExponent =
-						dblVolatilityExponent) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblConstant = dblConstant) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLiquidityExponent = dblLiquidityExponent) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblBlockSizeExponent = dblBlockSizeExponent) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatilityExponent =
+						dblVolatilityExponent) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dblAdjustedPrincipalDiscountExponent = dblAdjustedPrincipalDiscountExponent))
 			throw new java.lang.Exception ("OptimalMeasureDependence Constructor => Invalid Inputs!");
 	}

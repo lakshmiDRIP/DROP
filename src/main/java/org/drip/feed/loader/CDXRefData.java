@@ -97,33 +97,33 @@ public class CDXRefData {
 	{
 		if (null == astrArgs || 43 != astrArgs.length) System.exit (333);
 
-		java.lang.String strCurveID = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[0],
+		java.lang.String strCurveID = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[0],
 			false);
 
 		if (s_bBlog) System.out.println ("Curve ID: " + strCurveID);
 
-		java.lang.String strSPN = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[1], false);
+		java.lang.String strSPN = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[1], false);
 
 		if (s_bBlog) System.out.println ("SPN: " + strSPN);
 
-		java.lang.String strIndexLabel = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[2],
+		java.lang.String strIndexLabel = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[2],
 			false);
 
 		if (s_bBlog) System.out.println ("Index Label: " + strIndexLabel);
 
-		java.lang.String strIndexName = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[3],
+		java.lang.String strIndexName = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[3],
 			false);
 
 		if (s_bBlog) System.out.println ("Index Name: " + strIndexName);
 
-		java.lang.String strCurveName = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[4],
+		java.lang.String strCurveName = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[4],
 			false);
 
 		if (s_bBlog) System.out.println ("Curve Name: " + strCurveName);
 
 		org.drip.analytics.date.JulianDate dtIssueDate =
 			org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY
-				(org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[5], false), "-");
+				(org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[5], false), "-");
 
 		if (null == dtIssueDate) {
 			System.out.println ("Bad Issue Date for Curve ID " + strCurveID);
@@ -135,7 +135,7 @@ public class CDXRefData {
 
 		org.drip.analytics.date.JulianDate dtMaturityDate =
 			org.drip.analytics.date.DateUtil.MakeJulianFromDDMMMYY
-				(org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[6], false), "-");
+				(org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[6], false), "-");
 
 		if (null == dtMaturityDate) {
 			System.out.println ("Bad Maturity Date for Curve ID " + strCurveID);
@@ -157,17 +157,17 @@ public class CDXRefData {
 
 		if (s_bBlog) System.out.println ("Coupon: " + dblCoupon);
 
-		java.lang.String strCurrency = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[8],
+		java.lang.String strCurrency = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[8],
 			false);
 
 		if (s_bBlog) System.out.println ("Currency: " + strCurrency);
 
-		java.lang.String strDayCount = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[9],
+		java.lang.String strDayCount = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[9],
 			false);
 
 		if (s_bBlog) System.out.println ("DayCount: " + strDayCount);
 
-		java.lang.String strFullFirstStub = org.drip.quant.common.StringUtil.ProcessInputForNULL
+		java.lang.String strFullFirstStub = org.drip.numerical.common.StringUtil.ProcessInputForNULL
 			(astrArgs[10], false);
 
 		boolean bFullFirstStub = "lf".equalsIgnoreCase (strFullFirstStub);
@@ -188,7 +188,7 @@ public class CDXRefData {
 
 		int iFrequency = 0;
 
-		java.lang.String strFrequency = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[12],
+		java.lang.String strFrequency = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[12],
 			false);
 
 		if ("Q".equalsIgnoreCase (strFrequency))
@@ -198,12 +198,12 @@ public class CDXRefData {
 
 		if (s_bBlog) System.out.println ("Frequency: " + iFrequency);
 
-		java.lang.String strRedID = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[13],
+		java.lang.String strRedID = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[13],
 			false);
 
 		if (s_bBlog) System.out.println ("RedID: " + strRedID);
 
-		java.lang.String strIndexClass = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[14],
+		java.lang.String strIndexClass = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[14],
 			false);
 
 		if (s_bBlog) System.out.println ("Index Class: " + strIndexClass);
@@ -218,17 +218,17 @@ public class CDXRefData {
 
 		if (s_bBlog) System.out.println ("Index Series: " + iIndexSeries);
 
-		java.lang.String strIndexGroupName = org.drip.quant.common.StringUtil.ProcessInputForNULL
+		java.lang.String strIndexGroupName = org.drip.numerical.common.StringUtil.ProcessInputForNULL
 			(astrArgs[16], false);
 
 		if (s_bBlog) System.out.println ("Index Group Name: " + strIndexGroupName);
 
-		java.lang.String strIndexShortName = org.drip.quant.common.StringUtil.ProcessInputForNULL
+		java.lang.String strIndexShortName = org.drip.numerical.common.StringUtil.ProcessInputForNULL
 			(astrArgs[17], false);
 
 		if (s_bBlog) System.out.println ("Index Short Name: " + strIndexShortName);
 
-		java.lang.String strIndexShortGroupName = org.drip.quant.common.StringUtil.ProcessInputForNULL
+		java.lang.String strIndexShortGroupName = org.drip.numerical.common.StringUtil.ProcessInputForNULL
 			(astrArgs[18], false);
 
 		if (s_bBlog) System.out.println ("Index Short Group Name: " + strIndexShortGroupName);
@@ -253,7 +253,7 @@ public class CDXRefData {
 
 		if (s_bBlog) System.out.println ("Index Life Span: " + iIndexLifeSpan);
 
-		java.lang.String strCurvyCurveID = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[21],
+		java.lang.String strCurvyCurveID = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[21],
 			false);
 
 		if (s_bBlog) System.out.println ("Curvy Curve ID: " + strCurvyCurveID);
@@ -288,7 +288,7 @@ public class CDXRefData {
 
 		if (s_bBlog) System.out.println ("Defaulted Component Count: " + iDefaultedComponentCount);
 
-		java.lang.String strLocation = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[26],
+		java.lang.String strLocation = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[26],
 			false);
 
 		if (s_bBlog) System.out.println ("Location: " + strLocation);
@@ -305,12 +305,12 @@ public class CDXRefData {
 
 		if (s_bBlog) System.out.println ("Quote As CDS: " + bQuoteAsCDS);
 
-		java.lang.String strBBGTicker = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[41],
+		java.lang.String strBBGTicker = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[41],
 			false);
 
 		if (s_bBlog) System.out.println ("BBG Ticker: " + strBBGTicker);
 
-		java.lang.String strShortName = org.drip.quant.common.StringUtil.ProcessInputForNULL (astrArgs[42],
+		java.lang.String strShortName = org.drip.numerical.common.StringUtil.ProcessInputForNULL (astrArgs[42],
 			false);
 
 		if (s_bBlog) System.out.println ("Short Name: " + strShortName);

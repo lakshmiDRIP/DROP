@@ -100,7 +100,7 @@ public class CapitalAllocationLine {
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmTangency)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) || null ==
 			(_pmTangency = pmTangency))
 			throw new java.lang.Exception ("CapitalAllocationLine Constructor => Invalid Inputs");
 	}
@@ -141,7 +141,7 @@ public class CapitalAllocationLine {
 		final double dblCombinationPortfolioStandardDeviation)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCombinationPortfolioStandardDeviation))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCombinationPortfolioStandardDeviation))
 			throw new java.lang.Exception
 				("CapitalAllocationLine::combinationPortfolioExpectedReturn => Invalid Inputs");
 
@@ -163,7 +163,7 @@ public class CapitalAllocationLine {
 		final double dblCombinationPortfolioExpectedReturn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCombinationPortfolioExpectedReturn))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCombinationPortfolioExpectedReturn))
 			throw new java.lang.Exception
 				("CapitalAllocationLine::combinationPortfolioStandardDeviation => Invalid Inputs");
 

@@ -603,7 +603,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 			brdb._strTicker = rs.getString ("Ticker");
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (brdb._dblCoupon = rs.getDouble ("Coupon")))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (brdb._dblCoupon = rs.getDouble ("Coupon")))
 				return null;
 
 			brdb._dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate
@@ -672,13 +672,13 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 				("IssueDate"))))
 				return null;
 
-			brdb._bIsCallable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsCallable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsCallable"));
 
-			brdb._bIsPutable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsPutable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsPutable"));
 
-			brdb._bIsSinkable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsSinkable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsSinkable"));
 
 			brdb._strBBGParent = rs.getString ("BBGParent");
@@ -714,26 +714,26 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 			if (null == brdb._strCouponCurrency || brdb._strCouponCurrency.isEmpty()) return null;
 
-			brdb._bIsStructuredNote = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsStructuredNote = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("StructuredNote"));
 
-			brdb._bIsUnitTraded = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsUnitTraded = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("UnitTraded"));
 
-			brdb._bIsReversibleConvertible = org.drip.quant.common.StringUtil.ParseFromUnitaryString
+			brdb._bIsReversibleConvertible = org.drip.numerical.common.StringUtil.ParseFromUnitaryString
 				(rs.getString ("ReverseConvertible"));
 
 			brdb._strTradeCurrency = rs.getString ("TradeCurrency");
 
 			if (null == brdb._strTradeCurrency || brdb._strTradeCurrency.isEmpty()) return null;
 
-			brdb._bIsBearer = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsBearer = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Bearer"));
 
-			brdb._bIsRegistered = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsRegistered = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Registered"));
 
-			brdb._bHasBeenCalled = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bHasBeenCalled = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Called"));
 
 			brdb._strIssuer = rs.getString ("Issuer");
@@ -745,10 +745,10 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 			brdb._dblCurrentCoupon = rs.getDouble ("CurrentCoupon");
 
-			brdb._bIsFloater = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsFloater = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Floater"));
 
-			brdb._bTradeStatus = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bTradeStatus = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("TradeStatus"));
 
 			brdb._strCDRCountryCode = rs.getString ("CDRCountryCode");
@@ -760,13 +760,13 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 			brdb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate
 				("FinalMaturity"));
 
-			brdb._bIsPrivatePlacement = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsPrivatePlacement = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("PrivatePlacement"));
 
-			brdb._bIsPerpetual = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsPerpetual = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Perpetual"));
 
-			brdb._bIsDefaulted = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsDefaulted = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Defaulted"));
 
 			brdb._dblFloatSpread = rs.getDouble ("FloatSpread");
@@ -2522,27 +2522,27 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		sb.append ("'").append (_strCollateralType).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIssueAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblIssueAmount))
 			sb.append ("null, ");
 		else
 			sb.append (_dblIssueAmount).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOutstandingAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOutstandingAmount))
 			sb.append ("null, ");
 		else
 			sb.append (_dblOutstandingAmount).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPiece))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumPiece))
 			sb.append ("null, ");
 		else
 			sb.append (_dblMinimumPiece).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumIncrement))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumIncrement))
 			sb.append ("null, ");
 		else
 			sb.append (_dblMinimumIncrement).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblParAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblParAmount))
 			sb.append ("null, ");
 		else
 			sb.append (_dblParAmount).append (", ");
@@ -2628,7 +2628,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		sb.append ("'").append (_strFloatCouponConvention).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentCoupon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon))
 			sb.append ("null, ");
 		else
 			sb.append (_dblCurrentCoupon).append (", ");
@@ -2652,7 +2652,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		sb.append ("'").append (_bIsDefaulted ? 1 : 0).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread))
 			sb.append ("null, ");
 		else
 			sb.append (_dblFloatSpread).append (", ");
@@ -2669,12 +2669,12 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 
 		sb.append ("'").append (_strIssuerSPN).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIssuePrice))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblIssuePrice))
 			sb.append ("null, ");
 		else
 			sb.append (_dblIssuePrice).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCoupon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCoupon))
 			sb.append ("null, ");
 		else
 			sb.append (_dblCoupon).append (", ");
@@ -2708,90 +2708,90 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> mapJSON = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
 
-		mapJSON.put ("version", "" + org.drip.quant.common.StringUtil.VERSION);
+		mapJSON.put ("version", "" + org.drip.numerical.common.StringUtil.VERSION);
 
 		if (null == _strISIN || _strISIN.isEmpty())
-			mapJSON.put ("isin", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("isin", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("isin", _strISIN);
 
 		if (null == _strCUSIP || _strCUSIP.isEmpty())
-			mapJSON.put ("cusip", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("cusip", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("cusip", _strCUSIP);
 
 		if (null == _strBBGID || _strBBGID.isEmpty())
-			mapJSON.put ("bbgid", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("bbgid", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("bbgid", _strBBGID);
 
 		if (null == _strIssuerCategory || _strIssuerCategory.isEmpty())
-			mapJSON.put ("issuercategory", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuercategory", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuercategory", _strIssuerCategory);
 
 		if (null == _strTicker || _strTicker.isEmpty())
-			mapJSON.put ("ticker", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("ticker", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("ticker", _strTicker);
 
 		if (null == _strSeries || _strSeries.isEmpty())
-			mapJSON.put ("series", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("series", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("series", _strSeries);
 
 		if (null == _strName || _strName.isEmpty())
-			mapJSON.put ("name", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("name", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("name", _strName);
 
 		if (null == _strShortName || _strShortName.isEmpty())
-			mapJSON.put ("shortname", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("shortname", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("shortname", _strShortName);
 
 		if (null == _strIssuerIndustry || _strIssuerIndustry.isEmpty())
-			mapJSON.put ("issuerindustry", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuerindustry", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuerindustry", _strIssuerIndustry);
 
 		if (null == _strCouponType || _strCouponType.isEmpty())
-			mapJSON.put ("coupontype", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("coupontype", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("coupontype", _strCouponType);
 
 		if (null == _strMaturityType || _strMaturityType.isEmpty())
-			mapJSON.put ("maturitytype", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("maturitytype", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("maturitytype", _strMaturityType);
 
 		if (null == _strCalculationType || _strCalculationType.isEmpty())
-			mapJSON.put ("calculationtype", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("calculationtype", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("calculationtype", _strCalculationType);
 
 		if (null == _strDayCountCode || _strDayCountCode.isEmpty())
-			mapJSON.put ("daycountcode", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("daycountcode", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("daycountcode", _strDayCountCode);
 
 		if (null == _strMarketIssueType || _strMarketIssueType.isEmpty())
-			mapJSON.put ("marketissuetype", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("marketissuetype", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("marketissuetype", _strMarketIssueType);
 
 		if (null == _strIssueCountryCode || _strIssueCountryCode.isEmpty())
-			mapJSON.put ("issuecountrycode", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuecountrycode", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuecountrycode", _strIssueCountryCode);
 
 		if (null == _strIssueCountry || _strIssueCountry.isEmpty())
-			mapJSON.put ("issuecountry", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuecountry", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuecountry", _strIssueCountry);
 
 		if (null == _strCollateralType || _strCollateralType.isEmpty())
-			mapJSON.put ("collateraltype", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("collateraltype", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("collateraltype", _strCollateralType);
 
@@ -2806,44 +2806,44 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("paramount", "" + _dblParAmount);
 
 		if (null == _strLeadManager || _strLeadManager.isEmpty())
-			mapJSON.put ("leadmanager", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("leadmanager", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("leadmanager", _strLeadManager);
 
 		if (null == _strExchangeCode || _strExchangeCode.isEmpty())
-			mapJSON.put ("exchangecode", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("exchangecode", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("exchangecode", _strExchangeCode);
 
 		mapJSON.put ("redemptionvalue", "" + _dblRedemptionValue);
 
 		if (null == _dtAnnounce)
-			mapJSON.put ("announcedate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("announcedate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("announcedate", _dtAnnounce.toYYYYMMDD ("-"));
 
 		if (null == _dtFirstSettle)
-			mapJSON.put ("firstsettledate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("firstsettledate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("firstsettledate", _dtFirstSettle.toYYYYMMDD ("-"));
 
 		if (null == _dtFirstCoupon)
-			mapJSON.put ("firstcoupondate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("firstcoupondate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("firstcoupondate", _dtFirstCoupon.toYYYYMMDD ("-"));
 
 		if (null == _dtInterestAccrualStart)
-			mapJSON.put ("interestaccrualstartdate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("interestaccrualstartdate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("interestaccrualstartdate", _dtInterestAccrualStart.toYYYYMMDD ("-"));
 
 		if (null == _dtIssue)
-			mapJSON.put ("issuedate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuedate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuedate", _dtIssue.toYYYYMMDD ("-"));
 
 		if (null == _dtNextCouponDate)
-			mapJSON.put ("nextcoupondate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("nextcoupondate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("nextcoupondate", _dtNextCouponDate.toYYYYMMDD ("-"));
 
@@ -2854,62 +2854,62 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("issinkable", "" + _bIsSinkable);
 
 		if (null == _strBBGParent || _strBBGParent.isEmpty())
-			mapJSON.put ("bbgparent", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("bbgparent", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("bbgparent", _strBBGParent);
 
 		if (null == _strCountryOfIncorporation || _strCountryOfIncorporation.isEmpty())
-			mapJSON.put ("countryofincorporation", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("countryofincorporation", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("countryofincorporation", _strCountryOfIncorporation);
 
 		if (null == _strIndustrySector || _strIndustrySector.isEmpty())
-			mapJSON.put ("industrysector", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("industrysector", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("industrysector", _strIndustrySector);
 
 		if (null == _strIndustryGroup || _strIndustryGroup.isEmpty())
-			mapJSON.put ("industrygroup", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("industrygroup", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("industrygroup", _strIndustryGroup);
 
 		if (null == _strIndustrySubgroup || _strIndustrySubgroup.isEmpty())
-			mapJSON.put ("industrysubgroup", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("industrysubgroup", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("industrysubgroup", _strIndustrySubgroup);
 
 		if (null == _strCountryOfGuarantor || _strCountryOfGuarantor.isEmpty())
-			mapJSON.put ("countryofguarantor", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("countryofguarantor", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("countryofguarantor", _strCountryOfGuarantor);
 
 		if (null == _strCountryOfDomicile || _strCountryOfDomicile.isEmpty())
-			mapJSON.put ("countryofdomicile", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("countryofdomicile", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("countryofdomicile", _strCountryOfDomicile);
 
 		if (null == _strDescription || _strDescription.isEmpty())
-			mapJSON.put ("description", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("description", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("description", _strDescription);
 
 		if (null == _strSecurityType || _strSecurityType.isEmpty())
-			mapJSON.put ("securitytype", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("securitytype", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("securitytype", _strSecurityType);
 
 		if (null == _dtPrevCouponDate)
-			mapJSON.put ("prevcoupondate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("prevcoupondate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("prevcoupondate", _dtPrevCouponDate.toYYYYMMDD ("-"));
 
 		if (null == _strBBGUniqueID || _strBBGUniqueID.isEmpty())
-			mapJSON.put ("bbguniqueid", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("bbguniqueid", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("bbguniqueid", _strBBGUniqueID);
 
 		if (null == _strLongCompanyName || _strLongCompanyName.isEmpty())
-			mapJSON.put ("longcompanyname", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("longcompanyname", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("longcompanyname", _strLongCompanyName);
 
@@ -2920,17 +2920,17 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("isreversibleconvertible", "" + _bIsReversibleConvertible);
 
 		if (null == _strRedemptionCurrency || _strRedemptionCurrency.isEmpty())
-			mapJSON.put ("redemptioncurrency", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("redemptioncurrency", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("redemptioncurrency", _strRedemptionCurrency);
 
 		if (null == _strCouponCurrency || _strCouponCurrency.isEmpty())
-			mapJSON.put ("couponcurrency", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("couponcurrency", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("couponcurrency", _strCouponCurrency);
 
 		if (null == _strTradeCurrency || _strTradeCurrency.isEmpty())
-			mapJSON.put ("tradecurrency", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("tradecurrency", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("tradecurrency", _strTradeCurrency);
 
@@ -2941,17 +2941,17 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("hasbeencalled", "" + _bHasBeenCalled);
 
 		if (null == _strIssuer || _strIssuer.isEmpty())
-			mapJSON.put ("issuer", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuer", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuer", _strIssuer);
 
 		if (null == _dtPenultimateCouponDate)
-			mapJSON.put ("penultimatecoupondate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("penultimatecoupondate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("penultimatecoupondate", _dtPenultimateCouponDate.toYYYYMMDD ("-"));
 
 		if (null == _strFloatCouponConvention || _strFloatCouponConvention.isEmpty())
-			mapJSON.put ("floatcouponconvention", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("floatcouponconvention", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("floatcouponconvention", _strFloatCouponConvention);
 
@@ -2962,17 +2962,17 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("tradestatus", "" + _bTradeStatus);
 
 		if (null == _strCDRCountryCode || _strCDRCountryCode.isEmpty())
-			mapJSON.put ("cdrcountrycode", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("cdrcountrycode", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("cdrcountrycode", _strCDRCountryCode);
 
 		if (null == _strCDRSettleCode || _strCDRSettleCode.isEmpty())
-			mapJSON.put ("cdrsettlecode", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("cdrsettlecode", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("cdrsettlecode", _strCDRSettleCode);
 
 		if (null == _dtFinalMaturity)
-			mapJSON.put ("finalmaturitydate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("finalmaturitydate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("finalmaturitydate", _dtFinalMaturity.toYYYYMMDD ("-"));
 
@@ -2985,32 +2985,32 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("floatspread", "" + _dblFloatSpread);
 
 		if (null == _strRateIndex || _strRateIndex.isEmpty())
-			mapJSON.put ("rateindex", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("rateindex", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("rateindex", _strRateIndex);
 
 		if (null == _strMoody || _strMoody.isEmpty())
-			mapJSON.put ("moody", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("moody", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("moody", _strMoody);
 
 		if (null == _strSnP || _strSnP.isEmpty())
-			mapJSON.put ("snp", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("snp", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("snp", _strSnP);
 
 		if (null == _strFitch || _strFitch.isEmpty())
-			mapJSON.put ("fitch", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("fitch", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("fitch", _strFitch);
 
 		if (null == _strSnrSub || _strSnrSub.isEmpty())
-			mapJSON.put ("snrsub", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("snrsub", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("snrsub", _strSnrSub);
 
 		if (null == _strIssuerSPN || _strIssuerSPN.isEmpty())
-			mapJSON.put ("issuerspn", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("issuerspn", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("issuerspn", _strIssuerSPN);
 
@@ -3019,7 +3019,7 @@ public class BondRefDataBuilder implements org.drip.product.params.Validatable {
 		mapJSON.put ("coupon", "" + _dblCoupon);
 
 		if (null == _dtMaturity)
-			mapJSON.put ("maturitydate", org.drip.quant.common.StringUtil.NULL_SER_STRING);
+			mapJSON.put ("maturitydate", org.drip.numerical.common.StringUtil.NULL_SER_STRING);
 		else
 			mapJSON.put ("maturitydate", _dtMaturity.toYYYYMMDD ("-"));
 

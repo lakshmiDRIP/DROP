@@ -103,8 +103,8 @@ public class ExponentialRationalSetParams implements org.drip.spline.basis.Funct
 		final double dblRationalTension)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExponentialTension = dblExponentialTension) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblRationalTension = dblRationalTension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExponentialTension = dblExponentialTension) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblRationalTension = dblRationalTension))
 			throw new java.lang.Exception ("ExponentialRationalSetParams ctr: Invalid Inputs");
 	}
 

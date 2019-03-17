@@ -191,7 +191,7 @@ public class ContinuousLowUrgencyAsymptote extends
 				final double dblTime)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 					throw new java.lang.Exception
 						("ContinuousLowUrgencyAsymptote::Holdings::evaluate => Invalid Inputs");
 
@@ -206,7 +206,7 @@ public class ContinuousLowUrgencyAsymptote extends
 				final double dblTime)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 					throw new java.lang.Exception
 						("ContinuousLowUrgencyAsymptote::TradeRate::evaluate => Invalid Inputs");
 
@@ -220,7 +220,7 @@ public class ContinuousLowUrgencyAsymptote extends
 				final double dblTime)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 					throw new java.lang.Exception
 						("ContinuousLowUrgencyAsymptote::TransactionCostExpectation::evaluate => Invalid Inputs");
 

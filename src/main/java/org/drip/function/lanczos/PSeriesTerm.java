@@ -100,7 +100,7 @@ package org.drip.function.lanczos;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PSeriesTerm implements org.drip.function.numerical.R0ToR1SeriesTerm
+public class PSeriesTerm implements org.drip.numerical.estimation.R0ToR1SeriesTerm
 {
 	private int _g = -1;
 
@@ -144,7 +144,7 @@ public class PSeriesTerm implements org.drip.function.numerical.R0ToR1SeriesTerm
 
 		double aPlusGPlusHalf = 0.5 + order + _g;
 
-		return org.drip.quant.common.NumberUtil.HalfDownShiftedFactorial (order) *
+		return org.drip.numerical.common.NumberUtil.HalfDownShiftedFactorial (order) *
 			java.lang.Math.pow (
 				aPlusGPlusHalf,
 				-0.5 - order

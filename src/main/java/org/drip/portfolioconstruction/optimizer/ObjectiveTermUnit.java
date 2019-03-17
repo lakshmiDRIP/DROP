@@ -99,7 +99,7 @@ public class ObjectiveTermUnit {
 		final double dblWeight)
 		throws java.lang.Exception
 	{
-		if (null == (_objTerm = objTerm) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight =
+		if (null == (_objTerm = objTerm) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWeight =
 			dblWeight))
 			throw new java.lang.Exception ("ObjectiveTermUnit Constructor => Invalid Inputs");
 

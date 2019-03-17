@@ -6,7 +6,7 @@ import java.util.Map;
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.function.e2erf.AbramowitzStegun;
 import org.drip.function.e2erf.ErrorFunctionAnalytical;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

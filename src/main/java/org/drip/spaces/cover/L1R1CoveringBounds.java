@@ -128,11 +128,11 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblBound)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. >= _dblSupport ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. >= _dblVariation)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. >= _dblSupport ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. >= _dblVariation)
 			throw new java.lang.Exception ("L1R1CoveringBounds ctr: Invalid Inputs");
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblBound = dblBound) && _dblBound <= 0.5 *
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblBound = dblBound) && _dblBound <= 0.5 *
 			_dblVariation)
 			throw new java.lang.Exception ("L1R1CoveringBounds ctr: Invalid Inputs");
 	}
@@ -174,7 +174,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception ("L1R1CoveringBounds::logLowerBound => Invalid Inputs");
 
 		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);
@@ -183,7 +183,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		if (1. < 12. * dblVariationCoverScale)
 			throw new java.lang.Exception ("L1R1CoveringBounds::logLowerBound => Invalid Inputs");
 
-		return !org.drip.quant.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +
+		return !org.drip.numerical.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +
 			dblVariationLogLowerBound * java.lang.Math.log (2.) + java.lang.Math.log (_dblSupport * _dblBound
 				/ (6. * dblCover));
 	}
@@ -192,7 +192,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover))
 			throw new java.lang.Exception ("L1R1CoveringBounds::logUpperBound => Invalid Inputs");
 
 		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);
@@ -200,7 +200,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		if (1. < 12. * dblVariationCoverScale)
 			throw new java.lang.Exception ("L1R1CoveringBounds::logUpperBound => Invalid Inputs");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBound))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBound))
 			return java.lang.Math.log (2.) * 12. / dblVariationCoverScale;
 
 		return java.lang.Math.log (2.) * 18. / dblVariationCoverScale + 3. * _dblSupport * (2. * _dblBound -

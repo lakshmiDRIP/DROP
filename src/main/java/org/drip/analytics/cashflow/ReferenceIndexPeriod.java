@@ -156,7 +156,7 @@ public class ReferenceIndexPeriod
 	{
 		if ((_iEndDate = iEndDate) <= (_iStartDate = iStartDate) ||
 			(_iFixingDate = iFixingDate) > _iStartDate ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||
 			null == (_floaterLabel = floaterLabel))
 			throw new java.lang.Exception ("ReferenceIndexPeriod ctr: Invalid Inputs");
 	}

@@ -134,7 +134,7 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
 			0. > riskFactorSensitivityVariance)
 		{
 			throw new java.lang.Exception ("CurvatureEstimatorISDADelta::margin => Invalid Inputs");

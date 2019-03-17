@@ -129,7 +129,7 @@ public class CreditCurveMetrics {
 		final org.drip.analytics.date.JulianDate dt,
 		final double dblSurvivalProbability)
 	{
-		if (null == dt || !org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProbability)) return false;
+		if (null == dt || !org.drip.numerical.common.NumberUtil.IsValid (dblSurvivalProbability)) return false;
 
 		_mapSurvivalProbability.put (dt, dblSurvivalProbability);
 
@@ -149,7 +149,7 @@ public class CreditCurveMetrics {
 		final org.drip.analytics.date.JulianDate dt,
 		final double dblRecoveryRate)
 	{
-		if (null == dt || !org.drip.quant.common.NumberUtil.IsValid (dblRecoveryRate)) return false;
+		if (null == dt || !org.drip.numerical.common.NumberUtil.IsValid (dblRecoveryRate)) return false;
 
 		_mapRecoveryRate.put (dt, dblRecoveryRate);
 

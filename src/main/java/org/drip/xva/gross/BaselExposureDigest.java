@@ -133,14 +133,14 @@ public class BaselExposureDigest
 		final double exposureAtDefault)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_expectedExposure = expectedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_expectedPositiveExposure = expectedPositiveExposure)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_expectedExposure = expectedExposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_expectedPositiveExposure = expectedPositiveExposure)
 				||
-			!org.drip.quant.common.NumberUtil.IsValid (_effectiveExpectedExposure =
+			!org.drip.numerical.common.NumberUtil.IsValid (_effectiveExpectedExposure =
 				effectiveExpectedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_effectiveExpectedPositiveExposure =
+			!org.drip.numerical.common.NumberUtil.IsValid (_effectiveExpectedPositiveExposure =
 				effectiveExpectedPositiveExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_exposureAtDefault = exposureAtDefault))
+			!org.drip.numerical.common.NumberUtil.IsValid (_exposureAtDefault = exposureAtDefault))
 		{
 			throw new java.lang.Exception ("BaselExposureDigest Constructor => Invalid Inputs");
 		}

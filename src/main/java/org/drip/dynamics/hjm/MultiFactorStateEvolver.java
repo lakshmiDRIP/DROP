@@ -204,7 +204,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 			double dblWeightedFactorPointVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,
 				iTargetDate);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblWeightedFactorPointVolatility))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblWeightedFactorPointVolatility))
 				throw new java.lang.Exception
 					("MultiFactorStateEvolver::instantaneousForwardRateIncrement => Cannot compute View/Target Date Point Volatility");
 
@@ -238,7 +238,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-		if (iTargetDate <= iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblShortRate))
+		if (iTargetDate <= iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblShortRate))
 			throw new java.lang.Exception
 				("MultiFactorStateEvolver::proportionalPriceIncrement => Invalid Inputs");
 
@@ -296,7 +296,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 			double dblViewWeightedFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,
 				iViewDate);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblViewWeightedFactorVolatility))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewWeightedFactorVolatility))
 				throw new java.lang.Exception
 					("MultiFactorStateEvolver::shortRateIncrement => Cannot compute View Date Factor Volatility");
 
@@ -385,7 +385,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-		if (iSpotDate > iViewDate || iViewDate >= iTargetDate || !org.drip.quant.common.NumberUtil.IsValid
+		if (iSpotDate > iViewDate || iViewDate >= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblLIBORForwardRate))
 			throw new java.lang.Exception
 				("MultiFactorStateEvolver::liborForwardRateIncrement => Invalid Inputs");
@@ -432,7 +432,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-		if (iSpotDate > iViewDate || iViewDate >= iTargetDate || !org.drip.quant.common.NumberUtil.IsValid
+		if (iSpotDate > iViewDate || iViewDate >= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblShiftedLIBORForwardRate))
 			throw new java.lang.Exception
 				("MultiFactorStateEvolver::shiftedLIBORForwardIncrement => Invalid Inputs");
@@ -501,24 +501,24 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 				double dblViewDateFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,
 					iViewDate);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblViewDateFactorVolatility)) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewDateFactorVolatility)) return null;
 
 				double dblViewTargetFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,
 					iTargetDate);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblViewTargetFactorVolatility)) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetFactorVolatility)) return null;
 
 				double dblViewTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iViewDate, iTargetDate);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblViewTargetVolatilityIntegral)) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetVolatilityIntegral)) return null;
 
 				double dblSpotViewVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iViewDate);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotViewVolatilityIntegral)) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotViewVolatilityIntegral)) return null;
 
 				double dblSpotTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iTargetDate);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTargetVolatilityIntegral)) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotTargetVolatilityIntegral)) return null;
 
 				double dblScaledMultivariateRandom = dblAnnualizedIncrementSQRT * adblMultivariateRandom[i];
 				dblInstantaneousForwardRateIncrement += dblViewTargetVolatilityIntegral *

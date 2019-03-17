@@ -175,8 +175,8 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 			strDescription
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCoefficient = dblCoefficient) || 0. >
-			_dblCoefficient || !org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCoefficient = dblCoefficient) || 0. >
+			_dblCoefficient || !org.drip.numerical.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. >
 				_dblExponent)
 			throw new java.lang.Exception
 				("TransactionChargeMarketImpact Constuctor => Invalid Linear Charge");
@@ -209,8 +209,8 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 		final double dblFinal)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblInitial) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFinal))
 			throw new java.lang.Exception ("TransactionChargeMarketImpact::estimate => Invalid Inputs");
 
 		return _dblCoefficient * java.lang.Math.pow (java.lang.Math.abs (dblFinal - dblInitial),

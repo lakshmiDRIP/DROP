@@ -104,7 +104,7 @@ public class MultivariateSequenceGenerator {
 		if (null == (_aUSG = aUSG) || null == (_aadblCorrelation = aadblCorrelation))
 			throw new java.lang.Exception ("MultivariateSequenceGenerator ctr: Invalid Inputs");
 
-		_aadblCholesky = org.drip.quant.linearalgebra.Matrix.CholeskyBanachiewiczFactorization
+		_aadblCholesky = org.drip.numerical.linearalgebra.Matrix.CholeskyBanachiewiczFactorization
 			(aadblCorrelation);
 
 		int iNumVariate = aUSG.length;
@@ -118,7 +118,7 @@ public class MultivariateSequenceGenerator {
 				throw new java.lang.Exception ("MultivariateSequenceGenerator ctr: Invalid Inputs");
 
 			for (int j = 0; j < iNumVariate; ++j) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (_aadblCorrelation[i][j]))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (_aadblCorrelation[i][j]))
 					throw new java.lang.Exception ("MultivariateSequenceGenerator ctr: Invalid Inputs");
 			}
 		}

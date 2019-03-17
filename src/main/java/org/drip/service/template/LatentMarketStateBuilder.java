@@ -1619,7 +1619,7 @@ public class LatentMarketStateBuilder {
 				final double dblBump,
 				final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>
 			mapBumpedCurve = new
@@ -1768,7 +1768,7 @@ public class LatentMarketStateBuilder {
 				final double dblBump,
 				final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>
 			mapBumpedCurve = new
@@ -1882,7 +1882,7 @@ public class LatentMarketStateBuilder {
 				final double dblBump,
 				final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.forward.ForwardCurve>
 			mapBumpedCurve = new
@@ -2146,7 +2146,7 @@ public class LatentMarketStateBuilder {
 		final double dblBump,
 		final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.discount.MergedDiscountForwardCurve>
 			mapBumpedCurve = new
@@ -2349,7 +2349,7 @@ public class LatentMarketStateBuilder {
 			final double dblBump,
 			final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.credit.CreditCurve> mapBumpedCurve =
 			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.credit.CreditCurve>();
@@ -2421,7 +2421,7 @@ public class LatentMarketStateBuilder {
 			final double dblBump,
 			final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.govvie.GovvieCurve> mapBumpedCurve =
 			new org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.govvie.GovvieCurve>();
@@ -2491,7 +2491,7 @@ public class LatentMarketStateBuilder {
 			final double dblBump,
 			final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.fx.FXCurve> mapBumpedCurve = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.fx.FXCurve>();
@@ -2567,7 +2567,7 @@ public class LatentMarketStateBuilder {
 				final double dblBump,
 				final boolean bIsProportional)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.volatility.VolatilityCurve>
 			mapBumpedCurve = new

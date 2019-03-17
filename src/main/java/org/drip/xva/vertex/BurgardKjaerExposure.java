@@ -126,7 +126,7 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double uncollateralizedExposure,
 		final org.drip.xva.hypothecation.CollateralGroupVertexCloseOut collateralGroupVertexCloseOut)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
 			null == collateralGroupVertexCloseOut)
 		{
 			return null;
@@ -167,10 +167,10 @@ public class BurgardKjaerExposure implements org.drip.xva.hypothecation.Collater
 		final double collateralBalance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_credit = credit) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_debt = debt) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_funding = funding) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_credit = credit) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_debt = debt) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_funding = funding) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_collateralBalance = collateralBalance))
 		{
 			throw new java.lang.Exception ("BurgardKjaerExposure Constructor => Invalid Inputs");
 		}

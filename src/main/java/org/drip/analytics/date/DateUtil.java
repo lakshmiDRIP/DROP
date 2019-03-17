@@ -285,8 +285,8 @@ public class DateUtil {
 		int iM = iU + 2 - 12 * iV;
 		int iD = iT - (2447 * iU / 80);
 
-		return "" + iY + "/" + org.drip.quant.common.FormatUtil.FormatDouble (iM, 2, 0, 1., false) + "/" +
-			org.drip.quant.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false);
+		return "" + iY + "/" + org.drip.numerical.common.FormatUtil.FormatDouble (iM, 2, 0, 1., false) + "/" +
+			org.drip.numerical.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false);
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class DateUtil {
 		int iM = iU + 2 - 12 * iV;
 		int iD = iT - (2447 * iU / 80);
 
-		return org.drip.quant.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false) + "-" + MonthTrigram (iM)
+		return org.drip.numerical.common.FormatUtil.FormatDouble (iD, 2, 0, 1., false) + "-" + MonthTrigram (iM)
 			+ "-" + iY;
 	}
 

@@ -147,7 +147,7 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.rxtord.NormedRx
 		double[] adblSupremumNorm = _funcR1ToRd.evaluate (adblInstance[0]);
 
 		if (null == adblSupremumNorm || iOutputDimension != adblSupremumNorm.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (adblSupremumNorm))
+			!org.drip.numerical.common.NumberUtil.IsValid (adblSupremumNorm))
 			return null;
 
 		for (int i = 0; i < iOutputDimension; ++i)
@@ -159,7 +159,7 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.rxtord.NormedRx
 			if (null == adblSampleNorm || iOutputDimension != adblSampleNorm.length) return null;
 
 			for (int j = 0; j < iOutputDimension; ++j) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblSampleNorm[j])) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleNorm[j])) return null;
 
 				if (adblSampleNorm[j] > adblSupremumNorm[j]) adblSupremumNorm[j] = adblSampleNorm[j];
 			}
@@ -195,7 +195,7 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.rxtord.NormedRx
 			if (null == adblPointValue || iOutputDimension != adblPointValue.length) return null;
 
 			for (int j = 0; j < iOutputDimension; ++j) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblPointValue[j])) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblPointValue[j])) return null;
 
 				adblMetricNorm[j] += java.lang.Math.pow (java.lang.Math.abs (adblPointValue[j]), iPNorm);
 			}

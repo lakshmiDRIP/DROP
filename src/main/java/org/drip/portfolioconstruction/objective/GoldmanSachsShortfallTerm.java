@@ -123,7 +123,7 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception
 						("GoldmanSachsShortfallTerm::rdToR1::evaluate => Invalid Input");
 

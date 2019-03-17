@@ -105,8 +105,8 @@ public class DiscountCurveJacobianRegressorSet implements org.drip.regression.co
 			{
 				org.drip.analytics.date.JulianDate dtStart = null;
 				org.drip.state.discount.MergedDiscountForwardCurve dcIRS = null;
-				org.drip.quant.calculus.WengertJacobian wjPVDF = null;
-				org.drip.quant.calculus.WengertJacobian aWJComp[] = null;
+				org.drip.numerical.differentiation.WengertJacobian wjPVDF = null;
+				org.drip.numerical.differentiation.WengertJacobian aWJComp[] = null;
 				org.drip.product.definition.CalibratableComponent aCompCalib[] = null;
 
 				org.drip.param.market.LatentStateFixingsContainer lsfc = new
@@ -118,7 +118,7 @@ public class DiscountCurveJacobianRegressorSet implements org.drip.regression.co
 					int aiDate[] = new int[NUM_DC_INSTR];
 					double adblRate[] = new double[NUM_DC_INSTR];
 					double adblCompCalibValue[] = new double[NUM_DC_INSTR];
-					aWJComp = new org.drip.quant.calculus.WengertJacobian[NUM_DC_INSTR];
+					aWJComp = new org.drip.numerical.differentiation.WengertJacobian[NUM_DC_INSTR];
 					java.lang.String astrCalibMeasure[] = new java.lang.String[NUM_DC_INSTR];
 					aCompCalib = new org.drip.product.definition.CalibratableComponent[NUM_DC_INSTR];
 

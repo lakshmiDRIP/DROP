@@ -135,8 +135,8 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 		if (null == (_aNDC = aNDC) || null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) ||
 			null == (_adblScaledNonDimensionalTradeRate = adblScaledNonDimensionalTradeRate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))
 			throw new java.lang.Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
 
 		int iNumTimeNode = _adblNonDimensionalHoldings.length;

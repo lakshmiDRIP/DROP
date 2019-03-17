@@ -100,7 +100,7 @@ public class FlatUnivariate extends org.drip.function.definition.R1ToR1 {
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLevel = dblLevel))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLevel = dblLevel))
 			throw new java.lang.Exception ("FlatUnivariate ctr => Invalid Inputs");
 	}
 
@@ -108,21 +108,21 @@ public class FlatUnivariate extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("FlatUnivariate::evaluate => Invalid Inputs");
 
 		return _dblLevel;
 	}
 
-	@Override public org.drip.quant.calculus.Differential differential (
+	@Override public org.drip.numerical.differentiation.Differential differential (
 		final double dblVariate,
 		final double dblOFBase,
 		final int iOrder)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
 
 		try {
-			return new org.drip.quant.calculus.Differential (_dc.getVariateInfinitesimal (dblVariate), 0.);
+			return new org.drip.numerical.differentiation.Differential (_dc.getVariateInfinitesimal (dblVariate), 0.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -135,7 +135,7 @@ public class FlatUnivariate extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("FlatUnivariate::integrate => Invalid Inputs");
 

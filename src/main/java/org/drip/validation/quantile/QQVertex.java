@@ -124,8 +124,8 @@ public class QQVertex
 		throws java.lang.Exception
 	{
 		if (null == (_plottingPosition = plottingPosition) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_orderStatisticY = orderStatisticY))
+			!org.drip.numerical.common.NumberUtil.IsValid (_orderStatisticX = orderStatisticX) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_orderStatisticY = orderStatisticY))
 		{
 			throw new java.lang.Exception ("QQVertex Constructor => Invalid Inputs");
 		}

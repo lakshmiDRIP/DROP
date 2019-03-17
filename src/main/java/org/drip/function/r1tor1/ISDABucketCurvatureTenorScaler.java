@@ -156,7 +156,7 @@ public class ISDABucketCurvatureTenorScaler extends org.drip.function.definition
 		final double t)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (t) || 0 >= t)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0 >= t)
 		{
 			throw new java.lang.Exception ("ISDABucketCurvatureTenorScaler::evaluate => Invalid Inputs");
 		}

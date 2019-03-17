@@ -125,17 +125,17 @@ public class NetLiabilityCashFlow {
 		final double dblBasicConsumptionDF)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAge = dblAge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblHorizon = dblHorizon) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblWorkingAgeIncome = dblWorkingAgeIncome) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblPensionBenefits = dblPensionBenefits)
-							|| !org.drip.quant.common.NumberUtil.IsValid (_dblBasicConsumption =
-								dblBasicConsumption) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAge = dblAge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblHorizon = dblHorizon) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncome = dblWorkingAgeIncome) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefits = dblPensionBenefits)
+							|| !org.drip.numerical.common.NumberUtil.IsValid (_dblBasicConsumption =
+								dblBasicConsumption) || !org.drip.numerical.common.NumberUtil.IsValid
 									(_dblWorkingAgeIncomeDF = dblWorkingAgeIncomeDF) ||
-										!org.drip.quant.common.NumberUtil.IsValid (_dblPensionBenefitsDF =
+										!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsDF =
 											dblPensionBenefitsDF) ||
-												!org.drip.quant.common.NumberUtil.IsValid
+												!org.drip.numerical.common.NumberUtil.IsValid
 													(_dblBasicConsumptionDF = dblBasicConsumptionDF))
 			throw new java.lang.Exception ("NetLiabilityCashFlow Constructor => Invalid Inputs");
 

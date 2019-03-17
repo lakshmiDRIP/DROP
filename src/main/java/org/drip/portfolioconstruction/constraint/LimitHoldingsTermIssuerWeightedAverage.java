@@ -122,7 +122,7 @@ public class LimitHoldingsTermIssuerWeightedAverage extends
 		);
 
 		if (null == (_adblPrice = adblPrice) || adblIssuerSelection.length != _adblPrice.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblPrice))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))
 			throw new java.lang.Exception
 				("LimitHoldingsTermIssuerWeightedAverage Constructor => Invalid Selection");
 	}
@@ -159,7 +159,7 @@ public class LimitHoldingsTermIssuerWeightedAverage extends
 
 				double[] adblPrice = price();
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitHoldingsTermIssuerWeightedAverage::rdToR1::evaluate => Invalid Variate Dimension");

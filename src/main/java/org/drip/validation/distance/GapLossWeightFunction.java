@@ -119,7 +119,7 @@ public abstract class GapLossWeightFunction
 				final double pValueHypothesis)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (pValueHypothesis))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (pValueHypothesis))
 				{
 					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
 				}
@@ -143,7 +143,7 @@ public abstract class GapLossWeightFunction
 				final double pValueHypothesis)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (pValueHypothesis))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (pValueHypothesis))
 				{
 					throw new java.lang.Exception ("GapLossWeightFunction::weight => Invalid Inputs");
 				}

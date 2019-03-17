@@ -138,7 +138,7 @@ public class LimitHoldingsTermIssuerLongShort extends
 				double dblConstraintShortValue = 0.;
 				double dblConstraintLongValue = 0.;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitHoldingsTermIssuerLongShort::rdToR1::evaluate => Invalid Variate Dimension");

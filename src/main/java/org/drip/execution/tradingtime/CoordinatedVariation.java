@@ -125,8 +125,8 @@ public class CoordinatedVariation {
 		final double dblReferenceLiquidity)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblReferenceVolatility = dblReferenceVolatility) ||
-			0. >= _dblReferenceVolatility || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblReferenceVolatility = dblReferenceVolatility) ||
+			0. >= _dblReferenceVolatility || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblReferenceLiquidity = dblReferenceLiquidity) || 0. >= _dblReferenceLiquidity)
 			throw new java.lang.Exception ("CoordinatedVariation Constructor => Invalid Inputs");
 
@@ -180,7 +180,7 @@ public class CoordinatedVariation {
 		final double dblVolatility)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility))
 			throw new java.lang.Exception ("CoordinatedVariation::liquidity => Invalid Inputs");
 
 		return _dblInvariant / (dblVolatility * dblVolatility);
@@ -200,7 +200,7 @@ public class CoordinatedVariation {
 		final double dblLiquidity)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLiquidity))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLiquidity))
 			throw new java.lang.Exception ("CoordinatedVariation::volatility => Invalid Inputs");
 
 		return java.lang.Math.sqrt (_dblInvariant / dblLiquidity);

@@ -401,8 +401,8 @@ public class BuiltInEntry
 		final double erfc)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_erf = erf) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_erfc = erfc))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_erf = erf) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_erfc = erfc))
 		{
 			throw new java.lang.Exception ("BuiltInE2Entry Constructor => Invalid Inputs");
 		}

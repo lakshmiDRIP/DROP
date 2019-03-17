@@ -87,12 +87,12 @@ package org.drip.function.definition;
 public abstract class R1ToRd {
 	private static final int QUADRATURE_SAMPLING = 10000;
 
-	protected org.drip.quant.calculus.DerivativeControl _dc = null;
+	protected org.drip.numerical.differentiation.DerivativeControl _dc = null;
 
 	protected R1ToRd (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();
+		if (null == (_dc = dc)) _dc = new org.drip.numerical.differentiation.DerivativeControl();
 	}
 
 	/**
@@ -115,11 +115,11 @@ public abstract class R1ToRd {
 	 * @return The Array of Differentials
 	 */
 
-	public org.drip.quant.calculus.Differential[] differential (
+	public org.drip.numerical.differentiation.Differential[] differential (
 		final double dblVariate,
 		final int iOrder)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
 
 		int iOutputDimension = -1;
 		double[] adblDerivative = null;
@@ -152,7 +152,7 @@ public abstract class R1ToRd {
 
 			try {
 				for (int j = 0; j < iOutputDimension; ++j)
-					adblDerivative[j] += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK
+					adblDerivative[j] += (i % 2 == 0 ? 1 : -1) * org.drip.numerical.common.NumberUtil.NCK
 						(iOrder, i) * adblValue[j];
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
@@ -161,12 +161,12 @@ public abstract class R1ToRd {
 			}
 		}
 
-		org.drip.quant.calculus.Differential[] aDiff = new
-			org.drip.quant.calculus.Differential[iOutputDimension];
+		org.drip.numerical.differentiation.Differential[] aDiff = new
+			org.drip.numerical.differentiation.Differential[iOutputDimension];
 
 		try {
 			for (int j = 0; j < iOutputDimension; ++j)
-				aDiff[j] = new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal,
+				aDiff[j] = new org.drip.numerical.differentiation.Differential (dblOrderedVariateInfinitesimal,
 					adblDerivative[j]);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -190,7 +190,7 @@ public abstract class R1ToRd {
 		final double dblVariate,
 		final int iOrder)
 	{
-		org.drip.quant.calculus.Differential[] aDiff = differential (dblVariate, iOrder);
+		org.drip.numerical.differentiation.Differential[] aDiff = differential (dblVariate, iOrder);
 
 		if (null == aDiff) return null;
 
@@ -218,8 +218,8 @@ public abstract class R1ToRd {
 		final double dblLeftEdge,
 		final double dblRightEdge)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftEdge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRightEdge) || dblRightEdge <= dblLeftEdge)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftEdge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge) || dblRightEdge <= dblLeftEdge)
 			return null;
 
 		int iOutputDimension = -1;

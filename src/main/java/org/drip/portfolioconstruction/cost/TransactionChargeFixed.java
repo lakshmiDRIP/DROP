@@ -107,7 +107,7 @@ public class TransactionChargeFixed extends org.drip.portfolioconstruction.cost.
 			strDescription
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFixedCharge = dblFixedCharge) || 0. >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFixedCharge = dblFixedCharge) || 0. >
 			_dblFixedCharge)
 			throw new java.lang.Exception ("TransactionChargeFixed Constructor => Invalid Charge");
 	}
@@ -128,8 +128,8 @@ public class TransactionChargeFixed extends org.drip.portfolioconstruction.cost.
 		final double dblFinal)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinal))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblInitial) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFinal))
 			throw new java.lang.Exception ("TransactionChargeFixed::estimate => Invalid Inputs");
 
 		return _dblFixedCharge;

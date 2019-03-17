@@ -141,7 +141,7 @@ public class FixedPointFinderOutput {
 	{
 		_dblRootFindingTime = (System.nanoTime() - _lStartTime) * 0.000001;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRoot = dblRoot)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRoot = dblRoot)) return false;
 
 		return _bHasRoot = true;
 	}

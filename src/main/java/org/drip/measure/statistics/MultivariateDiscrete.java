@@ -110,7 +110,7 @@ public class MultivariateDiscrete {
 			throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
 
 		for (int iSequence = 0; iSequence < iSequenceSize; ++iSequence) {
-			if (null == aadblSequence[iSequence] || !org.drip.quant.common.NumberUtil.IsValid
+			if (null == aadblSequence[iSequence] || !org.drip.numerical.common.NumberUtil.IsValid
 				(aadblSequence[iSequence]))
 				throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
 

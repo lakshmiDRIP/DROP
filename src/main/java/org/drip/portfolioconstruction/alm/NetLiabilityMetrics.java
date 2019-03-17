@@ -105,9 +105,9 @@ public class NetLiabilityMetrics {
 		final double dblBasicConsumptionPV)
 		throws java.lang.Exception
 	{
-		if (null == (_lsNLCF = lsNLCF) || !org.drip.quant.common.NumberUtil.IsValid (_dblWorkingAgeIncomePV =
-			dblWorkingAgeIncomePV) || !org.drip.quant.common.NumberUtil.IsValid (_dblPensionBenefitsIncomePV
-				= dblPensionBenefitsIncomePV) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_lsNLCF = lsNLCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncomePV =
+			dblWorkingAgeIncomePV) || !org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsIncomePV
+				= dblPensionBenefitsIncomePV) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblBasicConsumptionPV = dblBasicConsumptionPV))
 			throw new java.lang.Exception ("NetLiabilityMetrics Constructor => Invalid Inputs");
 	}

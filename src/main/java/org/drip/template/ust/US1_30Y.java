@@ -2,9 +2,9 @@
 package org.drip.template.ust;
 
 import org.drip.analytics.date.*;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.product.definition.Bond;
 import org.drip.product.govvie.TreasuryFutures;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.ExchangeInstrumentBuilder;
 

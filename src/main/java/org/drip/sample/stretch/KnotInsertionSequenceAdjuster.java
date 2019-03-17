@@ -2,7 +2,7 @@
 package org.drip.sample.stretch;
 
 import org.drip.function.r1tor1.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.*;
 import org.drip.spline.stretch.*;

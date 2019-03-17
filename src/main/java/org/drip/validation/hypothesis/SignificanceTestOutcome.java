@@ -127,9 +127,9 @@ public class SignificanceTestOutcome
 		final boolean pass)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_rightTailPValue = rightTailPValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_leftTailPValue = leftTailPValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_rightTailPValue = rightTailPValue))
 		{
 			throw new java.lang.Exception ("SignificanceTestOutcome Constructor => Invalid Inputs");
 		}

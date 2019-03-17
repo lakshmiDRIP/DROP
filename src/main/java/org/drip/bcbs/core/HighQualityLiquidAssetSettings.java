@@ -161,17 +161,17 @@ public class HighQualityLiquidAssetSettings
 		final double level2BRiskWeight)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_level1Haircut = level1Haircut) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_level1Haircut = level1Haircut) ||
 				0. > _level1Haircut || 1. < _level1Haircut ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level1RiskWeight = level1RiskWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level1RiskWeight = level1RiskWeight) ||
 				0. > _level1RiskWeight ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2AHaircut = level2AHaircut) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2AHaircut = level2AHaircut) ||
 				0. > _level2AHaircut || 1. < _level2AHaircut ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2ARiskWeight = level2ARiskWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2ARiskWeight = level2ARiskWeight) ||
 				0. > _level2ARiskWeight ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2BHaircut = level2BHaircut) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2BHaircut = level2BHaircut) ||
 				0. > _level2BHaircut || 1. < _level2BHaircut ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2BRiskWeight = level2BRiskWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2BRiskWeight = level2BRiskWeight) ||
 				0. > _level2BRiskWeight)
 		{
 			throw new java.lang.Exception ("HighQualityLiquidAssetSettings Constructor => Invalid Inputs");

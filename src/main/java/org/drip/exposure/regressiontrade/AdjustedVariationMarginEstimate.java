@@ -125,7 +125,7 @@ public class AdjustedVariationMarginEstimate
 		throws java.lang.Exception
 	{
 		if (null == (_adjustedVariationMarginEstimateArray = adjustedVariationMarginEstimateArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adjustedVariationMarginEstimateArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adjustedVariationMarginEstimateArray) ||
 			null == (_denseTradePaymentArray = denseTradePaymentArray))
 		{
 			throw new java.lang.Exception ("AdjustedVariationMarginEstimate Constructor => Invalid Inputs");

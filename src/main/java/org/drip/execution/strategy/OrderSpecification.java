@@ -124,8 +124,8 @@ public class OrderSpecification {
 		final double dblMaxExecutionTime)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSize = dblSize) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaxExecutionTime = dblMaxExecutionTime) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSize = dblSize) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaxExecutionTime = dblMaxExecutionTime) || 0. >=
 				_dblMaxExecutionTime)
 			throw new java.lang.Exception ("OrderSpecification Constructor => Invalid Inputs");
 	}

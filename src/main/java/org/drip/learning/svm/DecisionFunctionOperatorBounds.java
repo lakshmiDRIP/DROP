@@ -132,9 +132,9 @@ public class DecisionFunctionOperatorBounds {
 		final int iFeatureSpaceDimension)
 		throws java.lang.Exception
 	{
-		if (null == (_dsoFactorizer = dsoFactorizer) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_dsoFactorizer = dsoFactorizer) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblInverseMarginNormBound = dblInverseMarginNormBound) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblFeatureSpaceMaureyConstant =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblFeatureSpaceMaureyConstant =
 					dblFeatureSpaceMaureyConstant) || 0 >= (_iFeatureSpaceDimension =
 						iFeatureSpaceDimension))
 			throw new java.lang.Exception ("DecisionFunctionOperatorBounds ctr => Invalid Inputs");

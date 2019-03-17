@@ -144,7 +144,7 @@ public class ScenarioLocalVolatilityBuilder {
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate)) return null;
 
 		org.drip.analytics.definition.MarketSurface msCallPrice =
 			org.drip.state.creator.ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (strName +

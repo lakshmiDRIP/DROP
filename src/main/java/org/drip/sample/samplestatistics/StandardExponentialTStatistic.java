@@ -4,8 +4,8 @@ package org.drip.sample.samplestatistics;
 import org.drip.measure.continuous.R1UnivariateExponential;
 import org.drip.measure.statistics.PopulationCentralMeasures;
 import org.drip.measure.statistics.UnivariateMoments;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.StringUtil;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.common.StringUtil;
 import org.drip.service.env.EnvManager;
 
 /*

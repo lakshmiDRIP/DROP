@@ -133,7 +133,7 @@ public class CRBucket
 	{
 		if (null == (_quality = quality) || _quality.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight))
+			!org.drip.numerical.common.NumberUtil.IsValid (_riskWeight = riskWeight))
 		{
 			throw new java.lang.Exception ("CRBucket Constructor => Invalid Inputs");
 		}

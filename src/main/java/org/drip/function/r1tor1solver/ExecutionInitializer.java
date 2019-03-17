@@ -116,8 +116,8 @@ public class ExecutionInitializer {
 			final double dblOF)
 			throws java.lang.Exception
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblOF = dblOF) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblVariate = dblVariate))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOF = dblOF) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblVariate = dblVariate))
 				throw new java.lang.Exception ("StartingVariateOF constructor: Invalid inputs!");
 		}
 	}
@@ -137,7 +137,7 @@ public class ExecutionInitializer {
 
 		double dblOF = _of.evaluate (dblVariate);
 
-		if (org.drip.quant.common.NumberUtil.IsValid (dblOF)) _mapOFMap.put (dblVariate, dblOF);
+		if (org.drip.numerical.common.NumberUtil.IsValid (dblOF)) _mapOFMap.put (dblVariate, dblOF);
 
 		return dblOF;
 	}
@@ -154,7 +154,7 @@ public class ExecutionInitializer {
 			dblOF = java.lang.Double.NaN;
 		}
 
-		if (!bop.incrOFCalcs() || !org.drip.quant.common.NumberUtil.IsValid (dblOF)) return null;
+		if (!bop.incrOFCalcs() || !org.drip.numerical.common.NumberUtil.IsValid (dblOF)) return null;
 
 		_mapOFMap.put (dblVariate, dblOF);
 
@@ -211,7 +211,7 @@ public class ExecutionInitializer {
 		final double dblOFGoal,
 		final org.drip.function.r1tor1solver.BracketingOutput bop)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFLeft) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblOFRight))
 			return false;
 
@@ -227,8 +227,8 @@ public class ExecutionInitializer {
 
 			dblOF = me.getValue();
 
-			if (org.drip.quant.common.NumberUtil.IsValid (dblVariatePrev) &&
-				org.drip.quant.common.NumberUtil.IsValid (dblOFPrev) && (((dblOF - dblOFGoal) * (dblOFPrev -
+			if (org.drip.numerical.common.NumberUtil.IsValid (dblVariatePrev) &&
+				org.drip.numerical.common.NumberUtil.IsValid (dblOFPrev) && (((dblOF - dblOFGoal) * (dblOFPrev -
 					dblOFGoal)) < 0.)) {
 				try {
 					bop.done (dblVariatePrev, dblVariate, dblOFPrev, dblOF,
@@ -265,7 +265,7 @@ public class ExecutionInitializer {
 
 		double dblOFValue = evaluateOF (dblConvergenceZoneVariate) - dblOFGoal;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFValue))
 			throw new java.lang.Exception
 				("ExecutionInitializer::isInConvergenceZone => Cannot evaluate OF for variate " +
 					dblConvergenceZoneVariate);
@@ -274,7 +274,7 @@ public class ExecutionInitializer {
 			throw new java.lang.Exception
 				("ExecutionInitializer::isInConvergenceZone => Cannot increment OF deriv count in the output");
 
-		org.drip.quant.calculus.Differential diff1D = _of.differential (dblConvergenceZoneVariate, 1);
+		org.drip.numerical.differentiation.Differential diff1D = _of.differential (dblConvergenceZoneVariate, 1);
 
 		if (null == diff1D)
 			throw new java.lang.Exception
@@ -285,7 +285,7 @@ public class ExecutionInitializer {
 			throw new java.lang.Exception
 				("ExecutionInitializer::isInConvergenceZone => Cannot increment OF deriv in the output");
 
-		org.drip.quant.calculus.Differential diff2D = _of.differential (dblConvergenceZoneVariate, 2);
+		org.drip.numerical.differentiation.Differential diff2D = _of.differential (dblConvergenceZoneVariate, 2);
 
 		if (null == diff2D)
 			throw new java.lang.Exception
@@ -301,8 +301,8 @@ public class ExecutionInitializer {
 		final double dblOFLeft,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-		return !org.drip.quant.common.NumberUtil.IsValid (dblOFLeft) || (null != ih &&
-			org.drip.quant.common.NumberUtil.IsValid (ih.getBracketFloor()) && dblVariateLeft <
+		return !org.drip.numerical.common.NumberUtil.IsValid (dblOFLeft) || (null != ih &&
+			org.drip.numerical.common.NumberUtil.IsValid (ih.getBracketFloor()) && dblVariateLeft <
 				ih.getBracketFloor());
 	}
 
@@ -311,8 +311,8 @@ public class ExecutionInitializer {
 		final double dblOFRight,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-		return !org.drip.quant.common.NumberUtil.IsValid (dblOFRight) || (null != ih &&
-			org.drip.quant.common.NumberUtil.IsValid (ih.getBracketCeiling()) && dblVariateRight >
+		return !org.drip.numerical.common.NumberUtil.IsValid (dblOFRight) || (null != ih &&
+			org.drip.numerical.common.NumberUtil.IsValid (ih.getBracketCeiling()) && dblVariateRight >
 				ih.getBracketCeiling());
 	}
 
@@ -320,11 +320,11 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.BracketingControlParams bcp,
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih)
 	{
-		if (null != ih && org.drip.quant.common.NumberUtil.IsValid (ih.getStartingBracketMid()))
+		if (null != ih && org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketMid()))
 			return ih.getStartingBracketMid();
 
-		if (null != ih && org.drip.quant.common.NumberUtil.IsValid (ih.getStartingBracketLeft()) &&
-			org.drip.quant.common.NumberUtil.IsValid (ih.getStartingBracketRight()))
+		if (null != ih && org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketLeft()) &&
+			org.drip.numerical.common.NumberUtil.IsValid (ih.getStartingBracketRight()))
 			return 0.5 * (ih.getStartingBracketLeft() + ih.getStartingBracketRight());
 
 		return bcp.getVariateStart();
@@ -339,8 +339,8 @@ public class ExecutionInitializer {
 
 			double dblBracketStartRight = ih.getStartingBracketRight();
 
-			if (org.drip.quant.common.NumberUtil.IsValid (dblBracketStartLeft) &&
-				org.drip.quant.common.NumberUtil.IsValid (dblBracketStartRight) && dblBracketStartRight >
+			if (org.drip.numerical.common.NumberUtil.IsValid (dblBracketStartLeft) &&
+				org.drip.numerical.common.NumberUtil.IsValid (dblBracketStartRight) && dblBracketStartRight >
 					dblBracketStartLeft)
 				return dblBracketStartRight - dblBracketStartLeft;
 		}
@@ -477,7 +477,7 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih,
 		final double dblOFGoal)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFGoal)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFGoal)) return null;
 
 		org.drip.function.r1tor1solver.ConvergenceOutput cop = new org.drip.function.r1tor1solver.ConvergenceOutput();
 
@@ -531,9 +531,9 @@ public class ExecutionInitializer {
 		final org.drip.function.r1tor1solver.InitializationHeuristics ih,
 		final double dblOFGoal)
 	{
-		if (null == ih || !org.drip.quant.common.NumberUtil.IsValid (ih.getSearchStartLeft()) ||
-			!org.drip.quant.common.NumberUtil.IsValid (ih.getSearchStartRight()) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblOFGoal))
+		if (null == ih || !org.drip.numerical.common.NumberUtil.IsValid (ih.getSearchStartLeft()) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (ih.getSearchStartRight()) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblOFGoal))
 			return null;
 
 		try {

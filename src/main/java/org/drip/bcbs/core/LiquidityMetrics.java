@@ -236,9 +236,9 @@ public class LiquidityMetrics
 		final double netStableFundingRatio)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_liquidityCoverageRatio = liquidityCoverageRatio) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_liquidityCoverageRatio = liquidityCoverageRatio) ||
 				0. > _liquidityCoverageRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_netStableFundingRatio = netStableFundingRatio) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_netStableFundingRatio = netStableFundingRatio) ||
 				0. > _netStableFundingRatio)
 		{
 			throw new java.lang.Exception ("LiquidityMetrics Constructor => Invalid Inputs");

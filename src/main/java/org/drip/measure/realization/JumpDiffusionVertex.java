@@ -104,9 +104,9 @@ public class JumpDiffusionVertex {
 		final boolean bJumpOccurred)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblValue = dblValue) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblCumulativeHazardIntegral =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblValue = dblValue) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblCumulativeHazardIntegral =
 					dblCumulativeHazardIntegral))
 			throw new java.lang.Exception ("JumpDiffusionVertex Constructor => Invalid Inputs");
 

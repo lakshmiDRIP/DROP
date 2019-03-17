@@ -122,8 +122,8 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final double dblExponent)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) || 0. > _dblConstant ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. > _dblExponent)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblConstant = dblConstant) || 0. > _dblConstant ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. > _dblExponent)
 			throw new java.lang.Exception ("ParticipationRatePower Constructor => Invalid Inputs");
 	}
 
@@ -141,7 +141,7 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("ParticipationRatePower::regularize => Invalid Inputs");
 
 		return 1. / dblTradeInterval;
@@ -158,7 +158,7 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeRate))
 			throw new java.lang.Exception ("ParticipationRatePower::evaluate => Invalid Inputs");
 
 		return (dblTradeRate < 0. ? -1. : 1.) * _dblConstant * java.lang.Math.pow (java.lang.Math.abs
@@ -170,7 +170,7 @@ public class ParticipationRatePower extends org.drip.execution.impact.Transactio
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (0 >= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))
+		if (0 >= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblTradeRate))
 			throw new java.lang.Exception ("ParticipationRatePower::derivative => Invalid Inputs");
 
 		double dblCoefficient = 1.;

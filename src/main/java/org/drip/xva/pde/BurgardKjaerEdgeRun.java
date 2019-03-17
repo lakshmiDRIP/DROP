@@ -154,13 +154,13 @@ public class BurgardKjaerEdgeRun extends org.drip.xva.pde.BurgardKjaerEdge
 			derivativeXVACollateralGrowth
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAFundingGrowth =
 				derivativeXVAFundingGrowth) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVADealerDefaultGrowth =
 				derivativeXVADealerDefaultGrowth) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAClientDefaultGrowth =
 				derivativeXVAClientDefaultGrowth) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAHedgeErrorGrowth =
 				derivativeXVAHedgeErrorGrowth))
 		{
 			throw new java.lang.Exception ("BurgardKjaerEdgeRun Constructor => Invalid Inputs");

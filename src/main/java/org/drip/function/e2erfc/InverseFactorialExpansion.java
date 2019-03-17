@@ -112,9 +112,9 @@ public class InverseFactorialExpansion
 	 * @return The Inverse Factorial Version of Error Function Complement Series Term
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesTerm SeriesTerm()
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm SeriesTerm()
 	{
-		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
 		{
 
 			@Override public double value (
@@ -123,7 +123,7 @@ public class InverseFactorialExpansion
 				throws java.lang.Exception
 			{
 				if (0 > order ||
-					!org.drip.quant.common.NumberUtil.IsValid (z))
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("InverseFactorialExpansion::SeriesTerm::value => Invalid Inputs");
@@ -150,7 +150,7 @@ public class InverseFactorialExpansion
 	 * @return The Inverse Factorial Version of Error Function Complement Series Generator
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesGenerator SeriesGenerator (
+	public static final org.drip.numerical.estimation.R1ToR1SeriesGenerator SeriesGenerator (
 		final int termCount)
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
@@ -169,7 +169,7 @@ public class InverseFactorialExpansion
 				);
 			}
 
-			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+			return new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
 				SeriesTerm(),
 				false,
 				termWeightMap

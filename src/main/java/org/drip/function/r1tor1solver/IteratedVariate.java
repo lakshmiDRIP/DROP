@@ -104,7 +104,7 @@ public class IteratedVariate {
 		final double dblOF)
 		throws java.lang.Exception
 	{
-		if (null == eiop || !org.drip.quant.common.NumberUtil.IsValid (_dblOF = dblOF))
+		if (null == eiop || !org.drip.numerical.common.NumberUtil.IsValid (_dblOF = dblOF))
 			throw new java.lang.Exception ("IteratedVariate constructor: Invalid Inputs");
 
 		_dblVariate = eiop.getStartingVariate();
@@ -132,7 +132,7 @@ public class IteratedVariate {
 	public boolean setVariate (
 		final double dblVariate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate)) return false;
 
 		_dblVariate = dblVariate;
 		return true;
@@ -160,7 +160,7 @@ public class IteratedVariate {
 	public boolean setOF (
 		final double dblOF)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOF)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOF)) return false;
 
 		_dblOF = dblOF;
 		return true;

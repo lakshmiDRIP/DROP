@@ -1,8 +1,8 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.quant.common.*;
-import org.drip.quant.eigen.*;
+import org.drip.numerical.common.*;
+import org.drip.numerical.eigen.*;
 import org.drip.service.env.EnvManager;
 
 /*

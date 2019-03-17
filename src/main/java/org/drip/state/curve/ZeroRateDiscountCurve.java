@@ -192,7 +192,7 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
 
 		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();
 
@@ -212,7 +212,7 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
 
 		org.drip.product.definition.CalibratableComponent[] aCC = calibComp();
 
@@ -268,7 +268,7 @@ public class ZeroRateDiscountCurve extends org.drip.state.discount.MergedDiscoun
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{

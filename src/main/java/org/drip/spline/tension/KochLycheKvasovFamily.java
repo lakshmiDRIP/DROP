@@ -123,7 +123,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromHyperbolicPrimitive.Phy::evaluate => Invalid Inputs!");
 
@@ -138,7 +138,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromHyperbolicPrimitive.Phy::derivative => Invalid Inputs!");
 
@@ -159,8 +159,8 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblEnd))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblEnd))
 					throw new java.lang.Exception
 						("KLKF::FromHyperbolicPrimitive.Phy::integrate => Invalid Inputs");
 
@@ -178,7 +178,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF.Psy::FromHyperbolicPrimitive::evaluate => Invalid Inputs!");
 
@@ -193,7 +193,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromHyperbolicPrimitive.Psy::derivative => Invalid Inputs!");
 
@@ -214,8 +214,8 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblEnd))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblEnd))
 					throw new java.lang.Exception
 						("KLKF::FromHyperbolicPrimitive.Psy::integrate => Invalid Inputs");
 
@@ -257,7 +257,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalLinearPrimitive.Phy::evaluate => Invalid Inputs!");
 
@@ -271,7 +271,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalLinearPrimitive.Phy::derivative => Invalid Inputs!");
 
@@ -303,7 +303,7 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -313,7 +313,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalLinearPrimitive.Psy::evaluate => Invalid Inputs!");
 
@@ -328,7 +328,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalLinearPrimitive.Psy::derivative => Invalid Inputs!");
 
@@ -361,7 +361,7 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -395,7 +395,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalQuadraticPrimitive.Phy::evaluate => Invalid Inputs!");
 
@@ -409,7 +409,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalQuadraticPrimitive.Phy::derivative => Invalid Inputs!");
 
@@ -441,7 +441,7 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -451,7 +451,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalQuadraticPrimitive.Psy::evaluate => Invalid Inputs!");
 
@@ -466,7 +466,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromRationalQuadraticPrimitive.Psy::derivative => Invalid Inputs!");
 
@@ -499,7 +499,7 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -532,7 +532,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromExponentialPrimitive.Phy::evaluate => Invalid Inputs!");
 
@@ -547,7 +547,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromExponentialPrimitive.Phy::derivative => Invalid Inputs!");
 
@@ -569,7 +569,7 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -579,7 +579,7 @@ public class KochLycheKvasovFamily {
 				final double dblX)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromExponentialPrimitive.Psy::evaluate => Invalid Inputs!");
 
@@ -594,7 +594,7 @@ public class KochLycheKvasovFamily {
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 					throw new java.lang.Exception
 						("KLKF::FromExponentialPrimitive.Psy::derivative => Invalid Inputs!");
 
@@ -617,7 +617,7 @@ public class KochLycheKvasovFamily {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 

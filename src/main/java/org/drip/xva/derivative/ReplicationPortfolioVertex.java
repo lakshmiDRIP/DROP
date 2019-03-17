@@ -170,12 +170,12 @@ public class ReplicationPortfolioVertex
 		final double cashAccount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dealerSeniorNumeraireHoldings =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealerSeniorNumeraireHoldings =
 				dealerSeniorNumeraireHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dealerSubordinateNumeraireHoldings =
+			!org.drip.numerical.common.NumberUtil.IsValid (_dealerSubordinateNumeraireHoldings =
 				dealerSubordinateNumeraireHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientNumeraireHoldings = clientNumeraireHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cashAccount = cashAccount))
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientNumeraireHoldings = clientNumeraireHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_cashAccount = cashAccount))
 		{
 			throw new java.lang.Exception ("ReplicationPortfolioVertex Constructor => Invalid Inputs");
 		}
@@ -264,7 +264,7 @@ public class ReplicationPortfolioVertex
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
+		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
 		{
 			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings;
 		}
@@ -299,7 +299,7 @@ public class ReplicationPortfolioVertex
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
+		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
 		{
 			value -= dealerSubordinateFundingMarketVertex * _dealerSubordinateNumeraireHoldings *
 				dealerMarketVertex.subordinateRecoveryRate();

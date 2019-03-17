@@ -99,7 +99,7 @@ public class Coupon {
 		final int iFrequency)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRate = dblRate) || 0 >= (_iFrequency =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRate = dblRate) || 0 >= (_iFrequency =
 			iFrequency))
 			throw new java.lang.Exception ("Coupon Constructor => Invalid Inputs");
 	}

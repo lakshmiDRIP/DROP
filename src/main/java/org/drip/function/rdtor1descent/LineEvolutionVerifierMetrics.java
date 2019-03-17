@@ -113,7 +113,7 @@ public abstract class LineEvolutionVerifierMetrics {
 		throws java.lang.Exception
 	{
 		if (null == (_uvTargetDirection = uvTargetDirection) || null == (_adblCurrentVariate =
-			adblCurrentVariate) || !org.drip.quant.common.NumberUtil.IsValid (_dblStepLength = dblStepLength)
+			adblCurrentVariate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblStepLength = dblStepLength)
 				|| null == (_adblCurrentVariateFunctionJacobian = adblCurrentVariateFunctionJacobian) ||
 					_adblCurrentVariate.length != _adblCurrentVariateFunctionJacobian.length)
 			throw new java.lang.Exception ("LineEvolutionVerifierMetrics Constructor => Invalid Inputs");
@@ -171,14 +171,14 @@ public abstract class LineEvolutionVerifierMetrics {
 		int iNumVariate = _adblCurrentVariate.length;
 
 		for (int i = 0; i < iNumVariate; ++i)
-			strDump = strDump + org.drip.quant.common.FormatUtil.FormatDouble (_adblCurrentVariate[i], 2, 3,
+			strDump = strDump + org.drip.numerical.common.FormatUtil.FormatDouble (_adblCurrentVariate[i], 2, 3,
 				1.) + " |";
 
-		strDump = strDump + "]" + org.drip.quant.common.FormatUtil.FormatDouble (_dblStepLength, 1, 3, 1.) +
+		strDump = strDump + "]" + org.drip.numerical.common.FormatUtil.FormatDouble (_dblStepLength, 1, 3, 1.) +
 			" || {";
 
 		for (int i = 0; i < iNumVariate; ++i)
-			strDump = strDump + org.drip.quant.common.FormatUtil.FormatDouble (adblDirection[i], 1, 2, 1.) +
+			strDump = strDump + org.drip.numerical.common.FormatUtil.FormatDouble (adblDirection[i], 1, 2, 1.) +
 				" |";
 
 		return strDump + " }";

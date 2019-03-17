@@ -119,7 +119,7 @@ public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvol
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit ur,
 		final double dblTimeIncrement)
 	{
-		if (null == jdv || null == ur || !org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement))
+		if (null == jdv || null == ur || !org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement))
 			return null;
 
 		double dblPreviousValue = jdv.value();

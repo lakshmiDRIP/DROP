@@ -137,7 +137,7 @@ public class ApproximateLipschitzLossLearner extends org.drip.learning.rxtor1.Li
 	{
 		super (funcClassRxToR1, cdpb, regularizerFunc, dblLipschitzSlope);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzFloor = dblLipschitzFloor))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLipschitzFloor = dblLipschitzFloor))
 			throw new java.lang.Exception ("ApproximateLipschitzLossLearner ctr: Invalid Inputs");
 	}
 
@@ -158,7 +158,7 @@ public class ApproximateLipschitzLossLearner extends org.drip.learning.rxtor1.Li
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || dblEpsilon <= (_dblLipschitzFloor /
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || dblEpsilon <= (_dblLipschitzFloor /
 			lipschitzSlope()))
 			throw new java.lang.Exception
 				("ApproximateLipschitzLossLearner::lossSampleCoveringNumber => Invalid Inputs");

@@ -178,7 +178,7 @@ public abstract class TransactionFunction extends org.drip.function.definition.R
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeAmount) || 0 >= iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeAmount) || 0 >= iOrder)
 			throw new java.lang.Exception ("TransactionFunction::leftHoldingsDerivative => Invalid Inputs");
 
 		double dblRegularizedInput = regularize (dblTradeInterval);
@@ -205,7 +205,7 @@ public abstract class TransactionFunction extends org.drip.function.definition.R
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeAmount) || 0 >= iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeAmount) || 0 >= iOrder)
 			throw new java.lang.Exception ("TransactionFunction::rightHoldingsDerivative => Invalid Inputs");
 
 		double dblRegularizedInput = regularize (dblTradeInterval);
@@ -230,7 +230,7 @@ public abstract class TransactionFunction extends org.drip.function.definition.R
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeAmount))
 			throw new java.lang.Exception ("TransactionFunction::crossHoldingsDerivative => Invalid Inputs");
 
 		double dblRegularizedInput = regularize (dblTradeInterval);

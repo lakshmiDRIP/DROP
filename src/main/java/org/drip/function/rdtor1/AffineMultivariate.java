@@ -103,8 +103,8 @@ public class AffineMultivariate extends org.drip.function.definition.RdToR1 impl
 		super (null);
 
 		if (null == (_adblCoefficient = adblCoefficient) || 0 == _adblCoefficient.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblCoefficient) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblCoefficient) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblConstant = dblConstant))
 			throw new java.lang.Exception ("AffineMultivariate Constructor => Invalid Inputs");
 	}
 
@@ -139,7 +139,7 @@ public class AffineMultivariate extends org.drip.function.definition.RdToR1 impl
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 			throw new java.lang.Exception ("AffineMultivariate::evaluate => Invalid Inputs");
 
 		double dblValue = 0.;

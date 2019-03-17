@@ -128,9 +128,9 @@ public class AssetFlowSettings {
 		throws java.lang.Exception
 	{
 		if (null == (_strAssetID = strAssetID) || _strAssetID.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblAverageDailyVolume = dblAverageDailyVolume) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblNumberOutstanding = dblNumberOutstanding) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblDailyVolatility = dblDailyVolatility) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblAverageDailyVolume = dblAverageDailyVolume) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblNumberOutstanding = dblNumberOutstanding) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblDailyVolatility = dblDailyVolatility) ||
 						0. >= _dblNumberOutstanding || 0. >= _dblDailyVolatility)
 			throw new java.lang.Exception ("AssetFlowSettings Constructor => Invalid Inputs");
 	}
@@ -217,8 +217,8 @@ public class AssetFlowSettings {
 		final double dblTime)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblRawTradeSize) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRawTradeSize) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 			throw new java.lang.Exception ("AssetFlowSettings::normalizeTradeSize => Invalid Inputs");
 
 		return dblRawTradeSize / (_dblAverageDailyVolume * dblTime);
@@ -238,7 +238,7 @@ public class AssetFlowSettings {
 		final double dblNormalizedImpact)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedImpact))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedImpact))
 			throw new java.lang.Exception ("AssetFlowSettings::denormalizeImpact => Invalid Inputs");
 
 		return dblNormalizedImpact * _dblDailyVolatility;

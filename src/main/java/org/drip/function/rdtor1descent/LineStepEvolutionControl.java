@@ -224,7 +224,7 @@ public class LineStepEvolutionControl {
 		final int iNumReductionStep)
 		throws java.lang.Exception
 	{
-		if (null == (_lev = lev) || !org.drip.quant.common.NumberUtil.IsValid (_dblReductionFactor =
+		if (null == (_lev = lev) || !org.drip.numerical.common.NumberUtil.IsValid (_dblReductionFactor =
 			dblReductionFactor) || 1. <= _dblReductionFactor || 0 >= (_iNumReductionStep =
 				iNumReductionStep))
 			throw new java.lang.Exception ("LineStepEvolutionControl Constructor => Invalid Inputs");

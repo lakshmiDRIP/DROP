@@ -150,7 +150,7 @@ public class DiagonalOperatorCoveringBound {
 	{
 		if ((BASE_DIAGONAL_ENTROPY_ASYMPTOTE_EXPONENT != (_iOperatorEntropyAsymptoteBase =
 			iOperatorEntropyAsymptoteBase) && LOG_DIAGONAL_ENTROPY_ASYMPTOTE_EXPONENT !=
-				_iOperatorEntropyAsymptoteBase) || !org.drip.quant.common.NumberUtil.IsValid
+				_iOperatorEntropyAsymptoteBase) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblOperatorEntropyAsymptoteExponent = dblOperatorEntropyAsymptoteExponent))
 			throw new java.lang.Exception ("DiagonalOperatorCoveringBound ctr => Invalid Inputs");
 	}

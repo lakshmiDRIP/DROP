@@ -156,9 +156,9 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		final double clientRecovery)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealerSeniorFundingRecovery =
 			dealerSeniorFundingRecovery) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientRecovery = clientRecovery))
 		{
 			throw new java.lang.Exception ("CloseOutBilateral Constructor => Invalid Inputs");
 		}
@@ -191,8 +191,8 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		final double collateralAmount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))
 		{
 			throw new java.lang.Exception ("CloseOutBilateral::dealerDefault => Invalid Inputs");
 		}
@@ -208,8 +208,8 @@ public class CloseOutBilateral extends org.drip.xva.definition.CloseOut
 		final double collateralAmount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (collateralAmount))
 		{
 			throw new java.lang.Exception ("CloseOutBilateral::clientDefault => Invalid Inputs");
 		}

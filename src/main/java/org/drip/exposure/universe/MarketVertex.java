@@ -316,10 +316,10 @@ public class MarketVertex
 		throws java.lang.Exception
 	{
 		if (null == (_anchorDate = anchorDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_overnightReplicator = overnightReplicator) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_csaReplicator = csaReplicator) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_overnightRate = overnightRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_overnightReplicator = overnightReplicator) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_csaSpread = csaSpread) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_csaReplicator = csaReplicator) ||
 			null == (_dealerMarketVertex = dealerMarketVertex) ||
 			null == (_clientMarketVertex = clientMarketVertex) ||
 			null == (_latentStateVertexContainer = latentStateVertexContainer))

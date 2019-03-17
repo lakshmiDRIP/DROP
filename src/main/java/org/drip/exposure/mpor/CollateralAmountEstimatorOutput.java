@@ -148,17 +148,17 @@ public class CollateralAmountEstimatorOutput
 	{
 		if (null == (_dealerMarginDate = dealerMarginDate) ||
 			null == (_clientMarginDate = clientMarginDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dealerWindowMarginValue = dealerWindowMarginValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dealerCollateralThreshold =
+			!org.drip.numerical.common.NumberUtil.IsValid (_dealerWindowMarginValue = dealerWindowMarginValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dealerCollateralThreshold =
 				dealerCollateralThreshold) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dealerPostingRequirement = dealerPostingRequirement)
+			!org.drip.numerical.common.NumberUtil.IsValid (_dealerPostingRequirement = dealerPostingRequirement)
 				||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientWindowMarginValue = clientWindowMarginValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientCollateralThreshold =
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientWindowMarginValue = clientWindowMarginValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientCollateralThreshold =
 				clientCollateralThreshold) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientPostingRequirement = clientPostingRequirement)
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientPostingRequirement = clientPostingRequirement)
 				||
-			!org.drip.quant.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))
+			!org.drip.numerical.common.NumberUtil.IsValid (_postingRequirement = postingRequirement))
 		{
 			throw new java.lang.Exception ("CollateralAmountEstimatorOutput Constructor => Invalid Inputs");
 		}

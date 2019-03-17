@@ -124,8 +124,8 @@ public class MarketStateCorrelated implements org.drip.execution.latent.MarketSt
 		final double dblVolatility)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidity = dblLiquidity) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLiquidity = dblLiquidity) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
 			throw new java.lang.Exception ("MarketStateCorrelated Constructor => Invalid Inpus");
 	}
 

@@ -1,8 +1,8 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.quant.common.*;
-import org.drip.quant.linearalgebra.Matrix;
+import org.drip.numerical.common.*;
+import org.drip.numerical.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 
 /*

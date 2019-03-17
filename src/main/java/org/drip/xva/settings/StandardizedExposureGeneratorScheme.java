@@ -184,7 +184,7 @@ public class StandardizedExposureGeneratorScheme
 			collateralizedPositiveExposureSegmentBuilderControl)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||0. >= _eadMultiplier
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_eadMultiplier = eadMultiplier) ||0. >= _eadMultiplier
 			|| 0 >= (_timeIntegrand = timeIntegrand) ||
 			null == (_collateralizedExposureSegmentBuilderControl =
 				collateralizedExposureSegmentBuilderControl) ||

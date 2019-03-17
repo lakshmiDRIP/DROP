@@ -5,7 +5,7 @@ import org.drip.function.definition.RdToR1;
 import org.drip.function.rdtor1.LagrangianMultivariate;
 import org.drip.function.rdtor1descent.LineStepEvolutionControl;
 import org.drip.function.rdtor1solver.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

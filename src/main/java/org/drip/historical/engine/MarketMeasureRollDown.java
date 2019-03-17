@@ -99,7 +99,7 @@ public class MarketMeasureRollDown {
 		final double dblInnate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblInnate = dblInnate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblInnate = dblInnate))
 			throw new java.lang.Exception ("MarketMeasureRollDown Constructor => Invalid Inputs");
 	}
 
@@ -127,7 +127,7 @@ public class MarketMeasureRollDown {
 		final java.lang.String strHorizon,
 		final double dblHorizonRollDown)
 	{
-		if (null == strHorizon || strHorizon.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == strHorizon || strHorizon.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblHorizonRollDown))
 			return false;
 

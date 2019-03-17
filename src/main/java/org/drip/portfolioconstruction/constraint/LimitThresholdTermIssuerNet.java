@@ -137,7 +137,7 @@ public class LimitThresholdTermIssuerNet extends
 				int iNumAsset = adblIssuerSelection.length;
 				double dblConstraintValue = 0.;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitThresholdTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");

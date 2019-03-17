@@ -122,7 +122,7 @@ public class LongTiltTerm extends org.drip.portfolioconstruction.objective.TiltT
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception ("LongTiltTerm::rdToR1::evaluate => Invalid Inputs");
 
 				double dblValue = 0.;
@@ -150,7 +150,7 @@ public class LongTiltTerm extends org.drip.portfolioconstruction.objective.TiltT
 				final int iOrder)
 				throws java.lang.Exception
 			{
-				if (0 == iOrder || null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid
+				if (0 == iOrder || null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblVariate))
 					throw new java.lang.Exception ("LongTiltTerm::rdToR1::derivative => Invalid Inputs");
 

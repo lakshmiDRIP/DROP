@@ -138,9 +138,9 @@ public class EmbeddedOptionSchedule {
 		if (bIsDiscrete) {
 			try {
 				return new EmbeddedOptionSchedule
-					(org.drip.quant.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new
+					(org.drip.numerical.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new
 						java.util.StringTokenizer (strDates, ";")),
-							org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
+							org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
 								java.util.StringTokenizer (strFactors, ";")), bIsPut, iNoticePeriod,
 									bFixToFloatOnExercise, dblFixToFloatExerciseDate, strFloatIndex,
 										dblFixToFloatSpread);
@@ -152,9 +152,9 @@ public class EmbeddedOptionSchedule {
 		}
 
 		return FromAmerican (iScheduleStart,
-			org.drip.quant.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new
+			org.drip.numerical.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new
 				java.util.StringTokenizer (strDates, ";")),
-					org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
+					org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
 						java.util.StringTokenizer (strFactors, ";")), bIsPut, iNoticePeriod,
 							bFixToFloatOnExercise, dblFixToFloatExerciseDate, strFloatIndex,
 								dblFixToFloatSpread);

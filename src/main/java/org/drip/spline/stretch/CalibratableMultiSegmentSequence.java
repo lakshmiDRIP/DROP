@@ -79,11 +79,11 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 	private org.drip.spline.stretch.SegmentSequenceBuilder _ssb = null;
 	private org.drip.spline.segment.LatentStateResponseModel[] _aLSRM = null;
 	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBC = null;
-	private org.drip.quant.calculus.WengertJacobian _wjDCoeffDEdgeParams = null;
+	private org.drip.numerical.differentiation.WengertJacobian _wjDCoeffDEdgeParams = null;
 
 	private boolean setDCoeffDEdgeParams (
 		final int iNodeIndex,
-		final org.drip.quant.calculus.WengertJacobian wjDCoeffDEdgeParams)
+		final org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParams)
 	{
 		if (null == wjDCoeffDEdgeParams) return false;
 
@@ -105,17 +105,17 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 			wjDCoeffDEdgeParams.firstDerivative (3, iParameterIndex));
 	}
 
-	private final org.drip.quant.calculus.WengertJacobian setDResponseDEdgeResponse (
+	private final org.drip.numerical.differentiation.WengertJacobian setDResponseDEdgeResponse (
 		final int iNodeIndex,
-		final org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeParams)
+		final org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeParams)
 	{
 		if (null == wjDResponseDEdgeParams) return null;
 
 		int iNumSegment = _aLSRM.length;
-		org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeResponse = null;
+		org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeResponse = null;
 
 		try {
-			wjDResponseDEdgeResponse = new org.drip.quant.calculus.WengertJacobian (1, iNumSegment + 1);
+			wjDResponseDEdgeResponse = new org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment + 1);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -211,7 +211,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				}
 			}
 
-			if (null == fpop || !org.drip.quant.common.NumberUtil.IsValid (fpop.getRoot()) ||
+			if (null == fpop || !org.drip.numerical.common.NumberUtil.IsValid (fpop.getRoot()) ||
 				!_ssb.manifestMeasureSensitivity (0.)) {
 				System.out.println ("FPOP: " + fpop);
 
@@ -223,7 +223,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 			int iNumSegment = _aLSRM.length;
 
 			try {
-				if (null == (_wjDCoeffDEdgeParams = new org.drip.quant.calculus.WengertJacobian
+				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian
 					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))
 					return false;
 			} catch (java.lang.Exception e) {
@@ -232,7 +232,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				return false;
 			}
 
-			org.drip.quant.calculus.WengertJacobian wjHead = _aLSRM[0].jackDCoeffDEdgeInputs();
+			org.drip.numerical.differentiation.WengertJacobian wjHead = _aLSRM[0].jackDCoeffDEdgeInputs();
 
 			if (!setDCoeffDEdgeParams (0, wjHead) || !setDCoeffDEdgeParams (1, wjHead)) return false;
 
@@ -345,7 +345,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 
 		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN & iSetupMode)) {
 			try {
-				if (null == (_wjDCoeffDEdgeParams = new org.drip.quant.calculus.WengertJacobian
+				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian
 					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))
 					return false;
 			} catch (java.lang.Exception e) {
@@ -354,7 +354,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				return false;
 			}
 
-			org.drip.quant.calculus.WengertJacobian wjDCoeffDEdgeParamsHead =
+			org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParamsHead =
 				_aLSRM[0].jackDCoeffDEdgeInputs();
 
 			if (!setDCoeffDEdgeParams (0, wjDCoeffDEdgeParamsHead) || !setDCoeffDEdgeParams (1,
@@ -402,11 +402,11 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("CalibratableMultiSegmentSequence::integrate => Invalid Inputs");
 
-		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 	}
 
 	@Override public boolean setLeftNode (
@@ -470,7 +470,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDCalibrationInput (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
@@ -488,7 +488,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 			(dblPredictorOrdinate, iOrder));
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
@@ -510,8 +510,8 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				}
 			}
 
-			org.drip.quant.calculus.WengertJacobian wjDResponseDManifestMeasure = new
-				org.drip.quant.calculus.WengertJacobian (1, iNumSegment);
+			org.drip.numerical.differentiation.WengertJacobian wjDResponseDManifestMeasure = new
+				org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment);
 
 			for (int i = 0; i < iNumSegment; ++i) {
 				double dblDResponseDManifestMeasurei = 0.;
@@ -626,7 +626,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 	@Override public boolean isKnot (
 		final double dblPredictorOrdinate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;
 
 		int iNumSegment = _aLSRM.length;
 
@@ -660,7 +660,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblResponseReset)
 	{
 		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _aLSRM.length <
-			iPredictorOrdinateIndex || !org.drip.quant.common.NumberUtil.IsValid (dblResponseReset))
+			iPredictorOrdinateIndex || !org.drip.numerical.common.NumberUtil.IsValid (dblResponseReset))
 			return false;
 
 		return _aLSRM[iPredictorOrdinateIndex - 1].calibrate (_aLSRM[iPredictorOrdinateIndex - 2],
@@ -707,7 +707,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception ("CalibratableMultiSegmentSequence::in => Invalid inputs");
 
 		return dblPredictorOrdinate >= getLeftPredictorOrdinateEdge() && dblPredictorOrdinate <=

@@ -180,7 +180,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 
 		double dblATMManifestMeasure = mapSTIROutput.get (strManifestMeasure);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure)) return null;
 
 		try {
 			double dblSTIRIntegratedSurfaceVariance =
@@ -188,7 +188,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 					(org.drip.state.identifier.CustomLabel.Standard (_stir.name() + "_" +
 						strManifestMeasure)), iValueDate, iExerciseDate);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance)) return null;
 
 			double dblSTIRIntegratedSurfaceVolatility = java.lang.Math.sqrt
 				(dblSTIRIntegratedSurfaceVariance);
@@ -218,7 +218,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 					("Rate"))
 				dblManifestMeasurePriceTransformer = 10000. * dblFixedCleanDV01;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
 
 			if (_bIsReceiver) {
 				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF
@@ -386,7 +386,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 
 		double dblATMManifestMeasure = mapSTIROutput.get (strManifestMeasure);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure))
 			throw new java.lang.Exception ("FixFloatEuropeanOption::pv => Invalid Inputs");
 
 		double dblSTIRIntegratedSurfaceVariance =
@@ -394,7 +394,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 				(org.drip.state.identifier.CustomLabel.Standard (_stir.name() + "_" + strManifestMeasure)),
 					iValueDate, iExerciseDate);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblSTIRIntegratedSurfaceVariance))
 			throw new java.lang.Exception ("FixFloatEuropeanOption::pv => Invalid Inputs");
 
 		double dblSTIRIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblSTIRIntegratedSurfaceVariance);
@@ -419,7 +419,7 @@ public class FixFloatEuropeanOption extends org.drip.product.option.OptionCompon
 				("Rate"))
 			dblManifestMeasurePriceTransformer = 10000. * dblFixedCleanDV01;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
 			throw new java.lang.Exception ("FixFloatEuropeanOption::pv => Invalid Inputs");
 
 		if (_bIsReceiver)

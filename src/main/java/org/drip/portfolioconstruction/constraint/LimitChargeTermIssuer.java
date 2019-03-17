@@ -219,7 +219,7 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 
 		for (int i = 0; i < iNumAsset; ++i)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings[i]) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings[i]) ||
 				null == _aTransactionCharge[i])
 				throw new java.lang.Exception ("LimitChargeTermIssuer Constructor => Invalid Inputs");
 		}
@@ -263,7 +263,7 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 				double dblConstraintValue = 0.;
 				int iNumAsset = _adblInitialHoldings.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitChargeTermIssuer::rdToR1::evaluate => Invalid Variate Dimension");

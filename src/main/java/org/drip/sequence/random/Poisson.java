@@ -98,7 +98,7 @@ public class Poisson extends org.drip.sequence.random.UnivariateSequenceGenerato
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
 			throw new java.lang.Exception ("Poisson constructor: Invalid inputs");
 
 		_dblExponentialLambda = java.lang.Math.exp (-1. * _dblLambda);

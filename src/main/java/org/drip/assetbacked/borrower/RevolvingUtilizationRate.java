@@ -96,7 +96,7 @@ public class RevolvingUtilizationRate {
 		final double dblRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRate = dblRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRate = dblRate))
 			throw new java.lang.Exception ("RevolvingUtilizationRate Constructor => Invalid Inputs");
 	}
 

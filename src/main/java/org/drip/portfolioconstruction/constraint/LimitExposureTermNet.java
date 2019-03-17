@@ -134,7 +134,7 @@ public class LimitExposureTermNet extends org.drip.portfolioconstruction.constra
 				double dblConstraintValue = 0.;
 				int iNumAsset = adblPrice.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureTermNet::rdToR1::evaluate => Invalid Variate Dimension");

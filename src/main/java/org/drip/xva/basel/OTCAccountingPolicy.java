@@ -130,10 +130,10 @@ public class OTCAccountingPolicy
 		final double portfolioValueChange)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_fundingTransferPricing = fundingTransferPricing) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cet1Change = cet1Change) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_contraLiabilityChange = contraLiabilityChange) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_portfolioValueChange = portfolioValueChange))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_fundingTransferPricing = fundingTransferPricing) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_cet1Change = cet1Change) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_contraLiabilityChange = contraLiabilityChange) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_portfolioValueChange = portfolioValueChange))
 		{
 			throw new java.lang.Exception ("OTCAccountingPolicy Constructor => Invalid Inputs");
 		}

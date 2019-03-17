@@ -108,7 +108,7 @@ public class TreasuryFuturesEligibility {
 	{
 		if (null == (_strMaturityFloor = strMaturityFloor) || _strMaturityFloor.isEmpty() || null ==
 			(_strMaturityCeiling = strMaturityCeiling) || _strMaturityCeiling.isEmpty() ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumOutstandingNotional =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumOutstandingNotional =
 					dblMinimumOutstandingNotional))
 			throw new java.lang.Exception ("TreasuryFuturesEligibility ctr: Invalid Inputs");
 
@@ -195,7 +195,7 @@ public class TreasuryFuturesEligibility {
 
 		if (iValueDate < dtFloorMaturity.julian() || iValueDate > dtCeilingMaturity.julian()) return false;
 
-		if (0. != _dblMinimumOutstandingNotional && org.drip.quant.common.NumberUtil.IsValid
+		if (0. != _dblMinimumOutstandingNotional && org.drip.numerical.common.NumberUtil.IsValid
 			(dblOutstandingNotional) && dblOutstandingNotional < _dblMinimumOutstandingNotional)
 			return false;
 

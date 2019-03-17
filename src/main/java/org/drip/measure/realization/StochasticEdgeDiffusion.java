@@ -94,7 +94,7 @@ public class StochasticEdgeDiffusion {
 		final double dblChange)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblChange = dblChange))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblChange = dblChange))
 			throw new java.lang.Exception ("StochasticEdgeDiffusion Constructor => Invalid Inputs");
 	}
 

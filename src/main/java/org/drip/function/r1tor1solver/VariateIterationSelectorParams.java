@@ -140,8 +140,8 @@ public class VariateIterationSelectorParams {
 		final int iRobustIteratorPrimitive)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeVariateShift = dblRelativeVariateShift) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateShiftLowerBound =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRelativeVariateShift = dblRelativeVariateShift) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateShiftLowerBound =
 				dblVariateShiftLowerBound))
 			throw new java.lang.Exception ("VariateIterationSelectorParams constructor: Invalid inputs!");
 	}

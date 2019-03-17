@@ -100,8 +100,8 @@ public class PopulationCentralMeasures
 		final double variance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_mean = mean) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_variance = variance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_mean = mean) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_variance = variance))
 		{
 			throw new java.lang.Exception ("PopulationCentralMeasures Constructor => Invalid Inputsx");
 		}
@@ -143,7 +143,7 @@ public class PopulationCentralMeasures
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 		{
 			throw new java.lang.Exception ("PopulationCentralMeasures::zScore => Invalid Inputs");
 		}

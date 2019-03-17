@@ -130,7 +130,7 @@ public class FundingBasisEvolver
 	{
 		if (null == (_underlyingEvolver = underlyingEvolver) ||
 			null == (_fundingSpreadEvolver = fundingSpreadEvolver) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_correlation = correlation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_correlation = correlation) ||
 			1. < _correlation || -1. > _correlation)
 		{
 			throw new java.lang.Exception ("FundingBasisEvolver Constructor => Invalid Inputs");

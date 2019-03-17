@@ -159,7 +159,7 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("PermanentImpactNoArbitrage::regularize => Invalid Inputs");
 
 		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);
@@ -169,7 +169,7 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("PermanentImpactNoArbitrage::modulate => Invalid Inputs");
 
 		return dblTradeInterval * _afp.dailyVolatility();
@@ -190,7 +190,7 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
 			throw new java.lang.Exception ("PermanentImpactNoArbitrage::evaluate => Invalid Inputs");
 
 		return 0.5 * org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *
@@ -202,7 +202,7 @@ public class PermanentImpactNoArbitrage extends org.drip.execution.impact.Partic
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (0 >= iOrder || !org.drip.quant.common.NumberUtil.IsValid (dblNormalizedX))
+		if (0 >= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
 			throw new java.lang.Exception ("PermanentImpactNoArbitrage::derivative => Invalid Inputs");
 
 		return 1 < iOrder ? 0. : 0.5 *

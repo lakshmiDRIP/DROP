@@ -128,7 +128,7 @@ public class MinimalQuadraticHaganWest {
 		throws java.lang.Exception
 	{
 		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =
-			adblPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight = dblWeight))
+			adblPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWeight = dblWeight))
 			throw new java.lang.Exception ("MinimalQuadraticHaganWest ctr: Invalid Inputs!");
 
 		int iNumObservation = _adblObservation.length;
@@ -218,8 +218,8 @@ public class MinimalQuadraticHaganWest {
 		adblRHS[3 * iNumObservation - 1] = 0.;
 		aadblCoeffMatrix[3 * iNumObservation - 1][3 * iNumObservation - 2] = 1.;
 
-		org.drip.quant.linearalgebra.LinearizationOutput lssGaussianElimination =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,
+		org.drip.numerical.linearalgebra.LinearizationOutput lssGaussianElimination =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,
 				adblRHS);
 
 		if (null == lssGaussianElimination) return false;
@@ -311,11 +311,11 @@ public class MinimalQuadraticHaganWest {
 
 		for (int i = 0; i < adblConservedConstraint.length; ++i)
 			System.out.println ("Conserved Constraint[" + i + "] => " +
-				org.drip.quant.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));
+				org.drip.numerical.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));
 
 		for (double dblTime = adblTime[0]; dblTime <= adblTime[adblTime.length - 1]; dblTime += 0.25)
-			System.out.println ("Response[" + org.drip.quant.common.FormatUtil.FormatDouble (dblTime, 2, 2,
-				1.) + "] = " + org.drip.quant.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,
+			System.out.println ("Response[" + org.drip.numerical.common.FormatUtil.FormatDouble (dblTime, 2, 2,
+				1.) + "] = " + org.drip.numerical.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,
 					6, 1.));
 	}
 }

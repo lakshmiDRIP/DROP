@@ -146,7 +146,7 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_iEpochDate = iEpochDate) || null == (_label =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_iEpochDate = iEpochDate) || null == (_label =
 			label) || null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())
 			throw new java.lang.Exception ("CreditCurve ctr: Invalid Inputs");
 	}

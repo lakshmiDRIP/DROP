@@ -276,7 +276,7 @@ public class CreditIndexAPI {
 			return null;
 		}
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblRollDownFairPremium)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRollDownFairPremium)) return null;
 
 		org.drip.historical.attribution.CDSMarketSnap cdsmsFirst = MarketValuationSnap (cds, dcFirst,
 			ccFirst, csqc, dblRollDownFairPremium);

@@ -388,7 +388,7 @@ public class PositionGroupTrajectory
 		{
 			if (null == _positionGroupArrayVertex[positionGroupIndex] ||
 				vertexCount != _positionGroupArrayVertex[positionGroupIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_positionGroupArrayVertex[positionGroupIndex]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_positionGroupArrayVertex[positionGroupIndex]))
 			{
 				throw new java.lang.Exception ("PositionGroupTrajectory Constructor => Invalid Inputs");
 			}

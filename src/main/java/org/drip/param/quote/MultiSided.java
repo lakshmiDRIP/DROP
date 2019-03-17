@@ -97,7 +97,7 @@ public class MultiSided extends org.drip.param.definition.Quote {
 			final double dblSize)
 			throws java.lang.Exception
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblQuote = dblQuote))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblQuote = dblQuote))
 				throw new java.lang.Exception ("MultiSided::SingleSided ctr: Invalid Inputs!");
 
 			_dblSize = dblSize;
@@ -123,7 +123,7 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		boolean setQuote (
 			final double dblQuote)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblQuote)) return false;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblQuote)) return false;
 
 			_dblQuote = dblQuote;
 			return true;
@@ -132,7 +132,7 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		boolean setSize (
 			final double dblSize)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSize)) return false;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSize)) return false;
 
 			_dblSize = dblSize;
 			return true;
@@ -156,7 +156,7 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		final double dblQuote)
 		throws java.lang.Exception
 	{
-		if (null == strSide || strSide.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblQuote))
+		if (null == strSide || strSide.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblQuote))
 			throw new java.lang.Exception ("MultiSided ctr: Invalid Side/Quote/Size!");
 
 		_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, java.lang.Double.NaN));
@@ -178,7 +178,7 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		final double dblSize)
 		throws java.lang.Exception
 	{
-		if (null == strSide || strSide.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblQuote))
+		if (null == strSide || strSide.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblQuote))
 			throw new java.lang.Exception ("MultiSided ctr: Invalid Side/Quote/Size!");
 
 		_mapSingleSidedQuote.put (strSide, new SingleSided (dblQuote, dblSize));
@@ -213,7 +213,7 @@ public class MultiSided extends org.drip.param.definition.Quote {
 		final double dblQuote,
 		final double dblSize)
 	{
-		if (null != strSide && !strSide.isEmpty() && !org.drip.quant.common.NumberUtil.IsValid (dblQuote))
+		if (null != strSide && !strSide.isEmpty() && !org.drip.numerical.common.NumberUtil.IsValid (dblQuote))
 			return false;
 
 		try {

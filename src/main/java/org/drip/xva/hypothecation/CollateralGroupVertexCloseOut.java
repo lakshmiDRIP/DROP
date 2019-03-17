@@ -108,8 +108,8 @@ public class CollateralGroupVertexCloseOut
 		final double collateralBalance)
 	{
 		if (null == closeOutGeneral ||
-			!org.drip.quant.common.NumberUtil.IsValid (uncollateralizedExposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+			!org.drip.numerical.common.NumberUtil.IsValid (uncollateralizedExposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))
 		{
 			return null;
 		}
@@ -149,8 +149,8 @@ public class CollateralGroupVertexCloseOut
 		final double client)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_client = client))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_client = client))
 		{
 			throw new java.lang.Exception ("CollateralGroupVertexCloseOut Constructor => Invalid Inputs");
 		}

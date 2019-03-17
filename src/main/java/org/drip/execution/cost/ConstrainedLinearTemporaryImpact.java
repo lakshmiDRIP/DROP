@@ -132,9 +132,9 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 		final double dblGrossPriceChange,
 		final org.drip.execution.impact.TransactionFunctionLinear tflTemporary)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFinishTime) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==
 					tflTemporary)
 			return null;
 
@@ -179,7 +179,7 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 				final double dblTau)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTau))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTau))
 					throw new java.lang.Exception
 						("ConstrainedLinearTemporaryImpact::Holdings::evaluate => Invalid Inputs");
 
@@ -220,9 +220,9 @@ public class ConstrainedLinearTemporaryImpact extends org.drip.execution.cost.Li
 		super (dblSpotTime, dblFinishTime, dblSpotHoldings, pcc, dblGrossPriceChange, tflTemporary,
 			dblTradeFinishTime - dblTradeStartTime, r1ToR1Holdings, dblInstantaneousTradeRate);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCriticalDrift = dblCriticalDrift) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeStartTime = dblTradeStartTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeFinishTime = dblTradeFinishTime))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCriticalDrift = dblCriticalDrift) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeStartTime = dblTradeStartTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeFinishTime = dblTradeFinishTime))
 			throw new java.lang.Exception ("ConstrainedLinearTemporaryImpact Constructor => Invalid Inputs");
 	}
 

@@ -122,7 +122,7 @@ public class IntegralOperatorEigenComponent {
 		final double dblEigenValue)
 		throws java.lang.Exception
 	{
-		if (null == (_efRdToR1 = efRdToR1) || !org.drip.quant.common.NumberUtil.IsValid (_dblEigenValue =
+		if (null == (_efRdToR1 = efRdToR1) || !org.drip.numerical.common.NumberUtil.IsValid (_dblEigenValue =
 			dblEigenValue))
 			throw new java.lang.Exception ("IntegralOperatorEigenComponent ctr: Invalid Inputs");
 

@@ -107,8 +107,8 @@ public class RiskFactorAggregate
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_sensitivityMargin = sensitivityMargin) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		{
 			throw new java.lang.Exception ("RiskFactorAggregate Constructor => Invalid Inputs");
 		}

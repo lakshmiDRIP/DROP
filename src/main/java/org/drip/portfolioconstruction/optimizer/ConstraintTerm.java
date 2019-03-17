@@ -108,8 +108,8 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 		if (null == (_scope = scope) ||
 			null == (_unit = unit) ||
-			(!org.drip.quant.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
+			(!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
 			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
 	}
 

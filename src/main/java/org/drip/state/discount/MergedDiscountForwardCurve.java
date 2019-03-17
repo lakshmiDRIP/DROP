@@ -135,7 +135,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 		throws java.lang.Exception
 	{
 		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_iEpochDate = iEpochDate))
+			!org.drip.numerical.common.NumberUtil.IsValid (_iEpochDate = iEpochDate))
 			throw new java.lang.Exception ("MergedDiscountForwardCurve ctr: Invalid Inputs");
 
 		_tldf = tldf;
@@ -258,7 +258,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 					return forward (epoch().addTenor (strTenor));
 				}
 
-				@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+				@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 					final java.lang.String strManifestMeasure,
 					final int iDate)
 				{
@@ -433,7 +433,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 		final double dblDCF)
 		throws java.lang.Exception
 	{
-		if (iDate1 == iDate2 || !org.drip.quant.common.NumberUtil.IsValid (dblDCF) || 0. == dblDCF)
+		if (iDate1 == iDate2 || !org.drip.numerical.common.NumberUtil.IsValid (dblDCF) || 0. == dblDCF)
 			throw new java.lang.Exception ("MergedDiscountForwardCurve::libor => Invalid input dates");
 
 		return ((df (iDate1) / df (iDate2)) - 1.) / dblDCF;
@@ -478,7 +478,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iStartDate) || null == strTenor || strTenor.isEmpty())
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iStartDate) || null == strTenor || strTenor.isEmpty())
 			throw new java.lang.Exception ("MergedDiscountForwardCurve::libor => Invalid Inputs");
 
 		return libor (iStartDate, new org.drip.analytics.date.JulianDate (iStartDate).addTenor
@@ -773,7 +773,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Manifest Measure Jacobian of the Discount Factor to the given date
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	public abstract org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure);
 
@@ -786,7 +786,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Manifest Measure Jacobian of the Discount Factor to the given date
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strManifestMeasure)
 	{
@@ -804,7 +804,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Manifest Measure Jacobian of the Discount Factor to the date implied by the given Tenor
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final java.lang.String strTenor,
 		final java.lang.String strManifestMeasure)
 	{
@@ -828,10 +828,10 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian compJackDPVDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian compJackDPVDManifestMeasure (
 		final int iDate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iDate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate)) return null;
 
 		org.drip.product.definition.CalibratableComponent[] aCalibComp = calibComp();
 
@@ -839,7 +839,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 
 		int iNumParameters = 0;
 		int iNumComponents = aCalibComp.length;
-		org.drip.quant.calculus.WengertJacobian wjCompPVDF = null;
+		org.drip.numerical.differentiation.WengertJacobian wjCompPVDF = null;
 
 		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
 			(iDate);
@@ -849,7 +849,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 				null, null == _ccis ? null : _ccis.fixing());
 
 		for (int i = 0; i < iNumComponents; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjCompDDirtyPVDManifestMeasure =
+			org.drip.numerical.differentiation.WengertJacobian wjCompDDirtyPVDManifestMeasure =
 				aCalibComp[i].jackDDirtyPVDManifestMeasure (valParams, null, csqs, null);
 
 			if (null == wjCompDDirtyPVDManifestMeasure) return null;
@@ -858,7 +858,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 
 			if (null == wjCompPVDF) {
 				try {
-					wjCompPVDF = new org.drip.quant.calculus.WengertJacobian (iNumComponents,
+					wjCompPVDF = new org.drip.numerical.differentiation.WengertJacobian (iNumComponents,
 						iNumParameters);
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -886,7 +886,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian compJackDPVDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian compJackDPVDManifestMeasure (
 		final org.drip.analytics.date.JulianDate dt)
 	{
 		return null == dt ? null : compJackDPVDManifestMeasure (dt.julian());
@@ -903,7 +903,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final int iDate1,
 		final int iDate2,
 		final java.lang.String strManifestMeasure,
@@ -911,7 +911,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	{
 		if (iDate1 == iDate2) return null;
 
-		org.drip.quant.calculus.WengertJacobian wjDDFDManifestMeasureDate1 = jackDDFDManifestMeasure
+		org.drip.numerical.differentiation.WengertJacobian wjDDFDManifestMeasureDate1 = jackDDFDManifestMeasure
 			(iDate1, strManifestMeasure);
 
 		if (null == wjDDFDManifestMeasureDate1) return null;
@@ -920,7 +920,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 
 		if (0 == iNumQuote) return null;
 
-		org.drip.quant.calculus.WengertJacobian wjDDFDManifestMeasureDate2 = jackDDFDManifestMeasure
+		org.drip.numerical.differentiation.WengertJacobian wjDDFDManifestMeasureDate2 = jackDDFDManifestMeasure
 			(iDate2, strManifestMeasure);
 
 		if (null == wjDDFDManifestMeasureDate2 || iNumQuote != wjDDFDManifestMeasureDate2.numParameters())
@@ -928,14 +928,14 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 
 		double dblDF1 = java.lang.Double.NaN;
 		double dblDF2 = java.lang.Double.NaN;
-		org.drip.quant.calculus.WengertJacobian wjDForwardDManifestMeasure = null;
+		org.drip.numerical.differentiation.WengertJacobian wjDForwardDManifestMeasure = null;
 
 		try {
 			dblDF1 = df (iDate1);
 
 			dblDF2 = df (iDate2);
 
-			wjDForwardDManifestMeasure = new org.drip.quant.calculus.WengertJacobian (1, iNumQuote);
+			wjDForwardDManifestMeasure = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -970,7 +970,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final org.drip.analytics.date.JulianDate dt1,
 		final org.drip.analytics.date.JulianDate dt2,
 		final java.lang.String strManifestMeasure,
@@ -992,7 +992,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strTenor,
 		final java.lang.String strManifestMeasure,
@@ -1013,7 +1013,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian zeroRateJack (
+	public org.drip.numerical.differentiation.WengertJacobian zeroRateJack (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
@@ -1032,7 +1032,7 @@ public abstract class MergedDiscountForwardCurve extends org.drip.state.discount
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian zeroRateJack (
+	public org.drip.numerical.differentiation.WengertJacobian zeroRateJack (
 		final org.drip.analytics.date.JulianDate dt,
 		final java.lang.String strManifestMeasure)
 	{

@@ -107,7 +107,7 @@ public class DomesticCollateralizedForeignForward {
 		final org.drip.analytics.date.JulianDate dtMaturity)
 		throws java.lang.Exception
 	{
-		if (null == (_cp = cp) || !org.drip.quant.common.NumberUtil.IsValid (_dblForexForwardStrike =
+		if (null == (_cp = cp) || !org.drip.numerical.common.NumberUtil.IsValid (_dblForexForwardStrike =
 			dblForexForwardStrike) || null == dtMaturity)
 			throw new java.lang.Exception ("DomesticCollateralizedForeignForward ctr: Invalid Inputs");
 

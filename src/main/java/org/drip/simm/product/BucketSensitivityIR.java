@@ -376,7 +376,7 @@ public class BucketSensitivityIR
 		final double sensitivityConcentrationThreshold)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (sensitivityConcentrationThreshold))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (sensitivityConcentrationThreshold))
 		{
 			throw new java.lang.Exception
 				("BucketSensitivityIR::sensitivityConcentrationRiskFactor => Invalid Inputs");

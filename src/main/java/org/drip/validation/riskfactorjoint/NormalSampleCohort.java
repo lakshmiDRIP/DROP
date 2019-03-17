@@ -130,7 +130,7 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 		final int vertexCount,
 		final double horizon)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (horizon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (horizon))
 		{
 			return null;
 		}
@@ -224,7 +224,7 @@ public class NormalSampleCohort implements org.drip.validation.riskfactorjoint.S
 	{
 		if (null == (_labelRdVertex = labelRdVertex) ||
 			null == (_latentStateLabelCovariance = latentStateLabelCovariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_horizon = horizon) || _horizon <= 0.)
+			!org.drip.numerical.common.NumberUtil.IsValid (_horizon = horizon) || _horizon <= 0.)
 		{
 			throw new java.lang.Exception ("NormalSampleCohort Constructor => Invalid Inputs");
 		}

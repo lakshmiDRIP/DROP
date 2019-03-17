@@ -107,7 +107,7 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 		final org.drip.function.definition.R1ToR1 auResponse)
 		throws java.lang.Exception
 	{
-		if (null == (_auKernel = auKernel) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_auKernel = auKernel) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblSmoothingParameter = dblSmoothingParameter) || 0 >= (_iSampleSize = iSampleSize) || null ==
 				(_auResponse = auResponse))
 			throw new java.lang.Exception ("KernelDensityEstimationL1 Constructor => Invalid Inputs!");
@@ -166,9 +166,9 @@ public class KernelDensityEstimationL1 extends org.drip.sequence.functional.Boun
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		double dblMinVariate = org.drip.quant.common.NumberUtil.Minimum (adblVariate);
+		double dblMinVariate = org.drip.numerical.common.NumberUtil.Minimum (adblVariate);
 
-		double dblMaxVariate = org.drip.quant.common.NumberUtil.Maximum (adblVariate);
+		double dblMaxVariate = org.drip.numerical.common.NumberUtil.Maximum (adblVariate);
 
 		double dblKernelIntegral = 0.;
 		int iNumVariate = adblVariate.length;

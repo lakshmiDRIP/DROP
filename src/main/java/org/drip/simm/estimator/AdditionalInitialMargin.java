@@ -169,15 +169,15 @@ public class AdditionalInitialMargin
 		final java.util.Map<java.lang.String, java.lang.Double> productAddOnFactorMap)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_ratesFXMultiplicativeScale =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_ratesFXMultiplicativeScale =
 				ratesFXMultiplicativeScale) || 1. > _ratesFXMultiplicativeScale ||
-			!org.drip.quant.common.NumberUtil.IsValid (_creditMultiplicativeScale =
+			!org.drip.numerical.common.NumberUtil.IsValid (_creditMultiplicativeScale =
 				creditMultiplicativeScale) || 1. > _creditMultiplicativeScale ||
-			!org.drip.quant.common.NumberUtil.IsValid (_equityMultiplicativeScale =
+			!org.drip.numerical.common.NumberUtil.IsValid (_equityMultiplicativeScale =
 				equityMultiplicativeScale) || 1. > _equityMultiplicativeScale ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commodityMultiplicativeScale =
+			!org.drip.numerical.common.NumberUtil.IsValid (_commodityMultiplicativeScale =
 				commodityMultiplicativeScale) || 1. > _commodityMultiplicativeScale ||
-			!org.drip.quant.common.NumberUtil.IsValid (_addOnFixed = addOnFixed) || 0. > _addOnFixed)
+			!org.drip.numerical.common.NumberUtil.IsValid (_addOnFixed = addOnFixed) || 0. > _addOnFixed)
 		{
 			throw new java.lang.Exception ("AdditionalInitialMargin Constructor => Invalid Inputs");
 		}

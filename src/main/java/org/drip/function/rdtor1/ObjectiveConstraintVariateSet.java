@@ -213,8 +213,8 @@ public class ObjectiveConstraintVariateSet {
 		throws java.lang.Exception
 	{
 		if (null == (_adblObjectiveVariate = adblObjectiveVariate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblObjectiveVariate) || null ==
-				(_adblConstraintVariate = adblConstraintVariate) || !org.drip.quant.common.NumberUtil.IsValid
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblObjectiveVariate) || null ==
+				(_adblConstraintVariate = adblConstraintVariate) || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblConstraintVariate))
 			throw new java.lang.Exception ("ObjectiveConstraintVariateSet Constructor => Invalid Inputs!");
 	}

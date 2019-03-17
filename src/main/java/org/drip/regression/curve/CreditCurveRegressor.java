@@ -223,14 +223,14 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (adblHazard[i] =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (adblHazard[i] =
 								_ccFromFlatHazard.hazard (_dtStart, (adt[i] = _dtStart.addYears (i + 1)))))
 								return false;
 
 							rnvd.set ("HazardRateFromHazardCurve[" + adt[i] + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (adblHazard[i], 1, 4, 1));
+								org.drip.numerical.common.FormatUtil.FormatDouble (adblHazard[i], 1, 4, 1));
 
-							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblHazard[i], 0.02))
+							if (!org.drip.numerical.common.NumberUtil.WithinTolerance (adblHazard[i], 0.02))
 								return false;
 						} catch (java.lang.Exception e) {
 							e.printStackTrace();
@@ -282,7 +282,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalCalc[i] =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (adblSurvivalCalc[i] =
 								_ccFromSurvival.survival (_aiDate[i])))
 								return false;
 
@@ -290,12 +290,12 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 								(_aiDate[i]);
 
 							rnvd.set ("SurvivalFromOriginal[" + dt + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (_adblSurvival[i], 1, 4, 1));
+								org.drip.numerical.common.FormatUtil.FormatDouble (_adblSurvival[i], 1, 4, 1));
 
 							rnvd.set ("SurvivalFromSurvival[" + dt + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (adblSurvivalCalc[i], 1, 4, 1));
+								org.drip.numerical.common.FormatUtil.FormatDouble (adblSurvivalCalc[i], 1, 4, 1));
 
-							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblSurvivalCalc[i],
+							if (!org.drip.numerical.common.NumberUtil.WithinTolerance (adblSurvivalCalc[i],
 								_adblSurvival[i]))
 								return false;
 						} catch (java.lang.Exception e) {
@@ -348,19 +348,19 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (adblHazardCalc[i] =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (adblHazardCalc[i] =
 								_ccFromHazard.hazard (dt1, dt1.addYears (1))))
 								return false;
 
 							org.drip.analytics.date.JulianDate dt2 = dt1.addYears (1);
 
 							rnvd.set ("HazardFromOriginal[" + dt1 + "-" + dt2 + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (_adblHazard[i], 1, 4, 1));
+								org.drip.numerical.common.FormatUtil.FormatDouble (_adblHazard[i], 1, 4, 1));
 
 							rnvd.set ("HazardFromHazard[" + dt1 + "-" + dt2 + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (adblHazardCalc[i], 1, 4, 1));
+								org.drip.numerical.common.FormatUtil.FormatDouble (adblHazardCalc[i], 1, 4, 1));
 
-							if (!org.drip.quant.common.NumberUtil.WithinTolerance (adblHazardCalc[i],
+							if (!org.drip.numerical.common.NumberUtil.WithinTolerance (adblHazardCalc[i],
 								_adblHazard[i]))
 								return false;
 
@@ -403,7 +403,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 
 						try {
 							rnvd.set ("CompQuote" + "_" + strCode + "[" + dt + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (_cc.manifestMeasure
+								org.drip.numerical.common.FormatUtil.FormatDouble (_cc.manifestMeasure
 									(strCode).get ("FairPremium"), 1, 4, 1));
 						} catch (java.lang.Exception e) {
 							e.printStackTrace();
@@ -450,9 +450,9 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 						double dblShiftedHazard = java.lang.Double.NaN;
 
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (dblShiftedHazard =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (dblShiftedHazard =
 								_ccParallelShifted.hazard (dt1, dt)) ||
-									!org.drip.quant.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard
+									!org.drip.numerical.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard
 										(dt1, dt)))
 								return false;
 						} catch (java.lang.Exception e) {
@@ -462,14 +462,14 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 						}
 
 						rnvd.set ("BaseCurveHazard[" + dt1 + "-" + dt + "]",
-							org.drip.quant.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 4, 1));
+							org.drip.numerical.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 4, 1));
 
 						rnvd.set ("ParallelShiftedCurveHazard[" + dt1 + "-" + dt + "]",
-							org.drip.quant.common.FormatUtil.FormatDouble (dblShiftedHazard, 1, 4, 1));
+							org.drip.numerical.common.FormatUtil.FormatDouble (dblShiftedHazard, 1, 4, 1));
 
 						dt = dt1;
 
-						if (!org.drip.quant.common.NumberUtil.WithinTolerance (dblBaseHazard + 0.0005,
+						if (!org.drip.numerical.common.NumberUtil.WithinTolerance (dblBaseHazard + 0.0005,
 							dblShiftedHazard))
 							return false;
 					}
@@ -507,17 +507,17 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 
 						try {
 							rnvd.set ("BaseCurveQuote[" + dt + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble (_cc.manifestMeasure
+								org.drip.numerical.common.FormatUtil.FormatDouble (_cc.manifestMeasure
 									(aCalibComp[i].primaryCode()).get ("FairPremium"), 1, 5, 1));
 
 							rnvd.set ("ParallelShiftedCurveQuote[" + dt + "]",
-								org.drip.quant.common.FormatUtil.FormatDouble
+								org.drip.numerical.common.FormatUtil.FormatDouble
 									(_ccParallelShifted.manifestMeasure (aCalibComp[i].primaryCode()).get
 										("FairPremium"), 1, 5, 1));
 
 							dt = dt1;
 
-							if (!org.drip.quant.common.NumberUtil.WithinTolerance (_cc.manifestMeasure
+							if (!org.drip.numerical.common.NumberUtil.WithinTolerance (_cc.manifestMeasure
 								(aCalibComp[i].primaryCode()).get ("FairPremium") + 5.,
 									_ccParallelShifted.manifestMeasure (aCalibComp[i].primaryCode()).get
 										("FairPremium")))
@@ -583,9 +583,9 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 						double dblShiftedHazard = java.lang.Double.NaN;
 
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (dblShiftedHazard =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (dblShiftedHazard =
 								_ccTweakedCurve.hazard (dt1, dt)) ||
-									!org.drip.quant.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard
+									!org.drip.numerical.common.NumberUtil.IsValid (dblBaseHazard = _cc.hazard
 										(dt1, dt)))
 								return false;
 						} catch (Exception e) {
@@ -595,9 +595,9 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 						}
 
 						rnvd.set ("UntweakedHazard[" + dt + "]",
-							org.drip.quant.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 5, 1));
+							org.drip.numerical.common.FormatUtil.FormatDouble (dblBaseHazard, 1, 5, 1));
 
-						rnvd.set ("TweakedHazard[" + dt + "]", org.drip.quant.common.FormatUtil.FormatDouble
+						rnvd.set ("TweakedHazard[" + dt + "]", org.drip.numerical.common.FormatUtil.FormatDouble
 							(dblShiftedHazard, 1, 5, 1));
 
 						dt = dt1;
@@ -635,7 +635,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 						double dblHazard = java.lang.Double.NaN;
 
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (dblHazard = _ccFlatCurve.hazard
+							if (!org.drip.numerical.common.NumberUtil.IsValid (dblHazard = _ccFlatCurve.hazard
 								(dt)))
 								return false;
 						} catch (java.lang.Exception e) {
@@ -644,7 +644,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 							return false;
 						}
 
-						rnvd.set ("FlatHazard[" + dt + "]", org.drip.quant.common.FormatUtil.FormatDouble
+						rnvd.set ("FlatHazard[" + dt + "]", org.drip.numerical.common.FormatUtil.FormatDouble
 							(dblHazard, 1, 5, 1));
 					}
 
@@ -664,7 +664,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 
 				@Override public boolean preRegression()
 				{
-					return !org.drip.quant.common.NumberUtil.IsValid (_iSpecificDefaultDate = _dtStart.addYears
+					return !org.drip.numerical.common.NumberUtil.IsValid (_iSpecificDefaultDate = _dtStart.addYears
 						(2).julian());
 				}
 
@@ -683,7 +683,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 					int iSurvivalDate = dtSurvival.julian();
 
 					try {
-						if (!org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival
+						if (!org.drip.numerical.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival
 							(iSurvivalDate)))
 							return false;
 					} catch (Exception e) {
@@ -697,7 +697,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 					if (!_cc.unsetSpecificDefault()) return false;
 
 					try {
-						if (!org.drip.quant.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival
+						if (!org.drip.numerical.common.NumberUtil.IsValid (dblSurvivalProb = _cc.survival
 							(iSurvivalDate)))
 							return false;
 					} catch (java.lang.Exception e) {
@@ -737,7 +737,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 				{
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (_adblSurvival[i] =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (_adblSurvival[i] =
 								_cc.effectiveSurvival ((i + 1) + "Y", (i + 2) + "Y")))
 								return false;
 						} catch (java.lang.Exception e) {
@@ -756,7 +756,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
 							rnvd.set ("EffectiveSurvival[" + new org.drip.analytics.date.JulianDate
-								(_aiDate[i]) + "]", org.drip.quant.common.FormatUtil.FormatDouble
+								(_aiDate[i]) + "]", org.drip.numerical.common.FormatUtil.FormatDouble
 									(_adblSurvival[i], 1, 4, 1));
 						} catch (java.lang.Exception e) {
 							e.printStackTrace();
@@ -785,7 +785,7 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 				{
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
-							if (!org.drip.quant.common.NumberUtil.IsValid (_adblEffectiveRecovery[i] =
+							if (!org.drip.numerical.common.NumberUtil.IsValid (_adblEffectiveRecovery[i] =
 								_cc.effectiveRecovery ((i + 1) + "Y", (i + 2) + "Y")))
 								return false;
 						} catch (java.lang.Exception e) {
@@ -804,12 +804,12 @@ public class CreditCurveRegressor implements org.drip.regression.core.RegressorS
 					for (int i = 0; i < NUM_DC_INSTRUMENTS; ++i) {
 						try {
 							rnvd.set ("EffectiveRecovery[" + (i + 1) + "Y-" + (i + 2) + "Y]",
-								org.drip.quant.common.FormatUtil.FormatDouble (_adblEffectiveRecovery[i], 1,
+								org.drip.numerical.common.FormatUtil.FormatDouble (_adblEffectiveRecovery[i], 1,
 									4, 1));
 
 							rnvd.set ("CurveRecovery[" + (i + 1) + "Y-" + (i + 2) + "Y]",
-								org.drip.quant.common.FormatUtil.FormatDouble (_cc.recovery ((i + 1) + "Y"),
-									1, 4, 1) + "-" + org.drip.quant.common.FormatUtil.FormatDouble
+								org.drip.numerical.common.FormatUtil.FormatDouble (_cc.recovery ((i + 1) + "Y"),
+									1, 4, 1) + "-" + org.drip.numerical.common.FormatUtil.FormatDouble
 										(_cc.recovery ((i + 2) + "Y"), 1, 4, 1));
 						} catch (java.lang.Exception e) {
 							e.printStackTrace();

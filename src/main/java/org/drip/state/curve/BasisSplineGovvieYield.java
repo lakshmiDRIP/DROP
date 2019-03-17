@@ -123,7 +123,7 @@ public class BasisSplineGovvieYield extends org.drip.state.govvie.GovvieCurve {
 		return _span.calcResponseValue (iDate);
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{

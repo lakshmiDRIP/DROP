@@ -23,9 +23,6 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * t-Statistic
  * p-value
  * Q-Q Plot
- * Stirling's Approximation
- * Lanczos Approximation
- * Error Function
  * Basel III Framework for Backtesting Exposure Models
  * Initial Margin Backtesting Framework
  * Model Risk Management Framework
@@ -141,6 +138,10 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Linear Systems Analysis and Transformation
  * Rayleigh Quotient Iteration
  * Power Iteration
+ * Numerical Integration
+ * Stirling's Approximation
+ * Lanczos Approximation
+ * Error Function
 
 
 ## Algorithm Support Coverage

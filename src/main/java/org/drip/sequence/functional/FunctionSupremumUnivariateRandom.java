@@ -170,7 +170,7 @@ public class FunctionSupremumUnivariateRandom extends org.drip.function.r1tor1.F
 	{
 		if (null == _dist) return null;
 
-		org.drip.quant.common.Array2D a2DHistogram = _dist.histogram();
+		org.drip.numerical.common.Array2D a2DHistogram = _dist.histogram();
 
 		return null == a2DHistogram ? null : sequenceMetrics (a2DHistogram.x(), a2DHistogram.y());
 	}

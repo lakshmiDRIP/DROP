@@ -113,14 +113,14 @@ public class ConstraintFunctionPointMetrics {
 			throw new java.lang.Exception ("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumConstraint; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblValue[i]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblMultiplier[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblValue[i]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblMultiplier[i]))
 				throw new java.lang.Exception ("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
 		}
 
 		for (int i = 0; i < iDimension; ++i) {
 			if (null == _aadblJacobian[i] || iNumConstraint != _aadblJacobian[i].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_aadblJacobian[i]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_aadblJacobian[i]))
 				throw new java.lang.Exception
 					("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
 		}

@@ -152,8 +152,8 @@ public class ReplicationPortfolioVertexDealer
 		final double subordinateNumeraireHoldings)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_seniorNumeraireHoldings = seniorNumeraireHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_subordinateNumeraireHoldings =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_seniorNumeraireHoldings = seniorNumeraireHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_subordinateNumeraireHoldings =
 				subordinateNumeraireHoldings))
 		{
 			throw new java.lang.Exception ("ReplicationPortfolioVertexDealer Constructor => Invalid Inputs");

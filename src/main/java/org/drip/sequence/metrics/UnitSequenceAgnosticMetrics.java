@@ -131,19 +131,19 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 		final double dblLevel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || 1. < dblLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || 1. < dblLevel)
 			throw new java.lang.Exception
 				("UnitSequenceAgnosticMetrics::chernoffBinomialUpperBound => Invalid Inputs");
 
 		int iNumEntry = sequence().length;
 
-		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?
+		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?
 			_dblPopulationMean : empiricalExpectation();
 
 		double dblBound = java.lang.Math.pow (dblPopulationMean / dblLevel, iNumEntry * dblLevel) *
 			java.lang.Math.pow ((1. - dblPopulationMean) / (1. - dblLevel), iNumEntry * (1. - dblLevel));
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBound)) return 0.;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBound)) return 0.;
 
 		return dblBound > 1. ? 1. : dblBound;
 	}
@@ -162,19 +162,19 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 		final double dblLevel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || 1. < dblLevel)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || 1. < dblLevel)
 			throw new java.lang.Exception
 				("UnitSequenceAgnosticMetrics::ChernoffBinomialUpperBound => Invalid Inputs");
 
 		int iNumEntry = sequence().length;
 
-		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?
+		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?
 			_dblPopulationMean : empiricalExpectation();
 
 		double dblBound = java.lang.Math.pow (dblPopulationMean / dblLevel, iNumEntry * dblLevel) *
 			java.lang.Math.exp (iNumEntry * (dblLevel - dblPopulationMean));
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBound)) return 0.;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBound)) return 0.;
 
 		return dblBound > 1. ? 1. : dblBound;
 	}
@@ -194,11 +194,11 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 	public org.drip.sequence.metrics.PivotedDepartureBounds karpHagerupRubBounds (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || 1. < dblLevel) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || 1. < dblLevel) return null;
 
 		int iNumEntry = sequence().length;
 
-		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?
+		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?
 			_dblPopulationMean : empiricalExpectation();
 
 		double dblScaledLevel = dblLevel / dblPopulationMean;
@@ -206,12 +206,12 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 		double dblLowerBound = java.lang.Math.exp (-0.5 * dblPopulationMean * iNumEntry * dblScaledLevel *
 			dblScaledLevel);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLowerBound)) dblLowerBound = 0.;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLowerBound)) dblLowerBound = 0.;
 
 		double dblUpperBound = java.lang.Math.exp (-1. * dblPopulationMean * iNumEntry * (1. +
 			dblScaledLevel) * java.lang.Math.log (1. + dblScaledLevel) - dblScaledLevel);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblUpperBound)) dblUpperBound = 0.;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblUpperBound)) dblUpperBound = 0.;
 
 		try {
 			return new org.drip.sequence.metrics.PivotedDepartureBounds

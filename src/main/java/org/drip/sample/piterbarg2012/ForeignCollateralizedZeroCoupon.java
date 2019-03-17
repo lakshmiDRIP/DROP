@@ -105,11 +105,11 @@ public class ForeignCollateralizedZeroCoupon {
 		double dblPrice = dcCcyDomesticCollatForeign.df (dtMaturity);
 
 		System.out.println ("\t[" +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForeignRatesVolatility, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblFXVolatility, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblFXForeignRatesCorrelation, 2, 0, 100.) + "%] =" +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblPrice, 1, 2, 100.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblPrice - dblBaselinePrice, 1, 0, 10000.)
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForeignRatesVolatility, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblFXVolatility, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblFXForeignRatesCorrelation, 2, 0, 100.) + "%] =" +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblPrice, 1, 2, 100.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblPrice - dblBaselinePrice, 1, 0, 10000.)
 		);
 
 		return dblPrice;

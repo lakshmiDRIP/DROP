@@ -113,7 +113,7 @@ public class ComposableFloatingUnitSetting extends org.drip.param.period.Composa
 		super (strTenor, iEdgeDateSequenceScheme, dapEdge);
 
 		if (null == (_floaterLabel = floaterLabel) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblSpread = dblSpread))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblSpread = dblSpread))
 			throw new java.lang.Exception ("ComposableFloatingUnitSetting ctr: Invalid Inputs");
 
 		_iReferencePeriodArrearsType = iReferencePeriodArrearsType;

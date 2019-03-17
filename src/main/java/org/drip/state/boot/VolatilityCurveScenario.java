@@ -194,7 +194,7 @@ public class VolatilityCurveScenario {
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-		if (null == aFRACapFloor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == aFRACapFloor || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		int iNumComp = aFRACapFloor.length;
 		org.drip.state.volatility.VolatilityCurve[] aVolatilityCurve = new
@@ -250,7 +250,7 @@ public class VolatilityCurveScenario {
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-		if (null == aFRACapFloor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == aFRACapFloor || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		int iNumComp = aFRACapFloor.length;
 

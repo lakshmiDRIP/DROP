@@ -134,11 +134,11 @@ public class PykhtinPillar
 		final double localVolatility)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_exposure = exposure) ||
 			0 > (_order = order) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cdf = cdf) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_variate = variate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_localVolatility = localVolatility))
+			!org.drip.numerical.common.NumberUtil.IsValid (_cdf = cdf) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_variate = variate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_localVolatility = localVolatility))
 		{
 			throw new java.lang.Exception ("PykhtinPillar Constructor => Invalid Inputs");
 		}

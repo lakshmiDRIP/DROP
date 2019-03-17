@@ -510,7 +510,7 @@ public class MultiSegmentSequenceBuilder {
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||
 			null == scbc)
 			return null;
 

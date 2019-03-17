@@ -133,10 +133,10 @@ public class VariationMarginTradeVertexExposure
 		final org.drip.exposure.csatimeline.LastFlowDates lastFlowDates)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientTradePaymentGap = clientTradePaymentGap) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientDealerTradePaymentGap =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientTradePaymentGap = clientTradePaymentGap) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientDealerTradePaymentGap =
 				clientDealerTradePaymentGap) ||
 			null == (_lastFlowDates = lastFlowDates))
 		{

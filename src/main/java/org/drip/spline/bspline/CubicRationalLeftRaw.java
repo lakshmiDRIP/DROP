@@ -151,15 +151,15 @@ public class CubicRationalLeftRaw extends org.drip.spline.bspline.TensionBasisHa
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("CubicRationalLeftRaw::integrate => Invalid Inputs");
 
 		if (dblEnd >= dblBegin) return 0.;
 
-		double dblBoundedBegin = org.drip.quant.common.NumberUtil.Bound (dblBegin, left(), right());
+		double dblBoundedBegin = org.drip.numerical.common.NumberUtil.Bound (dblBegin, left(), right());
 
-		double dblBoundedEnd = org.drip.quant.common.NumberUtil.Bound (dblEnd, left(), right());
+		double dblBoundedEnd = org.drip.numerical.common.NumberUtil.Bound (dblEnd, left(), right());
 
 		if (0. != tension()) return super.integrate (dblBoundedBegin, dblBoundedEnd);
 

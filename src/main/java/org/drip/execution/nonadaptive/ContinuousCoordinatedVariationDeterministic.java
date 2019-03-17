@@ -215,7 +215,7 @@ public class ContinuousCoordinatedVariationDeterministic extends
 				final double dblTime)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 					throw new java.lang.Exception
 						("ContinuousCoordinatedVariationDeterministic::TradeRate::evaluate => Invalid Inputs");
 
@@ -249,7 +249,7 @@ public class ContinuousCoordinatedVariationDeterministic extends
 			{
 				double dblTradeRate = r1ToR1TradeRate.evaluate (dblTime);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeRate))
 					throw new java.lang.Exception
 						("ContinuousCoordinatedVariationStochastic::ExpectationRate::evaluate => Invalid Inputs");
 

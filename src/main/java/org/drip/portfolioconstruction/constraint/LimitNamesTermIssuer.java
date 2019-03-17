@@ -107,7 +107,7 @@ public abstract class LimitNamesTermIssuer extends org.drip.portfolioconstructio
 		);
 
 		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 == _adblIssuerSelection.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))
 			throw new java.lang.Exception ("LimitNamesTermIssuer Constructor => Invalid Section");
 	}
 

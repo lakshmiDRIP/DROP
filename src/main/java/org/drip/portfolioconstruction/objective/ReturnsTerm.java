@@ -105,12 +105,12 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 
 		int iNumAsset = adblInitialHoldings.length;
 
-		if (null == (_adblAlpha = adblAlpha) || !org.drip.quant.common.NumberUtil.IsValid (_adblAlpha) ||
+		if (null == (_adblAlpha = adblAlpha) || !org.drip.numerical.common.NumberUtil.IsValid (_adblAlpha) ||
 			iNumAsset != _adblAlpha.length)
 			throw new java.lang.Exception ("ReturnsTerm Constructor => Invalid Inputs");
 
 		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) && (iNumAsset !=
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.quant.common.NumberUtil.IsValid
+			_adblBenchmarkConstrictedHoldings.length || !org.drip.numerical.common.NumberUtil.IsValid
 				(_adblBenchmarkConstrictedHoldings)))
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
 	}

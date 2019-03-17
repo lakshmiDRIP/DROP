@@ -125,7 +125,7 @@ public class DiffusionEvolver {
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu,
 		final double dblTimeIncrement)
 	{
-		if (null == jdv || null == jdeu || !org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement))
+		if (null == jdv || null == jdeu || !org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement))
 			return null;
 
 		double dblPreviousValue = jdv.value();
@@ -159,7 +159,7 @@ public class DiffusionEvolver {
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu,
 		final double dblTimeIncrement)
 	{
-		if (null == jdv || null == jdeu || !org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement))
+		if (null == jdv || null == jdeu || !org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement))
 			return null;
 
 		double dblPreviousValue = jdv.value();

@@ -128,9 +128,9 @@ public class NumeraireInducedMeasureShift
 		final double terminalVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_csaForward = csaForward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_noCSAForward = noCSAForward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_terminalVariance = terminalVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_csaForward = csaForward) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_noCSAForward = noCSAForward) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_terminalVariance = terminalVariance))
 		{
 			throw new java.lang.Exception ("NumeraireInducedMeasureShift Constructor => Invalid Inputs");
 		}
@@ -205,7 +205,7 @@ public class NumeraireInducedMeasureShift
 		final double k)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (k))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (k))
 		{
 			throw new java.lang.Exception ("NumeraireInducedMeasureShift::densityRescale => Invalid Inputs");
 		}

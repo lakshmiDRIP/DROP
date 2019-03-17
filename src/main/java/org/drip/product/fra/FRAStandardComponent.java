@@ -106,7 +106,7 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 	{
 		super (strName, stream, csp);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike))
 			throw new java.lang.Exception ("FRAStandardComponent ctr => Invalid Inputs!");
 	}
 
@@ -266,7 +266,7 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		return setstrMeasureNames;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -275,7 +275,7 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,

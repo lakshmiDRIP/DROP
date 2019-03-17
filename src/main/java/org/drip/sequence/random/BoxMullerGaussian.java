@@ -103,8 +103,8 @@ public class BoxMullerGaussian extends org.drip.sequence.random.UnivariateSequen
 		final double dblVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMean = dblMean) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVariance = dblVariance) || _dblVariance <= 0.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMean = dblMean) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance) || _dblVariance <= 0.)
 			throw new java.lang.Exception ("BoxMullerGaussian ctr: Invalid Inputs");
 
 		_dblSigma = java.lang.Math.sqrt (_dblVariance);

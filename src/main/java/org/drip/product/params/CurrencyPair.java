@@ -143,7 +143,7 @@ public class CurrencyPair {
 		if (null == strNumCcy || strNumCcy.isEmpty() || null == strDenomCcy || strDenomCcy.isEmpty() || null
 			== strQuoteCcy || strNumCcy.equalsIgnoreCase (strDenomCcy) || (!strQuoteCcy.equalsIgnoreCase
 				(strNumCcy) && !strQuoteCcy.equalsIgnoreCase (strDenomCcy)) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblPIPFactor))
+					!org.drip.numerical.common.NumberUtil.IsValid (dblPIPFactor))
 			throw new java.lang.Exception ("CurrencyPair ctr: Invalid parameters");
 
 		_strNumCcy = strNumCcy;

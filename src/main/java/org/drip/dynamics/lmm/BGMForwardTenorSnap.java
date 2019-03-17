@@ -144,23 +144,23 @@ public class BGMForwardTenorSnap {
 		final double dblContinuouslyCompoundedForwardVolatility)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLIBOR = dblLIBOR) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLIBORIncrement = dblLIBORIncrement) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblDiscountFactor = dblDiscountFactor) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblDiscountFactorIncrement =
-						dblDiscountFactorIncrement) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLIBOR = dblLIBOR) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLIBORIncrement = dblLIBORIncrement) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblDiscountFactor = dblDiscountFactor) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblDiscountFactorIncrement =
+						dblDiscountFactorIncrement) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dblContinuouslyCompoundedForwardIncrement =
 								dblContinuouslyCompoundedForwardIncrement) ||
-									!org.drip.quant.common.NumberUtil.IsValid (_dblSpotRateIncrement =
-										dblSpotRateIncrement) || !org.drip.quant.common.NumberUtil.IsValid
+									!org.drip.numerical.common.NumberUtil.IsValid (_dblSpotRateIncrement =
+										dblSpotRateIncrement) || !org.drip.numerical.common.NumberUtil.IsValid
 											(_dblInstantaneousEffectiveForwardRate =
 												dblInstantaneousEffectiveForwardRate) ||
-													!org.drip.quant.common.NumberUtil.IsValid
+													!org.drip.numerical.common.NumberUtil.IsValid
 														(_dblInstantaneousNominalForwardRate =
 															dblInstantaneousNominalForwardRate) ||
-																!org.drip.quant.common.NumberUtil.IsValid
+																!org.drip.numerical.common.NumberUtil.IsValid
 			(_dblLognormalLIBORVolatility = dblLognormalLIBORVolatility) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblContinuouslyCompoundedForwardVolatility =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblContinuouslyCompoundedForwardVolatility =
 					dblContinuouslyCompoundedForwardVolatility))
 			throw new java.lang.Exception ("BGMForwardTenorSnap ctr: Invalid Inputs");
 
@@ -290,16 +290,16 @@ public class BGMForwardTenorSnap {
 
 	@Override public java.lang.String toString()
 	{
-		return org.drip.quant.common.FormatUtil.FormatDouble (_dblLIBOR, 1, 2, 100.) + "% | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (_dblLIBORIncrement, 2, 2, 10000.) + " | " +
-				org.drip.quant.common.FormatUtil.FormatDouble (_dblDiscountFactor, 1, 4, 1.) + " | " +
-					org.drip.quant.common.FormatUtil.FormatDouble (_dblDiscountFactorIncrement, 2, 2, 10000.)
-						+ " | " + org.drip.quant.common.FormatUtil.FormatDouble
+		return org.drip.numerical.common.FormatUtil.FormatDouble (_dblLIBOR, 1, 2, 100.) + "% | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (_dblLIBORIncrement, 2, 2, 10000.) + " | " +
+				org.drip.numerical.common.FormatUtil.FormatDouble (_dblDiscountFactor, 1, 4, 1.) + " | " +
+					org.drip.numerical.common.FormatUtil.FormatDouble (_dblDiscountFactorIncrement, 2, 2, 10000.)
+						+ " | " + org.drip.numerical.common.FormatUtil.FormatDouble
 							(_dblContinuouslyCompoundedForwardIncrement, 2, 2, 10000.) + " | " +
-								org.drip.quant.common.FormatUtil.FormatDouble (_dblSpotRateIncrement, 2, 2,
-									10000.) + " | " + org.drip.quant.common.FormatUtil.FormatDouble
+								org.drip.numerical.common.FormatUtil.FormatDouble (_dblSpotRateIncrement, 2, 2,
+									10000.) + " | " + org.drip.numerical.common.FormatUtil.FormatDouble
 										(_dblInstantaneousEffectiveForwardRate, 2, 2, 10000.) + " | " +
-											org.drip.quant.common.FormatUtil.FormatDouble
+											org.drip.numerical.common.FormatUtil.FormatDouble
 												(_dblInstantaneousNominalForwardRate, 2, 2, 10000.) + " ||";
 	}
 }

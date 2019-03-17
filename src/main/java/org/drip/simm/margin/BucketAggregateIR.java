@@ -115,9 +115,9 @@ public class BucketAggregateIR
 	{
 		if (null == (_riskFactorAggregate = riskFactorAggregate) ||
 			null == (_sensitivityAggregate = sensitivityAggregate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
+			!org.drip.numerical.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
+			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
 				cumulativeSensitivityMargin))
 		{
 			throw new java.lang.Exception ("BucketAggregateIR Constructor => Invalid Inputs");

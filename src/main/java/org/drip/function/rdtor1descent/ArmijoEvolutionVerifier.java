@@ -132,7 +132,7 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 		final boolean bMaximizerCheck)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))
 			throw new java.lang.Exception ("ArmijoEvolutionVerifier Constructor => Invalid Inputs");
 
 		_bMaximizerCheck = bMaximizerCheck;

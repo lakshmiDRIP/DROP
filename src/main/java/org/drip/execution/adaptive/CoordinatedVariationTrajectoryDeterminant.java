@@ -141,14 +141,14 @@ public class CoordinatedVariationTrajectoryDeterminant {
 		final double dblMarketPower)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOrderSize = dblOrderSize) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTimeScale = dblTimeScale) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblCostScale = dblCostScale) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRateScale = dblTradeRateScale) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblMeanMarketUrgency =
-							dblMeanMarketUrgency) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOrderSize = dblOrderSize) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTimeScale = dblTimeScale) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblCostScale = dblCostScale) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRateScale = dblTradeRateScale) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanMarketUrgency =
+							dblMeanMarketUrgency) || !org.drip.numerical.common.NumberUtil.IsValid
 								(_dblNonDimensionalRiskAversion = dblNonDimensionalRiskAversion) ||
-									!org.drip.quant.common.NumberUtil.IsValid (_dblMarketPower =
+									!org.drip.numerical.common.NumberUtil.IsValid (_dblMarketPower =
 										dblMarketPower))
 			throw new java.lang.Exception
 				("CoordinatedVariationTrajectoryDeterminant Constructor => Invalid Inputs");

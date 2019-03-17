@@ -97,7 +97,7 @@ public class DelinquentAccountsLast2Years {
 		final int iCount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_iCount = iCount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_iCount = iCount))
 			throw new java.lang.Exception ("DelinquentAccountsLast2Years Constructor => Invalid Inputs");
 	}
 

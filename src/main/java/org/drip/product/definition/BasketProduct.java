@@ -823,7 +823,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 	{
 		double dblNotional = notional (iDate);
 
-		if (null == csqs || 0. == dblNotional || !org.drip.quant.common.NumberUtil.IsValid (dblNotional))
+		if (null == csqs || 0. == dblNotional || !org.drip.numerical.common.NumberUtil.IsValid (dblNotional))
 			throw new java.lang.Exception ("BasketProduct::coupon => Cannot extract basket notional");
 
 		org.drip.product.definition.Component[] aComp = components();

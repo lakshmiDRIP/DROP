@@ -145,10 +145,10 @@ public class BulletMetrics {
 		final org.drip.state.identifier.FXLabel fxLabel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblSurvival = dblSurvival) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblDF = dblDF) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblFX = dblFX) || null == (_convAdj =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblSurvival = dblSurvival) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblDF = dblDF) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblFX = dblFX) || null == (_convAdj =
 						convAdj) || null == (_fundingLabel = fundingLabel))
 			throw new java.lang.Exception ("BulletMetrics ctr: Invalid Inputs");
 

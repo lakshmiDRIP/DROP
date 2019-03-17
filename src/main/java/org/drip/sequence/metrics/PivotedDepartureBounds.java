@@ -131,9 +131,9 @@ public class PivotedDepartureBounds {
 		_iPivotAnchorType = iPivotAnchorType;
 		_dblCustomPivotAnchor = dblCustomPivotAnchor;
 
-		if ((!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper)) || (PIVOT_ANCHOR_TYPE_CUSTOM ==
-				_iPivotAnchorType && !org.drip.quant.common.NumberUtil.IsValid (_dblCustomPivotAnchor)))
+		if ((!org.drip.numerical.common.NumberUtil.IsValid (_dblLower) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper)) || (PIVOT_ANCHOR_TYPE_CUSTOM ==
+				_iPivotAnchorType && !org.drip.numerical.common.NumberUtil.IsValid (_dblCustomPivotAnchor)))
 			throw new java.lang.Exception ("PivotedDepartureBounds ctr: Invalid Inputs");
 	}
 

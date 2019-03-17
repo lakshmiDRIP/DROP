@@ -136,9 +136,9 @@ public class PriceMarketImpactPower extends org.drip.execution.parameters.PriceM
 	{
 		super (ats, dblPermanentImpactFactor, dblTemporaryImpactFactor);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDailyVolumeExecutionFactor =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDailyVolumeExecutionFactor =
 			dblDailyVolumeExecutionFactor) || 0. >= _dblDailyVolumeExecutionFactor ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpactExponent =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblTemporaryImpactExponent =
 					dblTemporaryImpactExponent))
 			throw new java.lang.Exception ("PriceMarketImpactPower Constructor => Invalid Inputs");
 	}

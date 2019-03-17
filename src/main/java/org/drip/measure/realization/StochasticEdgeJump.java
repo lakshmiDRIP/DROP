@@ -103,9 +103,9 @@ public class StochasticEdgeJump {
 		final double dblTarget)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblHazardIntegral = dblHazardIntegral) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTarget = dblTarget))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblHazardIntegral = dblHazardIntegral) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblTarget = dblTarget))
 			throw new java.lang.Exception ("StochasticEdgeJump Constructor => Invalid Inputs");
 
 		_bOccurred = bOccurred;

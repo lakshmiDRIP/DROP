@@ -153,7 +153,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	{
 		double dblBumpDelta = CalcMinDifference (adblY);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)
 			dblBumpDelta = CalcAbsoluteMin (adblY);
 
 		return 0. == dblBumpDelta ? DIFF_SCALE : dblBumpDelta * DIFF_SCALE;
@@ -202,7 +202,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception
 				("SingleSegmentLagrangePolynomial::responseValue => Invalid inputs!");
 
@@ -236,7 +236,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 >= iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 >= iOrder)
 			throw new java.lang.Exception
 				("SingleSegmentLagrangePolynomial::responseValueDerivative => Invalid inputs!");
 
@@ -253,28 +253,28 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		return au.derivative (dblPredictorOrdinate, iOrder);
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDCalibrationInput (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;
 
 		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
 		double dblInputResponseSensitivityShift = java.lang.Double.NaN;
 		double dblResponseWithUnadjustedResponseInput = java.lang.Double.NaN;
-		org.drip.quant.calculus.WengertJacobian wjDResponseDResponseInput = null;
+		org.drip.numerical.differentiation.WengertJacobian wjDResponseDResponseInput = null;
 
 		if (_adblPredictorOrdinate[0] > dblPredictorOrdinate ||
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] < dblPredictorOrdinate)
 			return null;
 
 		try {
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =
-				EstimateBumpDelta (_adblResponseValue)) || !org.drip.quant.common.NumberUtil.IsValid
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =
+				EstimateBumpDelta (_adblResponseValue)) || !org.drip.numerical.common.NumberUtil.IsValid
 					(dblResponseWithUnadjustedResponseInput = responseValue (dblPredictorOrdinate)))
 				return null;
 
-			wjDResponseDResponseInput = new org.drip.quant.calculus.WengertJacobian (1,
+			wjDResponseDResponseInput = new org.drip.numerical.differentiation.WengertJacobian (1,
 				iNumPredictorOrdinate);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -311,7 +311,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		return wjDResponseDResponseInput;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
@@ -322,7 +322,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	@Override public org.drip.spline.segment.Monotonocity monotoneType (
 		final double dblPredictorOrdinate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;
 
 		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
 
@@ -357,7 +357,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -372,7 +372,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 
 			double dblExtremum = fpop.getRoot();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblExtremum) || dblExtremum <= 0. || dblExtremum
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum <= 0. || dblExtremum
 				>= 1.)
 				return new org.drip.spline.segment.Monotonocity
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
@@ -470,7 +470,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	@Override public boolean isKnot (
 		final double dblPredictorOrdinate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;
 
 		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
 
@@ -489,7 +489,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final int iPredictorOrdinateNodeIndex,
 		final double dblResetResponse)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblResetResponse)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResetResponse)) return false;
 
 		if (iPredictorOrdinateNodeIndex > _adblPredictorOrdinate.length) return false;
 

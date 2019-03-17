@@ -153,8 +153,8 @@ public class Greeks {
 		final double dblUltima)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDF = dblDF) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveVolatility = dblEffectiveVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDF = dblDF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEffectiveVolatility = dblEffectiveVolatility))
 			throw new java.lang.Exception ("Greeks ctr: Invalid Inputs");
 
 		_dblExpectedPayoff = dblExpectedPayoff;

@@ -151,8 +151,8 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 
 		if (null == (_adblHoldingsDriftAdjustment = adblHoldingsDriftAdjustment) || null ==
 			(_adblTradeListDriftAdjustment = adblTradeListDriftAdjustment) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblResidualHolding = dblResidualHolding) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblDriftGainUpperBound =
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblResidualHolding = dblResidualHolding) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblDriftGainUpperBound =
 						dblDriftGainUpperBound))
 			throw new java.lang.Exception ("AlmgrenChrissDriftDiscrete Constructor => Invalid Inputs");
 
@@ -162,11 +162,11 @@ public class AlmgrenChrissDriftDiscrete extends org.drip.execution.optimum.Almgr
 			throw new java.lang.Exception ("AlmgrenChrissDriftDiscrete Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumNode; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblHoldingsDriftAdjustment[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblHoldingsDriftAdjustment[i]))
 				throw new java.lang.Exception ("AlmgrenChrissDriftDiscrete Constructor => Invalid Inputs");
 
 			if (0 != i) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (_adblTradeListDriftAdjustment[i - 1]))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (_adblTradeListDriftAdjustment[i - 1]))
 					throw new java.lang.Exception
 						("AlmgrenChrissDriftDiscrete Constructor => Invalid Inputs");
 			}

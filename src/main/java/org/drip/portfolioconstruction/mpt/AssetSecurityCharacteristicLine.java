@@ -100,8 +100,8 @@ public class AssetSecurityCharacteristicLine {
 		final double dblBeta)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAlpha = dblAlpha) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblBeta = dblBeta))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAlpha = dblAlpha) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblBeta = dblBeta))
 			throw new java.lang.Exception ("AssetSecurityCharacteristicLine Constructor => Invalid Inputs");
 	}
 
@@ -142,7 +142,7 @@ public class AssetSecurityCharacteristicLine {
 		final double dblMarketExcessReturns)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblMarketExcessReturns))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketExcessReturns))
 			throw new java.lang.Exception
 				("AssetSecurityCharacteristicLine::excessReturns => Invalid Inputs");
 

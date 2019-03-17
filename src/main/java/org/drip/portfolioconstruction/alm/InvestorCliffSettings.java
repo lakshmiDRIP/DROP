@@ -118,8 +118,8 @@ public class InvestorCliffSettings {
 		final double dblMaximumAge)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRetirementAge = dblRetirementAge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaximumAge = dblMaximumAge) || _dblRetirementAge
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRetirementAge = dblRetirementAge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaximumAge = dblMaximumAge) || _dblRetirementAge
 				>= _dblMaximumAge)
 			throw new java.lang.Exception ("InvestorCliffSettings Constructor => Invalid Inputs");
 	}
@@ -160,7 +160,7 @@ public class InvestorCliffSettings {
 		final double dblAge)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAge))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAge))
 			throw new java.lang.Exception ("InvestorHorizon::phase => Invalid Inputs");
 
 		if (dblAge <= _dblRetirementAge) return DATE_PHASE_BEFORE_RETIREMENT;

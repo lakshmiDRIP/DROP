@@ -310,10 +310,10 @@ public class BurgardKjaerBuilder
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (hedgeError))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (hedgeError))
 		{
 			return null;
 		}
@@ -382,9 +382,9 @@ public class BurgardKjaerBuilder
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))
 		{
 			return null;
 		}
@@ -442,8 +442,8 @@ public class BurgardKjaerBuilder
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow))
 		{
 			return null;
 		}
@@ -499,8 +499,8 @@ public class BurgardKjaerBuilder
 		final org.drip.exposure.universe.MarketEdge marketEdge,
 		final org.drip.xva.definition.CloseOut closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow))
 		{
 			return null;
 		}
@@ -557,9 +557,9 @@ public class BurgardKjaerBuilder
 		final double collateralBalance,
 		final org.drip.exposure.universe.MarketEdge marketEdge)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (exposure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (realizedCashFlow) ||
-			!org.drip.quant.common.NumberUtil.IsValid (collateralBalance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (exposure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (realizedCashFlow) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (collateralBalance))
 		{
 			return null;
 		}

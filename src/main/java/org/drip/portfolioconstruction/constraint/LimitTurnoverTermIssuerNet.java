@@ -145,7 +145,7 @@ public class LimitTurnoverTermIssuerNet extends
 
 				double[] adblPrice = price();
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitTurnoverTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");

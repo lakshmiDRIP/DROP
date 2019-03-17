@@ -134,8 +134,8 @@ public class CreditIndexConvention {
 					(_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_dtEffective =
 						dtEffective) || null == (_dtMaturity = dtMaturity) || 0 >= (_iFreq = iFreq) || null
 							== (_strDayCount = strDayCount) || _strDayCount.isEmpty() ||
-								!org.drip.quant.common.NumberUtil.IsValid (_dblFixedCoupon = dblFixedCoupon)
-									|| !org.drip.quant.common.NumberUtil.IsValid (_dblRecoveryRate =
+								!org.drip.numerical.common.NumberUtil.IsValid (_dblFixedCoupon = dblFixedCoupon)
+									|| !org.drip.numerical.common.NumberUtil.IsValid (_dblRecoveryRate =
 										dblRecoveryRate) || 0 >= (_iNumConstituent = iNumConstituent))
 			throw new java.lang.Exception ("CreditIndexConvention Constructor => Invalid Inputs");
 	}

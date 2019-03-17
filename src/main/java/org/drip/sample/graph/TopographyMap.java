@@ -3,7 +3,7 @@ package org.drip.sample.graph;
 
 import java.util.Map;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.graph.Edge;
 import org.drip.spaces.graph.Topography;

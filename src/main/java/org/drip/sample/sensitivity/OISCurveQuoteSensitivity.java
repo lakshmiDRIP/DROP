@@ -6,12 +6,12 @@ import java.util.List;
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.*;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.param.creator.*;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;
 import org.drip.product.creator.*;
 import org.drip.product.rates.*;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.ExponentialTensionSetParams;
 import org.drip.spline.params.*;
@@ -789,7 +789,7 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aDepositComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (
+			org.drip.numerical.differentiation.WengertJacobian wj = dc.jackDDFDManifestMeasure (
 				aDepositComp[i].maturityDate(),
 				"PV"
 			);
@@ -808,7 +808,7 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aShortEndOISComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+			org.drip.numerical.differentiation.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
 				aShortEndOISComp[i].maturityDate(),
 				"PV"
 			);
@@ -827,7 +827,7 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aOISFutureComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+			org.drip.numerical.differentiation.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
 				aOISFutureComp[i].maturityDate(),
 				"PV"
 			);
@@ -846,7 +846,7 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aLongEndOISComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+			org.drip.numerical.differentiation.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
 				aLongEndOISComp[i].maturityDate(),
 				"PV"
 			);

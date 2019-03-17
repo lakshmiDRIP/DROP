@@ -136,7 +136,7 @@ public abstract class DiagonalScalingOperator implements org.drip.spaces.cover.O
 			throw new java.lang.Exception ("DiagonalScalingOperator Constructor: Invalid Inputs");
 
 		for (int i = 0; i < iScalingSize; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDiagonalScaler[i]) || 0. >
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblDiagonalScaler[i]) || 0. >
 				_adblDiagonalScaler[i])
 				throw new java.lang.Exception ("DiagonalScalingOperator Constructor: Invalid Inputs");
 

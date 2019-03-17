@@ -155,7 +155,7 @@ public class MarketCorrelation
 			{
 				double correlationEntry = _matrix[latentStateIndex][matrixColumnIndex];
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (correlationEntry) ||
+				if (!org.drip.numerical.common.NumberUtil.IsValid (correlationEntry) ||
 					(latentStateIndex == matrixColumnIndex && 1 != correlationEntry) ||
 					(latentStateIndex != matrixColumnIndex && (1 < correlationEntry ||
 						-1 < correlationEntry)))

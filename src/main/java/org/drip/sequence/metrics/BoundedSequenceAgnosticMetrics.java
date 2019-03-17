@@ -105,7 +105,7 @@ public class BoundedSequenceAgnosticMetrics extends
 	{
 		super (adblSequence, distPopulation);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. >= _dblSupport)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. >= _dblSupport)
 			throw new java.lang.Exception ("BoundedSequenceAgnosticMetrics ctr: Invalid Inputs");
 	}
 
@@ -131,7 +131,7 @@ public class BoundedSequenceAgnosticMetrics extends
 	public org.drip.sequence.metrics.PivotedDepartureBounds chernoffHoeffdingAverageBounds (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0) return null;
 
 		double dblBound = java.lang.Math.exp (-2. * sequence().length * dblLevel * dblLevel / (_dblSupport *
 			_dblSupport));
@@ -160,11 +160,11 @@ public class BoundedSequenceAgnosticMetrics extends
 	public org.drip.sequence.metrics.PivotedDepartureBounds bennettAverageBounds (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
 		double dblPopulationVariance = populationVariance();
 
-		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?
+		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
 			dblPopulationVariance : empiricalVariance());
 
 		double dblBennettFactor = _dblSupport * dblLevel / dblVariance;
@@ -199,11 +199,11 @@ public class BoundedSequenceAgnosticMetrics extends
 	public org.drip.sequence.metrics.PivotedDepartureBounds bernsteinAverageBounds (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
 		double dblPopulationVariance = populationVariance();
 
-		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?
+		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
 			dblPopulationVariance : empiricalVariance());
 
 		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *

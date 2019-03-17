@@ -210,7 +210,7 @@ public class ForeignCollateralizedDiscountCurve extends org.drip.state.discount.
 		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{

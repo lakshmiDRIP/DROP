@@ -155,7 +155,7 @@ public class VariateIteratorPrimitive {
 		final double dblX2)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX1) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblX2))
 			throw new java.lang.Exception ("VariateIteratorPrimitive::Bisection => Invalid inputs " + dblX2);
 
@@ -182,9 +182,9 @@ public class VariateIteratorPrimitive {
 		final double dblY2)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX1) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblX2) || !org.drip.quant.common.NumberUtil.IsValid (dblY1) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblY2))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY1) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblY2))
 			throw new java.lang.Exception ("VariateIteratorPrimitive::FalsePosition => Invalid inputs");
 
 		return dblX1 + ((dblX1 - dblX2) / (dblY2 - dblY1) * dblY1);
@@ -214,10 +214,10 @@ public class VariateIteratorPrimitive {
 		final double dblY3)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX1) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblX2) || !org.drip.quant.common.NumberUtil.IsValid (dblX3) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblY1) || !org.drip.quant.common.NumberUtil.IsValid
-					(dblY2) || !org.drip.quant.common.NumberUtil.IsValid (dblY3))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid
+					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))
 			throw new java.lang.Exception
 				("VariateIteratorPrimitive.QuadraticInterpolation => Invalid inputs!");
 
@@ -273,10 +273,10 @@ public class VariateIteratorPrimitive {
 		final double dblY3)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX1) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblX2) || !org.drip.quant.common.NumberUtil.IsValid (dblX3) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblY1) || !org.drip.quant.common.NumberUtil.IsValid
-					(dblY2) || !org.drip.quant.common.NumberUtil.IsValid (dblY3))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid
+					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))
 			throw new java.lang.Exception
 				("VariateIteratorPrimitive.InverseQuadraticInterpolation => Invalid inputs!");
 
@@ -310,10 +310,10 @@ public class VariateIteratorPrimitive {
 		final double dblY3)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX1) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblX2) || !org.drip.quant.common.NumberUtil.IsValid (dblX3) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblY1) || !org.drip.quant.common.NumberUtil.IsValid
-					(dblY2) || !org.drip.quant.common.NumberUtil.IsValid (dblY3))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid
+					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3))
 			throw new java.lang.Exception ("VariateIteratorPrimitive.Ridder => Invalid inputs!");
 
 		double dblSQRTArg = dblY3 * dblY3 - dblY1 * dblY2;
@@ -355,11 +355,11 @@ public class VariateIteratorPrimitive {
 		final org.drip.function.r1tor1solver.FixedPointFinderOutput rfop)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX1) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblX2) || !org.drip.quant.common.NumberUtil.IsValid (dblX3) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblY1) || !org.drip.quant.common.NumberUtil.IsValid
-					(dblY2) || !org.drip.quant.common.NumberUtil.IsValid (dblY3) ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblOFTarget) || null == rfop || null == of)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX1) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblX2) || !org.drip.numerical.common.NumberUtil.IsValid (dblX3) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblY1) || !org.drip.numerical.common.NumberUtil.IsValid
+					(dblY2) || !org.drip.numerical.common.NumberUtil.IsValid (dblY3) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (dblOFTarget) || null == rfop || null == of)
 			throw new java.lang.Exception ("VariateIteratorPrimitive.MultiFunction => Invalid inputs!");
 
 		double dblNextRoot = Bisection (dblX1, dblX2);

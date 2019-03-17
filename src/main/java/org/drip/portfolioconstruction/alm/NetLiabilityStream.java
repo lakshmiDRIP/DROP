@@ -106,7 +106,7 @@ public class NetLiabilityStream {
 		throws java.lang.Exception
 	{
 		if (null == (_ics = ics) || null == (_enfi = enfi) || null == (_ebc = ebc) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome))
 			throw new java.lang.Exception ("NetLiabilityStream Constructor => Invalid Inputs");
 	}
 
@@ -169,8 +169,8 @@ public class NetLiabilityStream {
 		final double dblEndAge,
 		final org.drip.portfolioconstruction.alm.DiscountRate dr)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartAge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEndAge) || dblStartAge >= dblEndAge || null == dr)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartAge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblEndAge) || dblStartAge >= dblEndAge || null == dr)
 			return null;
 
 		java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> lsNLCF = new

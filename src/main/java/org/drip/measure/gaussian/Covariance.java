@@ -106,11 +106,11 @@ public class Covariance {
 
 		for (int i = 0; i < iNumVariate; ++i) {
 			if (null == _aadblCovariance[i] || iNumVariate != _aadblCovariance[i].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovariance[i]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_aadblCovariance[i]))
 				throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
 		}
 
-		if (null == (_aadblPrecision = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
+		if (null == (_aadblPrecision = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
 			(_aadblCovariance)))
 			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
 	}

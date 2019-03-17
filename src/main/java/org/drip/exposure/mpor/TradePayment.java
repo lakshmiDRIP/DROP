@@ -120,7 +120,7 @@ public class TradePayment
 	public static final TradePayment Standard (
 		final double tradePayment)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (tradePayment))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (tradePayment))
 		{
 			return null;
 		}
@@ -166,8 +166,8 @@ public class TradePayment
 		final double client)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dealer = dealer) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_client = client) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_client = client) ||
 			_dealer > 0. || _client < 0.)
 		{
 			throw new java.lang.Exception ("TradePayment Constructor => Invalid Inputs");

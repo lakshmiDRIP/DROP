@@ -137,9 +137,9 @@ public class LossQuadratureMetrics {
 		final int iDefaultLag)
 	{
 		if (
-			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveRecovery) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblAccrualDCF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblEffectiveNotional) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblEffectiveRecovery) ||
 			null == dc ||
 			null == cc
 		)
@@ -190,8 +190,8 @@ public class LossQuadratureMetrics {
 		final int iDefaultLag)
 	{
 		if (
-			!org.drip.quant.common.NumberUtil.IsValid (dblAccrualDCF) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEffectiveNotional) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblAccrualDCF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblEffectiveNotional) ||
 			null == dc ||
 			null == cc
 		)
@@ -248,12 +248,12 @@ public class LossQuadratureMetrics {
 		throws java.lang.Exception
 	{
 		if (
-			!org.drip.quant.common.NumberUtil.IsValid (_dblStartSurvival = dblStartSurvival) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEndSurvival = dblEndSurvival) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualDCF = dblAccrualDCF) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveNotional = dblEffectiveNotional) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveRecovery = dblEffectiveRecovery) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveDF = dblEffectiveDF)
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblStartSurvival = dblStartSurvival) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEndSurvival = dblEndSurvival) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblAccrualDCF = dblAccrualDCF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEffectiveNotional = dblEffectiveNotional) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEffectiveRecovery = dblEffectiveRecovery) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEffectiveDF = dblEffectiveDF)
 		)
 			throw new java.lang.Exception ("LossPeriodCurveFactors Constructor => Invalid params");
 

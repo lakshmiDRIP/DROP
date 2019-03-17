@@ -140,7 +140,7 @@ public class ScenarioMarketSurfaceBuilder {
 		for (int i = 0; i < iNumX; ++i) {
 			org.drip.spline.stretch.MultiSegmentSequence mssWire =
 				org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-					("Stretch@" + strName + "@" + org.drip.quant.common.StringUtil.GUID(), adblY,
+					("Stretch@" + strName + "@" + org.drip.numerical.common.StringUtil.GUID(), adblY,
 						aadblNode[i], aSCBCWireSpan, null,
 							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
@@ -160,7 +160,7 @@ public class ScenarioMarketSurfaceBuilder {
 			return new org.drip.state.curve.BasisSplineMarketSurface (dtStart.julian(),
 				org.drip.state.identifier.CustomLabel.Standard (strName), strCurrency, new
 					org.drip.spline.multidimensional.WireSurfaceStretch ("WireSurfaceStretch@" + strName +
-						"@" + org.drip.quant.common.StringUtil.GUID(), scbcSurface, mapWireSpan));
+						"@" + org.drip.numerical.common.StringUtil.GUID(), scbcSurface, mapWireSpan));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -572,9 +572,9 @@ public class ScenarioMarketSurfaceBuilder {
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcWireSpan,
 		final org.drip.spline.params.SegmentCustomBuilderControl scbcSurface)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) || null == adblStrike ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) || null == adblStrike ||
 					null == astrTenor || null == fphp)
 			return null;
 

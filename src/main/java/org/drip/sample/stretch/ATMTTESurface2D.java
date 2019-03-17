@@ -3,7 +3,7 @@ package org.drip.sample.stretch;
 
 import java.util.TreeMap;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.grid.*;
 import org.drip.spline.multidimensional.WireSurfaceStretch;
@@ -107,7 +107,7 @@ public class ATMTTESurface2D {
 		for (int i = 0; i < adblATMFactor.length; ++i)
 			mapSpan.put (adblATMFactor[i], new OverlappingStretchSpan (
 				MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
-					"Stretch@" + adblTTE + "@" + org.drip.quant.common.StringUtil.GUID(),
+					"Stretch@" + adblTTE + "@" + org.drip.numerical.common.StringUtil.GUID(),
 					adblTTE,
 					aadblImpliedVolatility[i],
 					aSCBCSpan,
@@ -130,7 +130,7 @@ public class ATMTTESurface2D {
 		);
 
 		WireSurfaceStretch ss = new WireSurfaceStretch (
-			"SurfaceStretch@" + org.drip.quant.common.StringUtil.GUID(),
+			"SurfaceStretch@" + org.drip.numerical.common.StringUtil.GUID(),
 			scbcSurface,
 			mapSpan
 		);

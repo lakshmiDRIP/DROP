@@ -174,7 +174,7 @@ public class BestFitFlexurePenalizer {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -216,7 +216,7 @@ public class BestFitFlexurePenalizer {
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 

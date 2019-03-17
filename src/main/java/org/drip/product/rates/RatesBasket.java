@@ -326,7 +326,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 	{
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -335,7 +335,7 @@ public class RatesBasket extends org.drip.product.definition.CalibratableCompone
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strMainfestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,

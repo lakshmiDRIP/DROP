@@ -111,7 +111,7 @@ public class RiskFactorAggregateCR
 	{
 		if (null == (_componentSensitivityMarginMap = componentSensitivityMarginMap) ||
 			0 == _componentSensitivityMarginMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
+			!org.drip.numerical.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))
 		 {
 			 throw new java.lang.Exception ("RiskFactorAggregateCR Constructor => Invalid Inputs");
 		 }

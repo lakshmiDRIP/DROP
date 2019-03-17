@@ -131,8 +131,8 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 	{
 		if (null == (_strName = strName) || _strName.isEmpty() || null == (_comp = comp) || null ==
 			(_strManifestMeasure = strManifestMeasure) || _strManifestMeasure.isEmpty() ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional))
 			throw new java.lang.Exception ("OptionComponent ctr: Invalid Inputs");
 
 		_csp = csp;
@@ -419,7 +419,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -428,7 +428,7 @@ public abstract class OptionComponent extends org.drip.product.definition.Calibr
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strMainfestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,

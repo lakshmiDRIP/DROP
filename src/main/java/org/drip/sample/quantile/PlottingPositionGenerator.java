@@ -1,7 +1,7 @@
 
 package org.drip.sample.quantile;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.quantile.PlottingPosition;
 import org.drip.validation.quantile.PlottingPositionGeneratorFilliben;

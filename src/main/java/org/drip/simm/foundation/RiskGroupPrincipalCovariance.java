@@ -109,7 +109,7 @@ package org.drip.simm.foundation;
 public class RiskGroupPrincipalCovariance
 {
 	private double _extraGroupCorrelation = java.lang.Double.NaN;
-	private org.drip.quant.eigen.EigenComponent _principalEigenComponent = null;
+	private org.drip.numerical.eigen.EigenComponent _principalEigenComponent = null;
 
 	/**
 	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
@@ -128,7 +128,7 @@ public class RiskGroupPrincipalCovariance
 		try
 		{
 			return new RiskGroupPrincipalCovariance (
-				new org.drip.quant.eigen.PowerIterationComponentExtractor (
+				new org.drip.numerical.eigen.PowerIterationComponentExtractor (
 					30,
 					0.000001,
 					false
@@ -154,12 +154,12 @@ public class RiskGroupPrincipalCovariance
 	 */
 
 	public RiskGroupPrincipalCovariance (
-		final org.drip.quant.eigen.EigenComponent principalEigenComponent,
+		final org.drip.numerical.eigen.EigenComponent principalEigenComponent,
 		final double extraGroupCorrelation)
 		throws java.lang.Exception
 	{
 		if (null == (_principalEigenComponent = principalEigenComponent) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
 				-1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
 		{
 			throw new java.lang.Exception ("RiskGroupPrincipalCovariance Constructor => Invalid Inputs");
@@ -172,7 +172,7 @@ public class RiskGroupPrincipalCovariance
 	 * @return The Intra-Group Principal Eigen-Component
 	 */
 
-	public org.drip.quant.eigen.EigenComponent principalEigenComponent()
+	public org.drip.numerical.eigen.EigenComponent principalEigenComponent()
 	{
 		return _principalEigenComponent;
 	}
@@ -221,7 +221,7 @@ public class RiskGroupPrincipalCovariance
 	{
 		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();
 
-		return org.drip.quant.linearalgebra.Matrix.CrossProduct (
+		return org.drip.numerical.linearalgebra.Matrix.CrossProduct (
 			scaledPrincipalEigenvector,
 			scaledPrincipalEigenvector
 		);
@@ -235,7 +235,7 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] adjustedCovariance()
 	{
-		return org.drip.quant.linearalgebra.Matrix.Scale2D (
+		return org.drip.numerical.linearalgebra.Matrix.Scale2D (
 			unadjustedCovariance(),
 			_extraGroupCorrelation
 		);

@@ -1,7 +1,7 @@
 
 package org.drip.sample.stretch;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.spline.basis.*;
 import org.drip.spline.params.*;
 import org.drip.spline.stretch.*;

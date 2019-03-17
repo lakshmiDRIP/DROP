@@ -103,7 +103,7 @@ public class MeucciViewUncertaintyParameterization {
 		final double[][] aadblScopingCovariance,
 		final double dblAlpha)
 	{
-		if (null == aadblScopingCovariance || !org.drip.quant.common.NumberUtil.IsValid (dblAlpha))
+		if (null == aadblScopingCovariance || !org.drip.numerical.common.NumberUtil.IsValid (dblAlpha))
 			return null;
 
 		int iNumScopingEntity = aadblScopingCovariance.length;
@@ -117,7 +117,7 @@ public class MeucciViewUncertaintyParameterization {
 				return null;
 
 			for (int j = 0; j < iNumScopingEntity; ++j) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (aadblScopingCovariance[i][j])) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblScopingCovariance[i][j])) return null;
 
 				aadblProjectionCovariance[i][j] = dblAlpha * aadblScopingCovariance[i][j];
 			}

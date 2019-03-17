@@ -128,8 +128,8 @@ public class MultiSegmentSequenceModifier {
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue) || null == mssIn || mssIn.isKnot
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue) || null == mssIn || mssIn.isKnot
 				(dblPredictorOrdinate))
 			return null;
 
@@ -212,7 +212,7 @@ public class MultiSegmentSequenceModifier {
 		final org.drip.spline.stretch.BoundarySettings bs,
 		final int iCalibrationDetail)
 	{
-		if (null == mssIn || null == srvc || null == scbc || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == mssIn || null == srvc || null == scbc || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblPredictorOrdinateAppendRight))
 			return null;
 
@@ -290,7 +290,7 @@ public class MultiSegmentSequenceModifier {
 		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdLeftSegmentRightEdge,
 		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdRightSegmentLeftEdge)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || null == mssIn ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || null == mssIn ||
 			mssIn.isKnot (dblPredictorOrdinate) || null == sprdLeftSegmentRightEdge || null ==
 				sprdRightSegmentLeftEdge)
 			return null;
@@ -357,8 +357,8 @@ public class MultiSegmentSequenceModifier {
 		final double dblPredictorOrdinate,
 		final double dblCardinalTension)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCardinalTension) || null == mssIn || mssIn.isKnot
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblCardinalTension) || null == mssIn || mssIn.isKnot
 				(dblPredictorOrdinate))
 			return null;
 

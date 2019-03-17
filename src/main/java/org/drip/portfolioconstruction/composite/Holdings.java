@@ -144,7 +144,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 		final java.lang.String strAssetID,
 		final double dblQuantity)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblQuantity))
 			return false;
 

@@ -131,7 +131,7 @@ public class RegularizerRdContinuousToR1Continuous extends
 	{
 		super (rdContinuousInput, r1ContinuousOutput, funcRdToR1);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 > _dblLambda)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 > _dblLambda)
 			throw new java.lang.Exception
 				("RegularizerRdContinuousToR1Continuous Constructor => Invalid Inputs");
 	}

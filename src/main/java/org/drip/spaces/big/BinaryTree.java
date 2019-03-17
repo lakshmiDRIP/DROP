@@ -103,7 +103,7 @@ public class BinaryTree {
 		final BinaryTree btParent)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNode = dblNode))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNode = dblNode))
 			throw new java.lang.Exception ("BinaryTree ctr => Invalid Inputs");
 
 		_iCount = 1;
@@ -176,7 +176,7 @@ public class BinaryTree {
 	public BinaryTree insert (
 		final double dblNode)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNode)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNode)) return null;
 
 		if (_dblNode == dblNode) {
 			++_iCount;

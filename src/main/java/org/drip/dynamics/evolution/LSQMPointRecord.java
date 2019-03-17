@@ -134,7 +134,7 @@ public class LSQMPointRecord {
 		final java.lang.String strQM,
 		final double dblValue)
 	{
-		if (null == lsl || null == strQM || strQM.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == lsl || null == strQM || strQM.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblValue))
 			return false;
 

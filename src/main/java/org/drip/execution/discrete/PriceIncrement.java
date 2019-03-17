@@ -128,7 +128,7 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 	{
 		super (micDeterministic, micStochastic);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousEquilibriumPrice =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPreviousEquilibriumPrice =
 			dblPreviousEquilibriumPrice))
 			throw new java.lang.Exception ("PriceIncrement Constructor => Invalid Inputs");
 	}

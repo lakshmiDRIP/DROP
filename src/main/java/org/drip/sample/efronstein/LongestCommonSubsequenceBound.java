@@ -1,7 +1,7 @@
 
 package org.drip.sample.efronstein;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.custom.LongestCommonSubsequence;
 import org.drip.sequence.functional.*;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;

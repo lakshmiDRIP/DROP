@@ -112,8 +112,8 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 	{
 		super (strName, strID, strDescription);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblShortTermTaxRate = dblShortTermTaxRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLongTermTaxRate = dblLongTermTaxRate) || -1 >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblShortTermTaxRate = dblShortTermTaxRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLongTermTaxRate = dblLongTermTaxRate) || -1 >=
 				(_iShortTermDays = iShortTermDays) || -1 >= (_iWashDays = iWashDays))
 			throw new java.lang.Exception ("TaxAccountingScheme Constructor => Invalid Inputs");
 	}

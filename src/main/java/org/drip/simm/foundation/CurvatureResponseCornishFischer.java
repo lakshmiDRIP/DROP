@@ -150,7 +150,7 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 		final double varCutoff)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_varCutoff = varCutoff) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_varCutoff = varCutoff) ||
 				0. > _varCutoff || 1. < _varCutoff)
 		{
 			throw new java.lang.Exception ("CurvatureResponseCornishFischer Constructor => Invalid Inputs");
@@ -199,8 +199,8 @@ public class CurvatureResponseCornishFischer implements org.drip.simm.foundation
 		final double cumulativeRiskFactorSensitivityPositive)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||
-			!org.drip.quant.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||
 				0. > cumulativeRiskFactorSensitivityPositive)
 		{
 			throw new java.lang.Exception ("CurvatureResponseCornishFischer::lambda => Invalid Inputs");

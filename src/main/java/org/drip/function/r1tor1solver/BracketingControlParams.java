@@ -141,10 +141,10 @@ public class BracketingControlParams {
 		final double dblBracketWidthExpansionFactor)
 		throws java.lang.Exception
 	{
-		if (0 >= (_iNumExpansions = iNumExpansions) || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblVariateStart = dblVariateStart) || !org.drip.quant.common.NumberUtil.IsValid
+		if (0 >= (_iNumExpansions = iNumExpansions) || !org.drip.numerical.common.NumberUtil.IsValid
+			(_dblVariateStart = dblVariateStart) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblBracketStartingWidth = dblBracketStartingWidth) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblBracketWidthExpansionFactor =
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblBracketWidthExpansionFactor =
 						dblBracketWidthExpansionFactor))
 			throw new java.lang.Exception ("BracketingControlParams constructor: Invalid inputs!");
 	}

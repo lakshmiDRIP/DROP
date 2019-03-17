@@ -127,10 +127,10 @@ public class MinimumImpactTradingTrajectory extends org.drip.execution.strategy.
 		final double dblFinishTime,
 		final int iNumInterval)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblStartTime) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) || dblStartTime >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFinishHoldings) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblStartTime) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblFinishTime) || dblStartTime >=
 						dblFinishTime || 0 >= iNumInterval)
 			return null;
 

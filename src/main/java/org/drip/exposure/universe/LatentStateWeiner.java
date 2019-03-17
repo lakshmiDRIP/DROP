@@ -184,7 +184,7 @@ public class LatentStateWeiner
 		if (null == latentStateLabel ||
 			null == weinerIncrementArray ||
 			0 == weinerIncrementArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (weinerIncrementArray))
+			!org.drip.numerical.common.NumberUtil.IsValid (weinerIncrementArray))
 		{
 			return false;
 		}

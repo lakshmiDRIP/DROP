@@ -121,9 +121,9 @@ public class TrinomialTreeTransitionMetrics {
 		final double dblTerminalAlpha)
 		throws java.lang.Exception
 	{
-		if (0 > (_lTreeTimeIndex = lTreeTimeIndex) || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblExpectedTerminalX = dblExpectedTerminalX) || !org.drip.quant.common.NumberUtil.IsValid
-				(_dblXVariance = dblXVariance) || !org.drip.quant.common.NumberUtil.IsValid
+		if (0 > (_lTreeTimeIndex = lTreeTimeIndex) || !org.drip.numerical.common.NumberUtil.IsValid
+			(_dblExpectedTerminalX = dblExpectedTerminalX) || !org.drip.numerical.common.NumberUtil.IsValid
+				(_dblXVariance = dblXVariance) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblTerminalAlpha = dblTerminalAlpha))
 			throw new java.lang.Exception ("TrinomialTreeTransitionMetrics ctr: Invalid Inputs");
 

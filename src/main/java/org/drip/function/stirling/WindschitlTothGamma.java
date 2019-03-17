@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WindschitlTothGamma extends org.drip.function.numerical.R1ToR1Estimator
+public class WindschitlTothGamma extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
 	/**
@@ -112,7 +112,7 @@ public class WindschitlTothGamma extends org.drip.function.numerical.R1ToR1Estim
 	 */
 
 	public WindschitlTothGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 		super (dc);
 	}
@@ -121,7 +121,7 @@ public class WindschitlTothGamma extends org.drip.function.numerical.R1ToR1Estim
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. > x)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. > x)
 		{
 			throw new java.lang.Exception ("WindschitlTothGamma::evaluate => Invalid Inputs");
 		}

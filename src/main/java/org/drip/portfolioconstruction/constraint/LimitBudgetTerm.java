@@ -105,7 +105,7 @@ public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.opt
 			dblBudget
 		);
 
-		if (null == (_adblPrice = adblPrice) || !org.drip.quant.common.NumberUtil.IsValid (_adblPrice))
+		if (null == (_adblPrice = adblPrice) || !org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))
 			throw new java.lang.Exception ("LimitBudgetTerm Constructor => Invalid Inputs");
 	}
 

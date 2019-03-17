@@ -142,15 +142,15 @@ public class EvolutionTrajectoryVertex
 		final double hedgeError)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_time = time) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_time = time) ||
 			null == (_replicationPortfolioVertex = replicationPortfolioVertex) ||
 			null == (_positionGreekVertex = positionGreekVertex) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientGainOnDealerDefault =
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientGainOnDealerDefault =
 				clientGainOnDealerDefault) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dealerGainOnClientDefault =
+			!org.drip.numerical.common.NumberUtil.IsValid (_dealerGainOnClientDefault =
 				dealerGainOnClientDefault) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_collateral = collateral) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))
+			!org.drip.numerical.common.NumberUtil.IsValid (_collateral = collateral) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_hedgeError = hedgeError))
 		{
 			throw new java.lang.Exception ("EvolutionTrajectoryVertex Constructor => Invalid Inputs");
 		}
@@ -262,7 +262,7 @@ public class EvolutionTrajectoryVertex
 
 		double dealerSubordinateFundingMarketVertex = dealerMarketVertex.subordinateFundingReplicator();
 
-		if (org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
+		if (org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingMarketVertex))
 		{
 			fundingConstraint += dealerSubordinateFundingMarketVertex *
 				_replicationPortfolioVertex.dealerSubordinateNumeraireHoldings();

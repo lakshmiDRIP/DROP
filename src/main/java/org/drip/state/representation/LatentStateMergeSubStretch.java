@@ -123,8 +123,8 @@ public class LatentStateMergeSubStretch {
 		final org.drip.state.identifier.LatentStateLabel lsl)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStartDate = dblStartDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEndDate = dblEndDate) || _dblStartDate >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartDate = dblStartDate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEndDate = dblEndDate) || _dblStartDate >=
 				_dblEndDate || null == (_lsl = lsl))
 			throw new java.lang.Exception ("LatentStateMergeSubStretch ctr: Invalid Inputs");
 	}
@@ -151,7 +151,7 @@ public class LatentStateMergeSubStretch {
 	public boolean shiftStart (
 		final double dblNewStartDate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNewStartDate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewStartDate)) return false;
 
 		_dblStartDate = dblNewStartDate;
 		return true;
@@ -179,7 +179,7 @@ public class LatentStateMergeSubStretch {
 	public boolean shiftEnd (
 		final double dblNewEndDate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNewEndDate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNewEndDate)) return false;
 
 		_dblEndDate = dblNewEndDate;
 		return true;
@@ -221,7 +221,7 @@ public class LatentStateMergeSubStretch {
 	public boolean in (
 		final double dblDate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate)) return false;
 
 		return dblDate >= _dblStartDate && dblDate <= _dblEndDate;
 	}

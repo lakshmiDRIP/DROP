@@ -135,11 +135,11 @@ public class CoordinatedVariationTrajectoryState {
 		final double dblMarketState)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblCost = dblCost) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblMarketState = dblMarketState))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblCost = dblCost) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblMarketState = dblMarketState))
 			throw new java.lang.Exception
 				("CoordinatedVariationTrajectoryState Constructor => Invalid Inputs");
 	}

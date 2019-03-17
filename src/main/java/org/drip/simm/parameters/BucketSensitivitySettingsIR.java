@@ -328,7 +328,7 @@ public class BucketSensitivitySettingsIR extends org.drip.simm.parameters.Liquid
 			null == (_primeTenorRiskWeight = primeTenorRiskWeight) ||
 			null == (_municipalTenorRiskWeight = municipalTenorRiskWeight) ||
 			null == (_crossTenorCorrelation = crossTenorCorrelation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||
 				-1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation)
 		{
 			throw new java.lang.Exception ("BucketSensitivitySettingsIR Constructor => Invalid Inputs");

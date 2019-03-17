@@ -207,8 +207,8 @@ public class JumpDiffusionEdge {
 		_sed = sed;
 		_sej = sej;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStart = dblStart) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblDeterministic = dblDeterministic) || (null == _sed
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStart = dblStart) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblDeterministic = dblDeterministic) || (null == _sed
 				&& null == _sej) || null == (_jdeu = jdeu))
 			throw new java.lang.Exception ("JumpDiffusionEdge Constructor => Invalid Inputs");
 	}

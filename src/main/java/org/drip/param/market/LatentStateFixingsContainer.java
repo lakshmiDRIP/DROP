@@ -122,7 +122,7 @@ public class LatentStateFixingsContainer {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final double dblFixing)
 	{
-		if (null == dt || null == lsl || !org.drip.quant.common.NumberUtil.IsValid (dblFixing)) return false;
+		if (null == dt || null == lsl || !org.drip.numerical.common.NumberUtil.IsValid (dblFixing)) return false;
 
 		if (lsl instanceof org.drip.state.identifier.OTCFixFloatLabel) {
 			if (!_mmOTCFixFloatFixing.containsKey (dt))

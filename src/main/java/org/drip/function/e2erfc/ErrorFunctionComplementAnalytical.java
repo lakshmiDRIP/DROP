@@ -138,7 +138,7 @@ public class ErrorFunctionComplementAnalytical
 		final double A,
 		final double B)
 	{
-		return !org.drip.quant.common.NumberUtil.IsValid (A) || !org.drip.quant.common.NumberUtil.IsValid (B)
+		return !org.drip.numerical.common.NumberUtil.IsValid (A) || !org.drip.numerical.common.NumberUtil.IsValid (B)
 			? null : new org.drip.function.e2erfc.ErrorFunctionComplement (
 				null,
 				null
@@ -148,7 +148,7 @@ public class ErrorFunctionComplementAnalytical
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplementAnalytical::KaragiannidisLioumpas2007::evaluate => Invalid Inputs");
@@ -201,7 +201,7 @@ public class ErrorFunctionComplementAnalytical
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012a::evaluate => Invalid Inputs");
@@ -220,14 +220,14 @@ public class ErrorFunctionComplementAnalytical
 				return 0.5 * java.lang.Math.exp (-2. * z * z) + 0.5 * java.lang.Math.exp (-1. * z * z);
 			}
 
-			@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
+			@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
 				final double z)
 			{
 				try
 				{
 					double baseline = evaluate (z);
 
-					return new org.drip.function.numerical.R1Estimate (
+					return new org.drip.numerical.estimation.R1Estimate (
 						baseline,
 						baseline,
 						java.lang.Math.exp (-1. * z * z)
@@ -260,7 +260,7 @@ public class ErrorFunctionComplementAnalytical
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012b::evaluate => Invalid Inputs");
@@ -292,7 +292,7 @@ public class ErrorFunctionComplementAnalytical
 	public static final org.drip.function.e2erfc.ErrorFunctionComplement ChangCosmanMilstein2011 (
 		final double beta)
 	{
-		return !org.drip.quant.common.NumberUtil.IsValid (beta) || 1. >= beta ? null :
+		return !org.drip.numerical.common.NumberUtil.IsValid (beta) || 1. >= beta ? null :
 			new org.drip.function.e2erfc.ErrorFunctionComplement (
 				null,
 				null
@@ -302,7 +302,7 @@ public class ErrorFunctionComplementAnalytical
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplementAnalytical::ChangCosmanMilstein2011::evaluate => Invalid Inputs");
@@ -344,7 +344,7 @@ public class ErrorFunctionComplementAnalytical
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplementAnalytical::ContinuedFractionExpansion::evaluate => Invalid Inputs");

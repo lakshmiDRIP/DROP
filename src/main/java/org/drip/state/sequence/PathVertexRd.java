@@ -270,7 +270,7 @@ public class PathVertexRd {
 		final double[] adblPathInitial,
 		final double dblTimeIncrement)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement)) return null;
 
 		int iNumVertex = _cpvd.numVertex();
 

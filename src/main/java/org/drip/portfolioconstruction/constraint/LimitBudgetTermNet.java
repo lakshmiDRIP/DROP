@@ -132,7 +132,7 @@ public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constrain
 				double dblConstraintValue = 0.;
 				int iNumAsset = adblPrice.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureBudgetNet::rdToR1::evaluate => Invalid Variate Dimension");

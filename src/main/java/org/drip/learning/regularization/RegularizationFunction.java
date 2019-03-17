@@ -128,7 +128,7 @@ public class RegularizationFunction {
 		throws java.lang.Exception
 	{
 		if (null == (_regR1ToR1 = regR1ToR1) && null == (_regRdToR1 = regRdToR1) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda))
 			throw new java.lang.Exception ("RegularizationFunction ctr: Invalid Inputs");
 	}
 

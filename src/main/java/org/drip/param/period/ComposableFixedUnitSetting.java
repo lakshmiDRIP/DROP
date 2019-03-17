@@ -112,8 +112,8 @@ public class ComposableFixedUnitSetting extends org.drip.param.period.Composable
 	{
 		super (strTenor, iEdgeDateSequenceScheme, dapEdge);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFixedCoupon = dblFixedCoupon) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblBasis = dblBasis) || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFixedCoupon = dblFixedCoupon) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblBasis = dblBasis) || null ==
 				(_strCouponCurrency = strCouponCurrency) || _strCouponCurrency.isEmpty())
 			throw new java.lang.Exception ("ComposableFixedUnitSetting ctr: Invalid Inputs");
 	}

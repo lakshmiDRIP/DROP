@@ -2,7 +2,7 @@
 package org.drip.sample.samplestatistics;
 
 import org.drip.measure.continuous.R1UnivariateUniform;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.evidence.TestStatisticAccumulator;
 import org.drip.validation.hypothesis.ProbabilityIntegralTransform;

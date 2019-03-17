@@ -119,7 +119,7 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 		final double dblAttribute)
 	{
 		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblAttribute))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblAttribute))
 			return false;
 
 		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);

@@ -136,7 +136,7 @@ public class LimitNamesTermIssuerLong extends org.drip.portfolioconstruction.con
 				int iNameCount = 0;
 				int iNumAsset = adblIssuerSelection.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitNamesTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");

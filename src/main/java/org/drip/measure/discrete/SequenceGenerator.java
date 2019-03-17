@@ -178,7 +178,7 @@ public class SequenceGenerator {
 	{
 		if (0 >= iCount) return null;
 
-		double[][] aadblCholesky = org.drip.quant.linearalgebra.Matrix.CholeskyBanachiewiczFactorization
+		double[][] aadblCholesky = org.drip.numerical.linearalgebra.Matrix.CholeskyBanachiewiczFactorization
 			(aadblCorrelation);
 
 		if (null == aadblCholesky) return null;

@@ -115,7 +115,7 @@ public class SingleSequenceAgnosticMetrics {
 			throw new java.lang.Exception ("SingleSequenceAgnosticMetrics ctr: Invalid Inputs");
 
 		for (int i = 0; i < iNumEntry; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblSequence[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblSequence[i]))
 				throw new java.lang.Exception ("SingleSequenceAgnosticMetrics ctr: Invalid Inputs");
 
 			_dblEmpiricalExpectation += _adblSequence[i];
@@ -214,7 +214,7 @@ public class SingleSequenceAgnosticMetrics {
 		final boolean bAbsolute)
 		throws java.lang.Exception
 	{
-		if (0 >= iMoment || !org.drip.quant.common.NumberUtil.IsValid (dblAnchor))
+		if (0 >= iMoment || !org.drip.numerical.common.NumberUtil.IsValid (dblAnchor))
 			throw new java.lang.Exception
 				("SingleSequenceAgnosticMetrics::empiricalAnchorMoment => Invalid Inputs");
 
@@ -353,13 +353,13 @@ public class SingleSequenceAgnosticMetrics {
 		final org.drip.function.definition.R1ToR1 auNonDecreasing)
 		throws java.lang.Exception
 	{
-		if (!isPositive() || !org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.)
+		if (!isPositive() || !org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.)
 			throw new java.lang.Exception
 				("SingleSequenceAgnosticMetrics::markovUpperProbabilityBound => Invalid Inputs");
 
 		double dblPopulationMean = populationMean();
 
-		double dblUpperProbabilityBound = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationMean) ?
+		double dblUpperProbabilityBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ?
 			dblPopulationMean : _dblEmpiricalExpectation) / dblLevel;
 
 		if (null != auNonDecreasing) {
@@ -387,11 +387,11 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevBound (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
 		double dblPopulationVariance = populationVariance();
 
-		double dblMeanDepartureBound = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?
+		double dblMeanDepartureBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
 			dblPopulationVariance : _dblEmpiricalVariance) / (dblLevel * dblLevel);
 
 		dblMeanDepartureBound = dblMeanDepartureBound < 1. ? dblMeanDepartureBound : 1.;
@@ -420,7 +420,7 @@ public class SingleSequenceAgnosticMetrics {
 		final double dblLevel,
 		final int iMoment)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
 		try {
 			double dblMeanDepartureBound = empiricalCentralMoment (iMoment, true) / java.lang.Math.pow
@@ -449,11 +449,11 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevCantelliBound (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
 		double dblPopulationVariance = populationVariance();
 
-		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?
+		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
 			dblPopulationVariance : _dblEmpiricalVariance);
 
 		try {
@@ -525,11 +525,11 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds weakLawAverageBounds (
 		final double dblLevel)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
 		double dblPopulationVariance = populationVariance();
 
-		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?
+		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
 			dblPopulationVariance : _dblEmpiricalVariance);
 
 		double dblBound = dblVariance / (_adblSequence.length * dblLevel * dblLevel);

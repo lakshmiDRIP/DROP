@@ -190,11 +190,11 @@ public class BondBuilder {
 		final java.lang.String strDayCount,
 		final org.drip.analytics.date.JulianDate dtEffective,
 		final org.drip.analytics.date.JulianDate dtMaturity,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
-			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+			dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return null;
 
 		return CreateBondFromParams (
@@ -258,7 +258,7 @@ public class BondBuilder {
 				strCurrency,
 				strCurrency,
 				null,
-				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
+				!org.drip.numerical.common.StringUtil.IsEmpty (strCreditCurveName) ?
 					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
@@ -319,11 +319,11 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
-			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+			dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))
 			return null;
 
 		return CreateBondFromParams (
@@ -387,7 +387,7 @@ public class BondBuilder {
 				strCurrency,
 				strCurrency,
 				null,
-				!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
+				!org.drip.numerical.common.StringUtil.IsEmpty (strCreditCurveName) ?
 					org.drip.state.identifier.EntityCDSLabel.Standard (
 						strCreditCurveName,
 						strCurrency
@@ -446,8 +446,8 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		return CreateSimpleFixedFP (
 			strName,
@@ -517,8 +517,8 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		return CreateSimpleFixedFP (
 			strName,
@@ -572,11 +572,11 @@ public class BondBuilder {
 		final java.lang.String strDayCount,
 		final org.drip.analytics.date.JulianDate dtEffective,
 		final org.drip.analytics.date.JulianDate dtMaturity,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
-			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))
+			dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblSpread))
 			return null;
 
 		return CreateBondFromParams (
@@ -709,11 +709,11 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
-			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))
+			dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblSpread))
 			return null;
 
 		return CreateBondFromParams (
@@ -844,8 +844,8 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		return CreateSimpleFloaterFP (
 			strName,
@@ -918,8 +918,8 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		return CreateSimpleFloaterFP (
 			strName,
@@ -980,8 +980,8 @@ public class BondBuilder {
 		final boolean bIsPrincipalPayDown)
 	{
 		if (null == adtPeriodEnd || null == adblCouponAmount || null == adblPrincipalAmount || null ==
-			dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) || 0 == iCouponFrequency)
+			dtEffective || !org.drip.numerical.common.NumberUtil.IsValid (dblInitialNotional) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) || 0 == iCouponFrequency)
 			return null;
 
 		int iEffectiveDate = dtEffective.julian();
@@ -1101,7 +1101,7 @@ public class BondBuilder {
 				strCurrency
 			),
 			new org.drip.product.params.CouponSetting (
-				org.drip.quant.common.Array2D.FromArray (
+				org.drip.numerical.common.Array2D.FromArray (
 					aiPeriodEndDate,
 					adblCouponFactor
 				),
@@ -1137,7 +1137,7 @@ public class BondBuilder {
 			new org.drip.product.params.NotionalSetting (
 				1.,
 				strCurrency,
-				org.drip.quant.common.Array2D.FromArray (
+				org.drip.numerical.common.Array2D.FromArray (
 					aiPrincipalDate,
 					adblPrincipalFactor
 				),
@@ -1182,7 +1182,7 @@ public class BondBuilder {
 			return null;
 		}
 
-		java.lang.String strName = strTreasuryCode + " " + org.drip.quant.common.FormatUtil.FormatDouble
+		java.lang.String strName = strTreasuryCode + " " + org.drip.numerical.common.FormatUtil.FormatDouble
 			(dblCoupon, 1, 2, 100.) + " " + dtMaturity;
 
 		tsyBond.setIdentifierSet (
@@ -1198,7 +1198,7 @@ public class BondBuilder {
 			new org.drip.product.params.NotionalSetting (
 				100.,
 				strCurrency,
-				org.drip.quant.common.Array2D.BulletSchedule(),
+				org.drip.numerical.common.Array2D.BulletSchedule(),
 				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_END,
 				false
 			)
@@ -1372,7 +1372,7 @@ public class BondBuilder {
 						dapPeriodEnd,
 						dapAccrualEnd,
 						org.drip.state.identifier.ForwardLabel.Standard (strFloatIndex),
-						!org.drip.quant.common.StringUtil.IsEmpty (strCreditCurveName) ?
+						!org.drip.numerical.common.StringUtil.IsEmpty (strCreditCurveName) ?
 							org.drip.state.identifier.EntityCDSLabel.Standard (
 								strCreditCurveName,
 								strCurrency
@@ -1758,11 +1758,11 @@ public class BondBuilder {
 		final java.lang.String strDayCount,
 		final org.drip.analytics.date.JulianDate dtEffective,
 		final org.drip.analytics.date.JulianDate dtMaturity,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
-			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))
+			dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblSpread))
 			return null;
 
 		return CreateBondFromParams (
@@ -1896,11 +1896,11 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		if (null == strName || strName.isEmpty() || null == strCurrency || strCurrency.isEmpty() || null ==
-			dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblSpread))
+			dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblSpread))
 			return null;
 
 		return CreateBondFromParams (
@@ -2032,8 +2032,8 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		return CreateSimpleFloaterFP (
 			strName,
@@ -2107,8 +2107,8 @@ public class BondBuilder {
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPeriodStart,
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualStart,
-		final org.drip.quant.common.Array2D fsPrincipalOutstanding,
-		final org.drip.quant.common.Array2D fsCoupon)
+		final org.drip.numerical.common.Array2D fsPrincipalOutstanding,
+		final org.drip.numerical.common.Array2D fsCoupon)
 	{
 		return CreateSimpleFloaterFP (
 			strName,

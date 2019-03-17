@@ -148,7 +148,7 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 		final int[] aiDate,
 		final double dblBump)
 	{
-		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == aiDate || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		int iNumNode = aiDate.length;
 		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
@@ -245,7 +245,7 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 		final java.lang.String[] astrTenor,
 		final double dblBump)
 	{
-		if (null == astrTenor || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == astrTenor || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		int iNumNode = astrTenor.length;
 		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];
@@ -313,7 +313,7 @@ public abstract class DiscountCurve implements org.drip.analytics.definition.Cur
 		final int iBumpNode,
 		final double dblBump)
 	{
-		if (null == aiDate || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == aiDate || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		int iNumNode = aiDate.length;
 		double[] adblForwardRate = 0 == iNumNode ? null : new double [iNumNode];

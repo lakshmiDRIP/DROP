@@ -114,7 +114,7 @@ public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentB
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception ("SegmentMulticBasisFunction::evaluate => Invalid Inputs");
 
 		if (dblPredictorOrdinate < leading() || dblPredictorOrdinate > trailing()) return 0.;
@@ -128,7 +128,7 @@ public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentB
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		return org.drip.quant.calculus.R1ToR1Integrator.Simpson (this, dblBegin, dblEnd);
+		return org.drip.numerical.integration.R1ToR1Integrator.Simpson (this, dblBegin, dblEnd);
 	}
 
 	@Override public double normalizer()
@@ -141,7 +141,7 @@ public class SegmentMulticBasisFunction extends org.drip.spline.bspline.SegmentB
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception
 				("SegmentMulticBasisFunction::normalizedCumulative => Invalid Inputs");
 

@@ -209,7 +209,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.quant.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 
@@ -344,7 +344,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.quant.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 
@@ -375,7 +375,7 @@ public class FixedBondAPI {
 			(iSpotDate);
 
 		try {
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblBaselineOAS = bond.oasFromPrice (valParams,
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBaselineOAS = bond.oasFromPrice (valParams,
 				csqc, null, dblBondMarketCleanPrice)))
 				return null;
 		} catch (java.lang.Exception e) {
@@ -460,7 +460,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.quant.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 
@@ -479,15 +479,15 @@ public class FixedBondAPI {
 				org.drip.param.valuation.ValuationParams.Spot (aiSpotDate[i] = adtSpot[i].julian());
 
 			try {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblYield[i] = bond.yieldFromPrice
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblYield[i] = bond.yieldFromPrice
 					(valParamsSpot, null, null, adblCleanPrice[i])))
 					return null;
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblModifiedDuration[i] =
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblModifiedDuration[i] =
 					bond.modifiedDurationFromPrice (valParamsSpot, null, null, adblCleanPrice[i])))
 					return null;
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblDirtyPrice[i] = adblCleanPrice[i] +
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblDirtyPrice[i] = adblCleanPrice[i] +
 					bond.accrued (aiSpotDate[i], null)))
 					return null;
 			} catch (java.lang.Exception e) {
@@ -654,7 +654,7 @@ public class FixedBondAPI {
 		}
 
 		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.quant.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
+			(strIssuerName + " " + org.drip.numerical.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
 				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
 					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
 

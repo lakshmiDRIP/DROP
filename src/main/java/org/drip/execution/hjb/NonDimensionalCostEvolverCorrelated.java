@@ -179,9 +179,9 @@ public class NonDimensionalCostEvolverCorrelated extends
 		final double dblNonDimensionalTimeIncrement)
 	{
 		if (null == ndc || !(ndc instanceof org.drip.execution.hjb.NonDimensionalCostCorrelated) || null
-			== ms || !org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalRiskAversion) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTime) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblNonDimensionalTimeIncrement))
+			== ms || !org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalRiskAversion) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalTime) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalTimeIncrement))
 			return null;
 
 		double dblLiquidityMarketState = ms.liquidity();

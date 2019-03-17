@@ -644,10 +644,10 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		java.lang.String strDelim = null == strDelimIn ? "" : strDelimIn;
 
 		try {
-			return org.drip.quant.common.FormatUtil.FormatDouble (DateUtil.Year (_iJulian), 4, 0, 1.) +
-				strDelim + org.drip.quant.common.FormatUtil.FormatDouble
+			return org.drip.numerical.common.FormatUtil.FormatDouble (DateUtil.Year (_iJulian), 4, 0, 1.) +
+				strDelim + org.drip.numerical.common.FormatUtil.FormatDouble
 					(org.drip.analytics.date.DateUtil.Month (_iJulian), 2, 0, 1.) + strDelim +
-						org.drip.quant.common.FormatUtil.FormatDouble (DateUtil.Date (_iJulian), 2, 0, 1.);
+						org.drip.numerical.common.FormatUtil.FormatDouble (DateUtil.Date (_iJulian), 2, 0, 1.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

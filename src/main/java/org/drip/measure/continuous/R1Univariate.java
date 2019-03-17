@@ -212,5 +212,5 @@ public abstract class R1Univariate {
 	 * @return The Univariate Weighted Histogram
 	 */
 
-	public abstract org.drip.quant.common.Array2D histogram();
+	public abstract org.drip.numerical.common.Array2D histogram();
 }

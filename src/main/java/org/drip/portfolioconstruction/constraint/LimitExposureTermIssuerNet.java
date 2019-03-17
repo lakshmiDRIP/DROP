@@ -141,7 +141,7 @@ public class LimitExposureTermIssuerNet extends
 
 				double[] adblIssuerSelection = issuerSelection();
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");

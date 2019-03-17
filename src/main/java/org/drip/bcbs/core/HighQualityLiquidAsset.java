@@ -125,9 +125,9 @@ public class HighQualityLiquidAsset
 		final double level2B)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_level1 = level1) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2A = level2A) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2B = level2B))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_level1 = level1) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2A = level2A) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2B = level2B))
 		{
 			throw new java.lang.Exception ("HighQualityLiquidAsset Constructor => Invalid Inputs");
 		}

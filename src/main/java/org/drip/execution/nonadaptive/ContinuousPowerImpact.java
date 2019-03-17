@@ -203,7 +203,7 @@ public class ContinuousPowerImpact extends org.drip.execution.nonadaptive.Static
 				final double dblT)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblT))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))
 					throw new java.lang.Exception
 						("ContinuousPowerImpact::generate::evaluate => Invalid Inputs");
 

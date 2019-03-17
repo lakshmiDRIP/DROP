@@ -4,6 +4,7 @@ package org.drip.sample.bloomberg;
 import java.util.Map;
 
 import org.drip.analytics.date.*;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.ValuationParams;
@@ -11,7 +12,6 @@ import org.drip.pricer.option.BlackScholesAlgorithm;
 import org.drip.product.creator.CDSBuilder;
 import org.drip.product.definition.CreditDefaultSwap;
 import org.drip.product.option.CDSEuropeanOption;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.creator.ScenarioDeterministicVolatilityBuilder;

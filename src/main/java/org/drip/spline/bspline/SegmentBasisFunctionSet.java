@@ -132,7 +132,7 @@ public class SegmentBasisFunctionSet extends org.drip.spline.basis.FunctionSet {
 	{
 		super (responseBasis (iNumBasisToUse, aAUHat));
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
 			throw new java.lang.Exception ("SegmentBasisFunctionSet ctr: Invalid Inputs!");
 	}
 

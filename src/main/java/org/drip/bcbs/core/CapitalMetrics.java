@@ -134,15 +134,15 @@ public class CapitalMetrics
 		final double totalPlusConservationBufferRatio)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_leverageRatio = leverageRatio) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_leverageRatio = leverageRatio) ||
 				0. > _leverageRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commonEquityRatio = commonEquityRatio) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_commonEquityRatio = commonEquityRatio) ||
 				0. > _commonEquityRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_commonEquityPlusConservationBufferRatio =
+			!org.drip.numerical.common.NumberUtil.IsValid (_commonEquityPlusConservationBufferRatio =
 				commonEquityPlusConservationBufferRatio) || 0. > _commonEquityPlusConservationBufferRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tier1Ratio = tier1Ratio) || 0. > _tier1Ratio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalRatio = totalRatio) || 0. > _totalRatio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_totalPlusConservationBufferRatio =
+			!org.drip.numerical.common.NumberUtil.IsValid (_tier1Ratio = tier1Ratio) || 0. > _tier1Ratio ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_totalRatio = totalRatio) || 0. > _totalRatio ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_totalPlusConservationBufferRatio =
 				totalPlusConservationBufferRatio) || 0. > _totalPlusConservationBufferRatio)
 		{
 			throw new java.lang.Exception ("CapitalMetrics Contructor => Invalid Inputs");

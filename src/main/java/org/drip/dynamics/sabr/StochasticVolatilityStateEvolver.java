@@ -205,9 +205,9 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 		final org.drip.sequence.random.UnivariateSequenceGenerator usgForwardRateVolatilityIdiosyncratic)
 		throws java.lang.Exception
 	{
-		if (null == (_lslForward = lslForward) || !org.drip.quant.common.NumberUtil.IsValid (_dblBeta =
-			dblBeta) || !org.drip.quant.common.NumberUtil.IsValid (_dblRho = dblRho) || _dblRho < -1. ||
-				_dblRho > 1. || !org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityOfVolatility =
+		if (null == (_lslForward = lslForward) || !org.drip.numerical.common.NumberUtil.IsValid (_dblBeta =
+			dblBeta) || !org.drip.numerical.common.NumberUtil.IsValid (_dblRho = dblRho) || _dblRho < -1. ||
+				_dblRho > 1. || !org.drip.numerical.common.NumberUtil.IsValid (_dblVolatilityOfVolatility =
 					dblVolatilityOfVolatility) || null == (_usgForwardRate = usgForwardRate) || (0. !=
 						_dblVolatilityOfVolatility && null == (_usgForwardRateVolatilityIdiosyncratic =
 							usgForwardRateVolatilityIdiosyncratic)))
@@ -339,8 +339,8 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 		final double dblTTE,
 		final double dblSigma0)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMForwardRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblTTE) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMForwardRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblTTE) || !org.drip.numerical.common.NumberUtil.IsValid
 				(dblSigma0))
 			return null;
 
@@ -379,10 +379,10 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 		final double dblTTE,
 		final double dblSigma0)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblATMForwardRate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblTTE) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblSigma0))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblATMForwardRate) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblTTE) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblSigma0))
 			return null;
 
 		if (dblStrike == dblATMForwardRate)

@@ -92,8 +92,8 @@ public abstract class CompositePeriod {
 	private java.lang.String _strPayCurrency = "";
 	private int _iPayDate = java.lang.Integer.MIN_VALUE;
 	private double _dblBaseNotional = java.lang.Double.NaN;
-	private org.drip.quant.common.Array2D _fsCoupon = null;
-	private org.drip.quant.common.Array2D _fsNotional = null;
+	private org.drip.numerical.common.Array2D _fsCoupon = null;
+	private org.drip.numerical.common.Array2D _fsNotional = null;
 	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;
 	private org.drip.param.period.FixingSetting _fxFixingSetting = null;
 	private java.util.List<org.drip.analytics.cashflow.ComposableUnitPeriod> _lsCUP = null;
@@ -472,7 +472,7 @@ public abstract class CompositePeriod {
 	 * @return Period Notional Schedule
 	 */
 
-	public org.drip.quant.common.Array2D notionalSchedule()
+	public org.drip.numerical.common.Array2D notionalSchedule()
 	{
 		return _fsNotional;
 	}
@@ -534,7 +534,7 @@ public abstract class CompositePeriod {
 	 * @return Period Coupon Schedule
 	 */
 
-	public org.drip.quant.common.Array2D couponSchedule()
+	public org.drip.numerical.common.Array2D couponSchedule()
 	{
 		return _fsCoupon;
 	}
@@ -1051,7 +1051,7 @@ public abstract class CompositePeriod {
 		final int iValueDate,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iValueDate)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iValueDate)) return null;
 
 		java.util.List<org.drip.analytics.output.UnitPeriodMetrics> lsUPM = new
 			java.util.ArrayList<org.drip.analytics.output.UnitPeriodMetrics>();

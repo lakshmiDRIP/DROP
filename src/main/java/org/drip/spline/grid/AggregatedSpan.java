@@ -199,16 +199,16 @@ public class AggregatedSpan implements org.drip.spline.grid.Span {
 		return false;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
 		int i = 0;
-		org.drip.quant.calculus.WengertJacobian wjAggregate = null;
+		org.drip.numerical.differentiation.WengertJacobian wjAggregate = null;
 
 		for (org.drip.spline.grid.Span span : _lsSpan) {
-			org.drip.quant.calculus.WengertJacobian wj = span.jackDResponseDManifestMeasure
+			org.drip.numerical.differentiation.WengertJacobian wj = span.jackDResponseDManifestMeasure
 				(strManifestMeasure, dblPredictorOrdinate, iOrder);
 
 			if (null == wj) return null;

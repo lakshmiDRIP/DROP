@@ -120,7 +120,7 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 		for (double dblElement : _lsElementSpace) {
 			if (java.lang.Double.NEGATIVE_INFINITY == dblElement) return dblElement;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftEdge))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftEdge))
 				dblLeftEdge = dblElement;
 			else {
 				if (dblLeftEdge > dblElement) dblLeftEdge = dblElement;
@@ -137,7 +137,7 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 		for (double dblElement : _lsElementSpace) {
 			if (java.lang.Double.POSITIVE_INFINITY == dblElement) return dblElement;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightEdge))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge))
 				dblRightEdge = dblElement;
 			else {
 				if (dblRightEdge < dblElement) dblRightEdge = dblElement;

@@ -99,8 +99,8 @@ public class ExpectedBasicConsumption {
 		final double dblRetirementAgeConsumptionRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblWorkingAgeConsumptionRate =
-			dblWorkingAgeConsumptionRate) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeConsumptionRate =
+			dblWorkingAgeConsumptionRate) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblRetirementAgeConsumptionRate = dblRetirementAgeConsumptionRate))
 			throw new java.lang.Exception ("ExpectedBasicConsumption Constructor => Invalid Inputs");
 	}

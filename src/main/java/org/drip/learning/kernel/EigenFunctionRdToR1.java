@@ -114,7 +114,7 @@ public abstract class EigenFunctionRdToR1 extends org.drip.spaces.rxtor1.NormedR
 	{
 		super (rdContinuousInput, r1ContinuousOutput, funcRdToR1);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAgnosticUpperBound = dblAgnosticUpperBound))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAgnosticUpperBound = dblAgnosticUpperBound))
 			throw new java.lang.Exception ("EigenFunctionRdToR1 ctr: Invalid Inputs");
 	}
 

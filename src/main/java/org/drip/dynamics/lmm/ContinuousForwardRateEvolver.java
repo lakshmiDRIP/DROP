@@ -275,8 +275,8 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		throws java.lang.Exception
 	{
 		if (iSpotDate > iForwardDate || iForwardDate > iMaturityDate ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblSpotPrice) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblSpotForwardReinvestmentAccrual))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblSpotPrice) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblSpotForwardReinvestmentAccrual))
 			throw new java.lang.Exception
 				("ContinuousForwardRateEvolver::zeroCouponForwardPrice => Invalid Inputs");
 

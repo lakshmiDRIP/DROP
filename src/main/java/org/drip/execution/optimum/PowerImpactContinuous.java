@@ -197,7 +197,7 @@ public class PowerImpactContinuous extends org.drip.execution.optimum.EfficientT
 			dblCharacteristicTime, dblMarketPower, r1ToR1Holdings, r1ToR1TradeRate,
 				r1ToR1TransactionCostExpectation, r1ToR1TransactionCostVariance);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHyperboloidBoundaryValue =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHyperboloidBoundaryValue =
 			dblHyperboloidBoundaryValue))
 			throw new java.lang.Exception ("PowerImpactContinuous Constructor => Invalid Inputs");
 

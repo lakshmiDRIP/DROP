@@ -138,8 +138,8 @@ public class QuoteConvention implements org.drip.product.params.Validatable {
 
 	@Override public boolean validate()
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_iFirstSettleDate) &&
-			org.drip.quant.common.NumberUtil.IsValid (_dblRedemptionValue);
+		return org.drip.numerical.common.NumberUtil.IsValid (_iFirstSettleDate) &&
+			org.drip.numerical.common.NumberUtil.IsValid (_dblRedemptionValue);
 	}
 
 	/**

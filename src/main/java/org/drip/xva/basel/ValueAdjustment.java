@@ -366,7 +366,7 @@ public class ValueAdjustment
 		final org.drip.xva.basel.ValueCategory valueCategory)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_amount = amount) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_amount = amount) ||
 			null == (_valueCategory = valueCategory))
 		{
 			throw new java.lang.Exception ("ValueAdjustment Constructor => Invalid Inputs");

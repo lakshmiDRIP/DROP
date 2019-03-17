@@ -193,7 +193,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 			double dblBasisFunctionDeriv = 0 == i ? _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate
 				(dblX) : _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, i);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasisFunctionDeriv))
 				throw new java.lang.Exception
 					("SegmentBasisEvaluator::shapedBasisFunctionDerivative => Cannot compute Basis Function Derivative");
 
@@ -201,7 +201,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative
 					(dblShapeControllerPredictorOrdinate, iOrder - i);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))
 				throw new java.lang.Exception
 					("SegmentBasisEvaluator::shapedBasisFunctionDerivative => Cannot compute Shape Control Derivative");
 
@@ -218,7 +218,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 					dblShapeControllerDerivScale /= _ics.width();
 			}
 
-			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *
+			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *
 				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
 					dblShapeControlDeriv);
 		}
@@ -264,7 +264,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 				dblPredictorOrdinate) : unshapedBasisFunctionDerivative (adblResponseBasisCoeff,
 					dblPredictorOrdinate, i);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasisFunctionDeriv))
 				throw new java.lang.Exception
 					("SegmentBasisEvaluator::responseValueDerivative => Cannot compute Basis Function Derivative");
 
@@ -272,7 +272,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative
 					(dblShapeControllerPredictorOrdinate, iOrder - i);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))
 				throw new java.lang.Exception
 					("SegmentBasisEvaluator::responseValueDerivative => Cannot compute Shape Control Derivative");
 
@@ -289,7 +289,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 					dblShapeControllerDerivScale /= _ics.width();
 			}
 
-			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *
+			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *
 				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
 					dblShapeControlDeriv);
 		}

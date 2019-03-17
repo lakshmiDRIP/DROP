@@ -177,7 +177,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblIntegratedSurfaceVariance)
 	{
-		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == valParams || null == csqs || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblIntegratedSurfaceVariance))
 			return null;
 
@@ -215,8 +215,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 		double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFRADV01))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFRADV01))
 			return null;
 
 		try {
@@ -237,7 +237,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 						strManifestMeasure.equalsIgnoreCase ("Rate"))
 				dblManifestMeasurePriceTransformer = 10000. * dblFRADV01;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
 
 			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (iValueDate, iExerciseDate, dblStrike,
 				dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblIntegratedSurfaceVariance);
@@ -344,7 +344,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final double dblVolatility)
 		throws java.lang.Exception
 	{
-		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblVolatility))
+		if (null == valParams || null == csqs || !org.drip.numerical.common.NumberUtil.IsValid (dblVolatility))
 			throw new java.lang.Exception ("FRAStandardCapFloorlet::price => Invalid Inputs");
 
 		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState
@@ -377,7 +377,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get ("DV01");
 		}
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
 			throw new java.lang.Exception
 				("FRAStandardCapFloorlet::price => No Manifest Measure Price Transformer");
 
@@ -411,7 +411,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		throws java.lang.Exception
 	{
 		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblCalibValue))
 			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => Invalid Inputs");
 
 		final double dblStrike = strike();
@@ -449,7 +449,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 		final double dblManifestMeasurePriceTransformerCalib = dblManifestMeasurePriceTransformer;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
 			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => No Transformer");
 
 		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {

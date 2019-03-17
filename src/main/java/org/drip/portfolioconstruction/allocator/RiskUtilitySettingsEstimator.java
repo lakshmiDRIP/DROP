@@ -102,9 +102,9 @@ public class RiskUtilitySettingsEstimator {
 		final double dblEquilibriumVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEquilibriumReturns) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblEquilibriumVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumReturns) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumVariance))
 			throw new java.lang.Exception
 				("RiskUtilitySettingsEstimator::EquilibriumRiskAversion => Invalid Inputs");
 
@@ -127,8 +127,8 @@ public class RiskUtilitySettingsEstimator {
 		final double dblEquilibriumVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEquilibriumReturns) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEquilibriumVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumReturns) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumVariance))
 			throw new java.lang.Exception
 				("RiskUtilitySettingsEstimator::EquilibriumRiskAversion => Invalid Inputs");
 

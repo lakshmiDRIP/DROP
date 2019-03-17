@@ -114,10 +114,10 @@ public class ConstantPaymentBondBuilder {
 		final double dblConstantAmount,
 		final double dblInitialNotional)
 	{
-		if (null == dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate > dblCouponRate ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblConstantAmount) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional))
+		if (null == dtEffective || !org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate > dblCouponRate ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblConstantAmount) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblInitialNotional))
 			return null;
 
 		double dblOutstandingPrincipal = dblInitialNotional;
@@ -215,11 +215,11 @@ public class ConstantPaymentBondBuilder {
 		final double dblConstantAmount,
 		final double dblInitialNotional)
 	{
-		if (null == dtEffective || !org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate > dblCouponRate ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblCPR) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblConstantAmount) ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblInitialNotional))
+		if (null == dtEffective || !org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFeeRate) || dblFeeRate > dblCouponRate ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblCPR) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblConstantAmount) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (dblInitialNotional))
 			return null;
 
 		double dblOutstandingPrincipal = dblInitialNotional;
@@ -305,8 +305,8 @@ public class ConstantPaymentBondBuilder {
 		final int iTenorInYears)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBondNotional) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBondNotional) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate))
 				throw new java.lang.Exception
 					("ConstantPaymentBondBuilder::ConstantUniformPaymentAmount => Invalid Inputs");
 

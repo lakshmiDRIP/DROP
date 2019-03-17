@@ -414,7 +414,7 @@ public class FunctionSetBuilder {
 			(org.drip.spline.bspline.BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC,
 				org.drip.spline.bspline.BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR, 2, 4, 1., -1);
 
-		org.drip.quant.common.NumberUtil.Print1DArray ("BSSP", bssp.predictorOrdinates(), false);
+		org.drip.numerical.common.NumberUtil.Print1DArray ("BSSP", bssp.predictorOrdinates(), false);
 
 		org.drip.spline.basis.FunctionSet fsBSS = BSplineBasisSet (bssp);
 

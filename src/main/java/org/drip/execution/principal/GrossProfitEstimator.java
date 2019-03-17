@@ -179,7 +179,7 @@ public class GrossProfitEstimator {
 	public org.drip.measure.gaussian.R1UnivariateNormal horizonPrincipalMeasure (
 		final double dblPrincipalDiscount)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrincipalDiscount)) return null;
 
 		double dblInverseHorizon = 1. / _ett.executionTime();
 
@@ -208,7 +208,7 @@ public class GrossProfitEstimator {
 		final double dblPrincipalDiscount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPrincipalDiscount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrincipalDiscount))
 			throw new java.lang.Exception ("GrossProfitEstimator::informationRatio => Invalid Inputs");
 
 		double dblInverseHorizon = 1. / _ett.executionTime();

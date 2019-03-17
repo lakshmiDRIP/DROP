@@ -120,7 +120,7 @@ public abstract class GapLossFunction
 				final double gap)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (gap))
 				{
 					throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
 				}
@@ -146,7 +146,7 @@ public abstract class GapLossFunction
 				final double gap)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (gap))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (gap))
 				{
 					throw new java.lang.Exception ("GapLossFunction::loss => Invalid Inputs");
 				}

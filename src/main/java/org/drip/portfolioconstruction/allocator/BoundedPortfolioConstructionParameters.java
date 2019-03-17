@@ -205,11 +205,11 @@ public class BoundedPortfolioConstructionParameters extends
 			double dblUpperBound = ab.upper();
 
 			try {
-				if (org.drip.quant.common.NumberUtil.IsValid (dblLowerBound))
+				if (org.drip.numerical.common.NumberUtil.IsValid (dblLowerBound))
 					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (false, i, iNumAsset +
 						iNumExtraneousVariate, dblLowerBound));
 
-				if (org.drip.quant.common.NumberUtil.IsValid (dblUpperBound))
+				if (org.drip.numerical.common.NumberUtil.IsValid (dblUpperBound))
 					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (true, i, iNumAsset +
 						iNumExtraneousVariate, dblUpperBound));
 			} catch (java.lang.Exception e) {
@@ -240,7 +240,7 @@ public class BoundedPortfolioConstructionParameters extends
 
 	public double[] feasibleStart()
 	{
-		boolean bReturnsConstraintPresent = org.drip.quant.common.NumberUtil.IsValid
+		boolean bReturnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid
 			(constraintSettings().returnsConstraint());
 
 		java.lang.String[] astrAssetID = assets();
@@ -265,7 +265,7 @@ public class BoundedPortfolioConstructionParameters extends
 
 	public double[] weightConstrainedFeasibleStart()
 	{
-		boolean bReturnsConstraintPresent = org.drip.quant.common.NumberUtil.IsValid
+		boolean bReturnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid
 			(constraintSettings().returnsConstraint());
 
 		java.lang.String[] astrAssetID = assets();

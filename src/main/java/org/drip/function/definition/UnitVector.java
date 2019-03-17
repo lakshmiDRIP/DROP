@@ -104,7 +104,7 @@ public class UnitVector {
 		if (0 == iDimension) return null;
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adbl[i])) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adbl[i])) return null;
 
 			dblGradientModulus += adbl[i] * adbl[i];
 		}
@@ -149,7 +149,7 @@ public class UnitVector {
 		final double[] adblVariate,
 		final double dblStepLength)
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (dblStepLength)) return null;
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (dblStepLength)) return null;
 
 		int iVariateDimension = adblVariate.length;
 		double[] adblIncrementedVariate = new double[iVariateDimension];
@@ -157,7 +157,7 @@ public class UnitVector {
 		if (iVariateDimension != _adblComponent.length) return null;
 
 		for (int i = 0; i < iVariateDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate[i])) return null;
 
 			adblIncrementedVariate[i] = adblVariate[i] + dblStepLength * _adblComponent[i];
 		}

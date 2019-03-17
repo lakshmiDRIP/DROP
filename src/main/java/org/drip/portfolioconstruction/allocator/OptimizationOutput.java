@@ -115,7 +115,7 @@ public class OptimizationOutput {
 			double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt
 				(dblPortfolioExcessReturnsVariance);
 
-			double[] adblImpliedBeta = org.drip.quant.linearalgebra.Matrix.Product (ausp.covariance
+			double[] adblImpliedBeta = org.drip.numerical.linearalgebra.Matrix.Product (ausp.covariance
 				(pfOptimal.id()), pfOptimal.weights());
 
 			if (null == adblImpliedBeta) return null;

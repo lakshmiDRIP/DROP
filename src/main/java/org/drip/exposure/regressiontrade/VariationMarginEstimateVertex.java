@@ -125,8 +125,8 @@ public class VariationMarginEstimateVertex
 		final double adjusted)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_unadjusted = unadjusted) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adjusted = adjusted))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_unadjusted = unadjusted) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adjusted = adjusted))
 		{
 			throw new java.lang.Exception ("VariationMarginEstimateVertex Constructor => Invalid Inputs");
 		}

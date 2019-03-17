@@ -144,10 +144,10 @@ public class EfficientTradingTrajectoryContinuous extends
 		super (dblExecutionTime, r1ToR1Holdings, r1ToR1TradeRate, r1ToR1TransactionCostExpectation,
 			r1ToR1TransactionCostVariance);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCostExpectation =
-			dblTransactionCostExpectation) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTransactionCostExpectation =
+			dblTransactionCostExpectation) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblTransactionCostVariance = dblTransactionCostVariance) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicTime =
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicTime =
 						dblCharacteristicTime))
 			throw new java.lang.Exception
 				("EfficientTradingTrajectoryContinuous Constructor => Invalid Inputs");

@@ -135,8 +135,8 @@ public class ConvergenceControl {
 		final int iNumFinderSteps)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 >
 				(_iNumFinderSteps = iNumFinderSteps))
 			throw new java.lang.Exception ("ConvergenceControl Constructor => Invalid Inputs");
 

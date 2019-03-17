@@ -112,8 +112,8 @@ public class RiskMeasureAggregateCR
 		throws java.lang.Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
+			!org.drip.numerical.common.NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
 		{
 			throw new java.lang.Exception ("RiskMeasureAggregateCR Consructor => Invalid Inputs");
 		}

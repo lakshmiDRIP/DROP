@@ -130,10 +130,10 @@ public class MarketImpactComponent {
 		final double dblTemporaryImpact)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentStep = dblCurrentStep) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblPreviousStep = dblPreviousStep) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))
 			throw new java.lang.Exception ("MarketImpactComponent Constructor => Invalid Inputs");
 	}
 

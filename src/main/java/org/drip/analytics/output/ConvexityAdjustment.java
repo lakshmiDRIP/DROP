@@ -114,7 +114,7 @@ public class ConvexityAdjustment {
 	public boolean setCollateralCredit (
 		final double dblCollateralCredit)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCollateralCredit)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralCredit)) return false;
 
 		_dblCollateralCredit = dblCollateralCredit;
 		return true;
@@ -142,7 +142,7 @@ public class ConvexityAdjustment {
 	public boolean setCollateralForward (
 		final double dblCollateralForward)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCollateralForward)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralForward)) return false;
 
 		_dblCollateralForward = dblCollateralForward;
 		return true;
@@ -170,7 +170,7 @@ public class ConvexityAdjustment {
 	public boolean setCollateralFunding (
 		final double dblCollateralFunding)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCollateralFunding)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralFunding)) return false;
 
 		_dblCollateralFunding = dblCollateralFunding;
 		return true;
@@ -198,7 +198,7 @@ public class ConvexityAdjustment {
 	public boolean setCollateralFX (
 		final double dblCollateralFX)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCollateralFX)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralFX)) return false;
 
 		_dblCollateralFX = dblCollateralFX;
 		return true;
@@ -226,7 +226,7 @@ public class ConvexityAdjustment {
 	public boolean setCreditForward (
 		final double dblCreditForward)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCreditForward)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditForward)) return false;
 
 		_dblCreditForward = dblCreditForward;
 		return true;
@@ -254,7 +254,7 @@ public class ConvexityAdjustment {
 	public boolean setCreditFunding (
 		final double dblCreditFunding)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCreditFunding)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditFunding)) return false;
 
 		_dblCreditFunding = dblCreditFunding;
 		return true;
@@ -282,7 +282,7 @@ public class ConvexityAdjustment {
 	public boolean setCreditFX (
 		final double dblCreditFX)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCreditFX)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditFX)) return false;
 
 		_dblCreditFX = dblCreditFX;
 		return true;
@@ -310,7 +310,7 @@ public class ConvexityAdjustment {
 	public boolean setForwardFunding (
 		final double dblForwardFunding)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblForwardFunding)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForwardFunding)) return false;
 
 		_dblForwardFunding = dblForwardFunding;
 		return true;
@@ -338,7 +338,7 @@ public class ConvexityAdjustment {
 	public boolean setForwardFX (
 		final double dblForwardFX)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblForwardFX)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForwardFX)) return false;
 
 		_dblForwardFX = dblForwardFX;
 		return true;
@@ -366,7 +366,7 @@ public class ConvexityAdjustment {
 	public boolean setFundingFX (
 		final double dblFundingFX)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblFundingFX)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFundingFX)) return false;
 
 		_dblFundingFX = dblFundingFX;
 		return true;

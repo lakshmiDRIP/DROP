@@ -109,7 +109,7 @@ public class ExerciseInfo {
 		final int iWOType)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))
 			throw new java.lang.Exception ("ExerciseInfo ctr: Invalid Inputs!");
 
 		_iDate = iDate;

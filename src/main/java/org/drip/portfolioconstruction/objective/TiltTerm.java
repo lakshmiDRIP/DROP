@@ -103,11 +103,11 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 
 		int iNumInitialHoldings = adblInitialHoldings.length;
 
-		if (null == (_adblMagnitude = adblMagnitude) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_adblMagnitude = adblMagnitude) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_adblMagnitude) || iNumInitialHoldings != _adblMagnitude.length)
 			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
 
-		if (null == (_adblMembership = adblMembership) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_adblMembership = adblMembership) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_adblMembership) || iNumInitialHoldings != _adblMembership.length)
 			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
 	}

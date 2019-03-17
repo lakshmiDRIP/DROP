@@ -105,11 +105,11 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double[] adblCumulativeProbability,
 		final double dblMean)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||
 				dblLeftPredictorOrdinateEdge >= dblRightPredictorOrdinateEdge || null ==
 					adblPredictorOrdinate || null == adblCumulativeProbability ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblMean))
+						!org.drip.numerical.common.NumberUtil.IsValid (dblMean))
 			return null;
 
 		int iNumSegment = adblPredictorOrdinate.length + 1;
@@ -134,11 +134,11 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 			aadblM[iNumSegment][i] = (dblSegmentRight * dblSegmentRight * dblSegmentRight - dblSegmentLeft *
 				dblSegmentLeft * dblSegmentLeft) / 6.;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSegmentLeft) || dblSegmentLeft <
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSegmentLeft) || dblSegmentLeft <
 				dblLeftPredictorOrdinateEdge)
 				return null;
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSegmentRight) || dblSegmentRight <=
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSegmentRight) || dblSegmentRight <=
 				dblSegmentLeft || dblSegmentRight > dblRightPredictorOrdinateEdge)
 				return null;
 		}
@@ -148,8 +148,8 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 				aadblM[i][k] = k > i ? 0. : adblSecondDegreeIntegral[k];
 		}
 
-		org.drip.quant.linearalgebra.LinearizationOutput lo =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblY);
+		org.drip.numerical.linearalgebra.LinearizationOutput lo =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblY);
 
 		if (null == lo) return null;
 
@@ -194,7 +194,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		super (dblLeftPredictorOrdinateEdge, dblRightPredictorOrdinateEdge);
 
 		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblPiecewiseDensitySlope =
-			adblPiecewiseDensitySlope) || !org.drip.quant.common.NumberUtil.IsValid (_dblDensityDisplacement
+			adblPiecewiseDensitySlope) || !org.drip.numerical.common.NumberUtil.IsValid (_dblDensityDisplacement
 				= dblDensityDisplacement))
 			throw new java.lang.Exception ("R1PiecewiseDisplaced Constructor: Invalid Inputs");
 
@@ -241,7 +241,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1PiecewiseDisplaced::cumulative => Invalid Inputs");
 
 		double dblLeftEdge = leftEdge();
@@ -281,7 +281,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
 			throw new java.lang.Exception ("R1PiecewiseDisplaced::invCumulative => Invalid inputs");
 
 		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new
@@ -310,7 +310,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1PiecewiseDisplaced::density => Invalid Inputs");
 
 		if (dblX <= leftEdge() || dblX >= rightEdge()) return 0.;
@@ -329,7 +329,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		return _adblPiecewiseDensitySlope[iSegmentIndex] * dblX + _dblDensityDisplacement;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		double dblLeftEdge = leftEdge();
 
@@ -350,6 +350,6 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 			}
 		}
 
-		return org.drip.quant.common.Array2D.FromArray (adblX, adblY);
+		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);
 	}
 }

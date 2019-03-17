@@ -372,7 +372,7 @@ public class ScenarioFXCurveBuilder {
 		final double dblFXSpot)
 	{
 		if (null == strName || strName.isEmpty() || null == astrTenor || null == dtStart ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFXSpot))
 			return null;
 
 		int iNumTenor = astrTenor.length;

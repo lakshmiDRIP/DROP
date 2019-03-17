@@ -4,10 +4,10 @@ package org.drip.sample.blacklitterman;
 import org.drip.measure.bayesian.JointPosteriorMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

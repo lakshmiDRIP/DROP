@@ -123,7 +123,7 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 			_adblBenchmarkHoldings.length;
 
 		if (0 != iNumBenchmarkHoldings && (aadblAssetCovariance[0].length != iNumBenchmarkHoldings ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblBenchmarkHoldings)))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblBenchmarkHoldings)))
 			throw new java.lang.Exception ("LimitRiskTermVariance Constructor => Invalid Benchmark");
 	}
 
@@ -156,7 +156,7 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 				int iNumAsset = aadblAssetCovariance.length;
 				double dblVariance = 0;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitRiskTermVariance::rdToR1::evaluate => Invalid Variate Dimension");

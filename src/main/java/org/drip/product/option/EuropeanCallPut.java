@@ -101,7 +101,7 @@ public class EuropeanCallPut {
 		final double dblStrike)
 		throws java.lang.Exception
 	{
-		if (null == (_dtMaturity = dtMaturity) || !org.drip.quant.common.NumberUtil.IsValid (_dblStrike =
+		if (null == (_dtMaturity = dtMaturity) || !org.drip.numerical.common.NumberUtil.IsValid (_dblStrike =
 			dblStrike) || 0. >= _dblStrike)
 			throw new java.lang.Exception ("EuropeanCallPut ctr: Invalid Inputs");
 	}

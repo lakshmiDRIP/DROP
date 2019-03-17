@@ -170,7 +170,7 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex >
 			_adblImpliedVolatility.length)
 			return false;
 
@@ -184,7 +184,7 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex >
 			_adblImpliedVolatility.length)
 			return false;
 
@@ -197,7 +197,7 @@ public class FlatForwardVolatilityCurve extends org.drip.state.volatility.Explic
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		for (int i = 0; i < _adblImpliedVolatility.length; ++i)
 			_adblImpliedVolatility[i] = dblValue;

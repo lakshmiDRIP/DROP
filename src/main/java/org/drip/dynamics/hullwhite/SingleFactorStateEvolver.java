@@ -110,8 +110,8 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final org.drip.sequence.random.UnivariateSequenceGenerator usg)
 		throws java.lang.Exception
 	{
-		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid (_dblSigma =
-			dblSigma) || !org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) || null == (_auIFRInitial =
+		if (null == (_lslFunding = lslFunding) || !org.drip.numerical.common.NumberUtil.IsValid (_dblSigma =
+			dblSigma) || !org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) || null == (_auIFRInitial =
 				auIFRInitial) || null == (_usg = usg))
 			throw new java.lang.Exception ("SingleFactorStateEvolver ctr: Invalid Inputs");
 	}
@@ -240,7 +240,7 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-		if (iSpotDate > iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblShortRate))
+		if (iSpotDate > iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblShortRate))
 			throw new java.lang.Exception ("SingleFactorStateEvolver::shortRateIncrement => Invalid Inputs");
 
 		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;

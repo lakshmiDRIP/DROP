@@ -159,35 +159,35 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 			throws java.lang.Exception
 		{
 			if (null == valParams || null == dcNum || null == dcDenom ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))
+				!org.drip.numerical.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblFXSpot))
 				throw new java.lang.Exception
 					("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => bad inputs");
 
 			double dblFXFwdBase = _fxfwd.fxForward (valParams, dcNum, dcDenom, dblFXSpot, false);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBase))
 				throw new java.lang.Exception
 					("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd Base!");
 
 			double dblFXFwdBumped = calcFXFwd (valParams, dcNum, dcDenom, dblFXSpot, _dblBasisIncr,
 				bBasisOnDenom);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBumped))
 				throw new java.lang.Exception
 					("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd for " +
 						_dblBasisIncr + " shift!");
 
 			double dblDBasisDFXFwd = _dblBasisIncr / (dblFXFwdBumped - dblFXFwdBase);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblDBasisDFXFwd))
 				throw new java.lang.Exception
 					("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot calculate Fwd/Basis Slope for 0 basis!");
 
 			double dblBasisPrev = 0.;
 			double dblBasis = dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasis))
 				throw new java.lang.Exception ("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Got " +
 					dblBasis + " for FlatSpread for " + _fxfwd.primaryCode() + " and price " + dblFXFwdBase);
 
@@ -197,19 +197,19 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 						("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot calib Basis for " +
 							_fxfwd.primaryCode() + " and price " + dblMarketFXFwdPrice + " within limit!");
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,
 					dcDenom, dblFXSpot, dblBasisPrev = dblBasis, bBasisOnDenom)))
 					throw new java.lang.Exception
 						("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd for " +
 							dblBasis + " shift!");
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,
 					dcDenom, dblFXSpot, dblBasis + _dblBasisIncr, bBasisOnDenom)))
 					throw new java.lang.Exception
 						("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd for " +
 							(dblBasis + _dblBasisIncr) + " shift!");
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /
 					(dblFXFwdBumped - dblFXFwdBase)))
 					throw new java.lang.Exception
 						("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Cannot calculate Fwd/Basis Slope for "
@@ -217,7 +217,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 
 				dblBasis = dblBasisPrev + dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasis))
 					throw new java.lang.Exception
 						("FXForwardComponent::calibrateDCBasisFromFwdPriceNR => Got " + dblBasis +
 							" for FlatSpread for " + _fxfwd.primaryCode() + " and price " + dblFXFwdBase);
@@ -259,7 +259,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 	{
 		if (null == (_strName = strName) || _strName.isEmpty() || null == (_ccyPair = ccyPair) ||
 			(_iEffectiveDate = iEffectiveDate) >= (_iMaturityDate = iMaturityDate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional))
 			throw new java.lang.Exception ("FXForwardComponent ctr: Invalid Inputs");
 
 		_csp = csp;
@@ -299,7 +299,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		throws java.lang.Exception
 	{
 		if (null == valParams || null == dcNum || null == dcDenom ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFXSpot))
 			throw new java.lang.Exception ("FXForwardComponent::fxForward => Invalid Inputs");
 
 		int iCashPayDate = valParams.cashPayDate();
@@ -718,7 +718,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -727,7 +727,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,

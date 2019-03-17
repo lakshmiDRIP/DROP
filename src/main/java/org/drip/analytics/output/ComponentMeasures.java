@@ -179,7 +179,7 @@ public class ComponentMeasures {
 	public boolean setCalcTime (
 		final double dblCalcTime)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCalcTime)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCalcTime)) return false;
 
 		_dblCalcTime = dblCalcTime;
 		return true;

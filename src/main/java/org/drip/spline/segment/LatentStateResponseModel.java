@@ -186,7 +186,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	private org.drip.spline.segment.BasisEvaluator _be = null;
 	private double[][] _aadblDResponseBasisCoeffDConstraint = null;
 	private org.drip.spline.params.SegmentInelasticDesignControl _sidc = null;
-	private org.drip.quant.calculus.WengertJacobian _wjDBasisCoeffDEdgeValue = null;
+	private org.drip.numerical.differentiation.WengertJacobian _wjDBasisCoeffDEdgeValue = null;
 
 	private
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.spline.segment.LatentStateManifestSensitivity>
@@ -216,8 +216,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 			org.drip.spline.segment.SegmentBasisEvaluator sbe = new
 				org.drip.spline.segment.SegmentBasisEvaluator (fs, rssc);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||
 				dblLeftPredictorOrdinate == dblRightPredictorOrdinate)
 			{
 				return null;
@@ -523,8 +523,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 			return false;
 		}
 
-		org.drip.quant.linearalgebra.LinearizationOutput lo =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
+		org.drip.numerical.linearalgebra.LinearizationOutput lo =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
 				(aadblResponseBasisCoeffConstraint, adblPredictorResponseConstraintValue);
 
 		if (null == lo) return false;
@@ -539,7 +539,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 			return false;
 
 		for (int i = 0; i < iNumResponseBasisCoeff; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblResponseBasisCoeff[i] =
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblResponseBasisCoeff[i] =
 				adblCalibResponseBasisCoeff[i]))
 				return false;
 		}
@@ -673,8 +673,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 			return null;
 		}
 
-		org.drip.quant.linearalgebra.LinearizationOutput lo =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
+		org.drip.numerical.linearalgebra.LinearizationOutput lo =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
 				(aadblResponseCoeffConstraintManifestSensitivity,
 					adblPredictorResponseManifestSensitivityConstraint);
 
@@ -850,15 +850,15 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightValue,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblLeftSlope) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblRightValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblLeftSlope) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblRightValue))
 			return false;
 
 		try {
 			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]
 				{left(), right()}, new double[] {dblLeftValue, dblRightValue},
-					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
+					org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
 						dblLeftSlope), null, null, sbfrState));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -894,7 +894,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};
 
 			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,
-				org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),
+				org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),
 					null, aSBFCState, sbfrState));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -1008,7 +1008,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 					adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightStateManifestSensitivity)) return true;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightStateManifestSensitivity)) return true;
 
 			if (!calibrateLocalManifestJacobian (strManifestMeasure, new
 				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new
@@ -1057,14 +1057,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
 		try {
-			return org.drip.quant.common.NumberUtil.IsValid (dblLeftManifestSensitivity) &&
-				org.drip.quant.common.NumberUtil.IsValid (dblLeftSlopeManifestSensitivity) &&
-					org.drip.quant.common.NumberUtil.IsValid (dblRightManifestSensitivity) ?
+			return org.drip.numerical.common.NumberUtil.IsValid (dblLeftManifestSensitivity) &&
+				org.drip.numerical.common.NumberUtil.IsValid (dblLeftSlopeManifestSensitivity) &&
+					org.drip.numerical.common.NumberUtil.IsValid (dblRightManifestSensitivity) ?
 						calibrateLocalManifestJacobian (strManifestMeasure, new
 							org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(),
 								right()}, new double[] {dblLeftManifestSensitivity,
 									dblRightManifestSensitivity},
-										org.drip.quant.common.CollectionUtil.DerivArrayFromSlope
+										org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope
 											(numParameters() - 2, dblLeftSlopeManifestSensitivity), null,
 												null, sbfrManifestSensitivity), null) : true;
 		} catch (java.lang.Exception e) {
@@ -1118,7 +1118,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 			return null == aSBFCManifestSensitivity ? true : calibrateLocalManifestJacobian
 				(strManifestMeasure, new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,
-					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
+					org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,
 						dblLeftSlopeManifestSensitivity), null, aSBFCManifestSensitivity,
 							sbfrManifestSensitivity), aSBFCState);
 		} catch (java.lang.Exception e) {
@@ -1330,7 +1330,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		double dblDResponseDPreceedingManifest = lsms.getDResponseDPreceedingManifest();
 
 		if (!pqsc.impactFade())
-			return org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?
+			return org.drip.numerical.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?
 				dblDResponseDPreceedingManifest : 0.;
 
 		org.drip.spline.segment.BasisEvaluator be = pqsc.basisEvaluator();
@@ -1371,14 +1371,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Segment's Response Basis Function Coefficients to the Edge Inputs
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeInputs()
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeInputs()
 	{
 		if (null != _wjDBasisCoeffDEdgeValue) return _wjDBasisCoeffDEdgeValue;
 
 		int iNumResponseBasisCoeff = _be.numBasis();
 
 		try {
-			_wjDBasisCoeffDEdgeValue = new org.drip.quant.calculus.WengertJacobian (iNumResponseBasisCoeff,
+			_wjDBasisCoeffDEdgeValue = new org.drip.numerical.differentiation.WengertJacobian (iNumResponseBasisCoeff,
 				iNumResponseBasisCoeff);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -1415,14 +1415,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Response to the Edge Inputs at the given Predictor Ordinate
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDResponseDEdgeInput (
+	public org.drip.numerical.differentiation.WengertJacobian jackDResponseDEdgeInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
 		try {
 			int iNumResponseBasisCoeff = _be.numBasis();
 
-			org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeParams = null;
+			org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeParams = null;
 			double[][] aadblDBasisCoeffDEdgeParams = new
 				double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
 
@@ -1432,7 +1432,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				adblDResponseDBasisCoeff.length)
 				return null;
 
-			org.drip.quant.calculus.WengertJacobian wjDBasisCoeffDEdgeParams = (null ==
+			org.drip.numerical.differentiation.WengertJacobian wjDBasisCoeffDEdgeParams = (null ==
 				_wjDBasisCoeffDEdgeValue) ? jackDCoeffDEdgeInputs() : _wjDBasisCoeffDEdgeValue;
 
 			for (int i = 0; i < iNumResponseBasisCoeff; ++i) {
@@ -1440,7 +1440,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 					aadblDBasisCoeffDEdgeParams[j][i] = wjDBasisCoeffDEdgeParams.firstDerivative (j, i);
 			}
 
-			if (!(wjDResponseDEdgeParams = new org.drip.quant.calculus.WengertJacobian (1,
+			if (!(wjDResponseDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian (1,
 				iNumResponseBasisCoeff)).setWengert (0, responseValue (dblPredictorOrdinate)))
 				return null;
 
@@ -1469,7 +1469,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Response to the Basis Coefficients at the given Predictor Ordinate
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDResponseDBasisCoeff (
+	public org.drip.numerical.differentiation.WengertJacobian jackDResponseDBasisCoeff (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
@@ -1482,8 +1482,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				adblBasisDResponseDBasisCoeff.length)
 				return null;
 
-			org.drip.quant.calculus.WengertJacobian wjDResponseDBasisCoeff = new
-				org.drip.quant.calculus.WengertJacobian (1, iNumResponseBasisCoeff);
+			org.drip.numerical.differentiation.WengertJacobian wjDResponseDBasisCoeff = new
+				org.drip.numerical.differentiation.WengertJacobian (1, iNumResponseBasisCoeff);
 
 			for (int i = 0; i < iNumResponseBasisCoeff; ++i) {
 				if (!wjDResponseDBasisCoeff.accumulatePartialFirstDerivative (0, i,
@@ -1513,7 +1513,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Segment's Response Basis Function Coefficients to the Edge Parameters
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeParams (
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeParams (
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue,
 		final double[] adblLeftEdgeDeriv,
@@ -1544,7 +1544,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Segment's Response Basis Function Coefficients to the Edge Parameters
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeParams (
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeParams (
 		final double dblLeftValue,
 		final double dblLeftSlope,
 		final double dblRightValue,
@@ -1570,7 +1570,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeParams (
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeParams (
 		final LatentStateResponseModel csPreceeding,
 		final java.lang.String strManifestMeasure,
 		final double dblRightStateValue,
@@ -1612,7 +1612,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				return _be.responseValueDerivative (_adblResponseBasisCoeff, dblX, 1);
 			}
 
-			@Override public org.drip.quant.calculus.Differential differential (
+			@Override public org.drip.numerical.differentiation.Differential differential (
 				final double dblX,
 				final double dblOFBase,
 				final int iOrder)
@@ -1620,7 +1620,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				try {
 					double dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblX);
 
-					return new org.drip.quant.calculus.Differential (dblVariateInfinitesimal,
+					return new org.drip.numerical.differentiation.Differential (dblVariateInfinitesimal,
 						_be.responseValueDerivative (_adblResponseBasisCoeff, dblX, iOrder) *
 							dblVariateInfinitesimal);
 				} catch (java.lang.Exception e) {
@@ -1635,7 +1635,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 
@@ -1650,7 +1650,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 			double dblExtremum = fpop.getRoot();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblExtremum) || dblExtremum <= 0. || dblExtremum
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum <= 0. || dblExtremum
 				>= 1.)
 				return new org.drip.spline.segment.Monotonocity
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);

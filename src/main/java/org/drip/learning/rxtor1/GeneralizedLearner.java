@@ -557,8 +557,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
 			throw new java.lang.Exception
 				("GeneralizedLearner::genericCoveringSampleSize => Invalid Inputs");
 
@@ -632,8 +632,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
+		if (null == gvvi || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
 			throw new java.lang.Exception
 				("GeneralizedLearner::genericCoveringSampleSize => Invalid Inputs");
 
@@ -678,7 +678,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon || iSampleSize < (2. /
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon || iSampleSize < (2. /
 			(dblEpsilon * dblEpsilon)))
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringProbabilityBound => Invalid Inputs");
@@ -719,8 +719,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringSampleSize => Invalid Inputs");
 
@@ -769,7 +769,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon || iSampleSize < (2. /
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon || iSampleSize < (2. /
 			(dblEpsilon * dblEpsilon)))
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringProbabilityBound => Invalid Inputs");
@@ -811,8 +811,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
+		if (null == gvvi || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringSampleSize => Invalid Inputs");
 

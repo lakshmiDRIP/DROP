@@ -4,7 +4,7 @@ package org.drip.sample.erfx;
 import java.util.Map;
 
 import org.drip.function.e2erf.MacLaurinSeriesGenerator;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

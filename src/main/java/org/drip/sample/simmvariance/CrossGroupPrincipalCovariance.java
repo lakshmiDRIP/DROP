@@ -1,11 +1,11 @@
 
 package org.drip.sample.simmvariance;
 
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
-import org.drip.quant.eigen.EigenComponent;
-import org.drip.quant.eigen.PowerIterationComponentExtractor;
-import org.drip.quant.linearalgebra.Matrix;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.eigen.EigenComponent;
+import org.drip.numerical.eigen.PowerIterationComponentExtractor;
+import org.drip.numerical.linearalgebra.Matrix;
 import org.drip.service.env.EnvManager;
 
 /*

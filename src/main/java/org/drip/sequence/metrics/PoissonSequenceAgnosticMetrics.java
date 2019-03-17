@@ -130,20 +130,20 @@ public class PoissonSequenceAgnosticMetrics extends org.drip.sequence.metrics.Si
 		final double dblLevel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel))
 			throw new java.lang.Exception
 				("PoissonSequenceAgnosticMetrics::chernoffStirlingUpperBound => Invalid Inputs");
 
 		int iNumEntry = sequence().length;
 
-		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?
+		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?
 			_dblPopulationMean : empiricalExpectation();
 
 		double dblBound = (java.lang.Math.pow (dblPopulationMean / dblLevel, iNumEntry * dblLevel) *
 			java.lang.Math.exp (iNumEntry * (dblLevel - dblPopulationMean) - (1. / (12. * iNumEntry *
 				dblLevel + 1.)))) / java.lang.Math.sqrt (2. * java.lang.Math.PI * iNumEntry * dblLevel);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBound)) return 0.;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBound)) return 0.;
 
 		return dblBound > 1. ? 1. : dblBound;
 	}

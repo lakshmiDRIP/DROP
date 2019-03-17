@@ -116,26 +116,26 @@ public class TheilMixedEstimationModel {
 
 		double[][] aadblScopingLoading2 = pdl2.scopingLoading();
 
-		double[][] aadblScopingWeightedPrecision1 = org.drip.quant.linearalgebra.Matrix.Product
-			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading1),
+		double[][] aadblScopingWeightedPrecision1 = org.drip.numerical.linearalgebra.Matrix.Product
+			(org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading1),
 				r1mn1.covariance().precisionMatrix());
 
-		double[][] aadblScopingWeightedPrecision2 = org.drip.quant.linearalgebra.Matrix.Product
-			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading2),
+		double[][] aadblScopingWeightedPrecision2 = org.drip.numerical.linearalgebra.Matrix.Product
+			(org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading2),
 				r1mn2.covariance().precisionMatrix());
 
-		double[][] aadblScopingSpacePrecision1 = org.drip.quant.linearalgebra.Matrix.Product
+		double[][] aadblScopingSpacePrecision1 = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingWeightedPrecision1, aadblScopingLoading1);
 
-		double[][] aadblScopingSpacePrecision2 = org.drip.quant.linearalgebra.Matrix.Product
+		double[][] aadblScopingSpacePrecision2 = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingWeightedPrecision2, aadblScopingLoading2);
 
 		if (null == aadblScopingSpacePrecision1 || null == aadblScopingSpacePrecision2) return null;
 
-		double[] adblPrecisionWeightedMean1 = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblPrecisionWeightedMean1 = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingWeightedPrecision1, r1mn1.mean());
 
-		double[] adblPrecisionWeightedMean2 = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblPrecisionWeightedMean2 = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingWeightedPrecision2, r1mn2.mean());
 
 		if (null == adblPrecisionWeightedMean1 || null == adblPrecisionWeightedMean2) return null;
@@ -149,10 +149,10 @@ public class TheilMixedEstimationModel {
 					aadblScopingSpacePrecision2[i][j];
 		}
 
-		double[][] aadblJointCovariance = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
+		double[][] aadblJointCovariance = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
 			(aadblJointPrecision);
 
-		double[] adblJointPosteriorMean = org.drip.quant.linearalgebra.Matrix.Product (aadblJointCovariance,
+		double[] adblJointPosteriorMean = org.drip.numerical.linearalgebra.Matrix.Product (aadblJointCovariance,
 			adblJointPrecisionWeightedMean);
 
 		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();
@@ -245,7 +245,7 @@ public class TheilMixedEstimationModel {
 		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
 			(strProjection);
 
-		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),
+		return null == pdl ? null : org.drip.numerical.linearalgebra.Matrix.Product (pdl.scopingLoading(),
 			spvd.scopingDistribution().mean());
 	}
 
@@ -269,7 +269,7 @@ public class TheilMixedEstimationModel {
 
 		if (null == pdl) return null;
 
-		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product
 			(pdl.scopingLoading(), spvd.scopingDistribution().mean());
 
 		if (null == adblProjectionSpaceScopingMean) return null;
@@ -316,10 +316,10 @@ public class TheilMixedEstimationModel {
 		double[][] aadblScopingLoading = pdl.scopingLoading();
 
 		try {
-			return new org.drip.measure.gaussian.Covariance (org.drip.quant.linearalgebra.Matrix.Product
-				(aadblScopingLoading, org.drip.quant.linearalgebra.Matrix.Product
+			return new org.drip.measure.gaussian.Covariance (org.drip.numerical.linearalgebra.Matrix.Product
+				(aadblScopingLoading, org.drip.numerical.linearalgebra.Matrix.Product
 					(r1mnScoping.covariance().covarianceMatrix(),
-						org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading))));
+						org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading))));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -349,9 +349,9 @@ public class TheilMixedEstimationModel {
 		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
 			(strProjection);
 
-		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product
+		return null == pdl ? null : org.drip.numerical.linearalgebra.Matrix.Product
 			(((org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping).covariance().covarianceMatrix(),
-				org.drip.quant.linearalgebra.Matrix.Transpose (pdl.scopingLoading()));
+				org.drip.numerical.linearalgebra.Matrix.Transpose (pdl.scopingLoading()));
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class TheilMixedEstimationModel {
 			(strProjection);
 
 		return !(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null == pdl ? null
-			: org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),
+			: org.drip.numerical.linearalgebra.Matrix.Product (pdl.scopingLoading(),
 				((org.drip.measure.gaussian.R1MultivariateNormal)
 					r1mScoping).covariance().covarianceMatrix());
 	}
@@ -403,7 +403,7 @@ public class TheilMixedEstimationModel {
 		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();
 
 		return !(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal) ? null :
-			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
+			org.drip.numerical.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
 				r1mProjection).covariance().precisionMatrix(), r1mProjection.mean());
 	}
 
@@ -436,11 +436,11 @@ public class TheilMixedEstimationModel {
 
 		double[][] aadblScopingLoading = pdl.scopingLoading();
 
-		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product
-			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose
+		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.Matrix.Product
+			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose
 				(aadblScopingLoading));
 
-		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingLoading, r1mScoping.mean());
 
 		if (null == adblProjectionSpaceScopingMean) return null;
@@ -454,10 +454,10 @@ public class TheilMixedEstimationModel {
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
 				adblProjectionSpaceScopingMean[i];
 
-		return org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionScopingShadow,
-			org.drip.quant.linearalgebra.Matrix.Product
-				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
-					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,
+		return org.drip.numerical.linearalgebra.Matrix.Product (aadblProjectionScopingShadow,
+			org.drip.numerical.linearalgebra.Matrix.Product
+				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
+					(org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 	}
 
@@ -494,11 +494,11 @@ public class TheilMixedEstimationModel {
 
 		double[][] aadblScopingLoading = pdl.scopingLoading();
 
-		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product
-			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose
+		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.Matrix.Product
+			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose
 				(aadblScopingLoading));
 
-		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingLoading, adblScopingMean);
 
 		if (null == adblProjectionSpaceScopingMean) return null;
@@ -513,10 +513,10 @@ public class TheilMixedEstimationModel {
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
 				adblProjectionSpaceScopingMean[i];
 
-		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product
-			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product
-				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
-					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,
+		double[] adblProjectionInducedScopingDeviation = org.drip.numerical.linearalgebra.Matrix.Product
+			(aadblProjectionScopingShadow, org.drip.numerical.linearalgebra.Matrix.Product
+				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
+					(org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 
 		if (null == adblProjectionInducedScopingDeviation) return null;
@@ -554,8 +554,8 @@ public class TheilMixedEstimationModel {
 
 		double[][] aadblScopingLoading = pdl.scopingLoading();
 
-		return org.drip.quant.linearalgebra.Matrix.Product (org.drip.quant.linearalgebra.Matrix.Transpose
-			(aadblScopingLoading), org.drip.quant.linearalgebra.Matrix.Product
+		return org.drip.numerical.linearalgebra.Matrix.Product (org.drip.numerical.linearalgebra.Matrix.Transpose
+			(aadblScopingLoading), org.drip.numerical.linearalgebra.Matrix.Product
 				(((org.drip.measure.gaussian.R1MultivariateNormal)
 					r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading));
 	}
@@ -586,9 +586,9 @@ public class TheilMixedEstimationModel {
 
 		double[][] aadblScopingLoading = pdl.scopingLoading();
 
-		return org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,
-			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
-				r1mScoping).covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose
+		return org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,
+			org.drip.numerical.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
+				r1mScoping).covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose
 					(aadblScopingLoading)));
 	}
 
@@ -627,11 +627,11 @@ public class TheilMixedEstimationModel {
 
 		double[][] aadblScopingLoading = pdl.scopingLoading();
 
-		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product
-			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose
+		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.Matrix.Product
+			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose
 				(aadblScopingLoading));
 
-		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product
+		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product
 			(aadblScopingLoading, adblScopingMean);
 
 		if (null == adblProjectionSpaceScopingMean) return null;
@@ -646,10 +646,10 @@ public class TheilMixedEstimationModel {
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
 				adblProjectionSpaceScopingMean[i];
 
-		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product
-			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product
-				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination
-					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,
+		double[] adblProjectionInducedScopingDeviation = org.drip.numerical.linearalgebra.Matrix.Product
+			(aadblProjectionScopingShadow, org.drip.numerical.linearalgebra.Matrix.Product
+				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
+					(org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 
 		if (null == adblProjectionInducedScopingDeviation) return null;
@@ -665,9 +665,9 @@ public class TheilMixedEstimationModel {
 		try {
 			return new org.drip.measure.gaussian.R1MultivariateNormal (r1mnUnconditional.meta(),
 				adblProjectionInducedScopingMean, new org.drip.measure.gaussian.Covariance
-					(org.drip.quant.linearalgebra.Matrix.Product
-						(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading),
-							org.drip.quant.linearalgebra.Matrix.Product
+					(org.drip.numerical.linearalgebra.Matrix.Product
+						(org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading),
+							org.drip.numerical.linearalgebra.Matrix.Product
 								(((org.drip.measure.gaussian.R1MultivariateNormal)
 									r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading))));
 		} catch (java.lang.Exception e) {

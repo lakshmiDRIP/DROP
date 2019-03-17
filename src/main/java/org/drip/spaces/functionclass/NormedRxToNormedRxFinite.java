@@ -107,7 +107,7 @@ public abstract class NormedRxToNormedRxFinite {
 		final double dblMaureyConstant)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0. >=
 			_dblMaureyConstant)
 			throw new java.lang.Exception ("NormedRxToNormedRxFinite ctr => Invalid Inputs");
 	}

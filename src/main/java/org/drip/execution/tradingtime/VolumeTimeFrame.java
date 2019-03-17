@@ -138,8 +138,8 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 			org.drip.measure.realization.StochasticEdgeDiffusion (dblVolatility * dblBrownian), null, new
 				org.drip.measure.realization.JumpDiffusionEdgeUnit (dblTimeIncrement, dblBrownian, 0.));
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate / (dblVolatility *
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate / (dblVolatility *
 				dblVolatility)))
 			throw new java.lang.Exception ("VolumeTimeFrame Constructor => Invalid Inputs!");
 	}

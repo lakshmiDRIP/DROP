@@ -97,7 +97,7 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 		throws java.lang.Exception
 	{
 		return new org.drip.product.fx.FXForwardComponent ("FXFWD_" +
-			org.drip.quant.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
+			org.drip.numerical.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
 				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),
 					bBasisOnDenom);
 	}
@@ -294,7 +294,7 @@ public class BasisSplineFXForward extends org.drip.state.fx.FXCurve {
 		return dcImplied.zero (iDate);
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{

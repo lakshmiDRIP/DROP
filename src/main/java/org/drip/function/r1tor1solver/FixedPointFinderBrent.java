@@ -125,7 +125,7 @@ public class FixedPointFinderBrent extends org.drip.function.r1tor1solver.FixedP
 
 		double dblVariateEstimateShift = java.lang.Math.abs (dblNextVariate - dblCurrentVariate);
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblVariateIterativeShift) ||
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblVariateIterativeShift) ||
 			_visp.getRobustVariateIteratorPrimitive() == _iIteratorPrimitive) {
 			if (dblVariateEstimateShift < _visp.getRelativeVariateShift() * _dblVariateIterativeShift &&
 				_dblVariateIterativeShift > 0.5 * _visp.getVariateShiftLowerBound()) {
@@ -145,7 +145,7 @@ public class FixedPointFinderBrent extends org.drip.function.r1tor1solver.FixedP
 				_visp.getRobustVariateIteratorPrimitive(), rfop);
 		}
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblPreviousVariateIterativeShift) &&
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblPreviousVariateIterativeShift) &&
 			(dblVariateEstimateShift < _visp.getRelativeVariateShift() * _dblPreviousVariateIterativeShift &&
 				_dblPreviousVariateIterativeShift > 0.5 * _visp.getVariateShiftLowerBound())) {
 			_iIteratorPrimitive = _visp.getFastVariateIteratorPrimitive();

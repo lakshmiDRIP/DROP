@@ -108,7 +108,7 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda))
 			throw new java.lang.Exception ("LinearRationalShapeControl ctr: Invalid tension");
 	}
 
@@ -124,7 +124,7 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("LinearRationalShapeControl::derivative => Invalid Inputs");
 
 		double dblDerivative = 1. / (1. + _dblLambda * dblX);
@@ -140,7 +140,7 @@ public class LinearRationalShapeControl extends org.drip.function.definition.R1T
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("LinearRationalShapeControl::integrate => Invalid Inputs");
 

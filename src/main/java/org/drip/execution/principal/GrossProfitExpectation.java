@@ -124,8 +124,8 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNumExecutedUnit = dblNumExecutedUnit) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCost = dblTransactionCost))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNumExecutedUnit = dblNumExecutedUnit) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTransactionCost = dblTransactionCost))
 			throw new java.lang.Exception ("GrossProfitExpectation Constructor => Invalid Inputs");
 	}
 
@@ -155,7 +155,7 @@ public class GrossProfitExpectation extends org.drip.function.definition.R1ToR1 
 		final double dblUnitDiscount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblUnitDiscount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblUnitDiscount))
 			throw new java.lang.Exception ("GrossProfitExpectation::evaluate => Invalid Inputs");
 
 		return dblUnitDiscount * _dblNumExecutedUnit - _dblTransactionCost;

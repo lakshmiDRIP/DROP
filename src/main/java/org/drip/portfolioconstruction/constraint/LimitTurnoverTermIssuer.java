@@ -120,9 +120,9 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 		if (0 == iNumAsset ||
 			_adblInitialHoldings.length == iNumAsset ||
 			_adblIssuerSelection.length == iNumAsset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblPrice) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblPrice) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))
 			throw new java.lang.Exception ("LimitTurnoverTermIssuer Constructor => Invalid Section");
 	}
 

@@ -98,7 +98,7 @@ public class AssetComponent {
 		final double dblAmount)
 		throws java.lang.Exception
 	{
-		if (null == (_strID = strID) || _strID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_strID = strID) || _strID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblAmount = dblAmount))
 			throw new java.lang.Exception ("AssetComponent Constructor => Invalid Inputs");
 	}

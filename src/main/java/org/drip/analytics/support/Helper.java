@@ -300,7 +300,7 @@ public class Helper {
 		final double dblTime)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblYield) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYield) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblTime))
 			throw new java.lang.Exception ("Helper::YieldDF => Bad yield/time");
 
@@ -327,7 +327,7 @@ public class Helper {
 		final double dblTime)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDF) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDF) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblTime))
 			throw new java.lang.Exception ("CurveProductHelper.DFYield: Bad yield/time");
 
@@ -356,8 +356,8 @@ public class Helper {
 		final double dblFedFundLIBORSwapBasis)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLIBORSwapRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFedFundLIBORSwapBasis))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLIBORSwapRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFedFundLIBORSwapBasis))
 			throw new java.lang.Exception ("Helper::OISFromLIBORSwapFedFundBasis => Invalid Inputs!");
 
 		double dblOISAnnuity = 1. + 0.25 * (4. * (java.lang.Math.sqrt (1. + (dblLIBORSwapRate * 180. / 365.))
@@ -410,7 +410,7 @@ public class Helper {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDIRate) || iStartDate >= iEndDate)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDIRate) || iStartDate >= iEndDate)
 			throw new java.lang.Exception ("Helper::DIStylePriceFromRate => Invalid Inputs");
 
 		return java.lang.Math.pow (1. + dblDIRate, -1. * org.drip.analytics.daycount.Convention.BusinessDays
@@ -437,7 +437,7 @@ public class Helper {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDIPrice) || iStartDate >= iEndDate)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDIPrice) || iStartDate >= iEndDate)
 			throw new java.lang.Exception ("Helper::DIStyleRateFromPrice => Invalid Inputs");
 
 		return java.lang.Math.pow (dblDIPrice, -252. / org.drip.analytics.daycount.Convention.BusinessDays
@@ -460,8 +460,8 @@ public class Helper {
 		final double dblTaxRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblNominalYield) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblTaxRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNominalYield) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblTaxRate))
 			throw new java.lang.Exception ("Helper::NominalYieldToPostTaxEquivalent => Invalid Inputs");
 
 		return dblNominalYield * (1. - dblTaxRate);
@@ -483,8 +483,8 @@ public class Helper {
 		final double dblTaxRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPostTaxEquivalentYield) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblTaxRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPostTaxEquivalentYield) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblTaxRate))
 			throw new java.lang.Exception ("Helper::PostTaxEquivalentYieldToNominal => Invalid Inputs");
 
 		return dblPostTaxEquivalentYield / (1. - dblTaxRate);
@@ -1006,14 +1006,14 @@ public class Helper {
 		final double dblBump,
 		final boolean bIsProportional)
 	{
-		if (null == adblQuotesIn || 0 == adblQuotesIn.length || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == adblQuotesIn || 0 == adblQuotesIn.length || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblBump))
 			return null;
 
 		double[] adblQuotesOut = new double[adblQuotesIn.length];
 
 		for (int i = 0; i < adblQuotesIn.length; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;
 
 			if (!bIsProportional)
 				adblQuotesOut[i] = adblQuotesIn[i] + dblBump;
@@ -1044,7 +1044,7 @@ public class Helper {
 
 		if (org.drip.param.definition.ManifestMeasureTweak.FLAT == ntp.node()) {
 			for (int i = 0; i < adblQuotesIn.length; ++i) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;
 
 				if (!ntp.isProportional())
 					adblQuotesOut[i] = adblQuotesIn[i] + ntp.amount();
@@ -1055,7 +1055,7 @@ public class Helper {
 			if (ntp.node() < 0 || ntp.node() >= adblQuotesIn.length) return null;
 
 			for (int i = 0; i < adblQuotesIn.length; ++i) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;
 
 				if (i == ntp.node()) {
 					if (!ntp.isProportional())
@@ -1252,7 +1252,7 @@ public class Helper {
 		final double dblReferenceIndex)
 		throws java.lang.Exception
 	{
-		if (null == dtValue || null == bond || !org.drip.quant.common.NumberUtil.IsValid (dblReferenceIndex))
+		if (null == dtValue || null == bond || !org.drip.numerical.common.NumberUtil.IsValid (dblReferenceIndex))
 			throw new java.lang.Exception
 				("AnalyticsHelper::BondFuturesPriceAUDBillStyle => Invalid Inputs");
 
@@ -1383,7 +1383,7 @@ public class Helper {
 		double[] adblBumpedNode = 0 == iNumNode ? null : new double[iNumNode];
 
 		for (int i = 0; i < iNumNode; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblBumpedNode[i] = adblNode[i] + dblBump))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblBumpedNode[i] = adblNode[i] + dblBump))
 				return null;
 		}
 

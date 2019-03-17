@@ -345,11 +345,11 @@ public class MarketVertexEntity
 		final double subordinateFundingReplicator)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_survivalProbability = survivalProbability) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_hazardRate = hazardRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_seniorRecoveryRate = seniorRecoveryRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingSpread = seniorFundingSpread) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_seniorFundingReplicator = seniorFundingReplicator))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_survivalProbability = survivalProbability) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_hazardRate = hazardRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_seniorRecoveryRate = seniorRecoveryRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_seniorFundingSpread = seniorFundingSpread) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_seniorFundingReplicator = seniorFundingReplicator))
 		{
 			throw new java.lang.Exception ("MarketVertexEntity Constructor => Invalid Inputs");
 		}

@@ -172,7 +172,7 @@ public class ContinuousTradingTrajectory implements org.drip.execution.strategy.
 		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblExecutionTime = dblExecutionTime) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExecutionTime = dblExecutionTime) || 0. >=
 			_dblExecutionTime || null == (_r1ToR1Holdings = r1ToR1Holdings) || null == (_r1ToR1TradeRate =
 				r1ToR1TradeRate) || null == (_r1ToR1TransactionCostExpectation =
 					r1ToR1TransactionCostExpectation) || null == (_r1ToR1TransactionCostVariance =

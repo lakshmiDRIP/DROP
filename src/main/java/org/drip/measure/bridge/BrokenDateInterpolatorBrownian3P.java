@@ -111,12 +111,12 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 		final double dblV3)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblT1 = dblT1) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblT2 = dblT2) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblT3 = dblT3) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblV1 = dblV1) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblV2 = dblV2) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 >= _dblT2 ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblT1 = dblT1) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblT2 = dblT2) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblT3 = dblT3) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblV1 = dblV1) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblV2 = dblV2) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 >= _dblT2 ||
 								_dblT2 >= _dblT3)
 			throw new java.lang.Exception ("BrokenDateInterpolatorBrownian3P Constructor => Invalid Inputs");
 
@@ -209,7 +209,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 		final double dblT)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblT) || dblT < _dblT1 || dblT > _dblT3)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT) || dblT < _dblT1 || dblT > _dblT3)
 			throw new java.lang.Exception
 				("BrokenDateInterpolatorBrownian3P::interpolate => Invalid Inputs");
 

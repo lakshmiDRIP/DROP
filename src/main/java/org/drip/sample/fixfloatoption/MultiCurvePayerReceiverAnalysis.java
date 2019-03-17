@@ -784,17 +784,17 @@ public class MultiCurvePayerReceiverAnalysis {
 		double dblSpotReceiverPrice = mapSTIRReceiverOutput.get ("SpotPrice");
 
 		System.out.println ("\t[" +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblCustomMetricVolatility, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardVolatility, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblFundingVolatility, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblATMSwapRate, 1, 4, 100.) + "% | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardPayerIntrinsic, 1, 0, 10000.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotPayerPrice, 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardReceiverIntrinsic, 1, 0, 10000.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotReceiverPrice, 1, 4, 1.));
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblCustomMetricVolatility, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardVolatility, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblFundingVolatility, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblATMSwapRate, 1, 4, 100.) + "% | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 4, 1.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardPayerIntrinsic, 1, 0, 10000.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblSpotPayerPrice, 1, 4, 1.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardReceiverIntrinsic, 1, 0, 10000.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblSpotReceiverPrice, 1, 4, 1.));
 	}
 
 	public static final void main (

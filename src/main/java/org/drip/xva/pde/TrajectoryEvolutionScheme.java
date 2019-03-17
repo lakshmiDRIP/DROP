@@ -218,7 +218,7 @@ public class TrajectoryEvolutionScheme
 		double cashAccountBalance = -1. * initialTrajectoryVertex.positionGreekVertex().derivativeXVAValue()
 			- initialDealerSeniorNumeraireHoldings * finalDealerSeniorFundingNumeraire;
 
-		if (org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
+		if (org.drip.numerical.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
 		{
 			cashAccountBalance -= initialDealerSubordinateNumeraireHoldings *
 				finalDealerSubordinateFundingNumeraire;
@@ -249,8 +249,8 @@ public class TrajectoryEvolutionScheme
 							(portfolioCashChange + clientCashAccumulation + dealerCashAccumulation) *
 								timeIncrement);
 
-			if (org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
-				org.drip.quant.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
+			if (org.drip.numerical.common.NumberUtil.IsValid (initialDealerSubordinateFundingNumeraire) &&
+				org.drip.numerical.common.NumberUtil.IsValid (finalDealerSubordinateFundingNumeraire))
 			{
 				derivativeXVAValueChange += initialDealerSubordinateNumeraireHoldings *
 					(finalDealerSubordinateFundingNumeraire - initialDealerSubordinateFundingNumeraire);
@@ -389,7 +389,7 @@ public class TrajectoryEvolutionScheme
 				new org.drip.xva.derivative.ReplicationPortfolioVertex (
 					-1. * derivativeXVAValueDeltaFinish,
 					gainOnDealerDefaultFinish / dealerSeniorFundingNumeraire,
-					!org.drip.quant.common.NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :
+					!org.drip.numerical.common.NumberUtil.IsValid (dealerSubordinateFundingNumeraire) ? 0. :
 						gainOnDealerDefaultFinish / dealerSubordinateFundingNumeraire,
 					finalClientHoldings,
 					initialTrajectoryVertex.replicationPortfolioVertex().cashAccount() +

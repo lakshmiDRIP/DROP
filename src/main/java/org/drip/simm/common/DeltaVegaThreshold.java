@@ -125,8 +125,8 @@ public class DeltaVegaThreshold
 		final double vega)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_delta = delta) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_vega = vega))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_delta = delta) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_vega = vega))
 		{
 			throw new java.lang.Exception ("DeltaVegaThreshold Constructor => Invalid Inputs");
 		}

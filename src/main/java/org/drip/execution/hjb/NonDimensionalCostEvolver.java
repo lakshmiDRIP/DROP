@@ -128,7 +128,7 @@ public abstract class NonDimensionalCostEvolver {
 		final boolean bAsymptoticEnhancedEulerCorrection)
 		throws java.lang.Exception
 	{
-		if (null == (_ou = ou) || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == (_ou = ou) || !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblAsymptoticEulerUrgencyThreshold = dblAsymptoticEulerUrgencyThreshold))
 			throw new java.lang.Exception ("NonDimensionalCostEvolver Constructor => Invalid Inputs");
 

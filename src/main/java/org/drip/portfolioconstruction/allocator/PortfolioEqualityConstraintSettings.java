@@ -181,7 +181,7 @@ public class PortfolioEqualityConstraintSettings {
 			throw new java.lang.Exception
 				("PortfolioEqualityConstraintSettings Constructor => Invalid Inputs!");
 
-		if (0 != (RETURNS_CONSTRAINT & _iConstraintType) && !org.drip.quant.common.NumberUtil.IsValid
+		if (0 != (RETURNS_CONSTRAINT & _iConstraintType) && !org.drip.numerical.common.NumberUtil.IsValid
 			(_dblReturnsConstraint = dblReturnsConstraint))
 			throw new java.lang.Exception
 				("PortfolioEqualityConstraintSettings Constructor => Invalid Inputs!");

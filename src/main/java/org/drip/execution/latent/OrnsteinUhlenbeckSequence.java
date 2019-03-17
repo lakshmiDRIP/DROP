@@ -129,7 +129,7 @@ public class OrnsteinUhlenbeckSequence {
 		final double dblInitialMarketState,
 		final int iCount)
 	{
-		if (null == deou || !org.drip.quant.common.NumberUtil.IsValid (dblGenerationInterval) || 0 >=
+		if (null == deou || !org.drip.numerical.common.NumberUtil.IsValid (dblGenerationInterval) || 0 >=
 			dblGenerationInterval || 1 >= iCount)
 			return null;
 
@@ -181,7 +181,7 @@ public class OrnsteinUhlenbeckSequence {
 		final double dblInitialVolatilityMarketState,
 		final int iCount)
 	{
-		if (null == oup2D || !org.drip.quant.common.NumberUtil.IsValid (dblGenerationInterval) || 0 >=
+		if (null == oup2D || !org.drip.numerical.common.NumberUtil.IsValid (dblGenerationInterval) || 0 >=
 			dblGenerationInterval || 1 >= iCount)
 			return null;
 

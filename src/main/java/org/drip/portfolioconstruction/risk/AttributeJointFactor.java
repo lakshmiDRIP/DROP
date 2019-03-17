@@ -239,7 +239,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		final double dblFactorLoading)
 	{
 		if (null == strAssetID || strAssetID.isEmpty() || null == strFactorID || strFactorID.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFactorLoading))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFactorLoading))
 			return false;
 
 		_mapAssetFactorLoading.put (strAssetID + "::" + strFactorID, dblFactorLoading);
@@ -265,7 +265,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		final double dblCrossFactorAttribute)
 	{
 		if (null == strFactorID1 || strFactorID1.isEmpty() || null == strFactorID2 || strFactorID2.isEmpty()
-			|| !org.drip.quant.common.NumberUtil.IsValid (dblCrossFactorAttribute))
+			|| !org.drip.numerical.common.NumberUtil.IsValid (dblCrossFactorAttribute))
 			return false;
 
 		_mapFactorFactorAttribute.put (strFactorID1 + "::" + strFactorID2, dblCrossFactorAttribute);
@@ -288,7 +288,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 		final java.lang.String strAssetID,
 		final double dblSpecificAttribute)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblSpecificAttribute))
 			return false;
 

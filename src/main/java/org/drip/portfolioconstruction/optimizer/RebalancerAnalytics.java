@@ -117,7 +117,7 @@ public class RebalancerAnalytics
 		final org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics portfolioBenchmarkMetrics)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblObjectiveValue = dblObjectiveValue) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblObjectiveValue = dblObjectiveValue) ||
 			null == (_holdingsFinal = holdingsFinal) ||
 			null == (_mapObjectiveTermRealization = mapObjectiveTermRealization) ||
 			null == (_mapConstraintRealization = mapConstraintRealization))

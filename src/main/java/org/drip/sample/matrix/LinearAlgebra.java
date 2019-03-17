@@ -1,8 +1,8 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.quant.common.*;
-import org.drip.quant.linearalgebra.*;
+import org.drip.numerical.common.*;
+import org.drip.numerical.linearalgebra.*;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -206,7 +206,7 @@ public class LinearAlgebra {
 		};
 		double[] adblB = new double[] {0.02, 0.026, 0., 0., 0., 0.};
 
-		org.drip.quant.common.NumberUtil.Print2DArray (
+		org.drip.numerical.common.NumberUtil.Print2DArray (
 			"\tCOEFF",
 			aadblA,
 			false

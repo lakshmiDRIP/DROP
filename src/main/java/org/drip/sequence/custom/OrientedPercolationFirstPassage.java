@@ -101,8 +101,8 @@ public class OrientedPercolationFirstPassage extends org.drip.sequence.functiona
 		final double dblMaxLength)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEdgeWeightVariance = dblEdgeWeightVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaxLength = dblMaxLength))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEdgeWeightVariance = dblEdgeWeightVariance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaxLength = dblMaxLength))
 			throw new java.lang.Exception ("OrientedPercolationFirstPassage ctr => Invalid Inputs");
 	}
 

@@ -176,7 +176,7 @@ public class ConstrainedMeanVarianceOptimizer extends
 
 					double dblMaxAllowedAssetWeight = 1. - dblCumulativeWeight;
 
-					if (!org.drip.quant.common.NumberUtil.IsValid (dblMaxAssetWeight))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (dblMaxAssetWeight))
 						dblMaxAssetWeight = dblMaxAllowedAssetWeight;
 
 					dblAssetWeight = dblMaxAssetWeight < dblMaxAllowedAssetWeight ? dblMaxAssetWeight :

@@ -109,13 +109,13 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aadblAssetCovariance[i] || !org.drip.quant.common.NumberUtil.IsValid
+			if (null == _aadblAssetCovariance[i] || !org.drip.numerical.common.NumberUtil.IsValid
 				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)
 				throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
 		}
 
 		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) && (iNumAsset !=
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.quant.common.NumberUtil.IsValid
+			_adblBenchmarkConstrictedHoldings.length || !org.drip.numerical.common.NumberUtil.IsValid
 				(_adblBenchmarkConstrictedHoldings)))
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
 	}

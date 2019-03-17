@@ -106,7 +106,7 @@ public abstract class LimitHoldingsTermMinimumPeriod extends
 			iSize
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumHoldingsPeriod = dblMinimumHoldingsPeriod)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumHoldingsPeriod = dblMinimumHoldingsPeriod)
 			|| 0. >= _dblMinimumHoldingsPeriod)
 			throw new java.lang.Exception ("LimitHoldingsTermMinimumPeriod Constructor => Invalid Inputs");
 	}

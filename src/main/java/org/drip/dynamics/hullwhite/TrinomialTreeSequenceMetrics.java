@@ -218,7 +218,7 @@ public class TrinomialTreeSequenceMetrics {
 		final org.drip.dynamics.hullwhite.TrinomialTreeNodeMetrics hwnmTarget,
 		final double dblTransitionProbability)
 	{
-		if (null == hwnmSource || null == hwnmTarget || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == hwnmSource || null == hwnmTarget || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblTransitionProbability) || 0. >= dblTransitionProbability || 1. < dblTransitionProbability)
 			return false;
 

@@ -135,7 +135,7 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKRDNode,
 		final double dblKRDValue)
 	{
-		if (null == strKRDNode || strKRDNode.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == strKRDNode || strKRDNode.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblKRDValue))
 			return false;
 
@@ -236,7 +236,7 @@ public class TenorDurationNodeMetrics {
 		final java.lang.String strKey,
 		final double dblR1)
 	{
-		if (null == strKey || strKey.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblR1))
+		if (null == strKey || strKey.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblR1))
 			return false;
 
 		_mapCustomR1.put (strKey, dblR1);

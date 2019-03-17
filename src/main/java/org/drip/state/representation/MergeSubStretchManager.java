@@ -110,7 +110,7 @@ public class MergeSubStretchManager {
 		final double dblDate,
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate) || null == lsl || null == _lsLSMS)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDate) || null == lsl || null == _lsLSMS)
 			return false;
 
 		for (org.drip.state.representation.LatentStateMergeSubStretch lsms : _lsLSMS) {

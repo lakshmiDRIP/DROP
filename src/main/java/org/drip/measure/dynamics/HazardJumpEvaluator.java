@@ -135,8 +135,8 @@ public class HazardJumpEvaluator extends org.drip.measure.dynamics.SingleJumpEva
 	{
 		super (leDensity, leMagnitude);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) || 0. > _dblHazardRate
-			|| !org.drip.quant.common.NumberUtil.IsValid (_dblMagnitude = dblMagnitude) || 0. >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) || 0. > _dblHazardRate
+			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblMagnitude = dblMagnitude) || 0. >
 				_dblMagnitude)
 			throw new java.lang.Exception ("HazardJumpEvaluator Constructor => Invalid Inputs");
 	}

@@ -177,7 +177,7 @@ public class DiscountCurveScenario {
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-		if (null == aCalibInst || !org.drip.quant.common.NumberUtil.IsValid (dblBump)) return null;
+		if (null == aCalibInst || !org.drip.numerical.common.NumberUtil.IsValid (dblBump)) return null;
 
 		int iNumComp = aCalibInst.length;
 		org.drip.state.discount.MergedDiscountForwardCurve[] aDiscountCurve = new
@@ -226,7 +226,7 @@ public class DiscountCurveScenario {
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-		if (null == aCalibInst || null == adblCalibQuote || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == aCalibInst || null == adblCalibQuote || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblBump))
 			return null;
 

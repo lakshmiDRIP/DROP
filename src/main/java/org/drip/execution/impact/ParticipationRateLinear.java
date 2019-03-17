@@ -161,8 +161,8 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 		final double dblSlope)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOffset = dblOffset) || 0. > _dblOffset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblSlope = dblSlope) || 0. > _dblSlope)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOffset = dblOffset) || 0. > _dblOffset ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblSlope = dblSlope) || 0. > _dblSlope)
 			throw new java.lang.Exception ("ParticipationRateLinear Constructor => Invalid Inputs");
 	}
 
@@ -192,7 +192,7 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
 			throw new java.lang.Exception ("ParticipationRateLinear::regularize => Invalid Inputs");
 
 		return 1. / dblTradeInterval;
@@ -209,7 +209,7 @@ public class ParticipationRateLinear extends org.drip.execution.impact.Transacti
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeRate))
 			throw new java.lang.Exception ("ParticipationRateLinear::evaluate => Invalid Inputs");
 
 		return (dblTradeRate < 0. ? -1. : 1.) * _dblOffset + _dblSlope * dblTradeRate;

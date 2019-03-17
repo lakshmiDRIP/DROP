@@ -10,7 +10,7 @@ import org.drip.measure.discrete.*;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.curve.BasisSplineGovvieYield;

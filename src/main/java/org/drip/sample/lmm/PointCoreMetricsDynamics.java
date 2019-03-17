@@ -4,7 +4,7 @@ package org.drip.sample.lmm;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.MarketSurface;
 import org.drip.dynamics.lmm.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.random.*;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.PolynomialFunctionSetParams;

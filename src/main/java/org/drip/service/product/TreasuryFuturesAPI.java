@@ -373,7 +373,7 @@ public class TreasuryFuturesAPI {
 			org.drip.param.valuation.ValuationParams.Spot (tsyFut.expiry().julian());
 
 		try {
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblBaselineCTDOAS = bondCTD.oasFromPrice
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBaselineCTDOAS = bondCTD.oasFromPrice
 				(valParamsExpiry, csqc, null, dblCTDExpiryPrice)))
 				return null;
 		} catch (java.lang.Exception e) {

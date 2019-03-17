@@ -128,7 +128,7 @@ public class PredictorResponseRelationSetup {
 	public boolean updateValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		_dblValue += dblValue;
 		return true;
@@ -147,8 +147,8 @@ public class PredictorResponseRelationSetup {
 		final double dblPredictor,
 		final double dblResponseWeight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictor) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblResponseWeight))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictor) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseWeight))
 			return false;
 
 		double dblResponseWeightPrior = _mapPredictorResponseWeight.containsKey (dblPredictor) ?

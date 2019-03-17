@@ -109,7 +109,7 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.quant.common.NumberUtil.Factorial
+		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.numerical.common.NumberUtil.Factorial
 			(_iExponent);
 	}
 
@@ -119,7 +119,7 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		throws java.lang.Exception
 	{
 		return iOrder > _iExponent ? 0. : java.lang.Math.pow (dblVariate, _iExponent - iOrder) /
-			org.drip.quant.common.NumberUtil.Factorial (_iExponent - iOrder);
+			org.drip.numerical.common.NumberUtil.Factorial (_iExponent - iOrder);
 	}
 
 	@Override public double integrate (
@@ -127,12 +127,12 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("NaturalLogSeriesElement::integrate => Invalid Inputs");
 
 		return (java.lang.Math.pow (dblEnd, _iExponent) - java.lang.Math.pow (dblBegin, _iExponent)) /
-			org.drip.quant.common.NumberUtil.Factorial (_iExponent + 1);
+			org.drip.numerical.common.NumberUtil.Factorial (_iExponent + 1);
 	}
 
 	/**

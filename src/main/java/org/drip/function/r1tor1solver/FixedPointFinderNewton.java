@@ -104,10 +104,10 @@ public class FixedPointFinderNewton extends org.drip.function.r1tor1solver.Fixed
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("FixedPointFinderNewton::calcVariateOFSlope => Invalid input!");
 
-		org.drip.quant.calculus.Differential diff = _of.differential (dblVariate, 1);
+		org.drip.numerical.differentiation.Differential diff = _of.differential (dblVariate, 1);
 
 		if (null == diff)
 			throw new java.lang.Exception

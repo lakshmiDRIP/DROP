@@ -2,8 +2,8 @@
 package org.drip.sample.stirling;
 
 import org.drip.function.stirling.WindschitlTothGamma;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 
 /*

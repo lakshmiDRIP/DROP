@@ -398,15 +398,15 @@ public class LocalMonotoneCkGenerator {
 							(adblPredictorOrdinate[i + 2] - adblPredictorOrdinate[i]);
 
 				try {
-					double dblM = 3 * org.drip.quant.common.NumberUtil.Minimum (new double[]
+					double dblM = 3 * org.drip.numerical.common.NumberUtil.Minimum (new double[]
 						{java.lang.Math.abs (adblNodeC1[i - 1]), java.lang.Math.abs (adblNodeC1[i]),
 							java.lang.Math.abs (dMu0), java.lang.Math.abs (dMuPlus)});
 
-					if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {dMu0, dMuMinus,
+					if (!org.drip.numerical.common.NumberUtil.SameSign (new double[] {dMu0, dMuMinus,
 							adblNodeC1[i - 1] - adblNodeC1[i - 2], adblNodeC1[i] - adblNodeC1[i - 1]}))
 						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),
 							java.lang.Math.abs (dMuMinus)));
-					else if (!org.drip.quant.common.NumberUtil.SameSign (new double[] {-dMu0, -dMuPlus,
+					else if (!org.drip.numerical.common.NumberUtil.SameSign (new double[] {-dMu0, -dMuPlus,
 							adblNodeC1[i] - adblNodeC1[i - 1], adblNodeC1[i + 1] - adblNodeC1[i]}))
 						dblM = java.lang.Math.max (dblM, 1.5 * java.lang.Math.min (java.lang.Math.abs (dMu0),
 							java.lang.Math.abs (dMuPlus)));

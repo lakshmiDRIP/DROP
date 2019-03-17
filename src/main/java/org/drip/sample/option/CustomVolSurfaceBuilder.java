@@ -3,7 +3,7 @@ package org.drip.sample.option;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.definition.MarketSurface;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.spline.basis.*;
 import org.drip.spline.params.*;
 import org.drip.spline.stretch.MultiSegmentSequenceBuilder;

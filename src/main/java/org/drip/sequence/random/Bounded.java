@@ -91,8 +91,8 @@ public abstract class Bounded extends org.drip.sequence.random.UnivariateSequenc
 		final double dblUpperBound)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound <=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound <=
 				dblLowerBound)
 			throw new java.lang.Exception ("Bounded ctr: Invalid Inputs!");
 	}

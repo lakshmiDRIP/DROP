@@ -163,7 +163,7 @@ public class Vertex
 		final double weight)
 	{
 		if (null == destinationName || destinationName.equalsIgnoreCase (_name) ||
-			!org.drip.quant.common.NumberUtil.IsValid (weight))
+			!org.drip.numerical.common.NumberUtil.IsValid (weight))
 		{
 			return false;
 		}

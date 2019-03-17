@@ -158,8 +158,8 @@ public class SegmentResponseValueConstraint {
 		final double dblPredictorOrdinate,
 		final double dblResponseValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblResponseValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue))
 			return null;
 
 		try {
@@ -190,7 +190,7 @@ public class SegmentResponseValueConstraint {
 		throws java.lang.Exception
 	{
 		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblResponseValueWeight =
-			adblResponseValueWeight) || !org.drip.quant.common.NumberUtil.IsValid
+			adblResponseValueWeight) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblWeightedResponseValueConstraint = dblWeightedResponseValueConstraint))
 			throw new java.lang.Exception ("SegmentResponseValueConstraint ctr: Invalid Inputs");
 
@@ -299,7 +299,7 @@ public class SegmentResponseValueConstraint {
 		final double dblPredictorKnot)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorKnot))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorKnot))
 			throw new java.lang.Exception ("SegmentResponseValueConstraint::knotPosition => Invalid Inputs");
 
 		if (dblPredictorKnot < _adblPredictorOrdinate[0]) return LEFT_OF_CONSTRAINT;

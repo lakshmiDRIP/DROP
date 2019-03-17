@@ -101,7 +101,7 @@ public class Bennett extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || dblVariate < 0.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || dblVariate < 0.)
 			throw new java.lang.Exception ("Bennett::evaluate => Invalid Inputs");
 
 		return (1. + dblVariate) * java.lang.Math.log (1. + dblVariate) - dblVariate;

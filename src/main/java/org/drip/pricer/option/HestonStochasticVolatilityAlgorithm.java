@@ -106,11 +106,11 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 	class PhaseCorrectedF {
 		double _dblCorrectedPhase = java.lang.Double.NaN;
-		org.drip.quant.fourier.ComplexNumber _cnF = null;
+		org.drip.numerical.fourier.ComplexNumber _cnF = null;
 
 		PhaseCorrectedF (
 			final double dblCorrectedPhase,
-			final org.drip.quant.fourier.ComplexNumber cnF)
+			final org.drip.numerical.fourier.ComplexNumber cnF)
 		{
 			_cnF = cnF;
 			_dblCorrectedPhase = dblCorrectedPhase;
@@ -127,42 +127,42 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblFreq,
 		final double dblB,
 		final double dblU,
-		final org.drip.quant.fourier.RotationCountPhaseTracker rcpt)
+		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
 	{
 		try {
-			org.drip.quant.fourier.ComplexNumber cnSmallDLHS = new org.drip.quant.fourier.ComplexNumber (dblB,
+			org.drip.numerical.fourier.ComplexNumber cnSmallDLHS = new org.drip.numerical.fourier.ComplexNumber (dblB,
 				-1. * _fphp.rho() * _fphp.sigma() * dblFreq);
 
-			org.drip.quant.fourier.ComplexNumber cnSmallD = org.drip.quant.fourier.ComplexNumber.Square
+			org.drip.numerical.fourier.ComplexNumber cnSmallD = org.drip.numerical.fourier.ComplexNumber.Square
 				(cnSmallDLHS);
 
 			if (null == cnSmallD) return null;
 
 			double dblSigmaScaler = _fphp.sigma() * _fphp.sigma();
 
-			if (null == (cnSmallD = org.drip.quant.fourier.ComplexNumber.Add (cnSmallD, new
-				org.drip.quant.fourier.ComplexNumber (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
+			if (null == (cnSmallD = org.drip.numerical.fourier.ComplexNumber.Add (cnSmallD, new
+				org.drip.numerical.fourier.ComplexNumber (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
 					* dblFreq * dblU))))
 				return null;
 
-			if (null == (cnSmallD = org.drip.quant.fourier.ComplexNumber.SquareRoot (cnSmallD))) return null;
+			if (null == (cnSmallD = org.drip.numerical.fourier.ComplexNumber.SquareRoot (cnSmallD))) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnGNumerator = org.drip.quant.fourier.ComplexNumber.Subtract
+			org.drip.numerical.fourier.ComplexNumber cnGNumerator = org.drip.numerical.fourier.ComplexNumber.Subtract
 				(cnSmallDLHS, cnSmallD);
 
 			if (null == cnGNumerator) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnG = org.drip.quant.fourier.ComplexNumber.Add (cnSmallDLHS,
+			org.drip.numerical.fourier.ComplexNumber cnG = org.drip.numerical.fourier.ComplexNumber.Add (cnSmallDLHS,
 				cnSmallD);
 
 			if (null == cnG) return null;
 
-			if (null == (cnG = org.drip.quant.fourier.ComplexNumber.Divide (cnGNumerator, cnG))) return null;
+			if (null == (cnG = org.drip.numerical.fourier.ComplexNumber.Divide (cnGNumerator, cnG))) return null;
 
 			int iM = 0;
 			int iN = 0;
 
-			if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
+			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
 				iM = (int) ((cnG.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
 
@@ -170,91 +170,91 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					(2. * java.lang.Math.PI));
 			}
 
-			org.drip.quant.fourier.ComplexNumber cnExpTTEScaledSmallD =
-				org.drip.quant.fourier.ComplexNumber.Scale (cnSmallD, -1. * dbTimeToExpiry);
+			org.drip.numerical.fourier.ComplexNumber cnExpTTEScaledSmallD =
+				org.drip.numerical.fourier.ComplexNumber.Scale (cnSmallD, -1. * dbTimeToExpiry);
 
 			if (null == cnExpTTEScaledSmallD) return null;
 
-			if (null == (cnExpTTEScaledSmallD = org.drip.quant.fourier.ComplexNumber.Exponentiate
+			if (null == (cnExpTTEScaledSmallD = org.drip.numerical.fourier.ComplexNumber.Exponentiate
 				(cnExpTTEScaledSmallD)))
 				return null;
 
-			org.drip.quant.fourier.ComplexNumber cnD = new org.drip.quant.fourier.ComplexNumber (1. -
+			org.drip.numerical.fourier.ComplexNumber cnD = new org.drip.numerical.fourier.ComplexNumber (1. -
 				cnExpTTEScaledSmallD.real(), -1. * cnExpTTEScaledSmallD.imaginary());
 
-			org.drip.quant.fourier.ComplexNumber cnInvGExpTTEScaledSmallD =
-				org.drip.quant.fourier.ComplexNumber.Multiply (cnExpTTEScaledSmallD, cnG);
+			org.drip.numerical.fourier.ComplexNumber cnInvGExpTTEScaledSmallD =
+				org.drip.numerical.fourier.ComplexNumber.Multiply (cnExpTTEScaledSmallD, cnG);
 
 			if (null == cnInvGExpTTEScaledSmallD) return null;
 
-			cnInvGExpTTEScaledSmallD = new org.drip.quant.fourier.ComplexNumber (1. -
+			cnInvGExpTTEScaledSmallD = new org.drip.numerical.fourier.ComplexNumber (1. -
 				cnInvGExpTTEScaledSmallD.real(), -1. * cnInvGExpTTEScaledSmallD.imaginary());
 
-			if (null == (cnD = org.drip.quant.fourier.ComplexNumber.Divide (cnD, cnInvGExpTTEScaledSmallD)))
+			if (null == (cnD = org.drip.numerical.fourier.ComplexNumber.Divide (cnD, cnInvGExpTTEScaledSmallD)))
 				return null;
 
-			if (null == (cnD = org.drip.quant.fourier.ComplexNumber.Multiply (cnGNumerator, cnD)))
+			if (null == (cnD = org.drip.numerical.fourier.ComplexNumber.Multiply (cnGNumerator, cnD)))
 				return null;
 
 			dblSigmaScaler = 1. / dblSigmaScaler;
 
-			if (null == (cnD = org.drip.quant.fourier.ComplexNumber.Scale (cnD, dblSigmaScaler))) return null;
+			if (null == (cnD = org.drip.numerical.fourier.ComplexNumber.Scale (cnD, dblSigmaScaler))) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnC = new org.drip.quant.fourier.ComplexNumber (1. -
+			org.drip.numerical.fourier.ComplexNumber cnC = new org.drip.numerical.fourier.ComplexNumber (1. -
 				cnG.real(), -1. * cnG.imaginary());
 
-			if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
+			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.quant.fourier.PhaseAdjuster.PowerLogPhaseTracker
+				if (null == (cnC = org.drip.numerical.fourier.PhaseAdjuster.PowerLogPhaseTracker
 					(cnInvGExpTTEScaledSmallD, cnC, iN, iM)))
 					return null;
-			} else if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
+			} else if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
 				== _fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Logarithm (cnC))) return null;
+				if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Logarithm (cnC))) return null;
 
-				cnC = new org.drip.quant.fourier.ComplexNumber (cnC.real(), rcpt.updateAndApply
+				cnC = new org.drip.numerical.fourier.ComplexNumber (cnC.real(), rcpt.updateAndApply
 					(cnC.argument(), true));
 			}
 
 			double dblCorrectedPhase = cnC.argument();
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Scale (cnC, -2.))) return null;
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Scale (cnC, -2.))) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnTTEScaledGNumerator =
-				org.drip.quant.fourier.ComplexNumber.Scale (cnGNumerator, dbTimeToExpiry);
+			org.drip.numerical.fourier.ComplexNumber cnTTEScaledGNumerator =
+				org.drip.numerical.fourier.ComplexNumber.Scale (cnGNumerator, dbTimeToExpiry);
 
 			if (null == cnTTEScaledGNumerator) return null;
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Add (cnTTEScaledGNumerator, cnC)))
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Add (cnTTEScaledGNumerator, cnC)))
 				return null;
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Scale (cnC, dblA * dblSigmaScaler)))
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Scale (cnC, dblA * dblSigmaScaler)))
 				return null;
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Add (new
-				org.drip.quant.fourier.ComplexNumber (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq),
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Add (new
+				org.drip.numerical.fourier.ComplexNumber (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq),
 					cnC)))
 				return null;
 
-			org.drip.quant.fourier.ComplexNumber cnF = org.drip.quant.fourier.ComplexNumber.Scale (cnD,
+			org.drip.numerical.fourier.ComplexNumber cnF = org.drip.numerical.fourier.ComplexNumber.Scale (cnD,
 				dblInitialVolatility);
 
 			if (null == cnF) return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Add (cnF, new
-				org.drip.quant.fourier.ComplexNumber (0., java.lang.Math.log (dblSpot) * dblFreq))))
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Add (cnF, new
+				org.drip.numerical.fourier.ComplexNumber (0., java.lang.Math.log (dblSpot) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Add (cnF, cnC))) return null;
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Add (cnF, cnC))) return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Add (cnF, new
-				org.drip.quant.fourier.ComplexNumber (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Add (cnF, new
+				org.drip.numerical.fourier.ComplexNumber (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Exponentiate (cnF))) return null;
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Exponentiate (cnF))) return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Divide (cnF, new
-				org.drip.quant.fourier.ComplexNumber (0., dblFreq))))
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Divide (cnF, new
+				org.drip.numerical.fourier.ComplexNumber (0., dblFreq))))
 				return null;
 
 			return new PhaseCorrectedF (dblCorrectedPhase, cnF);
@@ -275,42 +275,42 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblFreq,
 		final double dblB,
 		final double dblU,
-		final org.drip.quant.fourier.RotationCountPhaseTracker rcpt)
+		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
 	{
 		try {
-			org.drip.quant.fourier.ComplexNumber cnSmallDLHS = new org.drip.quant.fourier.ComplexNumber (dblB,
+			org.drip.numerical.fourier.ComplexNumber cnSmallDLHS = new org.drip.numerical.fourier.ComplexNumber (dblB,
 				-1. * _fphp.rho() * _fphp.sigma() * dblFreq);
 
-			org.drip.quant.fourier.ComplexNumber cnSmallD = org.drip.quant.fourier.ComplexNumber.Square
+			org.drip.numerical.fourier.ComplexNumber cnSmallD = org.drip.numerical.fourier.ComplexNumber.Square
 				(cnSmallDLHS);
 
 			if (null == cnSmallD) return null;
 
 			double dblSigmaScaler = _fphp.sigma() * _fphp.sigma();
 
-			if (null == (cnSmallD = org.drip.quant.fourier.ComplexNumber.Add (cnSmallD, new
-				org.drip.quant.fourier.ComplexNumber (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
+			if (null == (cnSmallD = org.drip.numerical.fourier.ComplexNumber.Add (cnSmallD, new
+				org.drip.numerical.fourier.ComplexNumber (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
 					* dblFreq * dblU))))
 				return null;
 
-			if (null == (cnSmallD = org.drip.quant.fourier.ComplexNumber.SquareRoot (cnSmallD))) return null;
+			if (null == (cnSmallD = org.drip.numerical.fourier.ComplexNumber.SquareRoot (cnSmallD))) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnGNumerator = org.drip.quant.fourier.ComplexNumber.Add
+			org.drip.numerical.fourier.ComplexNumber cnGNumerator = org.drip.numerical.fourier.ComplexNumber.Add
 				(cnSmallDLHS, cnSmallD);
 
 			if (null == cnGNumerator) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnG = org.drip.quant.fourier.ComplexNumber.Subtract
+			org.drip.numerical.fourier.ComplexNumber cnG = org.drip.numerical.fourier.ComplexNumber.Subtract
 				(cnSmallDLHS, cnSmallD);
 
 			if (null == cnG) return null;
 
-			if (null == (cnG = org.drip.quant.fourier.ComplexNumber.Divide (cnGNumerator, cnG))) return null;
+			if (null == (cnG = org.drip.numerical.fourier.ComplexNumber.Divide (cnGNumerator, cnG))) return null;
 
 			int iM = 0;
 			int iN = 0;
 
-			if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
+			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
 				iM = (int) ((cnG.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
 
@@ -318,91 +318,91 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					(2. * java.lang.Math.PI));
 			}
 
-			org.drip.quant.fourier.ComplexNumber cnExpTTEScaledSmallD =
-				org.drip.quant.fourier.ComplexNumber.Scale (cnSmallD, dbTimeToExpiry);
+			org.drip.numerical.fourier.ComplexNumber cnExpTTEScaledSmallD =
+				org.drip.numerical.fourier.ComplexNumber.Scale (cnSmallD, dbTimeToExpiry);
 
 			if (null == cnExpTTEScaledSmallD) return null;
 
-			if (null == (cnExpTTEScaledSmallD = org.drip.quant.fourier.ComplexNumber.Exponentiate
+			if (null == (cnExpTTEScaledSmallD = org.drip.numerical.fourier.ComplexNumber.Exponentiate
 				(cnExpTTEScaledSmallD)))
 				return null;
 
-			org.drip.quant.fourier.ComplexNumber cnD = new org.drip.quant.fourier.ComplexNumber (1. -
+			org.drip.numerical.fourier.ComplexNumber cnD = new org.drip.numerical.fourier.ComplexNumber (1. -
 				cnExpTTEScaledSmallD.real(), -1. * cnExpTTEScaledSmallD.imaginary());
 
-			org.drip.quant.fourier.ComplexNumber cnInvGExpTTEScaledSmallD =
-				org.drip.quant.fourier.ComplexNumber.Multiply (cnG, cnExpTTEScaledSmallD);
+			org.drip.numerical.fourier.ComplexNumber cnInvGExpTTEScaledSmallD =
+				org.drip.numerical.fourier.ComplexNumber.Multiply (cnG, cnExpTTEScaledSmallD);
 
 			if (null == cnInvGExpTTEScaledSmallD) return null;
 
-			cnInvGExpTTEScaledSmallD = new org.drip.quant.fourier.ComplexNumber (1. -
+			cnInvGExpTTEScaledSmallD = new org.drip.numerical.fourier.ComplexNumber (1. -
 				cnInvGExpTTEScaledSmallD.real(), -1. * cnInvGExpTTEScaledSmallD.imaginary());
 
-			if (null == (cnD = org.drip.quant.fourier.ComplexNumber.Divide (cnD, cnInvGExpTTEScaledSmallD)))
+			if (null == (cnD = org.drip.numerical.fourier.ComplexNumber.Divide (cnD, cnInvGExpTTEScaledSmallD)))
 				return null;
 
-			if (null == (cnD = org.drip.quant.fourier.ComplexNumber.Multiply (cnGNumerator, cnD)))
+			if (null == (cnD = org.drip.numerical.fourier.ComplexNumber.Multiply (cnGNumerator, cnD)))
 				return null;
 
 			dblSigmaScaler = 1. / dblSigmaScaler;
 
-			if (null == (cnD = org.drip.quant.fourier.ComplexNumber.Scale (cnD, dblSigmaScaler))) return null;
+			if (null == (cnD = org.drip.numerical.fourier.ComplexNumber.Scale (cnD, dblSigmaScaler))) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnC = new org.drip.quant.fourier.ComplexNumber (1. -
+			org.drip.numerical.fourier.ComplexNumber cnC = new org.drip.numerical.fourier.ComplexNumber (1. -
 				cnG.real(), -1. * cnG.imaginary());
 
-			if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
+			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.quant.fourier.PhaseAdjuster.PowerLogPhaseTracker
+				if (null == (cnC = org.drip.numerical.fourier.PhaseAdjuster.PowerLogPhaseTracker
 					(cnInvGExpTTEScaledSmallD, cnC, iN, iM)))
 					return null;
-			} else if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
+			} else if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
 				== _fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Logarithm (cnC))) return null;
+				if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Logarithm (cnC))) return null;
 
-				cnC = new org.drip.quant.fourier.ComplexNumber (cnC.real(), rcpt.updateAndApply
+				cnC = new org.drip.numerical.fourier.ComplexNumber (cnC.real(), rcpt.updateAndApply
 					(cnC.argument(), true));
 			}
 
 			double dblCorrectedPhase = cnC.argument();
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Scale (cnC, -2.))) return null;
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Scale (cnC, -2.))) return null;
 
-			org.drip.quant.fourier.ComplexNumber cnTTEScaledGNumerator =
-				org.drip.quant.fourier.ComplexNumber.Scale (cnGNumerator, dbTimeToExpiry);
+			org.drip.numerical.fourier.ComplexNumber cnTTEScaledGNumerator =
+				org.drip.numerical.fourier.ComplexNumber.Scale (cnGNumerator, dbTimeToExpiry);
 
 			if (null == cnTTEScaledGNumerator) return null;
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Add (cnTTEScaledGNumerator, cnC)))
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Add (cnTTEScaledGNumerator, cnC)))
 				return null;
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Scale (cnC, dblA * dblSigmaScaler)))
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Scale (cnC, dblA * dblSigmaScaler)))
 				return null;
 
-			if (null == (cnC = org.drip.quant.fourier.ComplexNumber.Add (new
-				org.drip.quant.fourier.ComplexNumber (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq),
+			if (null == (cnC = org.drip.numerical.fourier.ComplexNumber.Add (new
+				org.drip.numerical.fourier.ComplexNumber (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq),
 					cnC)))
 				return null;
 
-			org.drip.quant.fourier.ComplexNumber cnF = org.drip.quant.fourier.ComplexNumber.Scale (cnD,
+			org.drip.numerical.fourier.ComplexNumber cnF = org.drip.numerical.fourier.ComplexNumber.Scale (cnD,
 				dblInitialVolatility);
 
 			if (null == cnF) return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Add (cnF, new
-				org.drip.quant.fourier.ComplexNumber (0., java.lang.Math.log (dblSpot) * dblFreq))))
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Add (cnF, new
+				org.drip.numerical.fourier.ComplexNumber (0., java.lang.Math.log (dblSpot) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Add (cnF, cnC))) return null;
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Add (cnF, cnC))) return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Add (cnF, new
-				org.drip.quant.fourier.ComplexNumber (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Add (cnF, new
+				org.drip.numerical.fourier.ComplexNumber (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Exponentiate (cnF))) return null;
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Exponentiate (cnF))) return null;
 
-			if (null == (cnF = org.drip.quant.fourier.ComplexNumber.Divide (cnF, new
-				org.drip.quant.fourier.ComplexNumber (0., dblFreq))))
+			if (null == (cnF = org.drip.numerical.fourier.ComplexNumber.Divide (cnF, new
+				org.drip.numerical.fourier.ComplexNumber (0., dblFreq))))
 				return null;
 
 			return new PhaseCorrectedF (dblCorrectedPhase, cnF);
@@ -423,9 +423,9 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblFreq,
 		final double dblB,
 		final double dblU,
-		final org.drip.quant.fourier.RotationCountPhaseTracker rcpt)
+		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
 	{
-		if (org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+		if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
 			_fphp.phaseTrackerType() && null == rcpt)
 			return null;
 
@@ -477,10 +477,10 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblInitialVolatility,
 		final boolean bLeft)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||!org.drip.quant.common.NumberUtil.IsValid
-			(dblSpot) ||!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dbTimeToExpiry) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||!org.drip.numerical.common.NumberUtil.IsValid
+			(dblSpot) ||!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dbTimeToExpiry) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))
 			return null;
 
 		int i = 0;
@@ -488,9 +488,9 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		double dblU2 = -0.5;
 		double dblPreviousPhase = 0.;
 
-		org.drip.quant.fourier.RotationCountPhaseTracker rcpt =
-			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
+		org.drip.numerical.fourier.RotationCountPhaseTracker rcpt =
+			org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.numerical.fourier.RotationCountPhaseTracker() : null;
 
 		double dblA = _fphp.kappa() * _fphp.theta();
 
@@ -516,11 +516,11 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
 							return null;
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
 							return null;
 					} else
 						return null;
@@ -544,20 +544,20 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))
 			throw new java.lang.Exception ("HestonStochasticVolatilityAlgorithm::payoff => Invalid Inputs");
 
-		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =
-			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
+		org.drip.numerical.fourier.RotationCountPhaseTracker rcpt1 =
+			org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.numerical.fourier.RotationCountPhaseTracker() : null;
 
-		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =
-			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
+		org.drip.numerical.fourier.RotationCountPhaseTracker rcpt2 =
+			org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.numerical.fourier.RotationCountPhaseTracker() : null;
 
 		double dblA = _fphp.kappa() * _fphp.theta();
 
@@ -588,12 +588,12 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt1.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
 							throw new java.lang.Exception
 								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt1.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
 							throw new java.lang.Exception
 								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else
@@ -613,12 +613,12 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt2.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
 							throw new java.lang.Exception
 								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt2.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
 							throw new java.lang.Exception
 								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else
@@ -651,20 +651,20 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final boolean bIsForward,
 		final double dblInitialVolatility)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||
-						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))
 			return null;
 
-		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =
-			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
+		org.drip.numerical.fourier.RotationCountPhaseTracker rcpt1 =
+			org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.numerical.fourier.RotationCountPhaseTracker() : null;
 
-		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =
-			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
+		org.drip.numerical.fourier.RotationCountPhaseTracker rcpt2 =
+			org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.numerical.fourier.RotationCountPhaseTracker() : null;
 
 		double dblA = _fphp.kappa() * _fphp.theta();
 
@@ -695,11 +695,11 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt1.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
 							return null;
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt1.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
 							return null;
 					} else
 						return null;
@@ -717,11 +717,11 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt2.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
 							return null;
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt2.setDirection
-							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
 							return null;
 					} else
 						return null;

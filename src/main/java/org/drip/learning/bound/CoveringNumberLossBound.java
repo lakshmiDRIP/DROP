@@ -154,8 +154,8 @@ public class CoveringNumberLossBound {
 		throws java.lang.Exception
 	{
 		if (null == (_funcSampleCoefficient = funcSampleCoefficient) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEpsilonExponent = dblEpsilonExponent) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblExponentScaler = dblExponentScaler))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEpsilonExponent = dblEpsilonExponent) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblExponentScaler = dblExponentScaler))
 			throw new java.lang.Exception ("CoveringNumberLossBound ctr: Invalid Inputs");
 	}
 
@@ -210,7 +210,7 @@ public class CoveringNumberLossBound {
 		final double dblEpsilon)
 		throws java.lang.Exception
 	{
-		if (0 >= iSampleSize || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
+		if (0 >= iSampleSize || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
 			throw new java.lang.Exception
 				("CoveringNumberLossBound::deviationProbabilityUpperBound => Invalid Inputs");
 

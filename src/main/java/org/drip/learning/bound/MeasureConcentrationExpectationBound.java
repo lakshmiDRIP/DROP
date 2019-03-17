@@ -113,8 +113,8 @@ public class MeasureConcentrationExpectationBound {
 		final double dblExponent)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblConstant = dblConstant) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblExponent = dblExponent))
 			throw new java.lang.Exception ("MeasureConcentrationExpectationBound ctr: Invalid Inputs!");
 	}
 

@@ -148,7 +148,7 @@ public class HistogramTestSetting
 		throws java.lang.Exception
 	{
 		if (null == (_plottingPositionGenerator = plottingPositionGenerator) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pValueThreshold = pValueThreshold) ||
 				0. >= _pValueThreshold)
 		{
 			throw new java.lang.Exception ("HistogramTestSetting Constructor => Invalid Setting");

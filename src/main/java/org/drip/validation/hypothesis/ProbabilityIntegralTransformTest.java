@@ -149,7 +149,7 @@ public class ProbabilityIntegralTransformTest
 		final double testStatistic,
 		final org.drip.validation.hypothesis.SignificanceTestSetting pTestSetting)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || null == pTestSetting)
 		{
 			return null;
 		}

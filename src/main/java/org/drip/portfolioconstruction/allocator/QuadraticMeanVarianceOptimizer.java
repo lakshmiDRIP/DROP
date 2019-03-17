@@ -196,8 +196,8 @@ public class QuadraticMeanVarianceOptimizer extends
 				adblRHS[i] = adblEqualityConstraintValue[i - iNumAsset];
 		}
 
-		org.drip.quant.linearalgebra.LinearizationOutput lo =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (lm.hessian
+		org.drip.numerical.linearalgebra.LinearizationOutput lo =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (lm.hessian
 				(adblVariate), adblRHS);
 
 		if (null == lo) return null;
@@ -244,8 +244,8 @@ public class QuadraticMeanVarianceOptimizer extends
 
 		double[] adblVariate = new double[iLagrangianDimension];
 
-		org.drip.quant.linearalgebra.LinearizationOutput lo =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (lm.hessian
+		org.drip.numerical.linearalgebra.LinearizationOutput lo =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (lm.hessian
 				(adblVariate), lm.jacobian (adblVariate));
 
 		if (null == lo) return null;

@@ -1,8 +1,8 @@
 
 package org.drip.sample.alm;
 
+import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.alm.*;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

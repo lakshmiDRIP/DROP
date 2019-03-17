@@ -87,12 +87,12 @@ package org.drip.function.definition;
  */
 
 public abstract class R1ToR1 {
-	protected org.drip.quant.calculus.DerivativeControl _dc = null;
+	protected org.drip.numerical.differentiation.DerivativeControl _dc = null;
 
 	protected R1ToR1 (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();
+		if (null == (_dc = dc)) _dc = new org.drip.numerical.differentiation.DerivativeControl();
 	}
 
 	/**
@@ -119,12 +119,12 @@ public abstract class R1ToR1 {
 	 * @return The Derivative
 	 */
 
-	public org.drip.quant.calculus.Differential differential (
+	public org.drip.numerical.differentiation.Differential differential (
 		final double dblVariate,
 		final double dblOFBase,
 		final int iOrder)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
 
 		double dblDerivative = 0.;
 		double dblOrderedVariateInfinitesimal = 1.;
@@ -142,7 +142,7 @@ public abstract class R1ToR1 {
 			if (0 != i) dblOrderedVariateInfinitesimal *= (2. * dblVariateInfinitesimal);
 
 			try {
-				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *
+				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *
 					evaluate (dblVariate + dblVariateInfinitesimal * (iOrder - 2. * i));
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
@@ -152,7 +152,7 @@ public abstract class R1ToR1 {
 		}
 
 		try {
-			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);
+			return new org.drip.numerical.differentiation.Differential (dblOrderedVariateInfinitesimal, dblDerivative);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -169,7 +169,7 @@ public abstract class R1ToR1 {
 	 * @return The Derivative
 	 */
 
-	public org.drip.quant.calculus.Differential differential (
+	public org.drip.numerical.differentiation.Differential differential (
 		final double dblVariate,
 		final int iOrder)
 	{
@@ -217,7 +217,7 @@ public abstract class R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 	}
 
 	/**
@@ -271,8 +271,8 @@ public abstract class R1ToR1 {
 		final double dblVariateLeft,
 		final double dblVariateRight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft >= dblVariateRight)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariateLeft) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft >= dblVariateRight)
 			return null;
 
 		org.drip.function.definition.VariateOutputPair vop = maxima();
@@ -350,8 +350,8 @@ public abstract class R1ToR1 {
 		final double dblVariateLeft,
 		final double dblVariateRight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft >= dblVariateRight)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariateLeft) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft >= dblVariateRight)
 			return null;
 
 		org.drip.function.definition.VariateOutputPair vop = minima();

@@ -124,7 +124,7 @@ public class GapTestOutcomeAggregate
 		throws java.lang.Exception
 	{
 		if (null == (_eventOutcomeMap = eventOutcomeMap) || 0 == _eventOutcomeMap.size() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_distance = distance))
+			!org.drip.numerical.common.NumberUtil.IsValid (_distance = distance))
 		{
 			throw new java.lang.Exception ("GapTestOutcomeAggregate Constructor => Invalid inputs");
 		}

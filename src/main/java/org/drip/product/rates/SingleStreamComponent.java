@@ -329,7 +329,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		return _strCode;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -354,16 +354,16 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 
 			double dblDFMaturity = dcFunding.df (maturityDate().julian());
 
-			org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure
+			org.drip.numerical.differentiation.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure
 				(iEffectiveDate, "Rate");
 
-			org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure
+			org.drip.numerical.differentiation.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure
 				(maturityDate().julian(), "Rate");
 
 			if (null == wjDFEffective || null == wjDFMaturity) return null;
 
-			org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack = new
-				org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());
+			org.drip.numerical.differentiation.WengertJacobian wjPVDFMicroJack = new
+				org.drip.numerical.differentiation.WengertJacobian (1, wjDFMaturity.numParameters());
 
 			for (int i = 0; i < wjDFMaturity.numParameters(); ++i) {
 				if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, i, wjDFMaturity.firstDerivative (0,
@@ -383,7 +383,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
@@ -406,16 +406,16 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 
 				double dblDFMaturity = dcFunding.df (maturityDate().julian());
 
-				org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure
+				org.drip.numerical.differentiation.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure
 					(iEffectiveDate, "Rate");
 
-				org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure
+				org.drip.numerical.differentiation.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure
 					(maturityDate().julian(), "Rate");
 
 				if (null == wjDFEffective || null == wjDFMaturity) return null;
 
-				org.drip.quant.calculus.WengertJacobian wjDFMicroJack = new
-					org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());
+				org.drip.numerical.differentiation.WengertJacobian wjDFMicroJack = new
+					org.drip.numerical.differentiation.WengertJacobian (1, wjDFMaturity.numParameters());
 
 				for (int i = 0; i < wjDFMaturity.numParameters(); ++i) {
 					if (!wjDFMicroJack.accumulatePartialFirstDerivative (0, i,

@@ -132,8 +132,8 @@ public class CollateralGroupVertexExposure
 		final double tradePayment)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_tradePayment = tradePayment))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_tradePayment = tradePayment))
 		{
 			throw new java.lang.Exception ("CollateralGroupVertexExposure Constructor => Invalid Inputs");
 		}

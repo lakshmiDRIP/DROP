@@ -101,7 +101,7 @@ public class AssetBounds {
 		_dblLower = dblLower;
 		_dblUpper = dblUpper;
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblLower) && org.drip.quant.common.NumberUtil.IsValid
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblLower) && org.drip.numerical.common.NumberUtil.IsValid
 			(_dblUpper) && _dblLower >= _dblUpper)
 			throw new java.lang.Exception ("AssetBounds Constructor => Invalid Inputs");
 	}
@@ -136,13 +136,13 @@ public class AssetBounds {
 
 	public double feasibleStart()
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLower) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper))
 			return 0.;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower)) return 0.5 * _dblUpper;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLower)) return 0.5 * _dblUpper;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblUpper)) return 2.0 * _dblLower;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper)) return 2.0 * _dblLower;
 
 		return 0.5 * (_dblLower + _dblUpper);
 	}
@@ -161,16 +161,16 @@ public class AssetBounds {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("AssetBounds::localize => Invalid Inputs");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLower) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblUpper))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLower) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper))
 			return dblVariate;
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblLower) && dblVariate < _dblLower) return _dblLower;
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblLower) && dblVariate < _dblLower) return _dblLower;
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblUpper) && dblVariate > _dblUpper) return _dblUpper;
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblUpper) && dblVariate > _dblUpper) return _dblUpper;
 
 		return dblVariate;
 	}

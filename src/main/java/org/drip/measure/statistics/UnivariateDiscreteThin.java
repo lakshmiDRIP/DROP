@@ -153,7 +153,7 @@ public class UnivariateDiscreteThin {
 			throw new java.lang.Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iSequenceSize; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblSequence[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblSequence[i]))
 				throw new java.lang.Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
 
 			if (0 == i) {

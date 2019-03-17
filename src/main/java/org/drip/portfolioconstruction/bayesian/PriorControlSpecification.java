@@ -115,8 +115,8 @@ public class PriorControlSpecification {
 		final double dblTau)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTau = dblTau))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTau = dblTau))
 			throw new java.lang.Exception ("PriorControlSpecification Constructor => Invalid Inputs");
 
 		_bAlternateReferenceModel = bAlternateReferenceModel;

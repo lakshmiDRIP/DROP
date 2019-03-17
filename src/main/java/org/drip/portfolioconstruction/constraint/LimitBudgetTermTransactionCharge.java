@@ -122,7 +122,7 @@ public class LimitBudgetTermTransactionCharge extends
 		);
 
 		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))
 			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
 
 		int iNumAsset = _adblInitialHoldings.length;
@@ -168,7 +168,7 @@ public class LimitBudgetTermTransactionCharge extends
 				double dblConstraintValue = 0.;
 				int iNumAsset = adblPrice.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitBudgetTermTransactionCharge::rdToR1::evaluate => Invalid Variate Dimension");

@@ -127,9 +127,9 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 		final double dblTimeInterval)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeftHoldings = dblLeftHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblRightHoldings = dblRightHoldings) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTimeInterval = dblTimeInterval) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeftHoldings = dblLeftHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblRightHoldings = dblRightHoldings) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblTimeInterval = dblTimeInterval) || 0. >=
 					_dblTimeInterval)
 			throw new java.lang.Exception ("Slice Constructor => Invalid Inputs!");
 	}

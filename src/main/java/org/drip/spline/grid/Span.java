@@ -222,7 +222,7 @@ public interface Span {
 	 * @return Jacobian of the Response Derivative to the Manifest Measure at the Ordinate
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	public abstract org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder);

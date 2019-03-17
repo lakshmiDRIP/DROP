@@ -1,10 +1,10 @@
 
 package org.drip.sample.stochasticvolatility;
 
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.fourier.PhaseAdjuster;
 import org.drip.param.pricer.HestonOptionPricerParams;
 import org.drip.pricer.option.*;
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.fourier.PhaseAdjuster;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

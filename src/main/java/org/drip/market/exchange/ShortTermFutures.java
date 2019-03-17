@@ -101,7 +101,7 @@ public class ShortTermFutures {
 		throws java.lang.Exception
 	{
 		if (null == (_astrExchange = astrExchange) || 0 == _astrExchange.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional))
 			throw new java.lang.Exception ("ShortTermFutures ctr: Invalid Inputs");
 	}
 

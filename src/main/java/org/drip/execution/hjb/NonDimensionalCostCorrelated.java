@@ -156,11 +156,11 @@ public class NonDimensionalCostCorrelated extends org.drip.execution.hjb.NonDime
 	{
 		super (dblRealization, dblNonDimensionalTradeRate);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblVolatilityJacobian =
-						dblVolatilityJacobian) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLiquidityGradient = dblLiquidityGradient) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLiquidityJacobian = dblLiquidityJacobian) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatilityGradient = dblVolatilityGradient) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatilityJacobian =
+						dblVolatilityJacobian) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dblLiquidityVolatilityGradient = dblLiquidityVolatilityGradient))
 			throw new java.lang.Exception ("NonDimensionalCostCorrelated Constructor => Invalid Inputs");
 	}

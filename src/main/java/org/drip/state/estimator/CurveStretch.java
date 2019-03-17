@@ -191,7 +191,7 @@ public class CurveStretch extends org.drip.spline.stretch.CalibratableMultiSegme
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception ("CurveStretch.inBuiltRange => Invalid Inputs");
 
 		return dblPredictorOrdinate >= getLeftPredictorOrdinateEdge() && dblPredictorOrdinate <=

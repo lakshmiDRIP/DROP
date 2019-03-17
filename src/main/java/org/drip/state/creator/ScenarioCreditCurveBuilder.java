@@ -220,7 +220,7 @@ public class ScenarioCreditCurveBuilder {
 		final double[] adblSurvivalProbability,
 		final double dblRecovery)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblRecovery)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery)) return null;
 
 		try {
 			double dblSurvivalBegin = 1.;
@@ -232,7 +232,7 @@ public class ScenarioCreditCurveBuilder {
 			aiRecoveryDate[0] = iStartDate;
 
 			for (int i = 0; i < adblSurvivalProbability.length; ++i) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblSurvivalProbability[i]) ||
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblSurvivalProbability[i]) ||
 					aiSurvivalDate[i] <= iPeriodBegin || dblSurvivalBegin < adblSurvivalProbability[i])
 					return null;
 
@@ -314,9 +314,9 @@ public class ScenarioCreditCurveBuilder {
 		final int iHazardDate,
 		final double dblRecovery)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (iStartDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblHazardRate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblRecovery))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (iStartDate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblHazardRate) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery))
 			return null;
 
 		double[] adblHazard = new double[1];
@@ -361,7 +361,7 @@ public class ScenarioCreditCurveBuilder {
 		final double dblRecovery)
 	{
 		if (null == dtStart || null == adblHazardRate || null == aiDate || adblHazardRate.length !=
-			aiDate.length || !org.drip.quant.common.NumberUtil.IsValid (dblRecovery))
+			aiDate.length || !org.drip.numerical.common.NumberUtil.IsValid (dblRecovery))
 			return null;
 
 		try {

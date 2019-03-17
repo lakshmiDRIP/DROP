@@ -137,10 +137,10 @@ public class TransactionRealization {
 		throws java.lang.Exception
 	{
 		if (null == (_tfPermanent = tfPermanent) || null == (_tfTemporary = tfTemporary) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) || 0. > _dblVolatility
-				|| !org.drip.quant.common.NumberUtil.IsValid (_dblX = dblX) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblT = dblT) || 0. > _dblT ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblTPost = dblTPost) || _dblT >=
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) || 0. > _dblVolatility
+				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblX = dblX) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblT = dblT) || 0. > _dblT ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblTPost = dblTPost) || _dblT >=
 							_dblTPost)
 			throw new java.lang.Exception  ("TransactionRealization Constructor => Invalid Inputs");
 
@@ -226,8 +226,8 @@ public class TransactionRealization {
 		final double dblIRandom,
 		final double dblJRandom)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblIRandom) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblJRandom))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIRandom) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblJRandom))
 			return null;
 
 		try {

@@ -118,8 +118,8 @@ public class CarlStephaniNormedBounds {
 		final double dblEntropyBoundNormB)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEntropyBoundNormA = dblEntropyBoundNormA) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEntropyBoundNormB = dblEntropyBoundNormB))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEntropyBoundNormA = dblEntropyBoundNormA) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblEntropyBoundNormB = dblEntropyBoundNormB))
 			throw new java.lang.Exception ("CarlStephaniNormedBounds Constructor => Invalid Inputs");
 	}
 

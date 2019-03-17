@@ -126,8 +126,8 @@ public class SimpleBalanceSheet
 		final double liability)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_asset = asset) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_liability = liability))
 		{
 			throw new java.lang.Exception ("SimpleBalanceSheet Constructor => Invalid Inputs");
 		}
@@ -177,7 +177,7 @@ public class SimpleBalanceSheet
 	public SimpleBalanceSheet derivativeInfusion (
 		final double dblDerivativeValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDerivativeValue) || 0. > dblDerivativeValue)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDerivativeValue) || 0. > dblDerivativeValue)
 		{
 			return null;
 		}

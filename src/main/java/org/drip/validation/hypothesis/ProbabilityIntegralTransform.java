@@ -173,7 +173,7 @@ public class ProbabilityIntegralTransform
 		final double testStatistic)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic))
 		{
 			throw new java.lang.Exception ("ProbabilityIntegralTransform::pValue => Invalid Inputs");
 		}
@@ -192,7 +192,7 @@ public class ProbabilityIntegralTransform
 
 			if (testStatistic < testStatisticKey)
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyPrevious))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (testStatisticKeyPrevious))
 				{
 					return 0.;
 				}
@@ -204,7 +204,7 @@ public class ProbabilityIntegralTransform
 			testStatisticKeyPrevious = testStatisticKey;
 		}
 
-		return !org.drip.quant.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||
+		return !org.drip.numerical.common.NumberUtil.IsValid (testStatisticKeyCurrent) ||
 			testStatistic >= testStatisticKeyCurrent ? 1. :
 			((testStatistic - testStatisticKeyPrevious) * _testStatisticPValueMap.get
 				(testStatisticKeyCurrent) +
@@ -227,7 +227,7 @@ public class ProbabilityIntegralTransform
 		final double pValue)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (pValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (pValue))
 		{
 			throw new java.lang.Exception ("ProbabilityIntegralTransform::testStatistic => Invalid Inputs");
 		}
@@ -246,7 +246,7 @@ public class ProbabilityIntegralTransform
 
 			if (pValue < pValueKey)
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (pValueKeyPrevious))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (pValueKeyPrevious))
 				{
 					return _pValueTestStatisticMap.get (pValueKey);
 				}

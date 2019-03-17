@@ -115,7 +115,7 @@ public class GeneralizedMacLaurinSeriesGenerator
 	 * @return E<sub>n</sub> erf MacLaurin Series Generator
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesGenerator ERF (
+	public static final org.drip.numerical.estimation.R1ToR1SeriesGenerator ERF (
 		final int degree,
 		final int termCount)
 	{
@@ -136,7 +136,7 @@ public class GeneralizedMacLaurinSeriesGenerator
 
 		try
 		{
-			return new org.drip.function.numerical.R1ToR1SeriesGenerator (
+			return new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
 				new org.drip.function.enerf.GeneralizedMacLaurinSeriesTerm (degree),
 				false,
 				termWeightMap

@@ -120,11 +120,11 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblC = dblC) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dblD = dblD))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblC = dblC) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (_dblD = dblD))
 			throw new java.lang.Exception ("SABRLIBORCapVolatility ctr: Invalid Inputs");
 	}
 
@@ -132,7 +132,7 @@ public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("SABRLIBORCapVolatility::evaluate => Invalid Inputs");
 
 		double dblDateGap = dblVariate - _dblEpoch;

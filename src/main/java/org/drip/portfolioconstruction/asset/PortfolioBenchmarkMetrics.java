@@ -105,12 +105,12 @@ public class PortfolioBenchmarkMetrics {
 		final double dblResidualReturn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBeta = dblBeta) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblActiveBeta = dblActiveBeta) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblActiveRisk = dblActiveRisk) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblActiveReturn = dblActiveReturn) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblResidualRisk = dblResidualRisk) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dblResidualReturn =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBeta = dblBeta) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblActiveBeta = dblActiveBeta) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblActiveRisk = dblActiveRisk) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblActiveReturn = dblActiveReturn) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblResidualRisk = dblResidualRisk) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (_dblResidualReturn =
 								dblResidualReturn))
 			throw new java.lang.Exception ("PortfolioBenchmarkMetrics Constructor => Invalid Inputs");
 	}

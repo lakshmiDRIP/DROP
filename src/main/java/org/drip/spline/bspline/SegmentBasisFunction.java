@@ -120,10 +120,10 @@ public abstract class SegmentBasisFunction extends org.drip.function.definition.
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeadingPredictorOrdinate =
-			dblLeadingPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeadingPredictorOrdinate =
+			dblLeadingPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblFollowingPredictorOrdinate = dblFollowingPredictorOrdinate) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblTrailingPredictorOrdinate =
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblTrailingPredictorOrdinate =
 						dblTrailingPredictorOrdinate) || _dblLeadingPredictorOrdinate >=
 							_dblFollowingPredictorOrdinate || _dblFollowingPredictorOrdinate >=
 								_dblTrailingPredictorOrdinate || 2 > (_iBSplineOrder = iBSplineOrder))

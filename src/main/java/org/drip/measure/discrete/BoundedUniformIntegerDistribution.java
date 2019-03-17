@@ -130,7 +130,7 @@ public class BoundedUniformIntegerDistribution extends org.drip.measure.continuo
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception
 				("BoundedUniformIntegerDistribution::cumulative => Invalid inputs");
 
@@ -153,7 +153,7 @@ public class BoundedUniformIntegerDistribution extends org.drip.measure.continuo
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
 			throw new java.lang.Exception
 				("BoundedUniformIntegerDistribution::invCumulative => Invalid inputs");
 
@@ -178,7 +178,7 @@ public class BoundedUniformIntegerDistribution extends org.drip.measure.continuo
 	    return (_iFinish - _iStart) * (_iFinish - _iStart) / 12.;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		int iGridWidth = _iFinish - _iStart;
 		double[] adblX = new double[iGridWidth];

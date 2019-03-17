@@ -196,7 +196,7 @@ public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVecto
 		double dblModeProbability = java.lang.Double.NaN;
 
 		for (double dblElement : elementSpace()) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblMode))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblMode))
 				dblModeProbability = _distR1.density (dblMode = dblElement);
 			else {
 				double dblElementProbability = _distR1.density (dblElement);

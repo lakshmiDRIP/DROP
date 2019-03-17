@@ -160,9 +160,9 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 	{
 		super (leDrift, leVolatility);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. >=
-				_dblBurstiness || !org.drip.quant.common.NumberUtil.IsValid (_dblRelaxationTime =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. >=
+				_dblBurstiness || !org.drip.numerical.common.NumberUtil.IsValid (_dblRelaxationTime =
 					dblRelaxationTime) || 0. >= _dblRelaxationTime)
 			throw new java.lang.Exception
 				("DiffusionEvaluatorOrnsteinUhlenbeck Constructor => Invalid Inputs");

@@ -144,7 +144,7 @@ public abstract class NormedRxToNormedRd {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
 
 		double[] adblSampleMetricNorm = sampleMetricNorm (gvvi);
 
@@ -176,7 +176,7 @@ public abstract class NormedRxToNormedRd {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
 
 		double[] adblSampleSupremumNorm = sampleSupremumNorm (gvvi);
 
@@ -233,7 +233,7 @@ public abstract class NormedRxToNormedRd {
 	public double[] populationCoveringNumber (
 		final double dblCover)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
 
 		double[] adblPopulationMetricNorm = populationMetricNorm();
 
@@ -263,7 +263,7 @@ public abstract class NormedRxToNormedRd {
 	public double[] populationSupremumCoveringNumber (
 		final double dblCover)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
 
 		double[] adblPopulationSupremumNorm = populationSupremumNorm();
 

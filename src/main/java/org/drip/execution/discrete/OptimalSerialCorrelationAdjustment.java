@@ -124,8 +124,8 @@ public class OptimalSerialCorrelationAdjustment {
 		final double dblGain)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblHoldingsShift = dblHoldingsShift) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblGain = dblGain))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHoldingsShift = dblHoldingsShift) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblGain = dblGain))
 			throw new java.lang.Exception
 				("OptimalSerialCorrelationAdjustment Contructor => Invalid Inputs");
 	}

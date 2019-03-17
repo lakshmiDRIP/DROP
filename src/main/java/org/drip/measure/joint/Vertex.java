@@ -97,8 +97,8 @@ public class Vertex {
 		final double[] adblValue)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || null == (_adblValue =
-			adblValue) || 0 == _adblValue.length || !org.drip.quant.common.NumberUtil.IsValid (_adblValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) || null == (_adblValue =
+			adblValue) || 0 == _adblValue.length || !org.drip.numerical.common.NumberUtil.IsValid (_adblValue))
 			throw new java.lang.Exception ("Vertex Constructor => Invalid Inputs");
 	}
 

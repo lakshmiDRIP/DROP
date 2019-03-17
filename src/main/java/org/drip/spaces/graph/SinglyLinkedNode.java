@@ -233,7 +233,7 @@ public class SinglyLinkedNode
 		final SinglyLinkedNode adjacent)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_value = value))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_value = value))
 		{
 			throw new java.lang.Exception ("SinglyLinkedNodeConstructor => Invalid Inputs");
 		}
@@ -334,7 +334,7 @@ public class SinglyLinkedNode
 	public SinglyLinkedNode locate (
 		final double value)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (value))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (value))
 		{
 			return null;
 		}
@@ -365,7 +365,7 @@ public class SinglyLinkedNode
 	public boolean containsValue (
 		final double value)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (value))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (value))
 		{
 			return false;
 		}
@@ -398,8 +398,8 @@ public class SinglyLinkedNode
 		final double locationNodeValue,
 		final double insertionNodeValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (locationNodeValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (insertionNodeValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (locationNodeValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (insertionNodeValue))
 		{
 			return false;
 		}
@@ -441,7 +441,7 @@ public class SinglyLinkedNode
 	public SinglyLinkedNode removeAt (
 		final double removalNodeValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (removalNodeValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (removalNodeValue))
 		{
 			return null;
 		}

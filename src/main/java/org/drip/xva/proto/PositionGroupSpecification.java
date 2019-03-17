@@ -139,7 +139,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		try
 		{
 			return new PositionGroupSpecification (
-				org.drip.quant.common.StringUtil.GUID(),
+				org.drip.numerical.common.StringUtil.GUID(),
 				name,
 				14,
 				14,
@@ -184,8 +184,8 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		final double hedgeError,
 		final int closeOutScheme)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (clientThreshold) || 0. > clientThreshold ||
-			!org.drip.quant.common.NumberUtil.IsValid (dealerThreshold) || 0. < dealerThreshold)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (clientThreshold) || 0. > clientThreshold ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dealerThreshold) || 0. < dealerThreshold)
 		{
 			return null;
 		}
@@ -193,7 +193,7 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 		try
 		{
 			return new PositionGroupSpecification (
-				org.drip.quant.common.StringUtil.GUID(),
+				org.drip.numerical.common.StringUtil.GUID(),
 				name,
 				14,
 				14,
@@ -259,9 +259,9 @@ public class PositionGroupSpecification extends org.drip.xva.proto.ObjectSpecifi
 
 		if (-1 >= (_clientDefaultWindow = clientDefaultWindow) ||
 			-1 >= (_dealerDefaultWindow = dealerDefaultWindow) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_hedgeError = hedgeError))
+			!org.drip.numerical.common.NumberUtil.IsValid (_minimumTransferAmount = minimumTransferAmount) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_independentAmount = independentAmount) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_hedgeError = hedgeError))
 		{
 			throw new java.lang.Exception ("PositionGroupSpecification Constructor => Invalid Inputs");
 		}

@@ -112,9 +112,9 @@ public class RiskObjectiveUtilityMultivariate extends org.drip.function.definiti
 		super (null);
 
 		if (null == (_aadblCovarianceMatrix = aadblCovarianceMatrix) || null == (_adblExpectedReturns =
-			adblExpectedReturns) || !org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion =
-				dblRiskAversion) || !org.drip.quant.common.NumberUtil.IsValid (_dblRiskTolerance =
-					dblRiskTolerance) || !org.drip.quant.common.NumberUtil.IsValid (_dblRiskFreeRate =
+			adblExpectedReturns) || !org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion =
+				dblRiskAversion) || !org.drip.numerical.common.NumberUtil.IsValid (_dblRiskTolerance =
+					dblRiskTolerance) || !org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate =
 						dblRiskFreeRate))
 			throw new java.lang.Exception ("RiskObjectiveUtilityMultivariate Constructor => Invalid Inputs");
 
@@ -125,8 +125,8 @@ public class RiskObjectiveUtilityMultivariate extends org.drip.function.definiti
 
 		for (int i = 0; i < iSize; ++i) {
 			if (null == _aadblCovarianceMatrix[i] || iSize != _aadblCovarianceMatrix[i].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_adblExpectedReturns[i]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_aadblCovarianceMatrix[i]) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_adblExpectedReturns[i]))
 				throw new java.lang.Exception
 					("RiskObjectiveUtilityMultivariate Constructor => Invalid Inputs");
 		}
@@ -202,7 +202,7 @@ public class RiskObjectiveUtilityMultivariate extends org.drip.function.definiti
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 			throw new java.lang.Exception ("RiskObjectiveUtilityMultivariate::evaluate => Invalid Inputs");
 
 		double dblValue = 0.;
@@ -225,7 +225,7 @@ public class RiskObjectiveUtilityMultivariate extends org.drip.function.definiti
 	@Override public double[] jacobian (
 		final double[] adblVariate)
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate)) return null;
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate)) return null;
 
 		int iDimension = adblVariate.length;
 		double[] adblJacobian = new double[iDimension];

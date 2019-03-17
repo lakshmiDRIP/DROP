@@ -152,7 +152,7 @@ public class TrajectoryShortfallEstimator implements
 		final org.drip.execution.dynamics.WalkSuite[] aWS,
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingEquilibriumPrice) || null == aWS)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartingEquilibriumPrice) || null == aWS)
 			return null;
 
 		double[] adblExecutionTimeNode = _tt.executionTimeNode();

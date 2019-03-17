@@ -167,8 +167,8 @@ public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.Gen
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-		if (iExpiryDate <= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==
-			dcFunding || !org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility))
+		if (iExpiryDate <= iSpotDate || !org.drip.numerical.common.NumberUtil.IsValid (dblStrike) || null ==
+			dcFunding || !org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility))
 			throw new java.lang.Exception ("FokkerPlanckGenerator::payoff => Invalid Inputs");
 
 		return payoff (dblStrike, 1. * (iExpiryDate - iSpotDate) / 365.25, dcFunding.libor (iSpotDate,
@@ -205,7 +205,7 @@ public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.Gen
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-		if (iExpiryDate <= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==
+		if (iExpiryDate <= iSpotDate || !org.drip.numerical.common.NumberUtil.IsValid (dblStrike) || null ==
 			dcFunding || null == funcVolatilityR1ToR1)
 			throw new java.lang.Exception ("FokkerPlanckGenerator::payoff => Invalid Inputs");
 
@@ -255,8 +255,8 @@ public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.Gen
 		final boolean bIsForward,
 		final double dblIntegratedSurfaceVariance)
 	{
-		if (iExpiryDate <= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==
-			dcFunding || !org.drip.quant.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))
+		if (iExpiryDate <= iSpotDate || !org.drip.numerical.common.NumberUtil.IsValid (dblStrike) || null ==
+			dcFunding || !org.drip.numerical.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))
 			return null;
 
 		double dblTimeToExpiry = 1. * (iExpiryDate - iSpotDate) / 365.25;
@@ -297,7 +297,7 @@ public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.Gen
 		final boolean bIsForward,
 		final org.drip.function.definition.R1ToR1 funcVolatilityR1ToR1)
 	{
-		if (iExpiryDate <= iSpotDate || !org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null ==
+		if (iExpiryDate <= iSpotDate || !org.drip.numerical.common.NumberUtil.IsValid (dblStrike) || null ==
 			dcFunding || null == funcVolatilityR1ToR1)
 			return null;
 

@@ -197,7 +197,7 @@ public class ContinuousAlmgrenChriss extends org.drip.execution.nonadaptive.Stat
 				final double dblTime)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 					throw new java.lang.Exception
 						("ContinuousAlmgrenChriss::Holdings::evaluate => Invalid Inputs");
 
@@ -213,7 +213,7 @@ public class ContinuousAlmgrenChriss extends org.drip.execution.nonadaptive.Stat
 				final double dblTime)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTime))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))
 					throw new java.lang.Exception
 						("ContinuousAlmgrenChriss::TradeRate::evaluate => Invalid Inputs");
 
@@ -230,7 +230,7 @@ public class ContinuousAlmgrenChriss extends org.drip.execution.nonadaptive.Stat
 			{
 				double dblTradeRate = r1ToR1TradeRate.evaluate (dblTime);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTradeRate))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeRate))
 					throw new java.lang.Exception
 						("ContinuousAlmgrenChriss::ExpectationRate::evaluate => Invalid Inputs");
 

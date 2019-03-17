@@ -120,7 +120,7 @@ public class LimitHoldingsTermModelDeviation extends
 		);
 
 		if (null == (_adblBenchmarkHoldings = adblBenchmarkHoldings) || 0 != _adblBenchmarkHoldings.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblBenchmarkHoldings))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblBenchmarkHoldings))
 			throw new java.lang.Exception
 				("LimitHoldingsTermModelDeviation Constructor => Invalid Selection");
 	}
@@ -152,7 +152,7 @@ public class LimitHoldingsTermModelDeviation extends
 				double dblConstraintValue = 0.;
 				int iNumAsset = _adblBenchmarkHoldings.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitHoldingsTermModelDeviation::rdToR1::evaluate => Invalid Variate Dimension");

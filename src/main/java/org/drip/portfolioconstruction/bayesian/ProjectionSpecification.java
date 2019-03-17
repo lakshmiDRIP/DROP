@@ -118,7 +118,7 @@ public class ProjectionSpecification {
 		int iNumProjection = _aadblAssetSpaceLoading.length;
 
 		for (int i = 0; i < iNumProjection; ++i) {
-			if (null == _aadblAssetSpaceLoading[i] || !org.drip.quant.common.NumberUtil.IsValid
+			if (null == _aadblAssetSpaceLoading[i] || !org.drip.numerical.common.NumberUtil.IsValid
 				(_aadblAssetSpaceLoading[i]))
 				throw new java.lang.Exception ("ProjectionSpecification Constructor => Invalid Inputs");
 		}

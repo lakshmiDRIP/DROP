@@ -128,9 +128,9 @@ public class AssetTransactionSettings {
 		final double dblBidAskSpread)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPrice = dblPrice) || 0. >= _dblPrice ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblBackgroundVolume = dblBackgroundVolume) || 0. >=
-				_dblBackgroundVolume || !org.drip.quant.common.NumberUtil.IsValid (_dblBidAskSpread =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPrice = dblPrice) || 0. >= _dblPrice ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblBackgroundVolume = dblBackgroundVolume) || 0. >=
+				_dblBackgroundVolume || !org.drip.numerical.common.NumberUtil.IsValid (_dblBidAskSpread =
 					dblBidAskSpread))
 			throw new java.lang.Exception ("AssetTransactionSettings Constructor => Invalid Inputs");
 	}

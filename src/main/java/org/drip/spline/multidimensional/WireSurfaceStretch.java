@@ -159,7 +159,7 @@ public class WireSurfaceStretch {
 		org.drip.spline.stretch.MultiSegmentSequence mss =
 			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
 				("org.drip.spline.multidimensional.WireSurfaceStretch@" +
-					org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
+					org.drip.numerical.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
 						org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 							org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE);
 
@@ -188,7 +188,7 @@ public class WireSurfaceStretch {
 	public org.drip.spline.grid.Span wireSpanYAnchor (
 		final double dblYAnchor)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblYAnchor)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYAnchor)) return null;
 
 		int iSize = _mapWireSpan.size();
 
@@ -231,7 +231,7 @@ public class WireSurfaceStretch {
 			return new org.drip.spline.grid.OverlappingStretchSpan
 				(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
 					("org.drip.spline.multidimensional.WireSurfaceStretch@" +
-						org.drip.quant.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
+						org.drip.numerical.common.StringUtil.GUID(), adblX, adblZ, aSCBC, null,
 							org.drip.spline.stretch.BoundarySettings.NaturalStandard(),
 								org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE));
 		} catch (java.lang.Exception e) {
@@ -252,7 +252,7 @@ public class WireSurfaceStretch {
 	public org.drip.spline.grid.Span wireSpanXAnchor (
 		final double dblXAnchor)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchor)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblXAnchor)) return null;
 
 		org.drip.spline.grid.Span spanPrev = null;
 		org.drip.spline.grid.Span spanCurrent = null;
@@ -266,7 +266,7 @@ public class WireSurfaceStretch {
 
 			spanCurrent = me.getValue();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblXAnchorPrev)) {
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblXAnchorPrev)) {
 				if (dblXAnchor <= (dblXAnchorPrev = dblXAnchorCurrent)) return spanCurrent;
 
 				spanPrev = spanCurrent;

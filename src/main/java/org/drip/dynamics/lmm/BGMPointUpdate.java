@@ -209,8 +209,8 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLognormalLIBORVolatility =
-				dblLognormalLIBORVolatility) || !org.drip.quant.common.NumberUtil.IsValid
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLognormalLIBORVolatility =
+				dblLognormalLIBORVolatility) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblContinuouslyCompoundedForwardVolatility =
 						dblContinuouslyCompoundedForwardVolatility))
 			throw new java.lang.Exception ("BGMPointUpdate ctr: Invalid Inputs");

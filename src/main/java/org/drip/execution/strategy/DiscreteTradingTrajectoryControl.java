@@ -172,20 +172,20 @@ public class DiscreteTradingTrajectoryControl {
 		final double[] adblExecutionTimeNode)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStartHoldings = dblStartHoldings) || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStartHoldings = dblStartHoldings) || null ==
 			(_adblExecutionTimeNode = adblExecutionTimeNode))
 			throw new java.lang.Exception
 				("DiscreteTradingTrajectoryControl Constructor => Invalid Inputs!");
 
 		int iNumExecutionTimeNode = _adblExecutionTimeNode.length;
 
-		if (1 >= iNumExecutionTimeNode || !org.drip.quant.common.NumberUtil.IsValid
+		if (1 >= iNumExecutionTimeNode || !org.drip.numerical.common.NumberUtil.IsValid
 			(_adblExecutionTimeNode[0]))
 			throw new java.lang.Exception
 				("DiscreteTradingTrajectoryControl Constructor => Invalid Inputs!");
 
 		for (int i = 1; i < iNumExecutionTimeNode; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblExecutionTimeNode[i]) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblExecutionTimeNode[i]) ||
 				_adblExecutionTimeNode[i - 1] >= _adblExecutionTimeNode[i])
 				throw new java.lang.Exception
 					("DiscreteTradingTrajectoryControl Constructor => Invalid Inputs!");

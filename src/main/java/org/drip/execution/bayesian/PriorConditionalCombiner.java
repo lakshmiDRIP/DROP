@@ -182,7 +182,7 @@ public class PriorConditionalCombiner {
 	public org.drip.measure.gaussian.R1UnivariateNormal posteriorDriftDistribution (
 		final double dblDeltaS)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDeltaS)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDeltaS)) return null;
 
 		double dblT = _cpd.time();
 

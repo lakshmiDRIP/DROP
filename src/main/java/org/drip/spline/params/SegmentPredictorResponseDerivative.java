@@ -114,7 +114,7 @@ public class SegmentPredictorResponseDerivative {
 		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdB,
 		final double dblCardinalTension)
 	{
-		if (null == sprdA || null == sprdB || !org.drip.quant.common.NumberUtil.IsValid (dblCardinalTension))
+		if (null == sprdA || null == sprdB || !org.drip.numerical.common.NumberUtil.IsValid (dblCardinalTension))
 			return null;
 
 		int iNumDeriv = 0;
@@ -174,7 +174,7 @@ public class SegmentPredictorResponseDerivative {
 		final double[] adblDResponseDPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblResponseValue = dblResponseValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblResponseValue = dblResponseValue))
 			throw new java.lang.Exception ("SegmentPredictorResponseDerivative ctr: Invalid Inputs!");
 
 		_adblDResponseDPredictorOrdinate = adblDResponseDPredictorOrdinate;

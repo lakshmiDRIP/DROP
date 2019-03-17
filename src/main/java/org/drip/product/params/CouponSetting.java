@@ -91,7 +91,7 @@ package org.drip.product.params;
 public class CouponSetting implements org.drip.product.params.Validatable {
 	private double _dblCouponRateExtension = 0.;
 	private java.lang.String _strCouponType = "";
-	private org.drip.quant.common.Array2D _fs = null;
+	private org.drip.numerical.common.Array2D _fs = null;
 	private double _dblCouponRate = java.lang.Double.NaN;
 	private double _dblCouponFloorRate = java.lang.Double.NaN;
 	private double _dblCouponCeilingRate = java.lang.Double.NaN;
@@ -107,7 +107,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 	 */
 
 	public CouponSetting (
-		final org.drip.quant.common.Array2D fs,
+		final org.drip.numerical.common.Array2D fs,
 		final java.lang.String strCouponType,
 		final double dblCouponRate,
 		final double dblCouponCeilingRate,
@@ -132,7 +132,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 	 */
 
 	public CouponSetting (
-		final org.drip.quant.common.Array2D fs,
+		final org.drip.numerical.common.Array2D fs,
 		final java.lang.String strCouponType,
 		final double dblCouponRate,
 		final double dblCouponRateExtension,
@@ -164,19 +164,19 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblDate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblDate))
 			throw new java.lang.Exception ("CouponSetting::processCouponWindow => Invalid Inputs");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCouponCeilingRate) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponFloorRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate))
 			return dblCouponRate;
 
-		if (!!org.drip.quant.common.NumberUtil.IsValid (_dblCouponCeilingRate) && dblCouponRate >
+		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) && dblCouponRate >
 			_dblCouponCeilingRate)
 			return _dblCouponCeilingRate;
 
-		if (!!org.drip.quant.common.NumberUtil.IsValid (_dblCouponFloorRate) && dblCouponRate <
+		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) && dblCouponRate <
 			_dblCouponFloorRate)
 			return _dblCouponFloorRate;
 
@@ -185,14 +185,14 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	@Override public boolean validate()
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCouponRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponRateExtension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRateExtension))
 			return false;
 
-		if (null == _fs) _fs = org.drip.quant.common.Array2D.BulletSchedule();
+		if (null == _fs) _fs = org.drip.numerical.common.Array2D.BulletSchedule();
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblCouponCeilingRate) &&
-			org.drip.quant.common.NumberUtil.IsValid (_dblCouponFloorRate) && _dblCouponCeilingRate <
+		if (org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &&
+			org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) && _dblCouponCeilingRate <
 				_dblCouponFloorRate)
 			return false;
 
@@ -205,7 +205,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 	 * @return The Factor Schedule
 	 */
 
-	public org.drip.quant.common.Array2D factorSchedule()
+	public org.drip.numerical.common.Array2D factorSchedule()
 	{
 		return _fs;
 	}

@@ -595,13 +595,13 @@ public class MultiCurveFRAStandardAnalysis {
 		);
 
 		System.out.println ("\t[" +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + "%," +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
-			org.drip.quant.common.FormatUtil.FormatDouble (mapFRAOutput.get ("ParForward"), 1, 4, 100.) + "% |" +
-			org.drip.quant.common.FormatUtil.FormatDouble (mapFRAOutput.get ("QuantoAdjustedParForward"), 1, 4, 100.) + "% |" +
-			org.drip.quant.common.FormatUtil.FormatDouble (mapFRAOutput.get ("MultiplicativeQuantoAdjustment"), 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (mapFRAOutput.get ("AdditiveQuantoAdjustment"), 1, 1, 10000.));
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardVol, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblFundingVol, 2, 0, 100.) + "%," +
+			org.drip.numerical.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
+			org.drip.numerical.common.FormatUtil.FormatDouble (mapFRAOutput.get ("ParForward"), 1, 4, 100.) + "% |" +
+			org.drip.numerical.common.FormatUtil.FormatDouble (mapFRAOutput.get ("QuantoAdjustedParForward"), 1, 4, 100.) + "% |" +
+			org.drip.numerical.common.FormatUtil.FormatDouble (mapFRAOutput.get ("MultiplicativeQuantoAdjustment"), 1, 4, 1.) + " | " +
+			org.drip.numerical.common.FormatUtil.FormatDouble (mapFRAOutput.get ("AdditiveQuantoAdjustment"), 1, 1, 10000.));
 	}
 
 	public static final void main (

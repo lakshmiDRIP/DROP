@@ -98,7 +98,7 @@ public class FlatMultivariateRandom extends org.drip.sequence.functional.Multiva
 		final double dblFlatValue)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFlatValue = dblFlatValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFlatValue = dblFlatValue))
 			throw new java.lang.Exception ("FlatMultivariateRandom ctr: Invalid Inputs");
 	}
 

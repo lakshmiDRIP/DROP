@@ -251,7 +251,7 @@ public class PortfolioConstructionParameters {
 	{
 		double dblReturnsConstraint = _pecs.returnsConstraint();
 
-		return org.drip.quant.common.NumberUtil.IsValid (dblReturnsConstraint) ? new double[] {1.,
+		return org.drip.numerical.common.NumberUtil.IsValid (dblReturnsConstraint) ? new double[] {1.,
 			dblReturnsConstraint} : new double[] {1.};
 	}
 }

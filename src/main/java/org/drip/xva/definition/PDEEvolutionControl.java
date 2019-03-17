@@ -142,7 +142,7 @@ public class PDEEvolutionControl
 	{
 		if ((CLOSEOUT_GREGORY_LI_TANG != (_closeOutScheme = closeOutScheme) &&
 			CLOSEOUT_BURGARD_KJAER != _closeOutScheme) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_sensitivityShiftFactor = sensitivityShiftFactor))
+			!org.drip.numerical.common.NumberUtil.IsValid (_sensitivityShiftFactor = sensitivityShiftFactor))
 		{
 			throw new java.lang.Exception ("PDEEvolutionControl Constructor => Invalid Inputs");
 		}

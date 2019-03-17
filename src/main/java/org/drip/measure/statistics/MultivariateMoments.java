@@ -121,7 +121,7 @@ public class MultivariateMoments {
 			if (null == adblVariateSample || adblVariateSample.length != iNumSample) return null;
 
 			for (int k = 0; k < iNumSample; ++k) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateSample[k])) return null;
+				if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariateSample[k])) return null;
 
 				adblMean[i] += adblVariateSample[k];
 			}
@@ -222,7 +222,7 @@ public class MultivariateMoments {
 		final java.lang.String strVariateName,
 		final double dblMean)
 	{
-		if (null == strVariateName || strVariateName.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == strVariateName || strVariateName.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblMean))
 			return false;
 
@@ -267,7 +267,7 @@ public class MultivariateMoments {
 		final double dblCovariance)
 	{
 		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||
-			strVariate2Name.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblCovariance))
+			strVariate2Name.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblCovariance))
 			return false;
 
 		_mapCovariance.put (strVariate1Name + "@#" + strVariate2Name, dblCovariance);

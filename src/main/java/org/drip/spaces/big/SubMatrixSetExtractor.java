@@ -110,7 +110,7 @@ public class SubMatrixSetExtractor {
 
 		for (int i = 0; i < iSize; ++i) {
 			for (int j = 0; j < iSize; ++j) {
-				if (!org.drip.quant.common.NumberUtil.IsValid (aadbl[i][j]))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (aadbl[i][j]))
 					throw new java.lang.Exception
 						("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
 

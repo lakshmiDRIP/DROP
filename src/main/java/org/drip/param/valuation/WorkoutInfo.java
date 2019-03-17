@@ -129,8 +129,8 @@ public class WorkoutInfo {
 		final int iWOType)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblYield = dblYield) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblYield = dblYield) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))
 			throw new java.lang.Exception ("WorkoutInfo ctr: One of wkout dat/yld/ex factor came out NaN!");
 
 		_iDate = iDate;

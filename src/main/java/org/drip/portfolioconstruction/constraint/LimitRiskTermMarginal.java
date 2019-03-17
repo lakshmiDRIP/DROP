@@ -122,7 +122,7 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 
 		if (null == (_adblInitialHoldings = adblInitialHoldings) ||
 			_adblInitialHoldings.length != aadblAssetCovariance[0].length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))
 			throw new java.lang.Exception ("LimitRiskTermMarginal Constructor => Invalid Initial Holdings");
 	}
 
@@ -155,7 +155,7 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 				int iNumAsset = aadblAssetCovariance.length;
 				double dblMarginalVariance = 0;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitRiskTermMarginal::rdToR1::evaluate => Invalid Variate Dimension");

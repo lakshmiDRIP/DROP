@@ -114,7 +114,7 @@ public class ManifestMeasureTweak {
 		final double dblAmount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAmount = dblAmount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAmount = dblAmount))
 			throw new java.lang.Exception ("ManifestMeasureTweak ctr => Invalid Inputs");
 
 		_iNode = iNode;

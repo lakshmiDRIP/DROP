@@ -96,7 +96,7 @@ public class InquiriesLast6Months {
 		final int iCount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_iCount = iCount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_iCount = iCount))
 			throw new java.lang.Exception ("InquiriesLast6Months Constructor => Invalid Inputs");
 	}
 

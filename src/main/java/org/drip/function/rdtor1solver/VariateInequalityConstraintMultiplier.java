@@ -117,7 +117,7 @@ public class VariateInequalityConstraintMultiplier {
 		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
 	{
 		if (null == vicmBase || null == vicmIncrement || vicmBase.incremental() ||
-			!vicmIncrement.incremental() || !org.drip.quant.common.NumberUtil.IsValid (dblIncrementFactor) ||
+			!vicmIncrement.incremental() || !org.drip.numerical.common.NumberUtil.IsValid (dblIncrementFactor) ||
 				1. < dblIncrementFactor)
 			return null;
 
@@ -150,7 +150,7 @@ public class VariateInequalityConstraintMultiplier {
 			java.lang.String strDump = "\tB";
 
 			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.quant.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
+				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
 					" |";
 
 			System.out.println (strDump);
@@ -179,7 +179,7 @@ public class VariateInequalityConstraintMultiplier {
 			java.lang.String strDump = "\tA";
 
 			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.quant.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
+				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
 					" |";
 
 			System.out.println (strDump);
@@ -231,7 +231,7 @@ public class VariateInequalityConstraintMultiplier {
 		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
 	{
 		if (null == vicmBase || null == vicmIncrement || vicmBase.incremental() ||
-			!vicmIncrement.incremental() || !org.drip.quant.common.NumberUtil.IsValid (dblIncrementFactor) ||
+			!vicmIncrement.incremental() || !org.drip.numerical.common.NumberUtil.IsValid (dblIncrementFactor) ||
 				1. < dblIncrementFactor)
 			return null;
 
@@ -264,7 +264,7 @@ public class VariateInequalityConstraintMultiplier {
 			java.lang.String strDump = "\tB";
 
 			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.quant.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
+				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
 					" |";
 
 			System.out.println (strDump);
@@ -293,7 +293,7 @@ public class VariateInequalityConstraintMultiplier {
 			java.lang.String strDump = "\tA";
 
 			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.quant.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
+				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
 					" |";
 
 			System.out.println (strDump);
@@ -350,8 +350,8 @@ public class VariateInequalityConstraintMultiplier {
 		throws java.lang.Exception
 	{
 		if (null == vicm1 || null == vicm2 || vicm1.incremental() || vicm2.incremental() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRelativeTolerance) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteToleranceFallback) || 0 >
+			!org.drip.numerical.common.NumberUtil.IsValid (dblRelativeTolerance) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblAbsoluteToleranceFallback) || 0 >
 					dblAbsoluteToleranceFallback)
 			throw new java.lang.Exception ("VariateInequalityConstraintMultiplier::Compare => Invalid Inputs");
 
@@ -365,8 +365,8 @@ public class VariateInequalityConstraintMultiplier {
 			throw new java.lang.Exception ("VariateInequalityConstraintMultiplier::Compare => Invalid Inputs");
 
 		for (int i = 0; i < iNumComparisonVariate; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate1[i]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (adblVariate2[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate1[i]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (adblVariate2[i]))
 				throw new java.lang.Exception
 					("VariateInequalityConstraintMultiplier::Compare => Invalid Inputs");
 

@@ -411,8 +411,8 @@ public class PathSimulator
 				initialMarketVertex,
 				org.drip.exposure.universe.LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
-					org.drip.quant.linearalgebra.Matrix.Transpose
-						(org.drip.quant.linearalgebra.Matrix.Transpose
+					org.drip.numerical.linearalgebra.Matrix.Transpose
+						(org.drip.numerical.linearalgebra.Matrix.Transpose
 						(correlatedPathVertexDimension.straightPathVertexRd().flatform()))))))
 			{
 				return null;

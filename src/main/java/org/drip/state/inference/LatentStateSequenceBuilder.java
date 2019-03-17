@@ -313,7 +313,7 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 		final org.drip.spline.stretch.BoundarySettings bs)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpochResponse = dblEpochResponse) || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpochResponse = dblEpochResponse) || null ==
 			(_stretchSpec = stretchSpec) || null == (_valParams = valParams) || null == (_bs = bs) || null ==
 				(_mapPMSC = mapPMSC))
 			throw new java.lang.Exception ("LatentStateSequenceBuilder ctr: Invalid Inputs");

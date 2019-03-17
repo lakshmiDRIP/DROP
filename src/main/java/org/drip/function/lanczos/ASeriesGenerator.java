@@ -100,7 +100,7 @@ package org.drip.function.lanczos;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ASeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
+public class ASeriesGenerator extends org.drip.numerical.estimation.R1ToR1SeriesGenerator
 {
 	private org.drip.function.lanczos.PSeriesGenerator _pSeriesGenerator = null;
 

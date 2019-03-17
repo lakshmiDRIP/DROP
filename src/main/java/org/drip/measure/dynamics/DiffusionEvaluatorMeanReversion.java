@@ -143,9 +143,9 @@ public class DiffusionEvaluatorMeanReversion extends org.drip.measure.dynamics.D
 	{
 		super (leDrift, leVolatility);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionRate = dblMeanReversionRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanReversionRate = dblMeanReversionRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
 			throw new java.lang.Exception ("DiffusionEvaluatorMeanReversion Constructor => Invalid Inputs");
 	}
 

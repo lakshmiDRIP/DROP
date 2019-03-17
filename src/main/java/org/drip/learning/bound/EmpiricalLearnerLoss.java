@@ -114,7 +114,7 @@ public class EmpiricalLearnerLoss extends org.drip.function.definition.R1ToR1 {
 	{
 		super (null);
 
-		if (null == (_learner = learner) || !org.drip.quant.common.NumberUtil.IsValid (_dblRealization =
+		if (null == (_learner = learner) || !org.drip.numerical.common.NumberUtil.IsValid (_dblRealization =
 			dblRealization))
 			throw new java.lang.Exception ("EmpiricalLearnerLoss ctr: Invalid Inputs");
 	}

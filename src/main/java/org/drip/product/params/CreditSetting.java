@@ -124,7 +124,7 @@ public class CreditSetting implements org.drip.product.params.Validatable {
 	{
 		if (null == _strCreditCurveName || _strCreditCurveName.isEmpty()) return true;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRecovery) && !_bUseCurveRecovery) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRecovery) && !_bUseCurveRecovery) return false;
 
 		return true;
 	}

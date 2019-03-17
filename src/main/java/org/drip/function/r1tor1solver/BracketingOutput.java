@@ -165,10 +165,10 @@ public class BracketingOutput extends org.drip.function.r1tor1solver.ExecutionIn
 		final double dblOFRight,
 		final double dblStartingVariate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateLeft = dblVariateLeft) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateRight = dblVariateRight) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblOFLeft = dblOFLeft) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblOFRight = dblOFRight) ||
 						!setStartingVariate (dblStartingVariate))
 			return false;
 

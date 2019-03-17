@@ -145,8 +145,8 @@ public class InteriorFixedPointFinder extends org.drip.function.rdtor1solver.Fix
 			}
 		}
 
-		org.drip.quant.linearalgebra.LinearizationOutput lo =
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblRHS);
+		org.drip.numerical.linearalgebra.LinearizationOutput lo =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblRHS);
 
 		if (null == lo) return null;
 
@@ -194,7 +194,7 @@ public class InteriorFixedPointFinder extends org.drip.function.rdtor1solver.Fix
 		super (rdToR1ObjectiveFunction, lsec, cc);
 
 		if (null == (_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblBarrierStrength = dblBarrierStrength))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblBarrierStrength = dblBarrierStrength))
 			throw new java.lang.Exception ("InteriorFixedPointFinder Constructor => Invalid Inputs");
 
 		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;

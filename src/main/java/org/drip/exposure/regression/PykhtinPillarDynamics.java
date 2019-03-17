@@ -136,7 +136,7 @@ public class PykhtinPillarDynamics
 
 		for (double exposure : exposureArray)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (exposure))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (exposure))
 			{
 				return null;
 			}
@@ -300,7 +300,7 @@ public class PykhtinPillarDynamics
 
 		org.drip.spline.stretch.MultiSegmentSequence multiSegmentSequence =
 			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
-				"LocalVolatilityR1ToR1_" + org.drip.quant.common.StringUtil.GUID(),
+				"LocalVolatilityR1ToR1_" + org.drip.numerical.common.StringUtil.GUID(),
 				exposureArray,
 				localVolatilityArray,
 				localVolatilityGenerationControl.segmentCustomBuilderControlArray(),

@@ -115,7 +115,7 @@ public class NormalQuadrature {
     	final double dblX)
     	throws java.lang.Exception
     {
-    	if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+    	if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
     		throw new java.lang.Exception ("NormalQuadrature::Density => Invalid Inputs");
 
     	return java.lang.Math.exp (-0.5 * dblX * dblX) / java.lang.Math.sqrt (2 * java.lang.Math.PI);
@@ -167,7 +167,7 @@ public class NormalQuadrature {
     	final double dblY)
     	throws java.lang.Exception
     {
-    	if (!org.drip.quant.common.NumberUtil.IsValid (dblY))
+    	if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
     		throw new java.lang.Exception ("NormalQuadrature::InverseCDF => Invalid Inputs");
 
         return InverseCDF (dblY, .00000001, -8., 8.);

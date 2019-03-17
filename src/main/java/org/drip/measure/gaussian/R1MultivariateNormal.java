@@ -159,7 +159,7 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.R1Multivar
 		int iNumVariate = meta.numVariable();
 
 		if (iNumVariate != _adblMean.length || iNumVariate != _covariance.numVariate() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblMean)) {
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblMean)) {
 			System.out.println ("iNumVariate = " + iNumVariate);
 
 			System.out.println ("_adblMean = " + _adblMean.length);
@@ -183,7 +183,7 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.R1Multivar
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 			throw new java.lang.Exception ("R1MultivariateNormal::density => Invalid Inputs");
 
 		double dblDensity = 0.;

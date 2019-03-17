@@ -127,7 +127,7 @@ public class ControlNodesGreek {
 		final double[][] aadblHessian)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblValue = dblValue) || null == (_adblJacobian =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblValue = dblValue) || null == (_adblJacobian =
 			adblJacobian) || null == (_aadblHessian = aadblHessian))
 			throw new java.lang.Exception ("ControlNodesGreek Constructor => Invalid Inputs");
 
@@ -137,8 +137,8 @@ public class ControlNodesGreek {
 			throw new java.lang.Exception ("ControlNodesGreek Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumInterval; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblJacobian[i]) || null == _aadblHessian[i] ||
-				iNumInterval != _aadblHessian[i].length || !org.drip.quant.common.NumberUtil.IsValid
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblJacobian[i]) || null == _aadblHessian[i] ||
+				iNumInterval != _aadblHessian[i].length || !org.drip.numerical.common.NumberUtil.IsValid
 					(_aadblHessian[i]))
 				throw new java.lang.Exception ("ControlNodesGreek Constructor => Invalid Inputs");
 		}

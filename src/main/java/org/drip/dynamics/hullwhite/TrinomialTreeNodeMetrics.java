@@ -107,8 +107,8 @@ public class TrinomialTreeNodeMetrics {
 		final double dblAlpha)
 		throws java.lang.Exception
 	{
-		if (0 > (_lTimeIndex = lTimeIndex) || !org.drip.quant.common.NumberUtil.IsValid (_dblX = dblX) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblAlpha = dblAlpha))
+		if (0 > (_lTimeIndex = lTimeIndex) || !org.drip.numerical.common.NumberUtil.IsValid (_dblX = dblX) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblAlpha = dblAlpha))
 			throw new java.lang.Exception ("TrinomialTreeNodeMetrics ctr: Invalid Inputs");
 
 		_lXStochasticIndex = lXStochasticIndex;

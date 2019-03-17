@@ -202,7 +202,7 @@ public class ContinuousConstantTradingEnhanced extends
 				final double dblT)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblT))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))
 					throw new java.lang.Exception
 						("ContinuousConstantTradingEnhanced::generate::evaluate => Invalid Inputs");
 

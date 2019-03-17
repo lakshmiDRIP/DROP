@@ -105,7 +105,7 @@ public class FlatForwardForwardCurve extends org.drip.state.forward.ForwardCurve
 	{
 		super (dtEpoch.julian(), fri);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFlatForwardRate = dblFlatForwardRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFlatForwardRate = dblFlatForwardRate))
 			throw new java.lang.Exception ("FlatForwardForwardCurve ctr: Invalid Inputs");
 	}
 
@@ -116,7 +116,7 @@ public class FlatForwardForwardCurve extends org.drip.state.forward.ForwardCurve
 		return _dblFlatForwardRate;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{

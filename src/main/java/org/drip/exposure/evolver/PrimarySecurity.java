@@ -137,7 +137,7 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 		);
 
 		if (null == (_id = id) || _id.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (_repoRate = repoRate))
+			!org.drip.numerical.common.NumberUtil.IsValid (_repoRate = repoRate))
 		{
 			throw new java.lang.Exception ("PrimarySecurity Constructor => Invalid Inputs");
 		}

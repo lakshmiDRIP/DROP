@@ -143,18 +143,18 @@ public class TTestOutcome
 		final double ensembleStandardErrorOffset)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_testStatistic = testStatistic) ||
 			0 >= (_sampleCount = sampleCount) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleMean = ensembleMean) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleStandardDeviation =
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleMean = ensembleMean) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleVariance = ensembleVariance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardDeviation =
 				ensembleStandardDeviation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardError = ensembleStandardError) ||
 			0 > (_ensembleDegreesOfFreedom = ensembleDegreesOfFreedom) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =
 				ensemblePredictiveConfidenceInterval) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_ensembleStandardErrorOffset =
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_ensembleStandardErrorOffset =
 				ensembleStandardErrorOffset))
 		{
 			throw new java.lang.Exception ("TTestOutcome Constructor => Invalid Inputs");

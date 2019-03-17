@@ -100,7 +100,7 @@ package org.drip.function.lanczos;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PSeriesGenerator extends org.drip.function.numerical.R0ToR1SeriesGenerator
+public class PSeriesGenerator extends org.drip.numerical.estimation.R0ToR1SeriesGenerator
 {
 	private double[][] _chebyshevCoefficientMatrix = null;
 

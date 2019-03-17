@@ -101,7 +101,7 @@ public class ProjectionDistributionLoading {
 		final double dblTau)
 	{
 		if (null == aadblScopingCovariance || null == aadblScopingLoading ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblTau))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblTau))
 			return null;
 
 		int iNumProjection = aadblScopingLoading.length;
@@ -114,8 +114,8 @@ public class ProjectionDistributionLoading {
 			for (int j = 0; j < iNumProjection; ++j) {
 				try {
 					aadblProjectionCovariance[i][j] = i != j ? 0. : dblTau *
-						org.drip.quant.linearalgebra.Matrix.DotProduct (aadblScopingLoading[i],
-							org.drip.quant.linearalgebra.Matrix.Product (aadblScopingCovariance,
+						org.drip.numerical.linearalgebra.Matrix.DotProduct (aadblScopingLoading[i],
+							org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingCovariance,
 								aadblScopingLoading[j]));
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -183,7 +183,7 @@ public class ProjectionDistributionLoading {
 
 		for (int i = 0; i < iNumProjectionView; ++i) {
 			if (null == _aadblScopingLoading[i] || 0 == _aadblScopingLoading[i].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_aadblScopingLoading[i]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_aadblScopingLoading[i]))
 				throw new java.lang.Exception
 					("ProjectionDistributionLoading Constructor => Invalid Inputs!");
 		}

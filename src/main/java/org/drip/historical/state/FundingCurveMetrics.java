@@ -131,7 +131,7 @@ public class FundingCurveMetrics {
 		final double dblForwardRate)
 	{
 		if (null == strInTenor || strInTenor.isEmpty() || null == strForTenor || strForTenor.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblForwardRate))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblForwardRate))
 			return false;
 
 		if (!_mapInForNativeLIBOR.containsKey (strInTenor)) {

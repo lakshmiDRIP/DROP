@@ -142,8 +142,8 @@ public class DiffusionEvaluatorLogarithmic extends org.drip.measure.dynamics.Dif
 	{
 		super (leDrift, leVolatility);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
 			throw new java.lang.Exception ("DiffusionEvaluatorLogarithmic Constructor => Invalid Inputs");
 	}
 

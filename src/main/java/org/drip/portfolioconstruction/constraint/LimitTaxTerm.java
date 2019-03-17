@@ -109,7 +109,7 @@ public abstract class LimitTaxTerm extends org.drip.portfolioconstruction.optimi
 		);
 
 		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings) ||
 			null == (_taxationScheme = taxationScheme))
 			throw new java.lang.Exception ("LimitTaxTerm Constructor => Invalid Taxation Scheme");
 	}

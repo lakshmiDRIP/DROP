@@ -6,7 +6,7 @@ import java.util.*;
 import org.drip.analytics.date.JulianDate;
 import org.drip.feed.loader.*;
 import org.drip.historical.sensitivity.TenorDurationNodeMetrics;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.product.TreasuryFuturesAPI;
 

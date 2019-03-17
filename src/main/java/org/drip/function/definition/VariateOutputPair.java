@@ -109,7 +109,7 @@ public class VariateOutputPair {
 		if (0 == iNumVariate) throw new java.lang.Exception ("VariateOutputPair ctr: Invalid Inputs");
 
 		for (int i = 0; i < iNumVariate; ++i) {
-			if (!!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i]))
+			if (!!org.drip.numerical.common.NumberUtil.IsValid (adblVariate[i]))
 				throw new java.lang.Exception ("VariateOutputPair ctr: Invalid Inputs");
 		}
 	}

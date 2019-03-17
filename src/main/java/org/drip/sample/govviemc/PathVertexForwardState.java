@@ -3,7 +3,7 @@ package org.drip.sample.govviemc;
 
 import org.drip.analytics.date.*;
 import org.drip.measure.discrete.SequenceGenerator;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.govvie.GovvieCurve;

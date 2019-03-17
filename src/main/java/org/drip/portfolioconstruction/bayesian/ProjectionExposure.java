@@ -125,9 +125,9 @@ public class ProjectionExposure {
 			throw new java.lang.Exception ("ProjectionExposure Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iNumView; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblIntraViewComponent[i]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblInterViewComponent[i]) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_adblPriorViewComponent[i]) || null ==
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblIntraViewComponent[i]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblInterViewComponent[i]) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_adblPriorViewComponent[i]) || null ==
 						_aadblCompositeConfidenceCovariance[i] || iNumView !=
 							_aadblCompositeConfidenceCovariance[i].length)
 				throw new java.lang.Exception ("ProjectionExposure Constructor => Invalid Inputs");

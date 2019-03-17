@@ -288,7 +288,7 @@ public class MarketVertexGenerator
 			initialMarketVertex.dealer().subordinateFundingReplicator();
 
 		if (null == dealerSubordinateFundingReplicator ||
-			!org.drip.quant.common.NumberUtil.IsValid (initialDealerSubordinateFundingReplicator))
+			!org.drip.numerical.common.NumberUtil.IsValid (initialDealerSubordinateFundingReplicator))
 		{
 			return null;
 		}

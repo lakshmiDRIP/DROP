@@ -127,7 +127,7 @@ public class LatentStateManifestSensitivity {
 		if (0 == iNumCoeff) return false;
 
 		for (int i = 0; i < iNumCoeff; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDBasisCoeffDLocalManifest[i] =
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblDBasisCoeffDLocalManifest[i] =
 				adblDBasisCoeffDLocalManifest[i]))
 				return false;
 		}
@@ -167,7 +167,7 @@ public class LatentStateManifestSensitivity {
 		if (0 == iNumCoeff) return false;
 
 		for (int i = 0; i < iNumCoeff; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDBasisCoeffDPreceedingManifest[i] =
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblDBasisCoeffDPreceedingManifest[i] =
 				adblDBasisCoeffDPreceedingManifest[i]))
 				return false;
 		}
@@ -201,7 +201,7 @@ public class LatentStateManifestSensitivity {
 	public boolean setDResponseDPreceedingManifest (
 		final double dblDResponseDPreceedingManifest)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest)) return false;
 
 		_dblDResponseDPreceedingManifest = dblDResponseDPreceedingManifest;
 		return true;

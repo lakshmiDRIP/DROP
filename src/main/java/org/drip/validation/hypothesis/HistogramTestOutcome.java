@@ -130,7 +130,7 @@ public class HistogramTestOutcome
 		if (null == (_testStatisticArray = testStatisticArray) ||
 			null == (_pValueCumulativeArray = pValueCumulativeArray) ||
 			null == (_pValueIncrementalArray = pValueIncrementalArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic))
+			!org.drip.numerical.common.NumberUtil.IsValid (_thresholdTestStatistic = thresholdTestStatistic))
 		{
 			throw new java.lang.Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
 		}
@@ -140,9 +140,9 @@ public class HistogramTestOutcome
 		if (0 == count ||
 			count != _pValueCumulativeArray.length ||
 			count != _pValueIncrementalArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_testStatisticArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_pValueIncrementalArray))
+			!org.drip.numerical.common.NumberUtil.IsValid (_testStatisticArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pValueCumulativeArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pValueIncrementalArray))
 		{
 			throw new java.lang.Exception ("HistogramTestOutcome Constructor => Invalid Inputs");
 		}

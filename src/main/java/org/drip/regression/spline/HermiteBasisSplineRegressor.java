@@ -103,9 +103,9 @@ public class HermiteBasisSplineRegressor extends org.drip.regression.spline.Basi
 	private java.lang.String _strName = "";
 	private org.drip.spline.segment.LatentStateResponseModel _seg1 = null;
 	private org.drip.spline.segment.LatentStateResponseModel _seg2 = null;
-	private org.drip.quant.calculus.WengertJacobian _wjLeft = null;
-	private org.drip.quant.calculus.WengertJacobian _wjRight = null;
-	private org.drip.quant.calculus.WengertJacobian _wjValue = null;
+	private org.drip.numerical.differentiation.WengertJacobian _wjLeft = null;
+	private org.drip.numerical.differentiation.WengertJacobian _wjRight = null;
+	private org.drip.numerical.differentiation.WengertJacobian _wjValue = null;
 
 	/**
 	 * Create an instance of Hermite BasisSplineRegressor

@@ -103,7 +103,7 @@ package org.drip.function.e2erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical.R1ToR1SeriesGenerator
+public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimation.R1ToR1SeriesGenerator
 {
 
 	/**
@@ -145,7 +145,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
 				termWeightMap
 			);
 		}
@@ -186,7 +186,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
 				termWeightMap
 			);
 		}
@@ -247,7 +247,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
 				termWeightMap
 			);
 		}
@@ -298,7 +298,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
 				termWeightMap
 			);
 		}
@@ -374,7 +374,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.function.numerical.R1ToR1SeriesTerm(),
+				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
 				termWeightMap
 			);
 		}
@@ -396,7 +396,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.function.numerical
 	 */
 
 	public AbramowitzStegunSeriesGenerator (
-		final org.drip.function.numerical.R1ToR1SeriesTerm r1ToR1SeriesTerm,
+		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 		throws java.lang.Exception
 	{

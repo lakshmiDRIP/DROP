@@ -130,7 +130,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("AbramowitzStegun::InversePolynomial4::evaluate => Invalid Inputs");
@@ -184,7 +184,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("AbramowitzStegun::MixedPolynomial3::evaluate => Invalid Inputs");
@@ -235,7 +235,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("AbramowitzStegun::InversePolynomial6::evaluate => Invalid Inputs");
@@ -289,7 +289,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("AbramowitzStegun::MixedPolynomial5::evaluate => Invalid Inputs");
@@ -340,7 +340,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 					final double z)
 					throws java.lang.Exception
 				{
-					if (!org.drip.quant.common.NumberUtil.IsValid (z))
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
 							("AbramowitzStegun::NumericalRecipe2007::evaluate => Invalid Inputs");
@@ -384,7 +384,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 
 	public AbramowitzStegun (
 		final org.drip.function.e2erf.AbramowitzStegunSeriesGenerator abramowitzStegunSeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc,
+		final org.drip.numerical.differentiation.DerivativeControl dc,
 		final double maximumError)
 		throws java.lang.Exception
 	{
@@ -393,7 +393,7 @@ public abstract class AbramowitzStegun extends org.drip.function.e2erf.ErrorFunc
 			dc
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_maximumError = maximumError) || 0. >= _maximumError)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_maximumError = maximumError) || 0. >= _maximumError)
 		{
 			throw new java.lang.Exception ("AbramowitzStegun Constructor => Invalid Inputs");
 		}

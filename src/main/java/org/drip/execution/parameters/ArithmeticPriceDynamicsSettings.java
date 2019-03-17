@@ -128,9 +128,9 @@ public class ArithmeticPriceDynamicsSettings {
 		final double dblSerialCorrelation,
 		final double dblPrice)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAnnualReturnsExpectation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblAnnualReturnsVolatility) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblPrice))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAnnualReturnsExpectation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblAnnualReturnsVolatility) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))
 			return null;
 
 		try {
@@ -160,8 +160,8 @@ public class ArithmeticPriceDynamicsSettings {
 		final double dblSerialCorrelation)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDrift = dblDrift) || null == (_r1ToR1Volatility =
-			r1ToR1Volatility)|| !org.drip.quant.common.NumberUtil.IsValid (_dblSerialCorrelation =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDrift = dblDrift) || null == (_r1ToR1Volatility =
+			r1ToR1Volatility)|| !org.drip.numerical.common.NumberUtil.IsValid (_dblSerialCorrelation =
 				dblSerialCorrelation) || 1. < _dblSerialCorrelation || -1. > _dblSerialCorrelation)
 			throw new java.lang.Exception ("ArithmeticPriceDynamicsSettings Constructor => Invalid Inputs!");
 	}

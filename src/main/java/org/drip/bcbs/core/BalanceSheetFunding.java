@@ -156,9 +156,9 @@ public class BalanceSheetFunding
 		final java.lang.String stressPeriod)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_stableFundingAmount = stableFundingAmount) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_stableFundingAmount = stableFundingAmount) ||
 				0. > _stableFundingAmount ||
-			!org.drip.quant.common.NumberUtil.IsValid (_extendedStressFundingAmount =
+			!org.drip.numerical.common.NumberUtil.IsValid (_extendedStressFundingAmount =
 				extendedStressFundingAmount) || 0. > _extendedStressFundingAmount ||
 			null == (_stressPeriod = stressPeriod) || _stressPeriod.isEmpty())
 		{

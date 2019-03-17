@@ -156,8 +156,8 @@ public class PowerVarianceObjectiveUtility implements org.drip.execution.risk.Ob
 		final double dblRiskAversion)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVarianceExponent = dblVarianceExponent) || 0. >
-			_dblVarianceExponent || !org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblVarianceExponent = dblVarianceExponent) || 0. >
+			_dblVarianceExponent || !org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion =
 				dblRiskAversion) || 0. > _dblRiskAversion)
 			throw new java.lang.Exception ("PowerVarianceObjectiveUtility Constructor => Invalid Inputs!");
 	}

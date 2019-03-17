@@ -108,6 +108,64 @@ public class ImportanceWeight
 	private org.drip.measure.continuous.R1Univariate _r1Univariate = null;
 
 	/**
+	 * Construct the Importance Weight Version based on Normal Distribution
+	 * 
+	 * @param r1UnivariateNormal R<sup>1</sup> Normal Distribution
+	 * 
+	 * @return The Importance Weight
+	 */
+
+	public static final ImportanceWeight Normal (
+		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
+	{
+		if (null == r1UnivariateNormal)
+		{
+			return null;
+		}
+
+		final double mean = r1UnivariateNormal.mean();
+
+		final double sigma = r1UnivariateNormal.sigma();
+
+		org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormalStandard =
+			org.drip.measure.gaussian.R1UnivariateNormal.Standard();
+
+		double meanOverSigma = mean / sigma;
+
+		try
+		{
+			final double positiveExpectation = java.lang.Math.max (
+				mean * r1UnivariateNormalStandard.cumulative (meanOverSigma) +
+					sigma * r1UnivariateNormalStandard.density (meanOverSigma),
+				0.
+			);
+
+			return new ImportanceWeight (
+				r1UnivariateNormal,
+				positiveExpectation
+			)
+			{
+				@Override public double quantileLoading (
+					final double q)
+					throws java.lang.Exception
+				{
+					return 0. == positiveExpectation ? 0. : java.lang.Math.max (
+						org.drip.function.e2erf.ErrorFunctionInverse.Winitzki2008b().evaluate
+							(2. * q - 1.) * sigma * java.lang.Math.sqrt (2.) + mean,
+						0
+					) / positiveExpectation;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * ImportanceWeight Constructor
 	 * 
 	 * @param r1Univariate The Underlying R<sup>1</sup> Distribution
@@ -122,7 +180,7 @@ public class ImportanceWeight
 		throws java.lang.Exception
 	{
 		if (null == (_r1Univariate = r1Univariate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_positiveExpectation = positiveExpectation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_positiveExpectation = positiveExpectation) ||
 				0. > _positiveExpectation)
 		{
 			throw new java.lang.Exception ("ImportanceWeight Constructor => Invalid Inputs");
@@ -149,5 +207,25 @@ public class ImportanceWeight
 	public org.drip.measure.continuous.R1Univariate r1Univariate()
 	{
 		return _r1Univariate;
+	}
+
+	/**
+	 * Retrieve the Importance Weight Loading given the Quantile
+	 * 
+	 * @param q The Quantile
+	 * 
+	 * @return The Importance Weight Loading
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double quantileLoading (
+		final double q)
+		throws java.lang.Exception
+	{
+		return 0. == _positiveExpectation ? 0. : java.lang.Math.max (
+			_r1Univariate.invCumulative (q),
+			0
+		) / _positiveExpectation;
 	}
 }

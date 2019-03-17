@@ -476,12 +476,12 @@ public class BondReplicator
 		final org.drip.product.credit.BondComponent bond)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentPrice = dblCurrentPrice) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblIssuePrice = dblIssuePrice) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblIssueAmount = dblIssueAmount) || null ==
-					(_dtValue = dtValue) || !org.drip.quant.common.NumberUtil.IsValid (_dblFX = dblFX) || 0.
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentPrice = dblCurrentPrice) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblIssuePrice = dblIssuePrice) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblIssueAmount = dblIssueAmount) || null ==
+					(_dtValue = dtValue) || !org.drip.numerical.common.NumberUtil.IsValid (_dblFX = dblFX) || 0.
 						>= _dblFX || 0 > (_iSettleLag = iSettleLag) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dblRecoveryRate = dblRecoveryRate) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (_dblRecoveryRate = dblRecoveryRate) ||
 								0. >= _dblRecoveryRate || null == (_bond = bond))
 			throw new java.lang.Exception ("BondReplicator Constructor => Invalid Inputs");
 
@@ -807,7 +807,7 @@ public class BondReplicator
 
 			if (_bond.isFloater())
 			{
-				if (null != fl && org.drip.quant.common.NumberUtil.IsValid (_dblResetRate))
+				if (null != fl && org.drip.numerical.common.NumberUtil.IsValid (_dblResetRate))
 				{
 					if (fl instanceof org.drip.state.identifier.ForwardLabel)
 					{
@@ -2000,7 +2000,7 @@ public class BondReplicator
 				return null;
 
 			if (!arr.addNamedField (new org.drip.service.scenario.NamedField ("WAL3",
-				!org.drip.quant.common.NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :
+				!org.drip.numerical.common.NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :
 					dblWALCouponOnlyToExercise)))
 				return null;
 

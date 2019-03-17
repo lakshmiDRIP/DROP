@@ -90,7 +90,7 @@ public abstract class RdToR1 {
 
 	protected static final int DIMENSION_NOT_FIXED = -1;
 
-	protected org.drip.quant.calculus.DerivativeControl _dc = null;
+	protected org.drip.numerical.differentiation.DerivativeControl _dc = null;
 
 	/**
 	 * Validate the Input Double Array
@@ -110,16 +110,16 @@ public abstract class RdToR1 {
 		if (0 == iNumVariate) return false;
 
 		for (int i = 0; i < iNumVariate; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return false;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate[i])) return false;
 		}
 
 		return true;
 	}
 
 	protected RdToR1 (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();
+		if (null == (_dc = dc)) _dc = new org.drip.numerical.differentiation.DerivativeControl();
 	}
 
 	/**
@@ -154,12 +154,12 @@ public abstract class RdToR1 {
 	 * @return The Derivative
 	 */
 
-	public org.drip.quant.calculus.Differential differential (
+	public org.drip.numerical.differentiation.Differential differential (
 		final double[] adblVariate,
 		final int iVariateIndex,
 		final int iOrder)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate) || 0 >= iOrder) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate) || 0 >= iOrder) return null;
 
 		double dblDerivative = 0.;
 		int iNumVariate = adblVariate.length;
@@ -186,7 +186,7 @@ public abstract class RdToR1 {
 					(iOrder - 2. * i) : adblVariate[j];
 
 			try {
-				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *
+				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *
 					evaluate (adblVariateIncremental);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
@@ -196,7 +196,7 @@ public abstract class RdToR1 {
 		}
 
 		try {
-			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);
+			return new org.drip.numerical.differentiation.Differential (dblOrderedVariateInfinitesimal, dblDerivative);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -336,8 +336,8 @@ public abstract class RdToR1 {
 		final double[] adblRightEdge)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblLeftEdge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (adblRightEdge))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblLeftEdge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (adblRightEdge))
 			throw new java.lang.Exception ("RdToR1::integrate => Invalid Inputs");
 
 		double dblIntegrand = 0.;
@@ -377,8 +377,8 @@ public abstract class RdToR1 {
 		final double[] adblVariateLeft,
 		final double[] adblVariateRight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||
-			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariateLeft) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (adblVariateRight))
 			return null;
 
 		double dblValue = java.lang.Double.NaN;
@@ -405,7 +405,7 @@ public abstract class RdToR1 {
 				return null;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblMaxima)) {
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblMaxima)) {
 				dblMaxima = dblValue;
 
 				for (int j = 0; j < iNumVariate; ++j)
@@ -443,8 +443,8 @@ public abstract class RdToR1 {
 		final double[] adblVariateLeft,
 		final double[] adblVariateRight)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||
-			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariateLeft) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (adblVariateRight))
 			return null;
 
 		double dblValue = java.lang.Double.NaN;
@@ -471,7 +471,7 @@ public abstract class RdToR1 {
 				return null;
 			}
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblMinima)) {
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblMinima)) {
 				dblMinima = dblValue;
 
 				for (int j = 0; j < iNumVariate; ++j)

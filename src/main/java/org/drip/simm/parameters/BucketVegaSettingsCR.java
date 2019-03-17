@@ -303,8 +303,8 @@ public class BucketVegaSettingsCR extends org.drip.simm.parameters.BucketSensiti
 			concentrationThreshold
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_vegaScaler = vegaScaler) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_vegaScaler = vegaScaler) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_historicalVolatilityRatio =
 				historicalVolatilityRatio) ||
 			null == (_tenorDeltaRiskWeight = tenorDeltaRiskWeight))
 		{

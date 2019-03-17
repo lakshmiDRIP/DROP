@@ -132,9 +132,9 @@ public class PositionGreekVertex
 		final double derivativeFairValue)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAValue = derivativeXVAValue) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_derivativeXVAValueDelta =
-				derivativeXVAValueDelta) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAValue = derivativeXVAValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_derivativeXVAValueDelta =
+				derivativeXVAValueDelta) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_derivativeXVAValueGamma = derivativeXVAValueGamma))
 		{
 			throw new java.lang.Exception ("PositionGreekVertex Constructor => Invalid Inputs");

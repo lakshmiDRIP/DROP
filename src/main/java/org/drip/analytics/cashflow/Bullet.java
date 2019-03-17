@@ -108,7 +108,7 @@ public class Bullet {
 	 */
 
 	private double _dblBaseNotional = java.lang.Double.NaN;
-	private org.drip.quant.common.Array2D _a2DNotionalSchedule = null;
+	private org.drip.numerical.common.Array2D _a2DNotionalSchedule = null;
 
 	private org.drip.analytics.output.ConvexityAdjustment convexityAdjustment (
 		final int iValueDate,
@@ -203,13 +203,13 @@ public class Bullet {
 		final int iPayDate,
 		final int iFXFixingDate,
 		final double dblBaseNotional,
-		final org.drip.quant.common.Array2D a2DNotionalSchedule,
+		final org.drip.numerical.common.Array2D a2DNotionalSchedule,
 		final java.lang.String strPayCurrency,
 		final java.lang.String strCouponCurrency,
 		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) ||
 			null == (_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() ||
 			null == (_strCouponCurrency = strCouponCurrency) || _strCouponCurrency.isEmpty())
 		throw new java.lang.Exception ("Bullet Constructor => Invalid inputs");
@@ -220,7 +220,7 @@ public class Bullet {
 		_iTerminalDate = iTerminalDate;
 
 		if (null == (_a2DNotionalSchedule = a2DNotionalSchedule))
-			_a2DNotionalSchedule = org.drip.quant.common.Array2D.BulletSchedule();
+			_a2DNotionalSchedule = org.drip.numerical.common.Array2D.BulletSchedule();
 	}
 
 	/**
@@ -336,7 +336,7 @@ public class Bullet {
 	 * @return Notional Schedule
 	 */
 
-	public org.drip.quant.common.Array2D notionalSchedule()
+	public org.drip.numerical.common.Array2D notionalSchedule()
 	{
 		return _a2DNotionalSchedule;
 	}

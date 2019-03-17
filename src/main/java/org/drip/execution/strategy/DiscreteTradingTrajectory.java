@@ -158,9 +158,9 @@ public class DiscreteTradingTrajectory implements org.drip.execution.strategy.Tr
 		final double dblStartHoldings,
 		final double dblFinishHoldings)
 	{
-		if (null == adblExecutionTimeNode || !org.drip.quant.common.NumberUtil.IsValid
-			(adblExecutionTimeNode) || !org.drip.quant.common.NumberUtil.IsValid (dblStartHoldings) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblFinishHoldings))
+		if (null == adblExecutionTimeNode || !org.drip.numerical.common.NumberUtil.IsValid
+			(adblExecutionTimeNode) || !org.drip.numerical.common.NumberUtil.IsValid (dblStartHoldings) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblFinishHoldings))
 			return null;
 
 		int iNumNode = adblExecutionTimeNode.length;
@@ -199,14 +199,14 @@ public class DiscreteTradingTrajectory implements org.drip.execution.strategy.Tr
 		int iNumExecutionTime = _adblExecutionTimeNode.length;
 
 		if (1 >= iNumExecutionTime || iNumExecutionTime != _adblHoldings.length || iNumExecutionTime - 1 !=
-			_adblTradeList.length || !org.drip.quant.common.NumberUtil.IsValid (_adblHoldings[0]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblExecutionTimeNode[0]))
+			_adblTradeList.length || !org.drip.numerical.common.NumberUtil.IsValid (_adblHoldings[0]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblExecutionTimeNode[0]))
 			throw new java.lang.Exception ("DiscreteTradingTrajectory Constructor => Invalid Inputs!");
 
 		for (int i = 1; i < iNumExecutionTime; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblHoldings[i]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblTradeList[i - 1]) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_adblExecutionTimeNode[i]) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblHoldings[i]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblTradeList[i - 1]) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_adblExecutionTimeNode[i]) ||
 						_adblExecutionTimeNode[i - 1] >= _adblExecutionTimeNode[i])
 				throw new java.lang.Exception ("DiscreteTradingTrajectory Constructor => Invalid Inputs!");
 		}

@@ -134,7 +134,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 	{
 		super (funcClassRxToR1, cdpb, regularizerFunc);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzSlope = dblLipschitzSlope))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLipschitzSlope = dblLipschitzSlope))
 			throw new java.lang.Exception ("LipschitzLossLearner ctr: Invalid Inputs");
 	}
 
@@ -155,7 +155,7 @@ public class LipschitzLossLearner extends org.drip.learning.rxtor1.GeneralizedLe
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
+		if (null == gvvi || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
 			throw new java.lang.Exception
 				("LipschitzLossLearner::lossSampleCoveringNumber => Invalid Inputs");
 

@@ -147,10 +147,10 @@ public class ConvergenceControlParams {
 		throws java.lang.Exception
 	{
 		if (0 >= (_iFixedPointConvergenceIterations = iFixedPointConvergenceIterations) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBegin =
-				dblConvergenceZoneVariateBegin) || !org.drip.quant.common.NumberUtil.IsValid
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBegin =
+				dblConvergenceZoneVariateBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblConvergenceZoneEdgeLimit = dblConvergenceZoneEdgeLimit) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBumpFactor =
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblConvergenceZoneVariateBumpFactor =
 							dblConvergenceZoneVariateBumpFactor))
 			throw new java.lang.Exception ("ConvergenceControlParams constructor: Invalid inputs");
 	}

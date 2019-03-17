@@ -107,7 +107,7 @@ public class AffineBoundMultivariate extends org.drip.function.definition.RdToR1
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBoundValue = dblBoundValue) || 0 ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBoundValue = dblBoundValue) || 0 ==
 			(_iNumTotalVariate = iNumTotalVariate) || _iNumTotalVariate <= (_iBoundVariateIndex =
 				iBoundVariateIndex))
 			throw new java.lang.Exception ("AffineBoundMultivariate Constructor => Invalid Inputs");
@@ -134,7 +134,7 @@ public class AffineBoundMultivariate extends org.drip.function.definition.RdToR1
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("AffineBoundMultivariate::violated => Invalid Inputs");
 
 		if (_bIsUpper && dblVariate > _dblBoundValue) return true;
@@ -153,7 +153,7 @@ public class AffineBoundMultivariate extends org.drip.function.definition.RdToR1
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate) ||
+		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate) ||
 			adblVariate.length != dimension())
 			throw new java.lang.Exception ("AffineBoundMultivariate::evaluate => Invalid Inputs");
 

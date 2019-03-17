@@ -100,7 +100,7 @@ public class ExponentialTensionSetParams implements org.drip.spline.basis.Functi
 		final double dblTension)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
 			throw new java.lang.Exception ("ExponentialTensionSetParams ctr: Invalid Inputs");
 	}
 

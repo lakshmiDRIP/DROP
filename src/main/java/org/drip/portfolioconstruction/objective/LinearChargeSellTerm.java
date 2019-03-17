@@ -122,7 +122,7 @@ public class LinearChargeSellTerm extends org.drip.portfolioconstruction.objecti
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception
 						("LinearChargeSellTerm::rdToR1::evaluate => Invalid Input");
 

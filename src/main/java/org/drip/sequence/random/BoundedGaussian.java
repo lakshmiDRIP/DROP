@@ -107,8 +107,8 @@ public class BoundedGaussian extends org.drip.sequence.random.BoxMullerGaussian 
 	{
 		super (dblMean, dblVariance);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound <=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLowerBound = dblLowerBound) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpperBound = dblUpperBound) || dblUpperBound <=
 				dblLowerBound)
 			throw new java.lang.Exception ("BoundedGaussian ctr: Invalid Inputs");
 	}

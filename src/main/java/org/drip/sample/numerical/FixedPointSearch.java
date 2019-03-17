@@ -3,8 +3,9 @@ package org.drip.sample.numerical;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1solver.*;
-import org.drip.quant.calculus.*;
-import org.drip.quant.common.*;
+import org.drip.numerical.common.*;
+import org.drip.numerical.differentiation.*;
+import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

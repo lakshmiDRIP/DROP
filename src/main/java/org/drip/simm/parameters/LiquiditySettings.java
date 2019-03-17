@@ -113,7 +113,7 @@ public abstract class LiquiditySettings
 		final double concentrationThreshold)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_concentrationThreshold = concentrationThreshold))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_concentrationThreshold = concentrationThreshold))
 		{
 			throw new java.lang.Exception ("LiquiditySettings Constructor => Invalid Inputs");
 		}

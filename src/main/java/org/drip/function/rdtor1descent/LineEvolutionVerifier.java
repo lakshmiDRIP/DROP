@@ -106,7 +106,7 @@ public abstract class LineEvolutionVerifier {
 		final double[] adblCurrentVariate,
 		final double dblStepLength)
 	{
-		if (null == adblCurrentVariate || !org.drip.quant.common.NumberUtil.IsValid (dblStepLength))
+		if (null == adblCurrentVariate || !org.drip.numerical.common.NumberUtil.IsValid (dblStepLength))
 			return null;
 
 		int iDimension = adblCurrentVariate.length;
@@ -119,8 +119,8 @@ public abstract class LineEvolutionVerifier {
 		if (null == adblTargetDirection || iDimension != adblTargetDirection.length) return null;
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblCurrentVariate[i]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (adblTargetDirection[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblCurrentVariate[i]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (adblTargetDirection[i]))
 				return null;
 
 			adblNextVariate[i] = adblCurrentVariate[i] + dblStepLength * adblTargetDirection[i];

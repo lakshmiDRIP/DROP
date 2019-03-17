@@ -363,9 +363,9 @@ public class BucketVegaSettings extends org.drip.simm.parameters.BucketSensitivi
 			memberCorrelation
 		);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_impliedVolatility = impliedVolatility) ||
 				0. > _impliedVolatility ||
-			!org.drip.quant.common.NumberUtil.IsValid (_historicalVolatilityRatio =
+			!org.drip.numerical.common.NumberUtil.IsValid (_historicalVolatilityRatio =
 				historicalVolatilityRatio) || 0. > _historicalVolatilityRatio)
 		{
 			throw new java.lang.Exception ("BucketVegaSettings Constructor => Invalid Inputs");

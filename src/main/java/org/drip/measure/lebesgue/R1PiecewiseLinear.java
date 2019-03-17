@@ -102,8 +102,8 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double[] adblPredictorOrdinate,
 		final double[] adblCumulativeProbability)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||
 				dblLeftPredictorOrdinateEdge >= dblRightPredictorOrdinateEdge || null ==
 					adblPredictorOrdinate || null == adblCumulativeProbability)
 			return null;
@@ -118,14 +118,14 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 			double dblLeftPredictorOrdinate = 0 == i ? dblLeftPredictorOrdinateEdge :
 				adblPredictorOrdinate[i - 1];
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||
 				dblLeftPredictorOrdinate < dblLeftPredictorOrdinateEdge)
 				return null;
 
 			double dblRightPredictorOrdinate = iNumPredictorOrdinate == i ? dblRightPredictorOrdinateEdge :
 				adblPredictorOrdinate[i];
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||
 				dblRightPredictorOrdinate <= dblLeftPredictorOrdinate || dblRightPredictorOrdinate >
 					dblRightPredictorOrdinateEdge)
 				return null;
@@ -204,7 +204,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1PiecewiseLinear::cumulative => Invalid Inputs");
 
 		double dblLeftEdge = leftEdge();
@@ -241,7 +241,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
 			throw new java.lang.Exception ("R1PiecewiseLinear::invCumulative => Invalid inputs");
 
 		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new
@@ -268,7 +268,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception ("R1PiecewiseLinear::density => Invalid Inputs");
 
 		if (dblX <= leftEdge() || dblX >= rightEdge()) return 0.;
@@ -287,7 +287,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		return _adblPiecewiseDensity[iSegmentIndex] * dblX;
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 		double dblLeftEdge = leftEdge();
 
@@ -308,6 +308,6 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 			}
 		}
 
-		return org.drip.quant.common.Array2D.FromArray (adblX, adblY);
+		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);
 	}
 }

@@ -103,11 +103,11 @@ package org.drip.function.e2erfc;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionComplementInverse extends org.drip.function.numerical.R1ToR1Estimator
+public abstract class ErrorFunctionComplementInverse extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
 	protected ErrorFunctionComplementInverse (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{
 		super (dc);
@@ -127,7 +127,7 @@ public abstract class ErrorFunctionComplementInverse extends org.drip.function.n
 		final double p)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (p))
 		{
 			throw new java.lang.Exception ("ErrorFunctionComplementInverse::probit => Invalid Inputs");
 		}
@@ -149,7 +149,7 @@ public abstract class ErrorFunctionComplementInverse extends org.drip.function.n
 		final double p)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (p))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (p))
 		{
 			throw new java.lang.Exception ("ErrorFunctionComplementInverse::inverseCDF => Invalid Inputs");
 		}

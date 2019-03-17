@@ -1361,7 +1361,7 @@ public class ScenarioDiscountCurveBuilder {
 		final java.lang.String strCompoundingDayCount,
 		final int iCompoundingFreq)
 	{
-		if (null == dtStart || !org.drip.quant.common.NumberUtil.IsValid (dblYield)) return null;
+		if (null == dtStart || !org.drip.numerical.common.NumberUtil.IsValid (dblYield)) return null;
 
 		try {
 			return new org.drip.state.nonlinear.FlatForwardDiscountCurve (dtStart, strCurrency, new int[]

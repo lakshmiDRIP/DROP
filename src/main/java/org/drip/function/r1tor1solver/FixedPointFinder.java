@@ -137,7 +137,7 @@ public abstract class FixedPointFinder {
 		final boolean bWhine)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoal = dblOFGoal) || null == (_of = of))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOFGoal = dblOFGoal) || null == (_of = of))
 			throw new java.lang.Exception ("FixedPointFinder constructor: Invalid inputs");
 
 		_ec = new org.drip.function.r1tor1solver.ExecutionControl (of, null);

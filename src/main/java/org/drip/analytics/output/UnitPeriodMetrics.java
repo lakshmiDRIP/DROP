@@ -109,8 +109,8 @@ public class UnitPeriodMetrics extends org.drip.analytics.output.UnitPeriodConve
 	{
 		super (iStartDate, iEndDate, convAdj);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblRate = dblRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblRate = dblRate))
 			throw new java.lang.Exception ("UnitPeriodMetrics ctr: Invalid Inputs");
 	}
 

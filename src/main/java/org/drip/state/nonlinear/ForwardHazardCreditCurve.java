@@ -229,7 +229,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 	@Override public ForwardHazardCreditCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
 
 		double[] adblHazard = new double[_adblHazardRate.length];
 
@@ -256,7 +256,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
 
 		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||
 			0 == _adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
@@ -299,7 +299,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;
 
 		if (null == _valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote ||
 			0 == _adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
@@ -345,7 +345,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final boolean bSingleNode,
 		final double dblRecovery)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatNodeValue) || 0. >= dblFlatNodeValue || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatNodeValue) || 0. >= dblFlatNodeValue || null ==
 			_valParam || null == _aCalibInst || 0 == _aCalibInst.length || null == _adblCalibQuote || 0 ==
 				_adblCalibQuote.length || null == _astrCalibMeasure || 0 == _astrCalibMeasure.length ||
 					_astrCalibMeasure.length != _adblCalibQuote.length || _adblCalibQuote.length !=
@@ -358,7 +358,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 			if (bSingleNode)
 				cc = org.drip.state.creator.ScenarioCreditCurveBuilder.Hazard (_iEpochDate,
 					_label.fullyQualifiedName(), _strCurrency, _adblHazardRate[0], _aiHazardDate[0],
-						!org.drip.quant.common.NumberUtil.IsValid (dblRecovery) ? _adblRecoveryRate[0] :
+						!org.drip.numerical.common.NumberUtil.IsValid (dblRecovery) ? _adblRecoveryRate[0] :
 							dblRecovery);
 			else
 				cc = new ForwardHazardCreditCurve (_iEpochDate, _label, _strCurrency, _adblHazardRate,
@@ -497,7 +497,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblHazardRate.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblHazardRate.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblHazardRate.length; ++i)
@@ -510,7 +510,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblHazardRate.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblHazardRate.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblHazardRate.length; ++i)
@@ -522,7 +522,7 @@ public class ForwardHazardCreditCurve extends org.drip.state.credit.ExplicitBoot
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		for (int i = 0; i < _adblHazardRate.length; ++i)
 			_adblHazardRate[i] = dblValue;

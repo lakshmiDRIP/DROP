@@ -130,10 +130,10 @@ public class WalkSuite {
 		final double dblTemporaryImpact)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPrevious = dblPrevious) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCurrent = dblCurrent) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPrevious = dblPrevious) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrent = dblCurrent) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblPermanentImpact = dblPermanentImpact) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblTemporaryImpact = dblTemporaryImpact))
 			throw new java.lang.Exception ("WalkSuite Constructor => Invalid Inputs");
 	}
 

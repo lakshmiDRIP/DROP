@@ -96,7 +96,7 @@ public class TotalAccounts {
 		final int iCount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_iCount = iCount))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_iCount = iCount))
 			throw new java.lang.Exception ("TotalAccounts Constructor => Invalid Inputs");
 	}
 

@@ -102,7 +102,7 @@ public class RequestResponseDecorator {
 
 		jsonRequest.put ("REQUESTTIMESTAMP", new java.util.Date().toString());
 
-		jsonRequest.put ("REQUESTID", org.drip.quant.common.StringUtil.GUID());
+		jsonRequest.put ("REQUESTID", org.drip.numerical.common.StringUtil.GUID());
 
 		return true;
 	}
@@ -132,7 +132,7 @@ public class RequestResponseDecorator {
 
     	jsonResponse.put ("RESPONSETIMESTAMP", new java.util.Date().toString());
 
-    	jsonResponse.put ("RESPONSEID", org.drip.quant.common.StringUtil.GUID());
+    	jsonResponse.put ("RESPONSEID", org.drip.numerical.common.StringUtil.GUID());
 
 		return true;
 	}

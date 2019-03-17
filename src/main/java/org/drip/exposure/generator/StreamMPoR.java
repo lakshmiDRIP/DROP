@@ -117,7 +117,7 @@ public abstract class StreamMPoR implements org.drip.exposure.mpor.VariationMarg
 		throws java.lang.Exception
 	{
 		if (null == (_stream = stream) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_notional = notional))
+			!org.drip.numerical.common.NumberUtil.IsValid (_notional = notional))
 		{
 			throw new java.lang.Exception ("StreamMPoR Constructor => Invalid Inputs");
 		}

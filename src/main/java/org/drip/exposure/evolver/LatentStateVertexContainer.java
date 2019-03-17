@@ -383,7 +383,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.CSALabel csaLabel,
 		final double csa)
 	{
-		if (null == csaLabel || !org.drip.quant.common.NumberUtil.IsValid (csa))
+		if (null == csaLabel || !org.drip.numerical.common.NumberUtil.IsValid (csa))
 		{
 			return false;
 		}
@@ -447,7 +447,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.FXLabel fxLabel,
 		final double fx)
 	{
-		if (null == fxLabel || !org.drip.quant.common.NumberUtil.IsValid (fx))
+		if (null == fxLabel || !org.drip.numerical.common.NumberUtil.IsValid (fx))
 		{
 			return false;
 		}
@@ -511,7 +511,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.RepoLabel repoLabel,
 		final double repo)
 	{
-		if (null == repoLabel || !org.drip.quant.common.NumberUtil.IsValid (repo))
+		if (null == repoLabel || !org.drip.numerical.common.NumberUtil.IsValid (repo))
 		{
 			return false;
 		}
@@ -575,7 +575,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.CustomLabel customLabel,
 		final double custom)
 	{
-		if (null == customLabel || !org.drip.quant.common.NumberUtil.IsValid (custom))
+		if (null == customLabel || !org.drip.numerical.common.NumberUtil.IsValid (custom))
 		{
 			return false;
 		}
@@ -639,7 +639,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.GovvieLabel govvieLabel,
 		final double govvie)
 	{
-		if (null == govvieLabel || !org.drip.quant.common.NumberUtil.IsValid (govvie))
+		if (null == govvieLabel || !org.drip.numerical.common.NumberUtil.IsValid (govvie))
 		{
 			return false;
 		}
@@ -703,7 +703,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.RatingLabel ratingLabel,
 		final double rating)
 	{
-		if (null == ratingLabel || !org.drip.quant.common.NumberUtil.IsValid (rating))
+		if (null == ratingLabel || !org.drip.numerical.common.NumberUtil.IsValid (rating))
 		{
 			return false;
 		}
@@ -767,7 +767,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final double forward)
 	{
-		if (null == forwardLabel || !org.drip.quant.common.NumberUtil.IsValid (forward))
+		if (null == forwardLabel || !org.drip.numerical.common.NumberUtil.IsValid (forward))
 		{
 			return false;
 		}
@@ -831,7 +831,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.FundingLabel fundingLabel,
 		final double funding)
 	{
-		if (null == fundingLabel || !org.drip.quant.common.NumberUtil.IsValid (funding))
+		if (null == fundingLabel || !org.drip.numerical.common.NumberUtil.IsValid (funding))
 		{
 			return false;
 		}
@@ -895,7 +895,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.PaydownLabel payDownLabel,
 		final double payDown)
 	{
-		if (null == payDownLabel || !org.drip.quant.common.NumberUtil.IsValid (payDown))
+		if (null == payDownLabel || !org.drip.numerical.common.NumberUtil.IsValid (payDown))
 		{
 			return false;
 		}
@@ -959,7 +959,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.OvernightLabel overnightLabel,
 		final double overnight)
 	{
-		if (null == overnightLabel || !org.drip.quant.common.NumberUtil.IsValid (overnight))
+		if (null == overnightLabel || !org.drip.numerical.common.NumberUtil.IsValid (overnight))
 		{
 			return false;
 		}
@@ -1023,7 +1023,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.CollateralLabel collateralLabel,
 		final double collateral)
 	{
-		if (null == collateralLabel || !org.drip.quant.common.NumberUtil.IsValid (collateral))
+		if (null == collateralLabel || !org.drip.numerical.common.NumberUtil.IsValid (collateral))
 		{
 			return false;
 		}
@@ -1087,7 +1087,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.VolatilityLabel volatilityLabel,
 		final double volatility)
 	{
-		if (null == volatilityLabel || !org.drip.quant.common.NumberUtil.IsValid (volatility))
+		if (null == volatilityLabel || !org.drip.numerical.common.NumberUtil.IsValid (volatility))
 		{
 			return false;
 		}
@@ -1151,7 +1151,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.OTCFixFloatLabel otcFixFloatLabel,
 		final double otcFixFloat)
 	{
-		if (null == otcFixFloatLabel || !org.drip.quant.common.NumberUtil.IsValid (otcFixFloat))
+		if (null == otcFixFloatLabel || !org.drip.numerical.common.NumberUtil.IsValid (otcFixFloat))
 		{
 			return false;
 		}
@@ -1215,7 +1215,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.EntityCreditLabel entityCreditLabel,
 		final double entityCredit)
 	{
-		if (null == entityCreditLabel || !org.drip.quant.common.NumberUtil.IsValid (entityCredit))
+		if (null == entityCreditLabel || !org.drip.numerical.common.NumberUtil.IsValid (entityCredit))
 		{
 			return false;
 		}
@@ -1280,7 +1280,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.EntityEquityLabel entityEquityLabel,
 		final double entityEquity)
 	{
-		if (null == entityEquityLabel || !org.drip.quant.common.NumberUtil.IsValid (entityEquity))
+		if (null == entityEquityLabel || !org.drip.numerical.common.NumberUtil.IsValid (entityEquity))
 		{
 			return false;
 		}
@@ -1345,7 +1345,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.EntityHazardLabel entityHazardLabel,
 		final double entityHazard)
 	{
-		if (null == entityHazardLabel || !org.drip.quant.common.NumberUtil.IsValid (entityHazard))
+		if (null == entityHazardLabel || !org.drip.numerical.common.NumberUtil.IsValid (entityHazard))
 		{
 			return false;
 		}
@@ -1410,7 +1410,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.EntityFundingLabel entityFundingLabel,
 		final double entityFunding)
 	{
-		if (null == entityFundingLabel || !org.drip.quant.common.NumberUtil.IsValid (entityFunding))
+		if (null == entityFundingLabel || !org.drip.numerical.common.NumberUtil.IsValid (entityFunding))
 		{
 			return false;
 		}
@@ -1475,7 +1475,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.EntityRecoveryLabel entityRecoveryLabel,
 		final double entityRecovery)
 	{
-		if (null == entityRecoveryLabel || !org.drip.quant.common.NumberUtil.IsValid (entityRecovery))
+		if (null == entityRecoveryLabel || !org.drip.numerical.common.NumberUtil.IsValid (entityRecovery))
 		{
 			return false;
 		}
@@ -1540,7 +1540,7 @@ public class LatentStateVertexContainer
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel,
 		final double value)
 	{
-		if (null == latentStateLabel || !org.drip.quant.common.NumberUtil.IsValid (value))
+		if (null == latentStateLabel || !org.drip.numerical.common.NumberUtil.IsValid (value))
 		{
 			return false;
 		}

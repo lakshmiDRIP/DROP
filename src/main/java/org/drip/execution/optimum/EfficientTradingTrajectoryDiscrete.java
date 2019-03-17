@@ -176,10 +176,10 @@ public class EfficientTradingTrajectoryDiscrete extends org.drip.execution.strat
 	{
 		super (adblExecutionTimeNode, adblHoldings, adblTradeList);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTransactionCostExpectation =
-			dblTransactionCostExpectation) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTransactionCostExpectation =
+			dblTransactionCostExpectation) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblTransactionCostVariance = dblTransactionCostVariance) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblMarketPower = dblMarketPower))
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblMarketPower = dblMarketPower))
 			throw new java.lang.Exception
 				("EfficientTradingTrajectoryDiscrete Constructor => Invalid Inputs");
 	}

@@ -110,8 +110,8 @@ public class DeliverableSwapFutures {
 		throws java.lang.Exception
 	{
 		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strTenor = strTenor)
-			|| _strTenor.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (_dblNominal = dblNominal) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblRateIncrement = dblRateIncrement))
+			|| _strTenor.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (_dblNominal = dblNominal) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblRateIncrement = dblRateIncrement))
 			throw new java.lang.Exception ("DeliverableSwapFutures ctr: Invalid Inputs");
 
 		_ltds = ltds;

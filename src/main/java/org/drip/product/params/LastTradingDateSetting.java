@@ -152,7 +152,7 @@ public class LastTradingDateSetting {
 
 		if ((MID_CURVE_OPTION == _iMidCurveOptionType && (null == _strLastTradeExerciseLag ||
 			_strLastTradeExerciseLag.isEmpty())) || (MID_CURVE_OPTION_SERIAL == _iMidCurveOptionType &&
-				!org.drip.quant.common.NumberUtil.IsValid (_iLastTradingDate)))
+				!org.drip.numerical.common.NumberUtil.IsValid (_iLastTradingDate)))
 			throw new java.lang.Exception ("LastTradingDateSetting ctr => Invalid Inputs");
 	}
 

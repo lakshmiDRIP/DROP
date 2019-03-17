@@ -243,78 +243,78 @@ public class ProductDailyPnL {
 		final double dbl3MFloatingDCF)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTotalPnL = dbl1DTotalPnL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCleanPnL = dbl1DCleanPnL) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dbl1DDirtyPnL = dbl1DDirtyPnL) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTotalPnLWithFixing =
-						dbl1DTotalPnLWithFixing) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTotalPnL = dbl1DTotalPnL) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCleanPnL = dbl1DCleanPnL) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DDirtyPnL = dbl1DDirtyPnL) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTotalPnLWithFixing =
+						dbl1DTotalPnLWithFixing) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dbl1DCleanPnLWithFixing = dbl1DCleanPnLWithFixing) ||
-								!org.drip.quant.common.NumberUtil.IsValid (_dbl1DDirtyPnLWithFixing =
-									dbl1DDirtyPnLWithFixing) || !org.drip.quant.common.NumberUtil.IsValid
+								!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DDirtyPnLWithFixing =
+									dbl1DDirtyPnLWithFixing) || !org.drip.numerical.common.NumberUtil.IsValid
 										(_dbl1DCarryPnL = dbl1DCarryPnL) ||
-											!org.drip.quant.common.NumberUtil.IsValid (_dbl1DTimeRollPnL =
+											!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTimeRollPnL =
 												dbl1DTimeRollPnL) ||
-													!org.drip.quant.common.NumberUtil.IsValid
+													!org.drip.numerical.common.NumberUtil.IsValid
 														(_dbl1DMaturityRollDownSwapRatePnL =
 															dbl1DMaturityRollDownSwapRatePnL) ||
-																!org.drip.quant.common.NumberUtil.IsValid
+																!org.drip.numerical.common.NumberUtil.IsValid
 																	(_dbl1DMaturityRollUpSwapRatePnL =
 																		dbl1DMaturityRollUpSwapRatePnL) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumPnL =
-				dbl1DMaturityRollUpFairPremiumPnL) || !org.drip.quant.common.NumberUtil.IsValid
+			!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumPnL =
+				dbl1DMaturityRollUpFairPremiumPnL) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dbl1DMaturityRollUpFairPremiumWithFixingPnL =
 						dbl1DMaturityRollUpFairPremiumWithFixingPnL) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCurveShiftPnL =
-								dbl1DCurveShiftPnL) || !org.drip.quant.common.NumberUtil.IsValid
+							!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCurveShiftPnL =
+								dbl1DCurveShiftPnL) || !org.drip.numerical.common.NumberUtil.IsValid
 									(_dbl1MCarryPnL = dbl1MCarryPnL) ||
-										!org.drip.quant.common.NumberUtil.IsValid
+										!org.drip.numerical.common.NumberUtil.IsValid
 											(_dbl1MMaturityRollDownSwapRatePnL =
 												dbl1MMaturityRollDownSwapRatePnL) ||
-													!org.drip.quant.common.NumberUtil.IsValid (_dbl3MCarryPnL
+													!org.drip.numerical.common.NumberUtil.IsValid (_dbl3MCarryPnL
 														= dbl3MCarryPnL) ||
-															!org.drip.quant.common.NumberUtil.IsValid
+															!org.drip.numerical.common.NumberUtil.IsValid
 																(_dbl3MMaturityRollDownSwapRatePnL =
 																	dbl3MMaturityRollDownSwapRatePnL) ||
-																		!org.drip.quant.common.NumberUtil.IsValid
-			(_dblDV01 = dblDV01) || !org.drip.quant.common.NumberUtil.IsValid (_dblDV01WithFixing =
-				dblDV01WithFixing) || !org.drip.quant.common.NumberUtil.IsValid (_dblCleanFixedDV01 =
-					dblCleanFixedDV01) || !org.drip.quant.common.NumberUtil.IsValid (_dblCleanFloatDV01 =
-						dblCleanFloatDV01) || !org.drip.quant.common.NumberUtil.IsValid
+																		!org.drip.numerical.common.NumberUtil.IsValid
+			(_dblDV01 = dblDV01) || !org.drip.numerical.common.NumberUtil.IsValid (_dblDV01WithFixing =
+				dblDV01WithFixing) || !org.drip.numerical.common.NumberUtil.IsValid (_dblCleanFixedDV01 =
+					dblCleanFixedDV01) || !org.drip.numerical.common.NumberUtil.IsValid (_dblCleanFloatDV01 =
+						dblCleanFloatDV01) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dblCleanFloatDV01WithFixing = dblCleanFloatDV01WithFixing) ||
-								!org.drip.quant.common.NumberUtil.IsValid (_dblBaselineSwapRate =
-									dblBaselineSwapRate) || !org.drip.quant.common.NumberUtil.IsValid
+								!org.drip.numerical.common.NumberUtil.IsValid (_dblBaselineSwapRate =
+									dblBaselineSwapRate) || !org.drip.numerical.common.NumberUtil.IsValid
 										(_dbl1DTimeRollSwapRate = dbl1DTimeRollSwapRate) ||
-											!org.drip.quant.common.NumberUtil.IsValid
+											!org.drip.numerical.common.NumberUtil.IsValid
 												(_dbl1DMaturityRollDownSwapRate =
 													dbl1DMaturityRollDownSwapRate) ||
-														!org.drip.quant.common.NumberUtil.IsValid
+														!org.drip.numerical.common.NumberUtil.IsValid
 															(_dbl1MMaturityRollDownSwapRate =
 																dbl1MMaturityRollDownSwapRate) ||
-																	!org.drip.quant.common.NumberUtil.IsValid
+																	!org.drip.numerical.common.NumberUtil.IsValid
 																		(_dbl3MMaturityRollDownSwapRate =
 																			dbl3MMaturityRollDownSwapRate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpSwapRate =
-				dbl1DMaturityRollUpSwapRate) || !org.drip.quant.common.NumberUtil.IsValid
+			!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DMaturityRollUpSwapRate =
+				dbl1DMaturityRollUpSwapRate) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dbl1DMaturityRollUpFairPremium = dbl1DMaturityRollUpFairPremium) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumWithFixing
+						!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DMaturityRollUpFairPremiumWithFixing
 							= dbl1DMaturityRollUpFairPremiumWithFixing) ||
-								!org.drip.quant.common.NumberUtil.IsValid (_dbl1DCurveShiftSwapRate =
-									dbl1DCurveShiftSwapRate) || !org.drip.quant.common.NumberUtil.IsValid
+								!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCurveShiftSwapRate =
+									dbl1DCurveShiftSwapRate) || !org.drip.numerical.common.NumberUtil.IsValid
 										(_dblPeriodFixedRate = dblPeriodFixedRate) ||
-											!org.drip.quant.common.NumberUtil.IsValid
+											!org.drip.numerical.common.NumberUtil.IsValid
 												(_dblPeriodCurveFloatingRate = dblPeriodCurveFloatingRate) ||
-													!org.drip.quant.common.NumberUtil.IsValid
+													!org.drip.numerical.common.NumberUtil.IsValid
 														(_dblPeriodProductFloatingRate =
 															dblPeriodProductFloatingRate) ||
-																!org.drip.quant.common.NumberUtil.IsValid
+																!org.drip.numerical.common.NumberUtil.IsValid
 																	(_dblPeriodFloatingRateUsed =
 																		dblPeriodFloatingRateUsed) ||
-																			!org.drip.quant.common.NumberUtil.IsValid
-			(_dbl1DFixedDCF = dbl1DFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1DFloatingDCF
-				= dbl1DFloatingDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1MFixedDCF =
-					dbl1MFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl1MFloatingDCF =
-						dbl1MFloatingDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl3MFixedDCF =
-							dbl3MFixedDCF) || !org.drip.quant.common.NumberUtil.IsValid (_dbl3MFloatingDCF =
+																			!org.drip.numerical.common.NumberUtil.IsValid
+			(_dbl1DFixedDCF = dbl1DFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl1DFloatingDCF
+				= dbl1DFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl1MFixedDCF =
+					dbl1MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl1MFloatingDCF =
+						dbl1MFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl3MFixedDCF =
+							dbl3MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl3MFloatingDCF =
 								dbl3MFloatingDCF))
 			throw new java.lang.Exception ("ProductDailyPnL ctr: Invalid Inputs!");
 

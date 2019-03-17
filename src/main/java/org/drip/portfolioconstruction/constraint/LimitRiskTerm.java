@@ -118,7 +118,7 @@ public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optim
 		{
 			if (null == _aadblAssetCovariance[i] ||
 				iNumAsset != _aadblAssetCovariance[i].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))
 				throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
 		}
 	}

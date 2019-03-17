@@ -103,8 +103,8 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblHazard = dblHazard))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblHazard = dblHazard))
 			throw new java.lang.Exception ("ExponentialDecay ctr => Invalid Inputs");
 	}
 
@@ -112,7 +112,7 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("ExponentialDecay::evaluate => Invalid Inputs");
 
 		return java.lang.Math.exp (-1. * _dblHazard * (dblVariate - _dblEpoch));
@@ -123,7 +123,7 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder)
 			throw new java.lang.Exception ("ExponentialDecay::derivative => Invalid Inputs");
 
 		double dblDerivativeFactor = 1;
@@ -139,7 +139,7 @@ public class ExponentialDecay extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("ExponentialDecay::integrate => Invalid Inputs");
 

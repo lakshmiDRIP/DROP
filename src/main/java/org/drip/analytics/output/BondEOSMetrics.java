@@ -119,7 +119,7 @@ public class BondEOSMetrics {
 		final boolean[][] aabExerciseIndicator)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOASTM = dblOASTM))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOASTM = dblOASTM))
 			throw new java.lang.Exception ("BondEOSMetrics Constructor => Invalid Inputs");
 
 		_udtOptimalExercisePrice = new org.drip.measure.statistics.UnivariateDiscreteThin

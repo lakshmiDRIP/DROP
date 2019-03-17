@@ -1,8 +1,8 @@
 
 package org.drip.sample.spline;
 
+import org.drip.numerical.common.FormatUtil;
 import org.drip.spline.bspline.*;
-import org.drip.quant.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

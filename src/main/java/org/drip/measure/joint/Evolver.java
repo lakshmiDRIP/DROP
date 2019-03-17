@@ -102,7 +102,7 @@ public abstract class Evolver {
 
 		for (int i = 0; i < iNumFactor; ++i) {
 			if (null == _aLDEVDrift[i] || null == _aLDEVVolatility[i] || null == _aadblCorrelation[i] ||
-				iNumFactor != _aadblCorrelation[i].length || !org.drip.quant.common.NumberUtil.IsValid
+				iNumFactor != _aadblCorrelation[i].length || !org.drip.numerical.common.NumberUtil.IsValid
 					(_aadblCorrelation[i]))
 				throw new java.lang.Exception ("Evolver Constructor => Invalid Inputs");
 		}

@@ -4,13 +4,13 @@ package org.drip.sample.sensitivity;
 import org.drip.analytics.date.*;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
 import org.drip.market.otc.*;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.param.creator.*;
 import org.drip.param.valuation.*;
 import org.drip.product.creator.*;
 import org.drip.product.definition.*;
 import org.drip.product.rates.*;
-import org.drip.quant.calculus.WengertJacobian;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.*;
 import org.drip.spline.params.*;
@@ -532,7 +532,7 @@ public class FundingCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aDepositComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (aDepositComp[i].maturityDate(), "PV");
+			org.drip.numerical.differentiation.WengertJacobian wj = dc.jackDDFDManifestMeasure (aDepositComp[i].maturityDate(), "PV");
 
 			System.out.println (aDepositComp[i].maturityDate() + " => " + wj.displayString());
 		}
@@ -548,7 +548,7 @@ public class FundingCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aEDFComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (
+			org.drip.numerical.differentiation.WengertJacobian wj = dc.jackDDFDManifestMeasure (
 				aEDFComp[i].maturityDate(),
 				"PV"
 			);
@@ -567,7 +567,7 @@ public class FundingCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+			org.drip.numerical.differentiation.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
 				aSwapComp[i].maturityDate(),
 				"PV"
 			);

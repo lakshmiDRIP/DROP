@@ -113,7 +113,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 	private java.lang.String _strDenominationCurrency = "";
 	private double _dblNotionalAmount = java.lang.Double.NaN;
 	private int _iPeriodAmortizationMode = PERIOD_AMORT_AT_START;
-	private org.drip.quant.common.Array2D _fsOutstanding = null;
+	private org.drip.numerical.common.Array2D _fsOutstanding = null;
 
 	/**
 	 * Construct the NotionalSetting from the notional schedule and the amount.
@@ -128,7 +128,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 	public NotionalSetting (
 		final double dblNotionalAmount,
 		final java.lang.String strDenominationCurrency,
-		final org.drip.quant.common.Array2D fsOutstanding,
+		final org.drip.numerical.common.Array2D fsOutstanding,
 		final int iPeriodAmortizationMode,
 		final boolean bPriceOffOriginalNotional)
 	{
@@ -141,11 +141,11 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	@Override public boolean validate()
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotionalAmount) || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNotionalAmount) || null ==
 			_strDenominationCurrency || _strDenominationCurrency.isEmpty())
 			return false;
 
-		if (null == _fsOutstanding) _fsOutstanding = org.drip.quant.common.Array2D.BulletSchedule();
+		if (null == _fsOutstanding) _fsOutstanding = org.drip.numerical.common.Array2D.BulletSchedule();
 
 		return true;
 	}
@@ -189,7 +189,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 	 * @return The Outstanding Factor Schedule
 	 */
 
-	public org.drip.quant.common.Array2D outstandingFactorSchedule()
+	public org.drip.numerical.common.Array2D outstandingFactorSchedule()
 	{
 		return _fsOutstanding;
 	}

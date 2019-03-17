@@ -108,7 +108,7 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("UnivariateReflection::evaluate => Invalid Inputs");
 
 		return _au.evaluate (1. - dblVariate);
@@ -119,7 +119,7 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder)
 			throw new java.lang.Exception ("UnivariateReflection::derivative => Invalid Inputs");
 
 		return java.lang.Math.pow (-1., iOrder) * _au.derivative (1. - dblVariate, iOrder);
@@ -130,7 +130,7 @@ public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("UnivariateReflection::integrate => Invalid Inputs");
 

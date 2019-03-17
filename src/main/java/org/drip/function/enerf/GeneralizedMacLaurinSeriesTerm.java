@@ -103,7 +103,7 @@ package org.drip.function.enerf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GeneralizedMacLaurinSeriesTerm extends org.drip.function.numerical.R1ToR1SeriesTerm
+public class GeneralizedMacLaurinSeriesTerm extends org.drip.numerical.estimation.R1ToR1SeriesTerm
 {
 	private int _degree = -1;
 
@@ -142,7 +142,7 @@ public class GeneralizedMacLaurinSeriesTerm extends org.drip.function.numerical.
 		throws java.lang.Exception
 	{
 		if (0 > order ||
-			!org.drip.quant.common.NumberUtil.IsValid (z))
+			!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
 			throw new java.lang.Exception ("GeneralizedMacLaurinSeriesTerm::value => Invalid Inputs");
 		}

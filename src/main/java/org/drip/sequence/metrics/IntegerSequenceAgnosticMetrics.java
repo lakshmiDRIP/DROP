@@ -117,7 +117,7 @@ public class IntegerSequenceAgnosticMetrics extends
 	{
 		double dblPopulationMean = populationMean();
 
-		double dblProb = org.drip.quant.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :
+		double dblProb = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :
 			empiricalExpectation();
 
 		return dblProb > 1. ? 1 : dblProb;
@@ -133,12 +133,12 @@ public class IntegerSequenceAgnosticMetrics extends
 	{
 		double dblPopulationMean = populationMean();
 
-		double dblMean = org.drip.quant.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :
+		double dblMean = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :
 			empiricalExpectation();
 
 		double dblPopulationVariance = populationVariance();
 
-		double dblVariance = org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?
+		double dblVariance = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
 			dblPopulationVariance : empiricalVariance();
 
 		return dblVariance / (dblMean * dblMean + dblVariance);

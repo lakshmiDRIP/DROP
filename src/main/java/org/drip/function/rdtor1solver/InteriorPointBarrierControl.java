@@ -127,8 +127,8 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 	{
 		super (iConvergenceType, dblRelativeTolerance, dblAbsoluteTolerance, 100);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblInitialStrength = dblInitialStrength) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblDecayVelocity = dblDecayVelocity) || 1 >
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblInitialStrength = dblInitialStrength) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblDecayVelocity = dblDecayVelocity) || 1 >
 				(_iNumDecaySteps = iNumDecaySteps))
 			throw new java.lang.Exception ("InteriorPointBarrierControl Constructor => Invalid Inputs");
 	}

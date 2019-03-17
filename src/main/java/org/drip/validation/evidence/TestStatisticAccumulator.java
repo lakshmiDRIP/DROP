@@ -148,7 +148,7 @@ public class TestStatisticAccumulator
 	public boolean addTestStatistic (
 		final double testStatistic)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic))
 		{
 			return false;
 		}
@@ -181,7 +181,7 @@ public class TestStatisticAccumulator
 		final double testStatistic)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
 		{
 			throw new java.lang.Exception
 				("TestStatisticAccumulator::cumulativeProbabilityFromLeft => Invalid Inputs");
@@ -216,7 +216,7 @@ public class TestStatisticAccumulator
 		final double testStatistic)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (testStatistic) || 0 == _totalInstanceCount)
 		{
 			throw new java.lang.Exception
 				("TestStatisticAccumulator::cumulativeProbabilityFromRight => Invalid Inputs");

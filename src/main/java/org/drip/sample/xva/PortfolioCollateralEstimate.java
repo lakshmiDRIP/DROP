@@ -9,7 +9,7 @@ import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.xva.proto.*;
 import org.drip.xva.settings.*;

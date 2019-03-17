@@ -125,8 +125,8 @@ public class ShortfallIncrement extends org.drip.execution.discrete.EvolutionInc
 		final double dblPreviousHoldings,
 		final double dblHoldingsIncrement)
 	{
-		if (null == pi || !org.drip.quant.common.NumberUtil.IsValid (dblPreviousHoldings) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblHoldingsIncrement))
+		if (null == pi || !org.drip.numerical.common.NumberUtil.IsValid (dblPreviousHoldings) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblHoldingsIncrement))
 			return null;
 
 		double dblCurrentHoldings = dblPreviousHoldings + dblHoldingsIncrement;

@@ -115,8 +115,8 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 		int iNumAsset = _adblIssuerSelection.length;
 
 		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection)||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblInitialHoldings))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection)||
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))
 			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
 	}
 

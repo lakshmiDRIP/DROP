@@ -118,14 +118,14 @@ public class ImpliedBlackVolatility {
 		final double dblImpliedVolatility)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblATMForwardRate = dblATMForwardRate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblTTE = dblTTE) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblA = dblA) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblZ = dblZ) ||
-							!org.drip.quant.common.NumberUtil.IsValid (_dblChiZ = dblChiZ) ||
-								!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) ||
-									!org.drip.quant.common.NumberUtil.IsValid (_dblImpliedVolatility =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblATMForwardRate = dblATMForwardRate) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblTTE = dblTTE) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblZ = dblZ) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (_dblChiZ = dblChiZ) ||
+								!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) ||
+									!org.drip.numerical.common.NumberUtil.IsValid (_dblImpliedVolatility =
 										dblImpliedVolatility))
 			throw new java.lang.Exception ("ImpliedBlackVolatility ctr: Invalid Inputs");
 	}

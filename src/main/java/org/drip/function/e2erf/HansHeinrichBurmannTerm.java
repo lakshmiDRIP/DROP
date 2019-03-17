@@ -112,9 +112,9 @@ public class HansHeinrichBurmannTerm
 	 * @return The Convergent Version of E<sub>2</sub> erf Hans-Heinrich-Burmann Series Term
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesTerm Convergent()
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Convergent()
 	{
-		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
 		{
 
 			@Override public double value (
@@ -123,7 +123,7 @@ public class HansHeinrichBurmannTerm
 				throws java.lang.Exception
 			{
 				if (0 > order ||
-					!org.drip.quant.common.NumberUtil.IsValid (z))
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("HansHeinrichBurmannTerm::Convergent::value => Invalid Inputs");
@@ -143,9 +143,9 @@ public class HansHeinrichBurmannTerm
 	 * @return The Schopf-Supancic (2014) Version of E<sub>2</sub> erf Hans-Heinrich-Burmann Series Term
 	 */
 
-	public static final org.drip.function.numerical.R1ToR1SeriesTerm SchopfSupancic2014()
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm SchopfSupancic2014()
 	{
-		return new org.drip.function.numerical.R1ToR1SeriesTerm()
+		return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
 		{
 
 			@Override public double value (
@@ -154,7 +154,7 @@ public class HansHeinrichBurmannTerm
 				throws java.lang.Exception
 			{
 				if (0 > order ||
-					!org.drip.quant.common.NumberUtil.IsValid (z))
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("HansHeinrichBurmannTerm::SchopfSupancic2014::value => Invalid Inputs");

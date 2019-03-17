@@ -124,9 +124,9 @@ public class ArmijoEvolutionVerifierMetrics extends
 	{
 		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =
-				dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =
+				dblCurrentVariateFunctionValue) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblNextVariateFunctionValue = dblNextVariateFunctionValue))
 			throw new java.lang.Exception ("ArmijoEvolutionVerifierMetrics Constructor => Invalid Inputs");
 
@@ -187,7 +187,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 	{
 		try {
 			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *
-				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (targetDirection().component(),
+				stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (targetDirection().component(),
 					currentVariateFunctionJacobian());
 
 			return _bMaximizerCheck ? _dblNextVariateFunctionValue >= dblGradientUpdatedFunctionValue :

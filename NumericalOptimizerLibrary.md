@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v3.92.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.13.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -27,9 +27,9 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
  * *Optimization* => Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup.
 	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md) | 
 	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aoptimization) }
- * *Quant* => Suite of DROP Linear Algebra Utilities.
-	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/quant/README.md) | 
-	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Aquant) }
+ * *Numerical* => Suite of DROP Numerical Analysis Utilities.
+	* { [**Home**](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md) | 
+	[**Project**](https://github.com/lakshmiDRIP/DROP/issues?q=is%3Aopen+is%3Aissue+label%3Anumerical) }
 
 
 ## Coverage
@@ -126,6 +126,58 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* The Method
 	* Analysis
 	* Applications
+	* References
+ * Numerical Integration
+	* Introduction and Overview
+	* Reasons for Numerical Integration
+	* Methods for One-Dimensional Integrals
+	* Quadrature Rules Based on Interpolating Functions
+	* Generalized Mid-Point Rule Formulation
+	* Adaptive Algorithms
+	* Extrapolation Methods
+	* A Priori Conservative Error Estimation
+	* Integrals Over Infinite Intervals
+	* Multi-dimensional Integrals
+	* Monte Carlo
+	* Sparse Grids
+	* Bayesian Quadrature
+	* Connections to Differential Equations
+	* References
+ * Stirling's Approximation
+	* Introduction and Overview
+	* Derivation
+	* An Alternative Derivation
+	* Speed of Convergence and Error Estimates
+	* Stirling’s Formula for the Gamma Function
+	* Error Bounds
+	* A Convergent Version of the Sterling’s Formula
+	* Versions Suitable for Calculators
+	* References
+ * Lanczos Approximation
+	* Introduction
+	* Coefficients
+	* References
+ * Error Function
+	* Introduction and Overview
+	* Name
+	* Applications
+	* Properties
+	* Taylor Series
+	* Derivative and Integral
+	* Burmann Series
+	* Inverse Functions
+	* Asymptotic Expansion
+	* Continued Fraction Expansion
+	* Integral of Error Function with Gaussian Density Function
+	* Factorial Series
+	* Numerical Approximations – Approximation with Elementary Functions
+	* Polynomial
+	* Table of Values
+	* Related Functions – Complementary Error Function
+	* Imaginary Error Function
+	* Cumulative Distribution Function
+	* Generalized Error Functions
+	* Iterated Integrals of the Complementary Error Function
 	* References
 
 

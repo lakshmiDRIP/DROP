@@ -98,9 +98,9 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLeftPredictorOrdinate = dblLeftPredictorOrdinate)
-			|| !org.drip.quant.common.NumberUtil.IsValid (_dblRightPredictorOrdinate =
-				dblRightPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblTension =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeftPredictorOrdinate = dblLeftPredictorOrdinate)
+			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblRightPredictorOrdinate =
+				dblRightPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblTension =
 					dblTension))
 			throw new java.lang.Exception ("TensionBasisHat ctr: Invalid Inputs");
 	}
@@ -119,7 +119,7 @@ public abstract class TensionBasisHat extends org.drip.function.definition.R1ToR
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception ("TensionBasisHat::in => Invalid Input");
 
 		return dblPredictorOrdinate >= _dblLeftPredictorOrdinate && dblPredictorOrdinate <=

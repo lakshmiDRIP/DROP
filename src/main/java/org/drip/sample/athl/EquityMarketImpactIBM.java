@@ -3,7 +3,7 @@ package org.drip.sample.athl;
 
 import org.drip.execution.athl.*;
 import org.drip.execution.parameters.AssetFlowSettings;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

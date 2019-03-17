@@ -110,7 +110,7 @@ public abstract class HorizonChangeExplainProcessor {
 	{
 		if (null == (_comp = comp) || 0 > (_iSettleLag = iSettleLag) || null == (_strMarketMeasureName =
 			strMarketMeasureName) || _strMarketMeasureName.isEmpty() ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblMarketMeasureValue = dblMarketMeasureValue) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblMarketMeasureValue = dblMarketMeasureValue) ||
 					null == (_dtFirst = dtFirst) || null == (_dtSecond = dtSecond) || _dtSecond.julian() <=
 						_dtFirst.julian() || null == (_csqcFirst = csqcFirst) || null == (_csqcSecond =
 							csqcSecond) || null == (_mapCSQCRollDown = mapCSQCRollDown))

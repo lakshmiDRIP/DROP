@@ -1,7 +1,7 @@
 
 package org.drip.sample.sequence;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.metrics.*;
 import org.drip.sequence.random.BoundedUniform;
 import org.drip.service.env.EnvManager;

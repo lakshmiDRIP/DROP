@@ -126,7 +126,7 @@ public class RdUniform extends org.drip.measure.continuous.Rd {
 		double[] adblRightEdge = _gmvs.rightDimensionEdge();
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblX[i]) || adblX[i] > adblRightEdge[i])
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblX[i]) || adblX[i] > adblRightEdge[i])
 				throw new java.lang.Exception ("RdUniform::cumulative => Invalid Inputs");
 
 			dblCumulative *= (adblX[i] - adblLeftEdge[i]) / (adblRightEdge[i] - adblLeftEdge[i]);
@@ -154,8 +154,8 @@ public class RdUniform extends org.drip.measure.continuous.Rd {
 		double[] adblRightEdge = _gmvs.rightDimensionEdge();
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblXLeft[i]) || adblXLeft[i] < adblLeftEdge[i] ||
-				!org.drip.quant.common.NumberUtil.IsValid (adblXRight[i]) || adblXRight[i] >
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblXLeft[i]) || adblXLeft[i] < adblLeftEdge[i] ||
+				!org.drip.numerical.common.NumberUtil.IsValid (adblXRight[i]) || adblXRight[i] >
 					adblRightEdge[i])
 				throw new java.lang.Exception ("RdUniform::incremental => Invalid Inputs");
 

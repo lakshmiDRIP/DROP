@@ -161,7 +161,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 
 		double dblPopulationCoveringNumber = _aNormedRxToNormedR1[0].populationCoveringNumber (dblCover);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationCoveringNumber))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPopulationCoveringNumber))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::populationCoveringNumber => Cannot Compute Population Covering Number");
 
@@ -169,7 +169,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 			double dblFunctionPopulationCoveringNumber = _aNormedRxToNormedR1[i].populationCoveringNumber
 				(dblCover);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionPopulationCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFunctionPopulationCoveringNumber))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::populationCoveringNumber => Cannot Compute Population Covering Number");
 
@@ -203,7 +203,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		double dblPopulationSupremumCoveringNumber = _aNormedRxToNormedR1[0].populationSupremumCoveringNumber
 			(dblCover);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationSupremumCoveringNumber))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPopulationSupremumCoveringNumber))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::populationSupremumCoveringNumber => Cannot Compute Population Supremum Covering Number");
 
@@ -211,7 +211,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 			double dblFunctionPopulationSupremumCoveringNumber =
 				_aNormedRxToNormedR1[i].populationSupremumCoveringNumber (dblCover);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionPopulationSupremumCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFunctionPopulationSupremumCoveringNumber))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::populationSupremumCoveringNumber => Cannot Compute Population Supremum Covering Number");
 
@@ -246,7 +246,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 
 		double dblSampleCoveringNumber = _aNormedRxToNormedR1[0].sampleCoveringNumber (gvvi, dblCover);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleCoveringNumber))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblSampleCoveringNumber))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::sampleCoveringNumber => Cannot Compute Sample Covering Number");
 
@@ -254,7 +254,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 			double dblFunctionSampleCoveringNumber = _aNormedRxToNormedR1[i].sampleCoveringNumber (gvvi,
 				dblCover);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionSampleCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFunctionSampleCoveringNumber))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::sampleCoveringNumber => Cannot Compute Sample Covering Number");
 
@@ -290,7 +290,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		double dblSampleSupremumCoveringNumber = _aNormedRxToNormedR1[0].sampleSupremumCoveringNumber (gvvi,
 			dblCover);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleSupremumCoveringNumber))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblSampleSupremumCoveringNumber))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::sampleSupremumCoveringNumber => Cannot Compute Sample Supremum Covering Number");
 
@@ -298,7 +298,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 			double dblFunctionSampleSupremumCoveringNumber =
 				_aNormedRxToNormedR1[i].sampleSupremumCoveringNumber (gvvi, dblCover);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFunctionSampleSupremumCoveringNumber))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFunctionSampleSupremumCoveringNumber))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::sampleSupremumCoveringNumber => Cannot Compute Sample Supremum Covering Number");
 
@@ -320,7 +320,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 
 		double dblOperatorPopulationMetricNorm = _aNormedRxToNormedR1[0].populationMetricNorm();
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorPopulationMetricNorm))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOperatorPopulationMetricNorm))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::operatorPopulationMetricNorm => Cannot compute Population Metric Norm for Function #"
 					+ 0);
@@ -328,7 +328,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		for (int i = 1; i < iNumFunction; ++i) {
 			double dblPopulationMetricNorm = _aNormedRxToNormedR1[i].populationMetricNorm();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationMetricNorm))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMetricNorm))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::operatorPopulationMetricNorm => Cannot compute Population Metric Norm for Function #"
 						+ i);
@@ -351,7 +351,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 
 		double dblOperatorPopulationSupremumNorm = _aNormedRxToNormedR1[0].populationESS();
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorPopulationSupremumNorm))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOperatorPopulationSupremumNorm))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::operatorPopulationSupremumNorm => Cannot compute Population Supremum Norm for Function #"
 					+ 0);
@@ -359,7 +359,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		for (int i = 1; i < iNumFunction; ++i) {
 			double dblPopulationSupremumNorm = _aNormedRxToNormedR1[i].populationESS();
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationSupremumNorm))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPopulationSupremumNorm))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::operatorPopulationSupremumNorm => Cannot compute Population Supremum Norm for Function #"
 						+ i);
@@ -383,7 +383,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 
 		double dblOperatorSampleMetricNorm = _aNormedRxToNormedR1[0].sampleMetricNorm (gvvi);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorSampleMetricNorm))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOperatorSampleMetricNorm))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::operatorSampleMetricNorm => Cannot compute Sample Metric Norm for Function #"
 					+ 0);
@@ -391,7 +391,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		for (int i = 1; i < iNumFunction; ++i) {
 			double dblSampleMetricNorm = _aNormedRxToNormedR1[i].sampleMetricNorm (gvvi);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleMetricNorm))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSampleMetricNorm))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::operatorSampleMetricNorm => Cannot compute Sample Metric Norm for Function #"
 						+ i);
@@ -415,7 +415,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 
 		double dblOperatorSampleSupremumNorm = _aNormedRxToNormedR1[0].sampleSupremumNorm (gvvi);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorSampleSupremumNorm))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOperatorSampleSupremumNorm))
 			throw new java.lang.Exception
 				("NormedRxToNormedR1Finite::operatorSampleSupremumNorm => Cannot compute Sample Supremum Norm for Function #"
 					+ 0);
@@ -423,7 +423,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		for (int i = 1; i < iNumFunction; ++i) {
 			double dblSampleSupremumNorm = _aNormedRxToNormedR1[i].sampleSupremumNorm (gvvi);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleSupremumNorm))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSampleSupremumNorm))
 				throw new java.lang.Exception
 					("NormedRxToNormedR1Finite::operatorSampleSupremumNorm => Cannot compute Sample Supremum Norm for Function #"
 						+ i);

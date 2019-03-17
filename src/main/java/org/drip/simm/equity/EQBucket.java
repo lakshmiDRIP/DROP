@@ -143,9 +143,9 @@ public class EQBucket
 		if (null == (_size = size) || _size.isEmpty() ||
 			null == (_region = region) || _region.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
+			!org.drip.numerical.common.NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
 		{
 			throw new java.lang.Exception ("EQBucket Constructor => Invalid Inputs");
 		}

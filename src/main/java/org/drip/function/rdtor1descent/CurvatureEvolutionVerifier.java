@@ -139,7 +139,7 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 		final boolean bStrongCurvatureCriterion)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))
 			throw new java.lang.Exception ("CurvatureEvolutionVerifier Constructor => Invalid Inputs");
 
 		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;

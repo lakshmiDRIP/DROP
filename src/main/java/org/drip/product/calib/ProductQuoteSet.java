@@ -298,7 +298,7 @@ public class ProductQuoteSet {
 		final double dblManifestMeasureQuote)
 	{
 		if (null == strManifestMeasure || strManifestMeasure.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasureQuote))
+			!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasureQuote))
 			return false;
 
 		_mapQuote.put (strManifestMeasure, dblManifestMeasureQuote);

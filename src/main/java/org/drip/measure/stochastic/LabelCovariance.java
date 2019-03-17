@@ -150,8 +150,8 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 
 		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI)
 		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
 				0. > _volatilityArray[variateIndexI])
 			{
 				throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");

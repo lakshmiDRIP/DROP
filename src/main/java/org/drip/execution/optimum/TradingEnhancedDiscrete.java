@@ -176,8 +176,8 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,
 			dblTransactionCostVariance, dblMarketPower);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))
 			throw new java.lang.Exception ("TradingEnhancedDiscrete Constructor => Invalid Inputs");
 	}
 

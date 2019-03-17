@@ -211,7 +211,7 @@ public class BalanceSheetLiquidity
 		throws java.lang.Exception
 	{
 		if (null == (_highQualityLiquidAsset = highQualityLiquidAsset) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_netCashOutflowAmount = netCashOutflowAmount) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_netCashOutflowAmount = netCashOutflowAmount) ||
 				0. > _netCashOutflowAmount ||
 			null == (_netCashOutflowPeriod = netCashOutflowPeriod) || _netCashOutflowPeriod.isEmpty())
 		{

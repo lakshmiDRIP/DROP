@@ -163,7 +163,7 @@ public class EOSMetricsReplicator
 			null == (_gbs = gbs) ||
 			null == (_de = de) ||
 			0 >= (_iNumPath = iNumPath) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblPrice = dblPrice))
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblPrice = dblPrice))
 			throw new java.lang.Exception ("EOSMetricsReplicator Constructor => Invalid Inputs");
 	}
 

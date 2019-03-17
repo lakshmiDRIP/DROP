@@ -339,7 +339,7 @@ public class BondProductBuilder {
 
 			bpb._strTicker = rs.getString ("Ticker");
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * rs.getDouble ("Coupon")))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * rs.getDouble ("Coupon")))
 			{
 				System.out.println ("Invalid coupon for ISIN " + bpb._strISIN);
 
@@ -398,13 +398,13 @@ public class BondProductBuilder {
 				return null;
 			}
 
-			bpb._bIsCallable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsCallable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsCallable"));
 
-			bpb._bIsPutable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsPutable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsPutable"));
 
-			bpb._bIsSinkable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsSinkable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsSinkable"));
 
 			bpb._strRedemptionCurrency = org.drip.analytics.support.Helper.SwitchIRCurve
@@ -434,12 +434,12 @@ public class BondProductBuilder {
 				return null;
 			}
 
-			bpb._bHasBeenCalled = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bHasBeenCalled = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Called"));
 
 			bpb._strFloatCouponConvention = rs.getString ("FloatCouponConvention");
 
-			bpb._bIsFloater = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsFloater = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Floater"));
 
 			// bpb._dblCurrentCoupon = 0.01 * rs.getDouble ("CurrentCoupon");
@@ -447,17 +447,17 @@ public class BondProductBuilder {
 			bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate
 				("FinalMaturity"));
 
-			bpb._bIsPerpetual = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsPerpetual = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Perpetual"));
 
-			bpb._bIsDefaulted = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			bpb._bIsDefaulted = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Defaulted"));
 
 			bpb._dblFloatSpread = 0.0001 * rs.getDouble ("FloatSpread");
 
 			bpb._strRateIndex = rs.getString ("RateIndex");
 
-			if (bpb._bIsFloater && !org.drip.quant.common.NumberUtil.IsValid (bpb._dblFloatSpread) && (null ==
+			if (bpb._bIsFloater && !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) && (null ==
 				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {
 				System.out.println ("Invalid float spread for " + DES (bpb));
 
@@ -512,7 +512,7 @@ public class BondProductBuilder {
 
 		if (null == (bpb._strTicker = mapJSON.get ("ticker"))) return null;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * java.lang.Double.parseDouble
+		if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * java.lang.Double.parseDouble
 			(mapJSON.get ("coupon"))))
 			return null;
 
@@ -588,7 +588,7 @@ public class BondProductBuilder {
 
 			bpb._strRateIndex = mapJSON.get ("resetIndex");
 
-			if (bpb._bIsFloater && !org.drip.quant.common.NumberUtil.IsValid (bpb._dblFloatSpread) && (null ==
+			if (bpb._bIsFloater && !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) && (null ==
 				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {
 				System.out.println ("Invalid float spread for " + DES (bpb));
 
@@ -1255,7 +1255,7 @@ public class BondProductBuilder {
 	public boolean setFloatSpread (
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentCoupon)) {
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon)) {
 			System.out.println ("Curr cpn for ISIN " + _strISIN + " is NaN!");
 
 			return false;
@@ -1359,7 +1359,7 @@ public class BondProductBuilder {
 		}
 
 		if (_bIsFloater && (null == _strRateIndex || _strRateIndex.isEmpty()) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread) && java.lang.Double.isNaN
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread) && java.lang.Double.isNaN
 				(_dblCurrentCoupon)) {
 			if (m_bDisplayWarnings)
 				System.out.println ("Invalid Rate index & float spread & current coupon for " + _strISIN);
@@ -1375,7 +1375,7 @@ public class BondProductBuilder {
 			}
 		}
 
-		if (_bIsFloater && !org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread)) {
+		if (_bIsFloater && !org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread)) {
 			try {
 				if (!setFloatSpread (mpc)) {
 					if (m_bDisplayWarnings)
@@ -1463,7 +1463,7 @@ public class BondProductBuilder {
 
 		sb.append ("'").append (_strFloatCouponConvention).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentCoupon))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon))
 			sb.append ("null, ");
 		else
 			sb.append (_dblCurrentCoupon).append (", ");
@@ -1479,7 +1479,7 @@ public class BondProductBuilder {
 
 		sb.append ("'").append (_bIsDefaulted ? 1 : 0).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread))
 			sb.append ("null, ");
 		else
 			sb.append (_dblFloatSpread).append (", ");
@@ -1611,9 +1611,9 @@ public class BondProductBuilder {
 					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,
 						_dblCurrentCoupon, _strDayCountCode, _strDayCountCode, null, null, null, null, null,
 							null, null, null, _strMaturityType, false, _strCouponCurrency,
-								_strCouponCurrency, !org.drip.quant.common.StringUtil.IsEmpty (_strRateIndex)
+								_strCouponCurrency, !org.drip.numerical.common.StringUtil.IsEmpty (_strRateIndex)
 									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,
-										!org.drip.quant.common.StringUtil.IsEmpty (_strIssuerSPN) ?
+										!org.drip.numerical.common.StringUtil.IsEmpty (_strIssuerSPN) ?
 											org.drip.state.identifier.EntityCDSLabel.Standard (_strIssuerSPN,
 												_strCouponCurrency) : null);
 	}

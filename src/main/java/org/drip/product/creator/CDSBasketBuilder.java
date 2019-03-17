@@ -113,7 +113,7 @@ public class CDSBasketBuilder {
 		final double[] adblWeight,
 		final java.lang.String strName)
 	{
-		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)
+		if (null == dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon)
 			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||
 				0 == astrCC.length || null == adblWeight || 0 == adblWeight.length || adblWeight.length !=
 					astrCC.length)
@@ -163,7 +163,7 @@ public class CDSBasketBuilder {
 		final java.lang.String[] astrCC,
 		final java.lang.String strName)
 	{
-		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)
+		if (null == dtEffective || null == dtMaturity || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon)
 			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||
 				0 == astrCC.length)
 			return null;

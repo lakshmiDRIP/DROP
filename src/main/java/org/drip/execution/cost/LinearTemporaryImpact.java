@@ -140,9 +140,9 @@ public class LinearTemporaryImpact {
 		final double dblGrossPriceChange,
 		final org.drip.execution.impact.TransactionFunctionLinear tflTemporary)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFinishTime) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblFinishTime) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (dblSpotHoldings) || null == pcc || null ==
 					tflTemporary)
 			return null;
 
@@ -162,7 +162,7 @@ public class LinearTemporaryImpact {
 			{
 				if (0. >= dblHorizon) return 0.;
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblTau))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTau))
 					throw new java.lang.Exception
 						("LinearTemporaryImpact::Holdings::evaluate => Invalid Inputs");
 
@@ -198,12 +198,12 @@ public class LinearTemporaryImpact {
 		final double dblInstantaneousTradeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpotTime = dblSpotTime) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblFinishTime = dblFinishTime) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblSpotHoldings = dblSpotHoldings) || null ==
-					(_pcc = pcc) || !org.drip.quant.common.NumberUtil.IsValid (_dblGrossPriceChange =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSpotTime = dblSpotTime) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblFinishTime = dblFinishTime) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblSpotHoldings = dblSpotHoldings) || null ==
+					(_pcc = pcc) || !org.drip.numerical.common.NumberUtil.IsValid (_dblGrossPriceChange =
 						dblGrossPriceChange) || null == (_tflTemporary = tflTemporary) || null ==
-							r1ToR1Holdings || !org.drip.quant.common.NumberUtil.IsValid
+							r1ToR1Holdings || !org.drip.numerical.common.NumberUtil.IsValid
 								(_dblInstantaneousTradeRate = dblInstantaneousTradeRate))
 			throw new java.lang.Exception ("LinearTemporaryImpact Constructor => Invalid Inputs");
 
@@ -242,7 +242,7 @@ public class LinearTemporaryImpact {
 				final double dblDelta)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblDelta))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (dblDelta))
 					throw new java.lang.Exception
 						("LinearTemporaryImpact::r1ToR1Quadrature::evaluate => Invalid Inputs");
 

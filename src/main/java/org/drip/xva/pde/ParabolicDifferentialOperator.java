@@ -158,7 +158,7 @@ public class ParabolicDifferentialOperator
 		throws java.lang.Exception
 	{
 		if (null == evolutionTrajectoryVertex ||
-			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex))
+			!org.drip.numerical.common.NumberUtil.IsValid (positionValueVertex))
 		{
 			throw new java.lang.Exception ("ParabolicDifferentialOperator::theta => Invalid Inputs");
 		}
@@ -198,8 +198,8 @@ public class ParabolicDifferentialOperator
 		final double shift)
 	{
 		if (null == evolutionTrajectoryVertex ||
-			!org.drip.quant.common.NumberUtil.IsValid (positionValueVertex) ||
-			!org.drip.quant.common.NumberUtil.IsValid (shift))
+			!org.drip.numerical.common.NumberUtil.IsValid (positionValueVertex) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (shift))
 		{
 			return null;
 		}

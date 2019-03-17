@@ -174,12 +174,12 @@ public class BalanceSheetVertex
 		final double cash)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_cash = cash) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_asset = asset) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_liability = liability) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_retainedEarnings = retainedEarnings))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_cash = cash) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_asset = asset) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_liability = liability) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_contraAsset = contraAsset) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_contraLiability = contraLiability) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_retainedEarnings = retainedEarnings))
 		{
 			throw new java.lang.Exception ("BalanceSheetVertex Constructor => Invalid Inputs");
 		}

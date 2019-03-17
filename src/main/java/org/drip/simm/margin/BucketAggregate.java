@@ -131,9 +131,9 @@ public class BucketAggregate
 		throws java.lang.Exception
 	{
 		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) || 0 == _riskFactorAggregateMap.size()
-			|| !org.drip.quant.common.NumberUtil.IsValid (_sensitivityMarginVariance =
+			|| !org.drip.numerical.common.NumberUtil.IsValid (_sensitivityMarginVariance =
 				sensitivityMarginVariance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
+			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeSensitivityMargin =
 				cumulativeSensitivityMargin))
 		{
 			throw new java.lang.Exception ("BucketAggregate Constructor => Invalid Inputs");

@@ -148,7 +148,7 @@ public class FritzJohnMultipliers {
 		final double[] adblInequality)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblObjectiveCoefficient = dblObjectiveCoefficient))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblObjectiveCoefficient = dblObjectiveCoefficient))
 			throw new java.lang.Exception ("FritzJohnMultipliers Constructor => Invalid Inputs");
 
 		_adblEquality = adblEquality;

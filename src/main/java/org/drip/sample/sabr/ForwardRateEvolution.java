@@ -3,7 +3,7 @@ package org.drip.sample.sabr;
 
 import org.drip.analytics.date.*;
 import org.drip.dynamics.sabr.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.random.BoxMullerGaussian;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.ForwardLabel;

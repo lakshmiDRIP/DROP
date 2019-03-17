@@ -135,7 +135,7 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 				double dblConstraintValue = 0.;
 				int iNumAsset = adblPrice.length;
 
-				if (null == adblFinalHoldings || !org.drip.quant.common.NumberUtil.IsValid
+				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
 					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
 					throw new java.lang.Exception
 						("LimitExposureTermAbsolute::rdToR1::evaluate => Invalid Variate Dimension");

@@ -127,7 +127,7 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 		throws java.lang.Exception
 	{
 		if (null == (_deouReference = deouReference) || null == (_deouDerived = deouDerived) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || _dblCorrelation <
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || _dblCorrelation <
 				-1. || _dblCorrelation > 1.)
 			throw new java.lang.Exception ("OrnsteinUhlenbeckPair Constructor => Invalid Inputs");
 	}
@@ -182,9 +182,9 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 		final double dblTimeIncrement)
 	{
 		if (null == adblVariatePair || 2 != adblVariatePair.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (adblVariatePair) || null == adblDiffusionPair || 2 !=
-				adblDiffusionPair.length || !org.drip.quant.common.NumberUtil.IsValid (adblDiffusionPair) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblTimeIncrement) || 0. >= dblTimeIncrement)
+			!org.drip.numerical.common.NumberUtil.IsValid (adblVariatePair) || null == adblDiffusionPair || 2 !=
+				adblDiffusionPair.length || !org.drip.numerical.common.NumberUtil.IsValid (adblDiffusionPair) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement) || 0. >= dblTimeIncrement)
 			return null;
 
 		double dblRelaxationTime0 = _deouReference.relaxationTime();

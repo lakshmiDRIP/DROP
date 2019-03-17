@@ -164,18 +164,18 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 		final long lM2)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_lY1Prev = lY1Prev) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lY1PrevPrev = lY1PrevPrev) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lY1PrevPrevPrev = lY1PrevPrevPrev) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lY2Prev = lY2Prev) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lY2PrevPrev = lY2PrevPrev) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lY2PrevPrevPrev = lY2PrevPrevPrev) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lA12 = lA12) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lA13 = lA13) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lA21 = lA21) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lA23 = lA23) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lM1 = lM1) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_lM2 = lM2))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lY1Prev = lY1Prev) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrev = lY1PrevPrev) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrevPrev = lY1PrevPrevPrev) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lY2Prev = lY2Prev) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrev = lY2PrevPrev) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrevPrev = lY2PrevPrevPrev) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lA12 = lA12) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lA13 = lA13) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lA21 = lA21) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lA23 = lA23) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lM1 = lM1) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_lM2 = lM2))
 			throw new java.lang.Exception
 				("MultipleRecursiveGeneratorLEcuyer Constructor => Invalid Inputs");
 	}

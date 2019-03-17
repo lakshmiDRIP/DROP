@@ -343,8 +343,8 @@ public class BucketSensitivitySettings extends org.drip.simm.parameters.Liquidit
 	{
 		super (concentrationFactor);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
 				1. < _memberCorrelation || -1. > _memberCorrelation)
 		{
 			throw new java.lang.Exception ("BucketSensitivitySettings Constructor => Invalid Inputs");

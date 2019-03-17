@@ -116,7 +116,7 @@ public class CoveringBoundsHelper {
 		final double dblLogNEntropyNumber)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLogNEntropyNumber))
 			throw new java.lang.Exception ("CoveringBoundsHelper::DyadicEntropyNumber => Invalid Inputs");
 
 		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));

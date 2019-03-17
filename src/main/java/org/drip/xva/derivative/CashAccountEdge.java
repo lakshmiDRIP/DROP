@@ -130,9 +130,9 @@ public class CashAccountEdge
 		final double clientAccumulation)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_clientAccumulation = clientAccumulation))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_positionAccumulation = positionAccumulation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dealerAccumulation = dealerAccumulation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_clientAccumulation = clientAccumulation))
 		{
 			throw new java.lang.Exception ("CashAccountEdge Constructor => Invalid Inputs");
 		}

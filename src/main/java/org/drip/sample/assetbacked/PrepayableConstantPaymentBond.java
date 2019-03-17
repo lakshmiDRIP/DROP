@@ -5,11 +5,11 @@ import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.ConstantPaymentBondBuilder;
 import org.drip.product.definition.Bond;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

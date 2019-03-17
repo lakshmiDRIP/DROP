@@ -369,7 +369,7 @@ public class AndersenPykhtinSokolEnsemble
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))
+				!org.drip.numerical.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))
 			{
 				return null;
 			}
@@ -451,7 +451,7 @@ public class AndersenPykhtinSokolEnsemble
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex)
 		{
 			if (null == wanderEnsemble[pathIndex] || 0 == wanderEnsemble[pathIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))
+				!org.drip.numerical.common.NumberUtil.IsValid (wanderEnsemble[pathIndex]))
 			{
 				return null;
 			}

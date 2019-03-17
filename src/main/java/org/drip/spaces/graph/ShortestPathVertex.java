@@ -191,7 +191,7 @@ public class ShortestPathVertex
 	public boolean setWeightFromSource (
 		final double weightFromSource)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (weightFromSource))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (weightFromSource))
 		{
 			return false;
 		}

@@ -138,7 +138,7 @@ public class R1CombinatorialBall extends org.drip.spaces.metric.R1Combinatorial 
 	{
 		super (lsElementSpace, distR1, iPNorm);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
 			_dblNormRadius)
 			throw new java.lang.Exception ("R1CombinatorialBall Constructor: Invalid Inputs");
 	}

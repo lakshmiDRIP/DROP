@@ -141,12 +141,12 @@ public class ExecutionControl {
 		final double dblOFInitial)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblOFInitial))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblOFInitial))
 			throw new java.lang.Exception ("ExecutionControl::calcAbsoluteOFTolerance => Invalid inputs!");
 
 		double dblAbsoluteTolerance = java.lang.Math.abs (dblOFInitial) * _ecp.getOFGoalToleranceFactor();
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteTolerance) || dblAbsoluteTolerance <
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAbsoluteTolerance) || dblAbsoluteTolerance <
 			_ecp.getAbsoluteOFToleranceFallback())
 			dblAbsoluteTolerance = _ecp.getAbsoluteOFToleranceFallback();
 
@@ -167,14 +167,14 @@ public class ExecutionControl {
 		final double dblInitialVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblInitialVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVariate))
 			throw new java.lang.Exception
 				("ExecutionControl::calcAbsoluteVariateConvergence => Invalid inputs!");
 
 		double dblAbsoluteConvergence = java.lang.Math.abs (dblInitialVariate) *
 			_ecp.getVariateConvergenceFactor();
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteConvergence) || dblAbsoluteConvergence <
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAbsoluteConvergence) || dblAbsoluteConvergence <
 			_ecp.getAbsoluteVariateConvergenceFallback())
 			dblAbsoluteConvergence = _ecp.getAbsoluteVariateConvergenceFallback();
 
@@ -199,8 +199,8 @@ public class ExecutionControl {
 		final double dblOFGoal)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAbsoluteTolerance) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblOF) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAbsoluteTolerance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (dblOF) || !org.drip.numerical.common.NumberUtil.IsValid
 				(dblOFGoal))
 			throw new java.lang.Exception ("ExecutionControl::hasOFReachedGoal => Invalid inputs!");
 

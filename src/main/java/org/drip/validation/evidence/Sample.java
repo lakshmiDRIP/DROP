@@ -120,7 +120,7 @@ public class Sample implements org.drip.validation.evidence.NativePITGenerator
 	{
 		if (null == (_realizationArray = realizationArray) ||
 			0 == _realizationArray.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_realizationArray))
+			!org.drip.numerical.common.NumberUtil.IsValid (_realizationArray))
 		{
 			throw new java.lang.Exception ("Sample Constructor => Invalid Inputs");
 		}

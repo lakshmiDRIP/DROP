@@ -175,7 +175,7 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
 		if (null == lsCouponPeriod || 2 > lsCouponPeriod.size() || null == dc ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblZCBump) || null == scbc)
+			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)
 			return null;
 
 		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;
@@ -317,7 +317,7 @@ public class DerivedZeroRate extends org.drip.state.discount.ZeroCurve {
 		final org.drip.spline.params.SegmentCustomBuilderControl scbc)
 	{
 		if (null == lsCouponPeriod || 2 > lsCouponPeriod.size() || null == gc ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblZCBump) || null == scbc)
+			!org.drip.numerical.common.NumberUtil.IsValid (dblZCBump) || null == scbc)
 			return null;
 
 		int iFreq = 0 == iFreqZC ? 2 : iFreqZC;

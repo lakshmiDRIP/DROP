@@ -182,8 +182,8 @@ public class MaureyOperatorCoveringBounds {
 		final double dblOperatorNorm)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 >=
-			(_iSupremumDimension = iSupremumDimension) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 >=
+			(_iSupremumDimension = iSupremumDimension) || !org.drip.numerical.common.NumberUtil.IsValid
 				(_dblOperatorNorm = dblOperatorNorm))
 			throw new java.lang.Exception ("MaureyOperatorCoveringBounds ctr => Invalid Inputs");
 	}

@@ -109,7 +109,7 @@ public abstract class LimitThresholdTermIssuer extends
 		);
 
 		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 == _adblIssuerSelection.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (_adblIssuerSelection))
+			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))
 			throw new java.lang.Exception ("LimitThresholdTermIssuer Constructor => Invalid Section");
 	}
 

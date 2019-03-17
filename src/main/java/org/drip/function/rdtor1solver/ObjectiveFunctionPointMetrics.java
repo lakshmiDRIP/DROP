@@ -108,8 +108,8 @@ public class ObjectiveFunctionPointMetrics {
 			throw new java.lang.Exception ("ObjectiveFunctionPointMetrics Constructor => Invalid Inputs");
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblJacobian[i]) || null == _aadblHessian[i] ||
-				iDimension != _aadblHessian[i].length || !org.drip.quant.common.NumberUtil.IsValid
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblJacobian[i]) || null == _aadblHessian[i] ||
+				iDimension != _aadblHessian[i].length || !org.drip.numerical.common.NumberUtil.IsValid
 					(_aadblHessian[i]))
 				throw new java.lang.Exception
 					("ObjectiveFunctionPointMetrics Constructor => Invalid Inputs");

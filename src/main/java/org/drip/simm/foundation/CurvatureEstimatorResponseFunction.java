@@ -167,7 +167,7 @@ public class CurvatureEstimatorResponseFunction implements org.drip.simm.foundat
 		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||
 			0. > riskFactorSensitivityVariance)
 		{
 			throw new java.lang.Exception ("CurvatureEstimatorResponseFunction::margin => Invalid Inputs");

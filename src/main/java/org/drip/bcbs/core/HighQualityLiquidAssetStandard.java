@@ -145,8 +145,8 @@ public class HighQualityLiquidAssetStandard
 		final double level2BRatio)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_level2Ratio = level2Ratio) || 0. > _level2Ratio ||
-			!org.drip.quant.common.NumberUtil.IsValid (_level2BRatio = level2BRatio) || 0. > _level2BRatio)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_level2Ratio = level2Ratio) || 0. > _level2Ratio ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2BRatio = level2BRatio) || 0. > _level2BRatio)
 		{
 			throw new java.lang.Exception ("HighQualityLiquidAssetStandard Constructor => Invalid Inputs");
 		}

@@ -91,7 +91,7 @@ public class EmpiricalPenaltySupremum {
 		final double dblValue)
 		throws java.lang.Exception
 	{
-		if (0 > (_iIndex = iIndex) || !org.drip.quant.common.NumberUtil.IsValid (_dblValue = dblValue))
+		if (0 > (_iIndex = iIndex) || !org.drip.numerical.common.NumberUtil.IsValid (_dblValue = dblValue))
 			throw new java.lang.Exception ("EmpiricalPenaltySupremum Constructor => Invalid Inputs");
 	}
 

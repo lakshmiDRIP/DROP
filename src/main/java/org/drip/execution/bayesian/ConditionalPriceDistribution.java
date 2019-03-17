@@ -129,9 +129,9 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	{
 		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. >= _dblTime ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. >= _dblTime ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))
 			throw new java.lang.Exception ("ConditionalPriceDistribution Constructor => Invalid Inputs");
 	}
 

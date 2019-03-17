@@ -117,7 +117,7 @@ public class UnivariateMoments {
 		if (0 == iNumSample) return null;
 
 		for (int i = 0; i < iNumSample; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblEntry[i])) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblEntry[i])) return null;
 
 			dblMean += adblEntry[i];
 		}
@@ -171,8 +171,8 @@ public class UnivariateMoments {
 		final java.util.Map<java.lang.Integer, java.lang.Double> mapMoment)
 		throws java.lang.Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblMean = dblMean) || !org.drip.quant.common.NumberUtil.IsValid (_dblVariance = dblVariance) ||
+		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
+			(_dblMean = dblMean) || !org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance) ||
 				0 >= (_iNumSample = iNumSample))
 			throw new java.lang.Exception ("UnivariateMetrics Constructor => Invalid Inputs!");
 
@@ -270,7 +270,7 @@ public class UnivariateMoments {
 		final double hypothesisPivot)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (hypothesisPivot))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (hypothesisPivot))
 		{
 			throw new java.lang.Exception ("UnivariateMetrics::tStatistic => Invalid Inputs");
 		}
@@ -307,7 +307,7 @@ public class UnivariateMoments {
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 		{
 			throw new java.lang.Exception ("UnivariateMetrics::standardErrorOffset => Invalid Inputs");
 		}

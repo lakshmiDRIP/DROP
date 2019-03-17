@@ -140,7 +140,7 @@ public class LabelCorrelation extends org.drip.measure.stochastic.LabelBase
 		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
 		{
 			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_matrix[labelIndex]))
+				!org.drip.numerical.common.NumberUtil.IsValid (_matrix[labelIndex]))
 			{
 				throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 			}

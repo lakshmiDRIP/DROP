@@ -143,11 +143,11 @@ public class WolfeEvolutionVerifierMetrics extends
 	{
 		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||
 				null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =
-						dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =
+						dblCurrentVariateFunctionValue) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||
 								adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
 			throw new java.lang.Exception ("WolfeEvolutionVerifierMetrics Constructor => Invalid Inputs");
@@ -247,18 +247,18 @@ public class WolfeEvolutionVerifierMetrics extends
 
 		try {
 			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *
-				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,
+				stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,
 					adblCurrentVariateFunctionJacobian);
 
 			if ((_bMaximizerCheck && _dblNextVariateFunctionValue < dblGradientUpdatedFunctionValue) ||
 				(!_bMaximizerCheck && _dblNextVariateFunctionValue > dblGradientUpdatedFunctionValue))
 				return false;
 
-			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct
+			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct
 				(adblDirectionVector, _adblNextVariateFunctionJacobian);
 
 			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *
-				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,
+				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,
 					adblCurrentVariateFunctionJacobian);
 
 			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) <=

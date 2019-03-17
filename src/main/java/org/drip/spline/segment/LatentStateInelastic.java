@@ -122,8 +122,8 @@ public class LatentStateInelastic implements java.lang.Comparable<LatentStateIne
 		final double dblPredictorOrdinateRight)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft)
-			|| !org.drip.quant.common.NumberUtil.IsValid (_dblPredictorOrdinateRight =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPredictorOrdinateLeft = dblPredictorOrdinateLeft)
+			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblPredictorOrdinateRight =
 				dblPredictorOrdinateRight) || _dblPredictorOrdinateLeft >= _dblPredictorOrdinateRight)
 			throw new java.lang.Exception ("LatentStateInelastic ctr: Invalid inputs!");
 	}
@@ -164,7 +164,7 @@ public class LatentStateInelastic implements java.lang.Comparable<LatentStateIne
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
 			throw new java.lang.Exception ("LatentStateInelastic::in => Invalid Inputs");
 
 		return _dblPredictorOrdinateLeft <= dblPredictorOrdinate && _dblPredictorOrdinateRight >=
@@ -217,7 +217,7 @@ public class LatentStateInelastic implements java.lang.Comparable<LatentStateIne
 		final double dblLocalPredictorOrdinate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLocalPredictorOrdinate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLocalPredictorOrdinate))
 			throw new java.lang.Exception ("LatentStateInelastic::delocalize => Invalid Inputs");
 
 		return _dblPredictorOrdinateLeft + dblLocalPredictorOrdinate * (_dblPredictorOrdinateRight -

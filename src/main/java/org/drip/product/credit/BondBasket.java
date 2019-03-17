@@ -118,7 +118,7 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 		_adblNormWeights = new double[adblWeights.length];
 
 		for (int i = 0; i < adblWeights.length; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblWeights[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblWeights[i]))
 				throw new java.lang.Exception ("BasketBond ctr: Invalid weights");
 
 			dblCumulativeWeight += adblWeights[i];

@@ -103,7 +103,7 @@ public class LagrangePolynomialStretchRegressor extends org.drip.regression.core
 	private boolean _bLocallyMonotone = false;
 	private double _dblValue = java.lang.Double.NaN;
 	private org.drip.spline.segment.Monotonocity _sm = null;
-	private org.drip.quant.calculus.WengertJacobian _wj = null;
+	private org.drip.numerical.differentiation.WengertJacobian _wj = null;
 	private org.drip.spline.stretch.SingleSegmentSequence _sss = null;
 
 	public LagrangePolynomialStretchRegressor (
@@ -132,7 +132,7 @@ public class LagrangePolynomialStretchRegressor extends org.drip.regression.core
 	@Override public boolean execRegression()
 	{
 		try {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_dblValue = _sss.responseValue (2.16)))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblValue = _sss.responseValue (2.16)))
 				return false;
 
 			_bLocallyMonotone = _sss.isLocallyMonotone();

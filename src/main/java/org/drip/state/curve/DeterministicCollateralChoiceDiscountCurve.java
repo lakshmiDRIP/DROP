@@ -231,7 +231,7 @@ public class DeterministicCollateralChoiceDiscountCurve extends org.drip.state.d
 		return null;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{

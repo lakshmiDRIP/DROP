@@ -114,8 +114,8 @@ public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCu
 		int iNumPillar = _aiPillarDate.length;
 
 		for (int i = 0; i < iNumPillar; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_aiPillarDate[i]) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_adblRepoForward[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_aiPillarDate[i]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_adblRepoForward[i]))
 				throw new java.lang.Exception ("FlatForwardRepoCurve ctr => Invalid Inputs");
 		}
 	}
@@ -143,7 +143,7 @@ public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCu
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblRepoForward.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblRepoForward.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblRepoForward.length; ++i)
@@ -156,7 +156,7 @@ public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCu
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblRepoForward.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblRepoForward.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblRepoForward.length; ++i)
@@ -168,7 +168,7 @@ public class FlatForwardRepoCurve extends org.drip.state.repo.ExplicitBootRepoCu
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		for (int i = 0; i < _adblRepoForward.length; ++i)
 			_adblRepoForward[i] = dblValue;

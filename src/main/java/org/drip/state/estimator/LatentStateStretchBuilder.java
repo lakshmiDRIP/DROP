@@ -114,7 +114,7 @@ public class LatentStateStretchBuilder {
 		try {
 			for (int i = 0; i < iNumComp; ++i) {
 				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.quant.common.NumberUtil.IsValid (adblCalibQuote[i]))
+					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
 					return null;
 
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
@@ -171,7 +171,7 @@ public class LatentStateStretchBuilder {
 		try {
 			for (int i = 0; i < iNumComp; ++i) {
 				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.quant.common.NumberUtil.IsValid (adblCalibQuote[i]))
+					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
 					return null;
 
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
@@ -232,7 +232,7 @@ public class LatentStateStretchBuilder {
 		try {
 			for (int i = 0; i < iNumComp; ++i) {
 				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.quant.common.NumberUtil.IsValid (adblCalibQuote[i]))
+					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
 					return null;
 
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
@@ -482,7 +482,7 @@ public class LatentStateStretchBuilder {
 		try {
 			for (int i = 0; i < iNumComp; ++i) {
 				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.quant.common.NumberUtil.IsValid (adblCalibQuote[i]))
+					!org.drip.numerical.common.NumberUtil.IsValid (adblCalibQuote[i]))
 					return null;
 
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.FXLabel>

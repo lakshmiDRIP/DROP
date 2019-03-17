@@ -102,9 +102,9 @@ package org.drip.function.e2erfc;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionComplement extends org.drip.function.numerical.R1ToR1Estimator
+public abstract class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-	private org.drip.function.numerical.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct the Asymptotic Expansion Version of ErrorFunctionComplement
@@ -117,7 +117,7 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 	public static final ErrorFunctionComplement AsymptoticExpansion (
 		final int termCount)
 	{
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
 			org.drip.function.e2erfc.AsymptoticExpansion.SeriesGenerator (termCount);
 
 		return new ErrorFunctionComplement (
@@ -129,7 +129,7 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplement::AsymptoticExpansion::evaluate => Invalid Inputs");
@@ -165,7 +165,7 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 	public static final ErrorFunctionComplement InverseFactorialExpansion (
 		final int termCount)
 	{
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
 			org.drip.function.e2erfc.InverseFactorialExpansion.SeriesGenerator (termCount);
 
 		return new ErrorFunctionComplement (
@@ -177,7 +177,7 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.quant.common.NumberUtil.IsValid (z))
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
 					throw new java.lang.Exception
 						("ErrorFunctionComplement::InverseFactorialExpansion::evaluate => Invalid Inputs");
@@ -203,15 +203,15 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 	}
 
 	protected ErrorFunctionComplement (
-		final org.drip.function.numerical.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 		super (dc);
 
 		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate seriesEstimateNative (
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
 		final double x)
 	{
 		return null == _r1ToR1SeriesGenerator ? seriesEstimate (
@@ -239,7 +239,7 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 		{
 			throw new java.lang.Exception ("ErrorFunctionComplement::q => Invalid Inputs");
 		}
@@ -261,7 +261,7 @@ public abstract class ErrorFunctionComplement extends org.drip.function.numerica
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (x))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 		{
 			throw new java.lang.Exception ("ErrorFunctionComplement::cdf => Invalid Inputs");
 		}

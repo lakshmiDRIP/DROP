@@ -366,7 +366,7 @@ public class Stream {
 		if (null == cp || !cp.contains (iDate2))
 			throw new java.lang.Exception ("Stream::notional => Invalid Inputs");
 
-		org.drip.quant.common.Array2D notlSchedule = cp.notionalSchedule();
+		org.drip.numerical.common.Array2D notlSchedule = cp.notionalSchedule();
 
 		return initialNotional() * (null == notlSchedule ? 1. : notlSchedule.y (iDate1, iDate2));
 	}
@@ -1852,7 +1852,7 @@ public class Stream {
 	 * @return The Jacobian of the Dirty PV to the Manifest Measure
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -1865,14 +1865,14 @@ public class Stream {
 		if (null == dcFunding) return null;
 
 		try {
-			org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure = null;
+			org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure = null;
 
 			for (org.drip.analytics.cashflow.CompositePeriod p : _lsPeriod) {
 				int iPeriodPayDate = p.payDate();
 
 				if (p.startDate() < valParams.valueDate()) continue;
 
-				org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure =
+				org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure =
 					dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, "PV");
 
 				if (null == jackDDFDManifestMeasure) continue;
@@ -1882,7 +1882,7 @@ public class Stream {
 				if (0 == iNumQuote) continue;
 
 				if (null == jackDDirtyPVDManifestMeasure)
-					jackDDirtyPVDManifestMeasure = new org.drip.quant.calculus.WengertJacobian (1,
+					jackDDirtyPVDManifestMeasure = new org.drip.numerical.differentiation.WengertJacobian (1,
 						iNumQuote);
 
 				double dblPeriodNotional = p.notional (p.startDate(), p.endDate()) * p.fx (csqs);
@@ -1916,7 +1916,7 @@ public class Stream {
 	 * @return The micro-Jacobian of the Manifest Measure to the Discount Factor
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
@@ -1944,7 +1944,7 @@ public class Stream {
 			double dblParSwapRate = mapMeasures.get ("SwapRate");
 
 			try {
-				org.drip.quant.calculus.WengertJacobian wjSwapRateDFMicroJack = null;
+				org.drip.numerical.differentiation.WengertJacobian wjSwapRateDFMicroJack = null;
 
 				for (org.drip.analytics.cashflow.CompositePeriod p : _lsPeriod) {
 					int iPeriodPayDate = p.payDate();
@@ -1953,11 +1953,11 @@ public class Stream {
 
 					double dblPeriodDCF = p.couponMetrics (valParams.valueDate(), csqs).dcf();
 
-					org.drip.quant.calculus.WengertJacobian wjPeriodFwdRateDF =
+					org.drip.numerical.differentiation.WengertJacobian wjPeriodFwdRateDF =
 						dcFunding.jackDForwardDManifestMeasure (p.startDate(), p.endDate(), "Rate",
 							dblPeriodDCF);
 
-					org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF =
+					org.drip.numerical.differentiation.WengertJacobian wjPeriodPayDFDF =
 						dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, "Rate");
 
 					if (null == wjPeriodFwdRateDF || null == wjPeriodPayDFDF) continue;
@@ -1967,7 +1967,7 @@ public class Stream {
 					double dblPeriodPayDF = dcFunding.df (iPeriodPayDate);
 
 					if (null == wjSwapRateDFMicroJack)
-						wjSwapRateDFMicroJack = new org.drip.quant.calculus.WengertJacobian (1,
+						wjSwapRateDFMicroJack = new org.drip.numerical.differentiation.WengertJacobian (1,
 							wjPeriodFwdRateDF.numParameters());
 
 					double dblPeriodNotional = notional (p.startDate(), p.endDate());

@@ -209,15 +209,15 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 		return false;
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
 		if (0 == _lsMSS.size()) return null;
 
-		java.util.List<org.drip.quant.calculus.WengertJacobian> lsWJ = new
-			java.util.ArrayList<org.drip.quant.calculus.WengertJacobian>();
+		java.util.List<org.drip.numerical.differentiation.WengertJacobian> lsWJ = new
+			java.util.ArrayList<org.drip.numerical.differentiation.WengertJacobian>();
 
 		boolean bPredictorOrdinateCovered = false;
 
@@ -225,7 +225,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 			if (null == mss) continue;
 
 			try {
-				org.drip.quant.calculus.WengertJacobian wj = null;
+				org.drip.numerical.differentiation.WengertJacobian wj = null;
 
 				if (!bPredictorOrdinateCovered && mss.in (dblPredictorOrdinate)) {
 					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,
@@ -233,7 +233,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 
 					bPredictorOrdinateCovered = true;
 				} else
-					wj = new org.drip.quant.calculus.WengertJacobian (1, mss.segments().length);
+					wj = new org.drip.numerical.differentiation.WengertJacobian (1, mss.segments().length);
 
 				if (null != wj) lsWJ.add (wj);
 			} catch (java.lang.Exception e) {
@@ -243,7 +243,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 			}
 		}
 
-		return org.drip.quant.common.CollectionUtil.AppendWengert (lsWJ);
+		return org.drip.numerical.common.CollectionUtil.AppendWengert (lsWJ);
 	}
 
 	@Override public boolean in (

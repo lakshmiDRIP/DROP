@@ -102,8 +102,8 @@ public class PathRd {
 		final boolean bLogNormal)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==
-			_adblMean.length || !org.drip.quant.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_adblMean = adblMean) || null == _adblMean || 0 ==
+			_adblMean.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) ||
 				0. >= _dblVolatility)
 			throw new java.lang.Exception ("PathRd Constructor => Invalid Inputs");
 

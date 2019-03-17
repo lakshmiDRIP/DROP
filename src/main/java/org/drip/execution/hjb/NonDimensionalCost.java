@@ -124,8 +124,8 @@ public class NonDimensionalCost {
 		final double dblNonDimensionalTradeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblRealization = dblRealization) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblNonDimensionalTradeRate =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRealization = dblRealization) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblNonDimensionalTradeRate =
 				dblNonDimensionalTradeRate))
 			throw new java.lang.Exception ("NonDimensionalCost Constructor => Invalid Inputs");
 	}

@@ -169,7 +169,7 @@ public interface SingleSegmentSequence {
 	 * @return Jacobian of the Response Derivative to the Calibration Inputs at the Ordinate
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian jackDResponseDCalibrationInput (
+	public abstract org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder);
 
@@ -183,7 +183,7 @@ public interface SingleSegmentSequence {
 	 * @return Jacobian of the Response Derivative to the Quote at the Ordinate
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	public abstract org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder);

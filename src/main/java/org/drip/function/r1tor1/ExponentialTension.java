@@ -106,8 +106,8 @@ public class ExponentialTension extends org.drip.function.definition.R1ToR1 {
 	{
 		super (null);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBase = dblBase) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblTension = dblTension))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBase = dblBase) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
 			throw new java.lang.Exception ("ExponentialTension ctr: Invalid Inputs");
 
 		_bIsBaseNatural = _dblBase == java.lang.Math.E;
@@ -117,7 +117,7 @@ public class ExponentialTension extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("ExponentialTension::evaluate => Invalid Inputs");
 
 		return _bIsBaseNatural ? java.lang.Math.exp (_dblTension * dblVariate) : java.lang.Math.pow
@@ -129,7 +129,7 @@ public class ExponentialTension extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
 			throw new java.lang.Exception ("ExponentialTension::derivative => Invalid Inputs");
 
 		double dblDerivFactor = 1.;
@@ -146,7 +146,7 @@ public class ExponentialTension extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("ExponentialTension::integrate => Invalid Inputs");
 

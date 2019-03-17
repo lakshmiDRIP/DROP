@@ -152,7 +152,7 @@ public class RiskFactorTenorSensitivity
 		final java.lang.String tenor,
 		final double sensitivity)
 	{
-		if (null == tenor || !org.drip.quant.common.NumberUtil.IsValid (sensitivity))
+		if (null == tenor || !org.drip.numerical.common.NumberUtil.IsValid (sensitivity))
 		{
 			return false;
 		}

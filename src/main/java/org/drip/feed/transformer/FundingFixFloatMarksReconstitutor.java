@@ -187,7 +187,7 @@ public class FundingFixFloatMarksReconstitutor {
 
 			for (org.drip.product.rates.SingleStreamComponent sscDeposit : aSSCDeposit) {
 				try {
-					strDump += org.drip.quant.common.FormatUtil.FormatDouble (sscDeposit.measureValue
+					strDump += org.drip.numerical.common.FormatUtil.FormatDouble (sscDeposit.measureValue
 						(valParams, null, csqc, null, "ForwardRate"), 1, 6, 1.) + ",";
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -202,7 +202,7 @@ public class FundingFixFloatMarksReconstitutor {
 
 			for (org.drip.product.rates.FixFloatComponent ffc : aFixFloat) {
 				try {
-					strDump += org.drip.quant.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,
+					strDump += org.drip.numerical.common.FormatUtil.FormatDouble (ffc.measureValue (valParams,
 						null, csqc, null, "SwapRate"), 1, 6, 1.) + ",";
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -212,7 +212,7 @@ public class FundingFixFloatMarksReconstitutor {
 			}
 
 			for (int i = 0; i < iNumFixFloatQuote; ++i)
-				strDump += org.drip.quant.common.FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) +
+				strDump += org.drip.numerical.common.FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 6, 1.) +
 					",";
 
 			System.out.println (strDump);

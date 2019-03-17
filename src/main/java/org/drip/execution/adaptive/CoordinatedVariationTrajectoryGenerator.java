@@ -281,7 +281,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 		if (TRADE_RATE_ZERO_INITIALIZATION == _iTradeRateInitializer)
 			return org.drip.execution.hjb.NonDimensionalCostSystemic.Zero();
 
-		if (null == ms || !org.drip.quant.common.NumberUtil.IsValid (dblTradeRateScale)) return null;
+		if (null == ms || !org.drip.numerical.common.NumberUtil.IsValid (dblTradeRateScale)) return null;
 
 		try {
 			org.drip.execution.strategy.ContinuousTradingTrajectory ctt =

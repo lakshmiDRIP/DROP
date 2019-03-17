@@ -105,7 +105,7 @@ public class BoundedIdempotentUnivariateRandom extends
 	{
 		super (dblOffset, dist);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblVariateBound = dblVariateBound))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblVariateBound = dblVariateBound))
 			throw new java.lang.Exception ("BoundedIdempotentUnivariateRandom ctr => Invalid Inputs");
 	}
 

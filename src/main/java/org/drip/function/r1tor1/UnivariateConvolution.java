@@ -113,7 +113,7 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("Convolution::evaluate => Invalid Input");
 
 		return _au1.evaluate (dblVariate) * _au2.evaluate (dblVariate);
@@ -127,7 +127,7 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		double dblDerivative = _au1.evaluate (dblVariate) * _au2.derivative (dblVariate, iOrder);
 
 		for (int i = 1; i < iOrder; ++i)
-			dblDerivative += org.drip.quant.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,
+			dblDerivative += org.drip.numerical.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,
 				i) * _au2.derivative (dblVariate, iOrder - i);
 
 		return dblDerivative + _au1.derivative (dblVariate, iOrder) * _au2.evaluate (dblVariate);
@@ -138,10 +138,10 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
 			throw new java.lang.Exception ("HyperbolicTension::integrate => Invalid Inputs");
 
-		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 	}
 }

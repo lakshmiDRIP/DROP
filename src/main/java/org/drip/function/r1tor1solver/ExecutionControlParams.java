@@ -152,11 +152,11 @@ public class ExecutionControlParams {
 		final double dblAbsoluteVariateConvergenceFallback)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOFGoalToleranceFactor = dblOFGoalToleranceFactor)
-			|| !org.drip.quant.common.NumberUtil.IsValid (_dblVariateConvergenceFactor =
-				dblVariateConvergenceFactor) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOFGoalToleranceFactor = dblOFGoalToleranceFactor)
+			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblVariateConvergenceFactor =
+				dblVariateConvergenceFactor) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblAbsoluteOFToleranceFallback = dblAbsoluteOFToleranceFallback) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblAbsoluteVariateConvergenceFallback =
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblAbsoluteVariateConvergenceFallback =
 							dblAbsoluteVariateConvergenceFallback) || 0 >= (_iNumIterations =
 								iNumIterations))
 			throw new java.lang.Exception ("ExecutionControlParams constructor: Invalid inputs");

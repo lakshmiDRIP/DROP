@@ -122,7 +122,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 			(stream.effective(), stream.forwardLabel(), dblStrike), strManifestMeasure, dblStrike,
 				stream.initialNotional(), ltds, csp);
 
-		if (null == (_stream = stream) || !org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike))
+		if (null == (_stream = stream) || !org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike))
 			throw new java.lang.Exception ("FRAStandardCapFloor Constructor => Invalid Inputs");
 
 		_bIsCap = bIsCap;
@@ -314,7 +314,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblFlatVolatility)
 		throws java.lang.Exception
 	{
-		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))
+		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblFlatVolatility))
 			throw new java.lang.Exception ("FRAStandardCapFloor::atmPriceFromVolatility => Invalid Inputs");
 
 		int iValueDate = valParams.valueDate();
@@ -389,7 +389,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblCalibPrice)
 		throws java.lang.Exception
 	{
-		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))
+		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblCalibPrice))
 			throw new java.lang.Exception ("FRAStandardCapFloor::volatilityFromATMPrice => Invalid Inputs");
 
 		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
@@ -436,7 +436,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblFlatVolatility)
 		throws java.lang.Exception
 	{
-		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))
+		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblFlatVolatility))
 			throw new java.lang.Exception ("FRAStandardCapFloor::priceFromFlatVolatility => Invalid Inputs");
 
 		int iValueDate = valParams.valueDate();
@@ -478,7 +478,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.OptionComponent
 		final double dblCalibPrice)
 		throws java.lang.Exception
 	{
-		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))
+		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblCalibPrice))
 			throw new java.lang.Exception ("FRAStandardCapFloor::flatVolatilityFromPrice => Invalid Inputs");
 
 		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {

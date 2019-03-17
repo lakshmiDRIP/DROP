@@ -107,7 +107,7 @@ public class BinaryIdempotentUnivariateRandom extends
 	{
 		super (dblOffset, dist, dblVariateBound);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblPositiveProbability = dblPositiveProbability))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPositiveProbability = dblPositiveProbability))
 			throw new java.lang.Exception ("BinaryIdempotentUnivariateRandom ctr => Invalid Inputs");
 	}
 

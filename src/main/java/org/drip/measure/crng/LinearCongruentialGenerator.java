@@ -154,8 +154,8 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 		final org.drip.measure.crng.RecursiveGenerator rg)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_lA = lA) || !org.drip.quant.common.NumberUtil.IsValid
-			(_lB = lB) || !org.drip.quant.common.NumberUtil.IsValid (_lM = lM) || null == (_rg = rg))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lA = lA) || !org.drip.numerical.common.NumberUtil.IsValid
+			(_lB = lB) || !org.drip.numerical.common.NumberUtil.IsValid (_lM = lM) || null == (_rg = rg))
 			throw new java.lang.Exception ("LinearCongruentialGenerator Constructor => Invalid Inputs");
 	}
 

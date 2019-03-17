@@ -130,7 +130,7 @@ public class WireSurfacePiecewiseConstant {
 		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
 			throw new java.lang.Exception
 				("WireSurfacePiecewiseConstant::enclosingXIndex => Invalid Inputs");
 
@@ -161,7 +161,7 @@ public class WireSurfacePiecewiseConstant {
 		final double dblY)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblY))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
 			throw new java.lang.Exception
 				("WireSurfacePiecewiseConstant::enclosingYIndex => Invalid Inputs");
 

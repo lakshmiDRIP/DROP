@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.drip.measure.stochastic.LabelCorrelation;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.rates.IRSettingsContainer20;
 import org.drip.simm.rates.IRSystemics20;

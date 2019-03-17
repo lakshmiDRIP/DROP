@@ -97,7 +97,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		throws java.lang.Exception
 	{
 		return new org.drip.product.fx.FXForwardComponent ("FXFWD_" +
-			org.drip.quant.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
+			org.drip.numerical.common.StringUtil.GUID(), currencyPair(), epoch().julian(), iNodeDate, 1.,
 				null).discountCurveBasis (valParam, dcNum, dcDenom, _dblFXSpot, fx (iNodeDate),
 					bBasisOnDenom);
 	}
@@ -124,7 +124,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 	{
 		super (iEpochDate, cp);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFXSpot = dblFXSpot) || null == (_aiPillarDate =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFXSpot = dblFXSpot) || null == (_aiPillarDate =
 			aiPillarDate) || null == (_adblFXForward = adblFXForward) || _aiPillarDate.length !=
 				_adblFXForward.length)
 			throw new java.lang.Exception ("FlatForwardFXCurve ctr => Invalid Inputs");
@@ -132,7 +132,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		int iNumPillar = _aiPillarDate.length;
 
 		for (int i = 0; i < iNumPillar; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblFXForward[i]))
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblFXForward[i]))
 				throw new java.lang.Exception ("FlatForwardFXCurve ctr => Invalid Inputs");
 		}
 	}
@@ -308,7 +308,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		return dcImplied.zero (iDate);
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate)
 	{
@@ -319,7 +319,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblFXForward.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblFXForward.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblFXForward.length; ++i)
@@ -332,7 +332,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 		final int iNodeIndex,
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblFXForward.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex > _adblFXForward.length)
 			return false;
 
 		for (int i = iNodeIndex; i < _adblFXForward.length; ++i)
@@ -344,7 +344,7 @@ public class FlatForwardFXCurve extends org.drip.state.fx.ExplicitBootFXCurve {
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;
 
 		for (int i = 0; i < _adblFXForward.length; ++i)
 			_adblFXForward[i] = dblValue;

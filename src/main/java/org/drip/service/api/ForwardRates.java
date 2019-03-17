@@ -106,7 +106,7 @@ public class ForwardRates {
 	public boolean addForward (
 		final double dblForward)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblForward)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForward)) return false;
 
 		_lsForward.add (dblForward);
 

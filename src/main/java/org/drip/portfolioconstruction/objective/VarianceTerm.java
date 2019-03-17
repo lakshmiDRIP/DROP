@@ -125,7 +125,7 @@ public class VarianceTerm extends org.drip.portfolioconstruction.objective.RiskT
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.quant.common.NumberUtil.IsValid (adblVariate))
+				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
 					throw new java.lang.Exception ("VarianceTerm::rdToR1::evaluate => Invalid Input");
 
 				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();

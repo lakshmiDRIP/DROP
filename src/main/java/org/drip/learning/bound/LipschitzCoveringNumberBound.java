@@ -111,8 +111,8 @@ public class LipschitzCoveringNumberBound {
 		final double dblLpUpperBound)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupremumUpperBound = dblSupremumUpperBound) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblLpUpperBound = dblLpUpperBound))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSupremumUpperBound = dblSupremumUpperBound) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblLpUpperBound = dblLpUpperBound))
 			throw new java.lang.Exception ("LipschitzCoveringNumberBound ctr: Invalid Inputs");
 	}
 

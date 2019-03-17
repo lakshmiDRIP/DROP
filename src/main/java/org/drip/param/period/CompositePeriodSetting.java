@@ -87,8 +87,8 @@ public class CompositePeriodSetting {
 	private java.lang.String _strTenor = "";
 	private java.lang.String _strPayCurrency = "";
 	private double _dblBaseNotional = java.lang.Double.NaN;
-	private org.drip.quant.common.Array2D _fsCoupon = null;
-	private org.drip.quant.common.Array2D _fsNotional = null;
+	private org.drip.numerical.common.Array2D _fsCoupon = null;
+	private org.drip.numerical.common.Array2D _fsNotional = null;
 	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;
 	private org.drip.param.period.FixingSetting _fxFixingSetting = null;
 	private org.drip.analytics.daycount.DateAdjustParams _dapPay = null;
@@ -115,25 +115,25 @@ public class CompositePeriodSetting {
 		final java.lang.String strPayCurrency,
 		final org.drip.analytics.daycount.DateAdjustParams dapPay,
 		final double dblBaseNotional,
-		final org.drip.quant.common.Array2D fsCoupon,
-		final org.drip.quant.common.Array2D fsNotional,
+		final org.drip.numerical.common.Array2D fsCoupon,
+		final org.drip.numerical.common.Array2D fsNotional,
 		final org.drip.param.period.FixingSetting fxFixingSetting,
 		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iFreq = iFreq) || null == (_strTenor = strTenor) || _strTenor.isEmpty() || null ==
 			(_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional))
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional))
 			throw new java.lang.Exception ("CompositePeriodSetting ctr: Invalid Inputs");
 
 		_dapPay = dapPay;
 		_creditLabel = creditLabel;
 		_fxFixingSetting = fxFixingSetting;
 
-		if (null == (_fsCoupon = fsCoupon)) _fsCoupon = org.drip.quant.common.Array2D.BulletSchedule();
+		if (null == (_fsCoupon = fsCoupon)) _fsCoupon = org.drip.numerical.common.Array2D.BulletSchedule();
 
 		if (null == (_fsNotional = fsNotional))
-			_fsNotional = org.drip.quant.common.Array2D.BulletSchedule();
+			_fsNotional = org.drip.numerical.common.Array2D.BulletSchedule();
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class CompositePeriodSetting {
 	 * @return The Notional Schedule
 	 */
 
-	public org.drip.quant.common.Array2D notionalSchedule()
+	public org.drip.numerical.common.Array2D notionalSchedule()
 	{
 		return _fsNotional;
 	}
@@ -208,7 +208,7 @@ public class CompositePeriodSetting {
 	 * @return The Coupon Schedule
 	 */
 
-	public org.drip.quant.common.Array2D couponSchedule()
+	public org.drip.numerical.common.Array2D couponSchedule()
 	{
 		return _fsCoupon;
 	}

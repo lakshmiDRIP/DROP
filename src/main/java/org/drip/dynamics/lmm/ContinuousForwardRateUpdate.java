@@ -197,8 +197,8 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblDContinuousForwardDXTerminal =
-				dblDContinuousForwardDXTerminal) || !org.drip.quant.common.NumberUtil.IsValid
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblDContinuousForwardDXTerminal =
+				dblDContinuousForwardDXTerminal) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dblDContinuousForwardDXInitial = dblDContinuousForwardDXInitial))
 			throw new java.lang.Exception ("ContinuousForwardRateUpdate ctr: Invalid Inputs");
 	}

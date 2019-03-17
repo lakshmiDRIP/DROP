@@ -125,7 +125,7 @@ public class ConvergenceOutput extends org.drip.function.r1tor1solver.ExecutionI
 	public boolean done (
 		final double dblStartingVariate)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartingVariate)) return false;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartingVariate)) return false;
 
 		return setStartingVariate (dblStartingVariate) && done();
 	}

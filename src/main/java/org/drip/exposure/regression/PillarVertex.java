@@ -123,7 +123,7 @@ public class PillarVertex
 		final double exposure)
 		throws java.lang.Exception
 	{
-		if (0 >= (_date = date) || !org.drip.quant.common.NumberUtil.IsValid (_exposure = exposure))
+		if (0 >= (_date = date) || !org.drip.numerical.common.NumberUtil.IsValid (_exposure = exposure))
 		{
 			throw new java.lang.Exception ("PillarVertex Constructor => Invalid Inputs");
 		}

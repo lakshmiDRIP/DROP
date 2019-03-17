@@ -139,8 +139,8 @@ public class PutGreeks extends org.drip.pricer.option.Greeks {
 			dblPutProb1, dblPutProb2, dblPutDelta, dblPutVega, dblPutTheta, dblPutRho, dblPutGamma,
 				dblPutVanna, dblPutVomma, dblPutCharm, dblPutVeta, dblPutColor, dblPutSpeed, dblPutUltima);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPutPrice) &&
-			!org.drip.quant.common.NumberUtil.IsValid (_dblPutPriceFromParity = dblPutPriceFromParity))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPutPrice) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblPutPriceFromParity = dblPutPriceFromParity))
 			throw new java.lang.Exception ("PutGreeks ctr: Invalid Inputs");
 
 		_dblPutPriceFromParity = dblPutPriceFromParity;

@@ -10,7 +10,7 @@ import org.drip.execution.principal.Almgren2003Estimator;
 import org.drip.execution.profiletime.*;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1.FlatUnivariate;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
