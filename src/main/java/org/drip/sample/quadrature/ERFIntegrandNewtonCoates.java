@@ -1,5 +1,14 @@
 
-package org.drip.numerical.integration;
+package org.drip.sample.quadrature;
+
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.e2erf.BuiltInEntry;
+import org.drip.function.e2erf.ErrorFunction;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.NewtonCotesQuadrature;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +73,8 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>NewCotesQuadrature</i> computes the R<sup>1</sup> Numerical Estimate of a Function Quadrature using
- * Equally Spaced Grids. The References are:
+ * <i>ERFIntegrandNewtonCoates</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using
+ * Newton-Cotes Grids. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -93,108 +102,100 @@ package org.drip.numerical.integration;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/quadrature/README.md">R<sup>1</sup> Numerical Integration Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NewCotesQuadrature
+public class ERFIntegrandNewtonCoates
 {
-	private int _nodeCount = -1;
-	private org.drip.function.definition.R1ToR1 _r1ToR1 = null;
 
-	/**
-	 * NewCotesQuadrature Constructor
-	 * 
-	 * @param r1ToR1 R<sup>1</sup> To R<sup>1</sup> Integrand
-	 * @param nodeCount Quadrature Node Count
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public NewCotesQuadrature (
-		final org.drip.function.definition.R1ToR1 r1ToR1,
-		final int nodeCount)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (null == (_r1ToR1 = r1ToR1) ||
-			1 > (_nodeCount = nodeCount))
+		EnvManager.InitEnv ("");
+
+		R1ToR1 erfIntegrand = new ErrorFunction (
+			null,
+			null
+		).integrand();
+
+		int nodeCount10 = 10;
+		int nodeCount50 = 50;
+		int nodeCount100 = 100;
+
+		NewtonCotesQuadrature newtonCotesQuadrature10 = new NewtonCotesQuadrature (
+			erfIntegrand,
+			nodeCount10
+		);
+
+		NewtonCotesQuadrature newtonCotesQuadrature50 = new NewtonCotesQuadrature (
+			erfIntegrand,
+			nodeCount50
+		);
+
+		NewtonCotesQuadrature newtonCotesQuadrature100 = new NewtonCotesQuadrature (
+			erfIntegrand,
+			nodeCount100
+		);
+
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|                     Newton Coates erf Estimate                     ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                     ||");
+
+		System.out.println ("\t|                - x                                                 ||");
+
+		System.out.println ("\t|                - Built-in Estimate                                 ||");
+
+		System.out.println ("\t|                - Newton Coates Estimate (10 Nodes)                 ||");
+
+		System.out.println ("\t|                - Newton Coates Estimate (50 Nodes)                 ||");
+
+		System.out.println ("\t|                - Newton Coates Estimate (100 Nodes)                ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			throw new java.lang.Exception ("NewCotesQuadrature Constructor => Invalid Inputs");
-		}
-	}
+			double x = builtInTableEntry.getKey();
 
-	/**
-	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> Integrand
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Integrand
-	 */
+			double erfTable = builtInTableEntry.getValue().erf();
 
-	public org.drip.function.definition.R1ToR1 r1ToR1()
-	{
-		return _r1ToR1;
-	}
+			double erfEstimate10 = newtonCotesQuadrature10.integrate (
+				0.,
+				x
+			);
 
-	/**
-	 * Retrieve the Quadrature Node Count
-	 * 
-	 * @return The Quadrature Node Count
-	 */
+			double erfEstimate50 = newtonCotesQuadrature50.integrate (
+				0.,
+				x
+			);
 
-	public int nodeCount()
-	{
-		return _nodeCount;
-	}
+			double erfEstimate100 = newtonCotesQuadrature100.integrate (
+				0.,
+				x
+			);
 
-	/**
-	 * Integrate the Integrand from Left Through Right
-	 * 
-	 * @param left Left Limit
-	 * @param right Right Limit
-	 * 
-	 * @return The Integrand Quadrature
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double integrate (
-		final double left,
-		final double right)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (left) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (right))
-		{
-			throw new java.lang.Exception ("NewCotesQuadrature::integrate => Invalid Inputs");
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfEstimate10, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfEstimate50, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfEstimate100, 1, 9, 1.) + " ||"
+			);
 		}
 
-		if (left == right)
-		{
-			return 0.;
-		}
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		boolean flip = false;
-		double leftLimit = left;
-		double rightLimit = right;
-
-		if (leftLimit > rightLimit)
-		{
-			flip = true;
-			leftLimit = right;
-			rightLimit = left;
-		}
-
-		double width = (rightLimit - leftLimit) /_nodeCount;
-
-		double quadrature = 0.5 * (_r1ToR1.evaluate (leftLimit) + _r1ToR1.evaluate (rightLimit));
-
-		for (int nodeIndex = 1; nodeIndex < _nodeCount; ++nodeIndex)
-		{
-			quadrature = quadrature + _r1ToR1.evaluate (leftLimit + nodeIndex * width);
-		}
-
-		return (flip ? -1. : 1.) * quadrature * width;
+		EnvManager.TerminateEnv();
 	}
 }

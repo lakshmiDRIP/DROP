@@ -102,7 +102,7 @@ package org.drip.function.e2erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Estimator
+public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1IntegrandEstimator
 {
 	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
@@ -125,29 +125,39 @@ public abstract class ErrorFunction extends org.drip.numerical.estimation.R1ToR1
 			return null;
 		}
 
-		return new ErrorFunction (
-			e2MacLaurinSeriesGenerator,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new ErrorFunction (
+				e2MacLaurinSeriesGenerator,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception ("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunction::MacLaurin::evaluate => Invalid Inputs");
+					}
+
+					double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
+						e2MacLaurinSeriesGenerator.cumulative (
+							0.,
+							z
+						);
+
+					return erf > 1. ? 1. : erf;
 				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					e2MacLaurinSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
+		return null;
 	}
 
 	/**
@@ -158,39 +168,49 @@ public abstract class ErrorFunction extends org.drip.numerical.estimation.R1ToR1
 
 	public static final ErrorFunction HansHeinrichBurmannConvergent()
 	{
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
-			= org.drip.function.e2erf.HansHeinrichBurmannGenerator.Convergent();
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator
+			hansHeinrichBurmannConvergentSeriesGenerator =
+				org.drip.function.e2erf.HansHeinrichBurmannGenerator.Convergent();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
 		{
 			return null;
 		}
 
-		return new ErrorFunction (
-			hansHeinrichBurmannConvergentSeriesGenerator,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new ErrorFunction (
+				hansHeinrichBurmannConvergentSeriesGenerator,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunction::HansHeinrichBurmannConvergent::evaluate => Invalid Inputs");
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunction::HansHeinrichBurmannConvergent::evaluate => Invalid Inputs");
+					}
+
+					double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
+						java.lang.Math.sqrt (1. - java.lang.Math.exp (-1. * z * z)) *
+						hansHeinrichBurmannConvergentSeriesGenerator.cumulative (
+							0.,
+							z
+						);
+
+					return erf > 1. ? 1. : erf;
 				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					java.lang.Math.sqrt (1. - java.lang.Math.exp (-1. * z * z)) *
-					hansHeinrichBurmannConvergentSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
+		return null;
 	}
 
 	/**
@@ -209,38 +229,60 @@ public abstract class ErrorFunction extends org.drip.numerical.estimation.R1ToR1
 			return null;
 		}
 
-		return new ErrorFunction (
-			hansHeinrichBurmannConvergentSeriesGenerator,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new ErrorFunction (
+				hansHeinrichBurmannConvergentSeriesGenerator,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunction::HansHeinrichBurmannSchopfSupancic2014::evaluate => Invalid Inputs");
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunction::HansHeinrichBurmannSchopfSupancic2014::evaluate => Invalid Inputs");
+					}
+
+					double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
+						java.lang.Math.sqrt (1. - java.lang.Math.exp (-1. * z * z)) *
+						hansHeinrichBurmannConvergentSeriesGenerator.cumulative (
+							0.,
+							z
+						);
+
+					return erf > 1. ? 1. : erf;
 				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-				double erf = 2. / java.lang.Math.sqrt (java.lang.Math.PI) *
-					java.lang.Math.sqrt (1. - java.lang.Math.exp (-1. * z * z)) *
-					hansHeinrichBurmannConvergentSeriesGenerator.cumulative (
-						0.,
-						z
-					);
-
-				return erf > 1. ? 1. : erf;
-			}
-		};
+		return null;
 	}
 
-	protected ErrorFunction (
+	/**
+	 * ErrorFunction Constructor
+	 * 
+	 * @param r1ToR1SeriesGenerator R<sup>1</sup> To R<sup>1</sup> Series Generator
+	 * @param dc Differential Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ErrorFunction (
 		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
 		final org.drip.numerical.differentiation.DerivativeControl dc)
+		throws java.lang.Exception
 	{
-		super (dc);
+		super (
+			dc,
+			0.
+		);
 
 		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
 	}
@@ -295,6 +337,18 @@ public abstract class ErrorFunction extends org.drip.numerical.estimation.R1ToR1
 			_r1ToR1SeriesGenerator.termWeightMap(),
 			_r1ToR1SeriesGenerator
 		);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 integrand()
+	{
+		return new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+			{
+				return 2. * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI);
+			}
+		};
 	}
 
 	/**
