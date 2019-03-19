@@ -100,15 +100,18 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GeneralizedMidPointQuadrature extends org.drip.numerical.integration.QuadratureBase
+public class GeneralizedMidPointQuadrature
 {
+	private int _nodeCount = -1;
 	private int _seriesTermCount = -1;
+	private org.drip.function.definition.R1ToR1 _r1ToR1 = null;
 
 	/**
 	 * GeneralizedMidPointQuadrature Constructor
 	 * 
 	 * @param r1ToR1 R<sup>1</sup> To R<sup>1</sup> Integrand
 	 * @param nodeCount Quadrature Node Count
+	 * @param seriesTermCount Series Term Count
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -119,15 +122,34 @@ public class GeneralizedMidPointQuadrature extends org.drip.numerical.integratio
 		final int seriesTermCount)
 		throws java.lang.Exception
 	{
-		super (
-			r1ToR1,
-			nodeCount
-		);
-
-		if (0 >= (_seriesTermCount = seriesTermCount))
+		if (null == (_r1ToR1 = r1ToR1) ||
+			1 > (_nodeCount = nodeCount) ||
+			0 >= (_seriesTermCount = seriesTermCount))
 		{
 			throw new java.lang.Exception ("GeneralizedMidPointQuadrature Constructor => Invalid Inputs");
 		}
+	}
+
+	/**
+	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> Integrand
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Integrand
+	 */
+
+	public org.drip.function.definition.R1ToR1 r1ToR1()
+	{
+		return _r1ToR1;
+	}
+
+	/**
+	 * Retrieve the Quadrature Node Count
+	 * 
+	 * @return The Quadrature Node Count
+	 */
+
+	public int nodeCount()
+	{
+		return _nodeCount;
 	}
 
 	/**
@@ -141,7 +163,18 @@ public class GeneralizedMidPointQuadrature extends org.drip.numerical.integratio
 		return _seriesTermCount;
 	}
 
-	@Override public double integrate (
+	/**
+	 * Integrate the Integrand from Left Through Right
+	 * 
+	 * @param left Left Limit
+	 * @param right Right Limit
+	 * 
+	 * @return The Integrand Quadrature
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double integrate (
 		final double left,
 		final double right)
 		throws java.lang.Exception
@@ -169,22 +202,18 @@ public class GeneralizedMidPointQuadrature extends org.drip.numerical.integratio
 			rightLimit = left;
 		}
 
-		int nodeCount = nodeCount();
-
-		double m2 = 2. * nodeCount;
+		double m2 = 2. * _nodeCount;
 		double space = rightLimit - leftLimit;
 
-		org.drip.function.definition.R1ToR1 r1ToR1 = r1ToR1();
-
-		for (int nodeIndex = 1; nodeIndex <= nodeCount; ++nodeIndex)
+		for (int nodeIndex = 1; nodeIndex <= _nodeCount; ++nodeIndex)
 		{
 			for (int seriesTermIndex = 0; seriesTermIndex <= _seriesTermCount; ++seriesTermIndex)
 			{
 				int seriesTermIndex2 = 2 * seriesTermIndex;
 				int seriesTermIndex2Plus1 = seriesTermIndex2 + 1;
 
-				quadrature = quadrature + r1ToR1.derivative (
-					space * (nodeIndex - 0.5) / nodeCount + leftLimit,
+				quadrature = quadrature + _r1ToR1.derivative (
+					space * (nodeIndex - 0.5) / _nodeCount + leftLimit,
 					2 * seriesTermIndex
 				) / org.drip.numerical.common.NumberUtil.Factorial (seriesTermIndex2Plus1) /
 				java.lang.Math.pow (

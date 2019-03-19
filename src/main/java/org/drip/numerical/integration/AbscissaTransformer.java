@@ -64,8 +64,8 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>NewtonCotesQuadrature</i> computes the R<sup>1</sup> Numerical Estimate of a Function Quadrature using
- * Equally Spaced Grids. The References are:
+ * <i>AbscissaTransformer</i> transforms the Abscissa over into Corresponding Integrand Variable. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,69 +100,201 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NewtonCotesQuadrature extends org.drip.numerical.integration.QuadratureBase
+public class AbscissaTransformer
 {
+	private double _quadratureScale = java.lang.Double.NaN;
+	private org.drip.function.definition.R1ToR1 _r1ValueTransform = null;
+	private org.drip.function.definition.R1ToR1 _r1ToR1VariateTransform = null;
 
 	/**
-	 * NewtonCotesQuadrature Constructor
+	 * Generate the Scaled and Displaced Abscissa Transformer
 	 * 
-	 * @param r1ToR1 R<sup>1</sup> To R<sup>1</sup> Integrand
-	 * @param nodeCount Quadrature Node Count
+	 * @param left Span Left
+	 * @param right Span Right
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Scaled and Displaced Abscissa Transformer
 	 */
 
-	public NewtonCotesQuadrature (
-		final org.drip.function.definition.R1ToR1 r1ToR1,
-		final int nodeCount)
-		throws java.lang.Exception
-	{
-		super (
-			r1ToR1,
-			nodeCount
-		);
-	}
-
-	@Override public double integrate (
+	public static final AbscissaTransformer DisplaceAndScale (
 		final double left,
 		final double right)
-		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (left) ||
 			!org.drip.numerical.common.NumberUtil.IsValid (right))
 		{
-			throw new java.lang.Exception ("NewtonCotesQuadrature::integrate => Invalid Inputs");
+			return null;
 		}
 
-		if (left == right)
+		try
 		{
-			return 0.;
+			return new AbscissaTransformer (
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return (right - left) * x + left;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return 1.;
+					}
+				},
+				right - left
+			);
 		}
-
-		boolean flip = false;
-		double leftLimit = left;
-		double rightLimit = right;
-
-		if (leftLimit > rightLimit)
+		catch (java.lang.Exception e)
 		{
-			flip = true;
-			leftLimit = right;
-			rightLimit = left;
+			e.printStackTrace();
 		}
 
-		int nodeCount = nodeCount();
+		return null;
+	}
 
-		double width = (rightLimit - leftLimit) /nodeCount;
+	/**
+	 * Generate the Gauss-Hermite Abscissa Transformer
+	 * 
+	 * @return The Gauss-Hermite Abscissa Transformer
+	 */
 
-		org.drip.function.definition.R1ToR1 r1ToR1 = r1ToR1();
-
-		double quadrature = 0.5 * (r1ToR1.evaluate (leftLimit) + r1ToR1.evaluate (rightLimit));
-
-		for (int nodeIndex = 1; nodeIndex < nodeCount; ++nodeIndex)
+	public static final AbscissaTransformer GaussHermite()
+	{
+		try
 		{
-			quadrature = quadrature + r1ToR1.evaluate (leftLimit + nodeIndex * width);
+			return new AbscissaTransformer (
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return x / (1. - x * x);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						double xSquared = x * x;
+
+						return (1. + xSquared) / (1. - xSquared) / (1. - xSquared);
+					}
+				},
+				1.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		return (flip ? -1. : 1.) * quadrature * width;
+		return null;
+	}
+
+	/**
+	 * Generate the Gauss-Laguerre Abscissa Transformer for Integrals in [a, +Infinity]
+	 * 
+	 * @param left Span Left
+	 * 
+	 * @return The Gauss-Laguerre Abscissa Transformer for Integrals in [a, +Infinity]
+	 */
+
+	public static final AbscissaTransformer GaussLaguerreLeftDefinite (
+		final double left)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (left))
+		{
+			return null;
+		}
+
+		try
+		{
+			return new AbscissaTransformer (
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return left + (x / (1. - x));
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return 1. / (1. - x) / (1. - x);
+					}
+				},
+				1.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * AbscissaTransformer Constructor
+	 * 
+	 * @param r1ToR1VariateTransform R<sup>1</sup> to R<sup>1</sup> Variate Transform Function
+	 * @param r1ValueTransform R<sup>1</sup> Value Transform Function
+	 * @param quadratureScale Quadrature Scale
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public AbscissaTransformer (
+		final org.drip.function.definition.R1ToR1 r1ToR1VariateTransform,
+		final org.drip.function.definition.R1ToR1 r1ValueTransform,
+		final double quadratureScale)
+		throws java.lang.Exception
+	{
+		if (null == (_r1ToR1VariateTransform = r1ToR1VariateTransform) ||
+			null == (_r1ValueTransform = r1ValueTransform) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_quadratureScale = quadratureScale))
+		{
+			throw new java.lang.Exception ("AbscissaTransformer Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the R<sup>1</sup> to R<sup>1</sup> Variate Transform Function
+	 * 
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Variate Transform Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 r1ToR1VariateTransform()
+	{
+		return _r1ToR1VariateTransform;
+	}
+
+	/**
+	 * Retrieve the R<sup>1</sup> Value Transform Function
+	 * 
+	 * @return The R<sup>1</sup> Value Transform Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 r1ValueTransform()
+	{
+		return _r1ValueTransform;
+	}
+
+	/**
+	 * Retrieve the Quadrature Scale
+	 * 
+	 * @return The Quadrature Scale
+	 */
+
+	public double quadratureScale()
+	{
+		return _quadratureScale;
 	}
 }

@@ -142,17 +142,10 @@ public abstract class R1ToR1IntegrandEstimator extends org.drip.numerical.estima
 		final double x)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
-			throw new java.lang.Exception ("R1ToR1IntegrandEstimator::evaluate => Invalid Inputs");
-		}
-
-		return new org.drip.numerical.integration.NewtonCotesQuadrature (
-			integrand(),
-			100
-		).integrate (
+		return org.drip.numerical.integration.QuadratureGenerator.NewtonCotes (
 			_leftLimit,
-			x
-		);
+			x,
+			100
+		).integrate (integrand());
 	}
 }

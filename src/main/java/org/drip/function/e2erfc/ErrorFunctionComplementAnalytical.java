@@ -284,7 +284,7 @@ public class ErrorFunctionComplementAnalytical
 	/**
 	 * Construct the Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
 	 * 
-	 * @param Beta Beta
+	 * @param beta Beta
 	 * 
 	 * @return The Chang-Cosman-Milstein (2011) Version of the Analytical Error Function Complement
 	 */

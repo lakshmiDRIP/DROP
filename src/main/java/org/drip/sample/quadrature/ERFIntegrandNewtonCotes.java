@@ -7,7 +7,7 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.function.e2erf.ErrorFunction;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.integration.NewtonCotesQuadrature;
+import org.drip.numerical.integration.QuadratureGenerator;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -73,7 +73,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIntegrandNewtonCoates</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using
+ * <i>ERFIntegrandNewtonCotes</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using
  * Newton-Cotes Grids. The References are:
  * 
  * <br><br>
@@ -109,7 +109,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIntegrandNewtonCoates
+public class ERFIntegrandNewtonCotes
 {
 
 	public static final void main (
@@ -127,26 +127,11 @@ public class ERFIntegrandNewtonCoates
 		int nodeCount50 = 50;
 		int nodeCount100 = 100;
 
-		NewtonCotesQuadrature newtonCotesQuadrature10 = new NewtonCotesQuadrature (
-			erfIntegrand,
-			nodeCount10
-		);
-
-		NewtonCotesQuadrature newtonCotesQuadrature50 = new NewtonCotesQuadrature (
-			erfIntegrand,
-			nodeCount50
-		);
-
-		NewtonCotesQuadrature newtonCotesQuadrature100 = new NewtonCotesQuadrature (
-			erfIntegrand,
-			nodeCount100
-		);
-
 		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
-		System.out.println ("\t|                     Newton Coates erf Estimate                     ||");
+		System.out.println ("\t|                     Newton Cotes erf Estimate                      ||");
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
@@ -156,11 +141,11 @@ public class ERFIntegrandNewtonCoates
 
 		System.out.println ("\t|                - Built-in Estimate                                 ||");
 
-		System.out.println ("\t|                - Newton Coates Estimate (10 Nodes)                 ||");
+		System.out.println ("\t|                - Newton Cotes Estimate (10 Nodes)                  ||");
 
-		System.out.println ("\t|                - Newton Coates Estimate (50 Nodes)                 ||");
+		System.out.println ("\t|                - Newton Cotes Estimate (50 Nodes)                  ||");
 
-		System.out.println ("\t|                - Newton Coates Estimate (100 Nodes)                ||");
+		System.out.println ("\t|                - Newton Cotes Estimate (100 Nodes)                 ||");
 
 		System.out.println ("\t|--------------------------------------------------------------------||");
 
@@ -170,20 +155,23 @@ public class ERFIntegrandNewtonCoates
 
 			double erfTable = builtInTableEntry.getValue().erf();
 
-			double erfEstimate10 = newtonCotesQuadrature10.integrate (
+			double erfEstimate10 = QuadratureGenerator.NewtonCotes (
 				0.,
-				x
-			);
+				x,
+				nodeCount10
+			).integrate (erfIntegrand);
 
-			double erfEstimate50 = newtonCotesQuadrature50.integrate (
+			double erfEstimate50 = QuadratureGenerator.NewtonCotes (
 				0.,
-				x
-			);
+				x,
+				nodeCount50
+			).integrate (erfIntegrand);
 
-			double erfEstimate100 = newtonCotesQuadrature100.integrate (
+			double erfEstimate100 = QuadratureGenerator.NewtonCotes (
 				0.,
-				x
-			);
+				x,
+				nodeCount100
+			).integrate (erfIntegrand);
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +

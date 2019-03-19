@@ -111,6 +111,7 @@ public abstract class GeneralizedErrorFunction extends org.drip.numerical.estima
 	/**
 	 * Construct the Euler-MacLaurin Instance of the E<sub>n</sub> erf
 	 * 
+	 * @param degree Degree Generalized E<sub>n</sub> Degree
 	 * @param termCount The Count of Approximation Terms
 	 * 
 	 * @return The Euler-MacLaurin Instance of the E<sub>n</sub> erf

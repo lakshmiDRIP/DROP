@@ -103,4 +103,99 @@ package org.drip.numerical.integration;
 public class QuadratureGenerator
 {
 
+	/**
+	 * Generate the Newton-Cotes of Equally Spaced Quadrature over (0, 1)
+	 * 
+	 * @param abscissaTransformer The Abscissa Transformer
+	 * @param intermediatePointCount Number of Intermediate Points
+	 * 
+	 * @return The Newton-Cotes of Equally Spaced Quadrature over (0, 1)
+	 */
+
+	public static final org.drip.numerical.integration.Quadrature NewtonCotes0_1 (
+		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
+		final int intermediatePointCount)
+	{
+		if (0 >= intermediatePointCount)
+		{
+			return null;
+		}
+
+		int nodeCount = intermediatePointCount + 2;
+		double width = 1. / (intermediatePointCount + 1);
+		double[] abscissaArray = new double[nodeCount];
+		double[] weightArray = new double[nodeCount];
+		weightArray[intermediatePointCount + 1] = 0.5 * width;
+		abscissaArray[intermediatePointCount + 1] = 1.;
+		weightArray[0] = 0.5 * width;
+		abscissaArray[0] = 0.;
+
+		for (int intermediatePointIndex = 0; intermediatePointIndex < intermediatePointCount;
+			++intermediatePointIndex)
+		{
+			weightArray[intermediatePointIndex + 1] = width;
+			abscissaArray[intermediatePointIndex + 1] = width * (intermediatePointIndex + 1);
+		}
+
+		try
+		{
+			return new org.drip.numerical.integration.Quadrature (
+				abscissaTransformer,
+				org.drip.numerical.common.Array2D.FromArray (
+					abscissaArray,
+					weightArray
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Newton-Cotes of Equally Spaced Quadrature over (-1, 1)
+	 * 
+	 * @param intermediatePointCount Number of Intermediate Points
+	 * 
+	 * @return The Newton-Cotes of Equally Spaced Quadrature over (-1, 1)
+	 */
+
+	public static final org.drip.numerical.integration.Quadrature NewtonCotesMinus1_1 (
+		final int intermediatePointCount)
+	{
+		return NewtonCotes0_1 (
+			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScale (
+				-1.,
+				1.
+			),
+			intermediatePointCount
+		);
+	}
+
+	/**
+	 * Generate the Newton-Cotes of Equally Spaced Quadrature over (a, b)
+	 * 
+	 * @param left Left Integrand Quadrature Limit
+	 * @param right Right Integrand Quadrature Limit
+	 * @param intermediatePointCount Number of Intermediate Points
+	 * 
+	 * @return The Newton-Cotes of Equally Spaced Quadrature over (a, b)
+	 */
+
+	public static final org.drip.numerical.integration.Quadrature NewtonCotes (
+		final double left,
+		final double right,
+		final int intermediatePointCount)
+	{
+		return NewtonCotes0_1 (
+			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScale (
+				left,
+				right
+			),
+			intermediatePointCount
+		);
+	}
 }

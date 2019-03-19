@@ -102,59 +102,50 @@ package org.drip.numerical.integration;
 
 public class Quadrature
 {
-	private double[] _weightArray = null;
-	private double[] _abscissaArray = null;
+	private org.drip.numerical.common.Array2D _nodeWeightArray = null;
+	private org.drip.numerical.integration.AbscissaTransformer _abscissaTransformer = null;
 
 	/**
 	 * Quadrature Constructor
 	 * 
-	 * @param abscissaArray Array of the Abscissa
-	 * @param weightArray Array of the Weights
+	 * @param abscissaTransformer The Abscissa Transformer
+	 * @param nodeWeightArray Array of the Nodes and Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Quadrature (
-		final double[] abscissaArray,
-		final double[] weightArray)
+		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
+		final org.drip.numerical.common.Array2D nodeWeightArray)
 		throws java.lang.Exception
 	{
-		if (null == (_abscissaArray = abscissaArray) ||
-			null == (_weightArray = weightArray))
-		{
-			throw new java.lang.Exception ("Quadrature Constructor => Invalid Inputs");
-		}
-
-		int size = _abscissaArray.length;
-
-		if (0 == size || size != _weightArray.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_abscissaArray) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_weightArray))
+		if (null == (_abscissaTransformer = abscissaTransformer) ||
+			null == (_nodeWeightArray = nodeWeightArray))
 		{
 			throw new java.lang.Exception ("Quadrature Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Array of the Abscissa
+	 * Retrieve the Abscissa Transformer
 	 * 
-	 * @return Array of the Abscissa
+	 * @return The Abscissa Transformer
 	 */
 
-	public double[] abscissaArray()
+	public org.drip.numerical.integration.AbscissaTransformer abscissaTransformer()
 	{
-		return _abscissaArray;
+		return _abscissaTransformer;
 	}
 
 	/**
-	 * Retrieve the Array of Weights
+	 * Retrieve the 2D Array of Nodes and Weights
 	 * 
-	 * @return Array of Weights
+	 * @return 2D Array of Nodes and Weights
 	 */
 
-	public double[] weightArray()
+	public org.drip.numerical.common.Array2D nodeWeightArray()
 	{
-		return _weightArray;
+		return _nodeWeightArray;
 	}
 
 	/**
@@ -176,13 +167,25 @@ public class Quadrature
 			throw new java.lang.Exception ("Quadrature::integrate => Invalid Inputs");
 		}
 
+		double[] weightArray = _nodeWeightArray.y();
+
+		double[] abscissaArray = _nodeWeightArray.x();
+
 		double quadrature = 0.;
-		int nodeCount = _abscissaArray.length;
+		int nodeCount = abscissaArray.length;
+
+		double quadratureScale = _abscissaTransformer.quadratureScale();
+
+		org.drip.function.definition.R1ToR1 r1ValueTransform = _abscissaTransformer.r1ValueTransform();
+
+		org.drip.function.definition.R1ToR1 r1ToR1VariateTransform =
+			_abscissaTransformer.r1ToR1VariateTransform();
 
 		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
 		{
-			quadrature = quadrature + _weightArray[nodeIndex] * r1ToR1Integrand.evaluate
-				(_abscissaArray[nodeIndex]);
+			quadrature = quadrature + quadratureScale * weightArray[nodeIndex] *
+				r1ValueTransform.evaluate (abscissaArray[nodeIndex]) *
+				r1ToR1Integrand.evaluate (r1ToR1VariateTransform.evaluate (abscissaArray[nodeIndex]));
 		}
 
 		return quadrature;
