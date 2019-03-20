@@ -4,7 +4,7 @@ package org.drip.sample.statistics;
 import org.drip.measure.crng.RandomNumberGenerator;
 import org.drip.measure.discrete.*;
 import org.drip.measure.statistics.MultivariateDiscrete;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

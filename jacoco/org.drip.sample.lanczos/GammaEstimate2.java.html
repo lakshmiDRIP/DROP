@@ -3,7 +3,7 @@ package org.drip.sample.lanczos;
 
 import org.drip.function.lanczos.ASeriesGenerator;
 import org.drip.function.lanczos.Gamma;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

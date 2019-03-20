@@ -3,7 +3,7 @@ package org.drip.sample.graph;
 
 import java.util.Set;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.graph.BellmanFordScheme;
 import org.drip.spaces.graph.Edge;

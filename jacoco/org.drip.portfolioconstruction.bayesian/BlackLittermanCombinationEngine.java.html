@@ -420,9 +420,9 @@ public class BlackLittermanCombinationEngine {
 <span class="fc bfc" id="L420" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i)</span>
 <span class="fc" id="L421">			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;</span>
 
-<span class="fc" id="L423">		double[][] aadblProjectionSpaceAssetCovariance = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L424">			(org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,</span>
-				aadblAssetExcessReturnsCovariance), org.drip.quant.linearalgebra.Matrix.Transpose
+<span class="fc" id="L423">		double[][] aadblProjectionSpaceAssetCovariance = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L424">			(org.drip.numerical.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,</span>
+				aadblAssetExcessReturnsCovariance), org.drip.numerical.linearalgebra.Matrix.Transpose
 <span class="fc" id="L426">					(aadblProjectionSpaceLoading));</span>
 
 <span class="pc bpc" id="L428" title="1 of 2 branches missed.">		if (null == aadblProjectionSpaceAssetCovariance) return null;</span>
@@ -437,9 +437,9 @@ public class BlackLittermanCombinationEngine {
 						dblAssetConfidenceScaler;
 		}
 
-<span class="fc" id="L440">		double[][] aadblCompositePrecisionProjectionScoping = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L441">			(org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L442">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L440">		double[][] aadblCompositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L441">			(org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L442">				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
 <span class="fc" id="L443">					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),</span>
 						aadblAssetExcessReturnsCovariance);
 
@@ -453,12 +453,12 @@ public class BlackLittermanCombinationEngine {
 
 		try {
 <span class="fc" id="L455">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,</span>
-<span class="fc" id="L456">				org.drip.quant.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,</span>
+<span class="fc" id="L456">				org.drip.numerical.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,</span>
 <span class="fc" id="L457">					_frooUnadjusted.optimalPortfolio().weights()),</span>
-						org.drip.quant.linearalgebra.Matrix.Product
-<span class="fc" id="L459">							(org.drip.quant.linearalgebra.Matrix.Product</span>
+						org.drip.numerical.linearalgebra.Matrix.Product
+<span class="fc" id="L459">							(org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L460">								(aadblCompositePrecisionProjectionScoping,</span>
-									org.drip.quant.linearalgebra.Matrix.Transpose
+									org.drip.numerical.linearalgebra.Matrix.Transpose
 <span class="fc" id="L462">										(aadblProjectionSpaceLoading)), adblIntraViewComponent),</span>
 											aadblCompositeConfidenceCovariance);
 <span class="nc" id="L464">		} catch (java.lang.Exception e) {</span>
@@ -522,7 +522,7 @@ public class BlackLittermanCombinationEngine {
 		final double dblProjectionVariance)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L525" title="1 of 2 branches missed.">		if (null == adblUserConfidenceProjectionTilt || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L525" title="1 of 2 branches missed.">		if (null == adblUserConfidenceProjectionTilt || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L526" title="1 of 2 branches missed.">			(dblProjectionVariance))</span>
 <span class="nc" id="L527">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
@@ -562,7 +562,7 @@ public class BlackLittermanCombinationEngine {
 				(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 
 <span class="fc bfc" id="L564" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="pc bpc" id="L565" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))</span>
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))</span>
 <span class="nc" id="L566">				throw new java.lang.Exception</span>
 					(&quot;BlackLittermanCombinationEngine::tiltMismatch =&gt; Invalid Inputs&quot;);
 

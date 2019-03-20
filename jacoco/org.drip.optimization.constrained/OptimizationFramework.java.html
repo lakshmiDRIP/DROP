@@ -444,8 +444,8 @@ public class OptimizationFramework {
 			}
 		}
 
-<span class="fc" id="L447">		double dblSOSC = org.drip.quant.linearalgebra.Matrix.DotProduct (adblVariate,</span>
-<span class="fc" id="L448">			org.drip.quant.linearalgebra.Matrix.Product (aadblSOSCHessian, adblVariate));</span>
+<span class="fc" id="L447">		double dblSOSC = org.drip.numerical.linearalgebra.Matrix.DotProduct (adblVariate,</span>
+<span class="fc" id="L448">			org.drip.numerical.linearalgebra.Matrix.Product (aadblSOSCHessian, adblVariate));</span>
 
 <span class="pc bpc" id="L450" title="6 of 8 branches missed.">		return (bCheckForMinima &amp;&amp; dblSOSC &gt; 0.) || (!bCheckForMinima &amp;&amp; dblSOSC &lt; 0.);</span>
 	}
@@ -572,7 +572,7 @@ public class OptimizationFramework {
 <span class="fc bfc" id="L572" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumJacobian; ++i)</span>
 <span class="fc" id="L573">			aadblJacobian[i] = lsJacobian.get (i);</span>
 
-<span class="fc" id="L575">		return org.drip.quant.linearalgebra.Matrix.Rank (aadblJacobian);</span>
+<span class="fc" id="L575">		return org.drip.numerical.linearalgebra.Matrix.Rank (aadblJacobian);</span>
 	}
 
 	/**
@@ -636,7 +636,7 @@ public class OptimizationFramework {
 <span class="fc bfc" id="L636" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
 <span class="pc bpc" id="L637" title="1 of 2 branches missed.">			if (null != aadblJacobian[i]) {</span>
 <span class="nc bnc" id="L638" title="All 2 branches missed.">				for (int j = i + 1; j &lt; iNumConstraint; ++j) {</span>
-<span class="nc bnc" id="L639" title="All 2 branches missed.">					if (null != aadblJacobian[j] &amp;&amp; 0. != org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="nc bnc" id="L639" title="All 2 branches missed.">					if (null != aadblJacobian[j] &amp;&amp; 0. != org.drip.numerical.linearalgebra.Matrix.DotProduct</span>
 <span class="nc bnc" id="L640" title="All 2 branches missed.">						(aadblJacobian[i], aadblJacobian[j]))</span>
 <span class="nc" id="L641">						return false;</span>
 				}
@@ -646,7 +646,7 @@ public class OptimizationFramework {
 <span class="fc bfc" id="L646" title="All 2 branches covered.">		if (bPositiveLinearDependenceCheck) {</span>
 <span class="fc bfc" id="L647" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumConstraint; ++i) {</span>
 <span class="pc bpc" id="L648" title="1 of 2 branches missed.">				if (null != aadblJacobian[i] &amp;&amp;</span>
-<span class="nc bnc" id="L649" title="All 2 branches missed.">					!org.drip.quant.linearalgebra.Matrix.PositiveLinearlyIndependent (aadblJacobian[i]))</span>
+<span class="nc bnc" id="L649" title="All 2 branches missed.">					!org.drip.numerical.linearalgebra.Matrix.PositiveLinearlyIndependent (aadblJacobian[i]))</span>
 <span class="nc" id="L650">					return false;</span>
 			}
 		}
@@ -665,8 +665,8 @@ public class OptimizationFramework {
 	public double[][] alongAwayVariate (
 		final double[] adblVariate)
 	{
-<span class="fc" id="L668">		double[] adblVariateIncrement = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L669">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination (_rdToR1Objective.hessian</span>
+<span class="fc" id="L668">		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L669">			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (_rdToR1Objective.hessian</span>
 <span class="fc" id="L670">				(adblVariate)), _rdToR1Objective.jacobian (adblVariate));</span>
 
 <span class="pc bpc" id="L672" title="1 of 2 branches missed.">		if (null == adblVariateIncrement) return null;</span>

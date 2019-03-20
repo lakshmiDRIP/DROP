@@ -2,7 +2,7 @@
 package org.drip.sample.measure;
 
 import org.drip.measure.discrete.SequenceGenerator;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

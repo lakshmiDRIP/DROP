@@ -128,7 +128,7 @@ public class MinimalQuadraticHaganWest {
 		throws java.lang.Exception
 <span class="nc" id="L129">	{</span>
 <span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == (_adblObservation = adblObservation) || null == (_adblPredictorOrdinate =</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			adblPredictorOrdinate) || !org.drip.quant.common.NumberUtil.IsValid (_dblWeight = dblWeight))</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">			adblPredictorOrdinate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWeight = dblWeight))</span>
 <span class="nc" id="L132">			throw new java.lang.Exception (&quot;MinimalQuadraticHaganWest ctr: Invalid Inputs!&quot;);</span>
 
 <span class="nc" id="L134">		int iNumObservation = _adblObservation.length;</span>
@@ -218,8 +218,8 @@ public class MinimalQuadraticHaganWest {
 <span class="nc" id="L218">		adblRHS[3 * iNumObservation - 1] = 0.;</span>
 <span class="nc" id="L219">		aadblCoeffMatrix[3 * iNumObservation - 1][3 * iNumObservation - 2] = 1.;</span>
 
-<span class="nc" id="L221">		org.drip.quant.linearalgebra.LinearizationOutput lssGaussianElimination =</span>
-<span class="nc" id="L222">			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,</span>
+<span class="nc" id="L221">		org.drip.numerical.linearalgebra.LinearizationOutput lssGaussianElimination =</span>
+<span class="nc" id="L222">			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingGaussianElimination (aadblCoeffMatrix,</span>
 				adblRHS);
 
 <span class="nc bnc" id="L225" title="All 2 branches missed.">		if (null == lssGaussianElimination) return false;</span>
@@ -311,11 +311,11 @@ public class MinimalQuadraticHaganWest {
 
 <span class="nc bnc" id="L312" title="All 2 branches missed.">		for (int i = 0; i &lt; adblConservedConstraint.length; ++i)</span>
 <span class="nc" id="L313">			System.out.println (&quot;Conserved Constraint[&quot; + i + &quot;] =&gt; &quot; +</span>
-<span class="nc" id="L314">				org.drip.quant.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));</span>
+<span class="nc" id="L314">				org.drip.numerical.common.FormatUtil.FormatDouble (adblConservedConstraint[i], 1, 6, 1.));</span>
 
 <span class="nc bnc" id="L316" title="All 2 branches missed.">		for (double dblTime = adblTime[0]; dblTime &lt;= adblTime[adblTime.length - 1]; dblTime += 0.25)</span>
-<span class="nc" id="L317">			System.out.println (&quot;Response[&quot; + org.drip.quant.common.FormatUtil.FormatDouble (dblTime, 2, 2,</span>
-<span class="nc" id="L318">				1.) + &quot;] = &quot; + org.drip.quant.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,</span>
+<span class="nc" id="L317">			System.out.println (&quot;Response[&quot; + org.drip.numerical.common.FormatUtil.FormatDouble (dblTime, 2, 2,</span>
+<span class="nc" id="L318">				1.) + &quot;] = &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (mqhw.responseValue (dblTime), 1,</span>
 					6, 1.));
 <span class="nc" id="L320">	}</span>
 }

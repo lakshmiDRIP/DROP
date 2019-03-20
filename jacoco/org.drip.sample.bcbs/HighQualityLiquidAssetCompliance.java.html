@@ -4,7 +4,7 @@ package org.drip.sample.bcbs;
 import org.drip.bcbs.core.HighQualityLiquidAsset;
 import org.drip.bcbs.core.HighQualityLiquidAssetSettings;
 import org.drip.bcbs.core.HighQualityLiquidAssetStandard;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

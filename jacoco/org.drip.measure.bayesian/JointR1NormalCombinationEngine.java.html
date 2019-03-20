@@ -120,12 +120,12 @@ public class JointR1NormalCombinationEngine implements org.drip.measure.bayesian
 
 <span class="nc bnc" id="L121" title="All 2 branches missed.">		if (aadblPriorPrecision.length != iNumVariate) return null;</span>
 
-<span class="nc" id="L123">		double[] adblPrecisionWeightedPriorMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L123">		double[] adblPrecisionWeightedPriorMean = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L124">			(aadblPriorPrecision, r1mnPrior.mean());</span>
 
 <span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == adblPrecisionWeightedPriorMean) return null;</span>
 
-<span class="nc" id="L128">		double[] adblPrecisionWeightedConditionalMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L128">		double[] adblPrecisionWeightedConditionalMean = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L129">			(aadblConditionalPrecision, r1mnConditional.mean());</span>
 
 <span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == adblPrecisionWeightedConditionalMean) return null;</span>
@@ -137,10 +137,10 @@ public class JointR1NormalCombinationEngine implements org.drip.measure.bayesian
 <span class="nc" id="L137">				aadblJointPrecision[i][j] = aadblPriorPrecision[i][j] + aadblConditionalPrecision[i][j];</span>
 		}
 
-<span class="nc" id="L140">		double[][] aadblJointCovariance = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="nc" id="L140">		double[][] aadblJointCovariance = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
 <span class="nc" id="L141">			(aadblJointPrecision);</span>
 
-<span class="nc" id="L143">		double[] adblJointPosteriorMean = org.drip.quant.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
+<span class="nc" id="L143">		double[] adblJointPosteriorMean = org.drip.numerical.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
 			adblJointMean);
 
 <span class="nc" id="L146">		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();</span>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinearSystemSolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.numerical.linearalgebra</a> &gt; <span class="el_source">LinearSystemSolver.java</span></div><h1>LinearSystemSolver.java</h1><pre class="source lang-java linenums">
+package org.drip.numerical.linearalgebra;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;LinearSystemSolver&lt;/i&gt; implements the solver for a system of linear equations given by
+ * 
+ * 											A * x = B
+ * 
+ * where A is the matrix, x the set of variables, and B is the result to be solved for. It exports the
+ * following functions:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Row Regularization and Diagonal Pivoting
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Check for Diagonal Dominance
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Solving the linear system using any one of the following: Gaussian Elimination, Gauss Seidel
+ * 				reduction, or matrix inversion.
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra&quot;&gt;Linear Algebra Matrix Transform Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L106">public class LinearSystemSolver {</span>
+
+	/**
+	 * Regularize (i.e., convert the diagonal entries of the given cell to non-zero using suitable linear
+	 * 	transformations)
+	 * 
+	 * @param aadblA In/Out Matrix to be regularized
+	 * @param adblSolution In/out RHS
+	 * @param iInnerRow Matrix Cell Row that needs to be regularized
+	 * @param iOuter Matrix Cell Column that needs to be regularized
+	 * 
+	 * @return TRUE - Matrix has been successfully regularized
+	 */
+
+	public static final boolean RegulariseRow (
+		final double[][] aadblA,
+		final double[] adblSolution,
+		final int iInnerRow,
+		final int iOuter)
+	{
+<span class="fc" id="L126">		double dblInnerScaler = aadblA[iInnerRow][iOuter];</span>
+
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		if (0. != dblInnerScaler) return true;</span>
+
+<span class="fc" id="L130">		int iSize = aadblA.length;</span>
+<span class="fc" id="L131">		int iProxyRow = iSize - 1;</span>
+
+<span class="pc bpc" id="L133" title="1 of 4 branches missed.">		while (0. == aadblA[iProxyRow][iOuter] &amp;&amp; iProxyRow &gt;= 0) --iProxyRow;</span>
+
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (iProxyRow &lt; 0) return false;</span>
+
+<span class="fc" id="L137">		adblSolution[iInnerRow] += adblSolution[iProxyRow];</span>
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L140">			aadblA[iInnerRow][i] += aadblA[iProxyRow][i];</span>
+
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		return 0. != aadblA[iInnerRow][iOuter];</span>
+	}
+
+	/**
+	 * Check to see if the matrix is diagonally dominant.
+	 * 
+	 * @param aadblA Input Matrix
+	 * @param bCheckForStrongDominance TRUE - Fail if the matrix is not strongly diagonally dominant.
+	 * 
+	 * @return TRUE - Strongly or weakly Diagonally Dominant
+	 */
+
+	public static final boolean IsDiagonallyDominant (
+		final double[][] aadblA,
+		final boolean bCheckForStrongDominance)
+	{
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (null == aadblA) return false;</span>
+
+<span class="nc" id="L160">		int iSize = aadblA.length;</span>
+
+<span class="nc bnc" id="L162" title="All 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return false;</span>
+
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc" id="L165">			double dblAbsoluteDiagonalEntry = java.lang.Math.abs (aadblA[i][i]);</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">				if (i != j) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">					if ((bCheckForStrongDominance &amp;&amp; dblAbsoluteDiagonalEntry &lt;= java.lang.Math.abs</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">						(aadblA[i][j])) || (!bCheckForStrongDominance &amp;&amp; dblAbsoluteDiagonalEntry &lt;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">							java.lang.Math.abs (aadblA[i][j])))</span>
+<span class="nc" id="L172">						return false;</span>
+				}
+			}
+		}
+
+<span class="nc" id="L177">		return true;</span>
+	}
+
+	/**
+	 * Pivots the matrix A (Refer to wikipedia to find out what &quot;pivot a matrix&quot; means ;))
+	 * 
+	 * @param aadblA Input Matrix
+	 * @param adblB Input RHS
+	 * 
+	 * @return The pivoted input matrix and the re-jigged input RHS
+	 */
+
+	public static final double[] Pivot (
+		final double[][] aadblA,
+		final double[] adblB)
+	{
+<span class="pc bpc" id="L193" title="2 of 4 branches missed.">		if (null == aadblA || null == adblB) return null;</span>
+
+<span class="fc" id="L195">		int iSize = aadblA.length;</span>
+<span class="fc" id="L196">		double[] adblSolution = new double[iSize];</span>
+
+<span class="pc bpc" id="L198" title="4 of 8 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length || iSize != adblB.length)</span>
+<span class="nc" id="L199">			return null;</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L202">			adblSolution[i] = adblB[i];</span>
+
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">			if (!RegulariseRow (aadblA, adblSolution, iDiagonal, iDiagonal)) return null;</span>
+		}
+
+<span class="fc" id="L208">		return adblSolution;</span>
+	}
+
+	/**
+	 * Solve the Linear System using Matrix Inversion from the Set of Values in the Array
+	 * 
+	 * @param aadblAIn Input Matrix
+	 * @param adblB The Array of Values to be calibrated to
+	 * 
+	 * @return The Linear System Solution for the Coefficients
+	 */
+
+	public static final org.drip.numerical.linearalgebra.LinearizationOutput SolveUsingMatrixInversion (
+		final double[][] aadblAIn,
+		final double[] adblB)
+	{
+<span class="pc bpc" id="L224" title="2 of 4 branches missed.">		if (null == aadblAIn || null == adblB) return null;</span>
+
+<span class="fc" id="L226">		int iSize = aadblAIn.length;</span>
+<span class="fc" id="L227">		double[] adblSolution = new double[iSize];</span>
+
+<span class="pc bpc" id="L229" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblAIn[0] || iSize != aadblAIn[0].length) return null;</span>
+
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (adblB.length != iSize) return null;</span>
+
+<span class="fc" id="L233">		double[][] aadblInv = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (aadblAIn);</span>
+
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		if (null == aadblInv) return null;</span>
+
+<span class="fc" id="L237">		double[] adblProduct = org.drip.numerical.linearalgebra.Matrix.Product (aadblInv, adblB);</span>
+
+<span class="pc bpc" id="L239" title="2 of 4 branches missed.">		if (null == adblProduct || iSize != adblProduct.length) return null;</span>
+
+<span class="fc bfc" id="L241" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L242">			adblSolution[i] = adblProduct[i];</span>
+
+		try {
+<span class="fc" id="L245">			return new LinearizationOutput (adblSolution, aadblInv, &quot;GaussianElimination&quot;);</span>
+<span class="nc" id="L246">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L247">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L250">		return null;</span>
+	}
+
+	/**
+	 * Solve the Linear System using Gaussian Elimination from the Set of Values in the Array
+	 * 
+	 * @param aadblAIn Input Matrix
+	 * @param adblB The Array of Values to be calibrated to
+	 * 
+	 * @return The Linear System Solution for the Coefficients
+	 */
+
+	public static final org.drip.numerical.linearalgebra.LinearizationOutput SolveUsingGaussianElimination (
+		final double[][] aadblAIn,
+		final double[] adblB)
+	{
+<span class="pc bpc" id="L266" title="2 of 4 branches missed.">		if (null == aadblAIn || null == adblB) return null;</span>
+
+<span class="fc" id="L268">		int iSize = aadblAIn.length;</span>
+<span class="fc" id="L269">		double[][] aadblA = new double[iSize][iSize];</span>
+
+<span class="pc bpc" id="L271" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblAIn[0] || iSize != aadblAIn[0].length) return null;</span>
+
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		if (adblB.length != iSize) return null;</span>
+
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L277">				aadblA[i][j] = aadblAIn[i][j];</span>
+		}
+
+<span class="fc" id="L280">		double[] adblSolution = Pivot (aadblA, adblB);</span>
+
+<span class="pc bpc" id="L282" title="2 of 4 branches missed.">		if (null == adblSolution || adblSolution.length != iSize) return null;</span>
+
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		for (int iEliminationDiagonalPivot = iSize - 1; iEliminationDiagonalPivot &gt;= 0;</span>
+<span class="fc" id="L285">			--iEliminationDiagonalPivot) {</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">			for (int iRow = 0; iRow &lt; iSize; ++iRow) {</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">				if (iRow == iEliminationDiagonalPivot) continue;</span>
+
+<span class="fc bfc" id="L289" title="All 2 branches covered.">				if (0. == aadblA[iRow][iEliminationDiagonalPivot]) continue;</span>
+
+<span class="fc" id="L291">				double dblEliminationRatio = aadblA[iEliminationDiagonalPivot][iEliminationDiagonalPivot] /</span>
+					aadblA[iRow][iEliminationDiagonalPivot];
+<span class="fc" id="L293">				adblSolution[iRow] = adblSolution[iRow] * dblEliminationRatio -</span>
+					adblSolution[iEliminationDiagonalPivot];
+
+<span class="fc bfc" id="L296" title="All 2 branches covered.">				for (int iCol = 0; iCol &lt; iSize; ++iCol)</span>
+<span class="fc" id="L297">					aadblA[iRow][iCol] = aadblA[iRow][iCol] * dblEliminationRatio -</span>
+						aadblA[iEliminationDiagonalPivot][iCol];
+			}
+		}
+
+<span class="fc bfc" id="L302" title="All 2 branches covered.">		for (int i = iSize - 1; i &gt;= 0; --i) {</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">			for (int j = iSize - 1; j &gt; i; --j)</span>
+<span class="fc" id="L304">				adblSolution[i] -= adblSolution[j] * aadblA[i][j];</span>
+
+<span class="fc" id="L306">			adblSolution[i] /= aadblA[i][i];</span>
+		}
+
+		try {
+<span class="fc" id="L310">			return new LinearizationOutput (adblSolution, aadblA, &quot;GaussianElimination&quot;);</span>
+<span class="nc" id="L311">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L312">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L315">		return null;</span>
+	}
+
+	/**
+	 * Solve the Linear System using the Gauss-Seidel algorithm from the Set of Values in the Array
+	 * 
+	 * @param aadblAIn Input Matrix
+	 * @param adblB The Array of Values to be calibrated to
+	 * 
+	 * @return The Linear System Solution for the Coefficients
+	 */
+
+	public static final org.drip.numerical.linearalgebra.LinearizationOutput SolveUsingGaussSeidel (
+		final double[][] aadblAIn,
+		final double[] adblB)
+	{
+<span class="nc bnc" id="L331" title="All 4 branches missed.">		if (null == aadblAIn || null == adblB) return null;</span>
+
+<span class="nc" id="L333">		int NUM_SIM = 5;</span>
+<span class="nc" id="L334">		int iSize = aadblAIn.length;</span>
+<span class="nc" id="L335">		double[] adblSolution = new double[iSize];</span>
+<span class="nc" id="L336">		double[][] aadblA = new double[iSize][iSize];</span>
+
+<span class="nc bnc" id="L338" title="All 8 branches missed.">		if (0 == iSize || null == aadblAIn[0] || iSize != aadblAIn[0].length || iSize != adblB.length)</span>
+<span class="nc" id="L339">			return null;</span>
+
+<span class="nc bnc" id="L341" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="nc" id="L343">				aadblA[i][j] = aadblAIn[i][j];</span>
+		}
+
+<span class="nc" id="L346">		double[] adblRHS = Pivot (aadblA, adblB);</span>
+
+<span class="nc bnc" id="L348" title="All 4 branches missed.">		if (null == adblRHS || iSize != adblRHS.length ||</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">			!org.drip.numerical.linearalgebra.LinearSystemSolver.IsDiagonallyDominant (aadblA, true))</span>
+<span class="nc" id="L350">			return null;</span>
+
+<span class="nc bnc" id="L352" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="nc" id="L353">			adblSolution[i] = 0.;</span>
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">		for (int k = 0; k &lt; NUM_SIM; ++k) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc" id="L357">				adblSolution[i] = adblRHS[i];</span>
+
+<span class="nc bnc" id="L359" title="All 2 branches missed.">				for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">					if (j != i) adblSolution[i] -= aadblA[i][j] * adblSolution[j];</span>
+				}
+
+<span class="nc" id="L363">				adblSolution[i] /= aadblA[i][i];</span>
+			}
+		}
+
+		try {
+<span class="nc" id="L368">			return new LinearizationOutput (adblSolution, aadblA, &quot;GaussianSeidel&quot;);</span>
+<span class="nc" id="L369">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L370">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L373">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

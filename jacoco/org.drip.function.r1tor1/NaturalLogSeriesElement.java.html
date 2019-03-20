@@ -109,7 +109,7 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L112">		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.quant.common.NumberUtil.Factorial</span>
+<span class="fc" id="L112">		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.numerical.common.NumberUtil.Factorial</span>
 <span class="fc" id="L113">			(_iExponent);</span>
 	}
 
@@ -119,7 +119,7 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		throws java.lang.Exception
 	{
 <span class="fc bfc" id="L121" title="All 2 branches covered.">		return iOrder &gt; _iExponent ? 0. : java.lang.Math.pow (dblVariate, _iExponent - iOrder) /</span>
-<span class="fc" id="L122">			org.drip.quant.common.NumberUtil.Factorial (_iExponent - iOrder);</span>
+<span class="fc" id="L122">			org.drip.numerical.common.NumberUtil.Factorial (_iExponent - iOrder);</span>
 	}
 
 	@Override public double integrate (
@@ -127,12 +127,12 @@ public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="nc bnc" id="L131" title="All 2 branches missed.">			(dblEnd))</span>
 <span class="nc" id="L132">			throw new java.lang.Exception (&quot;NaturalLogSeriesElement::integrate =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L134">		return (java.lang.Math.pow (dblEnd, _iExponent) - java.lang.Math.pow (dblBegin, _iExponent)) /</span>
-<span class="nc" id="L135">			org.drip.quant.common.NumberUtil.Factorial (_iExponent + 1);</span>
+<span class="nc" id="L135">			org.drip.numerical.common.NumberUtil.Factorial (_iExponent + 1);</span>
 	}
 
 	/**

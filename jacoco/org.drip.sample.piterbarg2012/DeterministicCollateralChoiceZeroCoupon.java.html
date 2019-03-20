@@ -3,8 +3,8 @@ package org.drip.sample.piterbarg2012;
 
 import org.drip.analytics.date.*;
 import org.drip.function.r1tor1.*;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.product.params.CurrencyPair;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.creator.*;
 import org.drip.state.curve.*;

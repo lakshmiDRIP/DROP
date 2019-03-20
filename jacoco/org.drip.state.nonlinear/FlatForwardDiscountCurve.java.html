@@ -138,7 +138,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	private FlatForwardDiscountCurve shiftManifestMeasure (
 		final double[] adblShift)
 	{
-<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblShift) || null == _ccis) return null;</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (adblShift) || null == _ccis) return null;</span>
 
 <span class="nc" id="L143">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
 
@@ -383,7 +383,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="pc bpc" id="L386" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
+<span class="pc bpc" id="L386" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
 
 <span class="nc" id="L388">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
 
@@ -401,7 +401,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc bnc" id="L404" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
+<span class="nc bnc" id="L404" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift) || null == _ccis) return null;</span>
 
 <span class="nc" id="L406">		org.drip.product.definition.CalibratableComponent[] aCalibInst = _ccis.components();</span>
 
@@ -427,7 +427,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	@Override public FlatForwardDiscountCurve parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="pc bpc" id="L430" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblShift)) return null;</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblShift)) return null;</span>
 
 <span class="fc" id="L432">		int iNumDate = _adblForwardRate.length;</span>
 <span class="fc" id="L433">		double[] adblForwardRate = new double[iNumDate];</span>
@@ -492,19 +492,19 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 <span class="nc" id="L492">		return org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDFDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDFDManifestMeasure (
 		final int iDate,
 		final java.lang.String strManifestMeasure)
 	{
-<span class="pc bpc" id="L499" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (iDate)) return null;</span>
+<span class="pc bpc" id="L499" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (iDate)) return null;</span>
 
 <span class="fc" id="L501">		int i = 0;</span>
 <span class="fc" id="L502">		double dblDF = java.lang.Double.NaN;</span>
 <span class="fc" id="L503">		double iStartDate = _iEpochDate;</span>
-<span class="fc" id="L504">		org.drip.quant.calculus.WengertJacobian wj = null;</span>
+<span class="fc" id="L504">		org.drip.numerical.differentiation.WengertJacobian wj = null;</span>
 
 		try {
-<span class="fc" id="L507">			wj = new org.drip.quant.calculus.WengertJacobian (1, _adblForwardRate.length);</span>
+<span class="fc" id="L507">			wj = new org.drip.numerical.differentiation.WengertJacobian (1, _adblForwardRate.length);</span>
 <span class="nc" id="L508">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L509">			e.printStackTrace();</span>
 
@@ -542,7 +542,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="pc bpc" id="L545" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
+<span class="pc bpc" id="L545" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
 <span class="nc" id="L546">			return false;</span>
 
 <span class="fc bfc" id="L548" title="All 2 branches covered.">		for (int i = iNodeIndex; i &lt; _adblForwardRate.length; ++i)</span>
@@ -555,7 +555,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 		final int iNodeIndex,
 		final double dblValue)
 	{
-<span class="nc bnc" id="L558" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
+<span class="nc bnc" id="L558" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue) || iNodeIndex &gt; _adblForwardRate.length)</span>
 <span class="nc" id="L559">			return false;</span>
 
 <span class="nc bnc" id="L561" title="All 2 branches missed.">		for (int i = iNodeIndex; i &lt; _adblForwardRate.length; ++i)</span>
@@ -567,7 +567,7 @@ public class FlatForwardDiscountCurve extends org.drip.state.discount.ExplicitBo
 	@Override public boolean setFlatValue (
 		final double dblValue)
 	{
-<span class="nc bnc" id="L570" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblValue)) return false;</span>
+<span class="nc bnc" id="L570" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblValue)) return false;</span>
 
 <span class="nc bnc" id="L572" title="All 2 branches missed.">		for (int i = 0; i &lt; _adblForwardRate.length; ++i)</span>
 <span class="nc" id="L573">			_adblForwardRate[i] = dblValue;</span>

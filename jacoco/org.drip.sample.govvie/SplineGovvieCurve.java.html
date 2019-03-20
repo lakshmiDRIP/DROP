@@ -2,8 +2,8 @@
 package org.drip.sample.govvie;
 
 import org.drip.analytics.date.*;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.product.credit.BondComponent;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.TreasuryBuilder;
 import org.drip.state.creator.ScenarioGovvieCurveBuilder;

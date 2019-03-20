@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorFunctionInverse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.e2erf</a> &gt; <span class="el_source">ErrorFunctionInverse.java</span></div><h1>ErrorFunctionInverse.java</h1><pre class="source lang-java linenums">
+package org.drip.function.e2erf;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ErrorFunctionInverse&lt;/i&gt; implements the E&lt;sub&gt;2&lt;/sub&gt; erf Inverse erf&lt;sup&gt;-1&lt;/sup&gt;. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error
+ * 				Function &lt;i&gt;IEEE Transactions on Communications&lt;/i&gt; &lt;b&gt;59 (11)&lt;/b&gt; 2939-2944
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function
+ * 				Routines and Test Drivers &lt;i&gt;ACM Transactions on Mathematical Software&lt;/i&gt; &lt;b&gt;19 (1)&lt;/b&gt;
+ * 				22-32
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of
+ * 				Linear and Non-linear Heat Transfer and Diffusion
+ * 				https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/e2erf/README.md&quot;&gt;E&lt;sub&gt;2&lt;/sub&gt; erf and erf&lt;sup&gt;-1&lt;/sup&gt; Implementations&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class ErrorFunctionInverse extends org.drip.numerical.estimation.R1ToR1Estimator
+{
+<span class="nc" id="L107">	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;</span>
+
+	/**
+	 * Construct Winitzki (2008) Version of the Analytical E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 * 
+	 * @param a a
+	 * 
+	 * @return Winitzki (2008) Version of the Analytical E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 */
+
+	public static final org.drip.function.e2erf.ErrorFunctionInverse Winitzki2008 (
+		final double a)
+	{
+		try
+		{
+<span class="nc bnc" id="L122" title="All 2 branches missed.">			return !org.drip.numerical.common.NumberUtil.IsValid (a) ? null :</span>
+				new org.drip.function.e2erf.ErrorFunctionInverse (
+					null,
+					null
+				)
+<span class="nc" id="L127">			{</span>
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+<span class="nc bnc" id="L132" title="All 6 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z &lt;= -1. || z &gt;= 1.)</span>
+					{
+<span class="nc" id="L134">						throw new java.lang.Exception</span>
+							(&quot;ErrorFunctionInverse::Winitzki2008::evaluate =&gt; Invalid Inputs&quot;);
+					}
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">					if (0. == z)</span>
+					{
+<span class="nc" id="L140">						return 0.;</span>
+					}
+
+<span class="nc bnc" id="L143" title="All 2 branches missed.">					if (0. &gt; z)</span>
+					{
+<span class="nc" id="L145">						return -1. * evaluate (-1. * z);</span>
+					}
+
+<span class="nc" id="L148">					double twoOverPIA = 2. / (java.lang.Math.PI * a);</span>
+
+<span class="nc" id="L150">					double lnOneMinusZ2 = java.lang.Math.log (1. - z * z);</span>
+
+<span class="nc" id="L152">					double halfLnOneMinusZ2 = 0.5 * lnOneMinusZ2;</span>
+<span class="nc" id="L153">					double twoOverPIAPlusHalfLnOneMinusZ2 = twoOverPIA + halfLnOneMinusZ2;</span>
+
+<span class="nc" id="L155">					double erfi = java.lang.Math.sqrt (</span>
+<span class="nc" id="L156">						java.lang.Math.sqrt (</span>
+							twoOverPIAPlusHalfLnOneMinusZ2 * twoOverPIAPlusHalfLnOneMinusZ2 -
+								(lnOneMinusZ2 / a)
+						) - twoOverPIAPlusHalfLnOneMinusZ2
+					);
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">					return erfi &lt; 0. ? -1. * erfi : erfi;</span>
+				}
+			};
+		}
+<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L168">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L171">		return null;</span>
+	}
+
+	/**
+	 * Construct Winitzki (2008a) Version of the Analytical E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 * 
+	 * @return Winitzki (2008a) Version of the Analytical E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 */
+
+	public static final org.drip.function.e2erf.ErrorFunctionInverse Winitzki2008a()
+	{
+<span class="nc" id="L182">		return Winitzki2008 (</span>
+			8. * (java.lang.Math.PI - 3.) / (3. * java.lang.Math.PI * (4. - java.lang.Math.PI))
+		);
+	}
+
+	/**
+	 * Construct Winitzki (2008b) Version of the Analytical E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 * 
+	 * @return Winitzki (2008b) Version of the Analytical E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 */
+
+	public static final org.drip.function.e2erf.ErrorFunctionInverse Winitzki2008b()
+	{
+<span class="nc" id="L195">		return Winitzki2008 (0.147);</span>
+	}
+
+	/**
+	 * Construct the Euler-MacLaurin Instance of the E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 * 
+	 * @param termCount The Count of Approximation Terms
+	 * 
+	 * @return The Euler-MacLaurin Instance of the E&lt;sub&gt;2&lt;/sub&gt; erf Inverse
+	 */
+
+	public static final ErrorFunctionInverse MacLaurin (
+		final int termCount)
+	{
+<span class="nc" id="L209">		final org.drip.function.e2erf.MacLaurinSeriesGenerator e2InverseMacLaurinSeriesGenerator =</span>
+<span class="nc" id="L210">			org.drip.function.e2erf.MacLaurinSeriesGenerator.ERFI (termCount);</span>
+
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (null == e2InverseMacLaurinSeriesGenerator)</span>
+		{
+<span class="nc" id="L214">			return null;</span>
+		}
+
+<span class="nc" id="L217">		return new ErrorFunctionInverse (</span>
+			e2InverseMacLaurinSeriesGenerator,
+			null
+		)
+<span class="nc" id="L221">		{</span>
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L226" title="All 6 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (z) || -1. &gt;= z || 1. &lt;= z)</span>
+				{
+<span class="nc" id="L228">					throw new java.lang.Exception</span>
+						(&quot;ErrorFunctionInverse::MacLaurin::evaluate =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L232">				double erfi = e2InverseMacLaurinSeriesGenerator.cumulative (</span>
+					0.,
+					z
+				);
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">				return erfi &gt; 1. ? 1. : erfi;</span>
+			}
+		};
+	}
+
+	protected ErrorFunctionInverse (
+		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
+	{
+<span class="nc" id="L246">		super (dc);</span>
+
+<span class="nc" id="L248">		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;</span>
+<span class="nc" id="L249">	}</span>
+
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		return null == _r1ToR1SeriesGenerator ? seriesEstimate (</span>
+			x,
+			null,
+			null
+<span class="nc" id="L258">		) : seriesEstimate (</span>
+			x,
+<span class="nc" id="L260">			_r1ToR1SeriesGenerator.termWeightMap(),</span>
+			_r1ToR1SeriesGenerator
+		);
+	}
+
+	/**
+	 * Compute the Probit Value for the given p
+	 * 
+	 * @param p P
+	 * 
+	 * @return The Probit Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double probit (
+		final double p)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (p))</span>
+		{
+<span class="nc" id="L281">			throw new java.lang.Exception (&quot;ErrorFunctionInverse::probit =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L284">		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);</span>
+	}
+
+	/**
+	 * Compute the Inverse CDF Value for the given p
+	 * 
+	 * @param p P
+	 * 
+	 * @return The Inverse CDF Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double inverseCDF (
+		final double p)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (p))</span>
+		{
+<span class="nc" id="L303">			throw new java.lang.Exception (&quot;ErrorFunctionInverse::inverseCDF =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L306">		return java.lang.Math.sqrt (2.) * evaluate (2. * p - 1.);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

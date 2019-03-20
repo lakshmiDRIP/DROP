@@ -143,11 +143,11 @@ public class WolfeEvolutionVerifierMetrics extends
 	{
 <span class="fc" id="L144">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="pc bpc" id="L147" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
 				null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
-						dblCurrentVariateFunctionValue) || !org.drip.quant.common.NumberUtil.IsValid
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
+						dblCurrentVariateFunctionValue) || !org.drip.numerical.common.NumberUtil.IsValid
 <span class="pc bpc" id="L151" title="2 of 4 branches missed.">							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||</span>
 								adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
 <span class="nc" id="L153">			throw new java.lang.Exception (&quot;WolfeEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
@@ -247,18 +247,18 @@ public class WolfeEvolutionVerifierMetrics extends
 
 		try {
 <span class="fc" id="L249">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
-<span class="fc" id="L250">				stepLength() * org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L250">				stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 					adblCurrentVariateFunctionJacobian);
 
 <span class="pc bpc" id="L253" title="4 of 8 branches missed.">			if ((_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &lt; dblGradientUpdatedFunctionValue) ||</span>
 				(!_bMaximizerCheck &amp;&amp; _dblNextVariateFunctionValue &gt; dblGradientUpdatedFunctionValue))
 <span class="fc" id="L255">				return false;</span>
 
-<span class="fc" id="L257">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="fc" id="L257">			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct</span>
 <span class="fc" id="L258">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
 
 <span class="fc" id="L260">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
-<span class="fc" id="L261">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L261">				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 					adblCurrentVariateFunctionJacobian);
 
 <span class="fc bfc" id="L264" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>

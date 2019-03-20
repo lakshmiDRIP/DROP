@@ -3,7 +3,7 @@ package org.drip.sample.piterbarg2010;
 
 import org.drip.exposure.csadynamics.FundingBasisEvolver;
 import org.drip.measure.dynamics.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

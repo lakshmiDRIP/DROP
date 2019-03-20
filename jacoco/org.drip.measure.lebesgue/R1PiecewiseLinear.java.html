@@ -102,8 +102,8 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double[] adblPredictorOrdinate,
 		final double[] adblCumulativeProbability)
 	{
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||</span>
-<span class="pc bpc" id="L106" title="4 of 8 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||</span>
+<span class="pc bpc" id="L106" title="4 of 8 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||</span>
 				dblLeftPredictorOrdinateEdge &gt;= dblRightPredictorOrdinateEdge || null ==
 					adblPredictorOrdinate || null == adblCumulativeProbability)
 <span class="nc" id="L109">			return null;</span>
@@ -118,14 +118,14 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 <span class="fc bfc" id="L118" title="All 2 branches covered.">			double dblLeftPredictorOrdinate = 0 == i ? dblLeftPredictorOrdinateEdge :</span>
 				adblPredictorOrdinate[i - 1];
 
-<span class="pc bpc" id="L121" title="2 of 4 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
 				dblLeftPredictorOrdinate &lt; dblLeftPredictorOrdinateEdge)
 <span class="nc" id="L123">				return null;</span>
 
 <span class="fc bfc" id="L125" title="All 2 branches covered.">			double dblRightPredictorOrdinate = iNumPredictorOrdinate == i ? dblRightPredictorOrdinateEdge :</span>
 				adblPredictorOrdinate[i];
 
-<span class="pc bpc" id="L128" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L128" title="3 of 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
 				dblRightPredictorOrdinate &lt;= dblLeftPredictorOrdinate || dblRightPredictorOrdinate &gt;
 					dblRightPredictorOrdinateEdge)
 <span class="nc" id="L131">				return null;</span>
@@ -204,7 +204,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
 <span class="nc" id="L208">			throw new java.lang.Exception (&quot;R1PiecewiseLinear::cumulative =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L210">		double dblLeftEdge = leftEdge();</span>
@@ -241,7 +241,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L244" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
+<span class="pc bpc" id="L244" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
 <span class="nc" id="L245">			throw new java.lang.Exception (&quot;R1PiecewiseLinear::invCumulative =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L247">		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new</span>
@@ -268,7 +268,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
 <span class="nc" id="L272">			throw new java.lang.Exception (&quot;R1PiecewiseLinear::density =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc bnc" id="L274" title="All 4 branches missed.">		if (dblX &lt;= leftEdge() || dblX &gt;= rightEdge()) return 0.;</span>
@@ -287,7 +287,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 <span class="nc" id="L287">		return _adblPiecewiseDensity[iSegmentIndex] * dblX;</span>
 	}
 
-	@Override public org.drip.quant.common.Array2D histogram()
+	@Override public org.drip.numerical.common.Array2D histogram()
 	{
 <span class="nc" id="L292">		double dblLeftEdge = leftEdge();</span>
 
@@ -308,7 +308,7 @@ public class R1PiecewiseLinear extends org.drip.measure.lebesgue.R1Uniform {
 <span class="nc" id="L308">			}</span>
 		}
 
-<span class="nc" id="L311">		return org.drip.quant.common.Array2D.FromArray (adblX, adblY);</span>
+<span class="nc" id="L311">		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

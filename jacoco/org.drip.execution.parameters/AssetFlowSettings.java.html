@@ -128,9 +128,9 @@ public class AssetFlowSettings {
 		throws java.lang.Exception
 <span class="fc" id="L129">	{</span>
 <span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == (_strAssetID = strAssetID) || _strAssetID.isEmpty() ||</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblAverageDailyVolume = dblAverageDailyVolume) ||</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblNumberOutstanding = dblNumberOutstanding) ||</span>
-<span class="pc bpc" id="L133" title="3 of 6 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (_dblDailyVolatility = dblDailyVolatility) ||</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblAverageDailyVolume = dblAverageDailyVolume) ||</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblNumberOutstanding = dblNumberOutstanding) ||</span>
+<span class="pc bpc" id="L133" title="3 of 6 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblDailyVolatility = dblDailyVolatility) ||</span>
 						0. &gt;= _dblNumberOutstanding || 0. &gt;= _dblDailyVolatility)
 <span class="nc" id="L135">			throw new java.lang.Exception (&quot;AssetFlowSettings Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="fc" id="L136">	}</span>
@@ -217,8 +217,8 @@ public class AssetFlowSettings {
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblRawTradeSize) ||</span>
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblTime))</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRawTradeSize) ||</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
 <span class="nc" id="L222">			throw new java.lang.Exception (&quot;AssetFlowSettings::normalizeTradeSize =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L224">		return dblRawTradeSize / (_dblAverageDailyVolume * dblTime);</span>
@@ -238,7 +238,7 @@ public class AssetFlowSettings {
 		final double dblNormalizedImpact)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblNormalizedImpact))</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedImpact))</span>
 <span class="nc" id="L242">			throw new java.lang.Exception (&quot;AssetFlowSettings::denormalizeImpact =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L244">		return dblNormalizedImpact * _dblDailyVolatility;</span>

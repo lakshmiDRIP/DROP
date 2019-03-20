@@ -6,7 +6,7 @@ import java.util.Map;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.analytics.support.Helper;
 import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;

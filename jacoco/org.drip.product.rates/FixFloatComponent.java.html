@@ -551,7 +551,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 <span class="fc" id="L551">		}</span>
 
 		try {
-<span class="pc bpc" id="L554" title="1 of 2 branches missed.">			if (org.drip.quant.common.NumberUtil.IsValid (dblValueNotional)) {</span>
+<span class="pc bpc" id="L554" title="1 of 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsValid (dblValueNotional)) {</span>
 <span class="fc" id="L555">				double dblCleanPrice = 100. * (1. + (dblCleanPV / initialNotional() / dblValueNotional));</span>
 
 <span class="fc" id="L557">				org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
@@ -745,7 +745,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 <span class="nc" id="L745">		return mapFixedReferenceStreamResult.get (&quot;DirtyPV&quot;) + mapFloatDerivedStreamResult.get (&quot;DirtyPV&quot;);</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -758,7 +758,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 <span class="fc" id="L759">		double dblParSwapRate = mapMeasures.get (&quot;SwapRate&quot;);</span>
 
-<span class="fc" id="L761">		org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasureFloating =</span>
+<span class="fc" id="L761">		org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasureFloating =</span>
 <span class="fc" id="L762">			_floatDerived.jackDDirtyPVDManifestMeasure (valParams, pricerParams, csqs, quotingParams);</span>
 
 <span class="pc bpc" id="L764" title="1 of 2 branches missed.">		if (null == jackDDirtyPVDManifestMeasureFloating) return null;</span>
@@ -767,7 +767,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 <span class="pc bpc" id="L768" title="1 of 2 branches missed.">		if (0 == iNumQuote) return null;</span>
 
-<span class="fc" id="L770">		org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasureFixed =</span>
+<span class="fc" id="L770">		org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasureFixed =</span>
 <span class="fc" id="L771">			_fixReference.jackDDirtyPVDManifestMeasure (valParams, pricerParams, csqs, quotingParams);</span>
 
 <span class="pc bpc" id="L773" title="1 of 2 branches missed.">		if (null == jackDDirtyPVDManifestMeasureFixed || iNumQuote !=</span>
@@ -775,13 +775,13 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 <span class="nc" id="L775">			return null;</span>
 
 <span class="fc" id="L777">		double dblNotionalScaleDown = java.lang.Double.NaN;</span>
-<span class="fc" id="L778">		org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasureIRS = null;</span>
+<span class="fc" id="L778">		org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasureIRS = null;</span>
 
 <span class="pc bpc" id="L780" title="1 of 2 branches missed.">		if (null == jackDDirtyPVDManifestMeasureIRS) {</span>
 			try {
 <span class="fc" id="L782">				dblNotionalScaleDown = 1. / initialNotional();</span>
 
-<span class="fc" id="L784">				jackDDirtyPVDManifestMeasureIRS = new org.drip.quant.calculus.WengertJacobian (1, iNumQuote);</span>
+<span class="fc" id="L784">				jackDDirtyPVDManifestMeasureIRS = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);</span>
 <span class="nc" id="L785">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L786">				e.printStackTrace();</span>
 
@@ -799,7 +799,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 <span class="fc" id="L799">		return jackDDirtyPVDManifestMeasureIRS;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
@@ -822,7 +822,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 <span class="nc" id="L822">			double dblParSwapRate = mapMeasures.get (&quot;SwapRate&quot;);</span>
 
 			try {
-<span class="nc" id="L825">				org.drip.quant.calculus.WengertJacobian wjSwapRateDFMicroJack = null;</span>
+<span class="nc" id="L825">				org.drip.numerical.differentiation.WengertJacobian wjSwapRateDFMicroJack = null;</span>
 
 <span class="nc" id="L827">				org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
@@ -833,11 +833,11 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 <span class="nc bnc" id="L834" title="All 2 branches missed.">					if (iPeriodPayDate &lt; valParams.valueDate()) continue;</span>
 
-<span class="nc" id="L836">					org.drip.quant.calculus.WengertJacobian wjPeriodFwdRateDF =</span>
+<span class="nc" id="L836">					org.drip.numerical.differentiation.WengertJacobian wjPeriodFwdRateDF =</span>
 <span class="nc" id="L837">						dcFunding.jackDForwardDManifestMeasure (p.startDate(), p.endDate(), &quot;Rate&quot;,</span>
 <span class="nc" id="L838">							p.couponDCF());</span>
 
-<span class="nc" id="L840">					org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF =</span>
+<span class="nc" id="L840">					org.drip.numerical.differentiation.WengertJacobian wjPeriodPayDFDF =</span>
 <span class="nc" id="L841">						dcFunding.jackDDFDManifestMeasure (iPeriodPayDate, &quot;Rate&quot;);</span>
 
 <span class="nc bnc" id="L843" title="All 4 branches missed.">					if (null == wjPeriodFwdRateDF || null == wjPeriodPayDFDF) continue;</span>
@@ -847,7 +847,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 <span class="nc" id="L847">					double dblPeriodPayDF = dcFunding.df (iPeriodPayDate);</span>
 
 <span class="nc bnc" id="L849" title="All 2 branches missed.">					if (null == wjSwapRateDFMicroJack)</span>
-<span class="nc" id="L850">						wjSwapRateDFMicroJack = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="nc" id="L850">						wjSwapRateDFMicroJack = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
 <span class="nc" id="L851">							wjPeriodFwdRateDF.numParameters());</span>
 
 <span class="nc" id="L853">					double dblPeriodNotional = notional (p.startDate(), p.endDate());</span>

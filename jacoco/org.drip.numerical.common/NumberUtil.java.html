@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NumberUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.numerical.common</a> &gt; <span class="el_source">NumberUtil.java</span></div><h1>NumberUtil.java</h1><pre class="source lang-java linenums">
+package org.drip.numerical.common;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2012 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;NumberUtil&lt;/i&gt; implements number utility functions. It exposes the following functions:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *			Verify number/number array validity, and closeness/sign match
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *			Factorial Permutation/Combination functionality
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *			Dump multi-dimensional array contents
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *			Min/Max/Bound the array entries within limits
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common&quot;&gt;Primitives/Array Manipulate Format Display Utilities&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class NumberUtil {</span>
+	private static final double DEFAULT_ABSOLUTE_TOLERANCE = 1.0e-03;
+	private static final double DEFAULT_RELATIVE_TOLERANCE = 1.0e-03;
+
+	/**
+	 * Check if the Input Long is MIN_VALUE or MAX_VALUE
+	 * 
+	 * @param l Input Long
+	 * 
+	 * @return TRUE - Input Long is MIN_VALUE or MAX_VALUE
+	 */
+
+	public static final boolean IsValid (
+		final long l)
+	{
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		return java.lang.Long.MIN_VALUE != l &amp;&amp; java.lang.Long.MAX_VALUE != l;</span>
+	}
+
+	/**
+	 * Check if the Input Long Array contains a MIN_VALUE or MAX_VALUE
+	 * 
+	 * @param al Input Long Array
+	 * 
+	 * @return TRUE - Input Long Array contains a MIN_VALUE or MAX_VALUE
+	 */
+
+	public static final boolean IsValid (
+		final long[] al)
+	{
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (null == al) return true;</span>
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (int i = 0; i &lt; al.length; ++i) {</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			if (!IsValid (al[i])) return false;</span>
+		}
+
+<span class="nc" id="L139">		return true;</span>
+	}
+
+	/**
+	 * Checks if the input double is Infinite or NaN
+	 * 
+	 * @param dbl Input double
+	 * 
+	 * @return TRUE - Input double is Infinite or NaN
+	 */
+
+	public static final boolean IsValid (
+		final double dbl)
+	{
+<span class="pc bpc" id="L153" title="1 of 4 branches missed.">		return !java.lang.Double.isNaN (dbl) &amp;&amp; !java.lang.Double.isInfinite (dbl);</span>
+	}
+
+	/**
+	 * Checks if the input double array contains an Infinite or an NaN
+	 * 
+	 * @param adbl Input double array
+	 * 
+	 * @return TRUE - Input double contains an Infinite or an NaN
+	 */
+
+	public static final boolean IsValid (
+		final double[] adbl)
+	{
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (null == adbl) return true;</span>
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; adbl.length; ++i) {</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			if (!IsValid (adbl[i])) return false;</span>
+		}
+
+<span class="fc" id="L173">		return true;</span>
+	}
+
+	/**
+	 * Compare and checks if the two input numbers fall within a specified tolerance
+	 * 
+	 * @param dbl1 Number #1
+	 * @param dbl2 Number #2
+	 * @param dblAbsoluteTolerance Absolute Tolerance
+	 * @param dblRelativeTolerance Relative Tolerance
+	 * 
+	 * @return TRUE if they fall within the tolerance
+	 */
+
+	public static final boolean WithinTolerance (
+		final double dbl1,
+		final double dbl2,
+		final double dblAbsoluteTolerance,
+		final double dblRelativeTolerance)
+	{
+<span class="fc bfc" id="L193" title="All 4 branches covered.">		if (!IsValid (dbl1) || !IsValid (dbl2)) return false;</span>
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		if (dblAbsoluteTolerance &gt;= java.lang.Math.abs (dbl1)) {</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (dblAbsoluteTolerance &gt;= java.lang.Math.abs (dbl2)) return true;</span>
+
+<span class="nc" id="L198">			return false;</span>
+		}
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		if (dblRelativeTolerance &gt;= java.lang.Math.abs ((dbl2 - dbl1) / dbl1)) return true;</span>
+
+<span class="fc" id="L203">		return false;</span>
+	}
+
+	/**
+	 * Compare and checks if the two input numbers fall within a specified tolerance
+	 * 
+	 * @param dbl1 Number #1
+	 * @param dbl2 Number #2
+	 * 
+	 * @return TRUE if they fall within the tolerance
+	 */
+
+	public static final boolean WithinTolerance (
+		final double dbl1,
+		final double dbl2)
+	{
+<span class="fc" id="L219">		return WithinTolerance (dbl1, dbl2, DEFAULT_ABSOLUTE_TOLERANCE, DEFAULT_RELATIVE_TOLERANCE);</span>
+	}
+
+	/**
+	 * This function implements Factorial N.
+	 * 
+	 * @param n N
+	 * 
+	 * @return Factorial N
+	 */
+
+	public static final int Factorial (
+		final int n)
+	{
+<span class="fc" id="L233">		int iNFact = 1;</span>
+
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 1; i &lt;= n; ++i)</span>
+<span class="fc" id="L236">			iNFact *= i;</span>
+
+<span class="fc" id="L238">		return iNFact;</span>
+	}
+
+	/**
+	 * This function implements N Permute K.
+	 * 
+	 * @param n N
+	 * @param k K
+	 * 
+	 * @return N Permute K
+	 */
+
+	public static final int NPK (
+		final int n,
+		final int k)
+	{
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		int iK = n &lt; k ? n : k;</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">		int iN = n &gt; k ? n : k;</span>
+
+<span class="fc" id="L257">		return Factorial (iN) / Factorial (iK);</span>
+	}
+
+	/**
+	 * This function implements N choose K.
+	 * 
+	 * @param n N
+	 * @param k K
+	 * 
+	 * @return N choose K
+	 */
+
+	public static final int NCK (
+		final int n,
+		final int k)
+	{
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		int iK = n &lt; k ? n : k;</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">		int iN = n &gt; k ? n : k;</span>
+
+<span class="fc" id="L276">		return Factorial (iN) / Factorial (iK) / Factorial (iN - iK);</span>
+	}
+
+	/**
+	 * Bound the input to within (floor, Ceiling), i.e., compute Min (Max (floor, X), Ceiling)
+	 * 
+	 * @param dblX Input Number
+	 * @param dblFloor Floor
+	 * @param dblCeiling Ceiling
+	 * 
+	 * @return Min (Max (floor, X), Ceiling)
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 */
+
+	public static final double Bound (
+		final double dblX,
+		final double dblFloor,
+		final double dblCeiling)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L297" title="4 of 8 branches missed.">		if (!IsValid (dblX) || !IsValid (dblFloor)|| !IsValid (dblCeiling) || dblFloor &gt; dblCeiling)</span>
+<span class="nc" id="L298">			throw new java.lang.Exception (&quot;NumberUtil::Bound =&gt; Invalid Inputs&quot;);</span>
+
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		double dblBound = dblX &lt; dblFloor ? dblFloor : dblX;</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		return dblBound &gt; dblCeiling ? dblCeiling : dblBound;</span>
+	}
+
+	/**
+	 * Retrieve the Minimum Element in the specified Array
+	 * 
+	 * @param adbl Array of elements
+	 * 
+	 * @return The Minimum Element
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public static final double Minimum (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::Minimum =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L320">		double dblMinimum = adbl[0];</span>
+<span class="fc" id="L321">		int iNumElement = adbl.length;</span>
+
+<span class="fc bfc" id="L323" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i)</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">			dblMinimum = dblMinimum &lt; adbl[i] ? dblMinimum : adbl[i];</span>
+
+<span class="fc" id="L326">		return dblMinimum;</span>
+	}
+
+	/**
+	 * Retrieve the Maximum Element in the specified Array
+	 * 
+	 * @param adbl Array of elements
+	 * 
+	 * @return The Maximum Element
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public static final double Maximum (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::Maximum =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L345">		double dblMaximum = adbl[0];</span>
+<span class="fc" id="L346">		int iNumElement = adbl.length;</span>
+
+<span class="fc bfc" id="L348" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i)</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">			dblMaximum = dblMaximum &gt; adbl[i] ? dblMaximum : adbl[i];</span>
+
+<span class="fc" id="L351">		return dblMaximum;</span>
+	}
+
+	/**
+	 * Check if the specified array contains elements all of the same sign
+	 * 
+	 * @param adbl Array of elements
+	 * 
+	 * @return TRUE - Same Sign
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public static final boolean SameSign (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::SameSign =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		if (adbl[0] &lt;= 0.) return false;</span>
+
+<span class="fc" id="L372">		int iNumElement = adbl.length;</span>
+
+<span class="fc bfc" id="L374" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i) {</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">			if (adbl[0] * adbl[i] &lt;= 0.) return false;</span>
+		}
+
+<span class="fc" id="L378">		return true;</span>
+	}
+
+	/**
+	 * Print the contents of the 1D array
+	 * 
+	 * @param strName Label Name
+	 * @param adblA The 1D array
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return TRUE - Print Successful
+	 */
+
+	public static final boolean Print1DArray (
+		final java.lang.String strName,
+		final double[] adblA,
+		final boolean bBailOnNaN)
+	{
+<span class="nc bnc" id="L396" title="All 4 branches missed.">		if (null == adblA || 0 == adblA.length) return false;</span>
+
+<span class="nc" id="L398">		int iSize = adblA.length;</span>
+
+<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L401" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) &amp;&amp; bBailOnNaN) return false;</span>
+
+<span class="nc" id="L403">			System.out.println (strName + &quot;[&quot; + i + &quot;] = &quot; + adblA[i]);</span>
+		}
+
+<span class="nc" id="L406">		return true;</span>
+	}
+
+	/**
+	 * Print the contents of the 1D array to the Specified Decimal Location
+	 * 
+	 * @param strName Label Name
+	 * @param adblA The 1D array
+	 * @param iNumDecimal Number of Decimal Places to Display
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return TRUE - Print Successful
+	 */
+
+	public static final boolean Print1DArray (
+		final java.lang.String strName,
+		final double[] adblA,
+		final int iNumDecimal,
+		final boolean bBailOnNaN)
+	{
+<span class="pc bpc" id="L426" title="2 of 4 branches missed.">		if (null == adblA || 0 == adblA.length) return false;</span>
+
+<span class="fc" id="L428">		int iSize = adblA.length;</span>
+
+<span class="fc bfc" id="L430" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="pc bpc" id="L431" title="3 of 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) &amp;&amp; bBailOnNaN) return false;</span>
+
+<span class="fc" id="L433">			System.out.println (strName + &quot;[&quot; + i + &quot;] = &quot; + org.drip.numerical.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L434">				(adblA[i], 1, iNumDecimal, 1.));</span>
+		}
+
+<span class="fc" id="L437">		return true;</span>
+	}
+
+	/**
+	 * Print the contents of the 2D array
+	 * 
+	 * @param strName Label Name
+	 * @param aadblA The 2D array
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return TRUE - Print Successful
+	 */
+
+	public static final boolean Print2DArray (
+		final java.lang.String strName,
+		final double[][] aadblA,
+		final boolean bBailOnNaN)
+	{
+<span class="pc bpc" id="L455" title="1 of 2 branches missed.">		if (null == aadblA) return false;</span>
+
+<span class="fc" id="L457">		int iRowSize = aadblA.length;</span>
+
+<span class="pc bpc" id="L459" title="2 of 4 branches missed.">		if (0 == iRowSize || null == aadblA[0]) return false;</span>
+
+<span class="fc" id="L461">		int iColSize = aadblA[0].length;</span>
+
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">		if (0 == iColSize) return false;</span>
+
+<span class="fc bfc" id="L465" title="All 2 branches covered.">		for (int i = 0; i &lt; iRowSize; ++i) {</span>
+<span class="fc bfc" id="L466" title="All 2 branches covered.">			for (int j = 0; j &lt; iColSize; ++j) {</span>
+<span class="pc bpc" id="L467" title="3 of 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[i][j]) &amp;&amp; bBailOnNaN) return false;</span>
+
+<span class="fc" id="L469">				System.out.println (strName + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
+<span class="fc" id="L470">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblA[i][j], 1, 6, 1.));</span>
+			}
+		}
+
+<span class="fc" id="L474">		return true;</span>
+	}
+
+	/**
+	 * Print the Contents of the 2D Array Pair
+	 * 
+	 * @param strLeftLabel Left Label
+	 * @param strRightLabel Right Label
+	 * @param aadblLeft The Left 2D array
+	 * @param aadblRight The Right 2D array
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return TRUE - Print Successful
+	 */
+
+	public static final boolean Print2DArrayPair (
+		final java.lang.String strLeftLabel,
+		final java.lang.String strRightLabel,
+		final double[][] aadblLeft,
+		final double[][] aadblRight,
+		final boolean bBailOnNaN)
+	{
+<span class="nc bnc" id="L496" title="All 4 branches missed.">		if (null == aadblLeft || null == aadblRight) return false;</span>
+
+<span class="nc" id="L498">		int iSize = aadblLeft.length;</span>
+
+<span class="nc bnc" id="L500" title="All 4 branches missed.">		if (0 == iSize || iSize != aadblRight.length) return false;</span>
+
+<span class="nc bnc" id="L502" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
+<span class="nc bnc" id="L505" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (aadblRight[i][j]) &amp;&amp; bBailOnNaN)</span>
+<span class="nc" id="L506">					return false;</span>
+
+<span class="nc" id="L508">				System.out.println (strLeftLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
+<span class="nc" id="L509">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblLeft[i][j], 1, 6, 1.) + &quot;  |  &quot; +</span>
+						strRightLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +
+<span class="nc" id="L511">							org.drip.numerical.common.FormatUtil.FormatDouble (aadblRight[i][j], 1, 6, 1.));</span>
+			}
+		}
+
+<span class="nc" id="L515">		return true;</span>
+	}
+
+	/**
+	 * Print the Contents of the 2D Array Triplet
+	 * 
+	 * @param strLeftLabel Left Label
+	 * @param strMiddleLabel Middle Label
+	 * @param strRightLabel Right Label
+	 * @param aadblLeft The Left 2D array
+	 * @param aadblMiddle The Middle 2D array
+	 * @param aadblRight The Right 2D array
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return TRUE - Print Successful
+	 */
+
+	public static final boolean Print2DArrayTriplet (
+		final java.lang.String strLeftLabel,
+		final java.lang.String strMiddleLabel,
+		final java.lang.String strRightLabel,
+		final double[][] aadblLeft,
+		final double[][] aadblMiddle,
+		final double[][] aadblRight,
+		final boolean bBailOnNaN)
+	{
+<span class="pc bpc" id="L541" title="3 of 6 branches missed.">		if (null == aadblLeft || null == aadblMiddle || null == aadblRight) return false;</span>
+
+<span class="fc" id="L543">		int iSize = aadblLeft.length;</span>
+
+<span class="pc bpc" id="L545" title="3 of 6 branches missed.">		if (0 == iSize || iSize != aadblMiddle.length || iSize != aadblRight.length) return false;</span>
+
+<span class="fc bfc" id="L547" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
+<span class="nc bnc" id="L550" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
+<span class="nc bnc" id="L551" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (aadblRight[i][j]) &amp;&amp; bBailOnNaN)</span>
+<span class="nc" id="L552">					return false;</span>
+
+<span class="fc" id="L554">				System.out.println (strLeftLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
+<span class="fc" id="L555">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblLeft[i][j], 1, 6, 1.) + &quot;  |  &quot; +</span>
+						strMiddleLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +
+<span class="fc" id="L557">							org.drip.numerical.common.FormatUtil.FormatDouble (aadblMiddle[i][j], 1, 6, 1.) +</span>
+								&quot;  |  &quot; + strRightLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +
+<span class="fc" id="L559">									org.drip.numerical.common.FormatUtil.FormatDouble (aadblRight[i][j], 1, 6,</span>
+										1.));
+			}
+		}
+
+<span class="fc" id="L564">		return true;</span>
+	}
+
+	/**
+	 * Print the Matrix Contents
+	 * 
+	 * @param strName Name of the Matrix
+	 * @param aadblA Matrix
+	 * 
+	 * @return TRUE - Matrix Contents Successfully printed
+	 */
+
+	public static final boolean PrintMatrix (
+		final java.lang.String strName,
+		final double[][] aadblA)
+	{
+<span class="pc bpc" id="L580" title="2 of 4 branches missed.">		if (null == aadblA || 0 == aadblA.length) return false;</span>
+
+<span class="fc" id="L582">		int iSize = aadblA.length;</span>
+
+<span class="fc bfc" id="L584" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L585">			java.lang.String strDump = strName  + &quot; =&gt; &quot;;</span>
+
+<span class="fc bfc" id="L587" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L588">				strDump += org.drip.numerical.common.FormatUtil.FormatDouble (aadblA[i][j], 1, 6, 1.) + &quot; |&quot;;</span>
+
+<span class="fc" id="L590">			System.out.println (strDump);</span>
+		}
+
+<span class="fc" id="L593">		return true;</span>
+	}
+
+	/**
+	 * Compute (n - 0.5)!
+	 * 
+	 * @param n n
+	 * 
+	 * @return (n - 0.5)! Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double HalfDownShiftedFactorial (
+		final int n)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L610" title="All 2 branches missed.">		if (-1 &gt;= n)</span>
+		{
+<span class="nc" id="L612">			throw new java.lang.Exception (&quot;NumberUtil::HalfDownShiftedFactorial =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L615">		double halfDownShiftedFactorial = java.lang.Math.sqrt (java.lang.Math.PI);</span>
+
+<span class="nc bnc" id="L617" title="All 2 branches missed.">		for (double index = 1; index &lt; n; ++index)</span>
+		{
+<span class="nc" id="L619">			halfDownShiftedFactorial = halfDownShiftedFactorial * (index + 0.5);</span>
+		}
+
+<span class="nc" id="L622">		return halfDownShiftedFactorial;</span>
+	}
+
+	/**
+	 * Compute (2n - 1)!!
+	 * 
+	 * @param n n
+	 * 
+	 * @return (2n - 1)!!
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double DoubleFactorial (
+		final int n)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L639" title="All 2 branches missed.">		if (-1 &gt;= n)</span>
+		{
+<span class="nc" id="L641">			throw new java.lang.Exception (&quot;NumberUtil::DoubleFactorial =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L644">		double doubleFactorial = 1.;</span>
+
+<span class="nc bnc" id="L646" title="All 2 branches missed.">		for (int index = 1; index &lt;= n; ++index)</span>
+		{
+<span class="nc" id="L648">			doubleFactorial = doubleFactorial * (2. * n - 1.);</span>
+		}
+
+<span class="nc" id="L651">		return doubleFactorial;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -125,7 +125,7 @@ public class CurvatureEvolutionVerifierMetrics extends
 	{
 <span class="fc" id="L126">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
 
-<span class="pc bpc" id="L128" title="3 of 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
+<span class="pc bpc" id="L128" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
 			null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
 				adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
 <span class="nc" id="L131">			throw new java.lang.Exception</span>
@@ -178,11 +178,11 @@ public class CurvatureEvolutionVerifierMetrics extends
 <span class="fc" id="L178">		double[] adblDirectionVector = targetDirection().component();</span>
 
 		try {
-<span class="fc" id="L181">			double dblNextFunctionIncrement = org.drip.quant.linearalgebra.Matrix.DotProduct</span>
+<span class="fc" id="L181">			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct</span>
 <span class="fc" id="L182">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
 
 <span class="fc" id="L184">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
-<span class="fc" id="L185">				org.drip.quant.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
+<span class="fc" id="L185">				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
 <span class="fc" id="L186">					currentVariateFunctionJacobian());</span>
 
 <span class="fc bfc" id="L188" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>

@@ -116,26 +116,26 @@ package org.drip.measure.bayesian;
 
 <span class="fc" id="L117">		double[][] aadblScopingLoading2 = pdl2.scopingLoading();</span>
 
-<span class="fc" id="L119">		double[][] aadblScopingWeightedPrecision1 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L120">			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading1),</span>
+<span class="fc" id="L119">		double[][] aadblScopingWeightedPrecision1 = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L120">			(org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading1),</span>
 <span class="fc" id="L121">				r1mn1.covariance().precisionMatrix());</span>
 
-<span class="fc" id="L123">		double[][] aadblScopingWeightedPrecision2 = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L124">			(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading2),</span>
+<span class="fc" id="L123">		double[][] aadblScopingWeightedPrecision2 = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L124">			(org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading2),</span>
 <span class="fc" id="L125">				r1mn2.covariance().precisionMatrix());</span>
 
-<span class="fc" id="L127">		double[][] aadblScopingSpacePrecision1 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L127">		double[][] aadblScopingSpacePrecision1 = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L128">			(aadblScopingWeightedPrecision1, aadblScopingLoading1);</span>
 
-<span class="fc" id="L130">		double[][] aadblScopingSpacePrecision2 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L130">		double[][] aadblScopingSpacePrecision2 = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L131">			(aadblScopingWeightedPrecision2, aadblScopingLoading2);</span>
 
 <span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (null == aadblScopingSpacePrecision1 || null == aadblScopingSpacePrecision2) return null;</span>
 
-<span class="fc" id="L135">		double[] adblPrecisionWeightedMean1 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L135">		double[] adblPrecisionWeightedMean1 = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L136">			(aadblScopingWeightedPrecision1, r1mn1.mean());</span>
 
-<span class="fc" id="L138">		double[] adblPrecisionWeightedMean2 = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L138">		double[] adblPrecisionWeightedMean2 = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L139">			(aadblScopingWeightedPrecision2, r1mn2.mean());</span>
 
 <span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (null == adblPrecisionWeightedMean1 || null == adblPrecisionWeightedMean2) return null;</span>
@@ -149,10 +149,10 @@ package org.drip.measure.bayesian;
 					aadblScopingSpacePrecision2[i][j];
 		}
 
-<span class="fc" id="L152">		double[][] aadblJointCovariance = org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L152">		double[][] aadblJointCovariance = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
 <span class="fc" id="L153">			(aadblJointPrecision);</span>
 
-<span class="fc" id="L155">		double[] adblJointPosteriorMean = org.drip.quant.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
+<span class="fc" id="L155">		double[] adblJointPosteriorMean = org.drip.numerical.linearalgebra.Matrix.Product (aadblJointCovariance,</span>
 			adblJointPrecisionWeightedMean);
 
 <span class="fc" id="L158">		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();</span>
@@ -245,7 +245,7 @@ package org.drip.measure.bayesian;
 <span class="nc" id="L245">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
 <span class="nc" id="L246">			(strProjection);</span>
 
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		return null == pdl ? null : org.drip.numerical.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
 <span class="nc" id="L249">			spvd.scopingDistribution().mean());</span>
 	}
 
@@ -269,7 +269,7 @@ package org.drip.measure.bayesian;
 
 <span class="nc bnc" id="L270" title="All 2 branches missed.">		if (null == pdl) return null;</span>
 
-<span class="nc" id="L272">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L272">		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L273">			(pdl.scopingLoading(), spvd.scopingDistribution().mean());</span>
 
 <span class="nc bnc" id="L275" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
@@ -316,10 +316,10 @@ package org.drip.measure.bayesian;
 <span class="nc" id="L316">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
 		try {
-<span class="nc" id="L319">			return new org.drip.measure.gaussian.Covariance (org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L320">				(aadblScopingLoading, org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L319">			return new org.drip.measure.gaussian.Covariance (org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L320">				(aadblScopingLoading, org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L321">					(r1mnScoping.covariance().covarianceMatrix(),</span>
-<span class="nc" id="L322">						org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading))));</span>
+<span class="nc" id="L322">						org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading))));</span>
 <span class="nc" id="L323">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L324">			e.printStackTrace();</span>
 		}
@@ -349,9 +349,9 @@ package org.drip.measure.bayesian;
 <span class="nc" id="L349">		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading</span>
 <span class="nc" id="L350">			(strProjection);</span>
 
-<span class="nc bnc" id="L352" title="All 2 branches missed.">		return null == pdl ? null : org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">		return null == pdl ? null : org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L353">			(((org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping).covariance().covarianceMatrix(),</span>
-<span class="nc" id="L354">				org.drip.quant.linearalgebra.Matrix.Transpose (pdl.scopingLoading()));</span>
+<span class="nc" id="L354">				org.drip.numerical.linearalgebra.Matrix.Transpose (pdl.scopingLoading()));</span>
 	}
 
 	/**
@@ -375,7 +375,7 @@ package org.drip.measure.bayesian;
 <span class="nc" id="L375">			(strProjection);</span>
 
 <span class="nc bnc" id="L377" title="All 4 branches missed.">		return !(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null == pdl ? null</span>
-<span class="nc" id="L378">			: org.drip.quant.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
+<span class="nc" id="L378">			: org.drip.numerical.linearalgebra.Matrix.Product (pdl.scopingLoading(),</span>
 				((org.drip.measure.gaussian.R1MultivariateNormal)
 <span class="nc" id="L380">					r1mScoping).covariance().covarianceMatrix());</span>
 	}
@@ -403,7 +403,7 @@ package org.drip.measure.bayesian;
 <span class="fc" id="L403">		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();</span>
 
 <span class="pc bpc" id="L405" title="1 of 2 branches missed.">		return !(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal) ? null :</span>
-<span class="fc" id="L406">			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
+<span class="fc" id="L406">			org.drip.numerical.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
 <span class="fc" id="L407">				r1mProjection).covariance().precisionMatrix(), r1mProjection.mean());</span>
 	}
 
@@ -436,11 +436,11 @@ package org.drip.measure.bayesian;
 
 <span class="nc" id="L437">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L439">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L440">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L439">		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L440">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose</span>
 <span class="nc" id="L441">				(aadblScopingLoading));</span>
 
-<span class="nc" id="L443">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L443">		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L444">			(aadblScopingLoading, r1mScoping.mean());</span>
 
 <span class="nc bnc" id="L446" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
@@ -454,10 +454,10 @@ package org.drip.measure.bayesian;
 <span class="nc" id="L454">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="nc" id="L457">		return org.drip.quant.linearalgebra.Matrix.Product (aadblProjectionScopingShadow,</span>
-			org.drip.quant.linearalgebra.Matrix.Product
-<span class="nc" id="L459">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="nc" id="L460">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="nc" id="L457">		return org.drip.numerical.linearalgebra.Matrix.Product (aadblProjectionScopingShadow,</span>
+			org.drip.numerical.linearalgebra.Matrix.Product
+<span class="nc" id="L459">				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="nc" id="L460">					(org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 	}
 
@@ -494,11 +494,11 @@ package org.drip.measure.bayesian;
 
 <span class="fc" id="L495">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="fc" id="L497">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L498">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="fc" id="L497">		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L498">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose</span>
 <span class="fc" id="L499">				(aadblScopingLoading));</span>
 
-<span class="fc" id="L501">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L501">		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L502">			(aadblScopingLoading, adblScopingMean);</span>
 
 <span class="pc bpc" id="L504" title="1 of 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
@@ -513,10 +513,10 @@ package org.drip.measure.bayesian;
 <span class="fc" id="L513">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="fc" id="L516">		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L517">			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L518">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="fc" id="L519">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="fc" id="L516">		double[] adblProjectionInducedScopingDeviation = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L517">			(aadblProjectionScopingShadow, org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L518">				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L519">					(org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 
 <span class="pc bpc" id="L522" title="1 of 2 branches missed.">		if (null == adblProjectionInducedScopingDeviation) return null;</span>
@@ -554,8 +554,8 @@ package org.drip.measure.bayesian;
 
 <span class="nc" id="L555">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L557">		return org.drip.quant.linearalgebra.Matrix.Product (org.drip.quant.linearalgebra.Matrix.Transpose</span>
-<span class="nc" id="L558">			(aadblScopingLoading), org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L557">		return org.drip.numerical.linearalgebra.Matrix.Product (org.drip.numerical.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L558">			(aadblScopingLoading), org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L559">				(((org.drip.measure.gaussian.R1MultivariateNormal)</span>
 <span class="nc" id="L560">					r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading));</span>
 	}
@@ -586,9 +586,9 @@ package org.drip.measure.bayesian;
 
 <span class="nc" id="L587">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L589">		return org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
-<span class="nc" id="L590">			org.drip.quant.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
-<span class="nc" id="L591">				r1mScoping).covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L589">		return org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="nc" id="L590">			org.drip.numerical.linearalgebra.Matrix.Product (((org.drip.measure.gaussian.R1MultivariateNormal)</span>
+<span class="nc" id="L591">				r1mScoping).covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose</span>
 <span class="nc" id="L592">					(aadblScopingLoading)));</span>
 	}
 
@@ -627,11 +627,11 @@ package org.drip.measure.bayesian;
 
 <span class="nc" id="L628">		double[][] aadblScopingLoading = pdl.scopingLoading();</span>
 
-<span class="nc" id="L630">		double[][] aadblProjectionScopingShadow = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L631">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.quant.linearalgebra.Matrix.Transpose</span>
+<span class="nc" id="L630">		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L631">			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.Matrix.Transpose</span>
 <span class="nc" id="L632">				(aadblScopingLoading));</span>
 
-<span class="nc" id="L634">		double[] adblProjectionSpaceScopingMean = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L634">		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="nc" id="L635">			(aadblScopingLoading, adblScopingMean);</span>
 
 <span class="nc bnc" id="L637" title="All 2 branches missed.">		if (null == adblProjectionSpaceScopingMean) return null;</span>
@@ -646,10 +646,10 @@ package org.drip.measure.bayesian;
 <span class="nc" id="L646">			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -</span>
 				adblProjectionSpaceScopingMean[i];
 
-<span class="nc" id="L649">		double[] adblProjectionInducedScopingDeviation = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L650">			(aadblProjectionScopingShadow, org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="nc" id="L651">				(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="nc" id="L652">					(org.drip.quant.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
+<span class="nc" id="L649">		double[] adblProjectionInducedScopingDeviation = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L650">			(aadblProjectionScopingShadow, org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="nc" id="L651">				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="nc" id="L652">					(org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingLoading,</span>
 						aadblProjectionScopingShadow)), adblProjectionSpaceScopingDifferential));
 
 <span class="nc bnc" id="L655" title="All 2 branches missed.">		if (null == adblProjectionInducedScopingDeviation) return null;</span>
@@ -665,9 +665,9 @@ package org.drip.measure.bayesian;
 		try {
 <span class="nc" id="L666">			return new org.drip.measure.gaussian.R1MultivariateNormal (r1mnUnconditional.meta(),</span>
 				adblProjectionInducedScopingMean, new org.drip.measure.gaussian.Covariance
-					(org.drip.quant.linearalgebra.Matrix.Product
-<span class="nc" id="L669">						(org.drip.quant.linearalgebra.Matrix.Transpose (aadblScopingLoading),</span>
-							org.drip.quant.linearalgebra.Matrix.Product
+					(org.drip.numerical.linearalgebra.Matrix.Product
+<span class="nc" id="L669">						(org.drip.numerical.linearalgebra.Matrix.Transpose (aadblScopingLoading),</span>
+							org.drip.numerical.linearalgebra.Matrix.Product
 <span class="nc" id="L671">								(((org.drip.measure.gaussian.R1MultivariateNormal)</span>
 <span class="nc" id="L672">									r1mProjection).covariance().covarianceMatrix(), aadblScopingLoading))));</span>
 <span class="nc" id="L673">		} catch (java.lang.Exception e) {</span>

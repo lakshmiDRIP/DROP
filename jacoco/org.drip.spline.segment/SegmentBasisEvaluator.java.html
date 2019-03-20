@@ -193,7 +193,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 <span class="fc bfc" id="L193" title="All 2 branches covered.">			double dblBasisFunctionDeriv = 0 == i ? _fs.indexedBasisFunction (iBasisFunctionIndex).evaluate</span>
 <span class="fc" id="L194">				(dblX) : _fs.indexedBasisFunction (iBasisFunctionIndex).derivative (dblX, i);</span>
 
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
 <span class="nc" id="L197">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::shapedBasisFunctionDerivative =&gt; Cannot compute Basis Function Derivative&quot;);
 
@@ -201,7 +201,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 <span class="fc" id="L201">				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative</span>
 <span class="fc" id="L202">					(dblShapeControllerPredictorOrdinate, iOrder - i);</span>
 
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
 <span class="nc" id="L205">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::shapedBasisFunctionDerivative =&gt; Cannot compute Shape Control Derivative&quot;);
 
@@ -218,7 +218,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 <span class="fc" id="L218">					dblShapeControllerDerivScale /= _ics.width();</span>
 			}
 
-<span class="fc" id="L221">			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="fc" id="L221">			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *</span>
 				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
 					dblShapeControlDeriv);
 		}
@@ -264,7 +264,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 <span class="fc" id="L264">				dblPredictorOrdinate) : unshapedBasisFunctionDerivative (adblResponseBasisCoeff,</span>
 					dblPredictorOrdinate, i);
 
-<span class="pc bpc" id="L267" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasisFunctionDeriv))</span>
 <span class="nc" id="L268">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::responseValueDerivative =&gt; Cannot compute Basis Function Derivative&quot;);
 
@@ -272,7 +272,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 <span class="fc" id="L272">				(dblShapeControllerPredictorOrdinate) : _rssc.shapeController().derivative</span>
 <span class="fc" id="L273">					(dblShapeControllerPredictorOrdinate, iOrder - i);</span>
 
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblShapeControlDeriv))</span>
 <span class="nc" id="L276">				throw new java.lang.Exception</span>
 					(&quot;SegmentBasisEvaluator::responseValueDerivative =&gt; Cannot compute Shape Control Derivative&quot;);
 
@@ -289,7 +289,7 @@ public class SegmentBasisEvaluator implements org.drip.spline.segment.BasisEvalu
 <span class="fc" id="L289">					dblShapeControllerDerivScale /= _ics.width();</span>
 			}
 
-<span class="fc" id="L292">			dblResponseDerivative += (org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="fc" id="L292">			dblResponseDerivative += (org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *</span>
 				dblBasisFunctionDeriv * dblBasisFunctionDerivScale * dblShapeControllerDerivScale *
 					dblShapeControlDeriv);
 		}

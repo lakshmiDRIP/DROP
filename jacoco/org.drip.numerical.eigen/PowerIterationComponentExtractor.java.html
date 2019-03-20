@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PowerIterationComponentExtractor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.numerical.eigen</a> &gt; <span class="el_source">PowerIterationComponentExtractor.java</span></div><h1>PowerIterationComponentExtractor.java</h1><pre class="source lang-java linenums">
+package org.drip.numerical.eigen;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;PowerIterationComponentExtractor&lt;/i&gt; extracts the Linear System Components using the Power Iteration
+ * Method.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen&quot;&gt;Eigen Component Extraction Methodologies&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class PowerIterationComponentExtractor implements org.drip.numerical.eigen.ComponentExtractor {
+<span class="fc" id="L87">	private int _iMaxIteration = -1;</span>
+<span class="fc" id="L88">	private boolean _bToleranceAbsolute = false;</span>
+<span class="fc" id="L89">	private double _dblTolerance = java.lang.Double.NaN;</span>
+
+	/**
+	 * PowerIterationComponentExtractor Constructor
+	 * 
+	 * @param iMaxIteration Maximum Number of Iterations
+	 * @param dblTolerance Tolerance
+	 * @param bToleranceAbsolute Is Tolerance Absolute
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public PowerIterationComponentExtractor (
+		final int iMaxIteration,
+		final double dblTolerance,
+		final boolean bToleranceAbsolute)
+		throws java.lang.Exception
+<span class="fc" id="L106">	{</span>
+<span class="pc bpc" id="L107" title="3 of 6 branches missed.">		if (0 &gt;= (_iMaxIteration = iMaxIteration) || !org.drip.numerical.common.NumberUtil.IsValid (_dblTolerance</span>
+			= dblTolerance) || 0. == _dblTolerance)
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;PowerIterationComponentExtractor ctr: Invalid Inputs!&quot;);</span>
+
+<span class="fc" id="L111">		_bToleranceAbsolute = bToleranceAbsolute;</span>
+<span class="fc" id="L112">	}</span>
+
+	/**
+	 * Retrieve the Maximum Number of Iterations
+	 * 
+	 * @return The Maximum Number of Iterations
+	 */
+
+	public int maxIterations()
+	{
+<span class="nc" id="L122">		return _iMaxIteration;</span>
+	}
+
+	/**
+	 * Retrieve the Tolerance Level
+	 * 
+	 * @return The Tolerance Level
+	 */
+
+	public double tolerance()
+	{
+<span class="nc" id="L133">		return _dblTolerance;</span>
+	}
+
+	/**
+	 * Indicate if the specified Tolerance is Absolute
+	 * 
+	 * @return TRUE - The specified Tolerance is Absolute
+	 */
+
+	public boolean isToleranceAbsolute()
+	{
+<span class="nc" id="L144">		return _bToleranceAbsolute;</span>
+	}
+
+	@Override public org.drip.numerical.eigen.EigenComponent principalComponent (
+		final double[][] aadblA)
+	{
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == aadblA) return null;</span>
+
+<span class="fc" id="L152">		int iIter = 0;</span>
+<span class="fc" id="L153">		int iSize = aadblA.length;</span>
+<span class="fc" id="L154">		double dblEigenvalue = iSize;</span>
+<span class="fc" id="L155">		double[] adblEigenvector = new double[iSize];</span>
+<span class="fc" id="L156">		double[] adblUpdatedEigenvector = new double[iSize];</span>
+
+<span class="pc bpc" id="L158" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;</span>
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L161">			adblEigenvector[i] = 1.;</span>
+		}
+
+<span class="fc" id="L164">		adblEigenvector = org.drip.numerical.linearalgebra.Matrix.Normalize (adblEigenvector);</span>
+
+<span class="fc" id="L166">		double dblEigenvalueOld = dblEigenvalue;</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		double dblAbsoluteTolerance = _bToleranceAbsolute ? _dblTolerance : dblEigenvalue * _dblTolerance;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		dblAbsoluteTolerance = dblAbsoluteTolerance &gt; _dblTolerance ? dblAbsoluteTolerance : _dblTolerance;</span>
+
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		while (iIter &lt; _iMaxIteration) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L172">				adblUpdatedEigenvector[i] = 0.;</span>
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L175">					adblUpdatedEigenvector[i] += aadblA[i][j] * adblEigenvector[j];</span>
+			}
+
+<span class="fc" id="L178">			adblUpdatedEigenvector = org.drip.numerical.linearalgebra.Matrix.Normalize (adblUpdatedEigenvector);</span>
+
+			try {
+<span class="fc" id="L181">				dblEigenvalue = org.drip.numerical.linearalgebra.Matrix.RayleighQuotient (</span>
+					aadblA,
+					adblUpdatedEigenvector
+				);
+<span class="nc" id="L185">			} catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L187">				e.printStackTrace();</span>
+
+<span class="nc" id="L189">				return null;</span>
+<span class="fc" id="L190">			}</span>
+
+<span class="fc bfc" id="L192" title="All 2 branches covered.">			if (dblAbsoluteTolerance &gt; java.lang.Math.abs (dblEigenvalue - dblEigenvalueOld)) break;</span>
+
+<span class="fc" id="L194">			adblEigenvector = adblUpdatedEigenvector;</span>
+<span class="fc" id="L195">			dblEigenvalueOld = dblEigenvalue;</span>
+<span class="fc" id="L196">			++iIter;</span>
+		}
+
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		if (iIter &gt;= _iMaxIteration) return null;</span>
+
+		try {
+<span class="fc" id="L202">			return new org.drip.numerical.eigen.EigenComponent (adblUpdatedEigenvector, dblEigenvalue);</span>
+<span class="nc" id="L203">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L204">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L207">		return null;</span>
+	}
+
+	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
+		final double[][] aadblA)
+	{
+<span class="nc" id="L213">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -91,7 +91,7 @@ package org.drip.product.params;
 public class CouponSetting implements org.drip.product.params.Validatable {
 <span class="pc" id="L92">	private double _dblCouponRateExtension = 0.;</span>
 <span class="pc" id="L93">	private java.lang.String _strCouponType = &quot;&quot;;</span>
-<span class="pc" id="L94">	private org.drip.quant.common.Array2D _fs = null;</span>
+<span class="pc" id="L94">	private org.drip.numerical.common.Array2D _fs = null;</span>
 <span class="pc" id="L95">	private double _dblCouponRate = java.lang.Double.NaN;</span>
 <span class="pc" id="L96">	private double _dblCouponFloorRate = java.lang.Double.NaN;</span>
 <span class="pc" id="L97">	private double _dblCouponCeilingRate = java.lang.Double.NaN;</span>
@@ -107,7 +107,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 	 */
 
 	public CouponSetting (
-		final org.drip.quant.common.Array2D fs,
+		final org.drip.numerical.common.Array2D fs,
 		final java.lang.String strCouponType,
 		final double dblCouponRate,
 		final double dblCouponCeilingRate,
@@ -132,7 +132,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 	 */
 
 	public CouponSetting (
-		final org.drip.quant.common.Array2D fs,
+		final org.drip.numerical.common.Array2D fs,
 		final java.lang.String strCouponType,
 		final double dblCouponRate,
 		final double dblCouponRateExtension,
@@ -164,19 +164,19 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCouponRate) ||</span>
-<span class="nc bnc" id="L168" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblDate))</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) ||</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblDate))</span>
 <span class="nc" id="L169">			throw new java.lang.Exception (&quot;CouponSetting::processCouponWindow =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponFloorRate))</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate))</span>
 <span class="nc" id="L173">			return dblCouponRate;</span>
 
-<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (!!org.drip.quant.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp; dblCouponRate &gt;</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp; dblCouponRate &gt;</span>
 			_dblCouponCeilingRate)
 <span class="nc" id="L177">			return _dblCouponCeilingRate;</span>
 
-<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (!!org.drip.quant.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; dblCouponRate &lt;</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; dblCouponRate &lt;</span>
 			_dblCouponFloorRate)
 <span class="nc" id="L181">			return _dblCouponFloorRate;</span>
 
@@ -185,14 +185,14 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCouponRate) ||</span>
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblCouponRateExtension))</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRate) ||</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRateExtension))</span>
 <span class="nc" id="L190">			return false;</span>
 
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		if (null == _fs) _fs = org.drip.quant.common.Array2D.BulletSchedule();</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		if (null == _fs) _fs = org.drip.numerical.common.Array2D.BulletSchedule();</span>
 
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
-<span class="nc bnc" id="L195" title="All 4 branches missed.">			org.drip.quant.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; _dblCouponCeilingRate &lt;</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
+<span class="nc bnc" id="L195" title="All 4 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; _dblCouponCeilingRate &lt;</span>
 				_dblCouponFloorRate)
 <span class="nc" id="L197">			return false;</span>
 
@@ -205,7 +205,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 	 * @return The Factor Schedule
 	 */
 
-	public org.drip.quant.common.Array2D factorSchedule()
+	public org.drip.numerical.common.Array2D factorSchedule()
 	{
 <span class="fc" id="L210">		return _fs;</span>
 	}

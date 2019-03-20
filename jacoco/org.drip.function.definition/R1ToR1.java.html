@@ -87,12 +87,12 @@ package org.drip.function.definition;
  */
 
 public abstract class R1ToR1 {
-<span class="fc" id="L90">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
+<span class="fc" id="L90">	protected org.drip.numerical.differentiation.DerivativeControl _dc = null;</span>
 
 	protected R1ToR1 (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 <span class="fc" id="L94">	{</span>
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.numerical.differentiation.DerivativeControl();</span>
 <span class="fc" id="L96">	}</span>
 
 	/**
@@ -119,12 +119,12 @@ public abstract class R1ToR1 {
 	 * @return The Derivative
 	 */
 
-	public org.drip.quant.calculus.Differential differential (
+	public org.drip.numerical.differentiation.Differential differential (
 		final double dblVariate,
 		final double dblOFBase,
 		final int iOrder)
 	{
-<span class="pc bpc" id="L127" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder) return null;</span>
+<span class="pc bpc" id="L127" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder) return null;</span>
 
 <span class="fc" id="L129">		double dblDerivative = 0.;</span>
 <span class="fc" id="L130">		double dblOrderedVariateInfinitesimal = 1.;</span>
@@ -142,7 +142,7 @@ public abstract class R1ToR1 {
 <span class="fc bfc" id="L142" title="All 2 branches covered.">			if (0 != i) dblOrderedVariateInfinitesimal *= (2. * dblVariateInfinitesimal);</span>
 
 			try {
-<span class="fc bfc" id="L145" title="All 2 branches covered.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *</span>
 <span class="fc" id="L146">					evaluate (dblVariate + dblVariateInfinitesimal * (iOrder - 2. * i));</span>
 <span class="nc" id="L147">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L148">				e.printStackTrace();</span>
@@ -152,7 +152,7 @@ public abstract class R1ToR1 {
 		}
 
 		try {
-<span class="fc" id="L155">			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
+<span class="fc" id="L155">			return new org.drip.numerical.differentiation.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
 <span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L157">			e.printStackTrace();</span>
 		}
@@ -169,7 +169,7 @@ public abstract class R1ToR1 {
 	 * @return The Derivative
 	 */
 
-	public org.drip.quant.calculus.Differential differential (
+	public org.drip.numerical.differentiation.Differential differential (
 		final double dblVariate,
 		final int iOrder)
 	{
@@ -217,7 +217,7 @@ public abstract class R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L220">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="fc" id="L220">		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 	}
 
 	/**
@@ -271,8 +271,8 @@ public abstract class R1ToR1 {
 		final double dblVariateLeft,
 		final double dblVariateRight)
 	{
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
-<span class="nc bnc" id="L275" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
+<span class="nc bnc" id="L275" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
 <span class="nc" id="L276">			return null;</span>
 
 <span class="nc" id="L278">		org.drip.function.definition.VariateOutputPair vop = maxima();</span>
@@ -350,8 +350,8 @@ public abstract class R1ToR1 {
 		final double dblVariateLeft,
 		final double dblVariateRight)
 	{
-<span class="nc bnc" id="L353" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
-<span class="nc bnc" id="L354" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariateLeft) ||</span>
+<span class="nc bnc" id="L354" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblVariateRight) || dblVariateLeft &gt;= dblVariateRight)</span>
 <span class="nc" id="L355">			return null;</span>
 
 <span class="nc" id="L357">		org.drip.function.definition.VariateOutputPair vop = minima();</span>

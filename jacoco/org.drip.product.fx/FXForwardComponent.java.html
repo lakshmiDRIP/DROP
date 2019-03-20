@@ -159,35 +159,35 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 			throws java.lang.Exception
 		{
 <span class="pc bpc" id="L161" title="3 of 6 branches missed.">			if (null == valParams || null == dcNum || null == dcDenom ||</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||</span>
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">					!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblFXSpot))</span>
 <span class="nc" id="L164">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; bad inputs&quot;);
 
 <span class="fc" id="L167">			double dblFXFwdBase = _fxfwd.fxForward (valParams, dcNum, dcDenom, dblFXSpot, false);</span>
 
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase))</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBase))</span>
 <span class="nc" id="L170">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd Base!&quot;);
 
 <span class="fc" id="L173">			double dblFXFwdBumped = calcFXFwd (valParams, dcNum, dcDenom, dblFXSpot, _dblBasisIncr,</span>
 				bBasisOnDenom);
 
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped))</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBumped))</span>
 <span class="nc" id="L177">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd for &quot; +
 						_dblBasisIncr + &quot; shift!&quot;);
 
 <span class="fc" id="L181">			double dblDBasisDFXFwd = _dblBasisIncr / (dblFXFwdBumped - dblFXFwdBase);</span>
 
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd))</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblDBasisDFXFwd))</span>
 <span class="nc" id="L184">				throw new java.lang.Exception</span>
 					(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot calculate Fwd/Basis Slope for 0 basis!&quot;);
 
 <span class="fc" id="L187">			double dblBasisPrev = 0.;</span>
 <span class="fc" id="L188">			double dblBasis = dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);</span>
 
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasis))</span>
 <span class="nc" id="L191">				throw new java.lang.Exception (&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Got &quot; +</span>
 <span class="nc" id="L192">					dblBasis + &quot; for FlatSpread for &quot; + _fxfwd.primaryCode() + &quot; and price &quot; + dblFXFwdBase);</span>
 
@@ -197,19 +197,19 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot calib Basis for &quot; +
 <span class="nc" id="L198">							_fxfwd.primaryCode() + &quot; and price &quot; + dblMarketFXFwdPrice + &quot; within limit!&quot;);</span>
 
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,</span>
 					dcDenom, dblFXSpot, dblBasisPrev = dblBasis, bBasisOnDenom)))
 <span class="nc" id="L202">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd for &quot; +
 							dblBasis + &quot; shift!&quot;);
 
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,</span>
 					dcDenom, dblFXSpot, dblBasis + _dblBasisIncr, bBasisOnDenom)))
 <span class="nc" id="L208">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot imply FX Fwd for &quot; +
 							(dblBasis + _dblBasisIncr) + &quot; shift!&quot;);
 
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /</span>
 					(dblFXFwdBumped - dblFXFwdBase)))
 <span class="nc" id="L214">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Cannot calculate Fwd/Basis Slope for &quot;
@@ -217,7 +217,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 
 <span class="fc" id="L218">				dblBasis = dblBasisPrev + dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);</span>
 
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblBasis))</span>
 <span class="nc" id="L221">					throw new java.lang.Exception</span>
 						(&quot;FXForwardComponent::calibrateDCBasisFromFwdPriceNR =&gt; Got &quot; + dblBasis +
 <span class="nc" id="L223">							&quot; for FlatSpread for &quot; + _fxfwd.primaryCode() + &quot; and price &quot; + dblFXFwdBase);</span>
@@ -259,7 +259,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 <span class="fc" id="L259">	{</span>
 <span class="pc bpc" id="L260" title="4 of 8 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || null == (_ccyPair = ccyPair) ||</span>
 			(_iEffectiveDate = iEffectiveDate) &gt;= (_iMaturityDate = iMaturityDate) ||
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblNotional = dblNotional))</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional))</span>
 <span class="nc" id="L263">			throw new java.lang.Exception (&quot;FXForwardComponent ctr: Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L265">		_csp = csp;</span>
@@ -299,7 +299,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 		throws java.lang.Exception
 	{
 <span class="pc bpc" id="L301" title="3 of 6 branches missed.">		if (null == valParams || null == dcNum || null == dcDenom ||</span>
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblFXSpot))</span>
 <span class="nc" id="L303">			throw new java.lang.Exception (&quot;FXForwardComponent::fxForward =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L305">		int iCashPayDate = valParams.cashPayDate();</span>
@@ -718,7 +718,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 <span class="nc" id="L718">		return null;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -727,7 +727,7 @@ public class FXForwardComponent extends org.drip.product.definition.Calibratable
 <span class="nc" id="L727">		return null;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,

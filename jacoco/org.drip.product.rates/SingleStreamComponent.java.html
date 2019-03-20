@@ -329,7 +329,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 <span class="fc" id="L329">		return _strCode;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -354,16 +354,16 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 
 <span class="fc" id="L355">			double dblDFMaturity = dcFunding.df (maturityDate().julian());</span>
 
-<span class="fc" id="L357">			org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
+<span class="fc" id="L357">			org.drip.numerical.differentiation.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
 <span class="fc" id="L358">				(iEffectiveDate, &quot;Rate&quot;);</span>
 
-<span class="fc" id="L360">			org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
+<span class="fc" id="L360">			org.drip.numerical.differentiation.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
 <span class="fc" id="L361">				(maturityDate().julian(), &quot;Rate&quot;);</span>
 
 <span class="pc bpc" id="L363" title="2 of 4 branches missed.">			if (null == wjDFEffective || null == wjDFMaturity) return null;</span>
 
-<span class="fc" id="L365">			org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack = new</span>
-<span class="fc" id="L366">				org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());</span>
+<span class="fc" id="L365">			org.drip.numerical.differentiation.WengertJacobian wjPVDFMicroJack = new</span>
+<span class="fc" id="L366">				org.drip.numerical.differentiation.WengertJacobian (1, wjDFMaturity.numParameters());</span>
 
 <span class="fc bfc" id="L368" title="All 2 branches covered.">			for (int i = 0; i &lt; wjDFMaturity.numParameters(); ++i) {</span>
 <span class="pc bpc" id="L369" title="1 of 2 branches missed.">				if (!wjPVDFMicroJack.accumulatePartialFirstDerivative (0, i, wjDFMaturity.firstDerivative (0,</span>
@@ -383,7 +383,7 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 <span class="nc" id="L383">		return null;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
@@ -406,16 +406,16 @@ public class SingleStreamComponent extends org.drip.product.definition.Calibrata
 
 <span class="nc" id="L407">				double dblDFMaturity = dcFunding.df (maturityDate().julian());</span>
 
-<span class="nc" id="L409">				org.drip.quant.calculus.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
+<span class="nc" id="L409">				org.drip.numerical.differentiation.WengertJacobian wjDFEffective = dcFunding.jackDDFDManifestMeasure</span>
 <span class="nc" id="L410">					(iEffectiveDate, &quot;Rate&quot;);</span>
 
-<span class="nc" id="L412">				org.drip.quant.calculus.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
+<span class="nc" id="L412">				org.drip.numerical.differentiation.WengertJacobian wjDFMaturity = dcFunding.jackDDFDManifestMeasure</span>
 <span class="nc" id="L413">					(maturityDate().julian(), &quot;Rate&quot;);</span>
 
 <span class="nc bnc" id="L415" title="All 4 branches missed.">				if (null == wjDFEffective || null == wjDFMaturity) return null;</span>
 
-<span class="nc" id="L417">				org.drip.quant.calculus.WengertJacobian wjDFMicroJack = new</span>
-<span class="nc" id="L418">					org.drip.quant.calculus.WengertJacobian (1, wjDFMaturity.numParameters());</span>
+<span class="nc" id="L417">				org.drip.numerical.differentiation.WengertJacobian wjDFMicroJack = new</span>
+<span class="nc" id="L418">					org.drip.numerical.differentiation.WengertJacobian (1, wjDFMaturity.numParameters());</span>
 
 <span class="nc bnc" id="L420" title="All 2 branches missed.">				for (int i = 0; i &lt; wjDFMaturity.numParameters(); ++i) {</span>
 <span class="nc bnc" id="L421" title="All 2 branches missed.">					if (!wjDFMicroJack.accumulatePartialFirstDerivative (0, i,</span>

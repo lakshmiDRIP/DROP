@@ -116,7 +116,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="fc" id="L116">	private double _dblCoupon = java.lang.Double.NaN;</span>
 <span class="fc" id="L117">	private int _iMaturityDate = java.lang.Integer.MIN_VALUE;</span>
 <span class="fc" id="L118">	private int _iEffectiveDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L119">	private org.drip.quant.common.Array2D _notlSchedule = null;</span>
+<span class="fc" id="L119">	private org.drip.numerical.common.Array2D _notlSchedule = null;</span>
 <span class="fc" id="L120">	private org.drip.product.params.CreditSetting _crValParams = null;</span>
 <span class="fc" id="L121">	private org.drip.param.valuation.CashSettleParams _settleParams = null;</span>
 <span class="fc" id="L122">	private java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; _lsCouponPeriod = null;</span>
@@ -293,7 +293,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="fc" id="L293">		return mapResult;</span>
 	}
 
-	private org.drip.quant.calculus.WengertJacobian calcPeriodOnDefaultPVDFMicroJack (
+	private org.drip.numerical.differentiation.WengertJacobian calcPeriodOnDefaultPVDFMicroJack (
 		final double dblFairPremium,
 		final org.drip.analytics.cashflow.CompositePeriod period,
 		final org.drip.param.valuation.ValuationParams valParams,
@@ -303,16 +303,16 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc" id="L303">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel());</span>
 
 <span class="nc" id="L305">		int iNumParameters = 0;</span>
-<span class="nc" id="L306">		org.drip.quant.calculus.WengertJacobian wjPeriodOnDefaultPVDF = null;</span>
+<span class="nc" id="L306">		org.drip.numerical.differentiation.WengertJacobian wjPeriodOnDefaultPVDF = null;</span>
 
 <span class="nc bnc" id="L308" title="All 2 branches missed.">		for (org.drip.analytics.cashflow.LossQuadratureMetrics lpcf : period.lossMetrics (this, valParams,</span>
 <span class="nc" id="L309">			pricerParams, period.endDate(), csqs)) {</span>
-<span class="nc" id="L310">			org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF = dcFunding.jackDDFDManifestMeasure</span>
+<span class="nc" id="L310">			org.drip.numerical.differentiation.WengertJacobian wjPeriodPayDFDF = dcFunding.jackDDFDManifestMeasure</span>
 <span class="nc" id="L311">				((lpcf.startDate() + lpcf.endDate()) / 2 + _crValParams.lossPayLag(), &quot;Rate&quot;);</span>
 
 			try {
 <span class="nc bnc" id="L314" title="All 2 branches missed.">				if (null == wjPeriodOnDefaultPVDF)</span>
-<span class="nc" id="L315">					wjPeriodOnDefaultPVDF = new org.drip.quant.calculus.WengertJacobian (1, iNumParameters =</span>
+<span class="nc" id="L315">					wjPeriodOnDefaultPVDF = new org.drip.numerical.differentiation.WengertJacobian (1, iNumParameters =</span>
 <span class="nc" id="L316">						wjPeriodPayDFDF.numParameters());</span>
 
 <span class="nc" id="L318">				double dblPeriodIncrementalCashFlow = notional (lpcf.startDate(), lpcf.endDate()) *</span>
@@ -353,7 +353,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 <span class="nc" id="L354">			int iPeriodEffectiveDate = (lpcf.startDate() + lpcf.endDate()) / 2;</span>
 
-<span class="nc" id="L356">			org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF = dcFunding.jackDDFDManifestMeasure</span>
+<span class="nc" id="L356">			org.drip.numerical.differentiation.WengertJacobian wjPeriodPayDFDF = dcFunding.jackDDFDManifestMeasure</span>
 <span class="nc" id="L357">				(iPeriodEffectiveDate + _crValParams.lossPayLag(), &quot;Rate&quot;);</span>
 
 			try {
@@ -456,7 +456,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		final org.drip.analytics.daycount.DateAdjustParams dapAccrualEnd,
 		final org.drip.analytics.daycount.DateAdjustParams dapPay,
 		final org.drip.analytics.daycount.DateAdjustParams dapReset,
-		final org.drip.quant.common.Array2D notlSchedule,
+		final org.drip.numerical.common.Array2D notlSchedule,
 		final double dblNotional,
 		final java.lang.String strCouponCurrency,
 		final org.drip.product.params.CreditSetting crValParams,
@@ -464,7 +464,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		throws java.lang.Exception
 <span class="fc" id="L465">	{</span>
 <span class="pc bpc" id="L466" title="3 of 6 branches missed.">		if (null == strCouponCurrency || (_strCouponCurrency = strCouponCurrency).isEmpty() || null ==</span>
-<span class="pc bpc" id="L467" title="1 of 2 branches missed.">			crValParams || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">			crValParams || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
 <span class="nc" id="L468">			throw new java.lang.Exception (&quot;CDSComponent ctr: Invalid params!&quot;);</span>
 
 <span class="fc" id="L470">		_dblCoupon = dblCoupon;</span>
@@ -472,7 +472,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="fc" id="L472">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
 
 <span class="pc bpc" id="L474" title="1 of 2 branches missed.">		if (null == (_notlSchedule = notlSchedule))</span>
-<span class="fc" id="L475">			_notlSchedule = org.drip.quant.common.Array2D.BulletSchedule();</span>
+<span class="fc" id="L475">			_notlSchedule = org.drip.numerical.common.Array2D.BulletSchedule();</span>
 
 <span class="fc" id="L477">		org.drip.param.period.UnitCouponAccrualSetting ucas = new</span>
 			org.drip.param.period.UnitCouponAccrualSetting (iFreq, strCouponDC, _bApplyCpnEOMAdj,
@@ -752,8 +752,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 <span class="pc bpc" id="L753" title="1 of 2 branches missed.">		if (null == mapFairMeasures) return null;</span>
 
-<span class="fc" id="L755">		org.drip.quant.common.CollectionUtil.MergeWithMain (mapFairMeasures,</span>
-<span class="fc" id="L756">			org.drip.quant.common.CollectionUtil.PrefixKeys (mapFairMeasures, &quot;Fair&quot;));</span>
+<span class="fc" id="L755">		org.drip.numerical.common.CollectionUtil.MergeWithMain (mapFairMeasures,</span>
+<span class="fc" id="L756">			org.drip.numerical.common.CollectionUtil.PrefixKeys (mapFairMeasures, &quot;Fair&quot;));</span>
 
 <span class="fc" id="L758">		org.drip.analytics.cashflow.ComposableUnitPeriod cupFirst = _lsCouponPeriod.get (0).periods().get</span>
 <span class="fc" id="L759">			(0);</span>
@@ -812,7 +812,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc" id="L812">			e.printStackTrace();</span>
 <span class="nc" id="L813">		}</span>
 
-<span class="nc bnc" id="L815" title="All 2 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (dblCreditBasis)) {</span>
+<span class="nc bnc" id="L815" title="All 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (dblCreditBasis)) {</span>
 <span class="nc" id="L816">			mapFairMeasures.put (&quot;MarketCreditBasis&quot;, dblCreditBasis);</span>
 
 <span class="nc" id="L818">			org.drip.state.credit.CreditCurve cc = csqs.creditState (creditLabel());</span>
@@ -839,10 +839,10 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc" id="L839">					measures (&quot;&quot;, valParams, pricerParams, csqsMarket, vcp);</span>
 
 <span class="nc bnc" id="L841" title="All 2 branches missed.">				if (null != mapMarketMeasures) {</span>
-<span class="nc" id="L842">					org.drip.quant.common.CollectionUtil.MergeWithMain (mapMarketMeasures,</span>
-<span class="nc" id="L843">						org.drip.quant.common.CollectionUtil.PrefixKeys (mapMarketMeasures, &quot;Market&quot;));</span>
+<span class="nc" id="L842">					org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMarketMeasures,</span>
+<span class="nc" id="L843">						org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMarketMeasures, &quot;Market&quot;));</span>
 
-<span class="nc" id="L845">					org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);</span>
+<span class="nc" id="L845">					org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);</span>
 				}
 			}
 		}
@@ -1043,8 +1043,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 			final double dblFixCoupon,
 			final double dblQuotedSpread)
 	{
-<span class="pc bpc" id="L1046" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFixCoupon) ||</span>
-<span class="pc bpc" id="L1047" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblQuotedSpread))</span>
+<span class="pc bpc" id="L1046" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblFixCoupon) ||</span>
+<span class="pc bpc" id="L1047" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblQuotedSpread))</span>
 <span class="nc" id="L1048">			return null;</span>
 
 <span class="fc" id="L1050">		org.drip.product.definition.CalibratableComponent[] aComp = new</span>
@@ -1131,7 +1131,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="fc" id="L1131">		return mapPV;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -1159,23 +1159,23 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc" id="L1159">		double dblFairPremium = mapMeasures.get (&quot;FairPremium&quot;);</span>
 
 		try {
-<span class="nc" id="L1162">			org.drip.quant.calculus.WengertJacobian wjPVDFMicroJack = null;</span>
+<span class="nc" id="L1162">			org.drip.numerical.differentiation.WengertJacobian wjPVDFMicroJack = null;</span>
 
 <span class="nc bnc" id="L1164" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : _lsCouponPeriod) {</span>
 <span class="nc" id="L1165">				int iPeriodPayDate = p.payDate();</span>
 
 <span class="nc bnc" id="L1167" title="All 2 branches missed.">				if (iPeriodPayDate &lt; iValueDate) continue;</span>
 
-<span class="nc" id="L1169">				org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF = dc.jackDDFDManifestMeasure</span>
+<span class="nc" id="L1169">				org.drip.numerical.differentiation.WengertJacobian wjPeriodPayDFDF = dc.jackDDFDManifestMeasure</span>
 <span class="nc" id="L1170">					(iPeriodPayDate, &quot;Rate&quot;);</span>
 
-<span class="nc" id="L1172">				org.drip.quant.calculus.WengertJacobian wjPeriodOnDefaultPVMicroJack =</span>
+<span class="nc" id="L1172">				org.drip.numerical.differentiation.WengertJacobian wjPeriodOnDefaultPVMicroJack =</span>
 <span class="nc" id="L1173">					calcPeriodOnDefaultPVDFMicroJack (dblFairPremium, p, valParams, pricerParams, csqs);</span>
 
 <span class="nc bnc" id="L1175" title="All 6 branches missed.">				if (null == wjPeriodPayDFDF | null == wjPeriodOnDefaultPVMicroJack) continue;</span>
 
 <span class="nc bnc" id="L1177" title="All 2 branches missed.">				if (null == wjPVDFMicroJack)</span>
-<span class="nc" id="L1178">					wjPVDFMicroJack = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="nc" id="L1178">					wjPVDFMicroJack = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
 <span class="nc" id="L1179">						wjPeriodPayDFDF.numParameters());</span>
 
 <span class="nc" id="L1181">				double dblPeriodCashFlow = dblFairPremium * notional (p.startDate(), p.endDate()) *</span>
@@ -1198,7 +1198,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc" id="L1198">		return null;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
@@ -1228,7 +1228,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 			try {
 <span class="nc" id="L1230">				double dblDV01 = 0.;</span>
-<span class="nc" id="L1231">				org.drip.quant.calculus.WengertJacobian wjFairPremiumDFMicroJack = null;</span>
+<span class="nc" id="L1231">				org.drip.numerical.differentiation.WengertJacobian wjFairPremiumDFMicroJack = null;</span>
 
 <span class="nc bnc" id="L1233" title="All 2 branches missed.">				for (org.drip.analytics.cashflow.CompositePeriod p : _lsCouponPeriod) {</span>
 <span class="nc" id="L1234">					int iPeriodPayDate = p.payDate();</span>
@@ -1237,7 +1237,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 <span class="nc" id="L1238">					int iPeriodEndDate = p.endDate();</span>
 
-<span class="nc" id="L1240">					org.drip.quant.calculus.WengertJacobian wjPeriodPayDFDF =</span>
+<span class="nc" id="L1240">					org.drip.numerical.differentiation.WengertJacobian wjPeriodPayDFDF =</span>
 <span class="nc" id="L1241">						dcFunding.jackDDFDManifestMeasure (iPeriodEndDate, &quot;Rate&quot;);</span>
 
 <span class="nc" id="L1243">					PeriodLossMicroJack plmj = calcPeriodLossMicroJack (p, valParams, pricerParams, csqs);</span>
@@ -1245,7 +1245,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 <span class="nc bnc" id="L1245" title="All 6 branches missed.">					if (null == wjPeriodPayDFDF | null == plmj) continue;</span>
 
 <span class="nc bnc" id="L1247" title="All 2 branches missed.">					if (null == wjFairPremiumDFMicroJack)</span>
-<span class="nc" id="L1248">						wjFairPremiumDFMicroJack = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="nc" id="L1248">						wjFairPremiumDFMicroJack = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
 <span class="nc" id="L1249">							wjPeriodPayDFDF.numParameters());</span>
 
 <span class="nc" id="L1251">					double dblPeriodCoupon01 = notional (p.startDate(), iPeriodEndDate) * p.couponDCF() *</span>
@@ -1355,7 +1355,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	{
 <span class="fc" id="L1356">		double dblOldCoupon = _dblCoupon;</span>
 
-<span class="pc bpc" id="L1358" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCoupon = dblCoupon))</span>
+<span class="pc bpc" id="L1358" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCoupon = dblCoupon))</span>
 <span class="nc" id="L1359">			throw new java.lang.Exception (&quot;CDSComponent::resetCoupon =&gt; Bad coupon Input!&quot;);</span>
 
 <span class="fc" id="L1361">		return dblOldCoupon;</span>
@@ -1405,7 +1405,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 			final org.drip.state.credit.CreditCurve ccCalib)
 			throws java.lang.Exception
 <span class="nc" id="L1407">		{</span>
-<span class="nc bnc" id="L1408" title="All 4 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_dblCalibResult = dblCalibResult) || null ==</span>
+<span class="nc bnc" id="L1408" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCalibResult = dblCalibResult) || null ==</span>
 				(_ccCalib = ccCalib))
 <span class="nc" id="L1410">				throw new java.lang.Exception (&quot;CDSComponent::SpreadCalibOP ctr =&gt; Invalid inputs!&quot;);</span>
 <span class="nc" id="L1411">		}</span>
@@ -1472,7 +1472,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 			final double dblPriceCalib)
 		{
 <span class="nc bnc" id="L1474" title="All 6 branches missed.">			if (null == valParams || null == pricerParams || null == csqs ||</span>
-<span class="nc bnc" id="L1475" title="All 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblPriceCalib))</span>
+<span class="nc bnc" id="L1475" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblPriceCalib))</span>
 <span class="nc" id="L1476">				return null;</span>
 
 <span class="nc" id="L1478">			final org.drip.state.credit.CreditCurve ccOld = csqs.creditState (creditLabel());</span>
@@ -1514,16 +1514,16 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	class PeriodLossMicroJack {
 <span class="nc" id="L1516">		double _dblAccrOnDef01 = 0.;</span>
-<span class="nc" id="L1517">		org.drip.quant.calculus.WengertJacobian _wjLossPVMicroJack = null;</span>
-<span class="nc" id="L1518">		org.drip.quant.calculus.WengertJacobian _wjAccrOnDef01MicroJack = null;</span>
+<span class="nc" id="L1517">		org.drip.numerical.differentiation.WengertJacobian _wjLossPVMicroJack = null;</span>
+<span class="nc" id="L1518">		org.drip.numerical.differentiation.WengertJacobian _wjAccrOnDef01MicroJack = null;</span>
 
 		PeriodLossMicroJack (
 			final int iNumParameters)
 			throws java.lang.Exception
 <span class="nc" id="L1523">		{</span>
-<span class="nc" id="L1524">			_wjLossPVMicroJack = new org.drip.quant.calculus.WengertJacobian (1, iNumParameters);</span>
+<span class="nc" id="L1524">			_wjLossPVMicroJack = new org.drip.numerical.differentiation.WengertJacobian (1, iNumParameters);</span>
 
-<span class="nc" id="L1526">			_wjAccrOnDef01MicroJack = new org.drip.quant.calculus.WengertJacobian (1, iNumParameters);</span>
+<span class="nc" id="L1526">			_wjAccrOnDef01MicroJack = new org.drip.numerical.differentiation.WengertJacobian (1, iNumParameters);</span>
 <span class="nc" id="L1527">		}</span>
 	}
 }

@@ -105,7 +105,7 @@ public class BoundedSequenceAgnosticMetrics extends
 	{
 <span class="fc" id="L106">		super (adblSequence, distPopulation);</span>
 
-<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport)</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport)</span>
 <span class="nc" id="L109">			throw new java.lang.Exception (&quot;BoundedSequenceAgnosticMetrics ctr: Invalid Inputs&quot;);</span>
 <span class="fc" id="L110">	}</span>
 
@@ -131,7 +131,7 @@ public class BoundedSequenceAgnosticMetrics extends
 	public org.drip.sequence.metrics.PivotedDepartureBounds chernoffHoeffdingAverageBounds (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0) return null;</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0) return null;</span>
 
 <span class="fc" id="L136">		double dblBound = java.lang.Math.exp (-2. * sequence().length * dblLevel * dblLevel / (_dblSupport *</span>
 			_dblSupport));
@@ -160,11 +160,11 @@ public class BoundedSequenceAgnosticMetrics extends
 	public org.drip.sequence.metrics.PivotedDepartureBounds bennettAverageBounds (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L163" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L163" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 <span class="fc" id="L165">		double dblPopulationVariance = populationVariance();</span>
 
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
 <span class="fc" id="L168">			dblPopulationVariance : empiricalVariance());</span>
 
 <span class="fc" id="L170">		double dblBennettFactor = _dblSupport * dblLevel / dblVariance;</span>
@@ -199,11 +199,11 @@ public class BoundedSequenceAgnosticMetrics extends
 	public org.drip.sequence.metrics.PivotedDepartureBounds bernsteinAverageBounds (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L202" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L202" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 <span class="fc" id="L204">		double dblPopulationVariance = populationVariance();</span>
 
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
 <span class="fc" id="L207">			dblPopulationVariance : empiricalVariance());</span>
 
 <span class="fc" id="L209">		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *</span>

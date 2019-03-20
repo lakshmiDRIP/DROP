@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.fx.FXForwardComponent;
 import org.drip.product.params.CurrencyPair;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.*;
