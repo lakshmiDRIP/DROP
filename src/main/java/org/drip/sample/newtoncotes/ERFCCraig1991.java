@@ -1,5 +1,13 @@
 
-package org.drip.numerical.integration;
+package org.drip.sample.newtoncotes;
+
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.e2erf.BuiltInEntry;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +72,8 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>Quadrature</i> contains the Array of Quadrature Abscissa and their corresponding Weights. The
- * References are:
+ * <i>ERFCCraig1991</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using Newton-Cotes
+ * Grids. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -93,101 +101,100 @@ package org.drip.numerical.integration;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/newtoncotes/README.md">R<sup>1</sup> Newton-Cotes Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Quadrature
+public class ERFCCraig1991
 {
-	private org.drip.numerical.common.Array2D _nodeWeightArray = null;
-	private org.drip.numerical.integration.AbscissaTransformer _abscissaTransformer = null;
 
-	/**
-	 * Quadrature Constructor
-	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
-	 * @param nodeWeightArray Array of the Nodes and Weights
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Quadrature (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
-		final org.drip.numerical.common.Array2D nodeWeightArray)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (null == (_abscissaTransformer = abscissaTransformer) ||
-			null == (_nodeWeightArray = nodeWeightArray))
+		EnvManager.InitEnv ("");
+
+		int nodeCount10 = 10;
+		int nodeCount50 = 50;
+		int nodeCount100 = 100;
+
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|                      Craig 1991 erfc Estimate                      ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                     ||");
+
+		System.out.println ("\t|                - x                                                 ||");
+
+		System.out.println ("\t|                - Built-in Estimate                                 ||");
+
+		System.out.println ("\t|                - Newton Cotes Estimate (10 Nodes)                  ||");
+
+		System.out.println ("\t|                - Newton Cotes Estimate (50 Nodes)                  ||");
+
+		System.out.println ("\t|                - Newton Cotes Estimate (100 Nodes)                 ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			throw new java.lang.Exception ("Quadrature Constructor => Invalid Inputs");
-		}
-	}
+			final double x = builtInTableEntry.getKey();
 
-	/**
-	 * Retrieve the Abscissa Transformer
-	 * 
-	 * @return The Abscissa Transformer
-	 */
+			double erfcTable = builtInTableEntry.getValue().erfc();
 
-	public org.drip.numerical.integration.AbscissaTransformer abscissaTransformer()
-	{
-		return _abscissaTransformer;
-	}
+			R1ToR1 erfcIntegrand = new R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double theta)
+					throws java.lang.Exception
+				{
+					if (0. == theta)
+					{
+						return 0.;
+					}
 
-	/**
-	 * Retrieve the 2D Array of Nodes and Weights
-	 * 
-	 * @return 2D Array of Nodes and Weights
-	 */
+					double sinTheta = java.lang.Math.sin (theta);
 
-	public org.drip.numerical.common.Array2D nodeWeightArray()
-	{
-		return _nodeWeightArray;
-	}
+					return 2. * java.lang.Math.exp (-1. * x * x / (sinTheta * sinTheta)) / Math.PI;
+				}
+			};
 
-	/**
-	 * Integrate the Specified Integrand over the Nodes
-	 * 
-	 * @param r1ToR1Integrand The R<sup>1</sup> To R<sup>1</sup> Integrand
-	 * 
-	 * @return The Integrand Quadrature
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+			double erfcEstimate10 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				0.,
+				0.5 * Math.PI,
+				nodeCount10
+			).integrate (erfcIntegrand);
 
-	public double integrate (
-		final org.drip.function.definition.R1ToR1 r1ToR1Integrand)
-		throws java.lang.Exception
-	{
-		if (null == r1ToR1Integrand)
-		{
-			throw new java.lang.Exception ("Quadrature::integrate => Invalid Inputs");
-		}
+			double erfcEstimate50 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				0.,
+				0.5 * Math.PI,
+				nodeCount50
+			).integrate (erfcIntegrand);
 
-		double[] weightArray = _nodeWeightArray.y();
+			double erfcEstimate100 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				0.,
+				0.5 * Math.PI,
+				nodeCount100
+			).integrate (erfcIntegrand);
 
-		double[] abscissaArray = _nodeWeightArray.x();
-
-		double quadrature = 0.;
-		int nodeCount = abscissaArray.length;
-
-		double quadratureScale = _abscissaTransformer.quadratureScale();
-
-		org.drip.function.definition.R1ToR1 r1ValueTransform = _abscissaTransformer.r1ValueTransform();
-
-		org.drip.function.definition.R1ToR1 r1ToR1VariateTransform =
-			_abscissaTransformer.r1ToR1VariateTransform();
-
-		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
-		{
-			quadrature = quadrature + quadratureScale * weightArray[nodeIndex] *
-				r1ValueTransform.evaluate (abscissaArray[nodeIndex]) *
-				r1ToR1Integrand.evaluate (r1ToR1VariateTransform.evaluate (abscissaArray[nodeIndex]));
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate10, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate50, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate100, 1, 9, 1.) + " ||"
+			);
 		}
 
-		return quadrature;
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

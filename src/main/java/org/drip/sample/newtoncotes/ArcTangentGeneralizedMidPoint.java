@@ -1,5 +1,8 @@
 
-package org.drip.numerical.integration;
+package org.drip.sample.newtoncotes;
+
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,29 +67,28 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>GaussQuadratureGenerator</i> generates the Array of Gaussian Quadrature Based Abscissa and their
- * corresponding Weights. The References are:
+ * <i>ArcTangentGeneralizedMidPoint</i> computes the R<sup>1</sup> Numerical Estimate of the tan<sup>-1</sup>
+ * using the Generalized Mid-Point Quadrature. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Briol, F. X., C. J. Oates, M. Girolami, and M. A. Osborne (2015): <i>Frank-Wolfe Bayesian
+ * 				Quadrature: Probabilistic Integration with Theoretical Guarantees</i> <b>arXiv</b>
  * 		</li>
  * 		<li>
- * 			Laurie, D. (1997): Calculation of Gauss-Kronrod Quadrature Rules <i>Mathematics of
- * 				Computation</i> <b>66 (219)</b> 1133-1145
+ * 			Forsythe, G. E., M. A. Malcolm, and C. B. Moler (1977): <i>Computer Methods for Mathematical
+ * 				Computation</i> <b>Prentice Hall</b> Englewood Cliffs NJ
  * 		</li>
  * 		<li>
- * 			Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i>
+ * 			Leader, J. J. (2004): <i>Numerical Analysis and Scientific Computation</i> <b>Addison Wesley</b>
+ * 		</li>
+ * 		<li>
+ * 			Stoer, J., and R. Bulirsch (1980): <i>Introduction to Numerical Analysis</i>
  * 				<b>Springer-Verlag</b> New York
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019a): Gauss-Kronrod Quadrature Formula
- * 				https://en.wikipedia.org/wiki/Gauss%E2%80%93Kronrod_quadrature_formula
- * 		</li>
- * 		<li>
- * 			Wikipedia (2019b): Gaussian Quadrature https://en.wikipedia.org/wiki/Gaussian_quadrature
+ * 			Wikipedia (2019): Numerical Integration https://en.wikipedia.org/wiki/Numerical_integration
  * 		</li>
  * 	</ul>
  *
@@ -94,60 +96,90 @@ package org.drip.numerical.integration;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/newtoncotes/README.md">R<sup>1</sup> Newton-Cotes Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class GaussQuadratureGenerator
+public class ArcTangentGeneralizedMidPoint
 {
 
-	/**
-	 * Generate the Nested/Embedded G7 Gaussian Quadrature over (0, +1)
-	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
-	 * 
-	 * @return The Nested/Embedded G7 Gaussian Quadrature over (0, +1)
-	 */
-
-	public static final org.drip.numerical.integration.Quadrature G7 (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+	private static final double ArcTangent (
+		final double z,
+		final int termCount)
+		throws Exception
 	{
-		try
+		double b = 1.;
+		double a = 2. / z;
+		double arcTangent = 0.;
+
+		for (int termIndex = 1; termIndex <= termCount; ++termIndex)
 		{
-			return new org.drip.numerical.integration.Quadrature (
-				abscissaTransformer,
-				org.drip.numerical.common.Array2D.FromArray (
-					new double[]
-					{
-						-0.949107912342759,
-						-0.741531185599394,
-						-0.405845151377397,
-						 0.000000000000000,
-						 0.405845151377397,
-						 0.741531185599394,
-						 0.949107912342759,
-					},
-					new double[]
-					{
-						0.129484966168870,
-						0.279705391489277,
-						0.381830050505119,
-						0.417959183673469,
-						0.381830050505119,
-						0.279705391489277,
-						0.129484966168870,
-					}
-				)
+			arcTangent = arcTangent + (a / ((a * a + b * b) * (2 * termIndex - 1)));
+			a = a * (1. - (4. / (z * z))) + 4. * (b / z);
+			b = b * (1. - (4. / (z * z))) - 4. * (a / z);
+		}
+
+		return 2. * arcTangent;
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int termCount = 10;
+		double[] rValueArray =
+		{
+			 1. / 32.,
+			 1. / 16.,
+			 1. /  8.,
+			 1. /  4.,
+			 1. /  2.,
+			 1.,
+			 2.,
+			 4.,
+			 8.,
+			16.,
+			32.,
+			64.
+		};
+
+		System.out.println ("\t|-----------------------------------||");
+
+		System.out.println ("\t|   ARC TANGENT SERIES ESTIMATION   ||");
+
+		System.out.println ("\t|-----------------------------------||");
+
+		System.out.println ("\t|      L -> R:                      ||");
+
+		System.out.println ("\t|            - z                    ||");
+
+		System.out.println ("\t|            - System               ||");
+
+		System.out.println ("\t|            - Series               ||");
+
+		System.out.println ("\t|-----------------------------------||");
+
+		for (double rValue : rValueArray)
+		{
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (rValue, 2, 5, 1.) + " => " +
+				FormatUtil.FormatDouble (Math.atan (rValue), 1, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (
+					ArcTangent (
+						rValue,
+						termCount
+					), 1, 6, 1.
+				) + " ||"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+		System.out.println ("\t|-----------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

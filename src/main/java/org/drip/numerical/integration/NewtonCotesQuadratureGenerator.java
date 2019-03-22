@@ -112,7 +112,7 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (0, +1)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature Zero_PlusOne (
+	public static final org.drip.numerical.integration.QuadratureEstimator Zero_PlusOne (
 		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
 		final int intermediatePointCount)
 	{
@@ -139,7 +139,7 @@ public class NewtonCotesQuadratureGenerator
 
 		try
 		{
-			return new org.drip.numerical.integration.Quadrature (
+			return new org.drip.numerical.integration.QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					abscissaArray,
@@ -165,7 +165,7 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (1, +1)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature MinusOne_PlusOne (
+	public static final org.drip.numerical.integration.QuadratureEstimator MinusOne_PlusOne (
 		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
 		final int intermediatePointCount)
 	{
@@ -192,7 +192,7 @@ public class NewtonCotesQuadratureGenerator
 
 		try
 		{
-			return new org.drip.numerical.integration.Quadrature (
+			return new org.drip.numerical.integration.QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					abscissaArray,
@@ -218,13 +218,13 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (a, b) onto (0, +1)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature Zero_PlusOne (
+	public static final org.drip.numerical.integration.QuadratureEstimator Zero_PlusOne (
 		final double left,
 		final double right,
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScale0_1 (
+			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleZero_PlusOne (
 				left,
 				right
 			),
@@ -242,13 +242,13 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (a, b) onto (-1, +1)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature MinusOne_PlusOne (
+	public static final org.drip.numerical.integration.QuadratureEstimator MinusOne_PlusOne (
 		final double left,
 		final double right,
 		final int intermediatePointCount)
 	{
 		return MinusOne_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinus1_1 (
+			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			),
@@ -265,7 +265,7 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes Quadrature for the Gauss-Laguerre Left-Definite Integral over (a, +Infinity)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature GaussLaguerreLeftDefinite (
+	public static final org.drip.numerical.integration.QuadratureEstimator GaussLaguerreLeftDefinite (
 		final double left,
 		final int intermediatePointCount)
 	{
@@ -284,7 +284,7 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes Quadrature for the Gauss-Laguerre Left-Definite Integral over (-Infinity, a)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature GaussLaguerreRightDefinite (
+	public static final org.drip.numerical.integration.QuadratureEstimator GaussLaguerreRightDefinite (
 		final double right,
 		final int intermediatePointCount)
 	{
@@ -304,7 +304,7 @@ public class NewtonCotesQuadratureGenerator
 	 * 		(-Infinity, +Infinity)
 	 */
 
-	public static final org.drip.numerical.integration.Quadrature GaussHermite (
+	public static final org.drip.numerical.integration.QuadratureEstimator GaussHermite (
 		final int intermediatePointCount)
 	{
 		return MinusOne_PlusOne (

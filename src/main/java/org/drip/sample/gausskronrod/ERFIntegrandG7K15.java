@@ -1,9 +1,14 @@
 
-package org.drip.sample.quadrature;
+package org.drip.sample.gausskronrod;
+
+import java.util.Map;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.function.e2erf.BuiltInEntry;
+import org.drip.function.e2erf.ErrorFunction;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
+import org.drip.numerical.integration.QuadratureEstimate;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -69,29 +74,30 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>NormalIntegrandGaussLaguerreLeft</i> computes the R<sup>1</sup> Numerical Estimate of the Normal
- * Integrand using Gauss-Laguerre Transform over the Right Half R<sup>+</sup> Range using the Newton-Cotes
- * Quadrature. The References are:
+ * <i>ERFIntegrandG7K15</i> computes the R<sup>1</sup> Nested Numerical Estimate and Error of the erf
+ * Integrand using the G7-K15 Gaussian Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Briol, F. X., C. J. Oates, M. Girolami, and M. A. Osborne (2015): <i>Frank-Wolfe Bayesian
- * 				Quadrature: Probabilistic Integration with Theoretical Guarantees</i> <b>arXiv</b>
+ * 			Holoborodko, P. (2011): Gauss-Kronrod Quadrature Nodes and Weights
+ * 				https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/
  * 		</li>
  * 		<li>
- * 			Forsythe, G. E., M. A. Malcolm, and C. B. Moler (1977): <i>Computer Methods for Mathematical
- * 				Computation</i> <b>Prentice Hall</b> Englewood Cliffs NJ
+ * 			Kahaner, D., C. Moler, and S. Nash (1989): <i>Numerical Methods and Software</i> <b>Prentice
+ * 				Hall</b>
  * 		</li>
  * 		<li>
- * 			Leader, J. J. (2004): <i>Numerical Analysis and Scientific Computation</i> <b>Addison Wesley</b>
+ * 			Laurie, D. (1997): Calculation of Gauss-Kronrod Quadrature Rules <i>Mathematics of
+ * 				Computation</i> <b>66 (219)</b> 1133-1145
  * 		</li>
  * 		<li>
- * 			Stoer, J., and R. Bulirsch (1980): <i>Introduction to Numerical Analysis</i>
- * 				<b>Springer-Verlag</b> New York
+ * 			Piessens, R., E. de Doncker-Kapenga, C. W. Uberhuber, and D. K. Kahaner (1983): <i>QUADPACK – A
+ * 				Subroutine Package for Automatic Integration</i> <b>Springer-Verlag</b>
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Numerical Integration https://en.wikipedia.org/wiki/Numerical_integration
+ * 			Wikipedia (2019): Gauss-Kronrod Quadrature Formula
+ * 				https://en.wikipedia.org/wiki/Gauss%E2%80%93Kronrod_quadrature_formula
  * 		</li>
  * 	</ul>
  *
@@ -99,14 +105,14 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/quadrature/README.md">R<sup>1</sup> Numerical Integration Quadrature Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/gausskronrod/README.md">R<sup>1</sup> Gauss-Kronrod Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalIntegrandGaussLaguerreLeft
+public class ERFIntegrandG7K15
 {
 
 	public static final void main (
@@ -115,57 +121,51 @@ public class NormalIntegrandGaussLaguerreLeft
 	{
 		EnvManager.InitEnv ("");
 
-		int[] intermediatePointCountArray =
+		R1ToR1 erfIntegrand = new ErrorFunction (
+			null,
+			null
+		).integrand();
+
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t|            erf Integrand G7-K15 Estimate            ||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                      ||");
+
+		System.out.println ("\t|                - x                                  ||");
+
+		System.out.println ("\t|                - Built-in Estimate                  ||");
+
+		System.out.println ("\t|                - G7-K15 Estimate                    ||");
+
+		System.out.println ("\t|                - Estimation Error                   ||");
+
+		System.out.println ("\t|-----------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			 20,
-			 40,
-			 60,
-			 80,
-			100,
-			120,
-			140,
-			160,
-			180,
-			200
-		};
+			double x = builtInTableEntry.getKey();
 
-		R1ToR1 normalDensity = new R1ToR1 (null)
-		{
-			@Override public double evaluate (
-				final double z)
-			{
-				return Math.exp (-0.5 * z * z) / Math.sqrt (2. * Math.PI);
-			}
-		};
+			double erfTable = builtInTableEntry.getValue().erf();
 
-		System.out.println ("\t|--------------------||");
+			QuadratureEstimate quadratureEstimate = GaussKronrodQuadratureGenerator.G7K15 (
+				0.,
+				x
+			).estimate (erfIntegrand);
 
-		System.out.println ("\t|   GAUSS LAGUERRE   ||");
-
-		System.out.println ("\t|--------------------||");
-
-		System.out.println ("\t|    L -> R:         ||");
-
-		System.out.println ("\t|        - Points    ||");
-
-		System.out.println ("\t|        - Quad      ||");
-
-		System.out.println ("\t|--------------------||");
-
-		for (int intermediatePointCount : intermediatePointCountArray)
-		{
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (intermediatePointCount, 3, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-						0.,
-						intermediatePointCount
-					).integrate (normalDensity), 1, 8, 1.
-				) + " ||"
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (quadratureEstimate.baseline(), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (quadratureEstimate.error(), 1, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

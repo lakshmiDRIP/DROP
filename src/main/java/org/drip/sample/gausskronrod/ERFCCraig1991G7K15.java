@@ -1,12 +1,13 @@
 
-package org.drip.sample.quadrature;
+package org.drip.sample.gausskronrod;
 
 import java.util.Map;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
+import org.drip.numerical.integration.QuadratureEstimate;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -72,28 +73,30 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIntegrandNewtonCotes</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using
- * Newton-Cotes Grids. The References are:
+ * <i>ERFCCraig1991G7K15</i> computes the R<sup>1</sup> Nested Numerical Estimate and Error of the erfc
+ * Integrand using the G7-K15 Gaussian Integration Quadrature Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Briol, F. X., C. J. Oates, M. Girolami, and M. A. Osborne (2015): <i>Frank-Wolfe Bayesian
- * 				Quadrature: Probabilistic Integration with Theoretical Guarantees</i> <b>arXiv</b>
+ * 			Holoborodko, P. (2011): Gauss-Kronrod Quadrature Nodes and Weights
+ * 				https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/
  * 		</li>
  * 		<li>
- * 			Forsythe, G. E., M. A. Malcolm, and C. B. Moler (1977): <i>Computer Methods for Mathematical
- * 				Computation</i> <b>Prentice Hall</b> Englewood Cliffs NJ
+ * 			Kahaner, D., C. Moler, and S. Nash (1989): <i>Numerical Methods and Software</i> <b>Prentice
+ * 				Hall</b>
  * 		</li>
  * 		<li>
- * 			Leader, J. J. (2004): <i>Numerical Analysis and Scientific Computation</i> <b>Addison Wesley</b>
+ * 			Laurie, D. (1997): Calculation of Gauss-Kronrod Quadrature Rules <i>Mathematics of
+ * 				Computation</i> <b>66 (219)</b> 1133-1145
  * 		</li>
  * 		<li>
- * 			Stoer, J., and R. Bulirsch (1980): <i>Introduction to Numerical Analysis</i>
- * 				<b>Springer-Verlag</b> New York
+ * 			Piessens, R., E. de Doncker-Kapenga, C. W. Uberhuber, and D. K. Kahaner (1983): <i>QUADPACK – A
+ * 				Subroutine Package for Automatic Integration</i> <b>Springer-Verlag</b>
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Numerical Integration https://en.wikipedia.org/wiki/Numerical_integration
+ * 			Wikipedia (2019): Gauss-Kronrod Quadrature Formula
+ * 				https://en.wikipedia.org/wiki/Gauss%E2%80%93Kronrod_quadrature_formula
  * 		</li>
  * 	</ul>
  *
@@ -101,14 +104,14 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/quadrature/README.md">R<sup>1</sup> Numerical Integration Quadrature Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/gausskronrod/README.md">R<sup>1</sup> Gauss-Kronrod Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFCCraig1991NewtonCotes
+public class ERFCCraig1991G7K15
 {
 
 	public static final void main (
@@ -117,31 +120,25 @@ public class ERFCCraig1991NewtonCotes
 	{
 		EnvManager.InitEnv ("");
 
-		int nodeCount10 = 10;
-		int nodeCount50 = 50;
-		int nodeCount100 = 100;
-
 		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-		System.out.println ("\t|--------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                      Craig 1991 erfc Estimate                      ||");
+		System.out.println ("\t|               Craig 1991 erfc Estimate              ||");
 
-		System.out.println ("\t|--------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                                     ||");
+		System.out.println ("\t|        L -> R:                                      ||");
 
-		System.out.println ("\t|                - x                                                 ||");
+		System.out.println ("\t|                - x                                  ||");
 
-		System.out.println ("\t|                - Built-in Estimate                                 ||");
+		System.out.println ("\t|                - Built-in Estimate                  ||");
 
-		System.out.println ("\t|                - Newton Cotes Estimate (10 Nodes)                  ||");
+		System.out.println ("\t|                - G7-K15 Estimate                    ||");
 
-		System.out.println ("\t|                - Newton Cotes Estimate (50 Nodes)                  ||");
+		System.out.println ("\t|                - Estimation Error                   ||");
 
-		System.out.println ("\t|                - Newton Cotes Estimate (100 Nodes)                 ||");
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
@@ -166,34 +163,20 @@ public class ERFCCraig1991NewtonCotes
 				}
 			};
 
-			double erfcEstimate10 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+			QuadratureEstimate quadratureEstimate = GaussKronrodQuadratureGenerator.G7K15 (
 				0.,
-				0.5 * Math.PI,
-				nodeCount10
-			).integrate (erfcIntegrand);
-
-			double erfcEstimate50 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
-				0.,
-				0.5 * Math.PI,
-				nodeCount50
-			).integrate (erfcIntegrand);
-
-			double erfcEstimate100 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
-				0.,
-				0.5 * Math.PI,
-				nodeCount100
-			).integrate (erfcIntegrand);
+				0.5 * Math.PI
+			).estimate (erfcIntegrand);
 
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
 				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfcEstimate10, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfcEstimate50, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfcEstimate100, 1, 9, 1.) + " ||"
+				FormatUtil.FormatDouble (quadratureEstimate.baseline(), 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (quadratureEstimate.error(), 1, 9, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

@@ -1,10 +1,5 @@
 
-package org.drip.sample.quadrature;
-
-import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
-import org.drip.service.env.EnvManager;
+package org.drip.numerical.integration;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,9 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>NormalIntegrandGaussLaguerreRight</i> computes the R<sup>1</sup> Numerical Estimate of the Normal
- * Integrand using Gauss-Laguerre Transform over the Left Half R<sup>-</sup> Range using the Newton-Cotes
- * Quadrature. The References are:
+ * <i>QuadratureEstimate</i> contains the Estimate of the Integrand Quadrature and its corresponding Error.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -99,74 +93,58 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/quadrature/README.md">R<sup>1</sup> Numerical Integration Quadrature Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalIntegrandGaussLaguerreRight
+public class QuadratureEstimate
 {
+	private double _error = java.lang.Double.NaN;
+	private double _baseline = java.lang.Double.NaN;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * QuadratureEstimate Constructor
+	 * 
+	 * @param baseline Baseline Quadrature Estimate
+	 * @param error Quadrature Error Estimate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public QuadratureEstimate (
+		final double baseline,
+		final double error)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
-
-		int[] intermediatePointCountArray =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_baseline = baseline) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_error = error) || 0. > _error)
 		{
-			 20,
-			 40,
-			 60,
-			 80,
-			100,
-			120,
-			140,
-			160,
-			180,
-			200
-		};
-
-		R1ToR1 normalDensity = new R1ToR1 (null)
-		{
-			@Override public double evaluate (
-				final double z)
-			{
-				return Math.exp (-0.5 * z * z) / Math.sqrt (2. * Math.PI);
-			}
-		};
-
-		System.out.println ("\t|--------------------||");
-
-		System.out.println ("\t|   GAUSS LAGUERRE   ||");
-
-		System.out.println ("\t|--------------------||");
-
-		System.out.println ("\t|    L -> R:         ||");
-
-		System.out.println ("\t|        - Points    ||");
-
-		System.out.println ("\t|        - Quad      ||");
-
-		System.out.println ("\t|--------------------||");
-
-		for (int intermediatePointCount : intermediatePointCountArray)
-		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (intermediatePointCount, 3, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (
-						0.,
-						intermediatePointCount
-					).integrate (normalDensity), 1, 8, 1.
-				) + " ||"
-			);
+			throw new java.lang.Exception ("QuadratureEstimate Constructor => Invalid Inputs");
 		}
+	}
 
-		System.out.println ("\t|--------------------||");
+	/**
+	 * Retrieve the Baseline Quadrature Estimate
+	 * 
+	 * @return The Baseline Quadrature Estimate
+	 */
 
-		EnvManager.TerminateEnv();
+	public double baseline()
+	{
+		return _baseline;
+	}
+
+	/**
+	 * Retrieve the Quadrature Error Estimate
+	 * 
+	 * @return The Quadrature Error Estimate
+	 */
+
+	public double error()
+	{
+		return _error;
 	}
 }

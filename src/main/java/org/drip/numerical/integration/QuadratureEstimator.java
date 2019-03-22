@@ -1,10 +1,5 @@
 
-package org.drip.sample.quadrature;
-
-import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
-import org.drip.service.env.EnvManager;
+package org.drip.numerical.integration;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,9 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>NormalIntegrandGaussHermite</i> computes the R<sup>1</sup> Numerical Estimate of the Normal Integrand
- * using Gauss-Hermite Transform over the Whole R<sup>1</sup> Range using the Newton-Cotes Quadrature. The
- * References are:
+ * <i>QuadratureEstimator</i> estimates an Integrand Quadrature using the Array of Quadrature Abscissa and
+ * their corresponding Weights. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -99,71 +93,101 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/quadrature/README.md">R<sup>1</sup> Numerical Integration Quadrature Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalIntegrandGaussHermite
+public class QuadratureEstimator
 {
+	private org.drip.numerical.common.Array2D _nodeWeightArray = null;
+	private org.drip.numerical.integration.AbscissaTransformer _abscissaTransformer = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * QuadratureEstimator Constructor
+	 * 
+	 * @param abscissaTransformer The Abscissa Transformer
+	 * @param nodeWeightArray Array of the Nodes and Weights
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public QuadratureEstimator (
+		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
+		final org.drip.numerical.common.Array2D nodeWeightArray)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
-
-		int[] intermediatePointCountArray =
+		if (null == (_abscissaTransformer = abscissaTransformer) ||
+			null == (_nodeWeightArray = nodeWeightArray))
 		{
-			 20,
-			 40,
-			 60,
-			 80,
-			100,
-			120,
-			140,
-			160,
-			180,
-			200
-		};
+			throw new java.lang.Exception ("QuadratureEstimator Constructor => Invalid Inputs");
+		}
+	}
 
-		R1ToR1 normalDensity = new R1ToR1 (null)
+	/**
+	 * Retrieve the Abscissa Transformer
+	 * 
+	 * @return The Abscissa Transformer
+	 */
+
+	public org.drip.numerical.integration.AbscissaTransformer abscissaTransformer()
+	{
+		return _abscissaTransformer;
+	}
+
+	/**
+	 * Retrieve the 2D Array of Nodes and Weights
+	 * 
+	 * @return 2D Array of Nodes and Weights
+	 */
+
+	public org.drip.numerical.common.Array2D nodeWeightArray()
+	{
+		return _nodeWeightArray;
+	}
+
+	/**
+	 * Integrate the Specified Integrand over the Nodes
+	 * 
+	 * @param r1ToR1Integrand The R<sup>1</sup> To R<sup>1</sup> Integrand
+	 * 
+	 * @return The Integrand Quadrature
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double integrate (
+		final org.drip.function.definition.R1ToR1 r1ToR1Integrand)
+		throws java.lang.Exception
+	{
+		if (null == r1ToR1Integrand)
 		{
-			@Override public double evaluate (
-				final double z)
-			{
-				return Math.exp (-0.5 * z * z) / Math.sqrt (2. * Math.PI);
-			}
-		};
-
-		System.out.println ("\t|--------------------||");
-
-		System.out.println ("\t| GAUSS HERMITE QUAD ||");
-
-		System.out.println ("\t|--------------------||");
-
-		System.out.println ("\t|    L -> R:         ||");
-
-		System.out.println ("\t|        - Points    ||");
-
-		System.out.println ("\t|        - Quad      ||");
-
-		System.out.println ("\t|--------------------||");
-
-		for (int intermediatePointCount : intermediatePointCountArray)
-		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (intermediatePointCount, 3, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					NewtonCotesQuadratureGenerator.GaussHermite (intermediatePointCount).integrate (normalDensity), 1, 8, 1.
-				) + " ||"
-			);
+			throw new java.lang.Exception ("QuadratureEstimator::integrate => Invalid Inputs");
 		}
 
-		System.out.println ("\t|--------------------||");
+		double[] weightArray = _nodeWeightArray.y();
 
-		EnvManager.TerminateEnv();
+		double[] abscissaArray = _nodeWeightArray.x();
+
+		double quadrature = 0.;
+		int nodeCount = abscissaArray.length;
+
+		double quadratureScale = _abscissaTransformer.quadratureScale();
+
+		org.drip.function.definition.R1ToR1 r1ValueTransform = _abscissaTransformer.r1ValueTransform();
+
+		org.drip.function.definition.R1ToR1 r1ToR1VariateTransform =
+			_abscissaTransformer.r1ToR1VariateTransform();
+
+		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
+		{
+			quadrature = quadrature + quadratureScale * weightArray[nodeIndex] *
+				r1ValueTransform.evaluate (abscissaArray[nodeIndex]) *
+				r1ToR1Integrand.evaluate (r1ToR1VariateTransform.evaluate (abscissaArray[nodeIndex]));
+		}
+
+		return quadrature;
 	}
 }

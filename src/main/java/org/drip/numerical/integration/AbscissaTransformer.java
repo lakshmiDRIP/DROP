@@ -107,15 +107,15 @@ public class AbscissaTransformer
 	private org.drip.function.definition.R1ToR1 _r1ToR1VariateTransform = null;
 
 	/**
-	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (0, 1)
+	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (0, +1)
 	 * 
 	 * @param left Span Left
 	 * @param right Span Right
 	 * 
-	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (0, 1)
+	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (0, +1)
 	 */
 
-	public static final AbscissaTransformer DisplaceAndScale0_1 (
+	public static final AbscissaTransformer DisplaceAndScaleZero_PlusOne (
 		final double left,
 		final double right)
 	{
@@ -156,15 +156,15 @@ public class AbscissaTransformer
 	}
 
 	/**
-	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (-1, 1)
+	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (-1, +1)
 	 * 
 	 * @param left Span Left
 	 * @param right Span Right
 	 * 
-	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (-1, 1)
+	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (-1, +1)
 	 */
 
-	public static final AbscissaTransformer DisplaceAndScaleMinus1_1 (
+	public static final AbscissaTransformer DisplaceAndScaleMinusOne_PlusOne (
 		final double left,
 		final double right)
 	{
