@@ -107,15 +107,15 @@ public class AbscissaTransformer
 	private org.drip.function.definition.R1ToR1 _r1ToR1VariateTransform = null;
 
 	/**
-	 * Generate the Scaled and Displaced Abscissa Transformer
+	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (0, 1)
 	 * 
 	 * @param left Span Left
 	 * @param right Span Right
 	 * 
-	 * @return The Scaled and Displaced Abscissa Transformer
+	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (0, 1)
 	 */
 
-	public static final AbscissaTransformer DisplaceAndScale (
+	public static final AbscissaTransformer DisplaceAndScale0_1 (
 		final double left,
 		final double right)
 	{
@@ -156,6 +156,58 @@ public class AbscissaTransformer
 	}
 
 	/**
+	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (-1, 1)
+	 * 
+	 * @param left Span Left
+	 * @param right Span Right
+	 * 
+	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (-1, 1)
+	 */
+
+	public static final AbscissaTransformer DisplaceAndScaleMinus1_1 (
+		final double left,
+		final double right)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (left) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (right))
+		{
+			return null;
+		}
+
+		final double scale = 0.5 * (right - left);
+		final double offset = 0.5 * (right + left);
+
+		try
+		{
+			return new AbscissaTransformer (
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return scale * x + offset;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return 1.;
+					}
+				},
+				scale
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Generate the Gauss-Hermite Abscissa Transformer
 	 * 
 	 * @return The Gauss-Hermite Abscissa Transformer
@@ -181,7 +233,7 @@ public class AbscissaTransformer
 					{
 						double xSquared = x * x;
 
-						return (1. + xSquared) / (1. - xSquared) / (1. - xSquared);
+						return -1. == x || 1. == x ? 0. : (1. + xSquared) / (1. - xSquared) / (1. - xSquared);
 					}
 				},
 				1.
@@ -227,7 +279,53 @@ public class AbscissaTransformer
 					@Override public double evaluate (
 						final double x)
 					{
-						return 1. / (1. - x) / (1. - x);
+						return -1. == x || 1. == x ? 0. : 1. / (1. - x) / (1. - x);
+					}
+				},
+				1.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Gauss-Laguerre Abscissa Transformer for Integrals in [-Infinity, a]
+	 * 
+	 * @param right Span Right
+	 * 
+	 * @return The Gauss-Laguerre Abscissa Transformer for Integrals in [-Infinity, a]
+	 */
+
+	public static final AbscissaTransformer GaussLaguerreRightDefinite (
+		final double right)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (right))
+		{
+			return null;
+		}
+
+		try
+		{
+			return new AbscissaTransformer (
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return right - ((1. - x) / x);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+					{
+						return 0. == x ? 0. : 1. / (x * x);
 					}
 				},
 				1.

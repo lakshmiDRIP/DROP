@@ -138,36 +138,46 @@ public class ErrorFunctionComplementAnalytical
 		final double A,
 		final double B)
 	{
-		return !org.drip.numerical.common.NumberUtil.IsValid (A) || !org.drip.numerical.common.NumberUtil.IsValid (B)
-			? null : new org.drip.function.e2erfc.ErrorFunctionComplement (
-				null,
-				null
-			)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+			return !org.drip.numerical.common.NumberUtil.IsValid (A) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (B) ? null :
+					new org.drip.function.e2erfc.ErrorFunctionComplement (
+						null,
+						null
+					)
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplementAnalytical::KaragiannidisLioumpas2007::evaluate => Invalid Inputs");
-				}
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("ErrorFunctionComplementAnalytical::KaragiannidisLioumpas2007::evaluate => Invalid Inputs");
+						}
 
-				if (0. == z)
-				{
-					return 1.;
-				}
+						if (0. == z)
+						{
+							return 1.;
+						}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
+						if (z < 0)
+						{
+							return 2. - evaluate (-1. * z);
+						}
 
-				return (1. - java.lang.Math.exp (-1. * A * z)) * java.lang.Math.exp (-1. * z * z) /
-					(B * z * java.lang.Math.sqrt (java.lang.Math.PI));
-			}
-		};
+						return (1. - java.lang.Math.exp (-1. * A * z)) * java.lang.Math.exp (-1. * z * z) /
+							(B * z * java.lang.Math.sqrt (java.lang.Math.PI));
+					}
+				};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -192,55 +202,64 @@ public class ErrorFunctionComplementAnalytical
 
 	public static final org.drip.function.e2erfc.ErrorFunctionComplement ChianiDardariSimon2012a()
 	{
-		return new org.drip.function.e2erfc.ErrorFunctionComplement (
-			null,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new org.drip.function.e2erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012a::evaluate => Invalid Inputs");
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012a::evaluate => Invalid Inputs");
+					}
+
+					if (0. == z)
+					{
+						return 1.;
+					}
+
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
+
+					return 0.5 * java.lang.Math.exp (-2. * z * z) + 0.5 * java.lang.Math.exp (-1. * z * z);
 				}
 
-				if (0. == z)
+				@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
+					final double z)
 				{
-					return 1.;
+					try
+					{
+						double baseline = evaluate (z);
+
+						return new org.drip.numerical.estimation.R1Estimate (
+							baseline,
+							baseline,
+							java.lang.Math.exp (-1. * z * z)
+						);
+					}
+					catch (java.lang.Exception e)
+					{
+						e.printStackTrace();
+					}
+
+					return null;
 				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
-
-				return 0.5 * java.lang.Math.exp (-2. * z * z) + 0.5 * java.lang.Math.exp (-1. * z * z);
-			}
-
-			@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
-				final double z)
-			{
-				try
-				{
-					double baseline = evaluate (z);
-
-					return new org.drip.numerical.estimation.R1Estimate (
-						baseline,
-						baseline,
-						java.lang.Math.exp (-1. * z * z)
-					);
-				}
-				catch (java.lang.Exception e)
-				{
-					e.printStackTrace();
-				}
-
-				return null;
-			}
-		};
+		return null;
 	}
 
 	/**
@@ -251,34 +270,43 @@ public class ErrorFunctionComplementAnalytical
 
 	public static final org.drip.function.e2erfc.ErrorFunctionComplement ChianiDardariSimon2012b()
 	{
-		return new org.drip.function.e2erfc.ErrorFunctionComplement (
-			null,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new org.drip.function.e2erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012b::evaluate => Invalid Inputs");
-				}
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplementAnalytical::ChianiDardariSimon2012b::evaluate => Invalid Inputs");
+					}
 
-				if (0. == z)
-				{
-					return 1.;
-				}
+					if (0. == z)
+					{
+						return 1.;
+					}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
 
-				return java.lang.Math.exp (-1. * z * z) / 6. + 0.5 * java.lang.Math.exp (-4. * z * z / 3.);
-			}
-		};
+					return java.lang.Math.exp (-1. * z * z) / 6. + 0.5 * java.lang.Math.exp (-4. * z * z / 3.);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -292,36 +320,45 @@ public class ErrorFunctionComplementAnalytical
 	public static final org.drip.function.e2erfc.ErrorFunctionComplement ChangCosmanMilstein2011 (
 		final double beta)
 	{
-		return !org.drip.numerical.common.NumberUtil.IsValid (beta) || 1. >= beta ? null :
-			new org.drip.function.e2erfc.ErrorFunctionComplement (
-				null,
-				null
-			)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return !org.drip.numerical.common.NumberUtil.IsValid (beta) || 1. >= beta ? null :
+				new org.drip.function.e2erfc.ErrorFunctionComplement (
+					null,
+					null
+				)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplementAnalytical::ChangCosmanMilstein2011::evaluate => Invalid Inputs");
-				}
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplementAnalytical::ChangCosmanMilstein2011::evaluate => Invalid Inputs");
+					}
 
-				if (0. == z)
-				{
-					return 1.;
-				}
+					if (0. == z)
+					{
+						return 1.;
+					}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
 
-				return java.lang.Math.sqrt (2. * java.lang.Math.E * (beta - 1.) / java.lang.Math.PI) *
-					java.lang.Math.exp (-1. * beta * z * z) / beta;
-			}
-		};
+					return java.lang.Math.sqrt (2. * java.lang.Math.E * (beta - 1.) / java.lang.Math.PI) *
+						java.lang.Math.exp (-1. * beta * z * z) / beta;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -335,38 +372,116 @@ public class ErrorFunctionComplementAnalytical
 	public static final org.drip.function.e2erfc.ErrorFunctionComplement ContinuedFractionExpansion (
 		final int termCount)
 	{
-		return 0 >= termCount ? null : new org.drip.function.e2erfc.ErrorFunctionComplement (
-			null,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return 0 >= termCount ? null : new org.drip.function.e2erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplementAnalytical::ContinuedFractionExpansion::evaluate => Invalid Inputs");
-				}
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplementAnalytical::ContinuedFractionExpansion::evaluate => Invalid Inputs");
+					}
 
-				if (0. == z)
+					if (0. == z)
+					{
+						return 1.;
+					}
+
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
+
+					return z * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI) /
+						ContinuedFractionRecursor (
+							z,
+							1,
+							termCount
+						);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Craig 1991 Version of the ErrorFunctionComplement Quadrature
+	 * 
+	 * @return The Craig 1991 Version of the ErrorFunctionComplement Quadrature
+	 */
+
+	public static final org.drip.function.e2erfc.ErrorFunctionComplement Craig1991()
+	{
+		try
+		{
+			return new org.drip.function.e2erfc.ErrorFunctionComplement (
+				null,
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					return 1.;
-				}
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplementAnalytical::Craig1991::evaluate => Invalid Inputs");
+					}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
+					if (0. == z)
+					{
+						return 1.;
+					}
 
-				return z * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI) /
-					ContinuedFractionRecursor (
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
+
+					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+						0.,
 						z,
-						1,
-						termCount
+						100
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double theta)
+								throws java.lang.Exception
+							{
+								if (0. == theta)
+								{
+									return 0.;
+								}
+
+								double sinTheta = java.lang.Math.sin (theta);
+
+								return 2. * java.lang.Math.exp (-1. * z * z / (sinTheta * sinTheta)) /
+									java.lang.Math.PI;
+							}
+						}
 					);
-			}
-		};
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -1,5 +1,13 @@
 
-package org.drip.numerical.integration;
+package org.drip.sample.quadrature;
+
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.e2erf.BuiltInEntry;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +72,8 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>QuadratureGenerator</i> generates the Array of Quadrature Abscissa and their corresponding Weights. The
- * References are:
+ * <i>ERFIntegrandNewtonCotes</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using
+ * Newton-Cotes Grids. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -93,109 +101,100 @@ package org.drip.numerical.integration;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Sample</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/quadrature/README.md">R<sup>1</sup> Numerical Integration Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadratureGenerator
+public class ERFCCraig1991NewtonCotes
 {
 
-	/**
-	 * Generate the Newton-Cotes of Equally Spaced Quadrature over (0, 1)
-	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
-	 * @param intermediatePointCount Number of Intermediate Points
-	 * 
-	 * @return The Newton-Cotes of Equally Spaced Quadrature over (0, 1)
-	 */
-
-	public static final org.drip.numerical.integration.Quadrature NewtonCotes0_1 (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
-		final int intermediatePointCount)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (0 >= intermediatePointCount)
-		{
-			return null;
-		}
+		EnvManager.InitEnv ("");
 
-		int nodeCount = intermediatePointCount + 2;
-		double width = 1. / (intermediatePointCount + 1);
-		double[] abscissaArray = new double[nodeCount];
-		double[] weightArray = new double[nodeCount];
-		weightArray[intermediatePointCount + 1] = 0.5 * width;
-		abscissaArray[intermediatePointCount + 1] = 1.;
-		weightArray[0] = 0.5 * width;
-		abscissaArray[0] = 0.;
+		int nodeCount10 = 10;
+		int nodeCount50 = 50;
+		int nodeCount100 = 100;
 
-		for (int intermediatePointIndex = 0; intermediatePointIndex < intermediatePointCount;
-			++intermediatePointIndex)
-		{
-			weightArray[intermediatePointIndex + 1] = width;
-			abscissaArray[intermediatePointIndex + 1] = width * (intermediatePointIndex + 1);
-		}
+		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
 
-		try
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|                      Craig 1991 erfc Estimate                      ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                     ||");
+
+		System.out.println ("\t|                - x                                                 ||");
+
+		System.out.println ("\t|                - Built-in Estimate                                 ||");
+
+		System.out.println ("\t|                - Newton Cotes Estimate (10 Nodes)                  ||");
+
+		System.out.println ("\t|                - Newton Cotes Estimate (50 Nodes)                  ||");
+
+		System.out.println ("\t|                - Newton Cotes Estimate (100 Nodes)                 ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
 		{
-			return new org.drip.numerical.integration.Quadrature (
-				abscissaTransformer,
-				org.drip.numerical.common.Array2D.FromArray (
-					abscissaArray,
-					weightArray
-				)
+			final double x = builtInTableEntry.getKey();
+
+			double erfcTable = builtInTableEntry.getValue().erfc();
+
+			R1ToR1 erfcIntegrand = new R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double theta)
+					throws java.lang.Exception
+				{
+					if (0. == theta)
+					{
+						return 0.;
+					}
+
+					double sinTheta = java.lang.Math.sin (theta);
+
+					return 2. * java.lang.Math.exp (-1. * x * x / (sinTheta * sinTheta)) / Math.PI;
+				}
+			};
+
+			double erfcEstimate10 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				0.,
+				0.5 * Math.PI,
+				nodeCount10
+			).integrate (erfcIntegrand);
+
+			double erfcEstimate50 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				0.,
+				0.5 * Math.PI,
+				nodeCount50
+			).integrate (erfcIntegrand);
+
+			double erfcEstimate100 = NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				0.,
+				0.5 * Math.PI,
+				nodeCount100
+			).integrate (erfcIntegrand);
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate10, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate50, 1, 9, 1.) + " | " +
+				FormatUtil.FormatDouble (erfcEstimate100, 1, 9, 1.) + " ||"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
-	}
+		System.out.println ("\t|--------------------------------------------------------------------||");
 
-	/**
-	 * Generate the Newton-Cotes of Equally Spaced Quadrature over (-1, 1)
-	 * 
-	 * @param intermediatePointCount Number of Intermediate Points
-	 * 
-	 * @return The Newton-Cotes of Equally Spaced Quadrature over (-1, 1)
-	 */
-
-	public static final org.drip.numerical.integration.Quadrature NewtonCotesMinus1_1 (
-		final int intermediatePointCount)
-	{
-		return NewtonCotes0_1 (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScale (
-				-1.,
-				1.
-			),
-			intermediatePointCount
-		);
-	}
-
-	/**
-	 * Generate the Newton-Cotes of Equally Spaced Quadrature over (a, b)
-	 * 
-	 * @param left Left Integrand Quadrature Limit
-	 * @param right Right Integrand Quadrature Limit
-	 * @param intermediatePointCount Number of Intermediate Points
-	 * 
-	 * @return The Newton-Cotes of Equally Spaced Quadrature over (a, b)
-	 */
-
-	public static final org.drip.numerical.integration.Quadrature NewtonCotes (
-		final double left,
-		final double right,
-		final int intermediatePointCount)
-	{
-		return NewtonCotes0_1 (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScale (
-				left,
-				right
-			),
-			intermediatePointCount
-		);
+		EnvManager.TerminateEnv();
 	}
 }

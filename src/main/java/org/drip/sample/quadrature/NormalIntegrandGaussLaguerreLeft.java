@@ -1,11 +1,7 @@
 
 package org.drip.sample.quadrature;
 
-import java.util.Map;
-
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.e2erf.BuiltInEntry;
-import org.drip.function.e2erf.ErrorFunction;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 import org.drip.service.env.EnvManager;
@@ -73,8 +69,9 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIntegrandNewtonCotes</i> computes the R<sup>1</sup> Numerical Estimate of the erf Integrand using
- * Newton-Cotes Grids. The References are:
+ * <i>NormalIntegrandGaussLaguerreLeft</i> computes the R<sup>1</sup> Numerical Estimate of the Normal
+ * Integrand using Gauss-Laguerre Transform over the Right Half R<sup>+</sup> Range using the Newton-Cotes
+ * Quadrature. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -109,7 +106,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIntegrandNewtonCotes
+public class NormalIntegrandGaussLaguerreLeft
 {
 
 	public static final void main (
@@ -118,71 +115,57 @@ public class ERFIntegrandNewtonCotes
 	{
 		EnvManager.InitEnv ("");
 
-		R1ToR1 erfIntegrand = new ErrorFunction (
-			null,
-			null
-		).integrand();
-
-		int nodeCount10 = 10;
-		int nodeCount50 = 50;
-		int nodeCount100 = 100;
-
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		System.out.println ("\t|                     Newton Cotes erf Estimate                      ||");
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                     ||");
-
-		System.out.println ("\t|                - x                                                 ||");
-
-		System.out.println ("\t|                - Built-in Estimate                                 ||");
-
-		System.out.println ("\t|                - Newton Cotes Estimate (10 Nodes)                  ||");
-
-		System.out.println ("\t|                - Newton Cotes Estimate (50 Nodes)                  ||");
-
-		System.out.println ("\t|                - Newton Cotes Estimate (100 Nodes)                 ||");
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		int[] intermediatePointCountArray =
 		{
-			double x = builtInTableEntry.getKey();
+			 20,
+			 40,
+			 60,
+			 80,
+			100,
+			120,
+			140,
+			160,
+			180,
+			200
+		};
 
-			double erfTable = builtInTableEntry.getValue().erf();
+		R1ToR1 normalDensity = new R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+			{
+				return Math.exp (-0.5 * z * z) / Math.sqrt (2. * Math.PI);
+			}
+		};
 
-			double erfEstimate10 = NewtonCotesQuadratureGenerator.MinusOne_PlusOne (
-				0.,
-				x,
-				nodeCount10
-			).integrate (erfIntegrand);
+		System.out.println ("\t|--------------------||");
 
-			double erfEstimate50 = NewtonCotesQuadratureGenerator.MinusOne_PlusOne (
-				0.,
-				x,
-				nodeCount50
-			).integrate (erfIntegrand);
+		System.out.println ("\t|   GAUSS LAGUERRE   ||");
 
-			double erfEstimate100 = NewtonCotesQuadratureGenerator.MinusOne_PlusOne (
-				0.,
-				x,
-				nodeCount100
-			).integrate (erfIntegrand);
+		System.out.println ("\t|--------------------||");
 
+		System.out.println ("\t|    L -> R:         ||");
+
+		System.out.println ("\t|        - Points    ||");
+
+		System.out.println ("\t|        - Quad      ||");
+
+		System.out.println ("\t|--------------------||");
+
+		for (int intermediatePointCount : intermediatePointCountArray)
+		{
 			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (erfTable, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfEstimate10, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfEstimate50, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfEstimate100, 1, 9, 1.) + " ||"
+				"\t|" + FormatUtil.FormatDouble (intermediatePointCount, 3, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (
+					NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						0.,
+						intermediatePointCount
+					).integrate (normalDensity), 1, 8, 1.
+				) + " ||"
 			);
 		}
 
-		System.out.println ("\t|--------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------||");
 
 		EnvManager.TerminateEnv();
 	}

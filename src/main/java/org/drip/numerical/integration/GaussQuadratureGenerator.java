@@ -1,5 +1,5 @@
 
-package org.drip.numerical.estimation;
+package org.drip.numerical.integration;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +64,29 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>R1ToR1IntegrandEstimator</i> exposes the Stubs behind the Integrand Based R<sup>1</sup> - R<sup>1</sup>
- * Approximate Numerical Estimators. The References are:
+ * <i>GaussQuadratureGenerator</i> generates the Array of Gaussian Quadrature Based Abscissa and their
+ * corresponding Weights. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Laurie, D. (1997): Calculation of Gauss-Kronrod Quadrature Rules <i>Mathematics of
+ * 				Computation</i> <b>66 (219)</b> 1133-1145
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i>
+ * 				<b>Springer-Verlag</b> New York
  * 		</li>
  * 		<li>
- * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
- * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 			Wikipedia (2019a): Gauss-Kronrod Quadrature Formula
+ * 				https://en.wikipedia.org/wiki/Gauss%E2%80%93Kronrod_quadrature_formula
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2019b): Gaussian Quadrature https://en.wikipedia.org/wiki/Gaussian_quadrature
  * 		</li>
  * 	</ul>
  *
@@ -96,56 +95,59 @@ package org.drip.numerical.estimation;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1ToR1IntegrandEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public class GaussQuadratureGenerator
 {
-	private double _leftLimit = java.lang.Double.NaN;
 
-	protected R1ToR1IntegrandEstimator (
-		final org.drip.numerical.differentiation.DerivativeControl dc,
-		final double leftLimit)
-		throws java.lang.Exception
+	/**
+	 * Generate the Nested/Embedded G7 Gaussian Quadrature over (0, +1)
+	 * 
+	 * @param abscissaTransformer The Abscissa Transformer
+	 * 
+	 * @return The Nested/Embedded G7 Gaussian Quadrature over (0, +1)
+	 */
+
+	public static final org.drip.numerical.integration.Quadrature G7 (
+		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
 	{
-		super (dc);
-
-		if (java.lang.Double.isNaN (_leftLimit = leftLimit))
+		try
 		{
-			throw new java.lang.Exception ("R1ToR1IntegrandEstimator Contructor => Invalid Inputs");
+			return new org.drip.numerical.integration.Quadrature (
+				abscissaTransformer,
+				org.drip.numerical.common.Array2D.FromArray (
+					new double[]
+					{
+						-0.949107912342759,
+						-0.741531185599394,
+						-0.405845151377397,
+						 0.000000000000000,
+						 0.405845151377397,
+						 0.741531185599394,
+						 0.949107912342759,
+					},
+					new double[]
+					{
+						0.129484966168870,
+						0.279705391489277,
+						0.381830050505119,
+						0.417959183673469,
+						0.381830050505119,
+						0.279705391489277,
+						0.129484966168870,
+					}
+				)
+			);
 		}
-	}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-	/**
-	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> erf Integrand
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> erf Integrand
-	 */
-
-	public abstract org.drip.function.definition.R1ToR1 integrand();
-
-	/**
-	 * Retrieve the Left Limit
-	 * 
-	 * @return The Left Limit
-	 */
-
-	public double leftLimit()
-	{
-		return _leftLimit;
-	}
-
-	@Override public double evaluate (
-		final double x)
-		throws java.lang.Exception
-	{
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-			_leftLimit,
-			x,
-			100
-		).integrate (integrand());
+		return null;
 	}
 }

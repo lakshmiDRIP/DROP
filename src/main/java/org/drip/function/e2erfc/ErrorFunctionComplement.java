@@ -102,7 +102,7 @@ package org.drip.function.e2erfc;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1Estimator
+public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1IntegrandEstimator
 {
 	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
 
@@ -120,38 +120,47 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
 			org.drip.function.e2erfc.AsymptoticExpansion.SeriesGenerator (termCount);
 
-		return new ErrorFunctionComplement (
-			r1ToR1SeriesGenerator,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new ErrorFunctionComplement (
+				r1ToR1SeriesGenerator,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplement::AsymptoticExpansion::evaluate => Invalid Inputs");
-				}
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplement::AsymptoticExpansion::evaluate => Invalid Inputs");
+					}
 
-				if (0. == z)
-				{
-					return 1.;
-				}
+					if (0. == z)
+					{
+						return 1.;
+					}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
 
-				return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *
-					r1ToR1SeriesGenerator.cumulative (
-						0.,
-						z
-					);
-			}
-		};
+					return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *
+						r1ToR1SeriesGenerator.cumulative (
+							0.,
+							z
+						);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -168,45 +177,67 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
 			org.drip.function.e2erfc.InverseFactorialExpansion.SeriesGenerator (termCount);
 
-		return new ErrorFunctionComplement (
-			r1ToR1SeriesGenerator,
-			null
-		)
+		try
 		{
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
+			return new ErrorFunctionComplement (
+				r1ToR1SeriesGenerator,
+				null
+			)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					throw new java.lang.Exception
-						("ErrorFunctionComplement::InverseFactorialExpansion::evaluate => Invalid Inputs");
-				}
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ErrorFunctionComplement::InverseFactorialExpansion::evaluate => Invalid Inputs");
+					}
 
-				if (0. == z)
-				{
-					return 1.;
-				}
+					if (0. == z)
+					{
+						return 1.;
+					}
 
-				if (z < 0)
-				{
-					return 2. - evaluate (-1. * z);
-				}
+					if (z < 0)
+					{
+						return 2. - evaluate (-1. * z);
+					}
 
-				return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *
-					r1ToR1SeriesGenerator.cumulative (
-						0.,
-						z
-					);
-			}
-		};
+					return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *
+						r1ToR1SeriesGenerator.cumulative (
+							0.,
+							z
+						);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	protected ErrorFunctionComplement (
+	/**
+	 * ErrorFunctionComplement Constructor
+	 * 
+	 * @param r1ToR1SeriesGenerator R<sup>1</sup> To R<sup>1</sup> Series Generator
+	 * @param dc Differential Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ErrorFunctionComplement (
 		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
 		final org.drip.numerical.differentiation.DerivativeControl dc)
+		throws java.lang.Exception
 	{
-		super (dc);
+		super (
+			dc,
+			0.
+		);
 
 		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;
 	}
@@ -223,6 +254,18 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 			_r1ToR1SeriesGenerator.termWeightMap(),
 			_r1ToR1SeriesGenerator
 		);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 integrand()
+	{
+		return new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+			{
+				return 1. - 2. * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI);
+			}
+		};
 	}
 
 	/**
