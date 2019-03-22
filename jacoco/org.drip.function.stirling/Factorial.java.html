@@ -100,7 +100,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
+public class Factorial extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
 	/**
@@ -110,7 +110,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 	 */
 
 	public Factorial (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 <span class="nc" id="L115">		super (dc);</span>
 <span class="nc" id="L116">	}</span>
@@ -129,7 +129,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
 		{
 <span class="nc" id="L134">			throw new java.lang.Exception (&quot;Stirling::deMoivreTerm =&gt; Invalid Inputs&quot;);</span>
 		}
@@ -147,7 +147,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 <span class="nc" id="L147">		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);</span>
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
+	@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
 		final double x)
 	{
 		try
@@ -156,7 +156,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 
 <span class="nc" id="L157">			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;</span>
 
-<span class="nc" id="L159">			return new org.drip.function.numerical.R1Estimate (</span>
+<span class="nc" id="L159">			return new org.drip.numerical.estimation.R1Estimate (</span>
 				estimate,
 				estimate,
 				java.lang.Math.E * deMoivreTerm
@@ -178,7 +178,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 	 * @return The Bounded Function Estimates along with the First Order Laplace Correction
 	 */
 
-	public org.drip.function.numerical.R1Estimate laplaceCorrectionEstimate (
+	public org.drip.numerical.estimation.R1Estimate laplaceCorrectionEstimate (
 		final double x)
 	{
 <span class="nc" id="L184">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
@@ -194,8 +194,8 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 <span class="nc" id="L194">			return seriesEstimate (</span>
 				x,
 				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-<span class="nc" id="L198">					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),</span>
+				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+<span class="nc" id="L198">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
 					true,
 					termWeightMap
 				)
@@ -217,7 +217,7 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
 	 */
 
-	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
+	public org.drip.numerical.estimation.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
 <span class="nc" id="L223">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
@@ -248,8 +248,8 @@ public class Factorial extends org.drip.function.numerical.R1ToR1Estimator
 <span class="nc" id="L248">			return seriesEstimate (</span>
 				x,
 				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-<span class="nc" id="L252">					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),</span>
+				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+<span class="nc" id="L252">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
 					true,
 					termWeightMap
 				)

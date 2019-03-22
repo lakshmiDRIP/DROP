@@ -4,13 +4,13 @@ package org.drip.sample.sensitivity;
 import org.drip.analytics.date.*;
 import org.drip.function.r1tor1.QuadraticRationalShapeControl;
 import org.drip.market.otc.*;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.param.creator.*;
 import org.drip.param.valuation.*;
 import org.drip.product.creator.*;
 import org.drip.product.definition.*;
 import org.drip.product.rates.*;
-import org.drip.quant.calculus.WengertJacobian;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.*;
 import org.drip.spline.params.*;
@@ -532,7 +532,7 @@ import org.drip.state.inference.*;
 <span class="nc" id="L532">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
 <span class="nc bnc" id="L534" title="All 2 branches missed.">		for (int i = 0; i &lt; aDepositComp.length; ++i) {</span>
-<span class="nc" id="L535">			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (aDepositComp[i].maturityDate(), &quot;PV&quot;);</span>
+<span class="nc" id="L535">			org.drip.numerical.differentiation.WengertJacobian wj = dc.jackDDFDManifestMeasure (aDepositComp[i].maturityDate(), &quot;PV&quot;);</span>
 
 <span class="nc" id="L537">			System.out.println (aDepositComp[i].maturityDate() + &quot; =&gt; &quot; + wj.displayString());</span>
 		}
@@ -548,7 +548,7 @@ import org.drip.state.inference.*;
 <span class="nc" id="L548">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
 <span class="nc bnc" id="L550" title="All 2 branches missed.">		for (int i = 0; i &lt; aEDFComp.length; ++i) {</span>
-<span class="nc" id="L551">			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (</span>
+<span class="nc" id="L551">			org.drip.numerical.differentiation.WengertJacobian wj = dc.jackDDFDManifestMeasure (</span>
 <span class="nc" id="L552">				aEDFComp[i].maturityDate(),</span>
 				&quot;PV&quot;
 			);
@@ -567,7 +567,7 @@ import org.drip.state.inference.*;
 <span class="nc" id="L567">		System.out.println (&quot;\t----------------------------------------------------------------&quot;);</span>
 
 <span class="nc bnc" id="L569" title="All 2 branches missed.">		for (int i = 0; i &lt; aSwapComp.length; ++i) {</span>
-<span class="nc" id="L570">			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (</span>
+<span class="nc" id="L570">			org.drip.numerical.differentiation.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (</span>
 <span class="nc" id="L571">				aSwapComp[i].maturityDate(),</span>
 				&quot;PV&quot;
 			);

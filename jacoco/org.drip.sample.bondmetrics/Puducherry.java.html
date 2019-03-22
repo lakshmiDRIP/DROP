@@ -2,10 +2,10 @@
 package org.drip.sample.bondmetrics;
 
 import org.drip.analytics.date.*;
+import org.drip.numerical.common.Array2D;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.product.params.EmbeddedOptionSchedule;
-import org.drip.quant.common.Array2D;
 import org.drip.service.env.EnvManager;
 import org.drip.service.scenario.*;
 

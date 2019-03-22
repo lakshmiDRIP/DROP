@@ -90,7 +90,7 @@ public abstract class RdToR1 {
 
 	protected static final int DIMENSION_NOT_FIXED = -1;
 
-<span class="fc" id="L93">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
+<span class="fc" id="L93">	protected org.drip.numerical.differentiation.DerivativeControl _dc = null;</span>
 
 	/**
 	 * Validate the Input Double Array
@@ -110,16 +110,16 @@ public abstract class RdToR1 {
 <span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (0 == iNumVariate) return false;</span>
 
 <span class="fc bfc" id="L112" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate[i])) return false;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate[i])) return false;</span>
 		}
 
 <span class="fc" id="L116">		return true;</span>
 	}
 
 	protected RdToR1 (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 <span class="fc" id="L121">	{</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.numerical.differentiation.DerivativeControl();</span>
 <span class="fc" id="L123">	}</span>
 
 	/**
@@ -154,12 +154,12 @@ public abstract class RdToR1 {
 	 * @return The Derivative
 	 */
 
-	public org.drip.quant.calculus.Differential differential (
+	public org.drip.numerical.differentiation.Differential differential (
 		final double[] adblVariate,
 		final int iVariateIndex,
 		final int iOrder)
 	{
-<span class="nc bnc" id="L162" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariate) || 0 &gt;= iOrder) return null;</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate) || 0 &gt;= iOrder) return null;</span>
 
 <span class="nc" id="L164">		double dblDerivative = 0.;</span>
 <span class="nc" id="L165">		int iNumVariate = adblVariate.length;</span>
@@ -186,7 +186,7 @@ public abstract class RdToR1 {
 					(iOrder - 2. * i) : adblVariate[j];
 
 			try {
-<span class="nc bnc" id="L189" title="All 2 branches missed.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK (iOrder, i) *</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">				dblDerivative += (i % 2 == 0 ? 1 : -1) * org.drip.numerical.common.NumberUtil.NCK (iOrder, i) *</span>
 <span class="nc" id="L190">					evaluate (adblVariateIncremental);</span>
 <span class="nc" id="L191">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L192">				e.printStackTrace();</span>
@@ -196,7 +196,7 @@ public abstract class RdToR1 {
 		}
 
 		try {
-<span class="nc" id="L199">			return new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
+<span class="nc" id="L199">			return new org.drip.numerical.differentiation.Differential (dblOrderedVariateInfinitesimal, dblDerivative);</span>
 <span class="nc" id="L200">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L201">			e.printStackTrace();</span>
 		}
@@ -336,8 +336,8 @@ public abstract class RdToR1 {
 		final double[] adblRightEdge)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L339" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblLeftEdge) ||</span>
-<span class="nc bnc" id="L340" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblRightEdge))</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (adblLeftEdge) ||</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (adblRightEdge))</span>
 <span class="nc" id="L341">			throw new java.lang.Exception (&quot;RdToR1::integrate =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L343">		double dblIntegrand = 0.;</span>
@@ -377,8 +377,8 @@ public abstract class RdToR1 {
 		final double[] adblVariateLeft,
 		final double[] adblVariateRight)
 	{
-<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
-<span class="nc bnc" id="L381" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (adblVariateRight))</span>
 <span class="nc" id="L382">			return null;</span>
 
 <span class="nc" id="L384">		double dblValue = java.lang.Double.NaN;</span>
@@ -405,7 +405,7 @@ public abstract class RdToR1 {
 <span class="nc" id="L405">				return null;</span>
 <span class="nc" id="L406">			}</span>
 
-<span class="nc bnc" id="L408" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMaxima)) {</span>
+<span class="nc bnc" id="L408" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblMaxima)) {</span>
 <span class="nc" id="L409">				dblMaxima = dblValue;</span>
 
 <span class="nc bnc" id="L411" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumVariate; ++j)</span>
@@ -443,8 +443,8 @@ public abstract class RdToR1 {
 		final double[] adblVariateLeft,
 		final double[] adblVariateRight)
 	{
-<span class="nc bnc" id="L446" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
-<span class="nc bnc" id="L447" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (adblVariateRight))</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariateLeft) ||</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (adblVariateRight))</span>
 <span class="nc" id="L448">			return null;</span>
 
 <span class="nc" id="L450">		double dblValue = java.lang.Double.NaN;</span>
@@ -471,7 +471,7 @@ public abstract class RdToR1 {
 <span class="nc" id="L471">				return null;</span>
 <span class="nc" id="L472">			}</span>
 
-<span class="nc bnc" id="L474" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblMinima)) {</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblMinima)) {</span>
 <span class="nc" id="L475">				dblMinima = dblValue;</span>
 
 <span class="nc bnc" id="L477" title="All 2 branches missed.">				for (int j = 0; j &lt; iNumVariate; ++j)</span>

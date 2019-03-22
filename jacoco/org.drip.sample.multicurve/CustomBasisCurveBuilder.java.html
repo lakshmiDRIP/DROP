@@ -2,7 +2,7 @@
 package org.drip.sample.multicurve;
 
 import org.drip.analytics.date.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.basis.BasisCurve;
 import org.drip.state.creator.ScenarioBasisCurveBuilder;

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImportanceWeight.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.validation.distance</a> &gt; <span class="el_source">ImportanceWeight.java</span></div><h1>ImportanceWeight.java</h1><pre class="source lang-java linenums">
+package org.drip.validation.distance;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ImportanceWeight&lt;/i&gt; weighs the Importance of each Empirical Hypothesis Outcome.
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 &lt;b&gt;eSSRN&lt;/b&gt;
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ *  &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md&quot;&gt;Model Validation Analytics Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation&quot;&gt;Model Validation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/distance&quot;&gt;Hypothesis Target Difference Distance Test&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class ImportanceWeight
+{
+<span class="nc" id="L107">	private double _positiveExpectation = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private org.drip.measure.continuous.R1Univariate _r1Univariate = null;</span>
+
+	/**
+	 * Construct the Importance Weight Version based on Normal Distribution
+	 * 
+	 * @param r1UnivariateNormal R&lt;sup&gt;1&lt;/sup&gt; Normal Distribution
+	 * 
+	 * @return The Importance Weight
+	 */
+
+	public static final ImportanceWeight Normal (
+		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
+	{
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (null == r1UnivariateNormal)</span>
+		{
+<span class="nc" id="L123">			return null;</span>
+		}
+
+<span class="nc" id="L126">		final double mean = r1UnivariateNormal.mean();</span>
+
+<span class="nc" id="L128">		final double sigma = r1UnivariateNormal.sigma();</span>
+
+		org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormalStandard =
+<span class="nc" id="L131">			org.drip.measure.gaussian.R1UnivariateNormal.Standard();</span>
+
+<span class="nc" id="L133">		double meanOverSigma = mean / sigma;</span>
+
+		try
+		{
+<span class="nc" id="L137">			final double positiveExpectation = java.lang.Math.max (</span>
+<span class="nc" id="L138">				mean * r1UnivariateNormalStandard.cumulative (meanOverSigma) +</span>
+<span class="nc" id="L139">					sigma * r1UnivariateNormalStandard.density (meanOverSigma),</span>
+				0.
+			);
+
+<span class="nc" id="L143">			return new ImportanceWeight (</span>
+				r1UnivariateNormal,
+				positiveExpectation
+			)
+<span class="nc" id="L147">			{</span>
+				@Override public double quantileLoading (
+					final double q)
+					throws java.lang.Exception
+				{
+<span class="nc bnc" id="L152" title="All 2 branches missed.">					return 0. == positiveExpectation ? 0. : java.lang.Math.max (</span>
+<span class="nc" id="L153">						org.drip.function.e2erf.ErrorFunctionInverse.Winitzki2008b().evaluate</span>
+<span class="nc" id="L154">							(2. * q - 1.) * sigma * java.lang.Math.sqrt (2.) + mean,</span>
+						0
+					) / positiveExpectation;
+				}
+			};
+		}
+<span class="nc" id="L160">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L162">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L165">		return null;</span>
+	}
+
+	/**
+	 * ImportanceWeight Constructor
+	 * 
+	 * @param r1Univariate The Underlying R&lt;sup&gt;1&lt;/sup&gt; Distribution
+	 * @param positiveExpectation The Positive Expectation
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ImportanceWeight (
+		final org.drip.measure.continuous.R1Univariate r1Univariate,
+		final double positiveExpectation)
+		throws java.lang.Exception
+<span class="nc" id="L181">	{</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == (_r1Univariate = r1Univariate) ||</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_positiveExpectation = positiveExpectation) ||</span>
+				0. &gt; _positiveExpectation)
+		{
+<span class="nc" id="L186">			throw new java.lang.Exception (&quot;ImportanceWeight Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L188">	}</span>
+
+	/**
+	 * Retrieve the Positive Expectation
+	 * 
+	 * @return The Positive Expectation
+	 */
+
+	public double positiveExpectation()
+	{
+<span class="nc" id="L198">		return _positiveExpectation;</span>
+	}
+
+	/**
+	 * Retrieve the Underlying R&lt;sup&gt;1&lt;/sup&gt; Distribution
+	 * 
+	 * @return The Underlying R&lt;sup&gt;1&lt;/sup&gt; Distribution
+	 */
+
+	public org.drip.measure.continuous.R1Univariate r1Univariate()
+	{
+<span class="nc" id="L209">		return _r1Univariate;</span>
+	}
+
+	/**
+	 * Retrieve the Importance Weight Loading given the Quantile
+	 * 
+	 * @param q The Quantile
+	 * 
+	 * @return The Importance Weight Loading
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double quantileLoading (
+		final double q)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		return 0. == _positiveExpectation ? 0. : java.lang.Math.max (</span>
+<span class="nc" id="L227">			_r1Univariate.invCumulative (q),</span>
+			0
+		) / _positiveExpectation;
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

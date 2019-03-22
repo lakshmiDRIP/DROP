@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MacLaurinSeriesGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.e2erf</a> &gt; <span class="el_source">MacLaurinSeriesGenerator.java</span></div><h1>MacLaurinSeriesGenerator.java</h1><pre class="source lang-java linenums">
+package org.drip.function.e2erf;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;MacLaurinSeriesGenerator&lt;/i&gt; implements the E&lt;sub&gt;2&lt;/sub&gt; MacLaurin Series Term Generator. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error
+ * 				Function &lt;i&gt;IEEE Transactions on Communications&lt;/i&gt; &lt;b&gt;59 (11)&lt;/b&gt; 2939-2944
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function
+ * 				Routines and Test Drivers &lt;i&gt;ACM Transactions on Mathematical Software&lt;/i&gt; &lt;b&gt;19 (1)&lt;/b&gt;
+ * 				22-32
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of
+ * 				Linear and Non-linear Heat Transfer and Diffusion
+ * 				https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/e2erf/README.md&quot;&gt;E&lt;sub&gt;2&lt;/sub&gt; erf and erf&lt;sup&gt;-1&lt;/sup&gt; Implementations&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1ToR1SeriesGenerator
+{
+
+	/**
+	 * Generate the ERFI E&lt;sub&gt;2&lt;/sub&gt; MacLaurin Coefficient corresponding to the specified Series Index
+	 * 
+	 * @param seriesIndex Series Index
+	 * 
+	 * @return The ERFI E&lt;sub&gt;2&lt;/sub&gt; MacLaurin Coefficient corresponding to the specified Series Index
+	 */
+
+	public static final double ERFICoefficient (
+		final int seriesIndex)
+	{
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (0 &gt;= seriesIndex)</span>
+		{
+<span class="nc" id="L122">			return 1.;</span>
+		}
+
+<span class="nc" id="L125">		double seriesIndexLoader = 0.;</span>
+
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int termIndex = 0; termIndex &lt; seriesIndex; ++termIndex)</span>
+		{
+<span class="nc" id="L129">			seriesIndexLoader = seriesIndexLoader +</span>
+<span class="nc" id="L130">				ERFICoefficient (termIndex) * ERFICoefficient (seriesIndex - 1 - termIndex)</span>
+				/ ((1. + termIndex) * (1. + 2. * termIndex));
+		}
+
+<span class="nc" id="L134">		return seriesIndexLoader;</span>
+	}
+
+	/**
+	 * Construct the E&lt;sub&gt;2&lt;/sub&gt; erf MacLaurin Series Generator Version
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return E&lt;sub&gt;2&lt;/sub&gt; erf MacLaurin Series Generator Version
+	 */
+
+	public static final MacLaurinSeriesGenerator ERF (
+		final int termCount)
+	{
+<span class="nc" id="L148">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+<span class="nc" id="L151">		double signedInverseFactorial = 1.;</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (int termIndex = 0; termIndex &lt;= termCount; ++termIndex)</span>
+		{
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			signedInverseFactorial = 0 == termIndex ? 1. : signedInverseFactorial * -1. / termIndex;</span>
+
+<span class="nc" id="L157">			termWeightMap.put (</span>
+<span class="nc" id="L158">				termIndex,</span>
+<span class="nc" id="L159">				signedInverseFactorial / (2. * termIndex + 1.)</span>
+			);
+		}
+
+		try
+		{
+<span class="nc" id="L165">			return new MacLaurinSeriesGenerator (</span>
+				new org.drip.function.e2erf.MacLaurinSeriesTerm(),
+				termWeightMap
+			);
+		}
+<span class="nc" id="L170">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L172">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L175">		return null;</span>
+	}
+
+	/**
+	 * Construct the E&lt;sub&gt;2&lt;/sub&gt; erfi MacLaurin Series Generator Version
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The E&lt;sub&gt;2&lt;/sub&gt; erfi MacLaurin Series Generator Version
+	 */
+
+	public static final MacLaurinSeriesGenerator ERFI (
+		final int termCount)
+	{
+<span class="nc" id="L189">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+<span class="nc" id="L192">		double sqrtPIOver2 = 0.5 * java.lang.Math.sqrt (java.lang.Math.PI);</span>
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int termIndex = 0; termIndex &lt;= termCount; ++termIndex)</span>
+		{
+<span class="nc" id="L196">			int twoKPlusOne = 2 * termIndex + 1;</span>
+
+<span class="nc" id="L198">			termWeightMap.put (</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">				termIndex,</span>
+<span class="nc" id="L200">				(termIndex % 2 == 0 ? 1. : -1.) * ERFICoefficient (termIndex) * java.lang.Math.pow (</span>
+					sqrtPIOver2,
+					twoKPlusOne
+				) / twoKPlusOne
+			);
+		}
+
+		try
+		{
+<span class="nc" id="L209">			return new MacLaurinSeriesGenerator (</span>
+				new org.drip.function.e2erf.MacLaurinSeriesTerm(),
+				termWeightMap
+			);
+		}
+<span class="nc" id="L214">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L216">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L219">		return null;</span>
+	}
+
+	/**
+	 * MacLaurinSeriesGenerator Constructor
+	 * 
+	 * @param macLaurinSeriesGenerator E&lt;sub&gt;2&lt;/sub&gt; erf MacLaurin Series Term
+	 * @param termWeightMap Series Term Weight Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MacLaurinSeriesGenerator (
+		final org.drip.function.e2erf.MacLaurinSeriesTerm macLaurinSeriesGenerator,
+		final java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L236">		super (</span>
+			macLaurinSeriesGenerator,
+			false,
+			termWeightMap
+		);
+<span class="nc" id="L241">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
+public class RamanujanGamma extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
 	/**
@@ -112,7 +112,7 @@ public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
 	 */
 
 	public RamanujanGamma (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 <span class="nc" id="L117">		super (dc);</span>
 <span class="nc" id="L118">	}</span>
@@ -121,7 +121,7 @@ public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
 		{
 <span class="nc" id="L126">			throw new java.lang.Exception (&quot;RamanujanGamma::evaluate =&gt; Invalid Inputs&quot;);</span>
 		}
@@ -135,10 +135,10 @@ public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
 		);
 	}
 
-	@Override public org.drip.function.numerical.R1Estimate boundedEstimate (
+	@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
 		final double x)
 	{
-<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
 		{
 <span class="nc" id="L143">			return null;</span>
 		}
@@ -155,7 +155,7 @@ public class RamanujanGamma extends org.drip.function.numerical.R1ToR1Estimator
 
 		try
 		{
-<span class="nc" id="L158">			return new org.drip.function.numerical.R1Estimate (</span>
+<span class="nc" id="L158">			return new org.drip.numerical.estimation.R1Estimate (</span>
 				upperBound,
 <span class="nc" id="L160">				exponentialComponent * java.lang.Math.pow (</span>
 					8. * x * x * x + 4. * x * x + x + (1./ 100.),

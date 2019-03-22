@@ -101,7 +101,7 @@ public class ProjectionDistributionLoading {
 		final double dblTau)
 	{
 <span class="pc bpc" id="L103" title="2 of 4 branches missed.">		if (null == aadblScopingCovariance || null == aadblScopingLoading ||</span>
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblTau))</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTau))</span>
 <span class="nc" id="L105">			return null;</span>
 
 <span class="fc" id="L107">		int iNumProjection = aadblScopingLoading.length;</span>
@@ -114,8 +114,8 @@ public class ProjectionDistributionLoading {
 <span class="fc bfc" id="L114" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumProjection; ++j) {</span>
 				try {
 <span class="fc bfc" id="L116" title="All 2 branches covered.">					aadblProjectionCovariance[i][j] = i != j ? 0. : dblTau *</span>
-<span class="fc" id="L117">						org.drip.quant.linearalgebra.Matrix.DotProduct (aadblScopingLoading[i],</span>
-<span class="fc" id="L118">							org.drip.quant.linearalgebra.Matrix.Product (aadblScopingCovariance,</span>
+<span class="fc" id="L117">						org.drip.numerical.linearalgebra.Matrix.DotProduct (aadblScopingLoading[i],</span>
+<span class="fc" id="L118">							org.drip.numerical.linearalgebra.Matrix.Product (aadblScopingCovariance,</span>
 								aadblScopingLoading[j]));
 <span class="nc" id="L120">				} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L121">					e.printStackTrace();</span>
@@ -183,7 +183,7 @@ public class ProjectionDistributionLoading {
 
 <span class="fc bfc" id="L184" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumProjectionView; ++i) {</span>
 <span class="pc bpc" id="L185" title="2 of 4 branches missed.">			if (null == _aadblScopingLoading[i] || 0 == _aadblScopingLoading[i].length ||</span>
-<span class="pc bpc" id="L186" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_aadblScopingLoading[i]))</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_aadblScopingLoading[i]))</span>
 <span class="nc" id="L187">				throw new java.lang.Exception</span>
 					(&quot;ProjectionDistributionLoading Constructor =&gt; Invalid Inputs!&quot;);
 		}

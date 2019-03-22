@@ -2,6 +2,7 @@
 package org.drip.sample.bondeos;
 
 import org.drip.analytics.date.*;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.*;
@@ -9,7 +10,6 @@ import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.product.definition.*;
 import org.drip.product.params.EmbeddedOptionSchedule;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.*;
 import org.drip.state.discount.MergedDiscountForwardCurve;

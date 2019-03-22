@@ -113,7 +113,7 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))</span>
 <span class="nc" id="L117">			throw new java.lang.Exception (&quot;Convolution::evaluate =&gt; Invalid Input&quot;);</span>
 
 <span class="fc" id="L119">		return _au1.evaluate (dblVariate) * _au2.evaluate (dblVariate);</span>
@@ -127,7 +127,7 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 <span class="fc" id="L127">		double dblDerivative = _au1.evaluate (dblVariate) * _au2.derivative (dblVariate, iOrder);</span>
 
 <span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int i = 1; i &lt; iOrder; ++i)</span>
-<span class="fc" id="L130">			dblDerivative += org.drip.quant.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,</span>
+<span class="fc" id="L130">			dblDerivative += org.drip.numerical.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,</span>
 <span class="fc" id="L131">				i) * _au2.derivative (dblVariate, iOrder - i);</span>
 
 <span class="fc" id="L133">		return dblDerivative + _au1.derivative (dblVariate, iOrder) * _au2.evaluate (dblVariate);</span>
@@ -138,11 +138,11 @@ public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="nc bnc" id="L142" title="All 2 branches missed.">			(dblEnd))</span>
 <span class="nc" id="L143">			throw new java.lang.Exception (&quot;HyperbolicTension::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L145">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L145">		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

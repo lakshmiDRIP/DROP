@@ -153,7 +153,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	{
 <span class="fc" id="L154">		double dblBumpDelta = CalcMinDifference (adblY);</span>
 
-<span class="pc bpc" id="L156" title="1 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)</span>
+<span class="pc bpc" id="L156" title="1 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)</span>
 <span class="fc" id="L157">			dblBumpDelta = CalcAbsoluteMin (adblY);</span>
 
 <span class="pc bpc" id="L159" title="1 of 2 branches missed.">		return 0. == dblBumpDelta ? DIFF_SCALE : dblBumpDelta * DIFF_SCALE;</span>
@@ -202,7 +202,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
 <span class="nc" id="L206">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::responseValue =&gt; Invalid inputs!&quot;);
 
@@ -236,7 +236,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L239" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 &gt;= iOrder)</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 &gt;= iOrder)</span>
 <span class="nc" id="L240">			throw new java.lang.Exception</span>
 				(&quot;SingleSegmentLagrangePolynomial::responseValueDerivative =&gt; Invalid inputs!&quot;);
 
@@ -253,28 +253,28 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 <span class="nc" id="L253">		return au.derivative (dblPredictorOrdinate, iOrder);</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDCalibrationInput (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
-<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
 
 <span class="fc" id="L262">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 <span class="fc" id="L263">		double dblInputResponseSensitivityShift = java.lang.Double.NaN;</span>
 <span class="fc" id="L264">		double dblResponseWithUnadjustedResponseInput = java.lang.Double.NaN;</span>
-<span class="fc" id="L265">		org.drip.quant.calculus.WengertJacobian wjDResponseDResponseInput = null;</span>
+<span class="fc" id="L265">		org.drip.numerical.differentiation.WengertJacobian wjDResponseDResponseInput = null;</span>
 
 <span class="pc bpc" id="L267" title="2 of 4 branches missed.">		if (_adblPredictorOrdinate[0] &gt; dblPredictorOrdinate ||</span>
 			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] &lt; dblPredictorOrdinate)
 <span class="nc" id="L269">			return null;</span>
 
 		try {
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =</span>
-<span class="fc" id="L273">				EstimateBumpDelta (_adblResponseValue)) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =</span>
+<span class="fc" id="L273">				EstimateBumpDelta (_adblResponseValue)) || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L274" title="1 of 2 branches missed.">					(dblResponseWithUnadjustedResponseInput = responseValue (dblPredictorOrdinate)))</span>
 <span class="nc" id="L275">				return null;</span>
 
-<span class="fc" id="L277">			wjDResponseDResponseInput = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="fc" id="L277">			wjDResponseDResponseInput = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
 				iNumPredictorOrdinate);
 <span class="nc" id="L279">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L280">			e.printStackTrace();</span>
@@ -311,7 +311,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 <span class="fc" id="L311">		return wjDResponseDResponseInput;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
@@ -322,7 +322,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	@Override public org.drip.spline.segment.Monotonocity monotoneType (
 		final double dblPredictorOrdinate)
 	{
-<span class="pc bpc" id="L325" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;</span>
 
 <span class="fc" id="L327">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
@@ -357,7 +357,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L360">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L360">				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
@@ -372,7 +372,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 
 <span class="nc" id="L373">			double dblExtremum = fpop.getRoot();</span>
 
-<span class="nc bnc" id="L375" title="All 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
+<span class="nc bnc" id="L375" title="All 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
 				&gt;= 1.)
 <span class="nc" id="L377">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);
@@ -470,7 +470,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 	@Override public boolean isKnot (
 		final double dblPredictorOrdinate)
 	{
-<span class="nc bnc" id="L473" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
 
 <span class="nc" id="L475">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
@@ -489,7 +489,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		final int iPredictorOrdinateNodeIndex,
 		final double dblResetResponse)
 	{
-<span class="nc bnc" id="L492" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblResetResponse)) return false;</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResetResponse)) return false;</span>
 
 <span class="nc bnc" id="L494" title="All 2 branches missed.">		if (iPredictorOrdinateNodeIndex &gt; _adblPredictorOrdinate.length) return false;</span>
 

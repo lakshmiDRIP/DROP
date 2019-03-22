@@ -131,19 +131,19 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 		final double dblLevel)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || 1. &lt; dblLevel)</span>
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || 1. &lt; dblLevel)</span>
 <span class="nc" id="L135">			throw new java.lang.Exception</span>
 				(&quot;UnitSequenceAgnosticMetrics::chernoffBinomialUpperBound =&gt; Invalid Inputs&quot;);
 
 <span class="fc" id="L138">		int iNumEntry = sequence().length;</span>
 
-<span class="fc bfc" id="L140" title="All 2 branches covered.">		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
 <span class="fc" id="L141">			_dblPopulationMean : empiricalExpectation();</span>
 
 <span class="fc" id="L143">		double dblBound = java.lang.Math.pow (dblPopulationMean / dblLevel, iNumEntry * dblLevel) *</span>
 <span class="fc" id="L144">			java.lang.Math.pow ((1. - dblPopulationMean) / (1. - dblLevel), iNumEntry * (1. - dblLevel));</span>
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBound)) return 0.;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBound)) return 0.;</span>
 
 <span class="pc bpc" id="L148" title="1 of 2 branches missed.">		return dblBound &gt; 1. ? 1. : dblBound;</span>
 	}
@@ -162,19 +162,19 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 		final double dblLevel)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L165" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || 1. &lt; dblLevel)</span>
+<span class="pc bpc" id="L165" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || 1. &lt; dblLevel)</span>
 <span class="nc" id="L166">			throw new java.lang.Exception</span>
 				(&quot;UnitSequenceAgnosticMetrics::ChernoffBinomialUpperBound =&gt; Invalid Inputs&quot;);
 
 <span class="fc" id="L169">		int iNumEntry = sequence().length;</span>
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
 <span class="fc" id="L172">			_dblPopulationMean : empiricalExpectation();</span>
 
 <span class="fc" id="L174">		double dblBound = java.lang.Math.pow (dblPopulationMean / dblLevel, iNumEntry * dblLevel) *</span>
 <span class="fc" id="L175">			java.lang.Math.exp (iNumEntry * (dblLevel - dblPopulationMean));</span>
 
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBound)) return 0.;</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBound)) return 0.;</span>
 
 <span class="pc bpc" id="L179" title="1 of 2 branches missed.">		return dblBound &gt; 1. ? 1. : dblBound;</span>
 	}
@@ -194,11 +194,11 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 	public org.drip.sequence.metrics.PivotedDepartureBounds karpHagerupRubBounds (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || 1. &lt; dblLevel) return null;</span>
+<span class="pc bpc" id="L197" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || 1. &lt; dblLevel) return null;</span>
 
 <span class="fc" id="L199">		int iNumEntry = sequence().length;</span>
 
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
 <span class="fc" id="L202">			_dblPopulationMean : empiricalExpectation();</span>
 
 <span class="fc" id="L204">		double dblScaledLevel = dblLevel / dblPopulationMean;</span>
@@ -206,12 +206,12 @@ public class UnitSequenceAgnosticMetrics extends org.drip.sequence.metrics.Bound
 <span class="fc" id="L206">		double dblLowerBound = java.lang.Math.exp (-0.5 * dblPopulationMean * iNumEntry * dblScaledLevel *</span>
 			dblScaledLevel);
 
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLowerBound)) dblLowerBound = 0.;</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLowerBound)) dblLowerBound = 0.;</span>
 
 <span class="fc" id="L211">		double dblUpperBound = java.lang.Math.exp (-1. * dblPopulationMean * iNumEntry * (1. +</span>
 <span class="fc" id="L212">			dblScaledLevel) * java.lang.Math.log (1. + dblScaledLevel) - dblScaledLevel);</span>
 
-<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblUpperBound)) dblUpperBound = 0.;</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblUpperBound)) dblUpperBound = 0.;</span>
 
 		try {
 <span class="pc bpc" id="L217" title="2 of 4 branches missed.">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>

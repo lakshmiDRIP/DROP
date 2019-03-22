@@ -327,7 +327,7 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	public abstract org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final int iDate);
 
@@ -340,7 +340,7 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the given date
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.analytics.date.JulianDate dt)
 	{
@@ -358,7 +358,7 @@ public abstract class GovvieCurve extends org.drip.state.discount.DiscountCurve 
 	 * @return The Manifest Measure Jacobian of the Forward Rate to the date implied by the given Tenor
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+	public org.drip.numerical.differentiation.WengertJacobian jackDForwardDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final java.lang.String strTenor)
 	{

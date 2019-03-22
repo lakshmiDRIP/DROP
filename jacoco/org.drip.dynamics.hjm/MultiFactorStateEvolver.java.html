@@ -204,7 +204,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 <span class="fc" id="L204">			double dblWeightedFactorPointVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 				iTargetDate);
 
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblWeightedFactorPointVolatility))</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblWeightedFactorPointVolatility))</span>
 <span class="nc" id="L208">				throw new java.lang.Exception</span>
 					(&quot;MultiFactorStateEvolver::instantaneousForwardRateIncrement =&gt; Cannot compute View/Target Date Point Volatility&quot;);
 
@@ -238,7 +238,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L241" title="2 of 4 branches missed.">		if (iTargetDate &lt;= iViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblShortRate))</span>
+<span class="pc bpc" id="L241" title="2 of 4 branches missed.">		if (iTargetDate &lt;= iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblShortRate))</span>
 <span class="nc" id="L242">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::proportionalPriceIncrement =&gt; Invalid Inputs&quot;);
 
@@ -296,7 +296,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 <span class="fc" id="L296">			double dblViewWeightedFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 				iViewDate);
 
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblViewWeightedFactorVolatility))</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewWeightedFactorVolatility))</span>
 <span class="nc" id="L300">				throw new java.lang.Exception</span>
 					(&quot;MultiFactorStateEvolver::shortRateIncrement =&gt; Cannot compute View Date Factor Volatility&quot;);
 
@@ -385,7 +385,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L388" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L388" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L389" title="1 of 2 branches missed.">			(dblLIBORForwardRate))</span>
 <span class="nc" id="L390">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::liborForwardRateIncrement =&gt; Invalid Inputs&quot;);
@@ -432,7 +432,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L435" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L435" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L436" title="1 of 2 branches missed.">			(dblShiftedLIBORForwardRate))</span>
 <span class="nc" id="L437">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::shiftedLIBORForwardIncrement =&gt; Invalid Inputs&quot;);
@@ -501,24 +501,24 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 <span class="fc" id="L501">				double dblViewDateFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 					iViewDate);
 
-<span class="pc bpc" id="L504" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblViewDateFactorVolatility)) return null;</span>
+<span class="pc bpc" id="L504" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewDateFactorVolatility)) return null;</span>
 
 <span class="fc" id="L506">				double dblViewTargetFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 					iTargetDate);
 
-<span class="pc bpc" id="L509" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblViewTargetFactorVolatility)) return null;</span>
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetFactorVolatility)) return null;</span>
 
 <span class="fc" id="L511">				double dblViewTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iViewDate, iTargetDate);</span>
 
-<span class="pc bpc" id="L513" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblViewTargetVolatilityIntegral)) return null;</span>
+<span class="pc bpc" id="L513" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetVolatilityIntegral)) return null;</span>
 
 <span class="fc" id="L515">				double dblSpotViewVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iViewDate);</span>
 
-<span class="pc bpc" id="L517" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotViewVolatilityIntegral)) return null;</span>
+<span class="pc bpc" id="L517" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotViewVolatilityIntegral)) return null;</span>
 
 <span class="fc" id="L519">				double dblSpotTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iTargetDate);</span>
 
-<span class="pc bpc" id="L521" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotTargetVolatilityIntegral)) return null;</span>
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotTargetVolatilityIntegral)) return null;</span>
 
 <span class="fc" id="L523">				double dblScaledMultivariateRandom = dblAnnualizedIncrementSQRT * adblMultivariateRandom[i];</span>
 <span class="fc" id="L524">				dblInstantaneousForwardRateIncrement += dblViewTargetVolatilityIntegral *</span>

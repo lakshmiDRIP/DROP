@@ -209,15 +209,15 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 <span class="nc" id="L209">		return false;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
 <span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (0 == _lsMSS.size()) return null;</span>
 
-<span class="fc" id="L219">		java.util.List&lt;org.drip.quant.calculus.WengertJacobian&gt; lsWJ = new</span>
-			java.util.ArrayList&lt;org.drip.quant.calculus.WengertJacobian&gt;();
+<span class="fc" id="L219">		java.util.List&lt;org.drip.numerical.differentiation.WengertJacobian&gt; lsWJ = new</span>
+			java.util.ArrayList&lt;org.drip.numerical.differentiation.WengertJacobian&gt;();
 
 <span class="fc" id="L222">		boolean bPredictorOrdinateCovered = false;</span>
 
@@ -225,7 +225,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 <span class="pc bpc" id="L225" title="1 of 2 branches missed.">			if (null == mss) continue;</span>
 
 			try {
-<span class="fc" id="L228">				org.drip.quant.calculus.WengertJacobian wj = null;</span>
+<span class="fc" id="L228">				org.drip.numerical.differentiation.WengertJacobian wj = null;</span>
 
 <span class="fc bfc" id="L230" title="All 4 branches covered.">				if (!bPredictorOrdinateCovered &amp;&amp; mss.in (dblPredictorOrdinate)) {</span>
 <span class="fc" id="L231">					wj = mss.jackDResponseDManifestMeasure (strManifestMeasure, dblPredictorOrdinate,</span>
@@ -233,7 +233,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 
 <span class="fc" id="L234">					bPredictorOrdinateCovered = true;</span>
 				} else
-<span class="fc" id="L236">					wj = new org.drip.quant.calculus.WengertJacobian (1, mss.segments().length);</span>
+<span class="fc" id="L236">					wj = new org.drip.numerical.differentiation.WengertJacobian (1, mss.segments().length);</span>
 
 <span class="fc bfc" id="L238" title="All 2 branches covered.">				if (null != wj) lsWJ.add (wj);</span>
 <span class="nc" id="L239">			} catch (java.lang.Exception e) {</span>
@@ -243,7 +243,7 @@ public class OverlappingStretchSpan implements org.drip.spline.grid.Span {
 <span class="fc" id="L243">			}</span>
 <span class="fc" id="L244">		}</span>
 
-<span class="fc" id="L246">		return org.drip.quant.common.CollectionUtil.AppendWengert (lsWJ);</span>
+<span class="fc" id="L246">		return org.drip.numerical.common.CollectionUtil.AppendWengert (lsWJ);</span>
 	}
 
 	@Override public boolean in (

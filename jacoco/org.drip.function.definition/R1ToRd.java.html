@@ -87,12 +87,12 @@ package org.drip.function.definition;
 public abstract class R1ToRd {
 	private static final int QUADRATURE_SAMPLING = 10000;
 
-<span class="nc" id="L90">	protected org.drip.quant.calculus.DerivativeControl _dc = null;</span>
+<span class="nc" id="L90">	protected org.drip.numerical.differentiation.DerivativeControl _dc = null;</span>
 
 	protected R1ToRd (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 <span class="nc" id="L94">	{</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.quant.calculus.DerivativeControl();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		if (null == (_dc = dc)) _dc = new org.drip.numerical.differentiation.DerivativeControl();</span>
 <span class="nc" id="L96">	}</span>
 
 	/**
@@ -115,11 +115,11 @@ public abstract class R1ToRd {
 	 * @return The Array of Differentials
 	 */
 
-	public org.drip.quant.calculus.Differential[] differential (
+	public org.drip.numerical.differentiation.Differential[] differential (
 		final double dblVariate,
 		final int iOrder)
 	{
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder) return null;</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 &gt;= iOrder) return null;</span>
 
 <span class="nc" id="L124">		int iOutputDimension = -1;</span>
 <span class="nc" id="L125">		double[] adblDerivative = null;</span>
@@ -152,7 +152,7 @@ public abstract class R1ToRd {
 
 			try {
 <span class="nc bnc" id="L154" title="All 2 branches missed.">				for (int j = 0; j &lt; iOutputDimension; ++j)</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">					adblDerivative[j] += (i % 2 == 0 ? 1 : -1) * org.drip.quant.common.NumberUtil.NCK</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">					adblDerivative[j] += (i % 2 == 0 ? 1 : -1) * org.drip.numerical.common.NumberUtil.NCK</span>
 <span class="nc" id="L156">						(iOrder, i) * adblValue[j];</span>
 <span class="nc" id="L157">			} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L158">				e.printStackTrace();</span>
@@ -161,12 +161,12 @@ public abstract class R1ToRd {
 <span class="nc" id="L161">			}</span>
 		}
 
-<span class="nc" id="L164">		org.drip.quant.calculus.Differential[] aDiff = new</span>
-			org.drip.quant.calculus.Differential[iOutputDimension];
+<span class="nc" id="L164">		org.drip.numerical.differentiation.Differential[] aDiff = new</span>
+			org.drip.numerical.differentiation.Differential[iOutputDimension];
 
 		try {
 <span class="nc bnc" id="L168" title="All 2 branches missed.">			for (int j = 0; j &lt; iOutputDimension; ++j)</span>
-<span class="nc" id="L169">				aDiff[j] = new org.drip.quant.calculus.Differential (dblOrderedVariateInfinitesimal,</span>
+<span class="nc" id="L169">				aDiff[j] = new org.drip.numerical.differentiation.Differential (dblOrderedVariateInfinitesimal,</span>
 					adblDerivative[j]);
 <span class="nc" id="L171">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L172">			e.printStackTrace();</span>
@@ -190,7 +190,7 @@ public abstract class R1ToRd {
 		final double dblVariate,
 		final int iOrder)
 	{
-<span class="nc" id="L193">		org.drip.quant.calculus.Differential[] aDiff = differential (dblVariate, iOrder);</span>
+<span class="nc" id="L193">		org.drip.numerical.differentiation.Differential[] aDiff = differential (dblVariate, iOrder);</span>
 
 <span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null == aDiff) return null;</span>
 
@@ -218,8 +218,8 @@ public abstract class R1ToRd {
 		final double dblLeftEdge,
 		final double dblRightEdge)
 	{
-<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftEdge) ||</span>
-<span class="nc bnc" id="L222" title="All 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblRightEdge) || dblRightEdge &lt;= dblLeftEdge)</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftEdge) ||</span>
+<span class="nc bnc" id="L222" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge) || dblRightEdge &lt;= dblLeftEdge)</span>
 <span class="nc" id="L223">			return null;</span>
 
 <span class="nc" id="L225">		int iOutputDimension = -1;</span>

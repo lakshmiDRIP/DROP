@@ -79,11 +79,11 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="fc" id="L79">	private org.drip.spline.stretch.SegmentSequenceBuilder _ssb = null;</span>
 <span class="fc" id="L80">	private org.drip.spline.segment.LatentStateResponseModel[] _aLSRM = null;</span>
 <span class="fc" id="L81">	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBC = null;</span>
-<span class="fc" id="L82">	private org.drip.quant.calculus.WengertJacobian _wjDCoeffDEdgeParams = null;</span>
+<span class="fc" id="L82">	private org.drip.numerical.differentiation.WengertJacobian _wjDCoeffDEdgeParams = null;</span>
 
 	private boolean setDCoeffDEdgeParams (
 		final int iNodeIndex,
-		final org.drip.quant.calculus.WengertJacobian wjDCoeffDEdgeParams)
+		final org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParams)
 	{
 <span class="fc bfc" id="L88" title="All 2 branches covered.">		if (null == wjDCoeffDEdgeParams) return false;</span>
 
@@ -105,17 +105,17 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="fc" id="L105">			wjDCoeffDEdgeParams.firstDerivative (3, iParameterIndex));</span>
 	}
 
-	private final org.drip.quant.calculus.WengertJacobian setDResponseDEdgeResponse (
+	private final org.drip.numerical.differentiation.WengertJacobian setDResponseDEdgeResponse (
 		final int iNodeIndex,
-		final org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeParams)
+		final org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeParams)
 	{
 <span class="pc bpc" id="L112" title="1 of 2 branches missed.">		if (null == wjDResponseDEdgeParams) return null;</span>
 
 <span class="fc" id="L114">		int iNumSegment = _aLSRM.length;</span>
-<span class="fc" id="L115">		org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeResponse = null;</span>
+<span class="fc" id="L115">		org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeResponse = null;</span>
 
 		try {
-<span class="fc" id="L118">			wjDResponseDEdgeResponse = new org.drip.quant.calculus.WengertJacobian (1, iNumSegment + 1);</span>
+<span class="fc" id="L118">			wjDResponseDEdgeResponse = new org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment + 1);</span>
 <span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L120">			e.printStackTrace();</span>
 
@@ -211,7 +211,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="fc" id="L211">				}</span>
 			}
 
-<span class="pc bpc" id="L214" title="2 of 4 branches missed.">			if (null == fpop || !org.drip.quant.common.NumberUtil.IsValid (fpop.getRoot()) ||</span>
+<span class="pc bpc" id="L214" title="2 of 4 branches missed.">			if (null == fpop || !org.drip.numerical.common.NumberUtil.IsValid (fpop.getRoot()) ||</span>
 <span class="pc bpc" id="L215" title="1 of 2 branches missed.">				!_ssb.manifestMeasureSensitivity (0.)) {</span>
 <span class="nc" id="L216">				System.out.println (&quot;FPOP: &quot; + fpop);</span>
 
@@ -223,7 +223,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="nc" id="L223">			int iNumSegment = _aLSRM.length;</span>
 
 			try {
-<span class="nc" id="L226">				if (null == (_wjDCoeffDEdgeParams = new org.drip.quant.calculus.WengertJacobian</span>
+<span class="nc" id="L226">				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian</span>
 <span class="nc bnc" id="L227" title="All 2 branches missed.">					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))</span>
 <span class="nc" id="L228">					return false;</span>
 <span class="nc" id="L229">			} catch (java.lang.Exception e) {</span>
@@ -232,7 +232,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="nc" id="L232">				return false;</span>
 <span class="nc" id="L233">			}</span>
 
-<span class="nc" id="L235">			org.drip.quant.calculus.WengertJacobian wjHead = _aLSRM[0].jackDCoeffDEdgeInputs();</span>
+<span class="nc" id="L235">			org.drip.numerical.differentiation.WengertJacobian wjHead = _aLSRM[0].jackDCoeffDEdgeInputs();</span>
 
 <span class="nc bnc" id="L237" title="All 4 branches missed.">			if (!setDCoeffDEdgeParams (0, wjHead) || !setDCoeffDEdgeParams (1, wjHead)) return false;</span>
 
@@ -345,7 +345,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 
 <span class="fc bfc" id="L346" title="All 2 branches covered.">		if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE_JACOBIAN &amp; iSetupMode)) {</span>
 			try {
-<span class="fc" id="L348">				if (null == (_wjDCoeffDEdgeParams = new org.drip.quant.calculus.WengertJacobian</span>
+<span class="fc" id="L348">				if (null == (_wjDCoeffDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian</span>
 <span class="pc bpc" id="L349" title="1 of 2 branches missed.">					(_aLSRM[0].basisEvaluator().numBasis(), iNumSegment + 1)))</span>
 <span class="nc" id="L350">					return false;</span>
 <span class="nc" id="L351">			} catch (java.lang.Exception e) {</span>
@@ -354,7 +354,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="nc" id="L354">				return false;</span>
 <span class="fc" id="L355">			}</span>
 
-<span class="fc" id="L357">			org.drip.quant.calculus.WengertJacobian wjDCoeffDEdgeParamsHead =</span>
+<span class="fc" id="L357">			org.drip.numerical.differentiation.WengertJacobian wjDCoeffDEdgeParamsHead =</span>
 <span class="fc" id="L358">				_aLSRM[0].jackDCoeffDEdgeInputs();</span>
 
 <span class="pc bpc" id="L360" title="1 of 4 branches missed.">			if (!setDCoeffDEdgeParams (0, wjDCoeffDEdgeParamsHead) || !setDCoeffDEdgeParams (1,</span>
@@ -402,11 +402,11 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblEnd)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L405" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBegin) || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="nc bnc" id="L406" title="All 2 branches missed.">			(dblEnd))</span>
 <span class="nc" id="L407">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::integrate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L409">		return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L409">		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 	}
 
 	@Override public boolean setLeftNode (
@@ -470,7 +470,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="nc" id="L470">		return null;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDCalibrationInput (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
@@ -488,7 +488,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 <span class="fc" id="L488">			(dblPredictorOrdinate, iOrder));</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDResponseDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblPredictorOrdinate,
 		final int iOrder)
@@ -510,8 +510,8 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 				}
 			}
 
-<span class="fc" id="L513">			org.drip.quant.calculus.WengertJacobian wjDResponseDManifestMeasure = new</span>
-				org.drip.quant.calculus.WengertJacobian (1, iNumSegment);
+<span class="fc" id="L513">			org.drip.numerical.differentiation.WengertJacobian wjDResponseDManifestMeasure = new</span>
+				org.drip.numerical.differentiation.WengertJacobian (1, iNumSegment);
 
 <span class="fc bfc" id="L516" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumSegment; ++i) {</span>
 <span class="fc" id="L517">				double dblDResponseDManifestMeasurei = 0.;</span>
@@ -626,7 +626,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 	@Override public boolean isKnot (
 		final double dblPredictorOrdinate)
 	{
-<span class="pc bpc" id="L629" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;</span>
 
 <span class="fc" id="L631">		int iNumSegment = _aLSRM.length;</span>
 
@@ -660,7 +660,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblResponseReset)
 	{
 <span class="nc bnc" id="L662" title="All 6 branches missed.">		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _aLSRM.length &lt;</span>
-<span class="nc bnc" id="L663" title="All 2 branches missed.">			iPredictorOrdinateIndex || !org.drip.quant.common.NumberUtil.IsValid (dblResponseReset))</span>
+<span class="nc bnc" id="L663" title="All 2 branches missed.">			iPredictorOrdinateIndex || !org.drip.numerical.common.NumberUtil.IsValid (dblResponseReset))</span>
 <span class="nc" id="L664">			return false;</span>
 
 <span class="nc" id="L666">		return _aLSRM[iPredictorOrdinateIndex - 1].calibrate (_aLSRM[iPredictorOrdinateIndex - 2],</span>
@@ -707,7 +707,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final double dblPredictorOrdinate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L710" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
+<span class="pc bpc" id="L710" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))</span>
 <span class="nc" id="L711">			throw new java.lang.Exception (&quot;CalibratableMultiSegmentSequence::in =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc bfc" id="L713" title="All 2 branches covered.">		return dblPredictorOrdinate &gt;= getLeftPredictorOrdinateEdge() &amp;&amp; dblPredictorOrdinate &lt;=</span>

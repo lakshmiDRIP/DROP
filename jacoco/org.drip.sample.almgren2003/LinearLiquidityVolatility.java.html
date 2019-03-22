@@ -6,7 +6,7 @@ import org.drip.execution.impact.ParticipationRateLinear;
 import org.drip.execution.nonadaptive.DiscreteLinearTradingEnhanced;
 import org.drip.execution.optimum.TradingEnhancedDiscrete;
 import org.drip.execution.profiletime.UniformParticipationRateLinear;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

@@ -87,8 +87,8 @@ public class CompositePeriodSetting {
 <span class="fc" id="L87">	private java.lang.String _strTenor = &quot;&quot;;</span>
 <span class="fc" id="L88">	private java.lang.String _strPayCurrency = &quot;&quot;;</span>
 <span class="fc" id="L89">	private double _dblBaseNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private org.drip.quant.common.Array2D _fsCoupon = null;</span>
-<span class="fc" id="L91">	private org.drip.quant.common.Array2D _fsNotional = null;</span>
+<span class="fc" id="L90">	private org.drip.numerical.common.Array2D _fsCoupon = null;</span>
+<span class="fc" id="L91">	private org.drip.numerical.common.Array2D _fsNotional = null;</span>
 <span class="fc" id="L92">	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;</span>
 <span class="fc" id="L93">	private org.drip.param.period.FixingSetting _fxFixingSetting = null;</span>
 <span class="fc" id="L94">	private org.drip.analytics.daycount.DateAdjustParams _dapPay = null;</span>
@@ -115,25 +115,25 @@ public class CompositePeriodSetting {
 		final java.lang.String strPayCurrency,
 		final org.drip.analytics.daycount.DateAdjustParams dapPay,
 		final double dblBaseNotional,
-		final org.drip.quant.common.Array2D fsCoupon,
-		final org.drip.quant.common.Array2D fsNotional,
+		final org.drip.numerical.common.Array2D fsCoupon,
+		final org.drip.numerical.common.Array2D fsNotional,
 		final org.drip.param.period.FixingSetting fxFixingSetting,
 		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 		throws java.lang.Exception
 <span class="fc" id="L123">	{</span>
 <span class="pc bpc" id="L124" title="4 of 8 branches missed.">		if (0 &gt;= (_iFreq = iFreq) || null == (_strTenor = strTenor) || _strTenor.isEmpty() || null ==</span>
 <span class="pc bpc" id="L125" title="1 of 2 branches missed.">			(_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() ||</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional))</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional))</span>
 <span class="nc" id="L127">			throw new java.lang.Exception (&quot;CompositePeriodSetting ctr: Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L129">		_dapPay = dapPay;</span>
 <span class="fc" id="L130">		_creditLabel = creditLabel;</span>
 <span class="fc" id="L131">		_fxFixingSetting = fxFixingSetting;</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		if (null == (_fsCoupon = fsCoupon)) _fsCoupon = org.drip.quant.common.Array2D.BulletSchedule();</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		if (null == (_fsCoupon = fsCoupon)) _fsCoupon = org.drip.numerical.common.Array2D.BulletSchedule();</span>
 
 <span class="fc bfc" id="L135" title="All 2 branches covered.">		if (null == (_fsNotional = fsNotional))</span>
-<span class="fc" id="L136">			_fsNotional = org.drip.quant.common.Array2D.BulletSchedule();</span>
+<span class="fc" id="L136">			_fsNotional = org.drip.numerical.common.Array2D.BulletSchedule();</span>
 <span class="fc" id="L137">	}</span>
 
 	/**
@@ -197,7 +197,7 @@ public class CompositePeriodSetting {
 	 * @return The Notional Schedule
 	 */
 
-	public org.drip.quant.common.Array2D notionalSchedule()
+	public org.drip.numerical.common.Array2D notionalSchedule()
 	{
 <span class="fc" id="L202">		return _fsNotional;</span>
 	}
@@ -208,7 +208,7 @@ public class CompositePeriodSetting {
 	 * @return The Coupon Schedule
 	 */
 
-	public org.drip.quant.common.Array2D couponSchedule()
+	public org.drip.numerical.common.Array2D couponSchedule()
 	{
 <span class="fc" id="L213">		return _fsCoupon;</span>
 	}

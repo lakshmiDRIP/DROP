@@ -2,7 +2,7 @@
 package org.drip.sample.classifier;
 
 import org.drip.learning.rxtor1.*;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.functional.FlatMultivariateRandom;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;
 import org.drip.sequence.random.*;

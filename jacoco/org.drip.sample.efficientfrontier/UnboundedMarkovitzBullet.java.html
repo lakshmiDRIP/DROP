@@ -5,11 +5,11 @@ import java.util.*;
 
 import org.drip.feed.loader.*;
 import org.drip.measure.statistics.MultivariateMoments;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.AssetComponent;
 import org.drip.portfolioconstruction.mpt.MarkovitzBullet;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
-import org.drip.quant.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

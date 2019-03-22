@@ -2,7 +2,7 @@
 package org.drip.sample.coveringnumber;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spaces.cover.ScaleSensitiveCoveringBounds;
 

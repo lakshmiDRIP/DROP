@@ -4,7 +4,7 @@ package org.drip.sample.hjm;
 import org.drip.analytics.date.*;
 import org.drip.dynamics.hjm.G2PlusPlus;
 import org.drip.function.r1tor1.FlatUnivariate;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.random.*;
 import org.drip.service.env.EnvManager;
 

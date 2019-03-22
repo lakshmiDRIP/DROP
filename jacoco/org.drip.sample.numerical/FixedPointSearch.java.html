@@ -3,8 +3,9 @@ package org.drip.sample.numerical;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1solver.*;
-import org.drip.quant.calculus.*;
-import org.drip.quant.common.*;
+import org.drip.numerical.common.*;
+import org.drip.numerical.differentiation.*;
+import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -72,7 +73,7 @@ import org.drip.quant.common.*;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L75">public class FixedPointSearch {</span>
+<span class="nc" id="L76">public class FixedPointSearch {</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Newton-Raphson Open Method
@@ -84,26 +85,26 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L87">			FixedPointFinderOutput fpop = new FixedPointFinderNewton (</span>
+<span class="fc" id="L88">			FixedPointFinderOutput fpop = new FixedPointFinderNewton (</span>
 				0.,
 				func,
 				true
-<span class="fc" id="L91">			).findRoot();</span>
+<span class="fc" id="L92">			).findRoot();</span>
 
-<span class="fc" id="L93">			System.out.println (&quot;--------\nNEWTON START\n-------&quot;);</span>
+<span class="fc" id="L94">			System.out.println (&quot;--------\nNEWTON START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L95" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L96">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L97">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L98">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L99">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L100">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L101">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L102">			System.out.println (&quot;--------\nNEWTON FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L103">		} catch (Exception e) {</span>
-<span class="nc" id="L104">			e.printStackTrace();</span>
-<span class="fc" id="L105">		}</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L103">			System.out.println (&quot;--------\nNEWTON FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L104">		} catch (Exception e) {</span>
+<span class="nc" id="L105">			e.printStackTrace();</span>
+<span class="fc" id="L106">		}</span>
+<span class="fc" id="L107">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Bisection Bracketing Method
@@ -115,28 +116,28 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L118">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
+<span class="fc" id="L119">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
 				0.,
 				func,
 				null,
 				VariateIteratorPrimitive.BISECTION,
 				true
-<span class="fc" id="L124">			).findRoot();</span>
+<span class="fc" id="L125">			).findRoot();</span>
 
-<span class="fc" id="L126">			System.out.println (&quot;--------\nBISECTION START\n-------&quot;);</span>
+<span class="fc" id="L127">			System.out.println (&quot;--------\nBISECTION START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L129">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L130">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L131">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L132">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L133">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L134">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L135">			System.out.println (&quot;--------\nBISECTION FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L136">		} catch (Exception e) {</span>
-<span class="nc" id="L137">			e.printStackTrace();</span>
-<span class="fc" id="L138">		}</span>
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L136">			System.out.println (&quot;--------\nBISECTION FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L137">		} catch (Exception e) {</span>
+<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="fc" id="L139">		}</span>
+<span class="fc" id="L140">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the False Position Method
@@ -148,28 +149,28 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L151">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
+<span class="fc" id="L152">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
 				0.,
 				func,
 				null,
 				VariateIteratorPrimitive.FALSE_POSITION,
 				true
-<span class="fc" id="L157">			).findRoot();</span>
+<span class="fc" id="L158">			).findRoot();</span>
 
-<span class="fc" id="L159">			System.out.println (&quot;--------\nFALSE POSITION START\n-------&quot;);</span>
+<span class="fc" id="L160">			System.out.println (&quot;--------\nFALSE POSITION START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L161" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L162">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L162" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L163">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L164">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L165">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L166">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L167">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L168">			System.out.println (&quot;--------\nFALSE POSITION FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L169">		} catch (Exception e) {</span>
-<span class="nc" id="L170">			e.printStackTrace();</span>
-<span class="fc" id="L171">		}</span>
-<span class="fc" id="L172">	}</span>
+<span class="fc" id="L169">			System.out.println (&quot;--------\nFALSE POSITION FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L170">		} catch (Exception e) {</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
+<span class="fc" id="L172">		}</span>
+<span class="fc" id="L173">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Quadratic Interpolation Bracketing Method
@@ -181,28 +182,28 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L184">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
+<span class="fc" id="L185">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
 				0.,
 				func,
 				null,
 				VariateIteratorPrimitive.QUADRATIC_INTERPOLATION,
 				true
-<span class="fc" id="L190">			).findRoot();</span>
+<span class="fc" id="L191">			).findRoot();</span>
 
-<span class="fc" id="L192">			System.out.println (&quot;--------\nQUADRATIC INTERPOLATION START\n-------&quot;);</span>
+<span class="fc" id="L193">			System.out.println (&quot;--------\nQUADRATIC INTERPOLATION START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L194" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L195">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L196">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L197">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L198">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L199">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L200">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L201">			System.out.println (&quot;--------\nQUADRATIC INTERPOLATION FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L202">		} catch (Exception e) {</span>
-<span class="nc" id="L203">			e.printStackTrace();</span>
-<span class="fc" id="L204">		}</span>
-<span class="fc" id="L205">	}</span>
+<span class="fc" id="L202">			System.out.println (&quot;--------\nQUADRATIC INTERPOLATION FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L203">		} catch (Exception e) {</span>
+<span class="nc" id="L204">			e.printStackTrace();</span>
+<span class="fc" id="L205">		}</span>
+<span class="fc" id="L206">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Inverse Quadratic Interpolation Bracketing Method
@@ -214,28 +215,28 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L217">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
+<span class="fc" id="L218">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
 				0.,
 				func,
 				null,
 				VariateIteratorPrimitive.INVERSE_QUADRATIC_INTERPOLATION,
 				true
-<span class="fc" id="L223">			).findRoot();</span>
+<span class="fc" id="L224">			).findRoot();</span>
 
-<span class="fc" id="L225">			System.out.println (&quot;--------\nINVERSE QUADRATIC INTERPOLATION START\n-------&quot;);</span>
+<span class="fc" id="L226">			System.out.println (&quot;--------\nINVERSE QUADRATIC INTERPOLATION START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L227" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L228">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L228" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L229">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L230">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L231">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L232">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L233">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L234">			System.out.println (&quot;--------\nINVERSE QUADRATIC INTERPOLATION FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L235">		} catch (Exception e) {</span>
-<span class="nc" id="L236">			e.printStackTrace();</span>
-<span class="fc" id="L237">		}</span>
-<span class="fc" id="L238">	}</span>
+<span class="fc" id="L235">			System.out.println (&quot;--------\nINVERSE QUADRATIC INTERPOLATION FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L236">		} catch (Exception e) {</span>
+<span class="nc" id="L237">			e.printStackTrace();</span>
+<span class="fc" id="L238">		}</span>
+<span class="fc" id="L239">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Ridder Bracketing Method
@@ -247,28 +248,28 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L250">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
+<span class="fc" id="L251">			FixedPointFinderOutput fpop = new FixedPointFinderBracketing (</span>
 				0.,
 				func,
 				null,
 				VariateIteratorPrimitive.RIDDER,
 				true
-<span class="fc" id="L256">			).findRoot();</span>
+<span class="fc" id="L257">			).findRoot();</span>
 
-<span class="fc" id="L258">			System.out.println (&quot;--------\nRIDDER START\n-------&quot;);</span>
+<span class="fc" id="L259">			System.out.println (&quot;--------\nRIDDER START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L260" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L261">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L261" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L262">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L263">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L264">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L265">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L266">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L267">			System.out.println (&quot;--------\nRIDDER FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L268">		} catch (Exception e) {</span>
-<span class="nc" id="L269">			e.printStackTrace();</span>
-<span class="fc" id="L270">		}</span>
-<span class="fc" id="L271">	}</span>
+<span class="fc" id="L268">			System.out.println (&quot;--------\nRIDDER FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L269">		} catch (Exception e) {</span>
+<span class="nc" id="L270">			e.printStackTrace();</span>
+<span class="fc" id="L271">		}</span>
+<span class="fc" id="L272">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Brent's Bracketing Method
@@ -280,26 +281,26 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L283">			FixedPointFinderOutput fpop = new FixedPointFinderBrent (</span>
+<span class="fc" id="L284">			FixedPointFinderOutput fpop = new FixedPointFinderBrent (</span>
 				0.,
 				func,
 				true
-<span class="fc" id="L287">			).findRoot();</span>
+<span class="fc" id="L288">			).findRoot();</span>
 
-<span class="fc" id="L289">			System.out.println (&quot;--------\nBRENT START\n-------&quot;);</span>
+<span class="fc" id="L290">			System.out.println (&quot;--------\nBRENT START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L291" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L292">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L292" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L293">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L294">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L295">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L296">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L297">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L298">			System.out.println (&quot;--------\nBRENT FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L299">		} catch (Exception e) {</span>
-<span class="nc" id="L300">			e.printStackTrace();</span>
-<span class="fc" id="L301">		}</span>
-<span class="fc" id="L302">	}</span>
+<span class="fc" id="L299">			System.out.println (&quot;--------\nBRENT FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L300">		} catch (Exception e) {</span>
+<span class="nc" id="L301">			e.printStackTrace();</span>
+<span class="fc" id="L302">		}</span>
+<span class="fc" id="L303">	}</span>
 
 	/*
 	 * Sample illustrating the Invocation of the Zheng's Bracketing Method
@@ -311,26 +312,26 @@ import org.drip.quant.common.*;
 		final R1ToR1 func)
 	{
 		try {
-<span class="fc" id="L314">			FixedPointFinderOutput fpop = new FixedPointFinderZheng (</span>
+<span class="fc" id="L315">			FixedPointFinderOutput fpop = new FixedPointFinderZheng (</span>
 				0.,
 				func,
 				true
-<span class="fc" id="L318">			).findRoot();</span>
+<span class="fc" id="L319">			).findRoot();</span>
 
-<span class="fc" id="L320">			System.out.println (&quot;--------\nZHENG START\n-------&quot;);</span>
+<span class="fc" id="L321">			System.out.println (&quot;--------\nZHENG START\n-------&quot;);</span>
 
-<span class="pc bpc" id="L322" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
-<span class="fc" id="L323">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
+<span class="pc bpc" id="L323" title="2 of 4 branches missed.">			if (null != fpop &amp;&amp; fpop.containsRoot()) {</span>
+<span class="fc" id="L324">				System.out.println (&quot;Root: &quot; + FormatUtil.FormatDouble (fpop.getRoot(), 1, 4, 1.));</span>
 
-<span class="fc" id="L325">				System.out.println (fpop.displayString());</span>
+<span class="fc" id="L326">				System.out.println (fpop.displayString());</span>
 			} else
-<span class="nc" id="L327">				System.out.println (&quot;Root searched failed!&quot;);</span>
+<span class="nc" id="L328">				System.out.println (&quot;Root searched failed!&quot;);</span>
 
-<span class="fc" id="L329">			System.out.println (&quot;--------\nZHENG FINISH\n-------\n&quot;);</span>
-<span class="nc" id="L330">		} catch (Exception e) {</span>
-<span class="nc" id="L331">			e.printStackTrace();</span>
-<span class="fc" id="L332">		}</span>
-<span class="fc" id="L333">	}</span>
+<span class="fc" id="L330">			System.out.println (&quot;--------\nZHENG FINISH\n-------\n&quot;);</span>
+<span class="nc" id="L331">		} catch (Exception e) {</span>
+<span class="nc" id="L332">			e.printStackTrace();</span>
+<span class="fc" id="L333">		}</span>
+<span class="fc" id="L334">	}</span>
 
 	public static final void main (
 		final String[] astrArgs)
@@ -339,12 +340,12 @@ import org.drip.quant.common.*;
 		 * Define and implement the objective function
 		 */
 
-<span class="fc" id="L342">		R1ToR1 func = new R1ToR1 (null) {</span>
+<span class="fc" id="L343">		R1ToR1 func = new R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblVariate)
 				throws Exception
 			{
-<span class="fc" id="L347">				return Math.cos (dblVariate) - dblVariate * dblVariate * dblVariate;</span>
+<span class="fc" id="L348">				return Math.cos (dblVariate) - dblVariate * dblVariate * dblVariate;</span>
 
 				/* return dblVariate * dblVariate * dblVariate - 3. * dblVariate * dblVariate + 2. *
 					dblVariate;
@@ -363,21 +364,21 @@ import org.drip.quant.common.*;
 				final double dblOFBase,
 				final int iOrder)
 			{
-<span class="pc bpc" id="L366" title="2 of 4 branches missed.">				if (0 &gt;= iOrder || 2 &lt; iOrder) return null;</span>
+<span class="pc bpc" id="L367" title="2 of 4 branches missed.">				if (0 &gt;= iOrder || 2 &lt; iOrder) return null;</span>
 
-<span class="fc" id="L368">				double dblVariateInfinitesimal = Double.NaN;</span>
+<span class="fc" id="L369">				double dblVariateInfinitesimal = Double.NaN;</span>
 
 				try {
-<span class="fc" id="L371">					dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblVariate);</span>
-<span class="nc" id="L372">				} catch (Exception e) {</span>
-<span class="nc" id="L373">					e.printStackTrace();</span>
+<span class="fc" id="L372">					dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblVariate);</span>
+<span class="nc" id="L373">				} catch (Exception e) {</span>
+<span class="nc" id="L374">					e.printStackTrace();</span>
 
-<span class="nc" id="L375">					return null;</span>
-<span class="fc" id="L376">				}</span>
+<span class="nc" id="L376">					return null;</span>
+<span class="fc" id="L377">				}</span>
 
-<span class="pc bpc" id="L378" title="1 of 2 branches missed.">				if (1 != iOrder) {</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">				if (1 != iOrder) {</span>
 					try {
-<span class="nc" id="L380">						return new Differential (dblVariateInfinitesimal, (-1. * Math.cos (dblVariate) - 6. * dblVariate)</span>
+<span class="nc" id="L381">						return new Differential (dblVariateInfinitesimal, (-1. * Math.cos (dblVariate) - 6. * dblVariate)</span>
 							* dblVariateInfinitesimal);
 
 						/* return new Differential (dblVariateInfinitesimal, (6. * dblVariate - 6.) * dblVariateInfinitesimal);
@@ -388,15 +389,15 @@ import org.drip.quant.common.*;
 						 	dblVariate - 576. * dblVariate * dblVariate + 36.) * dblVariateInfinitesimal);
 
 						return new Differential (dblVariateInfinitesimal, (2. * Math.sin (dblVariate)) * dblVariateInfinitesimal); */
-<span class="nc" id="L391">					} catch (Exception e) {</span>
-<span class="nc" id="L392">						e.printStackTrace();</span>
+<span class="nc" id="L392">					} catch (Exception e) {</span>
+<span class="nc" id="L393">						e.printStackTrace();</span>
 					}
 
-<span class="nc" id="L395">					return null;</span>
+<span class="nc" id="L396">					return null;</span>
 				}
 
 				try {
-<span class="fc" id="L399">					return new Differential (dblVariateInfinitesimal, (-1. * Math.sin (dblVariate) - 3. * dblVariate * dblVariate) *</span>
+<span class="fc" id="L400">					return new Differential (dblVariateInfinitesimal, (-1. * Math.sin (dblVariate) - 3. * dblVariate * dblVariate) *</span>
 				 		dblVariateInfinitesimal);
 
 					/* return new Differential (dblVariateInfinitesimal, (3. * dblVariate * dblVariate - 6. * dblVariate + 2.) *
@@ -408,11 +409,11 @@ import org.drip.quant.common.*;
 						dblVariate - 192. * dblVariate * dblVariate * dblVariate + 36. * dblVariate) * dblVariateInfinitesimal);
 
 					return new Differential (dblVariateInfinitesimal, (3. - 2. * Math.cos (dblVariate)) * dblVariateInfinitesimal); */
-<span class="nc" id="L411">				} catch (Exception e) {</span>
-<span class="nc" id="L412">					e.printStackTrace();</span>
+<span class="nc" id="L412">				} catch (Exception e) {</span>
+<span class="nc" id="L413">					e.printStackTrace();</span>
 				}
 
-<span class="nc" id="L415">				return null;</span>
+<span class="nc" id="L416">				return null;</span>
 			}
 
 			@Override public double integrate (
@@ -420,25 +421,25 @@ import org.drip.quant.common.*;
 				final double dblEnd)
 				throws Exception
 			{
-<span class="nc" id="L423">				return R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L424">				return R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
-<span class="fc" id="L427">		InvokeNewton (func);</span>
+<span class="fc" id="L428">		InvokeNewton (func);</span>
 
-<span class="fc" id="L429">		InvokeBisection (func);</span>
+<span class="fc" id="L430">		InvokeBisection (func);</span>
 
-<span class="fc" id="L431">		InvokeFalsePosition (func);</span>
+<span class="fc" id="L432">		InvokeFalsePosition (func);</span>
 
-<span class="fc" id="L433">		InvokeQuadraticInterpolation (func);</span>
+<span class="fc" id="L434">		InvokeQuadraticInterpolation (func);</span>
 
-<span class="fc" id="L435">		InvokeInverseQuadraticInterpolation (func);</span>
+<span class="fc" id="L436">		InvokeInverseQuadraticInterpolation (func);</span>
 
-<span class="fc" id="L437">		InvokeRidder (func);</span>
+<span class="fc" id="L438">		InvokeRidder (func);</span>
 
-<span class="fc" id="L439">		InvokeBrent (func);</span>
+<span class="fc" id="L440">		InvokeBrent (func);</span>
 
-<span class="fc" id="L441">		InvokeZheng (func);</span>
-<span class="fc" id="L442">	}</span>
+<span class="fc" id="L442">		InvokeZheng (func);</span>
+<span class="fc" id="L443">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

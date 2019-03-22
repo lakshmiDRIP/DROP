@@ -130,20 +130,20 @@ public class PoissonSequenceAgnosticMetrics extends org.drip.sequence.metrics.Si
 		final double dblLevel)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel))</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel))</span>
 <span class="nc" id="L134">			throw new java.lang.Exception</span>
 				(&quot;PoissonSequenceAgnosticMetrics::chernoffStirlingUpperBound =&gt; Invalid Inputs&quot;);
 
 <span class="fc" id="L137">		int iNumEntry = sequence().length;</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		double dblPopulationMean = org.drip.quant.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		double dblPopulationMean = org.drip.numerical.common.NumberUtil.IsValid (_dblPopulationMean) ?</span>
 <span class="fc" id="L140">			_dblPopulationMean : empiricalExpectation();</span>
 
 <span class="fc" id="L142">		double dblBound = (java.lang.Math.pow (dblPopulationMean / dblLevel, iNumEntry * dblLevel) *</span>
 <span class="fc" id="L143">			java.lang.Math.exp (iNumEntry * (dblLevel - dblPopulationMean) - (1. / (12. * iNumEntry *</span>
 <span class="fc" id="L144">				dblLevel + 1.)))) / java.lang.Math.sqrt (2. * java.lang.Math.PI * iNumEntry * dblLevel);</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBound)) return 0.;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBound)) return 0.;</span>
 
 <span class="pc bpc" id="L148" title="1 of 2 branches missed.">		return dblBound &gt; 1. ? 1. : dblBound;</span>
 	}

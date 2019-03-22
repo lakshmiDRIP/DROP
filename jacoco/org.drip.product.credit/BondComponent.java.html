@@ -199,7 +199,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblPrice)
 	{
-<span class="pc bpc" id="L202" title="4 of 8 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblPrice) || null</span>
+<span class="pc bpc" id="L202" title="4 of 8 branches missed.">		if (null == valParams || null == csqs || !org.drip.numerical.common.NumberUtil.IsValid (dblPrice) || null</span>
 			== _eosCall)
 <span class="nc" id="L204">			return null;</span>
 
@@ -259,7 +259,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblPrice)
 	{
-<span class="nc bnc" id="L262" title="All 8 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblPrice) || null</span>
+<span class="nc bnc" id="L262" title="All 8 branches missed.">		if (null == valParams || null == csqs || !org.drip.numerical.common.NumberUtil.IsValid (dblPrice) || null</span>
 			== _eosPut)
 <span class="nc" id="L264">			return null;</span>
 
@@ -323,7 +323,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final boolean bApplyCouponExtension)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L326" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L326" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L327">			throw new java.lang.Exception (&quot;BondComponent::priceFromYield =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L329">		int iValueDate = valParams.valueDate();</span>
@@ -439,7 +439,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				iPeriodAmortizationMode)
 <span class="nc" id="L440">				dblCouponNotional = notional (iPeriodStartDate, iPeriodEndDate);</span>
 
-<span class="fc bfc" id="L442" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L443">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="fc bfc" id="L445" title="All 2 branches covered.">			dblCumulativePeriodPV += (period.accrualDCF (iPeriodEndDate) * (bApplyFlatForwardRate ?</span>
@@ -523,21 +523,21 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc" id="L523">			return null;</span>
 <span class="fc" id="L524">		}</span>
 
-<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCleanPrice)) return null;</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCleanPrice)) return null;</span>
 
 <span class="fc" id="L528">		java.lang.String strCalibMeasure = calibParams.measure();</span>
 
 <span class="fc" id="L530">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCalibMeasures = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc bfc" id="L533" title="All 2 branches covered.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="fc bfc" id="L533" title="All 2 branches covered.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;CleanPrice&quot;, &quot;FairCleanPrice&quot;, &quot;FairPrice&quot;, &quot;Price&quot;}, false)) {
 <span class="fc" id="L535">			mapCalibMeasures.put (strCalibMeasure, dblCleanPrice);</span>
 
 <span class="fc" id="L537">			return mapCalibMeasures;</span>
 		}
 
-<span class="pc bpc" id="L540" title="1 of 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="pc bpc" id="L540" title="1 of 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;DirtyPrice&quot;, &quot;FairDirtyPrice&quot;}, false)) {
 			try {
 <span class="nc" id="L543">				mapCalibMeasures.put (strCalibMeasure, dblCleanPrice + accrued (valParams.valueDate(),</span>
@@ -549,7 +549,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-<span class="pc bpc" id="L552" title="1 of 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="pc bpc" id="L552" title="1 of 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;Yield&quot;, &quot;FairYield&quot;}, false)) {
 			try {
 <span class="fc" id="L555">				mapCalibMeasures.put (strCalibMeasure, yieldFromPrice (valParams, csqc, vcp, iExerciseDate,</span>
@@ -561,7 +561,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-<span class="nc bnc" id="L564" title="All 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="nc bnc" id="L564" title="All 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;TSYSpread&quot;, &quot;FairTSYSpread&quot;}, false)) {
 			try {
 <span class="nc" id="L567">				mapCalibMeasures.put (strCalibMeasure, tsySpreadFromPrice (valParams, csqc, vcp,</span>
@@ -573,7 +573,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-<span class="nc bnc" id="L576" title="All 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;OAS&quot;, &quot;OASpread&quot;, &quot;OptionAdjustedSpread&quot;}, false)) {
 			try {
 <span class="nc" id="L579">				mapCalibMeasures.put (strCalibMeasure, oasFromPrice (valParams, csqc, vcp, iExerciseDate,</span>
@@ -585,7 +585,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-<span class="nc bnc" id="L588" title="All 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;BondBasis&quot;, &quot;YieldBasis&quot;, &quot;YieldSpread&quot;}, false)) {
 			try {
 <span class="nc" id="L591">				mapCalibMeasures.put (strCalibMeasure, bondBasisFromPrice (valParams, csqc, vcp,</span>
@@ -597,7 +597,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-<span class="nc bnc" id="L600" title="All 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="nc bnc" id="L600" title="All 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;CreditBasis&quot;}, false)) {
 <span class="nc bnc" id="L602" title="All 2 branches missed.">			if (null == cc) return null;</span>
 
@@ -611,7 +611,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			}
 		}
 
-<span class="nc bnc" id="L614" title="All 2 branches missed.">		if (org.drip.quant.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">		if (org.drip.numerical.common.StringUtil.MatchInStringArray (strCalibMeasure, new java.lang.String[]</span>
 			{&quot;PECS&quot;, &quot;ParEquivalentCDSSpread&quot;}, false)) {
 <span class="nc bnc" id="L616" title="All 2 branches missed.">			if (null == cc) return null;</span>
 
@@ -634,7 +634,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblPrice)
 	{
-<span class="pc bpc" id="L637" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L637" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L638">			return null;</span>
 
 <span class="fc" id="L640">		int iMaturityDate = maturityDate().julian();</span>
@@ -762,7 +762,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="pc bpc" id="L763" title="1 of 2 branches missed.">				if (null == cpcm) return null;</span>
 
-<span class="fc bfc" id="L765" title="All 2 branches covered.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardCoupon))</span>
+<span class="fc bfc" id="L765" title="All 2 branches covered.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardCoupon))</span>
 <span class="fc" id="L766">					dblFlatForwardCoupon = cpcm.rate();</span>
 
 <span class="fc" id="L768">				double dblPeriodBaseRate = period.periods().get (0).baseRate (csqc);</span>
@@ -947,17 +947,17 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="pc bpc" id="L948" title="1 of 2 branches missed.">		double dblCreditRiskyPV = null == bcm ? java.lang.Double.NaN : bcm.pv();</span>
 
-<span class="pc bpc" id="L950" title="1 of 2 branches missed.">		double dblPrice = !org.drip.quant.common.NumberUtil.IsValid (dblCreditRiskyPV) ?</span>
+<span class="pc bpc" id="L950" title="1 of 2 branches missed.">		double dblPrice = !org.drip.numerical.common.NumberUtil.IsValid (dblCreditRiskyPV) ?</span>
 <span class="pc" id="L951">			bwmFair.creditRisklessCleanbcm().pv() : dblCreditRiskyPV;</span>
 
 		try {
-<span class="fc" id="L954">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, rvMeasures (valParams,</span>
+<span class="fc" id="L954">			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, rvMeasures (valParams,</span>
 				pricerParams, csqc, vcp, new org.drip.param.valuation.WorkoutInfo (iMaturityDate,
 <span class="fc" id="L956">					yieldFromPrice (valParams, csqc, vcp, dblPrice / notional (valParams.valueDate())), 1.,</span>
 						org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY), dblPrice, &quot;&quot;));
 
-<span class="fc" id="L959">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures,</span>
-<span class="fc" id="L960">				org.drip.quant.common.CollectionUtil.PrefixKeys (mapMeasures, &quot;Fair&quot;));</span>
+<span class="fc" id="L959">			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures,</span>
+<span class="fc" id="L960">				org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMeasures, &quot;Fair&quot;));</span>
 
 <span class="fc" id="L962">			return mapMeasures;</span>
 <span class="nc" id="L963">		} catch (java.lang.Exception e) {</span>
@@ -979,8 +979,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L979">				(valParams, pricerParams, csqc, vcp, wiMarket, priceFromYield (valParams, csqc, vcp,</span>
 <span class="fc" id="L980">					wiMarket.date(), wiMarket.factor(), wiMarket.yield()), &quot;&quot;);</span>
 
-<span class="fc" id="L982">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures,</span>
-<span class="fc" id="L983">				org.drip.quant.common.CollectionUtil.PrefixKeys (mapMeasures, &quot;Market&quot;));</span>
+<span class="fc" id="L982">			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures,</span>
+<span class="fc" id="L983">				org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMeasures, &quot;Market&quot;));</span>
 
 <span class="fc" id="L985">			return mapMeasures;</span>
 <span class="nc" id="L986">		} catch (java.lang.Exception e) {</span>
@@ -1011,8 +1011,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final int iDiscountCurveType)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L1014" title="3 of 6 branches missed.">		if (null == valParams || null == csqc ||!org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
-<span class="pc bpc" id="L1015" title="1 of 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
+<span class="pc bpc" id="L1014" title="3 of 6 branches missed.">		if (null == valParams || null == csqc ||!org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
+<span class="pc bpc" id="L1015" title="1 of 2 branches missed.">			|| !org.drip.numerical.common.NumberUtil.IsValid (dblBump))</span>
 <span class="nc" id="L1016">			throw new java.lang.Exception (&quot;BondComponent::priceFromDiscountCurve =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L1018">		org.drip.state.discount.DiscountCurve dc = null;</span>
@@ -1100,7 +1100,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 				iPeriodAmortizationMode)
 <span class="nc" id="L1101">				dblCouponNotional = notional (iPeriodStartDate, iNotionalEndDate);</span>
 
-<span class="fc bfc" id="L1103" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L1103" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L1104">				dblFlatForwardRate = pcm.rate();</span>
 
 <span class="pc bpc" id="L1106" title="1 of 2 branches missed.">			dblPV += period.accrualDCF (iAccrualEndDate) * dblPeriodAnnuity * (bApplyFlatForward ?</span>
@@ -1171,7 +1171,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L1174" title="All 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="nc bnc" id="L1174" title="All 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L1175">			throw new java.lang.Exception</span>
 				(&quot;BondComponent::effectiveTreasuryBenchmarkYield =&gt; Bad val/mkt Params&quot;);
 
@@ -1393,7 +1393,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	{
 <span class="pc bpc" id="L1394" title="1 of 2 branches missed.">		if (null == _couponSetting) return 1.;</span>
 
-<span class="fc" id="L1396">		org.drip.quant.common.Array2D fsCoupon = _couponSetting.factorSchedule();</span>
+<span class="fc" id="L1396">		org.drip.numerical.common.Array2D fsCoupon = _couponSetting.factorSchedule();</span>
 
 <span class="fc bfc" id="L1398" title="All 2 branches covered.">		return null == fsCoupon ? 1. : fsCoupon.y (iDate);</span>
 	}
@@ -1593,7 +1593,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 	{
 <span class="nc bnc" id="L1595" title="All 6 branches missed.">		if (null == valParams || null == pricerParams || null == csqc ||</span>
-<span class="nc bnc" id="L1596" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="nc bnc" id="L1596" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L1597">			return null;</span>
 
 <span class="nc" id="L1599">		org.drip.param.valuation.WorkoutInfo wi = exerciseYieldFromPrice (valParams, csqc, vcp, dblPrice);</span>
@@ -1959,7 +1959,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc bnc" id="L1959" title="All 2 branches missed.">		if (null != _floaterSetting) {</span>
 <span class="nc" id="L1960">			double dblCurrentFullCoupon = _floaterSetting.currentFullCoupon();</span>
 
-<span class="nc bnc" id="L1962" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblCurrentFullCoupon))</span>
+<span class="nc bnc" id="L1962" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblCurrentFullCoupon))</span>
 <span class="nc" id="L1963">				return dblCurrentFullCoupon;</span>
 		}
 
@@ -2021,7 +2021,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L2022">				double dblCoupon = cpcm.rate();</span>
 
-<span class="pc bpc" id="L2024" title="1 of 2 branches missed.">				if (!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="pc bpc" id="L2024" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
 <span class="nc" id="L2025">					throw new java.lang.Exception (&quot;BondComponent::accrued =&gt; Invalid Coupon For &quot; + dt);</span>
 
 <span class="fc" id="L2027">				return period.accrualDCF (iDate) * dblCoupon * notional (iStartDate) * couponFactor</span>
@@ -2039,7 +2039,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2042" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2042" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2043">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageMaturityDate =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L2045">		int iValueDate = valParams.valueDate();</span>
@@ -2103,7 +2103,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2103">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
 <span class="fc" id="L2104">				(iAccrualStartDate);</span>
 
-<span class="fc bfc" id="L2106" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2106" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2107">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L2109" title="1 of 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
@@ -2139,7 +2139,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2142" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2142" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2143">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLife =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L2145">		int iValueDate = valParams.valueDate();</span>
@@ -2203,7 +2203,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2203">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
 <span class="fc" id="L2204">				(iAccrualStartDate);</span>
 
-<span class="fc bfc" id="L2206" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2206" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2207">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L2209" title="1 of 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
@@ -2239,7 +2239,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2242" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2242" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2243">			throw new java.lang.Exception</span>
 				(&quot;BondComponent::weightedAverageLifePrincipalOnly =&gt; Invalid Inputs&quot;);
 
@@ -2310,7 +2310,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2313" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2313" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2314">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCouponOnly =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L2316">		int iValueDate = valParams.valueDate();</span>
@@ -2374,7 +2374,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2374">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
 <span class="fc" id="L2375">				(iAccrualStartDate);</span>
 
-<span class="fc bfc" id="L2377" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2377" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2378">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L2380" title="1 of 2 branches missed.">			double dblPeriodCashflow = dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
@@ -2405,7 +2405,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2408" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2408" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2409">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeLossOnly =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L2411">		int iValueDate = valParams.valueDate();</span>
@@ -2469,7 +2469,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2469">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
 <span class="fc" id="L2470">				(iAccrualStartDate);</span>
 
-<span class="fc bfc" id="L2472" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2472" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2473">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L2475" title="1 of 2 branches missed.">			double dblPeriodLossCashflow = (dblPeriodTimeWidth * (bApplyFlatForward ? dblFlatForwardRate :</span>
@@ -2507,7 +2507,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblWorkoutFactor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2510" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L2510" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L2511">			throw new java.lang.Exception (&quot;BondComponent::weightedAverageLifeCredit =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L2513">		int iValueDate = valParams.valueDate();</span>
@@ -2571,7 +2571,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="fc" id="L2571">			double dblPeriodTimeWidth = period.accrualDCF (iAccrualEndDate) - period.accrualDCF</span>
 <span class="fc" id="L2572">				(iAccrualStartDate);</span>
 
-<span class="fc bfc" id="L2574" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2574" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2575">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="fc" id="L2577">			double dblPeriodSurvival = cc.survival (iPeriodPayDate);</span>
@@ -2621,8 +2621,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="fc" id="L2622">		int iValueDate = valParams.valueDate();</span>
 
-<span class="pc bpc" id="L2624" title="1 of 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == csqc || !org.drip.quant.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L2625" title="2 of 4 branches missed.">			(dblWorkoutFactor) || !org.drip.quant.common.NumberUtil.IsValid (dblBump))</span>
+<span class="pc bpc" id="L2624" title="1 of 4 branches missed.">		if (iValueDate &gt;= iWorkoutDate || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L2625" title="2 of 4 branches missed.">			(dblWorkoutFactor) || !org.drip.numerical.common.NumberUtil.IsValid (dblBump))</span>
 <span class="fc" id="L2626">			throw new java.lang.Exception (&quot;BondComponent::priceFromZeroCurve =&gt; Invalid Inputs &quot; + dblBump);</span>
 
 <span class="fc" id="L2628">		double dblPV = 0.;</span>
@@ -2717,7 +2717,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="pc bpc" id="L2718" title="1 of 2 branches missed.">			if (null == cpcm) throw new java.lang.Exception (&quot;BondComponent::priceFromZeroCurve =&gt; No PCM&quot;);</span>
 
-<span class="fc bfc" id="L2720" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2720" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2721">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L2723" title="1 of 2 branches missed.">			dblPV += (period.accrualDCF (iAccrualEndDate) * (bApplyFlatForwardRate ? dblFlatForwardRate :</span>
@@ -2764,8 +2764,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final boolean bFlat)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L2767" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
-<span class="pc bpc" id="L2768" title="1 of 4 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblCreditBasis) || null == _creditSetting)</span>
+<span class="pc bpc" id="L2767" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
+<span class="pc bpc" id="L2768" title="1 of 4 branches missed.">			|| !org.drip.numerical.common.NumberUtil.IsValid (dblCreditBasis) || null == _creditSetting)</span>
 <span class="fc" id="L2769">			throw new java.lang.Exception (&quot;BondComponent::priceFromCreditCurve =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L2771">		org.drip.state.credit.CreditCurve ccIn = csqc.creditState (creditLabel());</span>
@@ -2842,7 +2842,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="pc bpc" id="L2842" title="1 of 2 branches missed.">			if (null == cpcm)</span>
 <span class="nc" id="L2843">				throw new java.lang.Exception (&quot;BondComponent::priceFromCreditCurve =&gt; No PCM&quot;);</span>
 
-<span class="fc bfc" id="L2845" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L2845" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L2846">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L2848" title="1 of 2 branches missed.">			double dblPeriodCoupon = bApplyFlatForwardRate ? dblFlatForwardRate : cpcm.rate();</span>
@@ -3284,8 +3284,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L3287" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
-<span class="pc bpc" id="L3288" title="1 of 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L3287" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
+<span class="pc bpc" id="L3288" title="1 of 2 branches missed.">			|| !org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L3289">			throw new java.lang.Exception (&quot;BondComponent::aswFromPrice =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L3291">		int iValueDate = valParams.valueDate();</span>
@@ -3939,7 +3939,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L3942" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L3942" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L3943">			throw new java.lang.Exception (&quot;BondComponent::bondBasisFromYield =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L3945">		return dblYield - yieldFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor,</span>
@@ -4463,7 +4463,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L4466" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L4466" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L4467">			throw new java.lang.Exception (&quot;BondComponent::convexityFromPrice =&gt; Input inputs&quot;);</span>
 
 <span class="fc" id="L4469">		double dblYield = yieldFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblPrice);</span>
@@ -5666,7 +5666,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L5669" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L5669" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L5670">			throw new java.lang.Exception (&quot;BondComponent::discountMarginFromYield =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L5672">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
@@ -7366,7 +7366,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L7369" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield) ||</span>
+<span class="pc bpc" id="L7369" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblYield) ||</span>
 <span class="pc bpc" id="L7370" title="1 of 2 branches missed.">			valParams.valueDate() &gt;= iWorkoutDate)</span>
 <span class="nc" id="L7371">			throw new java.lang.Exception (&quot;BondComponent::gSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
@@ -7933,7 +7933,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L7936" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L7936" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L7937">			throw new java.lang.Exception (&quot;BondComponent::iSpreadFromYield =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L7939">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
@@ -8500,7 +8500,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L8503" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L8503" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L8504">			throw new java.lang.Exception (&quot;BondComponent::jSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L8506">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());</span>
@@ -9122,7 +9122,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L9125" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
+<span class="pc bpc" id="L9125" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor))</span>
 <span class="nc" id="L9126">			throw new java.lang.Exception (&quot;BondComponent::macaulayDurationFromYield =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L9128">		int iValueDate = valParams.valueDate();</span>
@@ -9237,7 +9237,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc bnc" id="L9237" title="All 2 branches missed.">			else if (org.drip.product.params.NotionalSetting.PERIOD_AMORT_EFFECTIVE == iAmortizationMode)</span>
 <span class="nc" id="L9238">				dblCouponNotional = notional (iPeriodStartDate, iPeriodEndDate);</span>
 
-<span class="fc bfc" id="L9240" title="All 2 branches covered.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="fc bfc" id="L9240" title="All 2 branches covered.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="fc" id="L9241">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="pc bpc" id="L9243" title="1 of 2 branches missed.">			double dblCouponPV = period.accrualDCF (iPeriodEndDate) * (bApplyFlatForwardRate ?</span>
@@ -9800,7 +9800,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L9803" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L9803" title="2 of 4 branches missed.">		if (null == valParams || !org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L9804">			throw new java.lang.Exception (&quot;BondComponent::modifiedDurationFromPrice =&gt; Input inputs&quot;);</span>
 
 <span class="fc bfc" id="L9806" title="All 2 branches covered.">		if (null == _floaterSetting)</span>
@@ -10452,7 +10452,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L10455" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L10455" title="2 of 4 branches missed.">		if (null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L10456">			throw new java.lang.Exception (&quot;BondComponent::nSpreadFromYield =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L10458">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
@@ -11684,8 +11684,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblASW)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L11687" title="All 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
-<span class="nc bnc" id="L11688" title="All 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblASW))</span>
+<span class="nc bnc" id="L11687" title="All 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
+<span class="nc bnc" id="L11688" title="All 2 branches missed.">			|| !org.drip.numerical.common.NumberUtil.IsValid (dblASW))</span>
 <span class="nc" id="L11689">			throw new java.lang.Exception (&quot;BondComponent::priceFromASW =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L11691">		int iValueDate = valParams.valueDate();</span>
@@ -12855,7 +12855,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblBondBasis)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L12858" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblBondBasis))</span>
+<span class="pc bpc" id="L12858" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBondBasis))</span>
 <span class="nc" id="L12859">			throw new java.lang.Exception (&quot;BondComponent::yieldFromBondBasis =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L12861">		return yieldFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, priceFromFundingCurve</span>
@@ -12932,8 +12932,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblDiscountMargin)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L12935" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.quant.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
-<span class="pc bpc" id="L12936" title="1 of 2 branches missed.">			|| !org.drip.quant.common.NumberUtil.IsValid (dblDiscountMargin))</span>
+<span class="pc bpc" id="L12935" title="3 of 6 branches missed.">		if (null == valParams || null == csqc || !org.drip.numerical.common.NumberUtil.IsValid (dblWorkoutFactor)</span>
+<span class="pc bpc" id="L12936" title="1 of 2 branches missed.">			|| !org.drip.numerical.common.NumberUtil.IsValid (dblDiscountMargin))</span>
 <span class="nc" id="L12937">			throw new java.lang.Exception (&quot;BondComponent::yieldFromDiscountMargin =&gt; Invalid inputs&quot;);</span>
 
 <span class="fc" id="L12939">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState (fundingLabel());</span>
@@ -13026,7 +13026,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblGSpread)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L13029" title="All 6 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblGSpread) || valParams.valueDate() &gt;= iWorkoutDate</span>
+<span class="nc bnc" id="L13029" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblGSpread) || valParams.valueDate() &gt;= iWorkoutDate</span>
 			|| null == csqc)
 <span class="nc" id="L13031">			throw new java.lang.Exception (&quot;BondComponent::yieldFromGSpread =&gt; Invalid Inputs&quot;);</span>
 
@@ -13071,7 +13071,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		throws java.lang.Exception
 	{
 <span class="nc bnc" id="L13073" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= iWorkoutDate || null == csqc ||</span>
-<span class="nc bnc" id="L13074" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblISpread))</span>
+<span class="nc bnc" id="L13074" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblISpread))</span>
 <span class="nc" id="L13075">			throw new java.lang.Exception (&quot;BondComponent::yieldFromISpread =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L13077">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqc.fundingState</span>
@@ -13112,7 +13112,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		throws java.lang.Exception
 	{
 <span class="nc bnc" id="L13114" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= iWorkoutDate || null == csqc ||</span>
-<span class="nc bnc" id="L13115" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblJSpread))</span>
+<span class="nc bnc" id="L13115" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblJSpread))</span>
 <span class="nc" id="L13116">			throw new java.lang.Exception (&quot;BondComponent::yieldFromJSpread =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L13118">		org.drip.state.govvie.GovvieCurve gc = csqc.govvieState (govvieLabel());</span>
@@ -13153,7 +13153,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		throws java.lang.Exception
 	{
 <span class="nc bnc" id="L13155" title="All 6 branches missed.">		if (null == valParams || valParams.valueDate() &gt;= iWorkoutDate || null == csqc ||</span>
-<span class="nc bnc" id="L13156" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblNSpread))</span>
+<span class="nc bnc" id="L13156" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblNSpread))</span>
 <span class="nc" id="L13157">			throw new java.lang.Exception (&quot;BondComponent::yieldFromNSpread =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L13159">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqc.fundingState</span>
@@ -13319,7 +13319,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblTSYSpread)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L13322" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblTSYSpread) || valParams.valueDate() &gt;=</span>
+<span class="pc bpc" id="L13322" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTSYSpread) || valParams.valueDate() &gt;=</span>
 			iWorkoutDate)
 <span class="nc" id="L13324">			throw new java.lang.Exception (&quot;BondComponent::calcYieldFromTSYSpread =&gt; Invalid Inputs&quot;);</span>
 
@@ -13359,7 +13359,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYieldSpread)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L13362" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYieldSpread) || valParams.valueDate() &gt;=</span>
+<span class="pc bpc" id="L13362" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYieldSpread) || valParams.valueDate() &gt;=</span>
 			iWorkoutDate)
 <span class="nc" id="L13364">			throw new java.lang.Exception (&quot;BondComponent::yieldFromYieldSpread =&gt; Invalid Inputs&quot;);</span>
 
@@ -13887,7 +13887,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L13890" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="pc bpc" id="L13890" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L13891">			throw new java.lang.Exception (&quot;BondComponent::yield01FromYield =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L13893">		return priceFromYield (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor, dblYield) -</span>
@@ -14490,7 +14490,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final double dblYield)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L14493" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblYield))</span>
+<span class="nc bnc" id="L14493" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYield))</span>
 <span class="nc" id="L14494">			throw new java.lang.Exception (&quot;BondComponent::yieldSpreadFromYield =&gt; Invalid Inputs&quot;);</span>
 
 <span class="nc" id="L14496">		return dblYield - yieldFromPrice (valParams, csqc, vcp, iWorkoutDate, dblWorkoutFactor,</span>
@@ -15090,7 +15090,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.WorkoutInfo wi,
 		final double dblPrice)
 	{
-<span class="pc bpc" id="L15093" title="3 of 6 branches missed.">		if (null == valParams || null == csqs || null == wi || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L15093" title="3 of 6 branches missed.">		if (null == valParams || null == csqs || null == wi || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L15094" title="1 of 2 branches missed.">			(dblPrice))</span>
 <span class="nc" id="L15095">			return null;</span>
 
@@ -15426,7 +15426,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc" id="L15426">				mapMeasures.put (&quot;MarketZeroDiscountMargin&quot;, dblZeroDiscountMargin);</span>
 			}
 
-<span class="fc" id="L15429">			org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, mapWorkoutMeasures);</span>
+<span class="fc" id="L15429">			org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, mapWorkoutMeasures);</span>
 
 <span class="fc" id="L15431">			org.drip.state.credit.CreditCurve cc = csqs.creditState (creditLabel());</span>
 
@@ -15446,10 +15446,10 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc" id="L15446">						org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMarketMeasures</span>
 <span class="nc" id="L15447">							= bwmMarket.toMap (&quot;&quot;);</span>
 
-<span class="nc" id="L15449">						org.drip.quant.common.CollectionUtil.MergeWithMain (mapMarketMeasures,</span>
-<span class="nc" id="L15450">							org.drip.quant.common.CollectionUtil.PrefixKeys (mapMarketMeasures, &quot;Market&quot;));</span>
+<span class="nc" id="L15449">						org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMarketMeasures,</span>
+<span class="nc" id="L15450">							org.drip.numerical.common.CollectionUtil.PrefixKeys (mapMarketMeasures, &quot;Market&quot;));</span>
 
-<span class="nc" id="L15452">						org.drip.quant.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);</span>
+<span class="nc" id="L15452">						org.drip.numerical.common.CollectionUtil.MergeWithMain (mapMeasures, mapMarketMeasures);</span>
 					}
 				}
 			}
@@ -15901,7 +15901,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 <span class="nc bnc" id="L15902" title="All 2 branches missed.">			if (null == cpcm) throw new java.lang.Exception (&quot;BondComponent::pv =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="nc bnc" id="L15904" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
+<span class="nc bnc" id="L15904" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblFlatForwardRate))</span>
 <span class="nc" id="L15905">				dblFlatForwardRate = cpcm.rate();</span>
 
 <span class="nc bnc" id="L15907" title="All 2 branches missed.">			double dblPeriodCoupon = bApplyFlatForwardRate ? dblFlatForwardRate : cpcm.rate();</span>
@@ -15961,7 +15961,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc" id="L15961">			_quoteConvention ? _quoteConvention.settleDate (valParams) : valParams.cashPayDate());</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
+	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
@@ -16036,7 +16036,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 <span class="nc" id="L16036">		return null;</span>
 	}
 
-	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
+	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.CreditPricerParams pricerParams,
@@ -16103,7 +16103,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			final double dblPrice)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L16106" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L16106" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L16107">				throw new java.lang.Exception</span>
 					(&quot;BondComponent::BondCalibrator::calibrateYieldFromPrice =&gt; Invalid Inputs!&quot;);
 
@@ -16163,7 +16163,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			final double dblPrice)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L16166" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L16166" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L16167">				throw new java.lang.Exception</span>
 					(&quot;BondComponent::BondCalibrator::calibrateZSpreadFromPrice =&gt; Invalid Inputs!&quot;);
 
@@ -16231,7 +16231,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			final double dblPrice)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L16234" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L16234" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L16235">				throw new java.lang.Exception</span>
 					(&quot;BondComponent::BondCalibrator::calibrateOASFromPrice =&gt; Invalid Inputs!&quot;);
 
@@ -16289,7 +16289,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			final double dblPrice)
 			throws java.lang.Exception
 		{
-<span class="nc bnc" id="L16292" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="nc bnc" id="L16292" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L16293">				throw new java.lang.Exception</span>
 					(&quot;BondComponent::BondCalibrator::calibrateDiscCurveSpreadFromPrice =&gt; Invalid Inputs!&quot;);
 
@@ -16347,7 +16347,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			final double dblPrice)
 			throws java.lang.Exception
 		{
-<span class="nc bnc" id="L16350" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="nc bnc" id="L16350" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L16351">				throw new java.lang.Exception</span>
 					(&quot;BondComponent::BondCalibrator::calibrateZeroCurveSpreadFromPrice =&gt; Invalid Inputs!&quot;);
 
@@ -16410,7 +16410,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 			final boolean bFlat)
 			throws java.lang.Exception
 		{
-<span class="pc bpc" id="L16413" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblPrice))</span>
+<span class="pc bpc" id="L16413" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPrice))</span>
 <span class="nc" id="L16414">				throw new java.lang.Exception</span>
 					(&quot;BondComponent::BondCalibrator::calibrateCreditBasisFromPrice =&gt; Invalid Inputs!&quot;);
 

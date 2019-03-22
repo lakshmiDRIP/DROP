@@ -6,7 +6,7 @@ import org.drip.analytics.definition.MarketSurface;
 import org.drip.dynamics.hjm.*;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1.FlatUnivariate;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.sequence.random.*;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.PolynomialFunctionSetParams;

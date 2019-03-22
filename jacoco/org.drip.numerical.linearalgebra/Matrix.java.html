@@ -1,0 +1,1175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Matrix.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.numerical.linearalgebra</a> &gt; <span class="el_source">Matrix.java</span></div><h1>Matrix.java</h1><pre class="source lang-java linenums">
+package org.drip.numerical.linearalgebra;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;Matrix&lt;/i&gt; implements Matrix manipulation routines. It exports the following functionality:
+ *  &lt;ul&gt;
+ *  	&lt;li&gt;
+ * 			Matrix Inversion using Closed form solutions (for low-dimension matrices), or using Gaussian
+ * 				elimination
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Matrix Product
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Matrix Diagonalization and Diagonal Pivoting
+ *  	&lt;/li&gt;
+ *  	&lt;li&gt;
+ * 			Matrix Regularization through Row Addition/Row Swap
+ *  	&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra&quot;&gt;Linear Algebra Matrix Transform Library&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L102">public class Matrix {</span>
+
+	/**
+	 * Lower Triangular Matrix
+	 */
+
+<span class="fc" id="L108">	public static int LOWER_TRIANGULAR = 1;</span>
+
+	/**
+	 * Upper Triangular Matrix
+	 */
+
+<span class="fc" id="L114">	public static int UPPER_TRIANGULAR = 2;</span>
+
+	/**
+	 * Lower+Upper Triangular Matrix
+	 */
+
+<span class="fc" id="L120">	public static int LOWER_AND_UPPER_TRIANGULAR = 3;</span>
+
+	/**
+	 * Non Triangular Matrix
+	 */
+
+<span class="fc" id="L126">	public static int NON_TRIANGULAR = 0;</span>
+
+	/**
+	 * Diagonalize the specified row in the source matrix, and apply comparable operations to the target
+	 * 
+	 * @param iQ Row in the Source Matrix
+	 * @param aadblZ2XJack Source Matrix
+	 * @param aadblZ2YJack Target Matrix
+	 * 
+	 * @return TRUE - Diagonalization was successful
+	 */
+
+	public static final boolean DiagonalizeRow (
+		final int iQ,
+		final double[][] aadblZ2XJack,
+		final double[][] aadblZ2YJack)
+	{
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (0. != aadblZ2XJack[iQ][iQ]) return true;</span>
+
+<span class="nc" id="L145">		int iSize = aadblZ2XJack.length;</span>
+<span class="nc" id="L146">		int iP = iSize - 1;</span>
+
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		while (0. == aadblZ2XJack[iP][iQ] &amp;&amp; iP &gt;= 0) --iP;</span>
+
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (0 &gt; iP) return false;</span>
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="nc" id="L153">			aadblZ2XJack[iQ][j] += aadblZ2XJack[iP][j];</span>
+
+<span class="nc" id="L155">		aadblZ2YJack[iQ][iP] += 1.;</span>
+<span class="nc" id="L156">		return true;</span>
+	}
+
+	/**
+	 * Compute the Product of an Input Matrix and a Column
+	 * 
+	 * @param aadblA Matrix A
+	 * @param adblB Array B
+	 * 
+	 * @return The Product
+	 */
+
+	public static final double[] Product (
+		final double[][] aadblA,
+		final double[] adblB)
+	{
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if (null == aadblA || null == adblB) return null;</span>
+
+<span class="fc" id="L174">		int iNumACol = aadblA[0].length;</span>
+<span class="fc" id="L175">		int iNumProductCol = adblB.length;</span>
+<span class="fc" id="L176">		int iNumProductRow = aadblA.length;</span>
+<span class="fc" id="L177">		double[] adblProduct = new double[iNumProductRow];</span>
+
+<span class="pc bpc" id="L179" title="4 of 8 branches missed.">		if (0 == iNumACol || iNumACol != adblB.length || 0 == iNumProductRow || 0 == iNumProductCol)</span>
+<span class="nc" id="L180">			return null;</span>
+
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int iRow = 0; iRow &lt; iNumProductRow; ++iRow) {</span>
+<span class="fc" id="L183">			adblProduct[iRow] = 0.;</span>
+
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumACol; ++i) {</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[iRow][i]) ||</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (adblB[i]))</span>
+<span class="nc" id="L188">					return null;</span>
+
+<span class="fc" id="L190">				adblProduct[iRow] += aadblA[iRow][i] * adblB[i];</span>
+			}
+		}
+
+<span class="fc" id="L194">		return adblProduct;</span>
+	}
+
+	/**
+	 * Compute the Product of an input column and a matrix
+	 * 
+	 * @param adblA Column A
+	 * @param aadblB Matrix B
+	 * 
+	 * @return The Product
+	 */
+
+	public static final double[][] Product (
+		final double[] adblA,
+		final double[][] aadblB)
+	{
+<span class="nc bnc" id="L210" title="All 4 branches missed.">		if (null == adblA || null == aadblB) return null;</span>
+
+<span class="nc" id="L212">		int iNumACol = adblA.length;</span>
+<span class="nc" id="L213">		int iNumProductCol = aadblB.length;</span>
+<span class="nc" id="L214">		double[][] aadblProduct = new double[iNumACol][iNumProductCol];</span>
+
+<span class="nc bnc" id="L216" title="All 6 branches missed.">		if (0 == iNumACol || iNumACol != aadblB.length || 0 == iNumProductCol) return null;</span>
+
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (int iRow = 0; iRow &lt; iNumACol; ++iRow) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			for (int iCol = 0; iCol &lt; iNumProductCol; ++iCol) {</span>
+<span class="nc" id="L220">				aadblProduct[iRow][iCol] = 0.;</span>
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumACol; ++i) {</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[iRow]) ||</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (aadblB[i][iCol]))</span>
+<span class="nc" id="L225">						return null;</span>
+
+<span class="nc" id="L227">					aadblProduct[iRow][iCol] += adblA[iRow] * aadblB[i][iCol];</span>
+				}
+			}
+		}
+
+<span class="nc" id="L232">		return aadblProduct;</span>
+	}
+
+	/**
+	 * Compute the Product of the input matrices
+	 * 
+	 * @param aadblA Matrix A
+	 * @param aadblB Matrix B
+	 * 
+	 * @return The Product
+	 */
+
+	public static final double[][] Product (
+		final double[][] aadblA,
+		final double[][] aadblB)
+	{
+<span class="pc bpc" id="L248" title="2 of 4 branches missed.">		if (null == aadblA || null == aadblB) return null;</span>
+
+<span class="fc" id="L250">		int iNumACol = aadblA[0].length;</span>
+<span class="fc" id="L251">		int iNumProductRow = aadblA.length;</span>
+<span class="fc" id="L252">		int iNumProductCol = aadblB[0].length;</span>
+<span class="fc" id="L253">		double[][] aadblProduct = new double[iNumProductRow][iNumProductCol];</span>
+
+<span class="pc bpc" id="L255" title="4 of 8 branches missed.">		if (0 == iNumACol || iNumACol != aadblB.length || 0 == iNumProductRow || 0 == iNumProductCol)</span>
+<span class="nc" id="L256">			return null;</span>
+
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		for (int iRow = 0; iRow &lt; iNumProductRow; ++iRow) {</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">			for (int iCol = 0; iCol &lt; iNumProductCol; ++iCol) {</span>
+<span class="fc" id="L260">				aadblProduct[iRow][iCol] = 0.;</span>
+
+<span class="fc bfc" id="L262" title="All 2 branches covered.">				for (int i = 0; i &lt; iNumACol; ++i) {</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[iRow][i]) ||</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (aadblB[i][iCol]))</span>
+<span class="nc" id="L265">						return null;</span>
+
+<span class="fc" id="L267">					aadblProduct[iRow][iCol] += aadblA[iRow][i] * aadblB[i][iCol];</span>
+				}
+			}
+		}
+
+<span class="fc" id="L272">		return aadblProduct;</span>
+	}
+
+	/**
+	 * Make a Square Diagonal Matrix from a Row
+	 * 
+	 * @param adblA The Row Array
+	 * 
+	 * @return The corresponding Square Diagonal Matrix
+	 */
+
+	public static final double[][] MakeSquareDiagonal (
+		final double[] adblA)
+	{
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (null == adblA) return null;</span>
+
+<span class="nc" id="L288">		int iNumElement = adblA.length;</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">		double[][] aadblDiagonal = 0 == iNumElement ? null : new double[iNumElement][iNumElement];</span>
+
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
+
+<span class="nc bnc" id="L293" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumElement; ++j)</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">				aadblDiagonal[i][j] = i == j ? adblA[i] : 0.;</span>
+		}
+
+<span class="nc" id="L298">		return aadblDiagonal;</span>
+	}
+
+	/**
+	 * Invert a 2D Matrix using Cramer's Rule
+	 * 
+	 * @param aadblA Input 2D Matrix
+	 * 
+	 * @return The Inverted Matrix
+	 */
+
+	public static final double[][] Invert2DMatrixUsingCramerRule (
+		final double[][] aadblA)
+	{
+<span class="nc bnc" id="L312" title="All 6 branches missed.">		if (null == aadblA || 2 != aadblA.length || 2 != aadblA[0].length) return null;</span>
+
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		for (int i = 0; i &lt; 2; ++i) {</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">			for (int j = 0; j &lt; 2; ++j) {</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[i][j])) return null;</span>
+			}
+		}
+
+<span class="nc" id="L320">		double dblScale = aadblA[0][0] * aadblA[1][1] - aadblA[0][1] * aadblA[1][0];</span>
+
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		if (0. == dblScale) return null;</span>
+
+<span class="nc" id="L324">		return new double[][] {{aadblA[1][1] / dblScale, -1. * aadblA[0][1] / dblScale}, {-1. * aadblA[1][0]</span>
+			/ dblScale, aadblA[0][0] / dblScale}};
+	}
+
+	/**
+	 * Regularize the specified diagonal entry of the input matrix using Row Swapping
+	 * 
+	 * @param mct The Input Matrix Complement Transform
+	 * 
+	 * @return The Regularization was successful
+	 */
+
+	public static final boolean RegularizeUsingRowSwap (
+		final org.drip.numerical.linearalgebra.MatrixComplementTransform mct)
+	{
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">		if (null == mct) return false;</span>
+
+<span class="fc" id="L341">		int iSize = mct.size();</span>
+
+<span class="fc" id="L343">		double[][] aadblSource = mct.getSource();</span>
+
+<span class="fc" id="L345">		double[][] aadblComplement = mct.getComplement();</span>
+
+<span class="fc bfc" id="L347" title="All 2 branches covered.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">			if (0. == aadblSource[iDiagonal][iDiagonal]) {</span>
+<span class="fc" id="L349">				int iSwapRow = iSize - 1;</span>
+
+<span class="fc bfc" id="L351" title="All 6 branches covered.">				while (iSwapRow &gt;= 0 &amp;&amp; (0. == aadblSource[iSwapRow][iDiagonal] || 0. ==</span>
+					aadblSource[iDiagonal][iSwapRow]))
+<span class="fc" id="L353">					--iSwapRow;</span>
+
+<span class="fc bfc" id="L355" title="All 2 branches covered.">				if (0 &gt; iSwapRow) {</span>
+<span class="fc" id="L356">					iSwapRow = 0;</span>
+
+<span class="fc bfc" id="L358" title="All 4 branches covered.">					while (iSwapRow &lt; iSize &amp;&amp; 0. == aadblSource[iSwapRow][iDiagonal])</span>
+<span class="fc" id="L359">						++iSwapRow;</span>
+
+<span class="fc bfc" id="L361" title="All 2 branches covered.">					if (iSwapRow &gt;= iSize) return false;</span>
+				}
+
+<span class="fc bfc" id="L364" title="All 2 branches covered.">				for (int iCol = 0; iCol &lt; iSize; ++iCol) {</span>
+<span class="fc" id="L365">					double dblComplementDiagonalEntry = aadblComplement[iDiagonal][iCol];</span>
+<span class="fc" id="L366">					aadblComplement[iDiagonal][iCol] = aadblComplement[iSwapRow][iCol];</span>
+<span class="fc" id="L367">					aadblComplement[iSwapRow][iCol] = dblComplementDiagonalEntry;</span>
+<span class="fc" id="L368">					double dblSourceDiagonalEntry = aadblSource[iDiagonal][iCol];</span>
+<span class="fc" id="L369">					aadblSource[iDiagonal][iCol] = aadblSource[iSwapRow][iCol];</span>
+<span class="fc" id="L370">					aadblSource[iSwapRow][iCol] = dblSourceDiagonalEntry;</span>
+				}
+			}
+		}
+
+		/* for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {
+			if (0. == aadblSource[iDiagonal][iDiagonal]) {
+				org.drip.quant.common.NumberUtil.Print2DArray (&quot;ZERO DIAG!&quot;, aadblSource, false);
+
+				return false;
+			}
+		} */
+
+<span class="fc" id="L383">		return true;</span>
+	}
+
+	/**
+	 * Regularize the specified diagonal entry of the input matrix using Row Addition
+	 * 
+	 * @param mct The Input Matrix Complement Transform
+	 * 
+	 * @return The Regularization was successful
+	 */
+
+	public static final boolean RegularizeUsingRowAddition (
+		final org.drip.numerical.linearalgebra.MatrixComplementTransform mct)
+	{
+<span class="nc bnc" id="L397" title="All 2 branches missed.">		if (null == mct) return false;</span>
+
+<span class="nc" id="L399">		int iSize = mct.size();</span>
+
+<span class="nc" id="L401">		double[][] aadblSource = mct.getSource();</span>
+
+<span class="nc" id="L403">		double[][] aadblComplement = mct.getComplement();</span>
+
+<span class="nc bnc" id="L405" title="All 2 branches missed.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">			if (0. == aadblSource[iDiagonal][iDiagonal]) {</span>
+<span class="nc" id="L407">				int iPivotRow = iSize - 1;</span>
+
+<span class="nc bnc" id="L409" title="All 4 branches missed.">				while (0. == aadblSource[iPivotRow][iDiagonal] &amp;&amp; iPivotRow &gt;= 0) --iPivotRow;</span>
+
+<span class="nc bnc" id="L411" title="All 2 branches missed.">				if (0 &gt; iPivotRow) return false;</span>
+
+<span class="nc bnc" id="L413" title="All 2 branches missed.">				for (int iCol = 0; iCol &lt; iSize; ++iCol) {</span>
+<span class="nc" id="L414">					aadblSource[iDiagonal][iCol] += aadblSource[iPivotRow][iCol];</span>
+<span class="nc" id="L415">					aadblComplement[iDiagonal][iCol] += aadblComplement[iPivotRow][iCol];</span>
+				}
+			}
+		}
+
+<span class="nc" id="L420">		return true;</span>
+	}
+
+	/**
+	 * Pivot the Diagonal of the Input Matrix
+	 * 
+	 * @param aadblA The Input Matrix
+	 * 
+	 * @return The Matrix Complement Transform Instance
+	 */
+
+	public static final org.drip.numerical.linearalgebra.MatrixComplementTransform PivotDiagonal (
+		final double[][] aadblA)
+	{
+<span class="pc bpc" id="L434" title="1 of 2 branches missed.">		if (null == aadblA) return null;</span>
+
+<span class="fc" id="L436">		int iSize = aadblA.length;</span>
+<span class="fc" id="L437">		double[][] aadblSource = new double[iSize][iSize];</span>
+<span class="fc" id="L438">		double[][] aadblComplement = new double[iSize][iSize];</span>
+<span class="fc" id="L439">		org.drip.numerical.linearalgebra.MatrixComplementTransform mctOut = null;</span>
+
+<span class="pc bpc" id="L441" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;</span>
+
+<span class="fc bfc" id="L443" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="fc" id="L445">				aadblSource[i][j] = aadblA[i][j];</span>
+<span class="fc bfc" id="L446" title="All 2 branches covered.">				aadblComplement[i][j] = i == j ? 1. : 0.;</span>
+			}
+		}
+
+		try {
+<span class="fc" id="L451">			mctOut = new org.drip.numerical.linearalgebra.MatrixComplementTransform (aadblSource,</span>
+				aadblComplement);
+<span class="nc" id="L453">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L454">			e.printStackTrace();</span>
+
+<span class="nc" id="L456">			return null;</span>
+<span class="fc" id="L457">		}</span>
+
+<span class="fc bfc" id="L459" title="All 2 branches covered.">		return RegularizeUsingRowSwap (mctOut) ? mctOut : null;</span>
+	}
+
+	/**
+	 * Invert the Source Matrix using Gaussian Elimination
+	 * 
+	 * @param aadblSource Source Matrix
+	 * 
+	 * @return The Inverted Matrix
+	 */
+
+	public static final double[][] InvertUsingGaussianElimination (
+		final double[][] aadblSource)
+	{
+<span class="fc" id="L473">		org.drip.numerical.linearalgebra.MatrixComplementTransform mctRegularized =</span>
+<span class="fc" id="L474">			org.drip.numerical.linearalgebra.Matrix.PivotDiagonal (aadblSource);</span>
+
+<span class="fc bfc" id="L476" title="All 2 branches covered.">		if (null == mctRegularized) return null;</span>
+
+<span class="fc" id="L478">		double[][] aadblRegularizedSource = mctRegularized.getSource();</span>
+
+<span class="fc" id="L480">		double[][] aadblRegularizedInverse = mctRegularized.getComplement();</span>
+
+<span class="fc" id="L482">		int iSize = aadblRegularizedSource.length;</span>
+
+<span class="fc bfc" id="L484" title="All 2 branches covered.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">			if (0. == aadblRegularizedSource[iDiagonal][iDiagonal]) return null;</span>
+
+<span class="fc bfc" id="L487" title="All 2 branches covered.">			for (int iRow = 0; iRow &lt; iSize; ++iRow) {</span>
+<span class="fc bfc" id="L488" title="All 4 branches covered.">				if (iRow == iDiagonal || 0. == aadblRegularizedSource[iRow][iDiagonal]) continue;</span>
+
+<span class="fc" id="L490">				double dblColEntryEliminatorRatio = aadblRegularizedSource[iDiagonal][iDiagonal] /</span>
+					aadblRegularizedSource[iRow][iDiagonal];
+
+<span class="fc bfc" id="L493" title="All 2 branches covered.">				for (int iCol = 0; iCol &lt; iSize; ++iCol) {</span>
+<span class="fc" id="L494">					aadblRegularizedSource[iRow][iCol] = aadblRegularizedSource[iRow][iCol] *</span>
+						dblColEntryEliminatorRatio - aadblRegularizedSource[iDiagonal][iCol];
+<span class="fc" id="L496">					aadblRegularizedInverse[iRow][iCol] = aadblRegularizedInverse[iRow][iCol] *</span>
+						dblColEntryEliminatorRatio - aadblRegularizedInverse[iDiagonal][iCol];
+				}
+			}
+		}
+
+<span class="fc bfc" id="L502" title="All 2 branches covered.">		for (int iDiagonal = 0; iDiagonal &lt; iSize; ++iDiagonal) {</span>
+<span class="fc" id="L503">			double dblDiagScaleDown = aadblRegularizedSource[iDiagonal][iDiagonal];</span>
+
+<span class="pc bpc" id="L505" title="1 of 2 branches missed.">			if (0. == dblDiagScaleDown) return null;</span>
+
+<span class="fc bfc" id="L507" title="All 2 branches covered.">			for (int iCol = 0; iCol &lt; iSize; ++iCol) {</span>
+<span class="fc" id="L508">				aadblRegularizedSource[iDiagonal][iCol] /= dblDiagScaleDown;</span>
+<span class="fc" id="L509">				aadblRegularizedInverse[iDiagonal][iCol] /= dblDiagScaleDown;</span>
+			}
+		}
+
+<span class="fc" id="L513">		return aadblRegularizedInverse;</span>
+	}
+
+	/**
+	 * Invert the input matrix using the specified Method
+	 * 
+	 * @param aadblA Input Matrix
+	 * @param strMethod The Inversion Method
+	 * 
+	 * @return The Inverted Matrix
+	 */
+
+	public static final double[][] Invert (
+		final double[][] aadblA,
+		final java.lang.String strMethod)
+	{
+<span class="nc bnc" id="L529" title="All 2 branches missed.">		if (null == aadblA) return null;</span>
+
+<span class="nc" id="L531">		int iSize = aadblA.length;</span>
+<span class="nc" id="L532">		double[][] aadblAInv = null;</span>
+<span class="nc" id="L533">		double[][] aadblASource = new double[iSize][iSize];</span>
+<span class="nc" id="L534">		double[][] aadblZ2YJack = new double[iSize][iSize];</span>
+
+<span class="nc bnc" id="L536" title="All 4 branches missed.">		if (0 == iSize || iSize != aadblA[0].length) return null;</span>
+
+<span class="nc bnc" id="L538" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblASource[i][j] = aadblA[i][j]))</span>
+<span class="nc" id="L541">					return null;</span>
+
+<span class="nc bnc" id="L543" title="All 2 branches missed.">				aadblZ2YJack[i][j] = i == j ? 1. : 0.;</span>
+			}
+		}
+
+<span class="nc bnc" id="L547" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L548" title="All 4 branches missed.">			if (0. == aadblASource[i][i] &amp;&amp; !DiagonalizeRow (i, aadblASource, aadblZ2YJack)) return null;</span>
+		}
+
+<span class="nc bnc" id="L551" title="All 6 branches missed.">		if (null == strMethod || strMethod.isEmpty() || strMethod.equalsIgnoreCase (&quot;GaussianElimination&quot;))</span>
+<span class="nc" id="L552">			aadblAInv = InvertUsingGaussianElimination (aadblASource);</span>
+
+<span class="nc bnc" id="L554" title="All 6 branches missed.">		if (null == aadblAInv || iSize != aadblAInv.length || iSize != aadblAInv[0].length) return null;</span>
+
+<span class="nc" id="L556">		return Product (aadblAInv, aadblZ2YJack);</span>
+	}
+
+	/**
+	 * Compute the Rank of the Matrix
+	 * 
+	 * @param aadblSource Source Matrix
+	 * 
+	 * @return The Rank of the Matrix
+	 * 
+	 * @throws java.lang.Exception Thrown if the Rank Cannot be computed
+	 */
+
+	public static final int Rank (
+		final double[][] aadblSource)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">		if (null == aadblSource) return 0;</span>
+
+<span class="fc" id="L575">		int iNumRow = aadblSource.length;</span>
+
+<span class="pc bpc" id="L577" title="1 of 2 branches missed.">		if (iNumRow == 0) return 0;</span>
+
+<span class="fc" id="L579">		int iNumCol = aadblSource[0].length;</span>
+
+<span class="fc bfc" id="L581" title="All 2 branches covered.">		for (int iScanRow = 0; iScanRow &lt; iNumRow; ++iScanRow) {</span>
+<span class="pc bpc" id="L582" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (aadblSource[iScanRow]))</span>
+<span class="nc" id="L583">				throw new java.lang.Exception (&quot;Matrix::Rank =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="pc bpc" id="L586" title="1 of 2 branches missed.">		double[][] aadblRegularizedSource = iNumRow &lt; iNumCol ?</span>
+<span class="pc" id="L587">			org.drip.numerical.linearalgebra.Matrix.Transpose (aadblSource) : aadblSource;</span>
+
+<span class="fc" id="L589">		int iNumDependentRow = 0;</span>
+<span class="fc" id="L590">		int iProcessedRow = aadblRegularizedSource.length;</span>
+<span class="fc" id="L591">		int iProcessedCol = aadblRegularizedSource[0].length;</span>
+
+<span class="pc bpc" id="L593" title="3 of 4 branches missed.">		if (1 == iNumRow || 1 == iNumCol) return iProcessedRow;</span>
+
+<span class="nc bnc" id="L595" title="All 2 branches missed.">		for (int iScanRow = 0; iScanRow &lt; iProcessedCol; ++iScanRow) {</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">			for (int iRow = 0; iRow &lt; iProcessedCol; ++iRow) {</span>
+<span class="nc bnc" id="L597" title="All 4 branches missed.">				if (iRow == iScanRow || 0. == aadblRegularizedSource[iRow][iScanRow]) continue;</span>
+
+<span class="nc" id="L599">				double dblColEntryEliminatorRatio = aadblRegularizedSource[iScanRow][iScanRow] /</span>
+					aadblRegularizedSource[iRow][iScanRow];
+
+<span class="nc bnc" id="L602" title="All 2 branches missed.">				for (int iCol = 0; iCol &lt; iProcessedCol; ++iCol)</span>
+<span class="nc" id="L603">					aadblRegularizedSource[iRow][iCol] = aadblRegularizedSource[iRow][iCol] *</span>
+						dblColEntryEliminatorRatio - aadblRegularizedSource[iScanRow][iCol];
+			}
+		}
+
+<span class="nc bnc" id="L608" title="All 2 branches missed.">		for (int iScanRow = 0; iScanRow &lt; iProcessedCol; ++iScanRow) {</span>
+<span class="nc bnc" id="L609" title="All 2 branches missed.">			if (0. == org.drip.numerical.linearalgebra.Matrix.Modulus (aadblRegularizedSource[iScanRow]))</span>
+<span class="nc" id="L610">				++iNumDependentRow;</span>
+		}
+
+<span class="nc" id="L613">		return iProcessedRow - iNumDependentRow;</span>
+	}
+
+	/**
+	 * Transpose the specified Square Matrix
+	 * 
+	 * @param aadblA The Input Square Matrix
+	 * 
+	 * @return The Transpose of the Square Matrix
+	 */
+
+	public static final double[][] Transpose (
+		final double[][] aadblA)
+	{
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">		if (null == aadblA) return null;</span>
+
+<span class="fc" id="L629">		int iRowSize = aadblA.length;</span>
+
+<span class="pc bpc" id="L631" title="2 of 4 branches missed.">		if (0 == iRowSize || null == aadblA[0]) return null;</span>
+
+<span class="fc" id="L633">		int iColSize = aadblA[0].length;</span>
+<span class="fc" id="L634">		double[][] aadblATranspose = new double[iColSize][iRowSize];</span>
+
+<span class="pc bpc" id="L636" title="1 of 2 branches missed.">		if (0 == iColSize) return null;</span>
+
+<span class="fc bfc" id="L638" title="All 2 branches covered.">		for (int i = 0; i &lt; iColSize; ++i) {</span>
+<span class="fc bfc" id="L639" title="All 2 branches covered.">			for (int j = 0; j &lt; iRowSize; ++j)</span>
+<span class="fc" id="L640">				aadblATranspose[i][j] = aadblA[j][i];</span>
+		}
+
+<span class="fc" id="L643">		return aadblATranspose;</span>
+	}
+
+	/**
+	 * Compute the Cholesky-Banachiewicz Factorization of the specified Matrix.
+	 * 
+	 * @param aadblA The Input Matrix
+	 * 
+	 * @return The Factorized Matrix
+	 */
+
+	public static final double[][] CholeskyBanachiewiczFactorization (
+		final double[][] aadblA)
+	{
+<span class="pc bpc" id="L657" title="1 of 2 branches missed.">		if (null == aadblA) return null;</span>
+
+<span class="fc" id="L659">		int iSize = aadblA.length;</span>
+<span class="fc" id="L660">		double[][] aadblL = new double[iSize][iSize];</span>
+
+<span class="pc bpc" id="L662" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblA[0] || iSize != aadblA[0].length) return null;</span>
+
+<span class="fc bfc" id="L664" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L665" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="fc" id="L666">				aadblL[i][j] = 0.;</span>
+
+<span class="fc bfc" id="L668" title="All 2 branches covered.">				if (i == j) {</span>
+<span class="fc bfc" id="L669" title="All 2 branches covered.">					for (int k = 0; k &lt; j; ++k)</span>
+<span class="fc" id="L670">						aadblL[j][j] -= aadblL[j][k] * aadblL[j][k];</span>
+
+<span class="fc" id="L672">					aadblL[j][j] = java.lang.Math.sqrt (aadblL[j][j] + aadblA[j][j]);</span>
+<span class="fc bfc" id="L673" title="All 2 branches covered.">				} else if (i &gt; j) {</span>
+<span class="fc bfc" id="L674" title="All 2 branches covered.">					for (int k = 0; k &lt; j; ++k)</span>
+<span class="fc" id="L675">						aadblL[i][j] -= aadblL[i][k] * aadblL[j][k];</span>
+
+<span class="fc" id="L677">					aadblL[i][j] = (aadblA[i][j] + aadblL[i][j]) / aadblL[j][j];</span>
+				}
+			}
+		}
+
+<span class="fc" id="L682">		return aadblL;</span>
+	}
+
+	/**
+	 * Dot Product of Vectors A and E
+	 * 
+	 * @param adblA Vector A
+	 * @param adblE Vector E
+	 * 
+	 * @return The Dot Product
+	 * 
+	 * @throws java.lang.Exception Thrown if the Dot-Product cannot be computed
+	 */
+
+	public static final double DotProduct (
+		final double[] adblA,
+		final double[] adblE)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L701" title="2 of 4 branches missed.">		if (null == adblA || null == adblE)</span>
+<span class="nc" id="L702">			throw new java.lang.Exception (&quot;Matrix::DotProduct =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="fc" id="L704">		int iSize = adblA.length;</span>
+<span class="fc" id="L705">		double dblDotProduct = 0.;</span>
+
+<span class="pc bpc" id="L707" title="2 of 4 branches missed.">		if (0 == iSize || iSize != adblE.length)</span>
+<span class="nc" id="L708">			throw new java.lang.Exception (&quot;Matrix::DotProduct =&gt; Invalid Inputs!&quot;);</span>
+
+<span class="fc bfc" id="L710" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L711">			dblDotProduct += adblE[i] * adblA[i];</span>
+
+<span class="fc" id="L713">		return dblDotProduct;</span>
+	}
+
+	/**
+	 * Compute the Cross Product between the Specified Vectors
+	 * 
+	 * @param vector1 Vector #1
+	 * @param vector2 Vector #2
+	 * 
+	 * @return The Cross Product
+	 */
+
+	public static final double[][] CrossProduct (
+		final double[] vector1,
+		final double[] vector2)
+	{
+<span class="nc bnc" id="L729" title="All 4 branches missed.">		if (null == vector1 || null == vector2)</span>
+		{
+<span class="nc" id="L731">			return null;</span>
+		}
+
+<span class="nc" id="L734">		int size1 = vector1.length;</span>
+<span class="nc" id="L735">		int size2 = vector2.length;</span>
+<span class="nc bnc" id="L736" title="All 4 branches missed.">		double[][] crossProduct = 0 == size1 || 0 == size2 ? null : new double[size1][size2];</span>
+
+<span class="nc bnc" id="L738" title="All 2 branches missed.">		if (null == crossProduct)</span>
+		{
+<span class="nc" id="L740">			return null;</span>
+		}
+
+<span class="nc bnc" id="L743" title="All 2 branches missed.">		for (int index1 = 0; index1 &lt; size1; ++index1)</span>
+		{
+<span class="nc bnc" id="L745" title="All 2 branches missed.">			for (int index2 = 0; index2 &lt; size2; ++index2)</span>
+			{
+<span class="nc" id="L747">				crossProduct[index1][index2] = vector1[index1] * vector2[index2];</span>
+			}
+		}
+
+<span class="nc" id="L751">		return crossProduct;</span>
+	}
+
+	/**
+	 * Project the Vector A along the Vector E
+	 * 
+	 * @param adblA Vector A
+	 * @param adblE Vector E
+	 * 
+	 * @return The Vector of Projection of A along E
+	 */
+
+	public static final double[] Project (
+		final double[] adblA,
+		final double[] adblE)
+	{
+<span class="nc bnc" id="L767" title="All 4 branches missed.">		if (null == adblA || null == adblE) return null;</span>
+
+<span class="nc" id="L769">		int iSize = adblA.length;</span>
+<span class="nc" id="L770">		double dblProjection = java.lang.Double.NaN;</span>
+<span class="nc" id="L771">		double[] adblProjectAOnE = new double[iSize];</span>
+
+<span class="nc bnc" id="L773" title="All 4 branches missed.">		if (0 == iSize || iSize != adblE.length) return null;</span>
+
+		try {
+<span class="nc" id="L776">			dblProjection = DotProduct (adblA, adblE) / DotProduct (adblE, adblE);</span>
+<span class="nc" id="L777">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L778">			e.printStackTrace();</span>
+
+<span class="nc" id="L780">			return null;</span>
+<span class="nc" id="L781">		}</span>
+
+<span class="nc bnc" id="L783" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="nc" id="L784">			adblProjectAOnE[i] = adblE[i] * dblProjection;</span>
+
+<span class="nc" id="L786">		return adblProjectAOnE;</span>
+	}
+
+	/**
+	 * Compute the Sum of the Input Vector
+	 * 
+	 * @param adbl The Input Vector
+	 * 
+	 * @return TRUE - The Sum of the Input Vector
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Sum (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="pc bpc" id="L803" title="2 of 4 branches missed.">		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))</span>
+<span class="nc" id="L804">			throw new java.lang.Exception (&quot;Matrix::Sum =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc" id="L806">		double dblSum = 0.;</span>
+<span class="fc" id="L807">		int iSize = adbl.length;</span>
+
+<span class="pc bpc" id="L809" title="1 of 2 branches missed.">		if (0 == iSize) throw new java.lang.Exception (&quot;Matrix::Sum =&gt; Invalid Inputs&quot;);</span>
+
+<span class="fc bfc" id="L811" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L812">			dblSum += adbl[i];</span>
+
+<span class="fc" id="L814">		return dblSum;</span>
+	}
+
+	/**
+	 * Compute the Modulus of the Input Vector
+	 * 
+	 * @param adbl The Input Vector
+	 * 
+	 * @return TRUE - The Modulus of the Input Vector
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Modulus (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L831" title="All 4 branches missed.">		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))</span>
+<span class="nc" id="L832">			throw new java.lang.Exception (&quot;Matrix::Modulus =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L834">		double dblModulus = 0.;</span>
+<span class="nc" id="L835">		int iSize = adbl.length;</span>
+
+<span class="nc bnc" id="L837" title="All 2 branches missed.">		if (0 == iSize) throw new java.lang.Exception (&quot;Matrix::Modulus =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L839" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="nc" id="L840">			dblModulus += adbl[i] * adbl[i];</span>
+
+<span class="nc" id="L842">		return java.lang.Math.sqrt (dblModulus);</span>
+	}
+
+	/**
+	 * Indicate if the Array Entries are Positive or Zero
+	 * 
+	 * @param adbl The Array
+	 * 
+	 * @return TRUE - The Array Entries are Positive or Zero
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean PositiveOrZero (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L859" title="All 4 branches missed.">		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))</span>
+<span class="nc" id="L860">			throw new java.lang.Exception (&quot;Matrix::PositiveOrZero =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L862">		int iSize = adbl.length;</span>
+
+<span class="nc bnc" id="L864" title="All 2 branches missed.">		if (0 == iSize) throw new java.lang.Exception (&quot;Matrix::PositiveOrZero =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L866" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L867" title="All 2 branches missed.">			if (0. &gt; adbl[i]) return false;</span>
+		}
+
+<span class="nc" id="L870">		return true;</span>
+	}
+
+	/**
+	 * Indicate if the Array Entries are Negative or Zero
+	 * 
+	 * @param adbl The Array
+	 * 
+	 * @return The Array Entries are Negative or Zero
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean NegativeOrZero (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L887" title="All 4 branches missed.">		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))</span>
+<span class="nc" id="L888">			throw new java.lang.Exception (&quot;Matrix::NegativeOrZero =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc" id="L890">		int iSize = adbl.length;</span>
+
+<span class="nc bnc" id="L892" title="All 2 branches missed.">		if (0 == iSize)  throw new java.lang.Exception (&quot;Matrix::NegativeOrZero =&gt; Invalid Inputs&quot;);</span>
+
+<span class="nc bnc" id="L894" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L895" title="All 2 branches missed.">			if (0. &lt; adbl[i]) return false;</span>
+		}
+
+<span class="nc" id="L898">		return true;</span>
+	}
+
+	/**
+	 * Indicate if the Array Entries are Positive Linearly Independent
+	 * 
+	 * @param adbl The Array
+	 * 
+	 * @return TRUE - The Array Entries are Positive Linearly Independent
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean PositiveLinearlyIndependent (
+		final double[] adbl)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L915" title="All 4 branches missed.">		return !PositiveOrZero (adbl) &amp;&amp; !NegativeOrZero (adbl);</span>
+	}
+
+	/**
+	 * Normalize the Input Vector
+	 * 
+	 * @param adbl The Input Vector
+	 * 
+	 * @return The Normalized Vector
+	 */
+
+	public static final double[] Normalize (
+		final double[] adbl)
+	{
+<span class="pc bpc" id="L929" title="1 of 2 branches missed.">		if (null == adbl) return null;</span>
+
+<span class="fc" id="L931">		double dblNorm = 0.;</span>
+<span class="fc" id="L932">		int iSize = adbl.length;</span>
+<span class="fc" id="L933">		double[] adblNormalized = new double[iSize];</span>
+
+<span class="pc bpc" id="L935" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
+
+<span class="fc bfc" id="L937" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L938">			dblNorm += adbl[i] * adbl[i];</span>
+
+<span class="fc" id="L940">		dblNorm = java.lang.Math.sqrt (dblNorm);</span>
+
+<span class="fc bfc" id="L942" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L943">			adblNormalized[i] = adbl[i] / dblNorm;</span>
+
+<span class="fc" id="L945">		return adblNormalized;</span>
+	}
+
+	/**
+	 * Orthogonalize the Specified Matrix Using the Graham-Schmidt Method
+	 * 
+	 * @param aadblV The Input Matrix
+	 * 
+	 * @return The Orthogonalized Matrix
+	 */
+
+	public static final double[][] GrahamSchmidtOrthogonalization (
+		final double[][] aadblV)
+	{
+<span class="pc bpc" id="L959" title="1 of 2 branches missed.">		if (null == aadblV) return null;</span>
+
+<span class="fc" id="L961">		int iSize = aadblV.length;</span>
+<span class="fc" id="L962">		double[][] aadblU = new double[iSize][iSize];</span>
+
+<span class="pc bpc" id="L964" title="3 of 6 branches missed.">		if (0 == iSize || null == aadblV[0] || iSize != aadblV[0].length) return null;</span>
+
+<span class="fc bfc" id="L966" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L967" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L968">				aadblU[i][j] = aadblV[i][j];</span>
+
+<span class="fc bfc" id="L970" title="All 2 branches covered.">			for (int j = 0; j &lt; i; ++j) {</span>
+<span class="fc" id="L971">				double dblProjectionAmplitude = java.lang.Double.NaN;</span>
+
+				try {
+<span class="fc" id="L974">					dblProjectionAmplitude = DotProduct (aadblV[i], aadblU[j]) / DotProduct (aadblU[j],</span>
+						aadblU[j]);
+<span class="nc" id="L976">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L977">					e.printStackTrace();</span>
+
+<span class="nc" id="L979">					return null;</span>
+<span class="fc" id="L980">				}</span>
+
+<span class="fc bfc" id="L982" title="All 2 branches covered.">				for (int k = 0; k &lt; iSize; ++k)</span>
+<span class="fc" id="L983">					aadblU[i][k] -= dblProjectionAmplitude * aadblU[j][k];</span>
+			}
+		}
+
+<span class="fc" id="L987">		return aadblU;</span>
+	}
+
+	/**
+	 * Orthonormalize the Specified Matrix Using the Graham-Schmidt Method
+	 * 
+	 * @param aadblV The Input Matrix
+	 * 
+	 * @return The Orthonormalized Matrix
+	 */
+
+	public static final double[][] GrahamSchmidtOrthonormalization (
+		final double[][] aadblV)
+	{
+<span class="fc" id="L1001">		double[][] aadblVOrthogonal = GrahamSchmidtOrthogonalization (aadblV);</span>
+
+<span class="pc bpc" id="L1003" title="1 of 2 branches missed.">		if (null == aadblVOrthogonal) return null;</span>
+
+<span class="fc" id="L1005">		int iSize = aadblVOrthogonal.length;</span>
+
+<span class="fc" id="L1007">		double[][] aadblVOrthonormal = new double[iSize][];</span>
+
+<span class="fc bfc" id="L1009" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L1010">			aadblVOrthonormal[i] = Normalize (aadblVOrthogonal[i]);</span>
+
+<span class="fc" id="L1012">		return aadblVOrthonormal;</span>
+	}
+
+	/**
+	 * Perform a QR Decomposition on the Input Matrix
+	 * 
+	 * @param aadblA The Input Matrix
+	 * 
+	 * @return The Output of QR Decomposition
+	 */
+
+	public static final org.drip.numerical.linearalgebra.QR QRDecomposition (
+		final double[][] aadblA)
+	{
+<span class="fc" id="L1026">		double[][] aadblQ = GrahamSchmidtOrthonormalization (aadblA);</span>
+
+<span class="pc bpc" id="L1028" title="1 of 2 branches missed.">		if (null == aadblQ) return null;</span>
+
+<span class="fc" id="L1030">		int iSize = aadblQ.length;</span>
+<span class="fc" id="L1031">		double[][] aadblR = new double[iSize][iSize];</span>
+
+		try {
+<span class="fc bfc" id="L1034" title="All 2 branches covered.">			for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L1035" title="All 2 branches covered.">				for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc bfc" id="L1036" title="All 2 branches covered.">					aadblR[i][j] = i &gt; j ? DotProduct (aadblQ[i], aadblA[j]) : 0.;</span>
+			}
+
+<span class="fc" id="L1039">			return new org.drip.numerical.linearalgebra.QR (aadblQ, aadblR);</span>
+<span class="nc" id="L1040">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1041">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L1044">		return null;</span>
+	}
+
+	/**
+	 * Retrieve the Triangular Type of the Matrix
+	 * 
+	 * @param aadblA The Input Matrix
+	 * @param dblFloor The Floor Level that means &quot;Zero&quot;
+	 * 
+	 * @return The Triangular Type
+	 */
+
+	public static final int TriangularType (
+		final double[][] aadblA,
+		final double dblFloor)
+	{
+<span class="pc bpc" id="L1060" title="3 of 6 branches missed.">		if (null == aadblA || !org.drip.numerical.common.NumberUtil.IsValid (dblFloor) || dblFloor &lt; 0.)</span>
+<span class="nc" id="L1061">			return NON_TRIANGULAR;</span>
+
+<span class="fc" id="L1063">		int iSize = aadblA.length;</span>
+<span class="fc" id="L1064">		boolean bLowerTriangular = true;</span>
+<span class="fc" id="L1065">		boolean bUpperTriangular = true;</span>
+
+<span class="pc bpc" id="L1067" title="3 of 6 branches missed.">		if (1 &gt;= iSize || null == aadblA[0] || iSize != aadblA[0].length) return NON_TRIANGULAR;</span>
+
+<span class="fc bfc" id="L1069" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L1070" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="fc bfc" id="L1071" title="All 2 branches covered.">				if (i &gt; j) {</span>
+<span class="fc bfc" id="L1072" title="All 2 branches covered.">					if (java.lang.Math.abs (aadblA[i][j]) &gt; dblFloor) bLowerTriangular = false;</span>
+<span class="fc bfc" id="L1073" title="All 2 branches covered.">				} else if (i &lt; j) {</span>
+<span class="fc bfc" id="L1074" title="All 2 branches covered.">					if (java.lang.Math.abs (aadblA[i][j]) &gt; dblFloor) bUpperTriangular = false;</span>
+				}
+			}
+		}
+
+<span class="pc bpc" id="L1079" title="1 of 4 branches missed.">		if (bLowerTriangular &amp;&amp; bUpperTriangular) return LOWER_AND_UPPER_TRIANGULAR;</span>
+
+<span class="pc bpc" id="L1081" title="3 of 4 branches missed.">		if (bLowerTriangular &amp;&amp; !bUpperTriangular) return LOWER_TRIANGULAR;</span>
+
+<span class="pc bpc" id="L1083" title="1 of 4 branches missed.">		if (!bLowerTriangular &amp;&amp; bUpperTriangular) return UPPER_TRIANGULAR;</span>
+
+<span class="fc" id="L1085">		return NON_TRIANGULAR;</span>
+	}
+
+	/**
+	 * Compute the Rayleigh Quotient given the Matrix and one of its Eigenvector
+	 * 
+	 * @param matrix The Given Matrix
+	 * @param eigenvector The corresponding Eigenvector
+	 * 
+	 * @return The Computed Rayleigh Quotient
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double RayleighQuotient (
+		final double[][] matrix,
+		final double[] eigenvector)
+		throws java.lang.Exception
+	{
+<span class="fc" id="L1104">		return org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+			eigenvector,
+<span class="fc" id="L1106">			org.drip.numerical.linearalgebra.Matrix.Product (</span>
+				matrix,
+				eigenvector
+			)
+		);
+	}
+
+	/**
+	 * Scale the Entries of the Input Vector by the Factor
+	 * 
+	 * @param vector The Input Vector
+	 * @param scaleFactor The Scale Factor
+	 * 
+	 * @return The Scaled Matrix
+	 */
+
+	public static final double[] Scale1D (
+		final double[] vector,
+		final double scaleFactor)
+	{
+<span class="nc bnc" id="L1126" title="All 4 branches missed.">		if (null == vector || !org.drip.numerical.common.NumberUtil.IsValid (scaleFactor))</span>
+		{
+<span class="nc" id="L1128">			return null;</span>
+		}
+
+<span class="nc" id="L1131">		int rowCount = vector.length;</span>
+<span class="nc bnc" id="L1132" title="All 2 branches missed.">		double[] scaledVector = 0 == rowCount ? null : new double[rowCount];</span>
+
+<span class="nc bnc" id="L1134" title="All 2 branches missed.">		for (int rowIndex = 0; rowIndex &lt; rowCount ; ++rowIndex)</span>
+		{
+<span class="nc" id="L1136">			scaledVector[rowIndex] = vector[rowIndex] * scaleFactor;</span>
+		}
+
+<span class="nc" id="L1139">		return scaledVector;</span>
+	}
+
+	/**
+	 * Scale the Entries of the Input Matrix by the Factor
+	 * 
+	 * @param matrix The Input Matrix
+	 * @param scaleFactor The Scale Factor
+	 * 
+	 * @return The Scaled Matrix
+	 */
+
+	public static final double[][] Scale2D (
+		final double[][] matrix,
+		final double scaleFactor)
+	{
+<span class="nc bnc" id="L1155" title="All 4 branches missed.">		if (null == matrix || !org.drip.numerical.common.NumberUtil.IsValid (scaleFactor))</span>
+		{
+<span class="nc" id="L1157">			return null;</span>
+		}
+
+<span class="nc" id="L1160">		int rowCount = matrix.length;</span>
+<span class="nc bnc" id="L1161" title="All 4 branches missed.">		int columnCount = 0 == rowCount || null == matrix[0] ? 0 : matrix[0].length;</span>
+<span class="nc bnc" id="L1162" title="All 2 branches missed.">		double[][] scaledMatrix = 0 == columnCount ? null : new double[rowCount][columnCount];</span>
+
+<span class="nc bnc" id="L1164" title="All 2 branches missed.">		for (int rowIndex = 0; rowIndex &lt; rowCount ; ++rowIndex)</span>
+		{
+<span class="nc bnc" id="L1166" title="All 2 branches missed.">			for (int columnIndex = 0; columnIndex &lt; columnCount ; ++columnIndex)</span>
+			{
+<span class="nc" id="L1168">				scaledMatrix[rowIndex][columnIndex] = matrix[rowIndex][columnIndex] * scaleFactor;</span>
+			}
+		}
+
+<span class="nc" id="L1172">		return scaledMatrix;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -108,7 +108,7 @@ public class ForwardReverseOptimizationOutput extends
 
 <span class="fc" id="L109">		int iNumAsset = adblAssetWeight.length;</span>
 
-<span class="fc" id="L111">		double[] adblExpectedAssetExcessReturns = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L111">		double[] adblExpectedAssetExcessReturns = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L112">			(aadblAssetExcessReturnsCovariance, pfEquilibrium.weights());</span>
 
 <span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == adblExpectedAssetExcessReturns);</span>
@@ -141,8 +141,8 @@ public class ForwardReverseOptimizationOutput extends
 
 <span class="fc" id="L142">		int iNumAsset = astrAssetID.length;</span>
 
-<span class="fc" id="L144">		double[] adblAssetWeight = org.drip.quant.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L145">			(org.drip.quant.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
+<span class="fc" id="L144">		double[] adblAssetWeight = org.drip.numerical.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L145">			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
 <span class="fc" id="L146">				(aadblAssetExcessReturnsCovariance), adblExpectedAssetExcessReturns);</span>
 
 <span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (null == adblAssetWeight || iNumAsset != adblAssetWeight.length) return null;</span>
@@ -182,7 +182,7 @@ public class ForwardReverseOptimizationOutput extends
 
 <span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (iNumAsset != adblExpectedAssetExcessReturns.length) return null;</span>
 
-<span class="fc" id="L185">		double[] adblImpliedBeta = org.drip.quant.linearalgebra.Matrix.Product</span>
+<span class="fc" id="L185">		double[] adblImpliedBeta = org.drip.numerical.linearalgebra.Matrix.Product</span>
 <span class="fc" id="L186">			(aadblAssetExcessReturnsCovariance, adblAssetWeight);</span>
 
 <span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (null == adblImpliedBeta) return null;</span>
@@ -237,7 +237,7 @@ public class ForwardReverseOptimizationOutput extends
 <span class="fc" id="L237">		super (pfOptimal, pmOptimal);</span>
 
 <span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (null == (_aadblAssetExcessReturnsCovariance = aadblAssetExcessReturnsCovariance) ||</span>
-<span class="pc bpc" id="L240" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || null ==</span>
+<span class="pc bpc" id="L240" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || null ==</span>
 				(_adblExpectedAssetExcessReturns = adblExpectedAssetExcessReturns))
 <span class="nc" id="L242">			throw new java.lang.Exception (&quot;ForwardReverseOptimizationOutput Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="fc" id="L243">	}</span>
@@ -291,7 +291,7 @@ public class ForwardReverseOptimizationOutput extends
 <span class="fc" id="L291">		org.drip.portfolioconstruction.asset.PortfolioMetrics pm = optimalMetrics();</span>
 
 		try {
-<span class="fc" id="L294">			double dblBeta = org.drip.quant.linearalgebra.Matrix.DotProduct (optimalPortfolio().weights(),</span>
+<span class="fc" id="L294">			double dblBeta = org.drip.numerical.linearalgebra.Matrix.DotProduct (optimalPortfolio().weights(),</span>
 <span class="fc" id="L295">				pmBenchmark.impliedBeta());</span>
 
 <span class="fc" id="L297">			double dblActiveBeta = dblBeta - 1.;</span>

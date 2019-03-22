@@ -3,7 +3,7 @@ package org.drip.sample.simmsettings;
 
 import java.util.Set;
 
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.common.DeltaVegaThreshold;
 import org.drip.simm.equity.EQRiskThresholdContainer20;

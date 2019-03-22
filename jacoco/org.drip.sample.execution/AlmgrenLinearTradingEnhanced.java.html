@@ -10,7 +10,7 @@ import org.drip.execution.profiletime.UniformParticipationRateLinear;
 import org.drip.execution.risk.MeanVarianceObjectiveUtility;
 import org.drip.execution.strategy.*;
 import org.drip.measure.gaussian.R1UnivariateNormal;
-import org.drip.quant.common.FormatUtil;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*

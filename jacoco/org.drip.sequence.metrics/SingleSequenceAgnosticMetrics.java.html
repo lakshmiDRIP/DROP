@@ -115,7 +115,7 @@ public class SingleSequenceAgnosticMetrics {
 <span class="nc" id="L115">			throw new java.lang.Exception (&quot;SingleSequenceAgnosticMetrics ctr: Invalid Inputs&quot;);</span>
 
 <span class="fc bfc" id="L117" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntry; ++i) {</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblSequence[i]))</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblSequence[i]))</span>
 <span class="nc" id="L119">				throw new java.lang.Exception (&quot;SingleSequenceAgnosticMetrics ctr: Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L121">			_dblEmpiricalExpectation += _adblSequence[i];</span>
@@ -214,7 +214,7 @@ public class SingleSequenceAgnosticMetrics {
 		final boolean bAbsolute)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (0 &gt;= iMoment || !org.drip.quant.common.NumberUtil.IsValid (dblAnchor))</span>
+<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (0 &gt;= iMoment || !org.drip.numerical.common.NumberUtil.IsValid (dblAnchor))</span>
 <span class="nc" id="L218">			throw new java.lang.Exception</span>
 				(&quot;SingleSequenceAgnosticMetrics::empiricalAnchorMoment =&gt; Invalid Inputs&quot;);
 
@@ -353,13 +353,13 @@ public class SingleSequenceAgnosticMetrics {
 		final org.drip.function.definition.R1ToR1 auNonDecreasing)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L356" title="3 of 6 branches missed.">		if (!isPositive() || !org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.)</span>
+<span class="pc bpc" id="L356" title="3 of 6 branches missed.">		if (!isPositive() || !org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.)</span>
 <span class="nc" id="L357">			throw new java.lang.Exception</span>
 				(&quot;SingleSequenceAgnosticMetrics::markovUpperProbabilityBound =&gt; Invalid Inputs&quot;);
 
 <span class="fc" id="L360">		double dblPopulationMean = populationMean();</span>
 
-<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		double dblUpperProbabilityBound = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationMean) ?</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		double dblUpperProbabilityBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ?</span>
 			dblPopulationMean : _dblEmpiricalExpectation) / dblLevel;
 
 <span class="fc bfc" id="L365" title="All 2 branches covered.">		if (null != auNonDecreasing) {</span>
@@ -387,11 +387,11 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevBound (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L390" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L390" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 <span class="fc" id="L392">		double dblPopulationVariance = populationVariance();</span>
 
-<span class="pc bpc" id="L394" title="1 of 2 branches missed.">		double dblMeanDepartureBound = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">		double dblMeanDepartureBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
 			dblPopulationVariance : _dblEmpiricalVariance) / (dblLevel * dblLevel);
 
 <span class="fc bfc" id="L397" title="All 2 branches covered.">		dblMeanDepartureBound = dblMeanDepartureBound &lt; 1. ? dblMeanDepartureBound : 1.;</span>
@@ -420,7 +420,7 @@ public class SingleSequenceAgnosticMetrics {
 		final double dblLevel,
 		final int iMoment)
 	{
-<span class="pc bpc" id="L423" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L423" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 		try {
 <span class="fc" id="L426">			double dblMeanDepartureBound = empiricalCentralMoment (iMoment, true) / java.lang.Math.pow</span>
@@ -449,11 +449,11 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevCantelliBound (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L452" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L452" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 <span class="fc" id="L454">		double dblPopulationVariance = populationVariance();</span>
 
-<span class="pc bpc" id="L456" title="1 of 2 branches missed.">		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
 			dblPopulationVariance : _dblEmpiricalVariance);
 
 		try {
@@ -525,11 +525,11 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds weakLawAverageBounds (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L528" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L528" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 <span class="fc" id="L530">		double dblPopulationVariance = populationVariance();</span>
 
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		double dblVariance = (org.drip.quant.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
 			dblPopulationVariance : _dblEmpiricalVariance);
 
 <span class="fc" id="L535">		double dblBound = dblVariance / (_adblSequence.length * dblLevel * dblLevel);</span>

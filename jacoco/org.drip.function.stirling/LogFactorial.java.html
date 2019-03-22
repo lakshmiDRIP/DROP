@@ -102,7 +102,7 @@ package org.drip.function.stirling;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
+public class LogFactorial extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
 	/**
@@ -112,7 +112,7 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 	 */
 
 	public LogFactorial (
-		final org.drip.quant.calculus.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 <span class="nc" id="L117">		super (dc);</span>
 <span class="nc" id="L118">	}</span>
@@ -131,7 +131,7 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
 		{
 <span class="nc" id="L136">			throw new java.lang.Exception (&quot;Stirling::logDeMoivreTerm =&gt; Invalid Inputs&quot;);</span>
 		}
@@ -154,7 +154,7 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
 	 */
 
-	public org.drip.function.numerical.R1Estimate nemesCorrectionEstimate (
+	public org.drip.numerical.estimation.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
 <span class="nc" id="L160">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
@@ -185,8 +185,8 @@ public class LogFactorial extends org.drip.function.numerical.R1ToR1Estimator
 <span class="nc" id="L185">			return seriesEstimate (</span>
 				x,
 				termWeightMap,
-				new org.drip.function.numerical.R1ToR1SeriesGenerator (
-<span class="nc" id="L189">					org.drip.function.numerical.R1ToR1SeriesTerm.Asymptotic(),</span>
+				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+<span class="nc" id="L189">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
 					false,
 					termWeightMap
 				)

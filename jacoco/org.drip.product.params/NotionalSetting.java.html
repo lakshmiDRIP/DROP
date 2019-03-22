@@ -113,7 +113,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 <span class="fc" id="L113">	private java.lang.String _strDenominationCurrency = &quot;&quot;;</span>
 <span class="fc" id="L114">	private double _dblNotionalAmount = java.lang.Double.NaN;</span>
 <span class="fc" id="L115">	private int _iPeriodAmortizationMode = PERIOD_AMORT_AT_START;</span>
-<span class="fc" id="L116">	private org.drip.quant.common.Array2D _fsOutstanding = null;</span>
+<span class="fc" id="L116">	private org.drip.numerical.common.Array2D _fsOutstanding = null;</span>
 
 	/**
 	 * Construct the NotionalSetting from the notional schedule and the amount.
@@ -128,7 +128,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 	public NotionalSetting (
 		final double dblNotionalAmount,
 		final java.lang.String strDenominationCurrency,
-		final org.drip.quant.common.Array2D fsOutstanding,
+		final org.drip.numerical.common.Array2D fsOutstanding,
 		final int iPeriodAmortizationMode,
 		final boolean bPriceOffOriginalNotional)
 <span class="fc" id="L134">	{</span>
@@ -141,11 +141,11 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNotionalAmount) || null ==</span>
+<span class="pc bpc" id="L144" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNotionalAmount) || null ==</span>
 <span class="pc bpc" id="L145" title="1 of 2 branches missed.">			_strDenominationCurrency || _strDenominationCurrency.isEmpty())</span>
 <span class="nc" id="L146">			return false;</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (null == _fsOutstanding) _fsOutstanding = org.drip.quant.common.Array2D.BulletSchedule();</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (null == _fsOutstanding) _fsOutstanding = org.drip.numerical.common.Array2D.BulletSchedule();</span>
 
 <span class="fc" id="L150">		return true;</span>
 	}
@@ -189,7 +189,7 @@ public class NotionalSetting implements org.drip.product.params.Validatable {
 	 * @return The Outstanding Factor Schedule
 	 */
 
-	public org.drip.quant.common.Array2D outstandingFactorSchedule()
+	public org.drip.numerical.common.Array2D outstandingFactorSchedule()
 	{
 <span class="fc" id="L194">		return _fsOutstanding;</span>
 	}

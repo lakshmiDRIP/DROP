@@ -339,7 +339,7 @@ public class BondProductBuilder {
 
 <span class="nc" id="L340">			bpb._strTicker = rs.getString (&quot;Ticker&quot;);</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * rs.getDouble (&quot;Coupon&quot;)))</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * rs.getDouble (&quot;Coupon&quot;)))</span>
 			{
 <span class="nc" id="L344">				System.out.println (&quot;Invalid coupon for ISIN &quot; + bpb._strISIN);</span>
 
@@ -398,13 +398,13 @@ public class BondProductBuilder {
 <span class="nc" id="L398">				return null;</span>
 			}
 
-<span class="nc" id="L401">			bpb._bIsCallable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L401">			bpb._bIsCallable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L402">				(&quot;IsCallable&quot;));</span>
 
-<span class="nc" id="L404">			bpb._bIsPutable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L404">			bpb._bIsPutable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L405">				(&quot;IsPutable&quot;));</span>
 
-<span class="nc" id="L407">			bpb._bIsSinkable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L407">			bpb._bIsSinkable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L408">				(&quot;IsSinkable&quot;));</span>
 
 <span class="nc" id="L410">			bpb._strRedemptionCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
@@ -434,12 +434,12 @@ public class BondProductBuilder {
 <span class="nc" id="L434">				return null;</span>
 			}
 
-<span class="nc" id="L437">			bpb._bHasBeenCalled = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L437">			bpb._bHasBeenCalled = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L438">				(&quot;Called&quot;));</span>
 
 <span class="nc" id="L440">			bpb._strFloatCouponConvention = rs.getString (&quot;FloatCouponConvention&quot;);</span>
 
-<span class="nc" id="L442">			bpb._bIsFloater = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L442">			bpb._bIsFloater = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L443">				(&quot;Floater&quot;));</span>
 
 			// bpb._dblCurrentCoupon = 0.01 * rs.getDouble (&quot;CurrentCoupon&quot;);
@@ -447,17 +447,17 @@ public class BondProductBuilder {
 <span class="nc" id="L447">			bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
 <span class="nc" id="L448">				(&quot;FinalMaturity&quot;));</span>
 
-<span class="nc" id="L450">			bpb._bIsPerpetual = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L450">			bpb._bIsPerpetual = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L451">				(&quot;Perpetual&quot;));</span>
 
-<span class="nc" id="L453">			bpb._bIsDefaulted = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L453">			bpb._bIsDefaulted = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
 <span class="nc" id="L454">				(&quot;Defaulted&quot;));</span>
 
 <span class="nc" id="L456">			bpb._dblFloatSpread = 0.0001 * rs.getDouble (&quot;FloatSpread&quot;);</span>
 
 <span class="nc" id="L458">			bpb._strRateIndex = rs.getString (&quot;RateIndex&quot;);</span>
 
-<span class="nc bnc" id="L460" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
+<span class="nc bnc" id="L460" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
 <span class="nc bnc" id="L461" title="All 2 branches missed.">				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {</span>
 <span class="nc" id="L462">				System.out.println (&quot;Invalid float spread for &quot; + DES (bpb));</span>
 
@@ -512,7 +512,7 @@ public class BondProductBuilder {
 
 <span class="nc bnc" id="L513" title="All 2 branches missed.">		if (null == (bpb._strTicker = mapJSON.get (&quot;ticker&quot;))) return null;</span>
 
-<span class="nc bnc" id="L515" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * java.lang.Double.parseDouble</span>
+<span class="nc bnc" id="L515" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * java.lang.Double.parseDouble</span>
 <span class="nc" id="L516">			(mapJSON.get (&quot;coupon&quot;))))</span>
 <span class="nc" id="L517">			return null;</span>
 
@@ -588,7 +588,7 @@ public class BondProductBuilder {
 
 <span class="nc" id="L589">			bpb._strRateIndex = mapJSON.get (&quot;resetIndex&quot;);</span>
 
-<span class="nc bnc" id="L591" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
+<span class="nc bnc" id="L591" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
 <span class="nc bnc" id="L592" title="All 2 branches missed.">				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {</span>
 <span class="nc" id="L593">				System.out.println (&quot;Invalid float spread for &quot; + DES (bpb));</span>
 
@@ -1255,7 +1255,7 @@ public class BondProductBuilder {
 	public boolean setFloatSpread (
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 	{
-<span class="nc bnc" id="L1258" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentCoupon)) {</span>
+<span class="nc bnc" id="L1258" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon)) {</span>
 <span class="nc" id="L1259">			System.out.println (&quot;Curr cpn for ISIN &quot; + _strISIN + &quot; is NaN!&quot;);</span>
 
 <span class="nc" id="L1261">			return false;</span>
@@ -1359,7 +1359,7 @@ public class BondProductBuilder {
 		}
 
 <span class="nc bnc" id="L1361" title="All 6 branches missed.">		if (_bIsFloater &amp;&amp; (null == _strRateIndex || _strRateIndex.isEmpty()) &amp;&amp;</span>
-<span class="nc bnc" id="L1362" title="All 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread) &amp;&amp; java.lang.Double.isNaN</span>
+<span class="nc bnc" id="L1362" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread) &amp;&amp; java.lang.Double.isNaN</span>
 <span class="nc bnc" id="L1363" title="All 2 branches missed.">				(_dblCurrentCoupon)) {</span>
 			if (m_bDisplayWarnings)
 <span class="nc" id="L1365">				System.out.println (&quot;Invalid Rate index &amp; float spread &amp; current coupon for &quot; + _strISIN);</span>
@@ -1375,7 +1375,7 @@ public class BondProductBuilder {
 			}
 		}
 
-<span class="nc bnc" id="L1378" title="All 4 branches missed.">		if (_bIsFloater &amp;&amp; !org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread)) {</span>
+<span class="nc bnc" id="L1378" title="All 4 branches missed.">		if (_bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread)) {</span>
 			try {
 <span class="nc bnc" id="L1380" title="All 2 branches missed.">				if (!setFloatSpread (mpc)) {</span>
 					if (m_bDisplayWarnings)
@@ -1463,7 +1463,7 @@ public class BondProductBuilder {
 
 <span class="nc" id="L1464">		sb.append (&quot;'&quot;).append (_strFloatCouponConvention).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1466" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentCoupon))</span>
+<span class="nc bnc" id="L1466" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon))</span>
 <span class="nc" id="L1467">			sb.append (&quot;null, &quot;);</span>
 		else
 <span class="nc" id="L1469">			sb.append (_dblCurrentCoupon).append (&quot;, &quot;);</span>
@@ -1479,7 +1479,7 @@ public class BondProductBuilder {
 
 <span class="nc bnc" id="L1480" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsDefaulted ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1482" title="All 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread))</span>
+<span class="nc bnc" id="L1482" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread))</span>
 <span class="nc" id="L1483">			sb.append (&quot;null, &quot;);</span>
 		else
 <span class="nc" id="L1485">			sb.append (_dblFloatSpread).append (&quot;, &quot;);</span>
@@ -1611,9 +1611,9 @@ public class BondProductBuilder {
 <span class="nc" id="L1611">					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,</span>
 						_dblCurrentCoupon, _strDayCountCode, _strDayCountCode, null, null, null, null, null,
 							null, null, null, _strMaturityType, false, _strCouponCurrency,
-<span class="nc bnc" id="L1614" title="All 2 branches missed.">								_strCouponCurrency, !org.drip.quant.common.StringUtil.IsEmpty (_strRateIndex)</span>
+<span class="nc bnc" id="L1614" title="All 2 branches missed.">								_strCouponCurrency, !org.drip.numerical.common.StringUtil.IsEmpty (_strRateIndex)</span>
 <span class="nc" id="L1615">									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,</span>
-<span class="nc bnc" id="L1616" title="All 2 branches missed.">										!org.drip.quant.common.StringUtil.IsEmpty (_strIssuerSPN) ?</span>
+<span class="nc bnc" id="L1616" title="All 2 branches missed.">										!org.drip.numerical.common.StringUtil.IsEmpty (_strIssuerSPN) ?</span>
 <span class="nc" id="L1617">											org.drip.state.identifier.EntityCDSLabel.Standard (_strIssuerSPN,</span>
 												_strCouponCurrency) : null);
 	}

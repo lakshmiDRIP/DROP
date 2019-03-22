@@ -186,7 +186,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L186">	private org.drip.spline.segment.BasisEvaluator _be = null;</span>
 <span class="fc" id="L187">	private double[][] _aadblDResponseBasisCoeffDConstraint = null;</span>
 <span class="fc" id="L188">	private org.drip.spline.params.SegmentInelasticDesignControl _sidc = null;</span>
-<span class="fc" id="L189">	private org.drip.quant.calculus.WengertJacobian _wjDBasisCoeffDEdgeValue = null;</span>
+<span class="fc" id="L189">	private org.drip.numerical.differentiation.WengertJacobian _wjDBasisCoeffDEdgeValue = null;</span>
 
 <span class="fc" id="L191">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.spline.segment.LatentStateManifestSensitivity&gt;
@@ -216,8 +216,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L216">			org.drip.spline.segment.SegmentBasisEvaluator sbe = new</span>
 				org.drip.spline.segment.SegmentBasisEvaluator (fs, rssc);
 
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
-<span class="pc bpc" id="L220" title="2 of 4 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinate) ||</span>
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinate) ||</span>
 				dblLeftPredictorOrdinate == dblRightPredictorOrdinate)
 			{
 <span class="nc" id="L223">				return null;</span>
@@ -523,8 +523,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="nc" id="L523">			return false;</span>
 <span class="fc" id="L524">		}</span>
 
-<span class="fc" id="L526">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
+<span class="fc" id="L526">		org.drip.numerical.linearalgebra.LinearizationOutput lo =</span>
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
 <span class="fc" id="L528">				(aadblResponseBasisCoeffConstraint, adblPredictorResponseConstraintValue);</span>
 
 <span class="fc bfc" id="L530" title="All 2 branches covered.">		if (null == lo) return false;</span>
@@ -539,7 +539,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="nc" id="L539">			return false;</span>
 
 <span class="fc bfc" id="L541" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
-<span class="pc bpc" id="L542" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (_adblResponseBasisCoeff[i] =</span>
+<span class="pc bpc" id="L542" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblResponseBasisCoeff[i] =</span>
 				adblCalibResponseBasisCoeff[i]))
 <span class="nc" id="L544">				return false;</span>
 		}
@@ -673,8 +673,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="nc" id="L673">			return null;</span>
 <span class="fc" id="L674">		}</span>
 
-<span class="fc" id="L676">		org.drip.quant.linearalgebra.LinearizationOutput lo =</span>
-			org.drip.quant.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
+<span class="fc" id="L676">		org.drip.numerical.linearalgebra.LinearizationOutput lo =</span>
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion
 <span class="fc" id="L678">				(aadblResponseCoeffConstraintManifestSensitivity,</span>
 					adblPredictorResponseManifestSensitivityConstraint);
 
@@ -850,15 +850,15 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final double dblRightValue,
 		final org.drip.spline.params.SegmentBestFitResponse sbfrState)
 	{
-<span class="pc bpc" id="L853" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblLeftValue) ||</span>
-<span class="pc bpc" id="L854" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblLeftSlope) ||</span>
-<span class="pc bpc" id="L855" title="1 of 2 branches missed.">				!org.drip.quant.common.NumberUtil.IsValid (dblRightValue))</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftValue) ||</span>
+<span class="pc bpc" id="L854" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblLeftSlope) ||</span>
+<span class="pc bpc" id="L855" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblRightValue))</span>
 <span class="nc" id="L856">			return false;</span>
 
 		try {
 <span class="fc" id="L859">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (new double[]</span>
 <span class="fc" id="L860">				{left(), right()}, new double[] {dblLeftValue, dblRightValue},</span>
-<span class="fc" id="L861">					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
+<span class="fc" id="L861">					org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
 						dblLeftSlope), null, null, sbfrState));
 <span class="nc" id="L863">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L864">			e.printStackTrace();</span>
@@ -894,7 +894,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L894">						wrvcStateRight ? null : wrvcStateRight.responseIndexedBasisConstraint (_be, this)};</span>
 
 <span class="fc" id="L896">			return calibrateState (new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,</span>
-<span class="fc" id="L897">				org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),</span>
+<span class="fc" id="L897">				org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2, dblLeftSlope),</span>
 					null, aSBFCState, sbfrState));
 <span class="nc" id="L899">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L900">			e.printStackTrace();</span>
@@ -1008,7 +1008,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L1008">					adblManifestJacobianDerivAtLeftOrdinate[i] = 0.;</span>
 			}
 
-<span class="pc bpc" id="L1011" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblRightStateManifestSensitivity)) return true;</span>
+<span class="pc bpc" id="L1011" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightStateManifestSensitivity)) return true;</span>
 
 <span class="nc bnc" id="L1013" title="All 2 branches missed.">			if (!calibrateLocalManifestJacobian (strManifestMeasure, new</span>
 <span class="nc bnc" id="L1014" title="All 2 branches missed.">				org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(), right()}, new</span>
@@ -1057,14 +1057,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		final org.drip.spline.params.SegmentBestFitResponse sbfrManifestSensitivity)
 	{
 		try {
-<span class="nc bnc" id="L1060" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblLeftManifestSensitivity) &amp;&amp;</span>
-<span class="nc bnc" id="L1061" title="All 2 branches missed.">				org.drip.quant.common.NumberUtil.IsValid (dblLeftSlopeManifestSensitivity) &amp;&amp;</span>
-<span class="nc bnc" id="L1062" title="All 2 branches missed.">					org.drip.quant.common.NumberUtil.IsValid (dblRightManifestSensitivity) ?</span>
+<span class="nc bnc" id="L1060" title="All 2 branches missed.">			return org.drip.numerical.common.NumberUtil.IsValid (dblLeftManifestSensitivity) &amp;&amp;</span>
+<span class="nc bnc" id="L1061" title="All 2 branches missed.">				org.drip.numerical.common.NumberUtil.IsValid (dblLeftSlopeManifestSensitivity) &amp;&amp;</span>
+<span class="nc bnc" id="L1062" title="All 2 branches missed.">					org.drip.numerical.common.NumberUtil.IsValid (dblRightManifestSensitivity) ?</span>
 <span class="nc" id="L1063">						calibrateLocalManifestJacobian (strManifestMeasure, new</span>
 <span class="nc" id="L1064">							org.drip.spline.params.SegmentStateCalibrationInputs (new double[] {left(),</span>
 <span class="nc" id="L1065">								right()}, new double[] {dblLeftManifestSensitivity,</span>
 									dblRightManifestSensitivity},
-										org.drip.quant.common.CollectionUtil.DerivArrayFromSlope
+										org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope
 <span class="nc" id="L1068">											(numParameters() - 2, dblLeftSlopeManifestSensitivity), null,</span>
 												null, sbfrManifestSensitivity), null) : true;
 <span class="nc" id="L1070">		} catch (java.lang.Exception e) {</span>
@@ -1118,7 +1118,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 <span class="pc bpc" id="L1119" title="1 of 2 branches missed.">			return null == aSBFCManifestSensitivity ? true : calibrateLocalManifestJacobian</span>
 <span class="fc" id="L1120">				(strManifestMeasure, new org.drip.spline.params.SegmentStateCalibrationInputs (null, null,</span>
-<span class="fc" id="L1121">					org.drip.quant.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
+<span class="fc" id="L1121">					org.drip.numerical.common.CollectionUtil.DerivArrayFromSlope (numParameters() - 2,</span>
 						dblLeftSlopeManifestSensitivity), null, aSBFCManifestSensitivity,
 							sbfrManifestSensitivity), aSBFCState);
 <span class="nc" id="L1124">		} catch (java.lang.Exception e) {</span>
@@ -1330,7 +1330,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L1330">		double dblDResponseDPreceedingManifest = lsms.getDResponseDPreceedingManifest();</span>
 
 <span class="pc bpc" id="L1332" title="1 of 2 branches missed.">		if (!pqsc.impactFade())</span>
-<span class="nc bnc" id="L1333" title="All 2 branches missed.">			return org.drip.quant.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?</span>
+<span class="nc bnc" id="L1333" title="All 2 branches missed.">			return org.drip.numerical.common.NumberUtil.IsValid (dblDResponseDPreceedingManifest) ?</span>
 				dblDResponseDPreceedingManifest : 0.;
 
 <span class="fc" id="L1336">		org.drip.spline.segment.BasisEvaluator be = pqsc.basisEvaluator();</span>
@@ -1371,14 +1371,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Segment's Response Basis Function Coefficients to the Edge Inputs
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeInputs()
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeInputs()
 	{
 <span class="fc bfc" id="L1376" title="All 2 branches covered.">		if (null != _wjDBasisCoeffDEdgeValue) return _wjDBasisCoeffDEdgeValue;</span>
 
 <span class="fc" id="L1378">		int iNumResponseBasisCoeff = _be.numBasis();</span>
 
 		try {
-<span class="fc" id="L1381">			_wjDBasisCoeffDEdgeValue = new org.drip.quant.calculus.WengertJacobian (iNumResponseBasisCoeff,</span>
+<span class="fc" id="L1381">			_wjDBasisCoeffDEdgeValue = new org.drip.numerical.differentiation.WengertJacobian (iNumResponseBasisCoeff,</span>
 				iNumResponseBasisCoeff);
 <span class="nc" id="L1383">		} catch (java.lang.Exception e) {</span>
 <span class="nc" id="L1384">			e.printStackTrace();</span>
@@ -1415,14 +1415,14 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Response to the Edge Inputs at the given Predictor Ordinate
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDResponseDEdgeInput (
+	public org.drip.numerical.differentiation.WengertJacobian jackDResponseDEdgeInput (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
 		try {
 <span class="fc" id="L1423">			int iNumResponseBasisCoeff = _be.numBasis();</span>
 
-<span class="fc" id="L1425">			org.drip.quant.calculus.WengertJacobian wjDResponseDEdgeParams = null;</span>
+<span class="fc" id="L1425">			org.drip.numerical.differentiation.WengertJacobian wjDResponseDEdgeParams = null;</span>
 <span class="fc" id="L1426">			double[][] aadblDBasisCoeffDEdgeParams = new</span>
 				double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
 
@@ -1432,7 +1432,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				adblDResponseDBasisCoeff.length)
 <span class="nc" id="L1433">				return null;</span>
 
-<span class="fc bfc" id="L1435" title="All 2 branches covered.">			org.drip.quant.calculus.WengertJacobian wjDBasisCoeffDEdgeParams = (null ==</span>
+<span class="fc bfc" id="L1435" title="All 2 branches covered.">			org.drip.numerical.differentiation.WengertJacobian wjDBasisCoeffDEdgeParams = (null ==</span>
 <span class="fc" id="L1436">				_wjDBasisCoeffDEdgeValue) ? jackDCoeffDEdgeInputs() : _wjDBasisCoeffDEdgeValue;</span>
 
 <span class="fc bfc" id="L1438" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
@@ -1440,7 +1440,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L1440">					aadblDBasisCoeffDEdgeParams[j][i] = wjDBasisCoeffDEdgeParams.firstDerivative (j, i);</span>
 			}
 
-<span class="fc" id="L1443">			if (!(wjDResponseDEdgeParams = new org.drip.quant.calculus.WengertJacobian (1,</span>
+<span class="fc" id="L1443">			if (!(wjDResponseDEdgeParams = new org.drip.numerical.differentiation.WengertJacobian (1,</span>
 <span class="pc bpc" id="L1444" title="1 of 2 branches missed.">				iNumResponseBasisCoeff)).setWengert (0, responseValue (dblPredictorOrdinate)))</span>
 <span class="nc" id="L1445">				return null;</span>
 
@@ -1469,7 +1469,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Response to the Basis Coefficients at the given Predictor Ordinate
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDResponseDBasisCoeff (
+	public org.drip.numerical.differentiation.WengertJacobian jackDResponseDBasisCoeff (
 		final double dblPredictorOrdinate,
 		final int iOrder)
 	{
@@ -1482,8 +1482,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				adblBasisDResponseDBasisCoeff.length)
 <span class="nc" id="L1483">				return null;</span>
 
-<span class="nc" id="L1485">			org.drip.quant.calculus.WengertJacobian wjDResponseDBasisCoeff = new</span>
-				org.drip.quant.calculus.WengertJacobian (1, iNumResponseBasisCoeff);
+<span class="nc" id="L1485">			org.drip.numerical.differentiation.WengertJacobian wjDResponseDBasisCoeff = new</span>
+				org.drip.numerical.differentiation.WengertJacobian (1, iNumResponseBasisCoeff);
 
 <span class="nc bnc" id="L1488" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumResponseBasisCoeff; ++i) {</span>
 <span class="nc bnc" id="L1489" title="All 2 branches missed.">				if (!wjDResponseDBasisCoeff.accumulatePartialFirstDerivative (0, i,</span>
@@ -1513,7 +1513,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Segment's Response Basis Function Coefficients to the Edge Parameters
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeParams (
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeParams (
 		final double[] adblPredictorOrdinate,
 		final double[] adblResponseValue,
 		final double[] adblLeftEdgeDeriv,
@@ -1544,7 +1544,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian of the Segment's Response Basis Function Coefficients to the Edge Parameters
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeParams (
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeParams (
 		final double dblLeftValue,
 		final double dblLeftSlope,
 		final double dblRightValue,
@@ -1570,7 +1570,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 	 * @return The Jacobian
 	 */
 
-	public org.drip.quant.calculus.WengertJacobian jackDCoeffDEdgeParams (
+	public org.drip.numerical.differentiation.WengertJacobian jackDCoeffDEdgeParams (
 		final LatentStateResponseModel csPreceeding,
 		final java.lang.String strManifestMeasure,
 		final double dblRightStateValue,
@@ -1612,7 +1612,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 <span class="fc" id="L1612">				return _be.responseValueDerivative (_adblResponseBasisCoeff, dblX, 1);</span>
 			}
 
-			@Override public org.drip.quant.calculus.Differential differential (
+			@Override public org.drip.numerical.differentiation.Differential differential (
 				final double dblX,
 				final double dblOFBase,
 				final int iOrder)
@@ -1620,7 +1620,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				try {
 <span class="nc" id="L1621">					double dblVariateInfinitesimal = _dc.getVariateInfinitesimal (dblX);</span>
 
-<span class="nc" id="L1623">					return new org.drip.quant.calculus.Differential (dblVariateInfinitesimal,</span>
+<span class="nc" id="L1623">					return new org.drip.numerical.differentiation.Differential (dblVariateInfinitesimal,</span>
 <span class="nc" id="L1624">						_be.responseValueDerivative (_adblResponseBasisCoeff, dblX, iOrder) *</span>
 							dblVariateInfinitesimal);
 <span class="nc" id="L1626">				} catch (java.lang.Exception e) {</span>
@@ -1635,7 +1635,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L1638">				return org.drip.quant.calculus.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
+<span class="nc" id="L1638">				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);</span>
 			}
 		};
 
@@ -1650,7 +1650,7 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 <span class="fc" id="L1651">			double dblExtremum = fpop.getRoot();</span>
 
-<span class="pc bpc" id="L1653" title="3 of 6 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
+<span class="pc bpc" id="L1653" title="3 of 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum &lt;= 0. || dblExtremum</span>
 				&gt;= 1.)
 <span class="nc" id="L1655">				return new org.drip.spline.segment.Monotonocity</span>
 					(org.drip.spline.segment.Monotonocity.MONOTONIC);

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1Estimate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.numerical.estimation</a> &gt; <span class="el_source">R1Estimate.java</span></div><h1>R1Estimate.java</h1><pre class="source lang-java linenums">
+package org.drip.numerical.estimation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1Estimate&lt;/i&gt; holds the Bounded R&lt;sup&gt;1&lt;/sup&gt; Numerical Estimate of a Function. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function &lt;i&gt;Computers and
+ * 				Mathematics with Applications&lt;/i&gt; &lt;b&gt;61 (11)&lt;/b&gt; 3364-3369
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
+ * 				Functions https://dlmf.nist.gov/5.11
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
+ * 				https://arxiv.org/abs/1003.2907 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
+ * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Stirling's Approximation
+ * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md&quot;&gt;Function Numerical Estimates/Corrections/Bounds&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1Estimate
+{
+<span class="nc" id="L106">	private double _baseline = java.lang.Double.NaN;</span>
+<span class="nc" id="L107">	private double _lowerBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L108">	private double _upperBound = java.lang.Double.NaN;</span>
+
+<span class="nc" id="L110">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _orderedSeriesMap = new</span>
+		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+	/**
+	 * Construct a Base Line Version without Bounds
+	 * 
+	 * @param baseline The Base Line Numerical Estimate
+	 * 
+	 * @return The Base Line Version without Bounds
+	 */
+
+	public static final R1Estimate BaselineOnly (
+		final double baseline)
+	{
+		try
+		{
+<span class="nc" id="L126">			return new R1Estimate (</span>
+				baseline,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN
+			);
+		}
+<span class="nc" id="L132">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L134">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L137">		return null;</span>
+	}
+
+	/**
+	 * R1Estimate Constructor
+	 * 
+	 * @param baseline The Base Line Estimate
+	 * @param lowerBound The Lower Bound
+	 * @param upperBound The Upper Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1Estimate (
+		final double baseline,
+		final double lowerBound,
+		final double upperBound)
+		throws java.lang.Exception
+<span class="nc" id="L155">	{</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_baseline = baseline))</span>
+		{
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;R1Estimate Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L161">		_lowerBound = lowerBound;</span>
+<span class="nc" id="L162">		_upperBound = upperBound;</span>
+<span class="nc" id="L163">	}</span>
+
+	/**
+	 * Retrieve the Base Line Numerical Estimate
+	 * 
+	 * @return The Base Line Numerical Estimate
+	 */
+
+	public double baseline()
+	{
+<span class="nc" id="L173">		return _baseline;</span>
+	}
+
+	/**
+	 * Retrieve the Lower Bound
+	 * 
+	 * @return The Lower Bound
+	 */
+
+	public double lowerBound()
+	{
+<span class="nc" id="L184">		return _lowerBound;</span>
+	}
+
+	/**
+	 * Retrieve the Upper Bound
+	 * 
+	 * @return The Upper Bound
+	 */
+
+	public double upperBound()
+	{
+<span class="nc" id="L195">		return _upperBound;</span>
+	}
+
+	/**
+	 * Retrieve the Higher Order Series Map
+	 * 
+	 * @return The Higher Order Series Map
+	 */
+
+	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; orderedSeriesMap()
+	{
+<span class="nc" id="L206">		return _orderedSeriesMap;</span>
+	}
+
+	/**
+	 * Add the Ordered Series Map
+	 * 
+	 * @param orderedSeriesMap The Ordered Series Map
+	 * 
+	 * @return TRUE - The Ordered Series Map successfully added
+	 */
+
+	public boolean addOrderedSeriesMap (
+		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; orderedSeriesMap)
+	{
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (null == orderedSeriesMap)</span>
+		{
+<span class="nc" id="L222">			return false;</span>
+		}
+
+<span class="nc" id="L225">		_orderedSeriesMap = orderedSeriesMap;</span>
+<span class="nc" id="L226">		return true;</span>
+	}
+
+	/**
+	 * Retrieve the Series corresponding to the Specified Order
+	 * 
+	 * @param order The Series Order
+	 * 
+	 * @return The Series corresponding to the Specified Order
+	 */
+
+	public double orderSeries (
+		final int order)
+	{
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		return _orderedSeriesMap.containsKey (order) ? _orderedSeriesMap.get (order) : 0.;</span>
+	}
+
+	/**
+	 * Compute the Series Cumulative
+	 * 
+	 * @return The Series Cumulative
+	 */
+
+	public double seriesCumulative()
+	{
+<span class="nc" id="L251">		double seriesCumulative = 0.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; orderedSeriesEntry :
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			_orderedSeriesMap.entrySet())</span>
+		{
+<span class="nc" id="L256">			seriesCumulative = seriesCumulative + orderedSeriesEntry.getValue();</span>
+<span class="nc" id="L257">		}</span>
+
+<span class="nc" id="L259">		return seriesCumulative;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -177,7 +177,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblIntegratedSurfaceVariance)
 	{
-<span class="pc bpc" id="L180" title="2 of 4 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L180" title="2 of 4 branches missed.">		if (null == valParams || null == csqs || !org.drip.numerical.common.NumberUtil.IsValid</span>
 <span class="pc bpc" id="L181" title="1 of 2 branches missed.">			(dblIntegratedSurfaceVariance))</span>
 <span class="nc" id="L182">			return null;</span>
 
@@ -215,8 +215,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 <span class="fc" id="L216">		double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);</span>
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblATMManifestMeasure) ||</span>
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblFRADV01))</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure) ||</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblFRADV01))</span>
 <span class="nc" id="L220">			return null;</span>
 
 		try {
@@ -237,7 +237,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 <span class="nc bnc" id="L237" title="All 2 branches missed.">						strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))</span>
 <span class="fc" id="L238">				dblManifestMeasurePriceTransformer = 10000. * dblFRADV01;</span>
 
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
 
 <span class="fc bfc" id="L242" title="All 2 branches covered.">			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (iValueDate, iExerciseDate, dblStrike,</span>
 				dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblIntegratedSurfaceVariance);
@@ -344,7 +344,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		final double dblVolatility)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L347" title="3 of 6 branches missed.">		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblVolatility))</span>
+<span class="pc bpc" id="L347" title="3 of 6 branches missed.">		if (null == valParams || null == csqs || !org.drip.numerical.common.NumberUtil.IsValid (dblVolatility))</span>
 <span class="nc" id="L348">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::price =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L350">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
@@ -377,7 +377,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 <span class="fc" id="L377">			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get (&quot;DV01&quot;);</span>
 		}
 
-<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
 <span class="nc" id="L381">			throw new java.lang.Exception</span>
 				(&quot;FRAStandardCapFloorlet::price =&gt; No Manifest Measure Price Transformer&quot;);
 
@@ -411,7 +411,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 		throws java.lang.Exception
 	{
 <span class="pc bpc" id="L413" title="4 of 8 branches missed.">		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||</span>
-<span class="pc bpc" id="L414" title="1 of 2 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblCalibValue))</span>
 <span class="nc" id="L415">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L417">		final double dblStrike = strike();</span>
@@ -449,7 +449,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.OptionCompon
 
 <span class="fc" id="L450">		final double dblManifestMeasurePriceTransformerCalib = dblManifestMeasurePriceTransformer;</span>
 
-<span class="pc bpc" id="L452" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
+<span class="pc bpc" id="L452" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
 <span class="nc" id="L453">			throw new java.lang.Exception (&quot;FRAStandardCapFloorlet::implyVolatility =&gt; No Transformer&quot;);</span>
 
 <span class="fc" id="L455">		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {</span>

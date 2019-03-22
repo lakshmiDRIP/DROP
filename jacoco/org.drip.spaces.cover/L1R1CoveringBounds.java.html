@@ -128,11 +128,11 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblBound)
 		throws java.lang.Exception
 <span class="fc" id="L130">	{</span>
-<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport ||</span>
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">			!org.drip.quant.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. &gt;= _dblVariation)</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. &gt;= _dblSupport ||</span>
+<span class="pc bpc" id="L132" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. &gt;= _dblVariation)</span>
 <span class="nc" id="L133">			throw new java.lang.Exception (&quot;L1R1CoveringBounds ctr: Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L135" title="1 of 4 branches missed.">		if (org.drip.quant.common.NumberUtil.IsValid (_dblBound = dblBound) &amp;&amp; _dblBound &lt;= 0.5 *</span>
+<span class="pc bpc" id="L135" title="1 of 4 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (_dblBound = dblBound) &amp;&amp; _dblBound &lt;= 0.5 *</span>
 			_dblVariation)
 <span class="nc" id="L137">			throw new java.lang.Exception (&quot;L1R1CoveringBounds ctr: Invalid Inputs&quot;);</span>
 <span class="fc" id="L138">	}</span>
@@ -174,7 +174,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L177" title="2 of 4 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
 <span class="nc" id="L178">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logLowerBound =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L180">		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);</span>
@@ -183,7 +183,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 <span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (1. &lt; 12. * dblVariationCoverScale)</span>
 <span class="nc" id="L184">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logLowerBound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L186" title="All 2 branches covered.">		return !org.drip.quant.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">		return !org.drip.numerical.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +</span>
 <span class="fc" id="L187">			dblVariationLogLowerBound * java.lang.Math.log (2.) + java.lang.Math.log (_dblSupport * _dblBound</span>
 				/ (6. * dblCover));
 	}
@@ -192,7 +192,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover))</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover))</span>
 <span class="nc" id="L196">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logUpperBound =&gt; Invalid Inputs&quot;);</span>
 
 <span class="fc" id="L198">		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);</span>
@@ -200,7 +200,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 <span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (1. &lt; 12. * dblVariationCoverScale)</span>
 <span class="nc" id="L201">			throw new java.lang.Exception (&quot;L1R1CoveringBounds::logUpperBound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		if (!org.drip.quant.common.NumberUtil.IsValid (_dblBound))</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBound))</span>
 <span class="fc" id="L204">			return java.lang.Math.log (2.) * 12. / dblVariationCoverScale;</span>
 
 <span class="fc" id="L206">		return java.lang.Math.log (2.) * 18. / dblVariationCoverScale + 3. * _dblSupport * (2. * _dblBound -</span>
