@@ -64,7 +64,7 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>GaussLegendreQuadratureGenerator</i> generates the Array of Orthogonal Legendre Polynomial Gaussian
+ * <i>GaussLobattoQuadratureGenerator</i> generates the Array of Orthogonal Lobatto Polynomial Gaussian
  * Quadrature Based Abscissa and their corresponding Weights. The References are:
  * 
  * <br><br>
@@ -101,96 +101,20 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GaussLegendreQuadratureGenerator
+public class GaussLobattoQuadratureGenerator
 {
 
 	/**
-	 * Generate the One Point Gauss Legendre Quadrature over [-1, +1]
+	 * Generate the Three Point Gauss Lobatto Quadrature over [-1, +1]
 	 * 
 	 * @param abscissaTransformer The Abscissa Transformer
 	 * 
-	 * @return The One Point Gauss Legendre Quadrature over [-1, +1]
-	 */
-
-	public static final org.drip.numerical.integration.QuadratureEstimator OnePoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
-	{
-		try
-		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
-				abscissaTransformer,
-				org.drip.numerical.common.Array2D.FromArray (
-					new double[]
-					{
-						0.000000000000000,
-					},
-					new double[]
-					{
-						2.000000000000000,
-					}
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Generate the Two Point Gauss Legendre Quadrature over [-1, +1]
-	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
-	 * 
-	 * @return The Two Point Gauss Legendre Quadrature over [-1, +1]
-	 */
-
-	public static final org.drip.numerical.integration.QuadratureEstimator TwoPoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
-	{
-		double sqrt_1Over3_ = java.lang.Math.sqrt (1. / 3.);
-
-		try
-		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
-				abscissaTransformer,
-				org.drip.numerical.common.Array2D.FromArray (
-					new double[]
-					{
-						-sqrt_1Over3_,
-						 sqrt_1Over3_,
-					},
-					new double[]
-					{
-						1.000000000000000,
-						1.000000000000000,
-					}
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Generate the Three Point Gauss Legendre Quadrature over [-1, +1]
-	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
-	 * 
-	 * @return The Three Point Gauss Legendre Quadrature over [-1, +1]
+	 * @return The Three Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator ThreePoint (
 		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
 	{
-		double sqrt_3Over5_ = java.lang.Math.sqrt (3. / 5.);
-
 		try
 		{
 			return new org.drip.numerical.integration.QuadratureEstimator (
@@ -198,15 +122,15 @@ public class GaussLegendreQuadratureGenerator
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
 					{
-						-sqrt_3Over5_,
+						-1.000000000000000,
 						 0.000000000000000,
-						 sqrt_3Over5_,
+						 1.000000000000000,
 					},
 					new double[]
 					{
-						5. / 9.,
-						8. / 9.,
-						5. / 9.,
+						1. / 3.,
+						4. / 3.,
+						1. / 3.,
 					}
 				)
 			);
@@ -220,27 +144,17 @@ public class GaussLegendreQuadratureGenerator
 	}
 
 	/**
-	 * Generate the Four Point Gauss Legendre Quadrature over [-1, +1]
+	 * Generate the Four Point Gauss Lobatto Quadrature over [-1, +1]
 	 * 
 	 * @param abscissaTransformer The Abscissa Transformer
 	 * 
-	 * @return The Four Point Gauss Legendre Quadrature over [-1, +1]
+	 * @return The Four Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator FourPoint (
 		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
 	{
-		double sqrt_30_Over36 = java.lang.Math.sqrt (30.) / 36.;
-
-		double nearWeight = 0.5 + sqrt_30_Over36;
-		double farWeight = 0.5 - sqrt_30_Over36;
-		double threeOver7 = 3. / 7.;
-
-		double twoOver7Sqrt_6Over5_ = 2. / 7. * java.lang.Math.sqrt (6. / 5.);
-
-		double farNode = java.lang.Math.sqrt (threeOver7 + twoOver7Sqrt_6Over5_);
-
-		double nearNode = java.lang.Math.sqrt (threeOver7 - twoOver7Sqrt_6Over5_);
+		double sqrt_1Over5_ = java.lang.Math.sqrt (0.2);
 
 		try
 		{
@@ -249,17 +163,17 @@ public class GaussLegendreQuadratureGenerator
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
 					{
-						-farNode,
-						-nearNode,
-						 nearNode,
-						 farNode,
+						-1.000000000000000,
+						-sqrt_1Over5_,
+						 sqrt_1Over5_,
+						 1.000000000000000,
 					},
 					new double[]
 					{
-						farWeight,
-						nearWeight,
-						nearWeight,
-						farWeight,
+						1. / 6.,
+						5. / 6.,
+						5. / 6.,
+						1. / 6.,
 					}
 				)
 			);
@@ -273,26 +187,17 @@ public class GaussLegendreQuadratureGenerator
 	}
 
 	/**
-	 * Generate the Five Point Gauss Legendre Quadrature over [-1, +1]
+	 * Generate the Five Point Gauss Lobatto Quadrature over [-1, +1]
 	 * 
 	 * @param abscissaTransformer The Abscissa Transformer
 	 * 
-	 * @return The Five Point Gauss Legendre Quadrature over [-1, +1]
+	 * @return The Five Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator FivePoint (
 		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
 	{
-		double thirteenSqrt_70_ = 13. * java.lang.Math.sqrt (70.);
-
-		double nearWeight = (322. + thirteenSqrt_70_) / 900.;
-		double farWeight = (322. - thirteenSqrt_70_) / 900.;
-
-		double twoSqrt_10Over7_ = 2. * java.lang.Math.sqrt (10. / 7.);
-
-		double farNode = java.lang.Math.sqrt (5. + twoSqrt_10Over7_) / 3.;
-
-		double nearNode = java.lang.Math.sqrt (5. - twoSqrt_10Over7_) / 3.;
+		double sqrt_3Over7_ = java.lang.Math.sqrt (3. / 7.);
 
 		try
 		{
@@ -301,19 +206,19 @@ public class GaussLegendreQuadratureGenerator
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
 					{
-						-farNode,
-						-nearNode,
+						-1.000000000000000,
+						-sqrt_3Over7_,
 						 0.000000000000000,
-						 nearNode,
-						 farNode,
+						 sqrt_3Over7_,
+						 1.000000000000000,
 					},
 					new double[]
 					{
-						farWeight,
-						nearWeight,
-						128. / 225.,
-						nearWeight,
-						farWeight,
+						 1. / 10.,
+						49. / 90.,
+						32. / 45.,
+						49. / 90.,
+						 1. / 10.,
 					}
 				)
 			);
@@ -327,45 +232,116 @@ public class GaussLegendreQuadratureGenerator
 	}
 
 	/**
-	 * Generate the One Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 * Generate the Six Point Gauss Lobatto Quadrature over [-1, +1]
 	 * 
-	 * @param left Left Integrand Quadrature Limit
-	 * @param right Right Integrand Quadrature Limit
+	 * @param abscissaTransformer The Abscissa Transformer
 	 * 
-	 * @return The One Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 * @return The Six Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator OnePoint (
-		final double left,
-		final double right)
+	public static final org.drip.numerical.integration.QuadratureEstimator SixPoint (
+		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
 	{
-		return OnePoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
-				left,
-				right
-			)
-		);
+		double sqrt7 = java.lang.Math.sqrt (7.);
+
+		double twoSqrt_7_Over21 = 2. / 21. * sqrt7;
+		double nearWeight = (14. + sqrt7) / 30.;
+		double farWeight = (14. - sqrt7) / 30.;
+
+		double farNode = java.lang.Math.sqrt ((1. / 3.) + twoSqrt_7_Over21);
+
+		double nearNode = java.lang.Math.sqrt ((1. / 3.) - twoSqrt_7_Over21);
+
+		try
+		{
+			return new org.drip.numerical.integration.QuadratureEstimator (
+				abscissaTransformer,
+				org.drip.numerical.common.Array2D.FromArray (
+					new double[]
+					{
+						-1.000000000000000,
+						-farNode,
+						-nearNode,
+						 nearNode,
+						 farNode,
+						 1.000000000000000,
+					},
+					new double[]
+					{
+						1. / 15.,
+						farWeight,
+						nearWeight,
+						nearWeight,
+						farWeight,
+						1. / 15.,
+					}
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Generate the Two Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 * Generate the Seven Point Gauss Lobatto Quadrature over [-1, +1]
 	 * 
-	 * @param left Left Integrand Quadrature Limit
-	 * @param right Right Integrand Quadrature Limit
+	 * @param abscissaTransformer The Abscissa Transformer
 	 * 
-	 * @return The Two Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 * @return The Seven Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator TwoPoint (
-		final double left,
-		final double right)
+	public static final org.drip.numerical.integration.QuadratureEstimator SevenPoint (
+		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
 	{
-		return TwoPoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
-				left,
-				right
-			)
-		);
+		double twoOver11Sqrt_5Over3_ = 2. / 11. * java.lang.Math.sqrt (5. / 3.);
+
+		double farNode = java.lang.Math.sqrt ((5. / 11.) + twoOver11Sqrt_5Over3_);
+
+		double nearNode = java.lang.Math.sqrt ((5. / 11.) - twoOver11Sqrt_5Over3_);
+
+		double sevenSqrt15 = 7. * java.lang.Math.sqrt (15.);
+
+		double nearWeight = (124. + sevenSqrt15) / 350.;
+		double farWeight = (124. - sevenSqrt15) / 350.;
+
+		try
+		{
+			return new org.drip.numerical.integration.QuadratureEstimator (
+				abscissaTransformer,
+				org.drip.numerical.common.Array2D.FromArray (
+					new double[]
+					{
+						-1.000000000000000,
+						-farNode,
+						-nearNode,
+						 0.000000000000000,
+						 nearNode,
+						 farNode,
+						 1.000000000000000,
+					},
+					new double[]
+					{
+						1. / 21.,
+						farWeight,
+						nearWeight,
+						256. / 525.,
+						nearWeight,
+						farWeight,
+						1. / 21.,
+					}
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -424,6 +400,48 @@ public class GaussLegendreQuadratureGenerator
 		final double right)
 	{
 		return FivePoint (
+			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+				left,
+				right
+			)
+		);
+	}
+
+	/**
+	 * Generate the Six Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 * 
+	 * @param left Left Integrand Quadrature Limit
+	 * @param right Right Integrand Quadrature Limit
+	 * 
+	 * @return The Six Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 */
+
+	public static final org.drip.numerical.integration.QuadratureEstimator SixPoint (
+		final double left,
+		final double right)
+	{
+		return SixPoint (
+			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+				left,
+				right
+			)
+		);
+	}
+
+	/**
+	 * Generate the Seven Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 * 
+	 * @param left Left Integrand Quadrature Limit
+	 * @param right Right Integrand Quadrature Limit
+	 * 
+	 * @return The Seven Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
+	 */
+
+	public static final org.drip.numerical.integration.QuadratureEstimator SevenPoint (
+		final double left,
+		final double right)
+	{
+		return SevenPoint (
 			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right

@@ -64,8 +64,8 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>R0ToR1SeriesGenerator</i> generates a Series of Weighted Numerical R<sup>0</sup> To R<sup>1</sup>
- * Terms. The References are:
+ * <i>R0ToR1Series</i> generates a Series of Weighted Numerical R<sup>0</sup> To R<sup>1</sup> Terms. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,13 +102,13 @@ package org.drip.numerical.estimation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R0ToR1SeriesGenerator extends org.drip.numerical.estimation.RxToR1SeriesGenerator
+public class R0ToR1Series extends org.drip.numerical.estimation.RxToR1Series
 {
 	private boolean _cumulative = false;
 	private org.drip.numerical.estimation.R0ToR1SeriesTerm _r0Tor1SeriesTerm = null;
 
 	/**
-	 * R0ToR1SeriesGenerator Constructor
+	 * R0ToR1Series Constructor
 	 * 
 	 * @param r0Tor1SeriesTerm R<sup>0</sup> To R<sup>1</sup> Series Term
 	 * @param proportional TRUE - The Series Term is Proportional
@@ -118,7 +118,7 @@ public class R0ToR1SeriesGenerator extends org.drip.numerical.estimation.RxToR1S
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R0ToR1SeriesGenerator (
+	public R0ToR1Series (
 		final org.drip.numerical.estimation.R0ToR1SeriesTerm r0Tor1SeriesTerm,
 		final boolean proportional,
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
@@ -132,7 +132,7 @@ public class R0ToR1SeriesGenerator extends org.drip.numerical.estimation.RxToR1S
 
 		if (null == (_r0Tor1SeriesTerm = r0Tor1SeriesTerm))
 		{
-			throw new java.lang.Exception ("R0ToR1SeriesGenerator Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("R0ToR1Series Constructor => Invalid Inputs");
 		}
 
 		_cumulative = cumulative;
@@ -214,5 +214,44 @@ public class R0ToR1SeriesGenerator extends org.drip.numerical.estimation.RxToR1S
 		}
 
 		return seriesExpansionMap;
+	}
+
+	@Override public double evaluate (
+		final double x)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = termWeightMap();
+
+		if (null == termWeightMap || 0 == termWeightMap.size())
+		{
+			return 0.;
+		}
+
+		double scale = proportional() ? 0. : 1.;
+
+		double value = 0.;
+		double seriesValue = 0.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			termWeightMap.entrySet())
+		{
+			int order = termWeightEntry.getKey();
+
+			double orderSeriesValue = scale * termWeightEntry.getValue() * _r0Tor1SeriesTerm.value
+				(order);
+
+			value = value + (_cumulative ? (seriesValue = seriesValue + orderSeriesValue) :
+				orderSeriesValue);
+		}
+
+		return value;
+	}
+
+	@Override public double derivative (
+		final double x,
+		final int order)
+		throws java.lang.Exception
+	{
+		return 0.;
 	}
 }

@@ -64,8 +64,8 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>R1ToR1SeriesGenerator</i> generates the R<sup>1</sup> To R<sup>1</sup> Expansion Terms in the Ordered
- * Series of the Numerical Estimate for a Function. The References are:
+ * <i>RxToR1Series</i> contains the R<sup>x</sup> To R<sup>1</sup> Expansion Terms in the Ordered Series of
+ * the Numerical Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,137 +102,40 @@ package org.drip.numerical.estimation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ToR1SeriesGenerator extends org.drip.numerical.estimation.RxToR1SeriesGenerator
+public abstract class RxToR1Series extends org.drip.function.definition.R1ToR1
 {
-	private org.drip.numerical.estimation.R1ToR1SeriesTerm _r1ToR1SeriesTerm = null;
+	private boolean _proportional = false;
+	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
 
-	/**
-	 * R1ToR1SeriesGenerator Constructor
-	 * 
-	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
-	 * @param proportional TRUE - The Expansion Term is Proportional
-	 * @param termWeightMap Error Term Weight Map
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public R1ToR1SeriesGenerator (
-		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
+	protected RxToR1Series (
 		final boolean proportional,
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
-		throws java.lang.Exception
 	{
-		super (
-			proportional,
-			termWeightMap
-		);
+		super (null);
 
-		if (null == (_r1ToR1SeriesTerm = r1ToR1SeriesTerm))
-		{
-			throw new java.lang.Exception ("R1ToR1SeriesGenerator Constructor => Invalid Inputs");
-		}
+		_proportional = proportional;
+		_termWeightMap = termWeightMap;
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * Indicate if the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
 	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * @return TRUE - The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
 	 */
 
-	public org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm()
+	public boolean proportional()
 	{
-		return _r1ToR1SeriesTerm;
+		return _proportional;
 	}
 
 	/**
-	 * Generate the R<sup>1</sup> To R<sup>1</sup> Series Expansion using the Term
+	 * Retrieve the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
 	 * 
-	 * @param zeroOrder The Zero Order Estimate
-	 * @param x X
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Series Expansion
+	 * @return The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
 	 */
 
-	public java.util.TreeMap<java.lang.Integer, java.lang.Double> generate (
-		final double zeroOrder, 
-		final double x)
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (zeroOrder))
-		{
-			return null;
-		}
-
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> seriesExpansionMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = termWeightMap();
-
-		if (null == termWeightMap || 0 == termWeightMap.size())
-		{
-			return seriesExpansionMap;
-		}
-
-		double scale = proportional() ? zeroOrder : 1.;
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
-			termWeightMap.entrySet())
-		{
-			int order = termWeightEntry.getKey();
-
-			try
-			{
-				seriesExpansionMap.put (
-					order,
-					scale * termWeightEntry.getValue() * _r1ToR1SeriesTerm.value (
-						order,
-						x
-					)
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
-			}
-		}
-
-		return seriesExpansionMap;
-	}
-
-	/**
-	 * Compute the Cumulative Series Value
-	 * 
-	 * @param zeroOrder The Zero Order Estimate
-	 * @param x X
-	 * 
-	 * @return The Cumulative Series Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double cumulative (
-		final double zeroOrder, 
-		final double x)
-		throws java.lang.Exception
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> seriesMap = generate (
-			zeroOrder, 
-			x
-		);
-
-		if (null == seriesMap)
-		{
-			throw new java.lang.Exception ("R1ToR1SeriesGenerator::cumulative => Invalid Inputs");
-		}
-
-		double cumulative = 0.;
-
-		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> seriesEntry : seriesMap.entrySet())
-		{
-			cumulative = cumulative + seriesEntry.getValue();
-		}
-
-		return cumulative;
+		return _termWeightMap;
 	}
 }

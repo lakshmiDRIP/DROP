@@ -103,7 +103,7 @@ package org.drip.function.e2erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimation.R1ToR1SeriesGenerator
+public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimation.R1ToR1Series
 {
 
 	/**

@@ -168,7 +168,7 @@ public class RaabeLogGamma extends org.drip.numerical.estimation.R1ToR1Estimator
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+				new org.drip.numerical.estimation.R1ToR1Series (
 					org.drip.numerical.estimation.R1ToR1SeriesTerm.InvertedRisingExponential(),
 					false,
 					termWeightMap

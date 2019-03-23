@@ -150,7 +150,7 @@ public class InverseFactorialExpansion
 	 * @return The Inverse Factorial Version of Error Function Complement Series Generator
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesGenerator SeriesGenerator (
+	public static final org.drip.numerical.estimation.R1ToR1Series SeriesGenerator (
 		final int termCount)
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
@@ -169,7 +169,7 @@ public class InverseFactorialExpansion
 				);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+			return new org.drip.numerical.estimation.R1ToR1Series (
 				SeriesTerm(),
 				false,
 				termWeightMap

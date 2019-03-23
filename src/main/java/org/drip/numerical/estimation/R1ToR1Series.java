@@ -64,8 +64,8 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>R1ToR1Estimator</i> exposes the Stubs behind R<sup>1</sup> - R<sup>1</sup> Approximate Numerical
- * Estimators. The References are:
+ * <i>R1ToR1Series</i> holds the R<sup>1</sup> To R<sup>1</sup> Expansion Terms in the Ordered Series of the
+ * Numerical Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,91 +102,164 @@ package org.drip.numerical.estimation;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1ToR1Estimator extends org.drip.function.definition.R1ToR1
+public class R1ToR1Series extends org.drip.numerical.estimation.RxToR1Series
 {
+	private org.drip.numerical.estimation.R1ToR1SeriesTerm _r1ToR1SeriesTerm = null;
 
 	/**
-	 * R<sup>1</sup> - R<sup>1</sup> Estimator Constructor
+	 * R1ToR1Series Constructor
 	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public R1ToR1Estimator (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-	{
-		super (dc);
-	}
-
-	/**
-	 * Estimate a Bounded Numerical Approximation of the Function Value
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Bounded Numerical Approximation
-	 */
-
-	public org.drip.numerical.estimation.R1Estimate boundedEstimate (
-		final double x)
-	{
-		try
-		{
-			return org.drip.numerical.estimation.R1Estimate.BaselineOnly (evaluate (x));
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Compute the Higher Order Series Estimates
-	 * 
-	 * @param x X
+	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * @param proportional TRUE - The Expansion Term is Proportional
 	 * @param termWeightMap Error Term Weight Map
-	 * @param r1ToR1SeriesGenerator R<sup>1</sup> To R<sup>1</sup> Series Generator
 	 * 
-	 * @return The Higher Order Series Estimates
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public org.drip.numerical.estimation.R1Estimate seriesEstimate (
-		final double x,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
-		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator)
+	public R1ToR1Series (
+		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
+		final boolean proportional,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
+		throws java.lang.Exception
 	{
-		org.drip.numerical.estimation.R1Estimate r1NumericalEstimate = boundedEstimate (x);
+		super (
+			proportional,
+			termWeightMap
+		);
 
-		if (null == r1NumericalEstimate ||
-			null == termWeightMap || 0 == termWeightMap.size() ||
-			null == r1ToR1SeriesGenerator)
+		if (null == (_r1ToR1SeriesTerm = r1ToR1SeriesTerm))
 		{
-			return r1NumericalEstimate;
+			throw new java.lang.Exception ("R1ToR1Series Constructor => Invalid Inputs");
 		}
-
-		return r1NumericalEstimate.addOrderedSeriesMap (
-			r1ToR1SeriesGenerator.generate (
-				r1NumericalEstimate.baseline(),
-				x
-			)
-		) ? r1NumericalEstimate : null;
 	}
 
 	/**
-	 * Compute the Built-in Higher Order Series Estimates
+	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
 	 * 
-	 * @param x X
-	 * 
-	 * @return The Built-in Higher Order Series Estimates
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
 	 */
 
-	public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+	public org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm()
+	{
+		return _r1ToR1SeriesTerm;
+	}
+
+	/**
+	 * Generate the R<sup>1</sup> To R<sup>1</sup> Series Expansion using the Term
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Series Expansion
+	 */
+
+	public java.util.TreeMap<java.lang.Integer, java.lang.Double> generate (
+		final double zeroOrder, 
 		final double x)
 	{
-		return seriesEstimate (
-			x,
-			null,
-			null
+		if (!org.drip.numerical.common.NumberUtil.IsValid (zeroOrder))
+		{
+			return null;
+		}
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> seriesExpansionMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = termWeightMap();
+
+		if (null == termWeightMap || 0 == termWeightMap.size())
+		{
+			return seriesExpansionMap;
+		}
+
+		double scale = proportional() ? zeroOrder : 1.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			termWeightMap.entrySet())
+		{
+			int order = termWeightEntry.getKey();
+
+			try
+			{
+				seriesExpansionMap.put (
+					order,
+					scale * termWeightEntry.getValue() * _r1ToR1SeriesTerm.value (
+						order,
+						x
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return seriesExpansionMap;
+	}
+
+	/**
+	 * Compute the Cumulative Series Value
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * 
+	 * @return The Cumulative Series Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double cumulative (
+		final double zeroOrder, 
+		final double x)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> seriesMap = generate (
+			zeroOrder, 
+			x
 		);
+
+		if (null == seriesMap)
+		{
+			throw new java.lang.Exception ("R1ToR1Series::cumulative => Invalid Inputs");
+		}
+
+		double cumulative = 0.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> seriesEntry : seriesMap.entrySet())
+		{
+			cumulative = cumulative + seriesEntry.getValue();
+		}
+
+		return cumulative;
+	}
+
+	@Override public double evaluate (
+		final double x)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = termWeightMap();
+
+		if (null == termWeightMap || 0 == termWeightMap.size())
+		{
+			return 0.;
+		}
+
+		double scale = proportional() ? 0. : 1.;
+
+		double value = 0.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			termWeightMap.entrySet())
+		{
+			value = value + scale * termWeightEntry.getValue() * _r1ToR1SeriesTerm.value (
+				termWeightEntry.getKey(),
+				x
+			);
+		}
+
+		return value;
 	}
 }

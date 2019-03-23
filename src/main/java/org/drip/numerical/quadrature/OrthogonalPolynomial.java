@@ -1,5 +1,5 @@
 
-package org.drip.numerical.estimation;
+package org.drip.numerical.quadrature;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +64,29 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>RxToR1SeriesGenerator</i> generates the R<sup>x</sup> To R<sup>1</sup> Expansion Terms in the Ordered
- * Series of the Numerical Estimate for a Function. The References are:
+ * <i>OrthogonalPolynomial</i> exposes the Basis Orthogonal Polynomials used in the Construction of the
+ * Quadrature. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Gil, A., J. Segura, and N. M. Temme (2007): <i>Numerical Methods for Special Functions</i>
+ * 				<b>Society for Industrial and Applied Mathematics</b> Philadelphia
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
+ * 				The Art of Scientific Computing 3rd Edition<i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
- * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 			Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i>
+ * 				<b>Springer</b>
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2019): Gaussian Quadrature https://en.wikipedia.org/wiki/Gaussian_quadrature
  * 		</li>
  * 	</ul>
  *
@@ -96,45 +95,53 @@ package org.drip.numerical.estimation;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/quadrature/README.md">R<sup>1</sup> Gaussian Integration Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RxToR1SeriesGenerator
+public class OrthogonalPolynomial extends org.drip.numerical.estimation.R1ToR1Series
 {
-	private boolean _proportional = false;
-	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
 
-	protected RxToR1SeriesGenerator (
-		final boolean proportional,
+	/**
+	 * OrthogonalPolynomial Constructor
+	 * 
+	 * @param termWeightMap Error Term Weight Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public OrthogonalPolynomial (
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
+		throws java.lang.Exception
 	{
-		_proportional = proportional;
-		_termWeightMap = termWeightMap;
+		super (
+			new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+			false,
+			termWeightMap
+		);
 	}
 
 	/**
-	 * Indicate if the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
+	 * Retrieve the Degree of the Orthogonal Polynomial
 	 * 
-	 * @return TRUE - The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
+	 * @return Degree of the Orthogonal Polynomial
 	 */
 
-	public boolean proportional()
+	public int degree()
 	{
-		return _proportional;
+		return termWeightMap().lastKey();
 	}
 
 	/**
-	 * Retrieve the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
+	 * Retrieve the Coefficient of the Degree of the Orthogonal Polynomial
 	 * 
-	 * @return The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
+	 * @return Coefficient of the Degree of the Orthogonal Polynomial
 	 */
 
-	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
+	public double degreeCoefficient()
 	{
-		return _termWeightMap;
+		return termWeightMap().lastEntry().getValue();
 	}
-
 }

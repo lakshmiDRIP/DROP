@@ -145,7 +145,7 @@ public class AsymptoticExpansion
 	 * @return The Asymptotic Version of Error Function Complement Series Generator
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesGenerator SeriesGenerator (
+	public static final org.drip.numerical.estimation.R1ToR1Series SeriesGenerator (
 		final int termCount)
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
@@ -162,7 +162,7 @@ public class AsymptoticExpansion
 				);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+			return new org.drip.numerical.estimation.R1ToR1Series (
 				SeriesTerm(),
 				false,
 				termWeightMap

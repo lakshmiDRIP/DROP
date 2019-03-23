@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.13.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.15.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -142,6 +142,27 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Sparse Grids
 	* Bayesian Quadrature
 	* Connections to Differential Equations
+	* References
+ * Gaussian Quadrature
+	* Introduction and Overview
+	* Gauss-Legendre Quadrature
+	* Change of Interval
+	* Other Forms
+	* Fundamental Theorem
+	* General Formula for the Weights
+	* Proof that the Weights are Positive
+	* Computation of Gaussian Quadrature Rules
+	* Recurrence Relation
+	* The Golub-Welsch Algorithm
+	* Error Estimates
+	* Gauss-Kronrod Rules
+	* Gauss-Lobatto Rules
+	* References
+ * Gauss-Kronrod Quadrature
+	* Introduction and Overview
+	* Description
+	* Example
+	* Implementation
 	* References
  * Stirling's Approximation
 	* Introduction and Overview

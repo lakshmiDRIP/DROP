@@ -104,7 +104,7 @@ package org.drip.function.e2erf;
 
 public abstract class ErrorFunctionInverse extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct Winitzki (2008) Version of the Analytical E<sub>2</sub> erf Inverse
@@ -240,7 +240,7 @@ public abstract class ErrorFunctionInverse extends org.drip.numerical.estimation
 	}
 
 	protected ErrorFunctionInverse (
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator,
 		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 		super (dc);

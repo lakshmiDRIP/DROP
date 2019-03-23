@@ -112,7 +112,7 @@ public class HansHeinrichBurmannGenerator
 	 * @return The Convergent E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesGenerator Convergent()
+	public static final org.drip.numerical.estimation.R1ToR1Series Convergent()
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
@@ -144,7 +144,7 @@ public class HansHeinrichBurmannGenerator
 
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+			return new org.drip.numerical.estimation.R1ToR1Series (
 				org.drip.function.e2erf.HansHeinrichBurmannTerm.Convergent(),
 				false,
 				termWeightMap
@@ -164,7 +164,7 @@ public class HansHeinrichBurmannGenerator
 	 * @return The Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesGenerator SchopfSupancic2014()
+	public static final org.drip.numerical.estimation.R1ToR1Series SchopfSupancic2014()
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
@@ -186,7 +186,7 @@ public class HansHeinrichBurmannGenerator
 
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+			return new org.drip.numerical.estimation.R1ToR1Series (
 				org.drip.function.e2erf.HansHeinrichBurmannTerm.SchopfSupancic2014(),
 				false,
 				termWeightMap

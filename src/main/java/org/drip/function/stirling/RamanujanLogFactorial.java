@@ -154,7 +154,7 @@ public class RamanujanLogFactorial extends org.drip.numerical.estimation.R1ToR1E
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+				new org.drip.numerical.estimation.R1ToR1Series (
 					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),
 					false,
 					termWeightMap

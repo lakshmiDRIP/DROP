@@ -104,7 +104,7 @@ package org.drip.function.e2erf;
 
 public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1IntegrandEstimator
 {
-	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct the Euler-MacLaurin Instance of the E<sub>2</sub> erf
@@ -168,7 +168,7 @@ public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Integrand
 
 	public static final ErrorFunction HansHeinrichBurmannConvergent()
 	{
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator
+		final org.drip.numerical.estimation.R1ToR1Series
 			hansHeinrichBurmannConvergentSeriesGenerator =
 				org.drip.function.e2erf.HansHeinrichBurmannGenerator.Convergent();
 
@@ -221,7 +221,7 @@ public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Integrand
 
 	public static final ErrorFunction HansHeinrichBurmannSchopfSupancic2014()
 	{
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator hansHeinrichBurmannConvergentSeriesGenerator
+		final org.drip.numerical.estimation.R1ToR1Series hansHeinrichBurmannConvergentSeriesGenerator
 			= org.drip.function.e2erf.HansHeinrichBurmannGenerator.SchopfSupancic2014();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
@@ -275,7 +275,7 @@ public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Integrand
 	 */
 
 	public ErrorFunction (
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator,
 		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{

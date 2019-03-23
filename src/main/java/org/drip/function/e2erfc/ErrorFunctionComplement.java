@@ -104,7 +104,7 @@ package org.drip.function.e2erfc;
 
 public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1IntegrandEstimator
 {
-	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct the Asymptotic Expansion Version of ErrorFunctionComplement
@@ -117,7 +117,7 @@ public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR
 	public static final ErrorFunctionComplement AsymptoticExpansion (
 		final int termCount)
 	{
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =
 			org.drip.function.e2erfc.AsymptoticExpansion.SeriesGenerator (termCount);
 
 		try
@@ -174,7 +174,7 @@ public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR
 	public static final ErrorFunctionComplement InverseFactorialExpansion (
 		final int termCount)
 	{
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =
 			org.drip.function.e2erfc.InverseFactorialExpansion.SeriesGenerator (termCount);
 
 		try
@@ -230,7 +230,7 @@ public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR
 	 */
 
 	public ErrorFunctionComplement (
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator,
 		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{

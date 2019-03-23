@@ -194,7 +194,7 @@ public class Factorial extends org.drip.numerical.estimation.R1ToR1Estimator
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+				new org.drip.numerical.estimation.R1ToR1Series (
 					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),
 					true,
 					termWeightMap
@@ -248,7 +248,7 @@ public class Factorial extends org.drip.numerical.estimation.R1ToR1Estimator
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1SeriesGenerator (
+				new org.drip.numerical.estimation.R1ToR1Series (
 					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),
 					true,
 					termWeightMap

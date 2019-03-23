@@ -106,7 +106,7 @@ package org.drip.function.enerf;
 public abstract class GeneralizedErrorFunction extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 	private int _degree = -1;
-	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;
+	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;
 
 	/**
 	 * Construct the Euler-MacLaurin Instance of the E<sub>n</sub> erf
@@ -121,7 +121,7 @@ public abstract class GeneralizedErrorFunction extends org.drip.numerical.estima
 		final int degree,
 		final int termCount)
 	{
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =
 			org.drip.function.enerf.GeneralizedMacLaurinSeriesGenerator.ERF (
 				degree,
 				termCount
@@ -170,7 +170,7 @@ public abstract class GeneralizedErrorFunction extends org.drip.numerical.estima
 	}
 
 	protected GeneralizedErrorFunction (
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator,
 		final org.drip.numerical.differentiation.DerivativeControl dc,
 		final int degree)
 		throws java.lang.Exception
