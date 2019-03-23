@@ -262,4 +262,33 @@ public class R1ToR1Series extends org.drip.numerical.estimation.RxToR1Series
 
 		return value;
 	}
+
+	@Override public double derivative (
+		final double x,
+		final int derivativeOrder)
+		throws java.lang.Exception
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = termWeightMap();
+
+		if (null == termWeightMap || 0 == termWeightMap.size())
+		{
+			return 0.;
+		}
+
+		double scale = proportional() ? 0. : 1.;
+
+		double value = 0.;
+
+		for (java.util.Map.Entry<java.lang.Integer, java.lang.Double> termWeightEntry :
+			termWeightMap.entrySet())
+		{
+			value = value + scale * termWeightEntry.getValue() * _r1ToR1SeriesTerm.derivative (
+				termWeightEntry.getKey(),
+				derivativeOrder,
+				x
+			);
+		}
+
+		return value;
+	}
 }

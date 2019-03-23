@@ -113,7 +113,7 @@ public class NewtonCotesQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator Zero_PlusOne (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer,
 		final int intermediatePointCount)
 	{
 		if (0 >= intermediatePointCount)
@@ -166,7 +166,7 @@ public class NewtonCotesQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator MinusOne_PlusOne (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer,
 		final int intermediatePointCount)
 	{
 		if (0 >= intermediatePointCount)
@@ -224,7 +224,7 @@ public class NewtonCotesQuadratureGenerator
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleZero_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleZero_PlusOne (
 				left,
 				right
 			),
@@ -248,7 +248,7 @@ public class NewtonCotesQuadratureGenerator
 		final int intermediatePointCount)
 	{
 		return MinusOne_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			),
@@ -270,7 +270,7 @@ public class NewtonCotesQuadratureGenerator
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.GaussLaguerreLeftDefinite (left),
+			org.drip.numerical.integration.AbscissaTransform.GaussLaguerreLeftDefinite (left),
 			intermediatePointCount
 		);
 	}
@@ -289,7 +289,7 @@ public class NewtonCotesQuadratureGenerator
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.GaussLaguerreRightDefinite (right),
+			org.drip.numerical.integration.AbscissaTransform.GaussLaguerreRightDefinite (right),
 			intermediatePointCount
 		);
 	}
@@ -308,7 +308,7 @@ public class NewtonCotesQuadratureGenerator
 		final int intermediatePointCount)
 	{
 		return MinusOne_PlusOne (
-			org.drip.numerical.integration.AbscissaTransformer.GaussHermite(),
+			org.drip.numerical.integration.AbscissaTransform.GaussHermite(),
 			intermediatePointCount
 		);
 	}

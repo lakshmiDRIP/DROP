@@ -145,7 +145,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimati
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+				org.drip.numerical.estimation.R1ToR1SeriesTerm.Taylor(),
 				termWeightMap
 			);
 		}
@@ -186,7 +186,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimati
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+				org.drip.numerical.estimation.R1ToR1SeriesTerm.Taylor(),
 				termWeightMap
 			);
 		}
@@ -247,7 +247,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimati
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+				org.drip.numerical.estimation.R1ToR1SeriesTerm.Taylor(),
 				termWeightMap
 			);
 		}
@@ -298,7 +298,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimati
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+				org.drip.numerical.estimation.R1ToR1SeriesTerm.Taylor(),
 				termWeightMap
 			);
 		}
@@ -374,7 +374,7 @@ public class AbramowitzStegunSeriesGenerator extends org.drip.numerical.estimati
 		try
 		{
 			return new AbramowitzStegunSeriesGenerator (
-				new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+				org.drip.numerical.estimation.R1ToR1SeriesTerm.Taylor(),
 				termWeightMap
 			);
 		}

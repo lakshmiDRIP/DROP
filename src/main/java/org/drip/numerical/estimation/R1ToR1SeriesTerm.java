@@ -64,7 +64,7 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>R1ToR1SeriesTerm</i> computes the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term in the Ordered
+ * <i>R1ToR1SeriesTerm</i> exposes the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term in the Ordered
  * Series of the Numerical Estimate for a Function. The References are:
  * 
  * <br><br>
@@ -102,7 +102,7 @@ package org.drip.numerical.estimation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ToR1SeriesTerm
+public abstract class R1ToR1SeriesTerm
 {
 
 	/**
@@ -174,10 +174,57 @@ public class R1ToR1SeriesTerm
 	}
 
 	/**
-	 * Empty R1ExpansionSeriesTerm Constructor
+	 * Construct the Taylor Series Expansion Term
+	 * 
+	 * @return The Taylor Series Expansion Term
 	 */
 
-	public R1ToR1SeriesTerm()
+	public static final R1ToR1SeriesTerm Taylor()
+	{
+		return new R1ToR1SeriesTerm()
+		{
+			@Override public double value (
+				final int order,
+				final double x)
+				throws java.lang.Exception
+			{
+				if (0 >= order ||
+					!org.drip.numerical.common.NumberUtil.IsValid (x))
+				{
+					throw new java.lang.Exception ("Taylor::R1ToR1SeriesTerm::value => Invalid Inputs");
+				}
+
+				return java.lang.Math.pow (
+					x,
+					order
+				);
+			}
+
+			@Override public double derivative (
+				final int order,
+				final int derivativeOrder,
+				final double x)
+				throws java.lang.Exception
+			{
+				if (0 >= order ||
+					0 >= derivativeOrder ||
+					!org.drip.numerical.common.NumberUtil.IsValid (x))
+				{
+					throw new java.lang.Exception ("Taylor::R1ToR1SeriesTerm::derivative => Invalid Inputs");
+				}
+
+				return derivativeOrder > order ? 0. : org.drip.numerical.common.NumberUtil.NPK (
+					order,
+					derivativeOrder
+				) * java.lang.Math.pow (
+					x,
+					order - derivativeOrder
+				);
+			}
+		};
+	}
+
+	protected R1ToR1SeriesTerm()
 	{
 	}
 
@@ -192,20 +239,29 @@ public class R1ToR1SeriesTerm
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double value (
+	public abstract double value (
 		final int order,
+		final double x)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Derivative of the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * 
+	 * @param order Order of the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * @param derivativeOrder Order of the R<sup>1</sup> To R<sup>1</sup> Series Derivative
+	 * @param x X
+	 * 
+	 * @return The Derivative of the R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double derivative (
+		final int order,
+		final int derivativeOrder,
 		final double x)
 		throws java.lang.Exception
 	{
-		if (0 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
-			throw new java.lang.Exception ("R1ToR1SeriesTerm::value => Invalid Inputs");
-		}
-
-		return java.lang.Math.pow (
-			x,
-			order
-		);
+		throw new java.lang.Exception ("R1ToR1SeriesTerm::value => Generic Derivative Not Implemented");
 	}
 }

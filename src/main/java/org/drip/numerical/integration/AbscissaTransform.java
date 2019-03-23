@@ -64,7 +64,7 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>AbscissaTransformer</i> transforms the Abscissa over into Corresponding Integrand Variable. The
+ * <i>AbscissaTransform</i> transforms the Abscissa over into Corresponding Integrand Variable. The
  * References are:
  * 
  * <br><br>
@@ -100,22 +100,22 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbscissaTransformer
+public class AbscissaTransform
 {
 	private double _quadratureScale = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _r1ValueTransform = null;
-	private org.drip.function.definition.R1ToR1 _r1ToR1VariateTransform = null;
+	private org.drip.function.definition.R1ToR1 _r1PointValueScale = null;
+	private org.drip.function.definition.R1ToR1 _r1ToR1VariateChange = null;
 
 	/**
-	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (0, +1)
+	 * Generate the Scaled and Displaced Abscissa Transform from (left, right) To (0, +1)
 	 * 
 	 * @param left Span Left
 	 * @param right Span Right
 	 * 
-	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (0, +1)
+	 * @return The Scaled and Displaced Abscissa Transform from (left, right) To (0, +1)
 	 */
 
-	public static final AbscissaTransformer DisplaceAndScaleZero_PlusOne (
+	public static final AbscissaTransform DisplaceAndScaleZero_PlusOne (
 		final double left,
 		final double right)
 	{
@@ -127,7 +127,7 @@ public class AbscissaTransformer
 
 		try
 		{
-			return new AbscissaTransformer (
+			return new AbscissaTransform (
 				new org.drip.function.definition.R1ToR1 (null)
 				{
 					@Override public double evaluate (
@@ -156,15 +156,15 @@ public class AbscissaTransformer
 	}
 
 	/**
-	 * Generate the Scaled and Displaced Abscissa Transformer from (left, right) To (-1, +1)
+	 * Generate the Scaled and Displaced Abscissa Transform from (left, right) To (-1, +1)
 	 * 
 	 * @param left Span Left
 	 * @param right Span Right
 	 * 
-	 * @return The Scaled and Displaced Abscissa Transformer from (left, right) To (-1, +1)
+	 * @return The Scaled and Displaced Abscissa Transform from (left, right) To (-1, +1)
 	 */
 
-	public static final AbscissaTransformer DisplaceAndScaleMinusOne_PlusOne (
+	public static final AbscissaTransform DisplaceAndScaleMinusOne_PlusOne (
 		final double left,
 		final double right)
 	{
@@ -179,7 +179,7 @@ public class AbscissaTransformer
 
 		try
 		{
-			return new AbscissaTransformer (
+			return new AbscissaTransform (
 				new org.drip.function.definition.R1ToR1 (null)
 				{
 					@Override public double evaluate (
@@ -208,16 +208,16 @@ public class AbscissaTransformer
 	}
 
 	/**
-	 * Generate the Gauss-Hermite Abscissa Transformer
+	 * Generate the Gauss-Hermite Abscissa Transform
 	 * 
-	 * @return The Gauss-Hermite Abscissa Transformer
+	 * @return The Gauss-Hermite Abscissa Transform
 	 */
 
-	public static final AbscissaTransformer GaussHermite()
+	public static final AbscissaTransform GaussHermite()
 	{
 		try
 		{
-			return new AbscissaTransformer (
+			return new AbscissaTransform (
 				new org.drip.function.definition.R1ToR1 (null)
 				{
 					@Override public double evaluate (
@@ -248,14 +248,14 @@ public class AbscissaTransformer
 	}
 
 	/**
-	 * Generate the Gauss-Laguerre Abscissa Transformer for Integrals in [a, +Infinity]
+	 * Generate the Gauss-Laguerre Abscissa Transform for Integrals in [a, +Infinity]
 	 * 
 	 * @param left Span Left
 	 * 
-	 * @return The Gauss-Laguerre Abscissa Transformer for Integrals in [a, +Infinity]
+	 * @return The Gauss-Laguerre Abscissa Transform for Integrals in [a, +Infinity]
 	 */
 
-	public static final AbscissaTransformer GaussLaguerreLeftDefinite (
+	public static final AbscissaTransform GaussLaguerreLeftDefinite (
 		final double left)
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (left))
@@ -265,7 +265,7 @@ public class AbscissaTransformer
 
 		try
 		{
-			return new AbscissaTransformer (
+			return new AbscissaTransform (
 				new org.drip.function.definition.R1ToR1 (null)
 				{
 					@Override public double evaluate (
@@ -294,14 +294,14 @@ public class AbscissaTransformer
 	}
 
 	/**
-	 * Generate the Gauss-Laguerre Abscissa Transformer for Integrals in [-Infinity, a]
+	 * Generate the Gauss-Laguerre Abscissa Transform for Integrals in [-Infinity, a]
 	 * 
 	 * @param right Span Right
 	 * 
-	 * @return The Gauss-Laguerre Abscissa Transformer for Integrals in [-Infinity, a]
+	 * @return The Gauss-Laguerre Abscissa Transform for Integrals in [-Infinity, a]
 	 */
 
-	public static final AbscissaTransformer GaussLaguerreRightDefinite (
+	public static final AbscissaTransform GaussLaguerreRightDefinite (
 		final double right)
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (right))
@@ -311,7 +311,7 @@ public class AbscissaTransformer
 
 		try
 		{
-			return new AbscissaTransformer (
+			return new AbscissaTransform (
 				new org.drip.function.definition.R1ToR1 (null)
 				{
 					@Override public double evaluate (
@@ -340,49 +340,49 @@ public class AbscissaTransformer
 	}
 
 	/**
-	 * AbscissaTransformer Constructor
+	 * AbscissaTransform Constructor
 	 * 
-	 * @param r1ToR1VariateTransform R<sup>1</sup> to R<sup>1</sup> Variate Transform Function
-	 * @param r1ValueTransform R<sup>1</sup> Value Transform Function
+	 * @param r1ToR1VariateChange R<sup>1</sup> to R<sup>1</sup> Variate Change Function
+	 * @param r1PointValueScale R<sup>1</sup> Point Value Scale Function
 	 * @param quadratureScale Quadrature Scale
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AbscissaTransformer (
-		final org.drip.function.definition.R1ToR1 r1ToR1VariateTransform,
-		final org.drip.function.definition.R1ToR1 r1ValueTransform,
+	public AbscissaTransform (
+		final org.drip.function.definition.R1ToR1 r1ToR1VariateChange,
+		final org.drip.function.definition.R1ToR1 r1PointValueScale,
 		final double quadratureScale)
 		throws java.lang.Exception
 	{
-		if (null == (_r1ToR1VariateTransform = r1ToR1VariateTransform) ||
-			null == (_r1ValueTransform = r1ValueTransform) ||
+		if (null == (_r1ToR1VariateChange = r1ToR1VariateChange) ||
+			null == (_r1PointValueScale = r1PointValueScale) ||
 			!org.drip.numerical.common.NumberUtil.IsValid (_quadratureScale = quadratureScale))
 		{
-			throw new java.lang.Exception ("AbscissaTransformer Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("AbscissaTransform Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> to R<sup>1</sup> Variate Transform Function
+	 * Retrieve the R<sup>1</sup> to R<sup>1</sup> Variate Change Function
 	 * 
-	 * @return The R<sup>1</sup> to R<sup>1</sup> Variate Transform Function
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Variate Change Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 r1ToR1VariateTransform()
+	public org.drip.function.definition.R1ToR1 variateChange()
 	{
-		return _r1ToR1VariateTransform;
+		return _r1ToR1VariateChange;
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> Value Transform Function
+	 * Retrieve the R<sup>1</sup> Point Value Scale Function
 	 * 
-	 * @return The R<sup>1</sup> Value Transform Function
+	 * @return The R<sup>1</sup> Point Value Scale Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 r1ValueTransform()
+	public org.drip.function.definition.R1ToR1 pointValueScale()
 	{
-		return _r1ValueTransform;
+		return _r1PointValueScale;
 	}
 
 	/**

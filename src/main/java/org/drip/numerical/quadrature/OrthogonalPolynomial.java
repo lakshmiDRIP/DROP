@@ -64,8 +64,8 @@ package org.drip.numerical.quadrature;
  */
 
 /**
- * <i>OrthogonalPolynomial</i> exposes the Basis Orthogonal Polynomials used in the Construction of the
- * Quadrature. The References are:
+ * <i>OrthogonalPolynomial</i> implements a Single Basis Orthogonal Polynomial used in the Construction of
+ * the Quadrature. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -117,7 +117,7 @@ public class OrthogonalPolynomial extends org.drip.numerical.estimation.R1ToR1Se
 		throws java.lang.Exception
 	{
 		super (
-			new org.drip.numerical.estimation.R1ToR1SeriesTerm(),
+			org.drip.numerical.estimation.R1ToR1SeriesTerm.Taylor(),
 			false,
 			termWeightMap
 		);
@@ -143,5 +143,58 @@ public class OrthogonalPolynomial extends org.drip.numerical.estimation.R1ToR1Se
 	public double degreeCoefficient()
 	{
 		return termWeightMap().lastEntry().getValue();
+	}
+
+	/**
+	 * Compute the Legendre (i.e., Unit Orthogonal Weight) Node Weight
+	 * 
+	 * @param xNode The Node X
+	 * 
+	 * @return The Legendre (i.e., Unit Orthogonal Weight) Node Weight
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double legendreNodeWeight (
+		final double xNode)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (xNode))
+		{
+			throw new java.lang.Exception ("OrthogonalPolynomial::legendreNodeWeight => Invalid Inputs");
+		}
+
+		return 2. / (
+			(1. - xNode * xNode) * derivative (
+				xNode,
+				1
+			)
+		);
+	}
+
+	/**
+	 * Compute the Lobatto (i.e., Unit Orthogonal Weight) Node Weight
+	 * 
+	 * @param xNode The Node X
+	 * 
+	 * @return The Lobatto (i.e., Unit Orthogonal Weight) Node Weight
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double lobattoNodeWeight (
+		final double xNode)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (xNode))
+		{
+			throw new java.lang.Exception ("OrthogonalPolynomial::lobattoNodeWeight => Invalid Inputs");
+		}
+
+		int degree = termWeightMap().lastKey();
+
+		double nodeValue = evaluate (xNode);
+
+		return 2. / (degree * (degree + 1) * nodeValue * nodeValue);
 	}
 }

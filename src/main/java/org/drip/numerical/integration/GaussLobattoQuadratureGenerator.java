@@ -113,7 +113,7 @@ public class GaussLobattoQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator ThreePoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
@@ -152,7 +152,7 @@ public class GaussLobattoQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator FourPoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_1Over5_ = java.lang.Math.sqrt (0.2);
 
@@ -195,7 +195,7 @@ public class GaussLobattoQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator FivePoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_3Over7_ = java.lang.Math.sqrt (3. / 7.);
 
@@ -240,7 +240,7 @@ public class GaussLobattoQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator SixPoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double sqrt7 = java.lang.Math.sqrt (7.);
 
@@ -295,7 +295,7 @@ public class GaussLobattoQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator SevenPoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double twoOver11Sqrt_5Over3_ = 2. / 11. * java.lang.Math.sqrt (5. / 3.);
 
@@ -358,7 +358,7 @@ public class GaussLobattoQuadratureGenerator
 		final double right)
 	{
 		return ThreePoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -379,7 +379,7 @@ public class GaussLobattoQuadratureGenerator
 		final double right)
 	{
 		return FourPoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -400,7 +400,7 @@ public class GaussLobattoQuadratureGenerator
 		final double right)
 	{
 		return FivePoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -421,7 +421,7 @@ public class GaussLobattoQuadratureGenerator
 		final double right)
 	{
 		return SixPoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -442,7 +442,7 @@ public class GaussLobattoQuadratureGenerator
 		final double right)
 	{
 		return SevenPoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)

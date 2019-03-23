@@ -113,7 +113,7 @@ public class GaussLegendreQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator OnePoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
@@ -148,7 +148,7 @@ public class GaussLegendreQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator TwoPoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_1Over3_ = java.lang.Math.sqrt (1. / 3.);
 
@@ -187,7 +187,7 @@ public class GaussLegendreQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator ThreePoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_3Over5_ = java.lang.Math.sqrt (3. / 5.);
 
@@ -228,7 +228,7 @@ public class GaussLegendreQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator FourPoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_30_Over36 = java.lang.Math.sqrt (30.) / 36.;
 
@@ -281,7 +281,7 @@ public class GaussLegendreQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator FivePoint (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		double thirteenSqrt_70_ = 13. * java.lang.Math.sqrt (70.);
 
@@ -340,7 +340,7 @@ public class GaussLegendreQuadratureGenerator
 		final double right)
 	{
 		return OnePoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -361,7 +361,7 @@ public class GaussLegendreQuadratureGenerator
 		final double right)
 	{
 		return TwoPoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -382,7 +382,7 @@ public class GaussLegendreQuadratureGenerator
 		final double right)
 	{
 		return ThreePoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -403,7 +403,7 @@ public class GaussLegendreQuadratureGenerator
 		final double right)
 	{
 		return FourPoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -424,7 +424,7 @@ public class GaussLegendreQuadratureGenerator
 		final double right)
 	{
 		return FivePoint (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)

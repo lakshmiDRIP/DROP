@@ -64,8 +64,8 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>QuadratureEstimator</i> estimates an Integrand Quadrature using the Array of Quadrature Abscissa and
- * their corresponding Weights. The References are:
+ * <i>QuadratureEstimator</i> estimates an Integrand Quadrature using the Array of Transformed Quadrature
+ * Abscissa and their corresponding Weights. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,23 +103,23 @@ package org.drip.numerical.integration;
 public class QuadratureEstimator
 {
 	private org.drip.numerical.common.Array2D _nodeWeightArray = null;
-	private org.drip.numerical.integration.AbscissaTransformer _abscissaTransformer = null;
+	private org.drip.numerical.integration.AbscissaTransform _abscissaTransform = null;
 
 	/**
 	 * QuadratureEstimator Constructor
 	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
+	 * @param abscissaTransform The Abscissa Transform
 	 * @param nodeWeightArray Array of the Nodes and Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QuadratureEstimator (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer,
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransform,
 		final org.drip.numerical.common.Array2D nodeWeightArray)
 		throws java.lang.Exception
 	{
-		if (null == (_abscissaTransformer = abscissaTransformer) ||
+		if (null == (_abscissaTransform = abscissaTransform) ||
 			null == (_nodeWeightArray = nodeWeightArray))
 		{
 			throw new java.lang.Exception ("QuadratureEstimator Constructor => Invalid Inputs");
@@ -127,14 +127,14 @@ public class QuadratureEstimator
 	}
 
 	/**
-	 * Retrieve the Abscissa Transformer
+	 * Retrieve the Abscissa Transform
 	 * 
-	 * @return The Abscissa Transformer
+	 * @return The Abscissa Transform
 	 */
 
-	public org.drip.numerical.integration.AbscissaTransformer abscissaTransformer()
+	public org.drip.numerical.integration.AbscissaTransform abscissaTransform()
 	{
-		return _abscissaTransformer;
+		return _abscissaTransform;
 	}
 
 	/**
@@ -174,18 +174,17 @@ public class QuadratureEstimator
 		double quadrature = 0.;
 		int nodeCount = abscissaArray.length;
 
-		double quadratureScale = _abscissaTransformer.quadratureScale();
+		double quadratureScale = _abscissaTransform.quadratureScale();
 
-		org.drip.function.definition.R1ToR1 r1ValueTransform = _abscissaTransformer.r1ValueTransform();
+		org.drip.function.definition.R1ToR1 r1PointValueScale = _abscissaTransform.pointValueScale();
 
-		org.drip.function.definition.R1ToR1 r1ToR1VariateTransform =
-			_abscissaTransformer.r1ToR1VariateTransform();
+		org.drip.function.definition.R1ToR1 r1ToR1VariateChange = _abscissaTransform.variateChange();
 
 		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
 		{
 			quadrature = quadrature + quadratureScale * weightArray[nodeIndex] *
-				r1ValueTransform.evaluate (abscissaArray[nodeIndex]) *
-				r1ToR1Integrand.evaluate (r1ToR1VariateTransform.evaluate (abscissaArray[nodeIndex]));
+				r1PointValueScale.evaluate (abscissaArray[nodeIndex]) *
+				r1ToR1Integrand.evaluate (r1ToR1VariateChange.evaluate (abscissaArray[nodeIndex]));
 		}
 
 		return quadrature;

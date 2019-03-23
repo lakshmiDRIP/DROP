@@ -1,5 +1,5 @@
 
-package org.drip.numerical.integration;
+package org.drip.numerical.quadrature;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,28 +64,29 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>NestedQuadratureEstimator</i> extends the R<sup>1</sup> Quadrature Estimator by providing the
- * Estimation Error. The References are:
+ * <i>OrthogonalPolynomialSuite</i> holds the Suite of Basis Orthogonal Polynomials used in the Construction
+ * of the Quadrature. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Briol, F. X., C. J. Oates, M. Girolami, and M. A. Osborne (2015): <i>Frank-Wolfe Bayesian
- * 				Quadrature: Probabilistic Integration with Theoretical Guarantees</i> <b>arXiv</b>
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Forsythe, G. E., M. A. Malcolm, and C. B. Moler (1977): <i>Computer Methods for Mathematical
- * 				Computation</i> <b>Prentice Hall</b> Englewood Cliffs NJ
+ * 			Gil, A., J. Segura, and N. M. Temme (2007): <i>Numerical Methods for Special Functions</i>
+ * 				<b>Society for Industrial and Applied Mathematics</b> Philadelphia
  * 		</li>
  * 		<li>
- * 			Leader, J. J. (2004): <i>Numerical Analysis and Scientific Computation</i> <b>Addison Wesley</b>
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
+ * 				The Art of Scientific Computing 3rd Edition<i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Stoer, J., and R. Bulirsch (1980): <i>Introduction to Numerical Analysis</i>
- * 				<b>Springer-Verlag</b> New York
+ * 			Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i>
+ * 				<b>Springer</b>
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Numerical Integration https://en.wikipedia.org/wiki/Numerical_integration
+ * 			Wikipedia (2019): Gaussian Quadrature https://en.wikipedia.org/wiki/Gaussian_quadrature
  * 		</li>
  * 	</ul>
  *
@@ -94,79 +95,73 @@ package org.drip.numerical.integration;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/quadrature/README.md">R<sup>1</sup> Gaussian Integration Quadrature Schemes</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NestedQuadratureEstimator extends org.drip.numerical.integration.QuadratureEstimator
+public class OrthogonalPolynomialSuite
 {
-	private org.drip.numerical.integration.QuadratureEstimator _embeddedQuadratureEstimator = null;
+	private java.util.TreeMap<java.lang.Integer, org.drip.numerical.quadrature.OrthogonalPolynomial>
+		_orthogonalPolynomialMap = new
+			java.util.TreeMap<java.lang.Integer, org.drip.numerical.quadrature.OrthogonalPolynomial>();
 
 	/**
-	 * NestedQuadratureEstimator Constructor
-	 * 
-	 * @param abscissaTransformer The Abscissa Transformer
-	 * @param nodeWeightArray Array of the Nodes and Weights
-	 * @param embeddedQuadratureEstimator The Embedded Quadrature Estimator
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Empty OrthogonalPolynomialSuite Constructor
 	 */
 
-	public NestedQuadratureEstimator (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer,
-		final org.drip.numerical.common.Array2D nodeWeightArray,
-		final org.drip.numerical.integration.QuadratureEstimator embeddedQuadratureEstimator)
-		throws java.lang.Exception
+	public OrthogonalPolynomialSuite()
 	{
-		super (
-			abscissaTransformer,
-			nodeWeightArray
+	}
+
+	/**
+	 * Retrieve the Orthogonal Polynomial Map
+	 * 
+	 * @return The Orthogonal Polynomial Map
+	 */
+
+	public java.util.TreeMap<java.lang.Integer, org.drip.numerical.quadrature.OrthogonalPolynomial>
+		orthogonalPolynomialMap()
+	{
+		return _orthogonalPolynomialMap;
+	}
+
+	/**
+	 * Add the Specified Orthogonal Polynomial
+	 * 
+	 * @param orthogonalPolynomial The Orthogonal Polynomial
+	 * 
+	 * @return TRUE - The Specified Orthogonal Polynomial successfully added
+	 */
+
+	public boolean addOrthogonalPolynomial (
+		final org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomial)
+	{
+		if (null == orthogonalPolynomial)
+		{
+			return false;
+		}
+
+		_orthogonalPolynomialMap.put (
+			orthogonalPolynomial.degree(),
+			orthogonalPolynomial
 		);
 
-		if (null == (_embeddedQuadratureEstimator = embeddedQuadratureEstimator))
-		{
-			throw new java.lang.Exception ("NestedQuadratureEstimator Constructor => Invalid Inputs");
-		}
+		return true;
 	}
 
 	/**
-	 * Retrieve the Embedded Quadrature Estimator
+	 * Retrieve the Orthogonal Polynomial corresponding to the Specified Degree
 	 * 
-	 * @return The Embedded Quadrature Estimator
+	 * @param degree The Polynomial Degree
+	 * 
+	 * @return The Orthogonal Polynomial corresponding to the Specified Degree
 	 */
 
-	public org.drip.numerical.integration.QuadratureEstimator embeddedQuadratureEstimator()
+	public org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomial (
+		final int degree)
 	{
-		return _embeddedQuadratureEstimator;
-	}
-
-	/**
-	 * Estimate the Quadrature and its Error
-	 * 
-	 * @param r1ToR1Integrand The R<sup>1</sup> To R<sup>1</sup> Integrand
-	 * 
-	 * @return The Quadrature and its Error
-	 */
-
-	public org.drip.numerical.integration.QuadratureEstimate estimate (
-		final org.drip.function.definition.R1ToR1 r1ToR1Integrand)
-	{
-		try
-		{
-			double baseline = integrate (r1ToR1Integrand);
-
-			return new org.drip.numerical.integration.QuadratureEstimate (
-				baseline,
-				java.lang.Math.abs (baseline - _embeddedQuadratureEstimator.integrate (r1ToR1Integrand))
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _orthogonalPolynomialMap.containsKey (degree) ? _orthogonalPolynomialMap.get (degree) : null;
 	}
 }

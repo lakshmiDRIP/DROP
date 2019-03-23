@@ -114,7 +114,7 @@ public class GaussKronrodQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator G7 (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
@@ -161,7 +161,7 @@ public class GaussKronrodQuadratureGenerator
 	 */
 
 	public static final org.drip.numerical.integration.QuadratureEstimator K15 (
-		final org.drip.numerical.integration.AbscissaTransformer abscissaTransformer)
+		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
@@ -229,7 +229,7 @@ public class GaussKronrodQuadratureGenerator
 		final double right)
 	{
 		return G7 (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -250,7 +250,7 @@ public class GaussKronrodQuadratureGenerator
 		final double right)
 	{
 		return K15 (
-			org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -273,7 +273,7 @@ public class GaussKronrodQuadratureGenerator
 		try
 		{
 			return new org.drip.numerical.integration.NestedQuadratureEstimator (
-				org.drip.numerical.integration.AbscissaTransformer.DisplaceAndScaleMinusOne_PlusOne (
+				org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 					left,
 					right
 				),
