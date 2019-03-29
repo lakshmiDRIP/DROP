@@ -79,7 +79,7 @@ package org.drip.numerical.quadrature;
  * 		</li>
  * 		<li>
  * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
- * 				The Art of Scientific Computing 3rd Edition<i> <b>Cambridge University Press</b> New York
+ * 				The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
  * 			Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i>

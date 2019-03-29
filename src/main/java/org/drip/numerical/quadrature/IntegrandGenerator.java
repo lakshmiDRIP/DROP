@@ -79,7 +79,7 @@ package org.drip.numerical.quadrature;
  * 		</li>
  * 		<li>
  * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
- * 				The Art of Scientific Computing 3rd Edition<i> <b>Cambridge University Press</b> New York
+ * 				The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
  * 		</li>
  * 		<li>
  * 			Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i>
@@ -386,6 +386,23 @@ public class IntegrandGenerator
 	}
 
 	/**
+	 * Generate the Integral of the Weight Function Over the Bounds
+	 * 
+	 * @return The Integral of the Weight Function Over the Bounds
+	 * 
+	 * @throws java.lang.Exception Thrown if it cannot be computed
+	 */
+
+	public double weightFunctionIntegral()
+		throws java.lang.Exception
+	{
+		return _weightFunction.integrate (
+			_lowerBound,
+			_upperBound
+		);
+	}
+
+	/**
 	 * Generate the Weight at the specified Node for the specified Orthogonal Polynomial
 	 * 
 	 * @param x X Node
@@ -401,10 +418,14 @@ public class IntegrandGenerator
 		final int degree)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-			1 >= degree)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 		{
 			throw new java.lang.Exception ("IntegrandGenerator::nodeWeight => Invalid Inputs");
+		}
+
+		if (0 > degree)
+		{
+			return 0.;
 		}
 
 		final org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomialN =
@@ -440,6 +461,251 @@ public class IntegrandGenerator
 				x,
 				1
 			)
+		);
+	}
+
+	/**
+	 * Compute the Loaded Inner Product between the Polynomial identified by their Degrees
+	 * 
+	 * @param degree1 Polynomial Degree #1
+	 * @param degree2 Polynomial Degree #2
+	 * 
+	 * @return The Loaded Inner Product
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double loadedInnerProduct (
+		final int degree1,
+		final int degree2)
+		throws java.lang.Exception
+	{
+		if (0 > degree1 || 0 > degree2)
+		{
+			return 0.;
+		}
+
+		final org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomial1 =
+			_orthogonalPolynomialSuite.orthogonalPolynomial (degree1);
+
+		final org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomial2 =
+			_orthogonalPolynomialSuite.orthogonalPolynomial (degree2);
+
+		if (null == orthogonalPolynomial1 || null == orthogonalPolynomial2)
+		{
+			throw new java.lang.Exception ("IntegrandGenerator::loadedInnerProduct => Invalid Inputs");
+		}
+
+		return new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				return z * _weightFunction.evaluate (z) * orthogonalPolynomial1.evaluate (z) *
+					orthogonalPolynomial2.evaluate (z);
+			}
+		}.integrate (
+			_lowerBound,
+			_upperBound
+		);
+	}
+
+	/**
+	 * Compute the Unloaded Inner Product between the Polynomial identified by their Degrees
+	 * 
+	 * @param degree1 Polynomial Degree #1
+	 * @param degree2 Polynomial Degree #2
+	 * 
+	 * @return The Unloaded Inner Product
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double unloadedInnerProduct (
+		final int degree1,
+		final int degree2)
+		throws java.lang.Exception
+	{
+		if (0 > degree1 || 0 > degree2)
+		{
+			return 0.;
+		}
+
+		final org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomial1 =
+			_orthogonalPolynomialSuite.orthogonalPolynomial (degree1);
+
+		final org.drip.numerical.quadrature.OrthogonalPolynomial orthogonalPolynomial2 =
+			_orthogonalPolynomialSuite.orthogonalPolynomial (degree2);
+
+		if (null == orthogonalPolynomial1 || null == orthogonalPolynomial2)
+		{
+			throw new java.lang.Exception ("IntegrandGenerator::unloadedInnerProduct => Invalid Inputs");
+		}
+
+		return new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				return _weightFunction.evaluate (z) * orthogonalPolynomial1.evaluate (z) *
+					orthogonalPolynomial2.evaluate (z);
+			}
+		}.integrate (
+			_lowerBound,
+			_upperBound
+		);
+	}
+
+	/**
+	 * Generate the Golub-Welsch Matrix A Entry
+	 * 
+	 * @param degree The Orthogonal Polynomial Degree
+	 * 
+	 * @return The Golub-Welsch Matrix A Entry
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double golubWelschA (
+		final int degree)
+		throws java.lang.Exception
+	{
+		return loadedInnerProduct (
+			degree,
+			degree
+		) / unloadedInnerProduct (
+			degree,
+			degree
+		);
+	}
+
+	/**
+	 * Generate the Golub-Welsch Matrix B Entry
+	 * 
+	 * @param degree The Orthogonal Polynomial Degree
+	 * 
+	 * @return The Golub-Welsch Matrix B Entry
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double golubWelschB (
+		final int degree)
+		throws java.lang.Exception
+	{
+		return unloadedInnerProduct (
+			degree,
+			degree
+		) / unloadedInnerProduct (
+			degree - 1,
+			degree - 1
+		);
+	}
+
+	/**
+	 * Generate the Cross Polynomial Recurrence Matrix to be used in the Golub-Welsch Algorithm
+	 * 
+	 * @return The Cross Polynomial Recurrence Matrix to be used in the Golub-Welsch Algorithm
+	 */
+
+	public org.drip.numerical.quadrature.GolubWelsch generateRecurrenceMatrix()
+	{
+		int size = _orthogonalPolynomialSuite.size();
+
+		double[][] golubWelschMatrix = new double[size][size];
+
+		for (int row = 0; row < size; ++row)
+		{
+			for (int column = 0; column < size; ++column)
+			{
+				golubWelschMatrix[row][column] = column == row + 1 ? 1. : 0.;
+			}
+		}
+
+		try
+		{
+			for (int row = 0; row < size; ++row)
+			{
+				golubWelschMatrix[row][row] = loadedInnerProduct (
+					row,
+					row
+				) / unloadedInnerProduct (
+					row,
+					row
+				);
+
+				if (0 < row)
+				{
+					golubWelschMatrix[row][row - 1] = unloadedInnerProduct (
+						row,
+						row
+					) / unloadedInnerProduct (
+						row - 1,
+						row - 1
+					);
+				}
+			}
+
+			return new org.drip.numerical.quadrature.GolubWelsch (golubWelschMatrix);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Quadrature Nodes and Scaled Weights Using the Gil, Segura, and Temme (2007) Scheme
+	 * 
+	 * @return The Quadrature Nodes and Scaled Weights
+	 */
+
+	public org.drip.numerical.common.Array2D gilSeguraTemme2007()
+	{
+		org.drip.numerical.quadrature.GolubWelsch golubWelsch = generateRecurrenceMatrix();
+
+		if (null == golubWelsch)
+		{
+			return null;
+		}
+
+		org.drip.numerical.common.Array2D nodesAndUnscaledWeights = golubWelsch.nodesAndUnscaledWeights();
+
+		if (null == nodesAndUnscaledWeights)
+		{
+			return null;
+		}
+
+		double[] unscaledWeightArray = nodesAndUnscaledWeights.y();
+
+		double[] nodeArray = nodesAndUnscaledWeights.x();
+
+		int size = nodeArray.length;
+		double[] scaledWeightArray = new double[size];
+
+		try
+		{
+			double weightFunctionIntegral = weightFunctionIntegral();
+
+			for (int nodeIndex = 0; nodeIndex < size; ++nodeIndex)
+			{
+				scaledWeightArray[nodeIndex] = unscaledWeightArray[nodeIndex] * weightFunctionIntegral;
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+
+			return null;
+		}
+
+		return org.drip.numerical.common.Array2D.FromArray (
+			nodeArray,
+			scaledWeightArray
 		);
 	}
 }

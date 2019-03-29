@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.15.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.18.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -97,7 +97,8 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* References
  * Karush-Kuhn-Tucker Conditions
 	* Introduction, Overview, Purpose, and Motivation
-	* Necessary Conditions for Optimization Problems	* Regularity Conditions or Constraint Qualifications
+	* Necessary Conditions for Optimization Problems
+	* Regularity Conditions or Constraint Qualifications
 	* Sufficiency Conditions
 	* KKT Conditions Application - Economics
 	* KKT Conditions Application - Value Function
@@ -177,6 +178,34 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
  * Lanczos Approximation
 	* Introduction
 	* Coefficients
+	* References
+ * Incomplete Gamma Function
+	* Introduction and Overview
+	* Definition
+	* Properties
+	* Continuation to Complex Values
+	* Lower Incomplete Gamma FUnction - Holomorphic Extensions
+	* Multi-Valuedness
+	* Sectors
+	* Branches
+	* Relationshiop between Branches
+	* Behavior near the Branch Point
+	* Algebraic Relations
+	* Integral Representation
+	* Limit for z→±∞ - Real Values
+	* Limit for z→±∞ - Complex Values
+	* Sector-wise Convergence
+	* Lower Incomplete Gamma Function – Overview
+	* Upper Incomplete Gamma Function
+	* Special Values
+	* Asymptotic Behavior
+	* Evaluation Formulas
+	* Connection with Kummer’s Confluent Hyper-geometric Function
+	* Multiplication Theorem
+	* Software Implementation
+	* Regularized Gamma Functions and Poisson Random Variables
+	* Derivatives
+	* Indefinite and Definite Integrals
 	* References
  * Error Function
 	* Introduction and Overview
