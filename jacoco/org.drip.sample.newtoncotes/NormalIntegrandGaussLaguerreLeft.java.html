@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NormalIntegrandGaussLaguerreLeft.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.newtoncotes</a> &gt; <span class="el_source">NormalIntegrandGaussLaguerreLeft.java</span></div><h1>NormalIntegrandGaussLaguerreLeft.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.newtoncotes;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;NormalIntegrandGaussLaguerreLeft&lt;/i&gt; computes the R&lt;sup&gt;1&lt;/sup&gt; Numerical Estimate of the Normal
+ * Integrand using Gauss-Laguerre Transform over the Right Half R&lt;sup&gt;+&lt;/sup&gt; Range using the Newton-Cotes
+ * Quadrature. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Briol, F. X., C. J. Oates, M. Girolami, and M. A. Osborne (2015): &lt;i&gt;Frank-Wolfe Bayesian
+ * 				Quadrature: Probabilistic Integration with Theoretical Guarantees&lt;/i&gt; &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Forsythe, G. E., M. A. Malcolm, and C. B. Moler (1977): &lt;i&gt;Computer Methods for Mathematical
+ * 				Computation&lt;/i&gt; &lt;b&gt;Prentice Hall&lt;/b&gt; Englewood Cliffs NJ
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Leader, J. J. (2004): &lt;i&gt;Numerical Analysis and Scientific Computation&lt;/i&gt; &lt;b&gt;Addison Wesley&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Stoer, J., and R. Bulirsch (1980): &lt;i&gt;Introduction to Numerical Analysis&lt;/i&gt;
+ * 				&lt;b&gt;Springer-Verlag&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Numerical Integration https://en.wikipedia.org/wiki/Numerical_integration
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Sample&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/newtoncotes/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; Newton-Cotes Quadrature Schemes&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L109">public class NormalIntegrandGaussLaguerreLeft</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L116">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L118">		int[] intermediatePointCountArray =</span>
+		{
+			 20,
+			 40,
+			 60,
+			 80,
+			100,
+			120,
+			140,
+			160,
+			180,
+			200
+		};
+
+<span class="nc" id="L132">		R1ToR1 normalDensity = new R1ToR1 (null)</span>
+<span class="nc" id="L133">		{</span>
+			@Override public double evaluate (
+				final double z)
+			{
+<span class="nc" id="L137">				return Math.exp (-0.5 * z * z) / Math.sqrt (2. * Math.PI);</span>
+			}
+		};
+
+<span class="nc" id="L141">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+
+<span class="nc" id="L143">		System.out.println (&quot;\t|   GAUSS LAGUERRE   ||&quot;);</span>
+
+<span class="nc" id="L145">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+
+<span class="nc" id="L147">		System.out.println (&quot;\t|    L -&gt; R:         ||&quot;);</span>
+
+<span class="nc" id="L149">		System.out.println (&quot;\t|        - Points    ||&quot;);</span>
+
+<span class="nc" id="L151">		System.out.println (&quot;\t|        - Quad      ||&quot;);</span>
+
+<span class="nc" id="L153">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		for (int intermediatePointCount : intermediatePointCountArray)</span>
+		{
+<span class="nc" id="L157">			System.out.println (</span>
+<span class="nc" id="L158">				&quot;\t|&quot; + FormatUtil.FormatDouble (intermediatePointCount, 3, 0, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L159">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L160">					NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+						0.,
+						intermediatePointCount
+<span class="nc" id="L163">					).integrate (normalDensity), 1, 8, 1.</span>
+				) + &quot; ||&quot;
+			);
+		}
+
+<span class="nc" id="L168">		System.out.println (&quot;\t|--------------------||&quot;);</span>
+
+<span class="nc" id="L170">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L171">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -102,9 +102,9 @@ package org.drip.function.e2erfc;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1Estimator
+public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1IntegrandEstimator
 {
-<span class="nc" id="L107">	private org.drip.numerical.estimation.R1ToR1SeriesGenerator _r1ToR1SeriesGenerator = null;</span>
+<span class="nc" id="L107">	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;</span>
 
 	/**
 	 * Construct the Asymptotic Expansion Version of ErrorFunctionComplement
@@ -117,41 +117,50 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 	public static final ErrorFunctionComplement AsymptoticExpansion (
 		final int termCount)
 	{
-<span class="nc" id="L120">		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =</span>
+<span class="nc" id="L120">		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =</span>
 <span class="nc" id="L121">			org.drip.function.e2erfc.AsymptoticExpansion.SeriesGenerator (termCount);</span>
 
-<span class="nc" id="L123">		return new ErrorFunctionComplement (</span>
-			r1ToR1SeriesGenerator,
-			null
-		)
-<span class="nc" id="L127">		{</span>
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-<span class="nc bnc" id="L132" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+		try
+		{
+<span class="nc" id="L125">			return new ErrorFunctionComplement (</span>
+				r1ToR1SeriesGenerator,
+				null
+			)
+<span class="nc" id="L129">			{</span>
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-<span class="nc" id="L134">					throw new java.lang.Exception</span>
-						(&quot;ErrorFunctionComplement::AsymptoticExpansion::evaluate =&gt; Invalid Inputs&quot;);
-				}
+<span class="nc bnc" id="L134" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+					{
+<span class="nc" id="L136">						throw new java.lang.Exception</span>
+							(&quot;ErrorFunctionComplement::AsymptoticExpansion::evaluate =&gt; Invalid Inputs&quot;);
+					}
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (0. == z)</span>
-				{
-<span class="nc" id="L140">					return 1.;</span>
-				}
+<span class="nc bnc" id="L140" title="All 2 branches missed.">					if (0. == z)</span>
+					{
+<span class="nc" id="L142">						return 1.;</span>
+					}
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">				if (z &lt; 0)</span>
-				{
-<span class="nc" id="L145">					return 2. - evaluate (-1. * z);</span>
-				}
+<span class="nc bnc" id="L145" title="All 2 branches missed.">					if (z &lt; 0)</span>
+					{
+<span class="nc" id="L147">						return 2. - evaluate (-1. * z);</span>
+					}
 
-<span class="nc" id="L148">				return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *</span>
-<span class="nc" id="L149">					r1ToR1SeriesGenerator.cumulative (</span>
-						0.,
-						z
-					);
-			}
-		};
+<span class="nc" id="L150">					return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *</span>
+<span class="nc" id="L151">						r1ToR1SeriesGenerator.cumulative (</span>
+							0.,
+							z
+						);
+				}
+			};
+		}
+<span class="nc" id="L158">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L160">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L163">		return null;</span>
 	}
 
 	/**
@@ -165,64 +174,98 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 	public static final ErrorFunctionComplement InverseFactorialExpansion (
 		final int termCount)
 	{
-<span class="nc" id="L168">		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator =</span>
-<span class="nc" id="L169">			org.drip.function.e2erfc.InverseFactorialExpansion.SeriesGenerator (termCount);</span>
+<span class="nc" id="L177">		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator =</span>
+<span class="nc" id="L178">			org.drip.function.e2erfc.InverseFactorialExpansion.SeriesGenerator (termCount);</span>
 
-<span class="nc" id="L171">		return new ErrorFunctionComplement (</span>
-			r1ToR1SeriesGenerator,
-			null
-		)
-<span class="nc" id="L175">		{</span>
-			@Override public double evaluate (
-				final double z)
-				throws java.lang.Exception
-			{
-<span class="nc bnc" id="L180" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+		try
+		{
+<span class="nc" id="L182">			return new ErrorFunctionComplement (</span>
+				r1ToR1SeriesGenerator,
+				null
+			)
+<span class="nc" id="L186">			{</span>
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-<span class="nc" id="L182">					throw new java.lang.Exception</span>
-						(&quot;ErrorFunctionComplement::InverseFactorialExpansion::evaluate =&gt; Invalid Inputs&quot;);
-				}
+<span class="nc bnc" id="L191" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+					{
+<span class="nc" id="L193">						throw new java.lang.Exception</span>
+							(&quot;ErrorFunctionComplement::InverseFactorialExpansion::evaluate =&gt; Invalid Inputs&quot;);
+					}
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				if (0. == z)</span>
-				{
-<span class="nc" id="L188">					return 1.;</span>
-				}
+<span class="nc bnc" id="L197" title="All 2 branches missed.">					if (0. == z)</span>
+					{
+<span class="nc" id="L199">						return 1.;</span>
+					}
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">				if (z &lt; 0)</span>
-				{
-<span class="nc" id="L193">					return 2. - evaluate (-1. * z);</span>
-				}
+<span class="nc bnc" id="L202" title="All 2 branches missed.">					if (z &lt; 0)</span>
+					{
+<span class="nc" id="L204">						return 2. - evaluate (-1. * z);</span>
+					}
 
-<span class="nc" id="L196">				return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *</span>
-<span class="nc" id="L197">					r1ToR1SeriesGenerator.cumulative (</span>
-						0.,
-						z
-					);
-			}
-		};
+<span class="nc" id="L207">					return java.lang.Math.exp (-1. * z * z) / (z * java.lang.Math.sqrt (java.lang.Math.PI)) *</span>
+<span class="nc" id="L208">						r1ToR1SeriesGenerator.cumulative (</span>
+							0.,
+							z
+						);
+				}
+			};
+		}
+<span class="nc" id="L215">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L217">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L220">		return null;</span>
 	}
 
-	protected ErrorFunctionComplement (
-		final org.drip.numerical.estimation.R1ToR1SeriesGenerator r1ToR1SeriesGenerator,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-	{
-<span class="nc" id="L209">		super (dc);</span>
+	/**
+	 * ErrorFunctionComplement Constructor
+	 * 
+	 * @param r1ToR1SeriesGenerator R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Generator
+	 * @param dc Differential Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
 
-<span class="nc" id="L211">		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;</span>
-<span class="nc" id="L212">	}</span>
+	public ErrorFunctionComplement (
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L237">		super (</span>
+			dc,
+			0.
+		);
+
+<span class="nc" id="L242">		_r1ToR1SeriesGenerator = r1ToR1SeriesGenerator;</span>
+<span class="nc" id="L243">	}</span>
 
 	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
 		final double x)
 	{
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		return null == _r1ToR1SeriesGenerator ? seriesEstimate (</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		return null == _r1ToR1SeriesGenerator ? seriesEstimate (</span>
 			x,
 			null,
 			null
-<span class="nc" id="L221">		) : seriesEstimate (</span>
+<span class="nc" id="L252">		) : seriesEstimate (</span>
 			x,
-<span class="nc" id="L223">			_r1ToR1SeriesGenerator.termWeightMap(),</span>
+<span class="nc" id="L254">			_r1ToR1SeriesGenerator.termWeightMap(),</span>
 			_r1ToR1SeriesGenerator
 		);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 integrand()
+	{
+<span class="nc" id="L261">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L262">		{</span>
+			@Override public double evaluate (
+				final double z)
+			{
+<span class="nc" id="L266">				return 1. - 2. * java.lang.Math.exp (-1. * z * z) / java.lang.Math.sqrt (java.lang.Math.PI);</span>
+			}
+		};
 	}
 
 	/**
@@ -239,12 +282,12 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L242" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 		{
-<span class="nc" id="L244">			throw new java.lang.Exception (&quot;ErrorFunctionComplement::q =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L287">			throw new java.lang.Exception (&quot;ErrorFunctionComplement::q =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L247">		return 0.5 * evaluate (x / java.lang.Math.sqrt (2.));</span>
+<span class="nc" id="L290">		return 0.5 * evaluate (x / java.lang.Math.sqrt (2.));</span>
 	}
 
 	/**
@@ -261,12 +304,12 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 		{
-<span class="nc" id="L266">			throw new java.lang.Exception (&quot;ErrorFunctionComplement::cdf =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L309">			throw new java.lang.Exception (&quot;ErrorFunctionComplement::cdf =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L269">		return 0.5 * evaluate (-1. * x / java.lang.Math.sqrt (2.));</span>
+<span class="nc" id="L312">		return 0.5 * evaluate (-1. * x / java.lang.Math.sqrt (2.));</span>
 	}
 
 	/**
@@ -283,7 +326,7 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L286">		return 1. - evaluate (x);</span>
+<span class="nc" id="L329">		return 1. - evaluate (x);</span>
 	}
 
 	/**
@@ -300,7 +343,7 @@ public abstract class ErrorFunctionComplement extends org.drip.numerical.estimat
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L303">		return java.lang.Math.exp (x * x) * evaluate (x);</span>
+<span class="nc" id="L346">		return java.lang.Math.exp (x * x) * evaluate (x);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
