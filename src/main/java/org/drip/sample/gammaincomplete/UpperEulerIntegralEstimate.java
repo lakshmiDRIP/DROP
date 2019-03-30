@@ -1,7 +1,8 @@
 
-package org.drip.sample.gamma;
+package org.drip.sample.gammaincomplete;
 
 import org.drip.function.gamma.EulerIntegralSecondKind;
+import org.drip.function.gammaincomplete.UpperEulerIntegral;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -68,29 +69,32 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>EulerIntegralEstimate</i> demonstrates the Quadrature Estimate of the Gamma Function Based on the Euler
- * Integral. The References are:
+ * <i>UpperEulerIntegralEstimate</i> illustrates the Estimation using the Euler's Second Kind Integral of the
+ * Upper Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
- * 				Integration Methods, and some Related Results <i>Ramanujan Journal</i> <b>35 (1)</b> 21-110
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				<i>Applicable Algebra in Engineering, Communications, and </i> <b>1 (2)</b> 149-165
  * 		</li>
  * 		<li>
- * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
- * 				https://arxiv.org/abs/1703.05349 <b>arXiv</b>
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				<i>Tables of Integrals, Series, and Products</i> <b>Academic Press</b>
  * 		</li>
  * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e<sup>iπx</sup> x<sup>(1/x)</sup> between 1 and ∞
+ *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -99,13 +103,13 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md">Estimates of Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerIntegralEstimate
+public class UpperEulerIntegralEstimate
 {
 
 	public static final void main (
@@ -131,13 +135,67 @@ public class EulerIntegralEstimate
 			7.0,
 		};
 
+		double[] limitArray =
+		{
+			0.0,
+			1.0,
+			2.0,
+			3.0,
+			4.0,
+			5.0,
+			6.0,
+			7.0,
+			8.0,
+			9.0,
+		};
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t|                                       UPPER EULER INTEGRAL ESTIMATE                                        ||");
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t|        L -> R:                                                                                             ||");
+
+		System.out.println
+			("\t|                - s                                                                                         ||");
+
+		System.out.println
+			("\t|                - Gamma Estimate                                                                            ||");
+
+		System.out.println
+			("\t|                - Multi-Limit Upper Incomplete Gamma Estimate                                               ||");
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------||");
+
 		for (double s : sArray)
 		{
-			System.out.println (
+			String display =
 				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (gammaFunction.evaluate (s), 3, 2, 1.) + " ||"
-			);
+				FormatUtil.FormatDouble (gammaFunction.evaluate (s), 3, 2, 1.) + " ||";
+
+			for (double limit : limitArray)
+			{
+				UpperEulerIntegral upperEulerIntegral = new UpperEulerIntegral (
+					null,
+					limit
+				);
+
+				display = display + FormatUtil.FormatDouble (
+					upperEulerIntegral.evaluate (s), 3, 2, 1.
+				) + " |";
+			}
+
+			System.out.println (display + "|");
 		}
+
+		System.out.println
+			("\t|------------------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

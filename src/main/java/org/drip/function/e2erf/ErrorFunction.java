@@ -117,8 +117,8 @@ public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Integrand
 	public static final ErrorFunction MacLaurin (
 		final int termCount)
 	{
-		final org.drip.function.e2erf.MacLaurinSeriesGenerator e2MacLaurinSeriesGenerator =
-			org.drip.function.e2erf.MacLaurinSeriesGenerator.ERF (termCount);
+		final org.drip.function.e2erf.MacLaurinSeries e2MacLaurinSeriesGenerator =
+			org.drip.function.e2erf.MacLaurinSeries.ERF (termCount);
 
 		if (null == e2MacLaurinSeriesGenerator)
 		{
@@ -170,7 +170,7 @@ public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Integrand
 	{
 		final org.drip.numerical.estimation.R1ToR1Series
 			hansHeinrichBurmannConvergentSeriesGenerator =
-				org.drip.function.e2erf.HansHeinrichBurmannGenerator.Convergent();
+				org.drip.function.e2erf.HansHeinrichBurmannSeries.Convergent();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
 		{
@@ -222,7 +222,7 @@ public class ErrorFunction extends org.drip.numerical.estimation.R1ToR1Integrand
 	public static final ErrorFunction HansHeinrichBurmannSchopfSupancic2014()
 	{
 		final org.drip.numerical.estimation.R1ToR1Series hansHeinrichBurmannConvergentSeriesGenerator
-			= org.drip.function.e2erf.HansHeinrichBurmannGenerator.SchopfSupancic2014();
+			= org.drip.function.e2erf.HansHeinrichBurmannSeries.SchopfSupancic2014();
 
 		if (null == hansHeinrichBurmannConvergentSeriesGenerator)
 		{

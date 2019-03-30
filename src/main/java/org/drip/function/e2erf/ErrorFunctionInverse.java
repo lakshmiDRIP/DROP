@@ -206,8 +206,8 @@ public abstract class ErrorFunctionInverse extends org.drip.numerical.estimation
 	public static final ErrorFunctionInverse MacLaurin (
 		final int termCount)
 	{
-		final org.drip.function.e2erf.MacLaurinSeriesGenerator e2InverseMacLaurinSeriesGenerator =
-			org.drip.function.e2erf.MacLaurinSeriesGenerator.ERFI (termCount);
+		final org.drip.function.e2erf.MacLaurinSeries e2InverseMacLaurinSeriesGenerator =
+			org.drip.function.e2erf.MacLaurinSeries.ERFI (termCount);
 
 		if (null == e2InverseMacLaurinSeriesGenerator)
 		{

@@ -64,8 +64,7 @@ package org.drip.function.e2erf;
  */
 
 /**
- * <i>MacLaurinSeriesGenerator</i> implements the E<sub>2</sub> MacLaurin Series Term Generator. The
- * References are:
+ * <i>MacLaurinSeries</i> implements the E<sub>2</sub> MacLaurin Series Term. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,7 +102,7 @@ package org.drip.function.e2erf;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1ToR1Series
+public class MacLaurinSeries extends org.drip.numerical.estimation.R1ToR1Series
 {
 
 	/**
@@ -142,7 +141,7 @@ public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1To
 	 * @return E<sub>2</sub> erf MacLaurin Series Generator Version
 	 */
 
-	public static final MacLaurinSeriesGenerator ERF (
+	public static final MacLaurinSeries ERF (
 		final int termCount)
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
@@ -162,7 +161,7 @@ public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1To
 
 		try
 		{
-			return new MacLaurinSeriesGenerator (
+			return new MacLaurinSeries (
 				new org.drip.function.e2erf.MacLaurinSeriesTerm(),
 				termWeightMap
 			);
@@ -183,7 +182,7 @@ public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1To
 	 * @return The E<sub>2</sub> erfi MacLaurin Series Generator Version
 	 */
 
-	public static final MacLaurinSeriesGenerator ERFI (
+	public static final MacLaurinSeries ERFI (
 		final int termCount)
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
@@ -206,7 +205,7 @@ public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1To
 
 		try
 		{
-			return new MacLaurinSeriesGenerator (
+			return new MacLaurinSeries (
 				new org.drip.function.e2erf.MacLaurinSeriesTerm(),
 				termWeightMap
 			);
@@ -220,21 +219,21 @@ public class MacLaurinSeriesGenerator extends org.drip.numerical.estimation.R1To
 	}
 
 	/**
-	 * MacLaurinSeriesGenerator Constructor
+	 * MacLaurinSeries Constructor
 	 * 
-	 * @param macLaurinSeriesGenerator E<sub>2</sub> erf MacLaurin Series Term
+	 * @param macLaurinSeriesTerm E<sub>2</sub> erf MacLaurin Series Term
 	 * @param termWeightMap Series Term Weight Map
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MacLaurinSeriesGenerator (
-		final org.drip.function.e2erf.MacLaurinSeriesTerm macLaurinSeriesGenerator,
+	public MacLaurinSeries (
+		final org.drip.function.e2erf.MacLaurinSeriesTerm macLaurinSeriesTerm,
 		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
 		throws java.lang.Exception
 	{
 		super (
-			macLaurinSeriesGenerator,
+			macLaurinSeriesTerm,
 			false,
 			termWeightMap
 		);

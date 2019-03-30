@@ -1,5 +1,5 @@
 
-package org.drip.function.e2erf;
+package org.drip.function.gammaincomplete;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,31 +64,31 @@ package org.drip.function.e2erf;
  */
 
 /**
- * <i>HansHeinrichBurmannGenerator</i> generates the Terms in the E<sub>2</sub> erf Hans-Heinrich-Burmann
- * Series Variants. The References are:
+ * <i>Lower</i> implements the Lower Incomplete Gamma Function using Power Series. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				<i>Applicable Algebra in Engineering, Communications, and </i> <b>1 (2)</b> 149-165
  * 		</li>
  * 		<li>
- * 			Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error
- * 				Function <i>IEEE Transactions on Communications</i> <b>59 (11)</b> 2939-2944
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				<i>Tables of Integrals, Series, and Products</i> <b>Academic Press</b>
  * 		</li>
  * 		<li>
- * 			Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function
- * 				Routines and Test Drivers <i>ACM Transactions on Mathematical Software</i> <b>19 (1)</b>
- * 				22-32
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e<sup>iÏ€x</sup> x<sup>(1/x)</sup> between 1 and âˆž
+ *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of
- * 				Linear and Non-linear Heat Transfer and Diffusion
- * 				https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
+ * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -96,107 +96,71 @@ package org.drip.function.e2erf;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/e2erf/README.md">E<sub>2</sub> erf and erf<sup>-1</sup> Implementations</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HansHeinrichBurmannGenerator
+public class Lower extends org.drip.numerical.estimation.R1ToR1Estimator
 {
+	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1Series = null;
 
 	/**
-	 * Construct the Convergent E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
+	 * Lower Constructor
 	 * 
-	 * @return The Convergent E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
+	 * @param r1ToR1Series R<sup>1</sup> To R<sup>1</sup> Series
+	 * @param dc Differential Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series Convergent()
+	public Lower (
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1Series,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
+		throws java.lang.Exception
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		super (dc);
 
-		termWeightMap.put (
-			0,
-			1.
+		_r1ToR1Series = r1ToR1Series;
+	}
+
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return null == _r1ToR1Series ? seriesEstimate (
+			x,
+			null,
+			null
+		) : seriesEstimate (
+			x,
+			_r1ToR1Series.termWeightMap(),
+			_r1ToR1Series
 		);
-
-		termWeightMap.put (
-			1,
-			-1. / 12.
-		);
-
-		termWeightMap.put (
-			2,
-			-7. / 480.
-		);
-
-		termWeightMap.put (
-			3,
-			-5. / 896.
-		);
-
-		termWeightMap.put (
-			4,
-			-787. / 276480.
-		);
-
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.function.e2erf.HansHeinrichBurmannTerm.Convergent(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	/**
-	 * Construct the Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
+	 * Compute the Weierstrass Limit
 	 * 
-	 * @return The Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Generator Version
+	 * @param z Z
+	 * 
+	 * @return The Weierstrass Limit
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series SchopfSupancic2014()
+	public double weierstrassLimit (
+		final double z)
+		throws java.lang.Exception
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		return _r1ToR1Series.evaluate (z);
+	}
 
-		termWeightMap.put (
-			0,
-			0.5 * java.lang.Math.sqrt (java.lang.Math.PI)
-		);
-
-		termWeightMap.put (
-			1,
-			31. / 200.
-		);
-
-		termWeightMap.put (
-			2,
-			-341. / 8000.
-		);
-
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.function.e2erf.HansHeinrichBurmannTerm.SchopfSupancic2014(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		return _r1ToR1Series.evaluate (z) * java.lang.Math.exp (-1. * z * z);
 	}
 }

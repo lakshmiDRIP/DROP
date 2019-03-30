@@ -1,13 +1,5 @@
 
-package org.drip.sample.gausskronrod;
-
-import java.util.Map;
-
-import org.drip.function.definition.R1ToR1;
-import org.drip.function.e2erf.BuiltInEntry;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gammaincomplete;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -72,30 +64,32 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFCCraig1991K15</i> computes the R<sup>1</sup> Numerical Estimate of the erfc Integrand using the K15
- * Gaussian Integration Quadrature Scheme. The References are:
+ * <i>LowerEulerIntegral</i> implements the Euler's Second Kind Integral Version of the Lower Incomplete
+ * Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Holoborodko, P. (2011): Gauss-Kronrod Quadrature Nodes and Weights
- * 				https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				<i>Applicable Algebra in Engineering, Communications, and </i> <b>1 (2)</b> 149-165
  * 		</li>
  * 		<li>
- * 			Kahaner, D., C. Moler, and S. Nash (1989): <i>Numerical Methods and Software</i> <b>Prentice
- * 				Hall</b>
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				<i>Tables of Integrals, Series, and Products</i> <b>Academic Press</b>
  * 		</li>
  * 		<li>
- * 			Laurie, D. (1997): Calculation of Gauss-Kronrod Quadrature Rules <i>Mathematics of
- * 				Computation</i> <b>66 (219)</b> 1133-1145
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e<sup>iπx</sup> x<sup>(1/x)</sup> between 1 and ∞
+ *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			Piessens, R., E. de Doncker-Kapenga, C. W. Uberhuber, and D. K. Kahaner (1983): <i>QUADPACK � A
- * 				Subroutine Package for Automatic Integration</i> <b>Springer-Verlag</b>
+ * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Gauss-Kronrod Quadrature Formula
- * 				https://en.wikipedia.org/wiki/Gauss%E2%80%93Kronrod_quadrature_formula
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -103,77 +97,76 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Numerical Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gausskronrod/README.md">R<sup>1</sup> Gauss-Kronrod Quadrature Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFCCraig1991K15
+public class LowerEulerIntegral extends org.drip.function.definition.R1ToR1
 {
+	private double _limit = java.lang.Double.NaN;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * LowerEulerIntegral Constructor
+	 * 
+	 * @param limit The Upper Limit
+	 * @param dc The Derivative Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LowerEulerIntegral (
+		final org.drip.numerical.differentiation.DerivativeControl dc,
+		final double limit)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
+		super (dc);
 
-		Map<Double, BuiltInEntry> builtInTable = BuiltInEntry.Table();
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t|       Craig 1991 erfc Estimate       ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                       ||");
-
-		System.out.println ("\t|                - x                   ||");
-
-		System.out.println ("\t|                - Built-in Estimate   ||");
-
-		System.out.println ("\t|                - K15 Estimate        ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		for (Map.Entry<Double, BuiltInEntry> builtInTableEntry : builtInTable.entrySet())
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_limit = limit))
 		{
-			final double x = builtInTableEntry.getKey();
+			throw new java.lang.Exception ("LowerEulerIntegral Constructor => Invalid Inputs");
+		}
+	}
 
-			double erfcTable = builtInTableEntry.getValue().erfc();
+	/**
+	 * Retrieve the Upper Limit
+	 * 
+	 * @return The Upper Limit
+	 */
 
-			R1ToR1 erfcIntegrand = new R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double theta)
-					throws java.lang.Exception
-				{
-					if (0. == theta)
-					{
-						return 0.;
-					}
+	public double limit()
+	{
+		return _limit;
+	}
 
-					double sinTheta = java.lang.Math.sin (theta);
-
-					return 2. * java.lang.Math.exp (-1. * x * x / (sinTheta * sinTheta)) / Math.PI;
-				}
-			};
-
-			double erfcEstimate = GaussKronrodQuadratureGenerator.K15 (
-				0.,
-				0.5 * Math.PI
-			).integrate (erfcIntegrand);
-
-			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (x, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + " | " +
-				FormatUtil.FormatDouble (erfcEstimate, 1, 9, 1.) + " ||"
-			);
+	@Override public double evaluate (
+		final double s)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
+		{
+			throw new java.lang.Exception ("LowerEulerIntegral::evaluate => Invalid Inputs");
 		}
 
-		System.out.println ("\t|--------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+			0.,
+			_limit,
+			100
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
+						t,
+						s - 1
+					) * java.lang.Math.exp (-t);
+				}
+			}
+		);
 	}
 }

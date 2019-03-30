@@ -1,11 +1,5 @@
 
-package org.drip.sample.erf;
-
-import java.util.TreeMap;
-
-import org.drip.function.e2erf.MacLaurinSeries;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gammaincomplete;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,31 +64,32 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>E2ERFMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficients for the E<sub>2</sub> ERF.
- * The References are:
+ * <i>WeierstrassLimitSeries</i> implements Weierstrass Lower Incomplete Gamma Expansion Series. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				<i>Applicable Algebra in Engineering, Communications, and </i> <b>1 (2)</b> 149-165
  * 		</li>
  * 		<li>
- * 			Chang, S. H., P. C. Cosman, L. B. Milstein (2011): Chernoff-Type Bounds for Gaussian Error
- * 				Function <i>IEEE Transactions on Communications</i> <b>59 (11)</b> 2939-2944
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				<i>Tables of Integrals, Series, and Products</i> <b>Academic Press</b>
  * 		</li>
  * 		<li>
- * 			Cody, W. J. (1991): Algorithm 715: SPECFUN – A Portable FORTRAN Package of Special Function
- * 				Routines and Test Drivers <i>ACM Transactions on Mathematical Software</i> <b>19 (1)</b>
- * 				22-32
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e<sup>iÏ€x</sup> x<sup>(1/x)</sup> between 1 and âˆž
+ *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			Schopf, H. M., and P. H. Supancic (2014): On Burmann’s Theorem and its Application to Problems of
- * 				Linear and Non-linear Heat Transfer and Diffusion
- * 				https://www.mathematica-journal.com/2014/11/on-burmanns-theorem-and-its-application-to-problems-of-linear-and-nonlinear-heat-transfer-and-diffusion/#more-39602/
+ * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Error Function https://en.wikipedia.org/wiki/Error_function
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -102,57 +97,53 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erf/README.md">E<sup>2</sup> and E<sup>n</sup> erf Estimation</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class E2ERFMacLaurinGenerator
+public class WeierstrassLimitSeries
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Series
+	 * 
+	 * @param s Incomplete Gamma s
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Weierstrass Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series GammaStar (
+		final double s,
+		final int termCount)
 	{
-		EnvManager.InitEnv ("");
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		int termCount = 20;
-
-		MacLaurinSeries e2MacLaurinSeriesGenerator = MacLaurinSeries.ERF (termCount);
-
-		TreeMap<Integer, Double> termWeightMap = e2MacLaurinSeriesGenerator.termWeightMap();
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|    ERROR FUNCTION MACLAURIN SERIES COEFFICIENTS     ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		System.out.println ("\t|      L -> R:                                        ||");
-
-		System.out.println ("\t|            - Term Index                             ||");
-
-		System.out.println ("\t|            - MacLaurin Series Coefficient           ||");
-
-		System.out.println ("\t|            - MacLaurin Series Coefficient Inverse   ||");
-
-		System.out.println ("\t|-----------------------------------------------------||");
-
-		for (int termIndex = 0; termIndex < termCount; ++termIndex)
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
 		{
-			double coefficient = termWeightMap.get (termIndex);
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (termIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (coefficient, 1, 19, 1.) + " | " +
-				FormatUtil.FormatDouble (1. / coefficient, 19, 0, 1.) + " ||"
+			termWeightMap.put (
+				termIndex,
+				1.
 			);
 		}
 
-		System.out.println ("\t|-----------------------------------------------------||");
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				new org.drip.function.gammaincomplete.WeierstrassLimitSeriesTerm (s),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		EnvManager.TerminateEnv();
+		return null;
 	}
 }

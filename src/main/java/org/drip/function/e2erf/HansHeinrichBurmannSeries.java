@@ -1,11 +1,5 @@
 
-package org.drip.sample.erfx;
-
-import java.util.Map;
-
-import org.drip.function.e2erf.MacLaurinSeries;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.e2erf;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ERFIMacLaurinGenerator</i> illustrates the MacLaurin Series Coefficient Generation for the Error
- * Function Inverse. The References are:
+ * <i>HansHeinrichBurmannSeries</i> generates the Terms in the E<sub>2</sub> erf Hans-Heinrich-Burmann Series
+ * Variants. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,89 +97,106 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/erfx/README.md">E<sup>2</sup> erfc and erfi Estimation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/e2erf/README.md">E<sub>2</sub> erf and erf<sup>-1</sup> Implementations</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ERFIMacLaurinGenerator
+public class HansHeinrichBurmannSeries
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Convergent E<sub>2</sub> erf Hans Heinrich Burmann Version
+	 * 
+	 * @return The Convergent E<sub>2</sub> erf Hans Heinrich Burmann Version
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series Convergent()
 	{
-		EnvManager.InitEnv ("");
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		int seriesTermCount = 5;
-		int coefficientTermCount = 15;
+		termWeightMap.put (
+			0,
+			1.
+		);
 
-		double[] termWeightCount =
+		termWeightMap.put (
+			1,
+			-1. / 12.
+		);
+
+		termWeightMap.put (
+			2,
+			-7. / 480.
+		);
+
+		termWeightMap.put (
+			3,
+			-5. / 896.
+		);
+
+		termWeightMap.put (
+			4,
+			-787. / 276480.
+		);
+
+		try
 		{
-			Math.pow (Math.PI, 0.5) / 2.,
-			-Math.pow (Math.PI, 1.5) / 24.,
-			7. * Math.pow (Math.PI, 2.5) / 960.,
-			-127. * Math.pow (Math.PI, 3.5) / 80640.,
-			0.5 * 4369. * Math.pow (Math.PI, 4.5) / 5806080.,
-			-0.5 * 34807. * Math.pow (Math.PI, 5.5) / 182476800.
-		};
-
-		System.out.println ("\t|---------------------||");
-
-		System.out.println ("\t|  ERFI COEFFICIENTS  ||");
-
-		System.out.println ("\t|---------------------||");
-
-		System.out.println ("\t|    L -> R:          ||");
-
-		System.out.println ("\t|        - Index      ||");
-
-		System.out.println ("\t|        - Value      ||");
-
-		System.out.println ("\t|---------------------||");
-
-		for (int coefficientTermIndex = 0; coefficientTermIndex <= coefficientTermCount; ++coefficientTermIndex)
-		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (coefficientTermIndex, 2, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (MacLaurinSeries.ERFICoefficient (coefficientTermIndex), 2, 9, 1.) + " ||"
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.e2erf.HansHeinrichBurmannTerm.Convergent(),
+				false,
+				termWeightMap
 			);
 		}
-
-		System.out.println ("\t|---------------------||");
-
-		System.out.println();
-
-		Map<Integer, Double> termWeightMap = MacLaurinSeries.ERFI (seriesTermCount).termWeightMap();
-
-		System.out.println ("\t|------------------------------------||");
-
-		System.out.println ("\t|   MacLaurin Series Coefficients    ||");
-
-		System.out.println ("\t|------------------------------------||");
-
-		System.out.println ("\t|    L -> R:                         ||");
-
-		System.out.println ("\t|        - Index                     ||");
-
-		System.out.println ("\t|        - Value                     ||");
-
-		System.out.println ("\t|        - Reconciler                ||");
-
-		System.out.println ("\t|------------------------------------||");
-
-		for (int seriesTermIndex = 0; seriesTermIndex <= seriesTermCount; ++seriesTermIndex)
+		catch (java.lang.Exception e)
 		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (seriesTermIndex, 1, 0, 1.) + " => " +
-				FormatUtil.FormatDouble (termWeightMap.get (seriesTermIndex), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (termWeightCount[seriesTermIndex], 1, 10, 1.) + " ||"
-			);
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * Construct the Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Version
+	 * 
+	 * @return The Schopf-Supancic (2014) E<sub>2</sub> erf Hans Heinrich Burmann Version
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series SchopfSupancic2014()
+	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		termWeightMap.put (
+			0,
+			0.5 * java.lang.Math.sqrt (java.lang.Math.PI)
+		);
+
+		termWeightMap.put (
+			1,
+			31. / 200.
+		);
+
+		termWeightMap.put (
+			2,
+			-341. / 8000.
+		);
+
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.e2erf.HansHeinrichBurmannTerm.SchopfSupancic2014(),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

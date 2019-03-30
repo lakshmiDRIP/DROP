@@ -1,6 +1,6 @@
 
 /**
- * Numerical Estimates of Gamma Family
+ * Integrand Estimates of Gamma Functions
  *
  * @author Lakshmi Krishnamurthy
  */

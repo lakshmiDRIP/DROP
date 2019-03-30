@@ -1,6 +1,6 @@
 
 /**
- * Estimate of Gamma Function Family
+ * Quadrature Estimate of Gamma Function
  *
  * @author Lakshmi Krishnamurthy
  */
