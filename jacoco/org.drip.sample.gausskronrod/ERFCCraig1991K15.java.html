@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ERFCCraig1991K15.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gausskronrod</a> &gt; <span class="el_source">ERFCCraig1991K15.java</span></div><h1>ERFCCraig1991K15.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.gausskronrod;
+
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.e2erf.BuiltInEntry;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ERFCCraig1991K15&lt;/i&gt; computes the R&lt;sup&gt;1&lt;/sup&gt; Numerical Estimate of the erfc Integrand using the K15
+ * Gaussian Integration Quadrature Scheme. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Holoborodko, P. (2011): Gauss-Kronrod Quadrature Nodes and Weights
+ * 				https://www.advanpix.com/2011/11/07/gauss-kronrod-quadrature-nodes-weights/
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Kahaner, D., C. Moler, and S. Nash (1989): &lt;i&gt;Numerical Methods and Software&lt;/i&gt; &lt;b&gt;Prentice
+ * 				Hall&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Laurie, D. (1997): Calculation of Gauss-Kronrod Quadrature Rules &lt;i&gt;Mathematics of
+ * 				Computation&lt;/i&gt; &lt;b&gt;66 (219)&lt;/b&gt; 1133-1145
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Piessens, R., E. de Doncker-Kapenga, C. W. Uberhuber, and D. K. Kahaner (1983): &lt;i&gt;QUADPACK – A
+ * 				Subroutine Package for Automatic Integration&lt;/i&gt; &lt;b&gt;Springer-Verlag&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gauss-Kronrod Quadrature Formula
+ * 				https://en.wikipedia.org/wiki/Gauss%E2%80%93Kronrod_quadrature_formula
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/gausskronrod/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; Gauss-Kronrod Quadrature Schemes&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L113">public class ERFCCraig1991K15</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L120">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L122">		Map&lt;Double, BuiltInEntry&gt; builtInTable = BuiltInEntry.Table();</span>
+
+<span class="nc" id="L124">		System.out.println (&quot;\t|--------------------------------------||&quot;);</span>
+
+<span class="nc" id="L126">		System.out.println (&quot;\t|       Craig 1991 erfc Estimate       ||&quot;);</span>
+
+<span class="nc" id="L128">		System.out.println (&quot;\t|--------------------------------------||&quot;);</span>
+
+<span class="nc" id="L130">		System.out.println (&quot;\t|        L -&gt; R:                       ||&quot;);</span>
+
+<span class="nc" id="L132">		System.out.println (&quot;\t|                - x                   ||&quot;);</span>
+
+<span class="nc" id="L134">		System.out.println (&quot;\t|                - Built-in Estimate   ||&quot;);</span>
+
+<span class="nc" id="L136">		System.out.println (&quot;\t|                - K15 Estimate        ||&quot;);</span>
+
+<span class="nc" id="L138">		System.out.println (&quot;\t|--------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (Map.Entry&lt;Double, BuiltInEntry&gt; builtInTableEntry : builtInTable.entrySet())</span>
+		{
+<span class="nc" id="L142">			final double x = builtInTableEntry.getKey();</span>
+
+<span class="nc" id="L144">			double erfcTable = builtInTableEntry.getValue().erfc();</span>
+
+<span class="nc" id="L146">			R1ToR1 erfcIntegrand = new R1ToR1 (null)</span>
+<span class="nc" id="L147">			{</span>
+				@Override public double evaluate (
+					final double theta)
+					throws java.lang.Exception
+				{
+<span class="nc bnc" id="L152" title="All 2 branches missed.">					if (0. == theta)</span>
+					{
+<span class="nc" id="L154">						return 0.;</span>
+					}
+
+<span class="nc" id="L157">					double sinTheta = java.lang.Math.sin (theta);</span>
+
+<span class="nc" id="L159">					return 2. * java.lang.Math.exp (-1. * x * x / (sinTheta * sinTheta)) / Math.PI;</span>
+				}
+			};
+
+<span class="nc" id="L163">			double erfcEstimate = GaussKronrodQuadratureGenerator.K15 (</span>
+				0.,
+				0.5 * Math.PI
+<span class="nc" id="L166">			).integrate (erfcIntegrand);</span>
+
+<span class="nc" id="L168">			System.out.println (</span>
+<span class="nc" id="L169">				&quot;\t| &quot; + FormatUtil.FormatDouble (x, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L170">				FormatUtil.FormatDouble (erfcTable, 1, 9, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L171">				FormatUtil.FormatDouble (erfcEstimate, 1, 9, 1.) + &quot; ||&quot;</span>
+			);
+<span class="nc" id="L173">		}</span>
+
+<span class="nc" id="L175">		System.out.println (&quot;\t|--------------------------------------||&quot;);</span>
+
+<span class="nc" id="L177">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L178">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
