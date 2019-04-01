@@ -1,5 +1,10 @@
 
-package org.drip.function.gammaincomplete;
+package org.drip.sample.gammaincomplete;
+
+import org.drip.function.gammaincomplete.LowerEulerIntegral;
+import org.drip.function.gammaincomplete.LowerSFixed;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +69,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>Lower</i> implements the Lower Incomplete Gamma Function using Power Series. The References are:
+ * <i>LowerWeierstrassLimitEstimate</i> illustrates the Estimation of the Lower Incomplete Gamma Function
+ * using the Weierstrass Limit Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -83,7 +89,7 @@ package org.drip.function.gammaincomplete;
  *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
  * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
@@ -96,71 +102,101 @@ package org.drip.function.gammaincomplete;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md">Estimates of Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Lower extends org.drip.numerical.estimation.R1ToR1Estimator
+public class LowerWeierstrassLimitEstimate
 {
-	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1Series = null;
 
-	/**
-	 * Lower Constructor
-	 * 
-	 * @param r1ToR1Series R<sup>1</sup> To R<sup>1</sup> Series
-	 * @param dc Differential Control
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public Lower (
-		final org.drip.numerical.estimation.R1ToR1Series r1ToR1Series,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+	private static final void EulerIntegralComparison (
+		final int termCount,
+		final double s,
+		final double[] zArray)
+		throws Exception
 	{
-		super (dc);
-
-		_r1ToR1Series = r1ToR1Series;
-	}
-
-	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
-		final double x)
-	{
-		return null == _r1ToR1Series ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_r1ToR1Series.termWeightMap(),
-			_r1ToR1Series
+		LowerSFixed lowerSFixed = LowerSFixed.WeierstrassLimit (
+			s,
+			termCount
 		);
+
+		System.out.println ("\t|-------------------------------------------------------------------------||");
+
+		System.out.println ("\t|                              TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
+
+		System.out.println ("\t|-------------------------------------------------------------------------||");
+
+		System.out.println ("\t|    L - R:                                                               ||");
+
+		System.out.println ("\t|            - Weierstrass Limit                                          ||");
+
+		System.out.println ("\t|            - Scaled Lower Incomplete Gamma                              ||");
+
+		System.out.println ("\t|            - Unscaled Lower Incomplete Gamma                            ||");
+
+		System.out.println ("\t|-------------------------------------------------------------------------||");
+
+		for (double z : zArray)
+		{
+			LowerEulerIntegral lowerEulerIntegral = new LowerEulerIntegral (
+				null,
+				z
+			);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 2, 0, 1.) + " => " +
+				FormatUtil.FormatDouble (lowerSFixed.weierstrassLimit (z), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (lowerSFixed.nonDimensional (z), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (lowerSFixed.evaluate (z), 3, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (lowerEulerIntegral.evaluate (s), 3, 10, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|-------------------------------------------------------------------------||");
+
+		System.out.println();
 	}
 
-	/**
-	 * Compute the Weierstrass Limit
-	 * 
-	 * @param z Z
-	 * 
-	 * @return The Weierstrass Limit
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double weierstrassLimit (
-		final double z)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		return _r1ToR1Series.evaluate (z);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double evaluate (
-		final double z)
-		throws java.lang.Exception
-	{
-		return _r1ToR1Series.evaluate (z) * java.lang.Math.exp (-1. * z * z);
+		double s = 6.;
+		int[] termCountArray =
+		{
+			20,
+			40,
+			60,
+			80,
+		};
+		double[] zArray =
+		{
+			20.0,
+			18.0,
+			16.0,
+			14.0,
+			12.0,
+			10.0,
+			 8.0,
+			 6.0,
+			 4.0,
+			 2.0
+		};
+
+		for (int termCount : termCountArray)
+		{
+			EulerIntegralComparison (
+				termCount,
+				s,
+				zArray
+			);
+		}
+
+		EnvManager.TerminateEnv();
 	}
 }

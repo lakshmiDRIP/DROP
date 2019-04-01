@@ -64,8 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>WeierstrassLimitTerm</i> implements a Single Term in the Weierstrass Lower Incomplete Gamma Expansion
- * Series. The References are:
+ * <i>LowerSFixed</i> implements the Lower Incomplete Gamma Function using Power Series for a Fixed s. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,53 +104,159 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeierstrassLimitSeriesTerm extends org.drip.numerical.estimation.R1ToR1SeriesTerm
+public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-	private double _s = java.lang.Double.NaN;
+	private org.drip.function.gammaincomplete.LowerSFixedSeries _lowerSFixedSeries = null;
 
 	/**
-	 * WeierstrassLimitTerm Constructor
+	 * Construct the Weierstrass Lower S Fixed Series Incomplete Gamma Estimator
 	 * 
-	 * @param s s
+	 * @param s Incomplete Gamma s
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The Weierstrass Lower S Fixed Series Incomplete Gamma Estimator
+	 */
+
+	public static final LowerSFixed WeierstrassLimit (
+		final double s,
+		final int termCount)
+	{
+		try
+		{
+			return new LowerSFixed (
+				org.drip.function.gammaincomplete.LowerSFixedSeries.WeierstrassLimit (
+					s,
+					termCount
+				),
+				null
+			)
+			{
+				@Override public double nonDimensional (
+					final double z)
+					throws java.lang.Exception
+				{
+					return weierstrassLimit (z) * java.lang.Math.exp (-1. * z);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the NIST (2019) Lower S Fixed Series Incomplete Gamma Estimator
+	 * 
+	 * @param s Incomplete Gamma s
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The NIST (2019) Lower S Fixed Series Incomplete Gamma Estimator
+	 */
+
+	public static final LowerSFixed NIST2019 (
+		final double s,
+		final int termCount)
+	{
+		try
+		{
+			return new LowerSFixed (
+				org.drip.function.gammaincomplete.LowerSFixedSeries.NIST2019 (
+					s,
+					termCount
+				),
+				null
+			)
+			{
+				@Override public double nonDimensional (
+					final double z)
+					throws java.lang.Exception
+				{
+					return weierstrassLimit (z);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * LowerSFixed Constructor
+	 * 
+	 * @param lowerSFixedSeries R<sup>1</sup> To R<sup>1</sup> Lower S Fixed Limit Series
+	 * @param dc Differential Control
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public WeierstrassLimitSeriesTerm (
-		final double s)
+	public LowerSFixed (
+		final org.drip.function.gammaincomplete.LowerSFixedSeries lowerSFixedSeries,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_s = s))
-		{
-			throw new java.lang.Exception ("WeierstrassLimitSeriesTerm Constructor => Invalid Inputs");
-		}
+		super (dc);
+
+		_lowerSFixedSeries = lowerSFixedSeries;
+	}
+
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return null == _lowerSFixedSeries ? seriesEstimate (
+			x,
+			null,
+			null
+		) : seriesEstimate (
+			x,
+			_lowerSFixedSeries.termWeightMap(),
+			_lowerSFixedSeries
+		);
 	}
 
 	/**
-	 * Retrieve s
+	 * Compute the Limiting Weierstrass Sum
 	 * 
-	 * @return s
+	 * @param z Z
+	 * 
+	 * @return The Limiting Weierstrass Sum
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double s()
-	{
-		return _s;
-	}
-
-	@Override public double value (
-		final int order,
+	public double weierstrassLimit (
 		final double z)
 		throws java.lang.Exception
 	{
-		if (0 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("WeierstrassLimitSeriesTerm::value => Invalid Inputs");
-		}
+		return _lowerSFixedSeries.evaluate (z);
+	}
 
+	/**
+	 * Compute the Non-dimensional Incomplete Gamma (Weierstrass Gamma Star)
+	 * 
+	 * @param z Z
+	 * 
+	 * @return The Non-dimensional Incomplete Gamma (Weierstrass Gamma Star)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double nonDimensional (
+		final double z)
+		throws java.lang.Exception;
+
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
 		return java.lang.Math.pow (
 			z,
-			order
-		) / new org.drip.function.stirling.NemesGamma (null).evaluate (_s + order + 1);
+			_lowerSFixedSeries.s()
+		) * _lowerSFixedSeries.gammaS() * nonDimensional (z);
 	}
 }

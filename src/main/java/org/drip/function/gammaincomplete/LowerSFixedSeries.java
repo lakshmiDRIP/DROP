@@ -64,8 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>WeierstrassLimitSeries</i> implements Weierstrass Lower Incomplete Gamma Expansion Series. The
- * References are:
+ * <i>LowerSFixedSeries</i> implements Weierstrass Lower Incomplete Gamma Expansion Series. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,19 +104,21 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeierstrassLimitSeries
+public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Series
 {
+	private double _s = java.lang.Double.NaN;
+	private double _gammaS = java.lang.Double.NaN;
 
 	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Series
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
 	 * 
 	 * @param s Incomplete Gamma s
 	 * @param termCount Count of the Number of Terms
 	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Weierstrass Series
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series GammaStar (
+	public static final LowerSFixedSeries WeierstrassLimit (
 		final double s,
 		final int termCount)
 	{
@@ -133,10 +135,11 @@ public class WeierstrassLimitSeries
 
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				new org.drip.function.gammaincomplete.WeierstrassLimitSeriesTerm (s),
-				false,
-				termWeightMap
+			return new LowerSFixedSeries (
+				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.WeierstrassLimit (s),
+				termWeightMap,
+				s,
+				new org.drip.function.stirling.NemesGamma (null).evaluate (s)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -145,5 +148,100 @@ public class WeierstrassLimitSeries
 		}
 
 		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
+	 * 
+	 * @param s Incomplete Gamma s
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
+	 */
+
+	public static final LowerSFixedSeries NIST2019 (
+		final double s,
+		final int termCount)
+	{
+		try
+		{
+			double gammaS = new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new LowerSFixedSeries (
+				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.NIST2019 (
+					s,
+					gammaS
+				),
+				termWeightMap,
+				s,
+				gammaS
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * LowerSFixedSeries Constructor
+	 * 
+	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
+	 * @param termWeightMap Error Term Weight Map
+	 * @param s s
+	 * @param gammaS Gamma (s)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LowerSFixedSeries (
+		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
+		final double s,
+		final double gammaS)
+		throws java.lang.Exception
+	{
+		super (
+			r1ToR1SeriesTerm,
+			false,
+			termWeightMap
+		);
+
+		_gammaS = new org.drip.function.stirling.NemesGamma (null).evaluate (_s = s);
+	}
+
+	/**
+	 * Retrieve s
+	 * 
+	 * @return s
+	 */
+
+	public double s()
+	{
+		return _s;
+	}
+
+	/**
+	 * Retrieve Gamma S
+	 * 
+	 * @return Gamma S
+	 */
+
+	public double gammaS()
+	{
+		return _gammaS;
 	}
 }
