@@ -153,14 +153,14 @@ public class LowerSFixedSeriesTerm
 	 * Construct the NIST (2019) Limit Version of the Lower S Fixed Term
 	 * 
 	 * @param s s
-	 * @param gammaS Gamma (s)
+	 * @param logGammaS Log (Gamma (s))
 	 * 
 	 * @return The NIST (2019) Limit Version of the Lower S Fixed Term 
 	 */
 
 	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019 (
 		final double s,
-		final double gammaS)
+		final double logGammaS)
 	{
 		try
 		{
@@ -178,20 +178,10 @@ public class LowerSFixedSeriesTerm
 							("LowerSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
 					}
 
-					/* System.out.println (order + " => " + java.lang.Math.pow (
-						-1. * z,
-						order
-					) / ( 
-						new org.drip.function.stirling.NemesGamma (null).evaluate (order) * 
-						gammaS * (s + order)
-					)); */
-					return java.lang.Math.pow (
-						-1. * z,
-						order
-					) / (
-						(s + order) *
-						new org.drip.function.stirling.NemesGamma (null).evaluate (order) *
-						gammaS
+					return (order % 2 == 0 ? 1. : -1.) * java.lang.Math.exp (
+						order * java.lang.Math.log (z) - java.lang.Math.log (s + order) -
+						(0 == order ? 0. : new org.drip.function.stirling.NemesLogGamma (null).evaluate (order))
+						- logGammaS
 					);
 				}
 			};

@@ -64,7 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>LowerSFixedSeries</i> implements Lower Incomplete Gamma Expansion Series. The References are:
+ * <i>UpperSRecursiveSeriesTerm</i> implements a Single Term in the Upper Incomplete Gamma Expansion Series
+ * for Recursive s, starting from s = 0. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,89 +104,39 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Series
+public class UpperSRecursiveSeriesTerm
 {
-	private double _s = java.lang.Double.NaN;
-	private double _logGammaS = java.lang.Double.NaN;
 
 	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
+	 * Construct the NIST (2019) Limit Version of the Upper s = 0 Term
 	 * 
-	 * @param s Incomplete Gamma s
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
+	 * @return The NIST (2019) Limit Version of the Upper s = 0 Term 
 	 */
 
-	public static final LowerSFixedSeries WeierstrassLimit (
-		final double s,
-		final int termCount)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
-			termWeightMap.put (
-				termIndex,
-				1.
-			);
-		}
-
-		try
-		{
-			return new LowerSFixedSeries (
-				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.WeierstrassLimit (s),
-				termWeightMap,
-				s,
-				new org.drip.function.stirling.NemesLogGamma (null).evaluate (s)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 * 
-	 * @param s Incomplete Gamma s
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 */
-
-	public static final LowerSFixedSeries NIST2019 (
-		final double s,
-		final int termCount)
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019()
 	{
 		try
 		{
-			double logGammaS = new org.drip.function.stirling.NemesLogGamma (null).evaluate (s);
-
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
 			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
-			}
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("UpperSRecursiveSeriesTerm::NIST2019::value => Invalid Inputs");
+					}
 
-			return new LowerSFixedSeries (
-				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.NIST2019 (
-					s,
-					logGammaS
-				),
-				termWeightMap,
-				s,
-				logGammaS
-			);
+					return 0. == z ? 0. : (order % 2 == 0 ? 1. : -1.) * java.lang.Math.exp (
+						order * java.lang.Math.log (z) - java.lang.Math.log (order) -
+						new org.drip.function.stirling.NemesLogGamma (null).evaluate (order)
+					);
+				}
+			};
 		}
 		catch (java.lang.Exception e)
 		{
@@ -196,55 +147,49 @@ public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Serie
 	}
 
 	/**
-	 * LowerSFixedSeries Constructor
+	 * Construct the NIST (2019) Limit Version of the Upper s = -n Term
 	 * 
-	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
-	 * @param termWeightMap Error Term Weight Map
-	 * @param s s
-	 * @param logGammaS Log (Gamma (s))
+	 * @param n n
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The NIST (2019) Limit Version of the Upper s = -n Term 
 	 */
 
-	public LowerSFixedSeries (
-		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
-		final double s,
-		final double logGammaS)
-		throws java.lang.Exception
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019 (
+		final int n)
 	{
-		super (
-			r1ToR1SeriesTerm,
-			false,
-			termWeightMap
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_s = s) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_logGammaS = logGammaS))
+		if (0 >= n)
 		{
-			throw new java.lang.Exception ("LowerSFixedSeries Constructor => Invalid Inputs");
+			return null;
 		}
-	}
 
-	/**
-	 * Retrieve s
-	 * 
-	 * @return s
-	 */
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 > order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("UpperSRecursiveSeriesTerm::NIST2019::value => Invalid Inputs");
+					}
 
-	public double s()
-	{
-		return _s;
-	}
+					return 0. == z || n <= order + 1 ? 0. : (order % 2 == 0 ? 1. : -1.) * java.lang.Math.exp (
+						order * java.lang.Math.log (z) +
+						new org.drip.function.stirling.NemesLogGamma (null).evaluate (n - order - 1)
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-	/**
-	 * Retrieve Log (Gamma (s))
-	 * 
-	 * @return Log (Gamma (s))
-	 */
-
-	public double logGammaS()
-	{
-		return _logGammaS;
+		return null;
 	}
 }

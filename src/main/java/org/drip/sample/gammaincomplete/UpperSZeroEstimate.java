@@ -1,5 +1,11 @@
 
-package org.drip.function.gammaincomplete;
+package org.drip.sample.gammaincomplete;
+
+import org.drip.function.gammaincomplete.UpperEulerIntegral;
+import org.drip.function.gammaincomplete.UpperSRecursive;
+import org.drip.function.gammaincomplete.UpperSRecursiveSeries;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +70,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>LowerSFixedSeries</i> implements Lower Incomplete Gamma Expansion Series. The References are:
+ * <i>UpperSZeroEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the NIST
+ * (2019) Series for s = 0. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -83,7 +90,7 @@ package org.drip.function.gammaincomplete;
  *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
  * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
@@ -96,155 +103,96 @@ package org.drip.function.gammaincomplete;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md">Estimates of Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Series
+public class UpperSZeroEstimate
 {
-	private double _s = java.lang.Double.NaN;
-	private double _logGammaS = java.lang.Double.NaN;
 
-	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
-	 * 
-	 * @param s Incomplete Gamma s
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
-	 */
-
-	public static final LowerSFixedSeries WeierstrassLimit (
-		final double s,
-		final int termCount)
+	private static final void EulerIntegralComparison (
+		final int termCount,
+		final double[] zArray)
+		throws Exception
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
-			termWeightMap.put (
-				termIndex,
-				1.
-			);
-		}
-
-		try
-		{
-			return new LowerSFixedSeries (
-				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.WeierstrassLimit (s),
-				termWeightMap,
-				s,
-				new org.drip.function.stirling.NemesLogGamma (null).evaluate (s)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 * 
-	 * @param s Incomplete Gamma s
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 */
-
-	public static final LowerSFixedSeries NIST2019 (
-		final double s,
-		final int termCount)
-	{
-		try
-		{
-			double logGammaS = new org.drip.function.stirling.NemesLogGamma (null).evaluate (s);
-
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
-			}
-
-			return new LowerSFixedSeries (
-				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.NIST2019 (
-					s,
-					logGammaS
-				),
-				termWeightMap,
-				s,
-				logGammaS
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * LowerSFixedSeries Constructor
-	 * 
-	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
-	 * @param termWeightMap Error Term Weight Map
-	 * @param s s
-	 * @param logGammaS Log (Gamma (s))
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LowerSFixedSeries (
-		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
-		final double s,
-		final double logGammaS)
-		throws java.lang.Exception
-	{
-		super (
-			r1ToR1SeriesTerm,
-			false,
-			termWeightMap
+		UpperSRecursive upperSZero = new UpperSRecursive (
+			UpperSRecursiveSeries.NIST2019 (termCount),
+			null
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_s = s) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_logGammaS = logGammaS))
+		System.out.println ("\t|---------------------------------------||");
+
+		System.out.println ("\t|           TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
+
+		System.out.println ("\t|---------------------------------------||");
+
+		System.out.println ("\t|    L - R:                             ||");
+
+		System.out.println ("\t|            - Series Estimate          ||");
+
+		System.out.println ("\t|            - Integral Estimate        ||");
+
+		System.out.println ("\t|---------------------------------------||");
+
+		for (double z : zArray)
 		{
-			throw new java.lang.Exception ("LowerSFixedSeries Constructor => Invalid Inputs");
+			UpperEulerIntegral upperEulerIntegral = new UpperEulerIntegral (
+				null,
+				z
+			);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (upperSZero.evaluate (z), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (upperEulerIntegral.evaluate (0.), 1, 10, 1.) + " ||"
+			);
 		}
+
+		System.out.println ("\t|---------------------------------------||");
+
+		System.out.println();
 	}
 
-	/**
-	 * Retrieve s
-	 * 
-	 * @return s
-	 */
-
-	public double s()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		return _s;
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve Log (Gamma (s))
-	 * 
-	 * @return Log (Gamma (s))
-	 */
+		int termCount = 50;
+		double[] zArray =
+		{
+			1.00,
+			0.95,
+			0.90,
+			0.85,
+			0.80,
+			0.75,
+			0.70,
+			0.65,
+			0.60,
+			0.55,
+			0.50,
+			0.45,
+			0.40,
+			0.35,
+			0.30,
+			0.25,
+			0.20,
+			0.15,
+			0.10,
+			0.05,
+			0.01,
+		};
 
-	public double logGammaS()
-	{
-		return _logGammaS;
+		EulerIntegralComparison (
+			termCount,
+			zArray
+		);
+
+		EnvManager.TerminateEnv();
 	}
 }

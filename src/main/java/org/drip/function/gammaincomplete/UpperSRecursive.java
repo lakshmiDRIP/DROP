@@ -64,7 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>LowerSFixedSeries</i> implements Lower Incomplete Gamma Expansion Series. The References are:
+ * <i>UpperSRecursive</i> implements the Upper Incomplete Gamma Function using Recursive Power Series,
+ * starting with s = 0. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,148 +104,94 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Series
+public class UpperSRecursive extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-	private double _s = java.lang.Double.NaN;
-	private double _logGammaS = java.lang.Double.NaN;
 
 	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
-	 * 
-	 * @param s Incomplete Gamma s
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
+	 * The Euler-Mascheroni Constant
 	 */
 
-	public static final LowerSFixedSeries WeierstrassLimit (
-		final double s,
-		final int termCount)
-	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+	public static final double EULER_MASCHERONI = 0.57721566490153286060;
 
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
-			termWeightMap.put (
-				termIndex,
-				1.
-			);
-		}
-
-		try
-		{
-			return new LowerSFixedSeries (
-				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.WeierstrassLimit (s),
-				termWeightMap,
-				s,
-				new org.drip.function.stirling.NemesLogGamma (null).evaluate (s)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	private org.drip.numerical.estimation.R1ToR1Series _upperSZeroSeries = null;
 
 	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
+	 * UpperSRecursive Constructor
 	 * 
-	 * @param s Incomplete Gamma s
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 */
-
-	public static final LowerSFixedSeries NIST2019 (
-		final double s,
-		final int termCount)
-	{
-		try
-		{
-			double logGammaS = new org.drip.function.stirling.NemesLogGamma (null).evaluate (s);
-
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
-			}
-
-			return new LowerSFixedSeries (
-				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.NIST2019 (
-					s,
-					logGammaS
-				),
-				termWeightMap,
-				s,
-				logGammaS
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * LowerSFixedSeries Constructor
-	 * 
-	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
-	 * @param termWeightMap Error Term Weight Map
-	 * @param s s
-	 * @param logGammaS Log (Gamma (s))
+	 * @param upperSZeroSeries R<sup>1</sup> To R<sup>1</sup> Lower S Fixed Limit Series
+	 * @param dc Differential Control
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LowerSFixedSeries (
-		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
-		final double s,
-		final double logGammaS)
+	public UpperSRecursive (
+		final org.drip.numerical.estimation.R1ToR1Series upperSZeroSeries,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{
-		super (
-			r1ToR1SeriesTerm,
-			false,
-			termWeightMap
+		super (dc);
+
+		_upperSZeroSeries = upperSZeroSeries;
+	}
+
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return null == _upperSZeroSeries ? seriesEstimate (
+			x,
+			null,
+			null
+		) : seriesEstimate (
+			x,
+			_upperSZeroSeries.termWeightMap(),
+			_upperSZeroSeries
 		);
+	}
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_s = s) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_logGammaS = logGammaS))
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z <= 0.)
 		{
-			throw new java.lang.Exception ("LowerSFixedSeries Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("UpperSRecursive::evaluate => Invalid Inputs");
 		}
+
+		return -1. * (EULER_MASCHERONI + java.lang.Math.log (z) + _upperSZeroSeries.evaluate (z));
 	}
 
 	/**
-	 * Retrieve s
+	 * Evaluate the Upper Gamma (-n, z) recursively from n = 0
 	 * 
-	 * @return s
+	 * @param n n
+	 * @param z z
+	 * @param recursiveTermCount Number of Recursive Series Terms
+	 * 
+	 * @return Upper Gamma (-n, z)
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double s()
+	public double evaluateRecursive (
+		final int n,
+		final double z,
+		final int recursiveTermCount)
+		throws java.lang.Exception
 	{
-		return _s;
-	}
+		org.drip.numerical.estimation.R1ToR1Series upperSRecursiveSeries =
+			org.drip.function.gammaincomplete.UpperSRecursiveSeries.NIST2019 (
+				recursiveTermCount,
+				n
+			);
 
-	/**
-	 * Retrieve Log (Gamma (s))
-	 * 
-	 * @return Log (Gamma (s))
-	 */
+		if (null == upperSRecursiveSeries)
+		{
+			throw new java.lang.Exception ("UpperSRecursive::evaluateRecursive => Invalid Inputs");
+		}
 
-	public double logGammaS()
-	{
-		return _logGammaS;
+		return (
+			upperSRecursiveSeries.evaluate (z) * java.lang.Math.exp (n * java.lang.Math.log (z) - z) +
+			evaluate (z)
+		) / new org.drip.function.stirling.NemesLogGamma (null).evaluate (n);
 	}
 }

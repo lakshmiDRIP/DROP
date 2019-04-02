@@ -254,9 +254,8 @@ public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Es
 		final double z)
 		throws java.lang.Exception
 	{
-		return java.lang.Math.pow (
-			z,
-			_lowerSFixedSeries.s()
-		) * _lowerSFixedSeries.gammaS() * nonDimensional (z);
+		return java.lang.Math.exp (
+			_lowerSFixedSeries.s() * java.lang.Math.log (z) + _lowerSFixedSeries.logGammaS()
+		) * nonDimensional (z);
 	}
 }

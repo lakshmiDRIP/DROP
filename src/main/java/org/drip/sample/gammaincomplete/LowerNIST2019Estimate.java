@@ -123,21 +123,21 @@ public class LowerNIST2019Estimate
 			termCount
 		);
 
-		System.out.println ("\t|-------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------||");
 
-		System.out.println ("\t|                              TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
+		System.out.println ("\t|                      TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
 
-		System.out.println ("\t|-------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------||");
 
-		System.out.println ("\t|    L - R:                                                               ||");
+		System.out.println ("\t|    L - R:                                                             ||");
 
-		System.out.println ("\t|            - Weierstrass Limit                                          ||");
+		System.out.println ("\t|            - Weierstrass Limit                                        ||");
 
-		System.out.println ("\t|            - Scaled Lower Incomplete Gamma                              ||");
+		System.out.println ("\t|            - Scaled Lower Incomplete Gamma                            ||");
 
-		System.out.println ("\t|            - Unscaled Lower Incomplete Gamma                            ||");
+		System.out.println ("\t|            - Unscaled Lower Incomplete Gamma                          ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------||");
 
 		for (double z : zArray)
 		{
@@ -147,15 +147,15 @@ public class LowerNIST2019Estimate
 			);
 
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (z, 2, 0, 1.) + " => " +
+				"\t|" + FormatUtil.FormatDouble (z, 1, 2, 1.) + " => " +
 				FormatUtil.FormatDouble (lowerSFixed.weierstrassLimit (z), 1, 10, 1.) + " | " +
 				FormatUtil.FormatDouble (lowerSFixed.nonDimensional (z), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (lowerSFixed.evaluate (z), 3, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (lowerEulerIntegral.evaluate (s), 3, 10, 1.) + " ||"
+				FormatUtil.FormatDouble (lowerSFixed.evaluate (z), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (lowerEulerIntegral.evaluate (s), 1, 10, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------||");
 
 		System.out.println();
 	}
@@ -169,21 +169,33 @@ public class LowerNIST2019Estimate
 		double s = 6.;
 		int[] termCountArray =
 		{
-			199,
-			 99,
+			 39,
+			 79,
+			119
 		};
 		double[] zArray =
 		{
-			20.0,
-			18.0,
-			16.0,
-			14.0,
-			12.0,
-			10.0,
-			 8.0,
-			 6.0,
-			 4.0,
-			 2.0
+			1.00,
+			0.95,
+			0.90,
+			0.85,
+			0.80,
+			0.75,
+			0.70,
+			0.65,
+			0.60,
+			0.55,
+			0.50,
+			0.45,
+			0.40,
+			0.35,
+			0.30,
+			0.25,
+			0.20,
+			0.15,
+			0.10,
+			0.05,
+			0.01,
 		};
 
 		for (int termCount : termCountArray)
