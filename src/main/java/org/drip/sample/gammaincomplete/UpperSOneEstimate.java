@@ -1,5 +1,10 @@
 
-package org.drip.function.gammaincomplete;
+package org.drip.sample.gammaincomplete;
+
+import org.drip.function.gammaincomplete.UpperEulerIntegral;
+import org.drip.function.gammaincomplete.UpperSFixed;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +69,9 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>UpperSRecursiveSeries</i> implements Upper Incomplete Gamma Expansion Series Recursively, starting with
- * s = 0. The References are:
+ * <i>UpperSOneEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the
+ * Weisstein Series for the Special Case of s=1, where the Closed Form is the Exponential Decay Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -84,7 +90,7 @@ package org.drip.function.gammaincomplete;
  *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
  * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
@@ -97,91 +103,96 @@ package org.drip.function.gammaincomplete;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md">Estimates of Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperSRecursiveSeries
+public class UpperSOneEstimate
 {
 
-	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 * 
-	 * @param termCount Count of the Number of Terms
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 */
-
-	public static final org.drip.numerical.estimation.R1ToR1Series NIST2019 (
-		final int termCount)
+	private static final void EulerIntegralComparison (
+		final int termCount,
+		final double[] zArray)
+		throws Exception
 	{
-		try
+		UpperSFixed upperSZero = UpperSFixed.Weisstein (1);
+
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		System.out.println ("\t|               TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
+
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		System.out.println ("\t|    L - R:                                             ||");
+
+		System.out.println ("\t|            - Series Estimate                          ||");
+
+		System.out.println ("\t|            - Exponential Decay Estimate               ||");
+
+		System.out.println ("\t|            - Integral Estimate                        ||");
+
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		for (double z : zArray)
 		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+			UpperEulerIntegral upperEulerIntegral = new UpperEulerIntegral (
+				null,
+				z
+			);
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
-			}
-
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.function.gammaincomplete.UpperSRecursiveSeriesTerm.NIST2019(),
-				false,
-				termWeightMap
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (upperEulerIntegral.evaluate (1.), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.exp (-z), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (upperSZero.evaluate (z), 1, 10, 1.) + " ||"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		System.out.println();
 	}
 
-	/**
-	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 * 
-	 * @param termCount Count of the Number of Terms
-	 * @param n n
-	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
-	 */
-
-	public static final org.drip.numerical.estimation.R1ToR1Series NIST2019 (
-		final int termCount,
-		final int n)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		try
+		EnvManager.InitEnv ("");
+
+		int termCount = 50;
+		double[] zArray =
 		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+			5.00,
+			4.75,
+			4.50,
+			4.25,
+			4.00,
+			3.75,
+			3.50,
+			3.25,
+			3.00,
+			2.75,
+			2.50,
+			2.25,
+			2.00,
+			1.75,
+			1.50,
+			1.25,
+			1.00,
+			0.75,
+			0.50,
+			0.25,
+			0.00,
+		};
 
-			for (int termIndex = 0; termIndex < termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
-			}
+		EulerIntegralComparison (
+			termCount,
+			zArray
+		);
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.function.gammaincomplete.UpperSRecursiveSeriesTerm.NIST2019 (n),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

@@ -69,8 +69,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>UpperSZeroEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the NIST
- * (2019) Series for s = 0. The References are:
+ * <i>UpperSWeissteinEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the
+ * Weisstein Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -109,29 +109,18 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperSZeroEstimate
+public class UpperSWeissteinEstimate
 {
 
 	private static final void EulerIntegralComparison (
 		final int termCount,
+		final int s,
 		final double[] zArray)
 		throws Exception
 	{
-		UpperSFixed upperSZero = UpperSFixed.NIST2019 (termCount);
+		UpperSFixed upperSZero = UpperSFixed.Weisstein (s);
 
-		System.out.println ("\t|---------------------------------------||");
-
-		System.out.println ("\t|           TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
-
-		System.out.println ("\t|---------------------------------------||");
-
-		System.out.println ("\t|    L - R:                             ||");
-
-		System.out.println ("\t|            - Series Estimate          ||");
-
-		System.out.println ("\t|            - Integral Estimate        ||");
-
-		System.out.println ("\t|---------------------------------------||");
+		String display = "\t|" + FormatUtil.FormatDouble (s, 1, 0, 1.) + " => ";
 
 		for (double z : zArray)
 		{
@@ -140,16 +129,12 @@ public class UpperSZeroEstimate
 				z
 			);
 
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (z, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (upperSZero.evaluate (z), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (upperEulerIntegral.evaluate (0.), 1, 10, 1.) + " ||"
-			);
+			display = display + " [" +
+				FormatUtil.FormatDouble (upperEulerIntegral.evaluate (s), 3, 4, 1.) + " -" +
+				FormatUtil.FormatDouble (upperSZero.evaluate (z), 3, 4, 1.) + "] |";
 		}
 
-		System.out.println ("\t|---------------------------------------||");
-
-		System.out.println();
+		System.out.println (display + "|");
 	}
 
 	public static final void main (
@@ -158,36 +143,50 @@ public class UpperSZeroEstimate
 	{
 		EnvManager.InitEnv ("");
 
+		int[] sArray = 
+		{
+			 1,
+			 2,
+			 3,
+			 4,
+			 5,
+			 6,
+			 7,
+		};
 		int termCount = 50;
 		double[] zArray =
 		{
-			1.00,
-			0.95,
-			0.90,
-			0.85,
-			0.80,
-			0.75,
-			0.70,
-			0.65,
-			0.60,
-			0.55,
-			0.50,
-			0.45,
-			0.40,
-			0.35,
-			0.30,
-			0.25,
-			0.20,
-			0.15,
-			0.10,
-			0.05,
-			0.01,
+			8.00,
+			6.00,
+			4.00,
+			2.00,
+			0.00,
 		};
 
-		EulerIntegralComparison (
-			termCount,
-			zArray
-		);
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|          ");
+
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|    L - R:                                                                                                              ||");
+
+		System.out.println ("\t|            - Integral Estimate                                                                                         ||");
+
+		System.out.println ("\t|            - Series Estimate                                                                                           ||");
+
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
+
+		for (int s : sArray)
+		{
+			EulerIntegralComparison (
+				termCount,
+				s,
+				zArray
+			);
+		}
+
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

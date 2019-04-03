@@ -64,8 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>UpperSRecursiveSeriesTerm</i> implements a Single Term in the Upper Incomplete Gamma Expansion Series
- * for Recursive s, starting from s = 0. The References are:
+ * <i>UpperSFixedSeries</i> implements Upper Incomplete Gamma Expansion Series, starting with s = 0 if
+ * Recurrence is employed. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,39 +104,38 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperSRecursiveSeriesTerm
+public class UpperSFixedSeries
 {
 
 	/**
-	 * Construct the NIST (2019) Limit Version of the Upper s = 0 Term
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
 	 * 
-	 * @return The NIST (2019) Limit Version of the Upper s = 0 Term 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019()
+	public static final org.drip.numerical.estimation.R1ToR1Series NIST2019 (
+		final int termCount)
 	{
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
-				@Override public double value (
-					final int order,
-					final double z)
-					throws java.lang.Exception
-				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("UpperSRecursiveSeriesTerm::NIST2019::value => Invalid Inputs");
-					}
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-					return 0. == z ? 0. : (order % 2 == 0 ? 1. : -1.) * java.lang.Math.exp (
-						order * java.lang.Math.log (z) - java.lang.Math.log (order) -
-						new org.drip.function.stirling.NemesLogGamma (null).evaluate (order)
-					);
-				}
-			};
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.gammaincomplete.UpperSFixedSeriesTerm.NIST2019(),
+				false,
+				termWeightMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -147,43 +146,72 @@ public class UpperSRecursiveSeriesTerm
 	}
 
 	/**
-	 * Construct the NIST (2019) Limit Version of the Upper s = -n Term
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Recursive Limit Series
 	 * 
 	 * @param n n
 	 * 
-	 * @return The NIST (2019) Limit Version of the Upper s = -n Term 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> NIST (2019) Recursive Limit Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019 (
+	public static final org.drip.numerical.estimation.R1ToR1Series NIST2019Recursive (
 		final int n)
 	{
-		if (0 >= n)
-		{
-			return null;
-		}
-
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
-				@Override public double value (
-					final int order,
-					final double z)
-					throws java.lang.Exception
-				{
-					if (0 > order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("UpperSRecursiveSeriesTerm::NIST2019::value => Invalid Inputs");
-					}
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-					return 0. == z || n <= order + 1 ? 0. : (order % 2 == 0 ? 1. : -1.) * java.lang.Math.exp (
-						order * java.lang.Math.log (z) +
-						new org.drip.function.stirling.NemesLogGamma (null).evaluate (n - order - 1)
-					);
-				}
-			};
+			for (int termIndex = 0; termIndex < n; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.gammaincomplete.UpperSFixedSeriesTerm.NIST2019 (n),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weisstein Limit Series
+	 * 
+	 * @param s s
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Weisstein Limit Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series Weisstein (
+		final int s)
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 0; termIndex < s; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.gammaincomplete.UpperSFixedSeriesTerm.Weisstein (s),
+				false,
+				termWeightMap
+			);
 		}
 		catch (java.lang.Exception e)
 		{

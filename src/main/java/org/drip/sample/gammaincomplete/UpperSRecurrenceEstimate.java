@@ -1,8 +1,8 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.function.gammaincomplete.UpperSRecursive;
-import org.drip.function.gammaincomplete.UpperSRecursiveSeries;
+import org.drip.function.gammaincomplete.UpperSFixed;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -68,8 +68,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>UpperSRecursiveEstimate</i> illustrates the Recursive Estimation of the Upper Incomplete Gamma Function
- * using the NIST (2019) Series. The References are:
+ * <i>UpperSRecurrenceEstimate</i> illustrates the Recurrence-Based Estimation of the Upper Incomplete Gamma
+ * Function using the NIST (2019) Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -108,7 +108,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperSRecursiveEstimate
+public class UpperSRecurrenceEstimate
 {
 
 	public static final void main (
@@ -117,30 +117,14 @@ public class UpperSRecursiveEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int termCount = 50;
-		int recursiveTermCount = 50;
+		int termCount = 20;
 		double[] zArray =
 		{
 			1.00,
-			0.95,
-			0.90,
-			0.85,
 			0.80,
-			0.75,
-			0.70,
-			0.65,
 			0.60,
-			0.55,
-			0.50,
-			0.45,
 			0.40,
-			0.35,
-			0.30,
-			0.25,
 			0.20,
-			0.15,
-			0.10,
-			0.05,
 			0.01,
 		};
 		int[] nArray =
@@ -150,18 +134,56 @@ public class UpperSRecursiveEstimate
 			3,
 			4,
 			5,
+			6,
+			7,
+			8,
+			9,
 		};
 
-		UpperSRecursive upperSRecursive = new UpperSRecursive (
-			UpperSRecursiveSeries.NIST2019 (termCount),
-			null
-		);
+		System.out.println
+			("\t|----------------------------------------------------------------------------------------------------------------||");
 
-		upperSRecursive.evaluateRecursive (
-			nArray[0],
-			zArray[0],
-			recursiveTermCount
-		);
+		System.out.println
+			("\t|                  RECURRENCE ESTIMATION OF UPPER INCOMEPLETE GAMMA FUNCTION - NEGATIVE VALUES                   ||");
+
+		System.out.println
+			("\t|----------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println
+			("\t|        L -> R:                                                                                                 ||");
+
+		System.out.println
+			("\t|                - (Negative) n                                                                                  ||");
+
+		System.out.println
+			("\t|                - Upper Incomplete Gamma for for z = 0 -> 1                                                     ||");
+
+		System.out.println
+			("\t|----------------------------------------------------------------------------------------------------------------||");
+
+		for (int n : nArray)
+		{
+			String display = "\t| n ->" + FormatUtil.FormatDouble (n, 1, 0, 1.) + " => ";
+
+			UpperSFixed upperSRecursive = UpperSFixed.NIST2019 (termCount);
+
+			for (double z : zArray)
+			{
+				display = display + " " +
+					FormatUtil.FormatDouble (
+						upperSRecursive.evaluateRecursive (
+							n,
+							z
+						), 6, 6, 1.
+					)
+				+ " |";
+			}
+
+			System.out.println (display + "|");
+		}
+
+		System.out.println
+			("\t|----------------------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

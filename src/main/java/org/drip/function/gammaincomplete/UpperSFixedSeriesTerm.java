@@ -64,8 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>UpperSRecursive</i> implements the Upper Incomplete Gamma Function using Recursive Power Series,
- * starting with s = 0. The References are:
+ * <i>UpperSFixedSeriesTerm</i> implements a Single Term in the Upper Incomplete Gamma Expansion Series for a
+ * Fixed s, starting from s = 0 if Recurrence is used. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,94 +104,142 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperSRecursive extends org.drip.numerical.estimation.R1ToR1Estimator
+public class UpperSFixedSeriesTerm
 {
 
 	/**
-	 * The Euler-Mascheroni Constant
+	 * Construct the NIST (2019) Limit Version of the Upper s = 0 Term
+	 * 
+	 * @return The NIST (2019) Limit Version of the Upper s = 0 Term 
 	 */
 
-	public static final double EULER_MASCHERONI = 0.57721566490153286060;
-
-	private org.drip.numerical.estimation.R1ToR1Series _upperSZeroSeries = null;
-
-	/**
-	 * UpperSRecursive Constructor
-	 * 
-	 * @param upperSZeroSeries R<sup>1</sup> To R<sup>1</sup> Lower S Fixed Limit Series
-	 * @param dc Differential Control
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public UpperSRecursive (
-		final org.drip.numerical.estimation.R1ToR1Series upperSZeroSeries,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019()
 	{
-		super (dc);
-
-		_upperSZeroSeries = upperSZeroSeries;
-	}
-
-	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
-		final double x)
-	{
-		return null == _upperSZeroSeries ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_upperSZeroSeries.termWeightMap(),
-			_upperSZeroSeries
-		);
-	}
-
-	@Override public double evaluate (
-		final double z)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z <= 0.)
+		try
 		{
-			throw new java.lang.Exception ("UpperSRecursive::evaluate => Invalid Inputs");
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("UpperSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
+					}
+
+					return 0. == z ? (0 == order ? 1. : 0.) : (order % 2 == 0 ? 1. : -1.) *
+						java.lang.Math.exp (
+							order * java.lang.Math.log (z) - java.lang.Math.log (order) -
+							new org.drip.function.stirling.NemesLogGamma (null).evaluate (order + 1)
+						);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		return -1. * (EULER_MASCHERONI + java.lang.Math.log (z) + _upperSZeroSeries.evaluate (z));
+		return null;
 	}
 
 	/**
-	 * Evaluate the Upper Gamma (-n, z) recursively from n = 0
+	 * Construct the NIST (2019) Limit Version of the Upper s = -n Term
 	 * 
 	 * @param n n
-	 * @param z z
-	 * @param recursiveTermCount Number of Recursive Series Terms
 	 * 
-	 * @return Upper Gamma (-n, z)
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The NIST (2019) Limit Version of the Upper s = -n Term 
 	 */
 
-	public double evaluateRecursive (
-		final int n,
-		final double z,
-		final int recursiveTermCount)
-		throws java.lang.Exception
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019 (
+		final int n)
 	{
-		org.drip.numerical.estimation.R1ToR1Series upperSRecursiveSeries =
-			org.drip.function.gammaincomplete.UpperSRecursiveSeries.NIST2019 (
-				recursiveTermCount,
-				n
-			);
-
-		if (null == upperSRecursiveSeries)
+		if (0 >= n)
 		{
-			throw new java.lang.Exception ("UpperSRecursive::evaluateRecursive => Invalid Inputs");
+			return null;
 		}
 
-		return (
-			upperSRecursiveSeries.evaluate (z) * java.lang.Math.exp (n * java.lang.Math.log (z) - z) +
-			evaluate (z)
-		) / new org.drip.function.stirling.NemesLogGamma (null).evaluate (n);
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 > order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("UpperSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
+					}
+
+					return 0. == z || n <= order + 1 ? 0. : (order % 2 == 0 ? 1. : -1.) *
+						java.lang.Math.exp (
+							order * java.lang.Math.log (z) +
+							new org.drip.function.stirling.NemesLogGamma (null).evaluate (n - order)
+						);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Weisstein Version of the Upper s > 0 Term
+	 * 
+	 * @param s s
+	 * 
+	 * @return The Weisstein Version of the Upper s > 0 Term 
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Weisstein (
+		final int s)
+	{
+		if (0 >= s)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 > order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("UpperSFixedSeriesTerm::Weisstein::value => Invalid Inputs");
+					}
+
+					return 0. == z ? (0 == order ? 1. : 0.) : java.lang.Math.pow (
+						z,
+						order
+					) * java.lang.Math.exp (-z) /
+						new org.drip.function.stirling.NemesGamma (null).evaluate (order + 1);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
