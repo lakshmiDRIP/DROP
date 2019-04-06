@@ -196,11 +196,11 @@ public class UpperSFixedSeriesTerm
 	}
 
 	/**
-	 * Construct the Weisstein Version of the Upper s > 0 Term
+	 * Construct the Weisstein Version of the Upper s .gt. 0 Term
 	 * 
 	 * @param s s
 	 * 
-	 * @return The Weisstein Version of the Upper s > 0 Term 
+	 * @return The Weisstein Version of the Upper s .gt. 0 Term 
 	 */
 
 	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Weisstein (

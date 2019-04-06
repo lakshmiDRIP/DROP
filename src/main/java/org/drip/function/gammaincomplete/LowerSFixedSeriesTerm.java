@@ -134,10 +134,10 @@ public class LowerSFixedSeriesTerm
 							("LowerSFixedSeriesTerm::WeierstrassLimit::value => Invalid Inputs");
 					}
 
-					return java.lang.Math.pow (
+					return (0 == z ? 1. : java.lang.Math.pow (
 						z,
 						order
-					) / new org.drip.function.stirling.NemesGamma (null).evaluate (s + order + 1);
+					)) / new org.drip.function.stirling.NemesGamma (null).evaluate (s + order + 1);
 				}
 			};
 		}

@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.18.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.20.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -164,6 +164,32 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Description
 	* Example
 	* Implementation
+	* References
+ * Gamma Function
+	* Introduction and Background
+	* Motivation
+	* Main Definition
+	* Alternate Definitions: Euler’s Definition as an Infinite Product
+	* Weierstrass Definition
+	* In Terms of Generalized Laguerre Polynomials
+	* General Properties
+	* Inequalities
+	* Stirling’s Formula
+	* Residues
+	* Minima
+	* Integral Representations
+	* Fourier Series Expansion
+	* Raabe’s Formula
+	* Pi Function
+	* Relation to Other Functions
+	* Particular Values
+	* The Log-Gamma Function
+	* The Log-Gamma Function Properties
+	* Integration Over Log-Gamma
+	* Approximations
+	* Applications – Integration Problems
+	* Calculating Products
+	* Analytic Number Theory
 	* References
  * Stirling's Approximation
 	* Introduction and Overview

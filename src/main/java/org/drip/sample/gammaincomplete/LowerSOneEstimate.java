@@ -1,7 +1,7 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.function.gammaincomplete.UpperEulerIntegral;
+import org.drip.function.gammaincomplete.LowerEulerIntegral;
 import org.drip.function.gammaincomplete.UpperSFixed;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -69,8 +69,9 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>UpperSWeissteinEstimate</i> illustrates the Estimation of the Upper Incomplete Gamma Function using the
- * Weisstein Series. The References are:
+ * <i>LowerSOneEstimate</i> illustrates the Estimation of the Lower Incomplete Gamma Function using the
+ * Weisstein Series for the Special Case of s=1, where the Closed Form is the Exponential Decay Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -109,32 +110,50 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperSWeissteinEstimate
+public class LowerSOneEstimate
 {
 
 	private static final void EulerIntegralComparison (
 		final int termCount,
-		final int s,
 		final double[] zArray)
 		throws Exception
 	{
-		UpperSFixed upperSZero = UpperSFixed.Weisstein (s);
+		UpperSFixed upperSZero = UpperSFixed.Weisstein (1);
 
-		String display = "\t|" + FormatUtil.FormatDouble (s, 1, 0, 1.) + " => ";
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		System.out.println ("\t|               TERM COUNT => " + FormatUtil.FormatDouble (termCount, 2, 0, 1.));
+
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		System.out.println ("\t|    L - R:                                             ||");
+
+		System.out.println ("\t|            - Series Estimate                          ||");
+
+		System.out.println ("\t|            - Exponential Decay Estimate               ||");
+
+		System.out.println ("\t|            - Integral Estimate                        ||");
+
+		System.out.println ("\t|-------------------------------------------------------||");
 
 		for (double z : zArray)
 		{
-			UpperEulerIntegral upperEulerIntegral = new UpperEulerIntegral (
+			LowerEulerIntegral lowerEulerIntegral = new LowerEulerIntegral (
 				null,
 				z
 			);
 
-			display = display + " [" +
-				FormatUtil.FormatDouble (upperEulerIntegral.evaluate (s), 3, 4, 1.) + " -" +
-				FormatUtil.FormatDouble (upperSZero.evaluate (z), 3, 4, 1.) + "] |";
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (lowerEulerIntegral.evaluate (1.), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (1. - Math.exp (-z), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (1. - upperSZero.evaluate (z), 1, 10, 1.) + " ||"
+			);
 		}
 
-		System.out.println (display + "|");
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		System.out.println();
 	}
 
 	public static final void main (
@@ -143,50 +162,36 @@ public class UpperSWeissteinEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int[] sArray = 
-		{
-			 1,
-			 2,
-			 3,
-			 4,
-			 5,
-			 6,
-			 7,
-		};
 		int termCount = 50;
 		double[] zArray =
 		{
-			8.00,
-			6.00,
+			5.00,
+			4.75,
+			4.50,
+			4.25,
 			4.00,
+			3.75,
+			3.50,
+			3.25,
+			3.00,
+			2.75,
+			2.50,
+			2.25,
 			2.00,
+			1.75,
+			1.50,
+			1.25,
+			1.00,
+			0.75,
+			0.50,
+			0.25,
 			0.00,
 		};
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|          ");
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|    L - R:                                                                                                              ||");
-
-		System.out.println ("\t|            - Integral Estimate                                                                                         ||");
-
-		System.out.println ("\t|            - Series Estimate                                                                                           ||");
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
-
-		for (int s : sArray)
-		{
-			EulerIntegralComparison (
-				termCount,
-				s,
-				zArray
-			);
-		}
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------||");
+		EulerIntegralComparison (
+			termCount,
+			zArray
+		);
 
 		EnvManager.TerminateEnv();
 	}

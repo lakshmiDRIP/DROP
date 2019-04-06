@@ -161,9 +161,11 @@ public class LowerEulerIntegral extends org.drip.function.definition.R1ToR1
 					final double t)
 					throws java.lang.Exception
 				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
+					return java.lang.Double.isInfinite (t) ? 0. : (0 == t ? 1. :
+						java.lang.Math.pow (
+							t,
+							s - 1
+						)
 					) * java.lang.Math.exp (-t);
 				}
 			}

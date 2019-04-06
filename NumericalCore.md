@@ -141,6 +141,7 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Numerical Integration
  * Gaussian Quadrature
  * Gauss-Kronrod Quadrature
+ * Gamma Function
  * Stirling's Approximation
  * Lanczos Approximation
  * Incomplete Gamma Function
