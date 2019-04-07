@@ -2,6 +2,7 @@
 package org.drip.sample.gamma;
 
 import org.drip.function.gamma.EulerIntegralSecondKind;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -97,27 +98,48 @@ import org.drip.service.env.EnvManager;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/stirling/README.md&quot;&gt;Stirling Variants Gamma/Factorial Implementation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md&quot;&gt;Integrand Estimates of Gamma Functions&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L107">public class EulerIntegralEstimate</span>
+<span class="nc" id="L108">public class EulerIntegralEstimate</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L114">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L115">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L116">		EulerIntegralSecondKind gammaFunction = new EulerIntegralSecondKind (null);</span>
+<span class="nc" id="L117">		EulerIntegralSecondKind gammaFunction = new EulerIntegralSecondKind (null);</span>
 
-<span class="nc" id="L118">		System.out.println (gammaFunction.evaluate (5.));</span>
+<span class="nc" id="L119">		double[] sArray =</span>
+		{
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+		};
 
-<span class="nc" id="L120">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L121">	}</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (double s : sArray)</span>
+		{
+<span class="nc" id="L136">			System.out.println (</span>
+<span class="nc" id="L137">				&quot;\t|&quot; + FormatUtil.FormatDouble (s, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L138">				FormatUtil.FormatDouble (gammaFunction.evaluate (s), 3, 2, 1.) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L142">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L143">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

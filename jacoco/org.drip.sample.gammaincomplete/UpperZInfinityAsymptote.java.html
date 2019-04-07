@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpperZInfinityAsymptote.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gammaincomplete</a> &gt; <span class="el_source">UpperZInfinityAsymptote.java</span></div><h1>UpperZInfinityAsymptote.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.gammaincomplete;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.gammaincomplete.LimitAsymptote;
+import org.drip.function.gammaincomplete.UpperEulerIntegral;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;UpperZInfinityAsymptote&lt;/i&gt; illustrates the Asymptotic Behavior of the Upper Incomplete Gamma Function
+ * in the Neighborhood of z = Infinity using the Weierstrass Limit Series. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				&lt;i&gt;Applicable Algebra in Engineering, Communications, and &lt;/i&gt; &lt;b&gt;1 (2)&lt;/b&gt; 149-165
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				&lt;i&gt;Tables of Integrals, Series, and Products&lt;/i&gt; &lt;b&gt;Academic Press&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e&lt;sup&gt;iÏ€x&lt;/sup&gt; x&lt;sup&gt;(1/x)&lt;/sup&gt; between 1 and âˆž
+ *				https://arxiv.org/pdf/0912.3844.pdf &lt;b&gt;arXiV&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md&quot;&gt;Estimates of Incomplete Gamma Functions&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L113">public class UpperZInfinityAsymptote</span>
+{
+
+	private static final void WeierstrassAsymptoteComparison (
+		final int termCount,
+		final double s,
+		final double[] zArray)
+		throws Exception
+	{
+<span class="nc" id="L122">		String display = &quot;\t|&quot; + FormatUtil.FormatDouble (s, 1, 2, 1.) + &quot; =&gt;&quot;;</span>
+
+<span class="nc" id="L124">		R1ToR1 zInfinityLimitAsymptote = LimitAsymptote.Upper().zInfinity (s);</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (double z : zArray)</span>
+		{
+<span class="nc" id="L128">			UpperEulerIntegral upperEulerIntegral = new UpperEulerIntegral (</span>
+				null,
+				z
+			);
+
+<span class="nc" id="L133">			display = display + &quot; [&quot; +</span>
+<span class="nc" id="L134">				FormatUtil.FormatDouble (upperEulerIntegral.evaluate (s), 1, 10, 1.) + &quot; -&quot; +</span>
+<span class="nc" id="L135">				FormatUtil.FormatDouble (zInfinityLimitAsymptote.evaluate (z), 1, 10, 1.) + &quot;] |&quot;;</span>
+		}
+
+<span class="nc" id="L138">		System.out.println (display + &quot;|&quot;);</span>
+<span class="nc" id="L139">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L145">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L147">		int termCount = 50;</span>
+<span class="nc" id="L148">		double[] sArray =</span>
+		{
+			0.01,
+			0.50,
+			1.00,
+			1.50,
+			2.00,
+			2.50,
+			3.00,
+			3.50,
+			4.00,
+			4.50,
+			5.00,
+			5.50,
+			6.00,
+		};
+<span class="nc" id="L164">		double[] zArray =</span>
+		{
+			10.,
+			20.,
+			30.
+		};
+
+<span class="nc" id="L171">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L173">		System.out.println (&quot;\t|                                   UPPER INCOMPLETE ASYMPTOTE BEHAVIOR                                    ||&quot;);</span>
+
+<span class="nc" id="L175">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L177">		System.out.println (&quot;\t|    L -&gt; R:                                                                                               ||&quot;);</span>
+
+<span class="nc" id="L179">		System.out.println (&quot;\t|            - s                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L181">		System.out.println (&quot;\t|            - Weierstrass vs. Asymptote Lower Incomplete Gamma                                            ||&quot;);</span>
+
+<span class="nc" id="L183">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (double s : sArray)</span>
+		{
+<span class="nc" id="L187">			WeierstrassAsymptoteComparison (</span>
+				termCount,
+				s,
+				zArray
+			);
+		}
+
+<span class="nc" id="L194">		System.out.println (&quot;\t|----------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L196">		System.out.println();</span>
+
+<span class="nc" id="L198">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L199">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
