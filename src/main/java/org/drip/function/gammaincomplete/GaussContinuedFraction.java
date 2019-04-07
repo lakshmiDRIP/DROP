@@ -64,8 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>UpperEulerIntegral</i> implements the Euler's Second Kind Integral Version of the Upper Incomplete
- * Gamma Function. The References are:
+ * <i>GaussContinuedFraction</i> implements the Gauss Continued Fraction Based Estimates for the Lower/Upper
+ * Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,68 +104,176 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperEulerIntegral extends org.drip.function.definition.R1ToR1
+public class GaussContinuedFraction
 {
-	private double _limit = java.lang.Double.NaN;
+
+	private static final double Lower (
+		final double z,
+		final double s,
+		final int k,
+		final int n)
+	{
+		if (k == n)
+		{
+			return 0;
+		}
+
+		double bottom = s + 2 * k + 1 + ((k + 1) * z) / Lower (
+			z,
+			s,
+			k + 1,
+			n
+		);
+
+		return s + 2 * k - (((k + s) * z) / bottom);
+	}
+
+	private static final double UpperAbramowitzStegun2007 (
+		final double z,
+		final double s,
+		final int k,
+		final int n)
+	{
+		if (k == n)
+		{
+			return 0;
+		}
+
+		double bottom = 1 + (k + 1.) / UpperAbramowitzStegun2007 (
+			z,
+			s,
+			k + 1,
+			n
+		);
+
+		return z + (k + 1 - s) / bottom;
+	}
+
+	private static final double Upper (
+		final double z,
+		final double s,
+		final int k,
+		final int n)
+	{
+		if (k == n)
+		{
+			return 0;
+		}
+
+		return 1. + 2. * k + z - s + (k + 1.) * ((s - k - 1.) / Upper (
+			z,
+			s,
+			k + 1,
+			n
+		));
+	}
 
 	/**
-	 * UpperEulerIntegral Constructor
+	 * Compute the Lower Incomplete Gamma Function using the Gauss Continued Fraction
 	 * 
-	 * @param dc The Derivative Control
-	 * @param limit The Lower Limit
+	 * @param z z
+	 * @param s s
+	 * @param n Count of the Number of Terms
+	 * 
+	 * @return The Lower Incomplete Gamma Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public UpperEulerIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc,
-		final double limit)
+	public static final double Lower (
+		final double z,
+		final double s,
+		final int n)
 		throws java.lang.Exception
 	{
-		super (dc);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_limit = limit))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (s) ||
+			0 == n)
 		{
-			throw new java.lang.Exception ("UpperEulerIntegral Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("GaussContinuedFraction::Lower => Invalid Inputs");
 		}
+
+		return java.lang.Math.pow (
+			z,
+			s
+		) * java.lang.Math.exp (-z) / Lower (
+			z,
+			s,
+			0,
+			n
+		);
 	}
 
 	/**
-	 * Retrieve the Lower Limit
+	 * Compute the Upper Incomplete Gamma Function using the Abramowitz-Stegun Gauss Continued Fraction
 	 * 
-	 * @return The Lower Limit
+	 * @param z z
+	 * @param s s
+	 * @param n Count of the Number of Terms
+	 * 
+	 * @return The Upper Incomplete Gamma Function using the Abramowitz-Stegun Gauss Continued Fraction
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double limit()
-	{
-		return _limit;
-	}
-
-	@Override public double evaluate (
-		final double s)
+	public static final double UpperAbramowitzStegun2007 (
+		final double z,
+		final double s,
+		final int n)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (s) ||
+			0 == n)
 		{
-			throw new java.lang.Exception ("UpperEulerIntegral::evaluate => Invalid Inputs");
+			throw new java.lang.Exception
+				("GaussContinuedFraction::UpperAbramowitzStegun2007 => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			_limit,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
-				}
-			}
+		return java.lang.Math.pow (
+			z,
+			s
+		) * java.lang.Math.exp (-z) / UpperAbramowitzStegun2007 (
+			z,
+			s,
+			0,
+			n
+		);
+	}
+
+	/**
+	 * Compute the Upper Incomplete Gamma Function using Gauss Continued Fraction
+	 * 
+	 * @param z z
+	 * @param s s
+	 * @param n Count of the Number of Terms
+	 * 
+	 * @return The Upper Incomplete Gamma Function using Gauss Continued Fraction
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Upper (
+		final double z,
+		final double s,
+		final int n)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (s) ||
+			0 == n)
+		{
+			throw new java.lang.Exception ("GaussContinuedFraction::Upper => Invalid Inputs");
+		}
+
+		return java.lang.Math.pow (
+			z,
+			s
+		) * java.lang.Math.exp (-z) / Upper (
+			z,
+			s,
+			0,
+			n
 		);
 	}
 }

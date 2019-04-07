@@ -134,7 +134,6 @@ public class LowerEulerIntegralEstimate
 			6.5,
 			7.0,
 		};
-
 		double[] limitArray =
 		{
 			20.0,

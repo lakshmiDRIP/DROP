@@ -650,4 +650,35 @@ public class NumberUtil {
 
 		return doubleFactorial;
 	}
+
+	/**
+	 * Compute the Pochhammer Symbol for the Specified s and k
+	 * 
+	 * @param s s
+	 * @param k k
+	 * 
+	 * @return Pochhammer Symbol
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double PochhammerSymbol (
+		final double s,
+		final int k)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 > k)
+		{
+			throw new java.lang.Exception ("NumberUtil::PochhammerSymbol => Invalid Inputs");
+		}
+
+		double pochhammerSymbol = s;
+
+		for (int index = 1; index < k; ++index)
+		{
+			pochhammerSymbol = pochhammerSymbol * (s + index);
+		}
+
+		return pochhammerSymbol;
+	}
 }

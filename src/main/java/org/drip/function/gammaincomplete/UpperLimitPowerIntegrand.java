@@ -64,8 +64,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>UpperEulerIntegral</i> implements the Euler's Second Kind Integral Version of the Upper Incomplete
- * Gamma Function. The References are:
+ * <i>UpperLimitPowerIntegrand</i> contains the Integrand that is the Product of the Limit raised to a Power
+ * Exponent and the corresponding Upper Incomplete Gamma, for a given s. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,68 +104,114 @@ package org.drip.function.gammaincomplete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperEulerIntegral extends org.drip.function.definition.R1ToR1
+public class UpperLimitPowerIntegrand extends org.drip.function.definition.R1ToR1
 {
-	private double _limit = java.lang.Double.NaN;
+	private double _s = java.lang.Double.NaN;
+	private double _limitExponent = java.lang.Double.NaN;
 
 	/**
-	 * UpperEulerIntegral Constructor
+	 * UpperLimitPowerIntegrand Constructor
 	 * 
 	 * @param dc The Derivative Control
-	 * @param limit The Lower Limit
+	 * @param s s
+	 * @param limitExponent The Limit Power Exponent
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public UpperEulerIntegral (
+	public UpperLimitPowerIntegrand (
 		final org.drip.numerical.differentiation.DerivativeControl dc,
-		final double limit)
+		final double s,
+		final double limitExponent)
 		throws java.lang.Exception
 	{
 		super (dc);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_limit = limit))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_s = s) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_limitExponent = limitExponent) ||
+				1. >= _limitExponent)
 		{
-			throw new java.lang.Exception ("UpperEulerIntegral Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("UpperLimitPowerIntegrand Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Lower Limit
+	 * Retrieve s
 	 * 
-	 * @return The Lower Limit
+	 * @return s
 	 */
 
-	public double limit()
+	public double s()
 	{
-		return _limit;
+		return _s;
+	}
+
+	/**
+	 * Retrieve the Limit Power Exponent
+	 * 
+	 * @return The Limit Power Exponent
+	 */
+
+	public double limitExponent()
+	{
+		return _limitExponent;
 	}
 
 	@Override public double evaluate (
-		final double s)
+		final double z)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
-			throw new java.lang.Exception ("UpperEulerIntegral::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("UpperLimitPowerIntegrand::evaluate => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			_limit,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
+		return java.lang.Math.pow (
+			z,
+			_limitExponent - 1.
+		) * new org.drip.function.gammaincomplete.UpperEulerIntegral (
+			null,
+			z
+		).evaluate (_s);
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 antiDerivative()
+	{
+		return new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
 			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
+					throw new java.lang.Exception
+						("UpperLimitPowerIntegrand::antiDerivative::evaluate => Invalid Inputs");
 				}
+
+				org.drip.function.gammaincomplete.UpperEulerIntegral upperEulerIntegral = new
+					org.drip.function.gammaincomplete.UpperEulerIntegral (
+						null,
+						z
+					);
+
+				return (
+					java.lang.Math.pow (
+						z,
+						_limitExponent
+					) * upperEulerIntegral.evaluate (_s) - upperEulerIntegral.evaluate (_s + _limitExponent)
+				) / _limitExponent;
 			}
-		);
+		};
+	}
+
+	@Override public double integrate (
+		final double left,
+		final double right)
+		throws java.lang.Exception
+	{
+		org.drip.function.definition.R1ToR1 antiDerivative = antiDerivative();
+
+		return antiDerivative.evaluate (right) - antiDerivative.evaluate (left);
 	}
 }

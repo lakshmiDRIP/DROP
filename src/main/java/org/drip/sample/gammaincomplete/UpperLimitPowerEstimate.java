@@ -1,5 +1,10 @@
 
-package org.drip.function.gammaincomplete;
+package org.drip.sample.gammaincomplete;
+
+import org.drip.function.gammaincomplete.UpperLimitPowerIntegrand;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +69,8 @@ package org.drip.function.gammaincomplete;
  */
 
 /**
- * <i>UpperEulerIntegral</i> implements the Euler's Second Kind Integral Version of the Upper Incomplete
- * Gamma Function. The References are:
+ * <i>UpperLimitPowerEstimate</i> illustrates the Estimation of the Integral of the Product of the Limit
+ * Raised to an Exponent and the corresponding Upper Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -84,7 +89,7 @@ package org.drip.function.gammaincomplete;
  *				https://arxiv.org/pdf/0912.3844.pdf <b>arXiV</b>
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
  * 				https://dlmf.nist.gov/8
  * 		</li>
  * 		<li>
@@ -97,75 +102,126 @@ package org.drip.function.gammaincomplete;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md">Estimates of Incomplete Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperEulerIntegral extends org.drip.function.definition.R1ToR1
+public class UpperLimitPowerEstimate
 {
-	private double _limit = java.lang.Double.NaN;
 
-	/**
-	 * UpperEulerIntegral Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 * @param limit The Lower Limit
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public UpperEulerIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc,
-		final double limit)
-		throws java.lang.Exception
+	private static final void QuadratureComparison (
+		final UpperLimitPowerIntegrand upperLimitPowerIntegrand,
+		final double s,
+		final double limitExponent,
+		final double[] leftArray,
+		final double[] rightArray,
+		final int intermediatePointCount)
+		throws Exception
 	{
-		super (dc);
+		System.out.println ("\t|--------------------------------------------------------------------------------------------------------------------------||");
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_limit = limit))
+		System.out.println ("\t|                                         QUADRATURE COMPARISON - s => " + FormatUtil.FormatDouble (s, 1, 1, 1.) + " | Exponent => " + FormatUtil.FormatDouble (limitExponent, 1, 1, 1.));
+
+		System.out.println ("\t|--------------------------------------------------------------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                                                                           ||");
+
+		System.out.println ("\t|                - s                                                                                                       ||");
+
+		System.out.println ("\t|                - [Comparison Pair]                                                                                       ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------------------------------------------------------------||");
+
+		for (double left : leftArray)
 		{
-			throw new java.lang.Exception ("UpperEulerIntegral Constructor => Invalid Inputs");
-		}
-	}
+			String display = "\t|" + FormatUtil.FormatDouble (left, 1, 1, 1.) + " => ";
 
-	/**
-	 * Retrieve the Lower Limit
-	 * 
-	 * @return The Lower Limit
-	 */
-
-	public double limit()
-	{
-		return _limit;
-	}
-
-	@Override public double evaluate (
-		final double s)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-		{
-			throw new java.lang.Exception ("UpperEulerIntegral::evaluate => Invalid Inputs");
-		}
-
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			_limit,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
+			for (double right : rightArray)
 			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
-				}
+				display = display + "[" + FormatUtil.FormatDouble (
+					NewtonCotesQuadratureGenerator.Zero_PlusOne (
+						left,
+						right,
+						intermediatePointCount
+					).integrate (upperLimitPowerIntegrand), 4, 2, 1.
+				) + " - " + FormatUtil.FormatDouble (
+					upperLimitPowerIntegrand.integrate (
+						left,
+						right
+					), 4, 2, 1.
+				) + "] |";
 			}
-		);
+
+			System.out.println (display + "|");
+		}
+
+		System.out.println ("\t|--------------------------------------------------------------------------------------------------------------------------||");
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int intermediatePointCount = 100;
+		double[] leftArray =
+		{
+			1.,
+			2.,
+			3.,
+			4.,
+			5.,
+		};
+		double[] rightArray =
+		{
+			10.,
+			15.,
+			20.,
+			25.,
+			30.,
+		};
+		double[] sArray =
+		{
+			3.,
+			4.,
+			5.,
+			6.,
+			7.,
+		};
+		double[] limitExponentArray =
+		{
+			3.,
+			4.,
+			5.,
+			6.,
+			7.,
+		};
+
+		for (double s : sArray)
+		{
+			for (double limitExponent : limitExponentArray)
+			{
+				UpperLimitPowerIntegrand upperLimitPowerIntegrand = new UpperLimitPowerIntegrand (
+					null,
+					s,
+					limitExponent
+				);
+
+				QuadratureComparison (
+					upperLimitPowerIntegrand,
+					s,
+					limitExponent,
+					leftArray,
+					rightArray,
+					intermediatePointCount
+				);
+			}
+		}
+
+		EnvManager.TerminateEnv();
 	}
 }
