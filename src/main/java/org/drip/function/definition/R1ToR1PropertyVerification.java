@@ -7,9 +7,6 @@ package org.drip.function.definition;
 
 /*!
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
@@ -68,7 +65,8 @@ package org.drip.function.definition;
  */
 
 /**
- * <i>SizedVector</i> holds the R<sup>d</sup> Unit Direction Vector along with its Magnitude.
+ * <i>R1ToR1PropertyVerification</i> evaluates the Specified Pair of R<sup>1</sup> To R<sup>1</sup>-
+ * Functions, and holds the Verification Status.
  *
  *	<br><br>
  *  <ul>
@@ -81,88 +79,67 @@ package org.drip.function.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SizedVector {
-	private double _dblMagnitude = java.lang.Double.NaN;
-	private org.drip.function.definition.UnitVector _uv = null;
+public class R1ToR1PropertyVerification
+{
+	private boolean _verified = false;
+	private double _lValue = java.lang.Double.NaN;
+	private double _rValue = java.lang.Double.NaN;
 
 	/**
-	 * Construct an Instance of the Sized Vector from the Input Array
+	 * R1ToR1PropertyVerification Constructor
 	 * 
-	 * @param adbl The Input Double Array
+	 * @param lValue LHS Value
+	 * @param rValue RHS Value
+	 * @param verified TRUE - The Verification Passes
 	 * 
-	 * @return The Sized Vector Instance
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final SizedVector Standard (
-		final double[] adbl)
-	{
-		if (null == adbl) return null;
-
-		double dblModulus = 0.;
-		int iDimension = adbl.length;
-		double[] adblComponent = 0 == iDimension ? null : new double[iDimension];
-
-		if (0 == iDimension) return null;
-
-		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adbl[i])) return null;
-
-			dblModulus += adbl[i] * adbl[i];
-		}
-
-		if (0. == dblModulus) return null;
-
-		dblModulus = java.lang.Math.sqrt (dblModulus);
-
-		for (int i = 0; i < iDimension; ++i)
-			adblComponent[i] = adbl[i] / dblModulus;
-
-		try {
-			return new SizedVector (new org.drip.function.definition.UnitVector (adblComponent), dblModulus);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * SizedVector Constructor
-	 * 
-	 * @param uv The Unit Vector
-	 * @param dblMagnitude Magnitude of the Vector
-	 * 
-	 * @throws java.lang.Exception Thriwn if the Inputs are Invalid
-	 */
-
-	public SizedVector (
-		final org.drip.function.definition.UnitVector uv,
-		final double dblMagnitude)
+	public R1ToR1PropertyVerification (
+		final double lValue,
+		final double rValue,
+		final boolean verified)
 		throws java.lang.Exception
 	{
-		if (null == (_uv = uv) || !org.drip.numerical.common.NumberUtil.IsValid (_dblMagnitude = dblMagnitude))
-			throw new java.lang.Exception ("SizedVector Constructor => Invalid Inputs");
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lValue = lValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_rValue = rValue))
+		{
+			throw new java.lang.Exception ("R1ToR1PropertyVerification Constructor => Invalid Inputs");
+		}
+
+		_verified = verified;
 	}
 
 	/**
-	 * Retrieve the Unit Direction Vector
+	 * Retrieve the LHS Value
 	 * 
-	 * @return The Unit Vector Direction Instance
+	 * @return The LHS Value
 	 */
 
-	public org.drip.function.definition.UnitVector direction()
+	public double lValue()
 	{
-		return _uv;
+		return _lValue;
 	}
 
 	/**
-	 * Retrieve the Vector Magnitude
+	 * Retrieve the RHS Value
 	 * 
-	 * @return The Vector Magnitude
+	 * @return The RHS Value
 	 */
 
-	public double magnitude()
+	public double rValue()
 	{
-		return _dblMagnitude;
+		return _rValue;
+	}
+
+	/**
+	 * Retrieve the Verification Flag
+	 * 
+	 * @return The Verification Flag
+	 */
+
+	public boolean verified()
+	{
+		return _verified;
 	}
 }
