@@ -2,6 +2,10 @@
 package org.drip.sample.gamma;
 
 import org.drip.function.gamma.EulerIntegralSecondKind;
+import org.drip.function.stirling.Factorial;
+import org.drip.function.stirling.NemesGamma;
+import org.drip.function.stirling.RamanujanGamma;
+import org.drip.function.stirling.WindschitlTothGamma;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -114,30 +118,82 @@ public class EulerIntegralEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		EulerIntegralSecondKind gammaFunction = new EulerIntegralSecondKind (null);
-
 		double[] sArray =
 		{
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
+			0.05,
+			0.10,
+			0.15,
+			0.20,
+			0.25,
+			0.30,
+			0.35,
+			0.40,
+			0.45,
+			0.50,
+			0.60,
+			0.70,
+			0.80,
+			0.90,
+			1.00,
+			1.50,
+			2.00,
+			2.50,
+			3.00,
+			3.50,
+			4.00,
+			4.50,
+			5.00,
+			5.50,
+			6.00,
+			6.50,
+			7.00,
 		};
+
+		Factorial factorial = new Factorial (null);
+
+		NemesGamma nemesGamma = new NemesGamma (null);
+
+		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
+
+		WindschitlTothGamma windschitlTothGamma = new WindschitlTothGamma (null);
+
+		EulerIntegralSecondKind eulerIntegralSecondKind = new EulerIntegralSecondKind (null);
+
+		System.out.println ("\t|---------------------------------------------------------||");
+
+		System.out.println ("\t|                 GAMMA FUNCTION ESTIMATE                 ||");
+
+		System.out.println ("\t|---------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                          ||");
+
+		System.out.println ("\t|                - s                                      ||");
+
+		System.out.println ("\t|                - Windschitl-Toth                        ||");
+
+		System.out.println ("\t|                - Nemes                                  ||");
+
+		System.out.println ("\t|                - Ramanujan                              ||");
+
+		System.out.println ("\t|                - Stirling                               ||");
+
+		System.out.println ("\t|                - Euler Integral Second Kind             ||");
+
+		System.out.println ("\t|---------------------------------------------------------||");
 
 		for (double s : sArray)
 		{
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (gammaFunction.evaluate (s), 3, 2, 1.) + " ||"
+				FormatUtil.FormatDouble (windschitlTothGamma.evaluate (s), 3, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (nemesGamma.evaluate (s), 3, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (ramanujanGamma.evaluate (s), 3, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (factorial.evaluate (s), 3, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (eulerIntegralSecondKind.evaluate (s), 3, 2, 1.) + " ||"
 			);
 		}
+
+		System.out.println ("\t|---------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

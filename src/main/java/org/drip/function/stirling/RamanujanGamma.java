@@ -118,13 +118,15 @@ public class RamanujanGamma extends org.drip.numerical.estimation.R1ToR1Estimato
 	}
 
 	@Override public double evaluate (
-		final double x)
+		final double z)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. > x)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
 		{
 			throw new java.lang.Exception ("RamanujanGamma::evaluate => Invalid Inputs");
 		}
+
+		double x = z - 1.;
 
 		return java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (
 			x / java.lang.Math.E,

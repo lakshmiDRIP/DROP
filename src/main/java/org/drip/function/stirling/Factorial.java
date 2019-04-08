@@ -134,9 +134,9 @@ public class Factorial extends org.drip.numerical.estimation.R1ToR1Estimator
 			throw new java.lang.Exception ("Stirling::deMoivreTerm => Invalid Inputs");
 		}
 
-		return java.lang.Math.exp (-x) * java.lang.Math.pow (
-			x,
-			x + 0.5
+		return java.lang.Math.exp (1. - x) * java.lang.Math.pow (
+			x - 1.,
+			x - 0.5
 		);
 	}
 
