@@ -64,8 +64,8 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>ReimannZetaProperty</i> verifies the Specified Properties of the Riemann Zeta Function. The References
- * are:
+ * <i>InfiniteProductSeriesTerm</i> implements a Single Term in the Infinite Product Series for Log Gamma
+ * Estimation. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,66 +101,75 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReimannZetaProperty
+public class InfiniteProductSeriesTerm
 {
 
 	/**
-	 * Construct the Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 * Construct the Euler Infinite Product Series Term for Log Gamma
 	 * 
-	 * @return The Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 * @return The Euler Infinite Product Series Term for Log Gamma
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property MeromorphicAnalyticContinuation()
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Euler()
 	{
 		try
 		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
 				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
-
-						return new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * s)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (s)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * s
-							);
+						throw new java.lang.Exception
+							("InfiniteProductSeriesTerm::Euler::value => Invalid Inputs");
 					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
+
+					return 0. == z ? 0. : z * java.lang.Math.log (1. + (1. / order)) -
+						java.lang.Math.log (1. + (z / order));
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Weierstrass Infinite Product Series Term for Gamma
+	 * 
+	 * @return The Weierstrass Infinite Product Series Term for Gamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Weierstrass()
+	{
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
 				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
-
-						double sReflection = 1. - s;
-
-						return
-							new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * sReflection)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (sReflection)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * sReflection
-							);
+						throw new java.lang.Exception
+							("InfiniteProductSeriesTerm::Euler::value => Invalid Inputs");
 					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
+
+					double zOverOrder = z / order;
+
+					return 0. == z ? 0. : zOverOrder - java.lang.Math.log (1. + zOverOrder);
+				}
+			};
 		}
 		catch (java.lang.Exception e)
 		{

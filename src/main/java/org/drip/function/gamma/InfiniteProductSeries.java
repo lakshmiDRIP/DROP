@@ -64,8 +64,8 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>ReimannZetaProperty</i> verifies the Specified Properties of the Riemann Zeta Function. The References
- * are:
+ * <i>InfiniteProductSeries</i> implements Several Infinite Product Series for Log Gamma Estimation. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,65 +101,75 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReimannZetaProperty
+public class InfiniteProductSeries
 {
 
 	/**
-	 * Construct the Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Infinite Euler Product Series
 	 * 
-	 * @return The Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Euler Product Series
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property MeromorphicAnalyticContinuation()
+	public static final org.drip.numerical.estimation.R1ToR1Series Euler (
+		final int termCount)
 	{
 		try
 		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-						return new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * s)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (s)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * s
-							);
-					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
 
-						double sReflection = 1. - s;
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.gamma.InfiniteProductSeriesTerm.Euler(),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-						return
-							new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * sReflection)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (sReflection)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * sReflection
-							);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Infinite Weierstrass Product Series
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Weierstrass Product Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series Weierstrass (
+		final int termCount)
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.function.gamma.InfiniteProductSeriesTerm.Weierstrass(),
+				false,
+				termWeightMap
 			);
 		}
 		catch (java.lang.Exception e)

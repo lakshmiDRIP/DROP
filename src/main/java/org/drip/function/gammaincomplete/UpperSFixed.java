@@ -106,17 +106,10 @@ package org.drip.function.gammaincomplete;
 
 public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-
-	/**
-	 * The Euler-Mascheroni Constant
-	 */
-
-	public static final double EULER_MASCHERONI = 0.57721566490153286060;
-
 	private org.drip.numerical.estimation.R1ToR1Series _upperSFixedSeries = null;
 
 	/**
-	 * Retrieve the NIST (2019) Version of Upper Incomplete Gamma s = 0 Estimator
+	 * Compute the NIST (2019) Version of Upper Incomplete Gamma s = 0 Estimator
 	 * 
 	 * @param termCount Number of Terms in the Estimation
 	 * 
@@ -142,8 +135,8 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 						throw new java.lang.Exception ("UpperSFixed::evaluate => Invalid Inputs");
 					}
 
-					return -1. * (EULER_MASCHERONI + java.lang.Math.log (z) + upperSFixedSeries().evaluate
-						(z));
+					return -1. * (org.drip.function.gamma.InfiniteProduct.EULER_MASCHERONI +
+						java.lang.Math.log (z) + upperSFixedSeries().evaluate (z));
 				}
 			};
 		}
@@ -156,7 +149,7 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	}
 
 	/**
-	 * Retrieve the Weisstein Version of Upper Incomplete Gamma Estimator
+	 * Compute the Weisstein Version of Upper Incomplete Gamma Estimator
 	 * 
 	 * @param s s
 	 * 

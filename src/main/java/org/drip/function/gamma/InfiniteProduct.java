@@ -64,7 +64,7 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>ReimannZetaProperty</i> verifies the Specified Properties of the Riemann Zeta Function. The References
+ * <i>InfiniteProduct</i> estimates Log Gamma using Gamma Infinite Product Series Estimator. The References
  * are:
  * 
  * <br><br>
@@ -101,66 +101,47 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReimannZetaProperty
+public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
 	/**
-	 * Construct the Meromorphic Analytic Continuation Property of the Riemann Zeta Function
-	 * 
-	 * @return The Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 * The Euler-Mascheroni Constant
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property MeromorphicAnalyticContinuation()
+	public static final double EULER_MASCHERONI = 0.57721566490153286060;
+
+	private org.drip.numerical.estimation.R1ToR1Series _infiniteProductSeries = null;
+
+	/**
+	 * Compute the Euler Infinite Product Series of Log Gamma Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Euler Infinite Product Series of Log Gamma Estimator
+	 */
+
+	public static final InfiniteProduct Euler (
+		final int termCount)
 	{
 		try
 		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
+			return new InfiniteProduct (
+				org.drip.function.gamma.InfiniteProductSeries.Euler (termCount),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
 				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z <= 0.)
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
-
-						return new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * s)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (s)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * s
-							);
+						throw new java.lang.Exception ("InfiniteProduct::Euler::evaluate => Invalid Inputs");
 					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
 
-						double sReflection = 1. - s;
-
-						return
-							new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * sReflection)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (sReflection)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * sReflection
-							);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
+					return infiniteProductSeries().evaluate (z) - java.lang.Math.log (z);
+				}
+			};
 		}
 		catch (java.lang.Exception e)
 		{
@@ -168,5 +149,90 @@ public class ReimannZetaProperty
 		}
 
 		return null;
+	}
+
+	/**
+	 * Compute the Weierstrass Infinite Product Series of Log Gamma Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Weierstrass Infinite Product Series of Log Gamma Estimator
+	 */
+
+	public static final InfiniteProduct Weierstrass (
+		final int termCount)
+	{
+		try
+		{
+			return new InfiniteProduct (
+				org.drip.function.gamma.InfiniteProductSeries.Weierstrass (termCount),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z <= 0.)
+					{
+						throw new java.lang.Exception
+							("InfiniteProduct::Weierstrass::evaluate => Invalid Inputs");
+					}
+
+					return infiniteProductSeries().evaluate (z) - java.lang.Math.log (z) -
+						z * EULER_MASCHERONI;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * InfiniteProduct Constructor
+	 * 
+	 * @param infiniteProductSeries R<sup>1</sup> To R<sup>1</sup> Infinite Product Series
+	 * @param dc Differential Control
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	protected InfiniteProduct (
+		final org.drip.numerical.estimation.R1ToR1Series infiniteProductSeries,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
+		throws java.lang.Exception
+	{
+		super (dc);
+
+		_infiniteProductSeries = infiniteProductSeries;
+	}
+
+	/**
+	 * Retrieve the Underlying Infinite Product Series
+	 * 
+	 * @return The Underlying Infinite Product Series
+	 */
+
+	public org.drip.numerical.estimation.R1ToR1Series infiniteProductSeries()
+	{
+		return _infiniteProductSeries;
+	}
+
+	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+		final double x)
+	{
+		return null == _infiniteProductSeries ? seriesEstimate (
+			x,
+			null,
+			null
+		) : seriesEstimate (
+			x,
+			_infiniteProductSeries.termWeightMap(),
+			_infiniteProductSeries
+		);
 	}
 }

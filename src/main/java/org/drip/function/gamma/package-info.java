@@ -1,6 +1,6 @@
 
 /**
- * Quadrature Estimate of Gamma Function
+ * Estimation Techniques for Gamma Function
  *
  * @author Lakshmi Krishnamurthy
  */

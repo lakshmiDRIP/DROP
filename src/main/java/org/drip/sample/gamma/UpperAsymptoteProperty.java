@@ -1,5 +1,11 @@
 
-package org.drip.function.gamma;
+package org.drip.sample.gamma;
+
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.gamma.Property;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +70,8 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>ReimannZetaProperty</i> verifies the Specified Properties of the Riemann Zeta Function. The References
- * are:
+ * <i>UpperAsymptoteProperty</i> demonstrates the Verification of the Upper Asymptote Property of the Gamma
+ * Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -94,79 +100,75 @@ package org.drip.function.gamma;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReimannZetaProperty
+public class UpperAsymptoteProperty
 {
 
-	/**
-	 * Construct the Meromorphic Analytic Continuation Property of the Riemann Zeta Function
-	 * 
-	 * @return The Meromorphic Analytic Continuation Property of the Riemann Zeta Function
-	 */
-
-	public static final org.drip.function.definition.R1ToR1Property MeromorphicAnalyticContinuation()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		try
+		EnvManager.InitEnv ("");
+
+		double alpha = 1.0;
+		double[] sArray =
 		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
+			 5,
+			10,
+			15,
+			20,
+			25,
+			30,
+			35,
+			40,
+			45,
+			50,
+			60,
+			70,
+			80,
+			90,
+		};
 
-						return new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * s)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (s)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * s
-							);
-					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate => Invalid Inputs");
-						}
+		R1ToR1Property asymptoticUpperApproximateProperty = Property.AsymptoticUpperApproximate (alpha);
 
-						double sReflection = 1. - s;
+		System.out.println ("\t|---------------------------------------------------||");
 
-						return
-							new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * sReflection)
-							* new org.drip.function.gamma.RiemannZeta (null).evaluate (sReflection)
-							* java.lang.Math.pow (
-								java.lang.Math.PI,
-								-0.5 * sReflection
-							);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+		System.out.println ("\t|      GAMMA FUNCTION UPPER ASYMPTOTE PROPERTY      ||");
+
+		System.out.println ("\t|---------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                    ||");
+
+		System.out.println ("\t|                - s                                ||");
+
+		System.out.println ("\t|                - LHS Value                        ||");
+
+		System.out.println ("\t|                - RHS Value                        ||");
+
+		System.out.println ("\t|                - Verification Success?            ||");
+
+		System.out.println ("\t|---------------------------------------------------||");
+
+		for (double s : sArray)
+		{
+			R1ToR1PropertyVerification propertyVerification = asymptoticUpperApproximateProperty.verify (s);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (s, 2, 2, 1.) + " => " +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 3, 10, 1.) + " | " +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 3, 10, 1.) + " | " +
+					propertyVerification.verified() + " ||"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+		System.out.println ("\t|---------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

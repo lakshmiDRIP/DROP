@@ -1,11 +1,9 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.EulerIntegralSecondKind;
-import org.drip.function.stirling.Factorial;
-import org.drip.function.stirling.NemesGamma;
-import org.drip.function.stirling.RamanujanGamma;
-import org.drip.function.stirling.WindschitlTothGamma;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.gamma.Property;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -72,8 +70,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>EulerIntegralEstimate</i> demonstrates the Quadrature Estimate of the Gamma Function Based on the Euler
- * Integral. The References are:
+ * <i>ReflectionProperty</i> demonstrates the Verification of the Reflection Property of the Gamma Function.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -109,7 +107,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerIntegralEstimate
+public class ReflectionProperty
 {
 
 	public static final void main (
@@ -134,66 +132,41 @@ public class EulerIntegralEstimate
 			0.70,
 			0.80,
 			0.90,
-			1.00,
-			1.50,
-			2.00,
-			2.50,
-			3.00,
-			3.50,
-			4.00,
-			4.50,
-			5.00,
-			5.50,
-			6.00,
-			6.50,
-			7.00,
 		};
 
-		Factorial factorial = new Factorial (null);
+		R1ToR1Property reflectionProperty = Property.ReflectionFormula();
 
-		NemesGamma nemesGamma = new NemesGamma (null);
+		System.out.println ("\t|----------------------------------------------||");
 
-		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
+		System.out.println ("\t|      GAMMA FUNCTION REFLECTION PROPERTY      ||");
 
-		WindschitlTothGamma windschitlTothGamma = new WindschitlTothGamma (null);
+		System.out.println ("\t|----------------------------------------------||");
 
-		EulerIntegralSecondKind eulerIntegralSecondKind = new EulerIntegralSecondKind (null);
+		System.out.println ("\t|        L -> R:                               ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|                - s                           ||");
 
-		System.out.println ("\t|                 GAMMA FUNCTION ESTIMATE                 ||");
+		System.out.println ("\t|                - LHS Value                   ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|                - RHS Value                   ||");
 
-		System.out.println ("\t|        L -> R:                                          ||");
+		System.out.println ("\t|                - Verification Success?       ||");
 
-		System.out.println ("\t|                - s                                      ||");
-
-		System.out.println ("\t|                - Windschitl-Toth                        ||");
-
-		System.out.println ("\t|                - Nemes                                  ||");
-
-		System.out.println ("\t|                - Ramanujan                              ||");
-
-		System.out.println ("\t|                - Stirling                               ||");
-
-		System.out.println ("\t|                - Euler Integral Second Kind             ||");
-
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|----------------------------------------------||");
 
 		for (double s : sArray)
 		{
+			R1ToR1PropertyVerification propertyVerification = reflectionProperty.verify (s);
+
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (windschitlTothGamma.evaluate (s), 3, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (nemesGamma.evaluate (s), 3, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (ramanujanGamma.evaluate (s), 3, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (factorial.evaluate (s), 3, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (eulerIntegralSecondKind.evaluate (s), 3, 2, 1.) + " ||"
+				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " =>" +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 2, 10, 1.) + " |" +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 2, 10, 1.) + " | " +
+					propertyVerification.verified() + " ||"
 			);
 		}
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|----------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
