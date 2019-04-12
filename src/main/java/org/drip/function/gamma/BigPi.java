@@ -64,8 +64,7 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>EulerIntegralSecondKind</i> implements the Euler's Second Kind Integral Version of the Gamma Function.
- * The References are:
+ * <i>BigPi</i> implements the Gaussian Big Pi Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,111 +100,33 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
+public abstract class BigPi extends org.drip.function.definition.R1ToR1
 {
+	private org.drip.function.gamma.EulerIntegralSecondKind _gamma = null;
+
 
 	/**
-	 * EulerIntegralSecondKind Constructor
+	 * BigPi Constructor
 	 * 
 	 * @param dc The Derivative Control
 	 */
 
-	public EulerIntegralSecondKind (
+	public BigPi (
 		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
 		super (dc);
+
+		_gamma = new org.drip.function.gamma.EulerIntegralSecondKind (dc);
 	}
 
-	@Override public double evaluate (
-		final double s)
-		throws java.lang.Exception
+	/**
+	 * Retrieve the Underlying Gamma Function
+	 * 
+	 * @return The Underlying Gamma Function
+	 */
+
+	public org.drip.function.gamma.EulerIntegralSecondKind gamma()
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
-		}
-
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
-				}
-			}
-		);
-	}
-
-	@Override public double derivative (
-		final double z,
-		final int order)
-		throws java.lang.Exception
-	{
-		if (1 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
-		}
-
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
-						t,
-						z - 1
-					) * java.lang.Math.exp (-t) * java.lang.Math.pow (
-						java.lang.Math.log (t),
-						order
-					);
-				}
-			}
-		);
-	}
-
-	@Override public org.drip.function.definition.PoleResidue poleResidue (
-		final double x)
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
-			return null;
-		}
-
-		int n = (int) x;
-
-		if (0 != (x - n) || x >= 0.)
-		{
-			return org.drip.function.definition.PoleResidue.NotAPole (x);
-		}
-
-		n = -n;
-
-		try
-		{
-			return new org.drip.function.definition.PoleResidue (
-				x,
-				(1 == n % 2 ? -1. : 1.) / new org.drip.function.stirling.NemesGamma (null).evaluate (n + 1.)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _gamma;
 	}
 }

@@ -388,4 +388,18 @@ public abstract class R1ToR1 {
 	{
 		return null;
 	}
+
+	/**
+	 * Compute the Residue if the Variate is a Pole
+	 * 
+	 * @param x Variate
+	 * 
+	 * @return The Residue if the Variate is a Pole
+	 */
+
+	public org.drip.function.definition.PoleResidue poleResidue (
+		final double x)
+	{
+		return null;
+	}
 }

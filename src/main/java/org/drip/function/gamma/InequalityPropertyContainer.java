@@ -293,10 +293,263 @@ public class InequalityPropertyContainer
 						return eulerIntegralSecondKind.derivative (
 							x,
 							1
-						) / weierStrass.evaluate (x);
+						) - weierStrass.evaluate (x);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Logarithmically Convex Inequality Verifier
+	 * 
+	 * @return The Logarithmically Convex Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property LogarithmicConvex()
+	{
+		final org.drip.function.gamma.InfiniteProduct weierStrass =
+			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::LogarithmicConvex::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.log (
+							new org.drip.function.gamma.EulerIntegralSecondKind (null).derivative (
+								z,
+								2
+							)
+						) + weierStrass.evaluate (z);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::LogarithmicConvex::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.log (
+							new org.drip.function.gamma.EulerIntegralSecondKind (null).derivative (
+								z,
+								1
+							)
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Gautschi Left Inequality Verifier
+	 * 
+	 * @param s s
+	 * 
+	 * @return The Gautschi Left Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property GautschiLeft (
+		final double s)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. >= s || 1. <= s)
+		{
+			return null;
+		}
+
+		final org.drip.function.gamma.InfiniteProduct weierStrass =
+			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::GautschiLeft::evaluate => Invalid Inputs");
+						}
+
+						return (1. - s) * java.lang.Math.log (z);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::GautschiLeft::evaluate => Invalid Inputs");
+						}
+
+						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Gautschi Right Inequality Verifier
+	 * 
+	 * @param s s
+	 * 
+	 * @return The Gautschi Right Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property GautschiRight (
+		final double s)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. >= s || 1. <= s)
+		{
+			return null;
+		}
+
+		final org.drip.function.gamma.InfiniteProduct weierStrass =
+			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::GautschiRight::evaluate => Invalid Inputs");
+						}
+
+						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::GautschiRight::evaluate => Invalid Inputs");
+						}
+
+						return (1. - s) * java.lang.Math.log (z + 1.);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Jensen Multi-Point Interpolant Convexity Verification
+	 * 
+	 * @param multiPoint2D Multi-Point 2D
+	 * 
+	 * @return Jensen Multi-Point Interpolant Convexity Verification
+	 */
+
+	public static final org.drip.function.definition.R1ToR1PropertyVerification JensenMultiPointInterpolant (
+		final org.drip.numerical.common.Array2D multiPoint2D)
+	{
+		if (null == multiPoint2D)
+		{
+			return null;
+		}
+
+		final org.drip.function.gamma.InfiniteProduct weierStrass =
+			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+
+		double[] xArray = multiPoint2D.x();
+
+		double[] aArray = multiPoint2D.y();
+
+		double interpolantDenominator = 0.;
+		double interpolantNumerator = 0.;
+		int count = aArray.length;
+		double rValue = 0.;
+
+		for (int index = 0; index < count; ++index)
+		{
+			interpolantNumerator = interpolantNumerator + aArray[index] * xArray[index];
+			interpolantDenominator = interpolantDenominator + aArray[index];
+		}
+
+		double interpolantDenominatorInverse = 1. / interpolantDenominator;
+
+		try
+		{
+			double lValue = weierStrass.evaluate (interpolantNumerator* interpolantDenominatorInverse);
+
+			for (int index = 0; index < count; ++index)
+			{
+				rValue = rValue + aArray[index] * weierStrass.evaluate (xArray[index]);
+			}
+
+			return new org.drip.function.definition.R1ToR1PropertyVerification (
+				lValue,
+				rValue = rValue * interpolantDenominatorInverse,
+				lValue <= rValue
 			);
 		}
 		catch (java.lang.Exception e)

@@ -1,5 +1,11 @@
 
-package org.drip.function.gamma;
+package org.drip.sample.gamma;
+
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.gamma.InequalityPropertyContainer;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +70,8 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>EulerIntegralSecondKind</i> implements the Euler's Second Kind Integral Version of the Gamma Function.
- * The References are:
+ * <i>LogarithmicConvexProperty</i> demonstrates the Verification of the Logarithmic Convex Property of the
+ * Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -94,118 +100,86 @@ package org.drip.function.gamma;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
+public class LogarithmicConvexProperty
 {
 
-	/**
-	 * EulerIntegralSecondKind Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public EulerIntegralSecondKind (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+	private static final void Verifier (
+		final double[] xArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		System.out.println ("\t|---------------------------------------------------||");
 
-	@Override public double evaluate (
-		final double s)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
+		System.out.println ("\t|  GAMMA FUNCTION LOGARITHMICALLY CONVEX PROPERTY   ||");
+
+		System.out.println ("\t|---------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                    ||");
+
+		System.out.println ("\t|                - t                                ||");
+
+		System.out.println ("\t|                - LHS Value                        ||");
+
+		System.out.println ("\t|                - RHS Value                        ||");
+
+		System.out.println ("\t|                - Verification Success?            ||");
+
+		System.out.println ("\t|---------------------------------------------------||");
+
+		R1ToR1Property logarithmicConvexProperty = InequalityPropertyContainer.LogarithmicConvex();
+
+		for (double x : xArray)
 		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
-		}
+			R1ToR1PropertyVerification propertyVerification = logarithmicConvexProperty.verify (x);
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
-				}
-			}
-		);
-	}
-
-	@Override public double derivative (
-		final double z,
-		final int order)
-		throws java.lang.Exception
-	{
-		if (1 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
-		}
-
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
-						t,
-						z - 1
-					) * java.lang.Math.exp (-t) * java.lang.Math.pow (
-						java.lang.Math.log (t),
-						order
-					);
-				}
-			}
-		);
-	}
-
-	@Override public org.drip.function.definition.PoleResidue poleResidue (
-		final double x)
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
-			return null;
-		}
-
-		int n = (int) x;
-
-		if (0 != (x - n) || x >= 0.)
-		{
-			return org.drip.function.definition.PoleResidue.NotAPole (x);
-		}
-
-		n = -n;
-
-		try
-		{
-			return new org.drip.function.definition.PoleResidue (
-				x,
-				(1 == n % 2 ? -1. : 1.) / new org.drip.function.stirling.NemesGamma (null).evaluate (n + 1.)
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (x, 2, 2, 1.) + " => " +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 3, 10, 1.) + " | " +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 3, 10, 1.) + " | " +
+					propertyVerification.verified() + " ||"
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+		System.out.println ("\t|---------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		double[] xArray =
+		{
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+			7.5,
+			8.0,
+			8.5,
+			9.0,
+			9.5,
+		};
+
+		Verifier (xArray);
+
+		EnvManager.TerminateEnv();
 	}
 }
