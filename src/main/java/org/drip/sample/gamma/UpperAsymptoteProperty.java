@@ -3,7 +3,7 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.Property;
+import org.drip.function.gamma.InequalityPropertyContainer;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -110,36 +110,19 @@ import org.drip.service.env.EnvManager;
 public class UpperAsymptoteProperty
 {
 
-	public static final void main (
-		final String[] argumentArray)
+	private static final void AsymptoticUpperApproximate (
+		final double alpha,
+		final double[] sArray)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
-
-		double alpha = 1.0;
-		double[] sArray =
-		{
-			 5,
-			10,
-			15,
-			20,
-			25,
-			30,
-			35,
-			40,
-			45,
-			50,
-			60,
-			70,
-			80,
-			90,
-		};
-
-		R1ToR1Property asymptoticUpperApproximateProperty = Property.AsymptoticUpperApproximate (alpha);
+		R1ToR1Property asymptoticUpperApproximateProperty =
+			InequalityPropertyContainer.AsymptoticUpperApproximate (alpha);
 
 		System.out.println ("\t|---------------------------------------------------||");
 
 		System.out.println ("\t|      GAMMA FUNCTION UPPER ASYMPTOTE PROPERTY      ||");
+
+		System.out.println ("\t|                  ALPHA = " + FormatUtil.FormatDouble (alpha, 1, 2, 1.));
 
 		System.out.println ("\t|---------------------------------------------------||");
 
@@ -168,6 +151,49 @@ public class UpperAsymptoteProperty
 		}
 
 		System.out.println ("\t|---------------------------------------------------||");
+
+		System.out.println();
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		double[] alphaArray =
+		{
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+		};
+		double[] sArray =
+		{
+			 5,
+			10,
+			15,
+			20,
+			25,
+			30,
+			35,
+			40,
+			45,
+			50,
+			60,
+			70,
+			80,
+			90,
+		};
+
+		for (double alpha : alphaArray)
+		{
+			AsymptoticUpperApproximate (
+				alpha,
+				sArray
+			);
+		}
 
 		EnvManager.TerminateEnv();
 	}

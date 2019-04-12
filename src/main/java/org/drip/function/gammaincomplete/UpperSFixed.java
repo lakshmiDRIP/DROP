@@ -135,7 +135,7 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 						throw new java.lang.Exception ("UpperSFixed::evaluate => Invalid Inputs");
 					}
 
-					return -1. * (org.drip.function.gamma.InfiniteProduct.EULER_MASCHERONI +
+					return -1. * (org.drip.function.gamma.Definitions.EULER_MASCHERONI +
 						java.lang.Math.log (z) + upperSFixedSeries().evaluate (z));
 				}
 			};

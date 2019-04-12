@@ -104,12 +104,6 @@ package org.drip.function.gamma;
 public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1ToR1Estimator
 {
 
-	/**
-	 * The Euler-Mascheroni Constant
-	 */
-
-	public static final double EULER_MASCHERONI = 0.57721566490153286060;
-
 	private org.drip.numerical.estimation.R1ToR1Series _infiniteProductSeries = null;
 
 	/**
@@ -180,7 +174,7 @@ public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1To
 					}
 
 					return infiniteProductSeries().evaluate (z) - java.lang.Math.log (z) -
-						z * EULER_MASCHERONI;
+						z * org.drip.function.gamma.Definitions.EULER_MASCHERONI;
 				}
 			};
 		}

@@ -143,4 +143,37 @@ public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
 			}
 		);
 	}
+
+	@Override public double derivative (
+		final double z,
+		final int order)
+		throws java.lang.Exception
+	{
+		if (1 > order ||
+			!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
+		}
+
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+			0.,
+			100
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
+						t,
+						z - 1
+					) * java.lang.Math.exp (-t) * java.lang.Math.pow (
+						java.lang.Math.log (t),
+						order
+					);
+				}
+			}
+		);
+	}
 }

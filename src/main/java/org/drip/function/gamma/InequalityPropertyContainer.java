@@ -64,7 +64,8 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>Property</i> verifies the Specified Properties of the Gamma Function. The References are:
+ * <i>InequalityPropertyContainer</i> contains the Verifiable Inequality Properties of the Gamma Function.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,197 +101,8 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Property
+public class InequalityPropertyContainer
 {
-
-	/**
-	 * Construct the Reflection Formula Verifier
-	 * 
-	 * @return The Reflection Formula Verifier
-	 */
-
-	public static final org.drip.function.definition.R1ToR1Property ReflectionFormula()
-	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("Property::ReflectionFormula::evaluate => Invalid Inputs");
-						}
-
-						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
-
-						return java.lang.Math.exp (weierstrassInfiniteProduct.evaluate (1. - s) +
-							weierstrassInfiniteProduct.evaluate (s));
-					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("Property::ReflectionFormula::evaluate => Invalid Inputs");
-						}
-
-						return java.lang.Math.PI / java.lang.Math.sin (java.lang.Math.PI * s);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the Duplication Formula Verifier
-	 * 
-	 * @return The Duplication Formula Verifier
-	 */
-
-	public static final org.drip.function.definition.R1ToR1Property DuplicationFormula()
-	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("Property::DuplicationFormula::evaluate => Invalid Inputs");
-						}
-
-						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
-
-						return weierstrassInfiniteProduct.evaluate (s) + weierstrassInfiniteProduct.evaluate
-							(s + 0.5);
-					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("Property::DuplicationFormula::evaluate => Invalid Inputs");
-						}
-
-						return (1. - 2. * s) * java.lang.Math.log (2.) +
-							0.5 * java.lang.Math.log (java.lang.Math.PI)  +
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate (2. * s);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct the Multiplication Formula Verifier
-	 * 
-	 * @param m m
-	 * 
-	 * @return The Multiplication Formula Verifier
-	 */
-
-	public static final org.drip.function.definition.R1ToR1Property MultiplicationFormula (
-		final int m)
-	{
-		if (1 >= m)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("Property::MultiplicationFormula::evaluate => Invalid Inputs");
-						}
-
-						double logGammaSum = 0.;
-
-						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
-
-						for (double i = 0; i < m; ++i)
-						{
-							logGammaSum = logGammaSum + weierstrassInfiniteProduct.evaluate (s + (i / m));
-						}
-
-						return logGammaSum;
-					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("Property::MultiplicationFormula::evaluate => Invalid Inputs");
-						}
-
-						return 0.5 * (m - 1.) * java.lang.Math.log (2. * java.lang.Math.PI) +
-							(0.5 - m * s) * java.lang.Math.log (m)  +
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate (m * s);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 
 	/**
 	 * Construct the Asymptotic Upper Approximate
@@ -321,7 +133,7 @@ public class Property
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("Property::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
+								("InequalityPropertyContainer::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
 						}
 
 						return org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate 
@@ -337,11 +149,151 @@ public class Property
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("Property::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
+								("InequalityPropertyContainer::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
 						}
 
 						return alpha * java.lang.Math.log (s)  +
 							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate (s);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Exponentially Convex Inequality Verifier
+	 * 
+	 * @param z1 z1
+	 * @param z2 z2
+	 * 
+	 * @return The Exponentially Convex Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ExponentiallyConvex (
+		final double z1,
+		final double z2)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z1) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (z2))
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LTE,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double t)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t || 1. < t)
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::ExponentiallyConvex::evaluate => Invalid Inputs");
+						}
+
+						return org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate
+							(t * z1 + (1. - t) * z2);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double t)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t || 1. < t)
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::ExponentiallyConvex::evaluate => Invalid Inputs");
+						}
+
+						org.drip.function.gamma.InfiniteProduct weierStrass =
+							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+
+						return t * weierStrass.evaluate (z1) + (1. - t) * weierStrass.evaluate (z2);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Spaced Point Convex Inequality Verifier
+	 * 
+	 * @param y y
+	 * 
+	 * @return The Spaced Point Convex Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SpacedPointConvex (
+		final double y)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (y))
+		{
+			return null;
+		}
+
+		final org.drip.function.gamma.InfiniteProduct weierStrass =
+			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+
+		try
+		{
+			final double logGammaY = weierStrass.evaluate (y);
+
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x >= y)
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::SpacedPointConvex::evaluate => Invalid Inputs");
+						}
+
+						return (logGammaY - weierStrass.evaluate (x)) / (y - x);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double x)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (x))
+						{
+							throw new java.lang.Exception
+								("InequalityPropertyContainer::SpacedPointConvex::evaluate => Invalid Inputs");
+						}
+
+						org.drip.function.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =
+							new org.drip.function.gamma.EulerIntegralSecondKind (null);
+
+						return eulerIntegralSecondKind.derivative (
+							x,
+							1
+						) / weierStrass.evaluate (x);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
