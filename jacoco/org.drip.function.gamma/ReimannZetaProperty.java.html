@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReimannZetaProperty.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.gamma</a> &gt; <span class="el_source">ReimannZetaProperty.java</span></div><h1>ReimannZetaProperty.java</h1><pre class="source lang-java linenums">
+package org.drip.function.gamma;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;ReimannZetaProperty&lt;/i&gt; verifies the Specified Properties of the Riemann Zeta Function. The References
+ * are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md&quot;&gt;Estimation Techniques for Gamma Function&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class ReimannZetaProperty</span>
+{
+
+	/**
+	 * Construct the Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 * 
+	 * @return The Meromorphic Analytic Continuation Property of the Riemann Zeta Function
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property MeromorphicAnalyticContinuation()
+	{
+		try
+		{
+<span class="nc" id="L117">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L120">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L125" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L127">							throw new java.lang.Exception</span>
+								(&quot;ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L131">						return new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * s)</span>
+<span class="nc" id="L132">							* new org.drip.function.gamma.RiemannZeta (null).evaluate (s)</span>
+<span class="nc" id="L133">							* java.lang.Math.pow (</span>
+								java.lang.Math.PI,
+								-0.5 * s
+							);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L140">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L145" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L147">							throw new java.lang.Exception</span>
+								(&quot;ReimannZetaProperty::MeromorphicAnalyticContinuation::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L151">						double sReflection = 1. - s;</span>
+
+<span class="nc" id="L153">						return</span>
+<span class="nc" id="L154">							new org.drip.function.stirling.WindschitlTothGamma (null).evaluate (0.5 * sReflection)</span>
+<span class="nc" id="L155">							* new org.drip.function.gamma.RiemannZeta (null).evaluate (sReflection)</span>
+<span class="nc" id="L156">							* java.lang.Math.pow (</span>
+								java.lang.Math.PI,
+								-0.5 * sReflection
+							);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L165">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L167">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L170">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

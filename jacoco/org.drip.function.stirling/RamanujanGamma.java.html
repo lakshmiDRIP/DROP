@@ -118,18 +118,20 @@ public class RamanujanGamma extends org.drip.numerical.estimation.R1ToR1Estimato
 <span class="nc" id="L118">	}</span>
 
 	@Override public double evaluate (
-		final double x)
+		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt; z)</span>
 		{
 <span class="nc" id="L126">			throw new java.lang.Exception (&quot;RamanujanGamma::evaluate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L129">		return java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (</span>
+<span class="nc" id="L129">		double x = z - 1.;</span>
+
+<span class="nc" id="L131">		return java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (</span>
 			x / java.lang.Math.E,
 			x
-<span class="nc" id="L132">		) * java.lang.Math.pow (</span>
+<span class="nc" id="L134">		) * java.lang.Math.pow (</span>
 			8. * x * x * x + 4. * x * x + x + (1./ 30.),
 			1. / 6.
 		);
@@ -138,38 +140,38 @@ public class RamanujanGamma extends org.drip.numerical.estimation.R1ToR1Estimato
 	@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
 		final double x)
 	{
-<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
 		{
-<span class="nc" id="L143">			return null;</span>
+<span class="nc" id="L145">			return null;</span>
 		}
 
-<span class="nc" id="L146">		double exponentialComponent = java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (</span>
+<span class="nc" id="L148">		double exponentialComponent = java.lang.Math.sqrt (java.lang.Math.PI) * java.lang.Math.pow (</span>
 			x / java.lang.Math.E,
 			x
 		);
 
-<span class="nc" id="L151">		double upperBound = exponentialComponent * java.lang.Math.pow (</span>
+<span class="nc" id="L153">		double upperBound = exponentialComponent * java.lang.Math.pow (</span>
 			8. * x * x * x + 4. * x * x + x + (1./ 30.),
 			1. / 6.
 		);
 
 		try
 		{
-<span class="nc" id="L158">			return new org.drip.numerical.estimation.R1Estimate (</span>
+<span class="nc" id="L160">			return new org.drip.numerical.estimation.R1Estimate (</span>
 				upperBound,
-<span class="nc" id="L160">				exponentialComponent * java.lang.Math.pow (</span>
+<span class="nc" id="L162">				exponentialComponent * java.lang.Math.pow (</span>
 					8. * x * x * x + 4. * x * x + x + (1./ 100.),
 					1. / 6.
 				),
 				upperBound
 			);
 		}
-<span class="nc" id="L167">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L169">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L169">			e.printStackTrace();</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L172">		return null;</span>
+<span class="nc" id="L174">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

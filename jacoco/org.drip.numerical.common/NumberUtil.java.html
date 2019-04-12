@@ -650,5 +650,36 @@ package org.drip.numerical.common;
 
 <span class="nc" id="L651">		return doubleFactorial;</span>
 	}
+
+	/**
+	 * Compute the Pochhammer Symbol for the Specified s and k
+	 * 
+	 * @param s s
+	 * @param k k
+	 * 
+	 * @return Pochhammer Symbol
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double PochhammerSymbol (
+		final double s,
+		final int k)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L670" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 &gt; k)</span>
+		{
+<span class="nc" id="L672">			throw new java.lang.Exception (&quot;NumberUtil::PochhammerSymbol =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L675">		double pochhammerSymbol = s;</span>
+
+<span class="nc bnc" id="L677" title="All 2 branches missed.">		for (int index = 1; index &lt; k; ++index)</span>
+		{
+<span class="nc" id="L679">			pochhammerSymbol = pochhammerSymbol * (s + index);</span>
+		}
+
+<span class="nc" id="L682">		return pochhammerSymbol;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

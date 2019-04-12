@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpperLimitPowerEstimate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gammaincomplete</a> &gt; <span class="el_source">UpperLimitPowerEstimate.java</span></div><h1>UpperLimitPowerEstimate.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.gammaincomplete;
+
+import org.drip.function.gammaincomplete.UpperLimitPowerIntegrand;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;UpperLimitPowerEstimate&lt;/i&gt; illustrates the Estimation of the Integral of the Product of the Limit
+ * Raised to an Exponent and the corresponding Upper Incomplete Gamma Function. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				&lt;i&gt;Applicable Algebra in Engineering, Communications, and &lt;/i&gt; &lt;b&gt;1 (2)&lt;/b&gt; 149-165
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				&lt;i&gt;Tables of Integrals, Series, and Products&lt;/i&gt; &lt;b&gt;Academic Press&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e&lt;sup&gt;iÏ€x&lt;/sup&gt; x&lt;sup&gt;(1/x)&lt;/sup&gt; between 1 and âˆž
+ *				https://arxiv.org/pdf/0912.3844.pdf &lt;b&gt;arXiV&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019a): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gammaincomplete/README.md&quot;&gt;Estimates of Incomplete Gamma Functions&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L112">public class UpperLimitPowerEstimate</span>
+{
+
+	private static final void QuadratureComparison (
+		final UpperLimitPowerIntegrand upperLimitPowerIntegrand,
+		final double s,
+		final double limitExponent,
+		final double[] leftArray,
+		final double[] rightArray,
+		final int intermediatePointCount)
+		throws Exception
+	{
+<span class="nc" id="L124">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L126">		System.out.println (&quot;\t|                                         QUADRATURE COMPARISON - s =&gt; &quot; + FormatUtil.FormatDouble (s, 1, 1, 1.) + &quot; | Exponent =&gt; &quot; + FormatUtil.FormatDouble (limitExponent, 1, 1, 1.));</span>
+
+<span class="nc" id="L128">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L130">		System.out.println (&quot;\t|        L -&gt; R:                                                                                                           ||&quot;);</span>
+
+<span class="nc" id="L132">		System.out.println (&quot;\t|                - s                                                                                                       ||&quot;);</span>
+
+<span class="nc" id="L134">		System.out.println (&quot;\t|                - [Comparison Pair]                                                                                       ||&quot;);</span>
+
+<span class="nc" id="L136">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (double left : leftArray)</span>
+		{
+<span class="nc" id="L140">			String display = &quot;\t|&quot; + FormatUtil.FormatDouble (left, 1, 1, 1.) + &quot; =&gt; &quot;;</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			for (double right : rightArray)</span>
+			{
+<span class="nc" id="L144">				display = display + &quot;[&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L145">					NewtonCotesQuadratureGenerator.Zero_PlusOne (</span>
+						left,
+						right,
+						intermediatePointCount
+<span class="nc" id="L149">					).integrate (upperLimitPowerIntegrand), 4, 2, 1.</span>
+<span class="nc" id="L150">				) + &quot; - &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L151">					upperLimitPowerIntegrand.integrate (</span>
+						left,
+						right
+					), 4, 2, 1.
+				) + &quot;] |&quot;;
+			}
+
+<span class="nc" id="L158">			System.out.println (display + &quot;|&quot;);</span>
+		}
+
+<span class="nc" id="L161">		System.out.println (&quot;\t|--------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L162">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L168">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L170">		int intermediatePointCount = 100;</span>
+<span class="nc" id="L171">		double[] leftArray =</span>
+		{
+			1.,
+			2.,
+			3.,
+			4.,
+			5.,
+		};
+<span class="nc" id="L179">		double[] rightArray =</span>
+		{
+			10.,
+			15.,
+			20.,
+			25.,
+			30.,
+		};
+<span class="nc" id="L187">		double[] sArray =</span>
+		{
+			3.,
+			4.,
+			5.,
+			6.,
+			7.,
+		};
+<span class="nc" id="L195">		double[] limitExponentArray =</span>
+		{
+			3.,
+			4.,
+			5.,
+			6.,
+			7.,
+		};
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		for (double s : sArray)</span>
+		{
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			for (double limitExponent : limitExponentArray)</span>
+			{
+<span class="nc" id="L208">				UpperLimitPowerIntegrand upperLimitPowerIntegrand = new UpperLimitPowerIntegrand (</span>
+					null,
+					s,
+					limitExponent
+				);
+
+<span class="nc" id="L214">				QuadratureComparison (</span>
+					upperLimitPowerIntegrand,
+					s,
+					limitExponent,
+					leftArray,
+					rightArray,
+					intermediatePointCount
+				);
+			}
+		}
+
+<span class="nc" id="L225">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L226">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
