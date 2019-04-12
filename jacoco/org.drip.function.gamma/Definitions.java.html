@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Definitions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.gamma</a> &gt; <span class="el_source">Definitions.java</span></div><h1>Definitions.java</h1><pre class="source lang-java linenums">
+package org.drip.function.gamma;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;Definitions&lt;/i&gt; contains all the Definitions and Constants relating to the Gamma Function Family. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md&quot;&gt;Estimation Techniques for Gamma Function&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class Definitions</span>
+{
+
+	/**
+	 * The Euler-Mascheroni Constant
+	 */
+
+	public static final double EULER_MASCHERONI = 0.57721566490153286060;
+
+	/**
+	 * The Gamma Minimum Variate Location
+	 */
+
+	public static final double MINIMUM_VARIATE_LOCATION = 1.461632144968;
+
+	/**
+	 * The Gamma Minimum Variate Location
+	 */
+
+	public static final double MINIMUM_VALUE = 0.885603;
+
+	/**
+	 * Generate a Table of Built-in E&lt;sub&gt;2&lt;/sub&gt; erf/erfc Entries
+	 * 
+	 * @return The Table of Built-in E&lt;sub&gt;2&lt;/sub&gt; erf/erfc Entries
+	 */
+
+	public static final java.util.Map&lt;java.lang.Double, java.lang.Double&gt; Table()
+	{
+<span class="nc" id="L133">		java.util.Map&lt;java.lang.Double, java.lang.Double&gt; builtInEntryTable = new</span>
+			java.util.TreeMap&lt;java.lang.Double, java.lang.Double&gt;();
+
+<span class="nc" id="L136">		double sqrtPI = java.lang.Math.sqrt (java.lang.Math.PI);</span>
+		
+		try
+		{
+<span class="nc" id="L140">			builtInEntryTable.put (</span>
+<span class="nc" id="L141">				-1.50,</span>
+<span class="nc" id="L142">				4. * sqrtPI / 3.</span>
+			);
+
+<span class="nc" id="L145">			builtInEntryTable.put (</span>
+<span class="nc" id="L146">				-0.50,</span>
+<span class="nc" id="L147">				-2. * sqrtPI</span>
+			);
+
+<span class="nc" id="L150">			builtInEntryTable.put (</span>
+<span class="nc" id="L151">				0.50,</span>
+<span class="nc" id="L152">				sqrtPI</span>
+			);
+
+<span class="nc" id="L155">			builtInEntryTable.put (</span>
+<span class="nc" id="L156">				1.00,</span>
+<span class="nc" id="L157">				1.</span>
+			);
+
+<span class="nc" id="L160">			builtInEntryTable.put (</span>
+<span class="nc" id="L161">				1.50,</span>
+<span class="nc" id="L162">				0.50 * sqrtPI</span>
+			);
+
+<span class="nc" id="L165">			builtInEntryTable.put (</span>
+<span class="nc" id="L166">				2.00,</span>
+<span class="nc" id="L167">				1.</span>
+			);
+
+<span class="nc" id="L170">			builtInEntryTable.put (</span>
+<span class="nc" id="L171">				2.50,</span>
+<span class="nc" id="L172">				0.75 * sqrtPI</span>
+			);
+
+<span class="nc" id="L175">			builtInEntryTable.put (</span>
+<span class="nc" id="L176">				3.00,</span>
+<span class="nc" id="L177">				2.</span>
+			);
+
+<span class="nc" id="L180">			builtInEntryTable.put (</span>
+<span class="nc" id="L181">				3.50,</span>
+<span class="nc" id="L182">				15. * sqrtPI / 8.</span>
+			);
+
+<span class="nc" id="L185">			builtInEntryTable.put (</span>
+<span class="nc" id="L186">				4.00,</span>
+<span class="nc" id="L187">				6.</span>
+			);
+
+<span class="nc" id="L190">			return builtInEntryTable;</span>
+		}
+<span class="nc" id="L192">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L194">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L197">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
