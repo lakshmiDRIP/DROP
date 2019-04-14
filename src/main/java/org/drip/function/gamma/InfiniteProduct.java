@@ -229,4 +229,36 @@ public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1To
 			_infiniteProductSeries
 		);
 	}
+
+	@Override public org.drip.function.definition.PoleResidue poleResidue (
+		final double x)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
+		{
+			return null;
+		}
+
+		int n = (int) x;
+
+		if (0 != (x - n) || x >= 0.)
+		{
+			return org.drip.function.definition.PoleResidue.NotAPole (x);
+		}
+
+		n = -n;
+
+		try
+		{
+			return new org.drip.function.definition.PoleResidue (
+				x,
+				(1 == n % 2 ? -1. : 1.) / new org.drip.function.stirling.NemesGamma (null).evaluate (n + 1.)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

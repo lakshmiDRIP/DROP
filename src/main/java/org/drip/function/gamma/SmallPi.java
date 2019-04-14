@@ -1,11 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityProperties;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
- * Function. The References are:
+ * <i>SmallPi</i> implements the Small Pi Function - the Reciprocal of the Gaussian Big Pi Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,74 +94,80 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DuplicationProperty
+public class SmallPi extends org.drip.function.definition.R1ToR1
 {
+	private org.drip.function.definition.R1ToR1 _r1ToR1BigPi = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Generate the Weierstrass Infinite Product Series Version of Log Small Pi Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Weierstrass Infinite Product Series Version of Log Small Pi Estimator
+	 */
+
+	public static final SmallPi Weierstrass (
+		final int termCount)
 	{
-		EnvManager.InitEnv ("");
-
-		double[] sArray =
+		try
 		{
-			0.05,
-			0.10,
-			0.15,
-			0.20,
-			0.25,
-			0.30,
-			0.35,
-			0.40,
-			0.45,
-			0.50,
-			0.60,
-			0.70,
-			0.80,
-			0.90,
-		};
-
-		R1ToR1Property duplicationProperty = EqualityProperties.DuplicationFormula();
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|     GAMMA FUNCTION DUPLICATION PROPERTY      ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                               ||");
-
-		System.out.println ("\t|                - s                           ||");
-
-		System.out.println ("\t|                - LHS Value                   ||");
-
-		System.out.println ("\t|                - RHS Value                   ||");
-
-		System.out.println ("\t|                - Verification Success?       ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		for (double s : sArray)
+			return new SmallPi (org.drip.function.gamma.BigPi.Weierstrass (termCount));
+		}
+		catch (java.lang.Exception e)
 		{
-			R1ToR1PropertyVerification propertyVerification = duplicationProperty.verify (s);
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
-					propertyVerification.verified() + " ||"
-			);
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|----------------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * SmallPi Constructor
+	 * 
+	 * @param r1ToR1BigPi The Big Pi Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SmallPi (
+		final org.drip.function.definition.R1ToR1 r1ToR1BigPi)
+		throws java.lang.Exception
+	{
+		super (null);
+
+		if (null == (_r1ToR1BigPi = r1ToR1BigPi))
+		{
+			throw new java.lang.Exception ("SmallPi Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Big Pi Function
+	 * 
+	 * @return The Big Pi Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 r1ToR1BigPi()
+	{
+		return _r1ToR1BigPi;
+	}
+
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("SmallPi::evaluate => Invalid Inputs");
+		}
+
+		return 1. / _r1ToR1BigPi.evaluate (z);
 	}
 }

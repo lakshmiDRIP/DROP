@@ -100,33 +100,141 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BigPi extends org.drip.function.definition.R1ToR1
+public class BigPi extends org.drip.function.definition.R1ToR1
 {
-	private org.drip.function.gamma.EulerIntegralSecondKind _gamma = null;
+	private org.drip.function.definition.R1ToR1 _r1ToR1Gamma = null;
 
+	/**
+	 * Generate the Weierstrass Infinite Product Series Version of Log Big Pi Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Weierstrass Infinite Product Series Version of Log Big Pi Estimator
+	 */
+
+	public static final BigPi Weierstrass (
+		final int termCount)
+	{
+		try
+		{
+			return new BigPi (org.drip.function.gamma.InfiniteProduct.Weierstrass (termCount));
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Volume of the N-Ellipsoid
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * @param radiusArray The Array of the Ellipsoid Radii
+	 * 
+	 * @return The Volume of the N-Ellipsoid
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double NEllipsoidVolume (
+		final int termCount,
+		final double[] radiusArray)
+		throws java.lang.Exception
+	{
+		if (null == radiusArray)
+		{
+			throw new java.lang.Exception ("BigPi::NEllipsoidVolume => Invalid Inputs");
+		}
+
+		int radiusCount = radiusArray.length;
+
+		if (0 == radiusCount || org.drip.numerical.common.NumberUtil.IsValid (radiusArray))
+		{
+			throw new java.lang.Exception ("BigPi::NEllipsoidVolume => Invalid Inputs");
+		}
+
+		double halfN = 0.5 * radiusCount;
+
+		double logNEllipsoidVolume = halfN * java.lang.Math.log (java.lang.Math.PI) -
+			Weierstrass (termCount).evaluate (halfN);
+
+		for (int radiusIndex = 0; radiusIndex < radiusCount; ++radiusIndex)
+		{
+			logNEllipsoidVolume = logNEllipsoidVolume + radiusArray[radiusIndex];
+		}
+
+		return java.lang.Math.exp (logNEllipsoidVolume);
+	}
 
 	/**
 	 * BigPi Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param r1ToR1Gamma The Gamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BigPi (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final org.drip.function.definition.R1ToR1 r1ToR1Gamma)
+		throws java.lang.Exception
 	{
-		super (dc);
+		super (null);
 
-		_gamma = new org.drip.function.gamma.EulerIntegralSecondKind (dc);
+		if (null == (_r1ToR1Gamma = r1ToR1Gamma))
+		{
+			throw new java.lang.Exception ("BigPi Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Underlying Gamma Function
+	 * Retrieve the Gamma Function
 	 * 
-	 * @return The Underlying Gamma Function
+	 * @return The Gamma Function
 	 */
 
-	public org.drip.function.gamma.EulerIntegralSecondKind gamma()
+	public org.drip.function.definition.R1ToR1 r1ToR1Gamma()
 	{
-		return _gamma;
+		return _r1ToR1Gamma;
+	}
+
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("BigPi::evaluate => Invalid Inputs");
+		}
+
+		return _r1ToR1Gamma.evaluate (z + 1.);
+	}
+
+	@Override public double derivative (
+		final double z,
+		final int order)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("BigPi::derivative => Invalid Inputs");
+		}
+
+		return _r1ToR1Gamma.derivative (
+			z + 1.,
+			order
+		);
+	}
+
+	@Override public org.drip.function.definition.PoleResidue poleResidue (
+		final double z)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			return null;
+		}
+
+		return _r1ToR1Gamma.poleResidue (z + 1.);
 	}
 }

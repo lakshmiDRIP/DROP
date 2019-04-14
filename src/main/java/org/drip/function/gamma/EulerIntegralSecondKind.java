@@ -152,7 +152,7 @@ public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
 		if (1 > order ||
 			!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("EulerIntegralSecondKind::derivative => Invalid Inputs");
 		}
 
 		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (

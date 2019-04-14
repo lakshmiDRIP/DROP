@@ -1,11 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityProperties;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
- * Function. The References are:
+ * <i>StretchedExponentialMoment</i> estimates the specified Moment Stretched Exponential Integral Function.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,74 +94,95 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DuplicationProperty
+public class StretchedExponentialMoment extends org.drip.function.definition.R1ToR1
 {
+	private double _tau = java.lang.Double.NaN;
+	private double _beta = java.lang.Double.NaN;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * StretchedExponentialMoment Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 * @param tau Tau
+	 * @param beta Beta
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public StretchedExponentialMoment (
+		final org.drip.numerical.differentiation.DerivativeControl dc,
+		final double tau,
+		final double beta)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
+		super (dc);
 
-		double[] sArray =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_tau = tau) || 0. >= _tau ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta) || 0. >= _beta)
 		{
-			0.05,
-			0.10,
-			0.15,
-			0.20,
-			0.25,
-			0.30,
-			0.35,
-			0.40,
-			0.45,
-			0.50,
-			0.60,
-			0.70,
-			0.80,
-			0.90,
-		};
+			throw new java.lang.Exception ("StretchedExponentialMoment Constructor => Invalid Inputs");
+		}
+	}
 
-		R1ToR1Property duplicationProperty = EqualityProperties.DuplicationFormula();
+	/**
+	 * Retrieve Tau
+	 * 
+	 * @return Tau
+	 */
 
-		System.out.println ("\t|----------------------------------------------||");
+	public double tau()
+	{
+		return _tau;
+	}
 
-		System.out.println ("\t|     GAMMA FUNCTION DUPLICATION PROPERTY      ||");
+	/**
+	 * Retrieve Beta
+	 * 
+	 * @return Beta
+	 */
 
-		System.out.println ("\t|----------------------------------------------||");
+	public double beta()
+	{
+		return _beta;
+	}
 
-		System.out.println ("\t|        L -> R:                               ||");
-
-		System.out.println ("\t|                - s                           ||");
-
-		System.out.println ("\t|                - LHS Value                   ||");
-
-		System.out.println ("\t|                - RHS Value                   ||");
-
-		System.out.println ("\t|                - Verification Success?       ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		for (double s : sArray)
+	@Override public double evaluate (
+		final double moment)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. > moment)
 		{
-			R1ToR1PropertyVerification propertyVerification = duplicationProperty.verify (s);
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
-					propertyVerification.verified() + " ||"
-			);
+			throw new java.lang.Exception ("StretchedExponential::evaluate => Invalid Inputs");
 		}
 
-		System.out.println ("\t|----------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+			0.,
+			100
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
+						t,
+						moment - 1
+					) * java.lang.Math.exp (
+						-java.lang.Math.pow (
+							t / _tau,
+							_beta
+						)
+					);
+				}
+			}
+		);
 	}
 }

@@ -3,7 +3,7 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.InequalityPropertyContainer;
+import org.drip.function.gamma.InequalityProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -138,7 +138,7 @@ public class ExponentialConvexProperty
 
 		System.out.println ("\t|---------------------------------------------------||");
 
-		R1ToR1Property exponentiallyConvexProperty = InequalityPropertyContainer.ExponentiallyConvex (
+		R1ToR1Property exponentiallyConvexProperty = InequalityProperties.ExponentiallyConvex (
 			z1,
 			z2
 		);

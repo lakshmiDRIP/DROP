@@ -1,11 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityProperties;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.beta;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,18 +64,13 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
- * Function. The References are:
+ * <i>LogGammaBased</i> implements the Log Beta Function using the Log Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
- * 				Integration Methods, and some Related Results <i>Ramanujan Journal</i> <b>35 (1)</b> 21-110
- * 		</li>
- * 		<li>
- * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
- * 				https://arxiv.org/abs/1703.05349 <b>arXiv</b>
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
  * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
@@ -92,6 +81,9 @@ import org.drip.service.env.EnvManager;
  * 				University Press</b> New York
  * 		</li>
  * 		<li>
+ * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 		</li>
+ * 		<li>
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
@@ -100,74 +92,92 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DuplicationProperty
+public class LogGammaBased
 {
+	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Weierstrass Infinite Product Series Version of Log Beta Estimator
+	 */
+
+	public static final LogGammaBased Weierstrass (
+		final int termCount)
 	{
-		EnvManager.InitEnv ("");
-
-		double[] sArray =
+		try
 		{
-			0.05,
-			0.10,
-			0.15,
-			0.20,
-			0.25,
-			0.30,
-			0.35,
-			0.40,
-			0.45,
-			0.50,
-			0.60,
-			0.70,
-			0.80,
-			0.90,
-		};
-
-		R1ToR1Property duplicationProperty = EqualityProperties.DuplicationFormula();
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|     GAMMA FUNCTION DUPLICATION PROPERTY      ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                               ||");
-
-		System.out.println ("\t|                - s                           ||");
-
-		System.out.println ("\t|                - LHS Value                   ||");
-
-		System.out.println ("\t|                - RHS Value                   ||");
-
-		System.out.println ("\t|                - Verification Success?       ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		for (double s : sArray)
+			return new LogGammaBased (org.drip.function.gamma.InfiniteProduct.Weierstrass (termCount));
+		}
+		catch (java.lang.Exception e)
 		{
-			R1ToR1PropertyVerification propertyVerification = duplicationProperty.verify (s);
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
-					propertyVerification.verified() + " ||"
-			);
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|----------------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * LogGammaBased Constructor
+	 * 
+	 * @param r1ToR1LogGamma The Log Gamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LogGammaBased (
+		final org.drip.function.definition.R1ToR1 r1ToR1LogGamma)
+		throws java.lang.Exception
+	{
+		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma))
+		{
+			throw new java.lang.Exception ("LogGammaBased Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Log Gamma Function
+	 * 
+	 * @return The Log Gamma Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 r1ToR1LogGamma()
+	{
+		return _r1ToR1LogGamma;
+	}
+
+	/**
+	 * Evaluate the Log Beta Function using the Log Gamma Function
+	 * 
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Log Beta Function using the LogGamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double evaluate (
+		final double x,
+		final double y)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (y))
+		{
+			throw new java.lang.Exception ("LogGammaBased::evaluate => Invalid Inputs");
+		}
+
+		return _r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) -
+			_r1ToR1LogGamma.evaluate (x + y);
 	}
 }

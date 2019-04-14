@@ -1,11 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityProperties;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
- * Function. The References are:
+ * <i>BigPiProperties</i> verifies the Specified Properties of the Big Pi Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,74 +93,142 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DuplicationProperty
+public class BigPiProperties
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Reflection Formula Verifier
+	 * 
+	 * @return The Reflection Formula Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ReflectionFormula()
 	{
-		EnvManager.InitEnv ("");
+		final org.drip.function.gamma.BigPi weierstrassBigPi = org.drip.function.gamma.BigPi.Weierstrass
+			(1638400);
 
-		double[] sArray =
+		try
 		{
-			0.05,
-			0.10,
-			0.15,
-			0.20,
-			0.25,
-			0.30,
-			0.35,
-			0.40,
-			0.45,
-			0.50,
-			0.60,
-			0.70,
-			0.80,
-			0.90,
-		};
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("BigPiProperties::ReflectionFormula::evaluate => Invalid Inputs");
+						}
 
-		R1ToR1Property duplicationProperty = EqualityProperties.DuplicationFormula();
+						return java.lang.Math.exp (weierstrassBigPi.evaluate (-1. * z) +
+							weierstrassBigPi.evaluate (z));
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("BigPiProperties::ReflectionFormula::evaluate => Invalid Inputs");
+						}
 
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|     GAMMA FUNCTION DUPLICATION PROPERTY      ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                               ||");
-
-		System.out.println ("\t|                - s                           ||");
-
-		System.out.println ("\t|                - LHS Value                   ||");
-
-		System.out.println ("\t|                - RHS Value                   ||");
-
-		System.out.println ("\t|                - Verification Success?       ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		for (double s : sArray)
-		{
-			R1ToR1PropertyVerification propertyVerification = duplicationProperty.verify (s);
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
-					propertyVerification.verified() + " ||"
+						return 1. / new org.drip.function.r1tor1.Sinc (null).evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
 			);
 		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		System.out.println ("\t|----------------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * Construct the Multiplication Formula Verifier
+	 * 
+	 * @param m m
+	 * 
+	 * @return The Multiplication Formula Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property MultiplicationFormula (
+		final int m)
+	{
+		if (1 >= m)
+		{
+			return null;
+		}
+
+		final org.drip.function.gamma.BigPi weierstrassBigPi = org.drip.function.gamma.BigPi.Weierstrass
+			(1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("BigPiProperties::MultiplicationFormula::evaluate => Invalid Inputs");
+						}
+
+						double logBigPiSum = 0.;
+
+						for (double i = 0; i < m; ++i)
+						{
+							logBigPiSum = logBigPiSum + weierstrassBigPi.evaluate ((z - i) / m);
+						}
+
+						return logBigPiSum;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("BigPiProperties::MultiplicationFormula::evaluate => Invalid Inputs");
+						}
+
+						return 0.5 * (m - 1.) * java.lang.Math.log (2. * java.lang.Math.PI) -
+							(0.5 + z) * java.lang.Math.log (m) + weierstrassBigPi.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

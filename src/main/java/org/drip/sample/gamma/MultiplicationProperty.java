@@ -3,7 +3,7 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityPropertyContainer;
+import org.drip.function.gamma.EqualityProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -192,7 +192,7 @@ public class MultiplicationProperty
 			Verifier (
 				m,
 				sArray,
-				EqualityPropertyContainer.MultiplicationFormula (m)
+				EqualityProperties.MultiplicationFormula (m)
 			);
 		}
 

@@ -1,9 +1,7 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityProperties;
+import org.drip.function.gamma.StretchedExponentialMoment;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -70,8 +68,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
- * Function. The References are:
+ * <i>StretchedExponentialMomentEstimate</i> demonstrates the Estimation of the Moments of the Stretched
+ * Exponential Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,8 +105,33 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DuplicationProperty
+public class StretchedExponentialMomentEstimate
 {
+
+	private static final void Estimate (
+		final double tau,
+		final double beta,
+		final double[] momentArray)
+		throws Exception
+	{
+		StretchedExponentialMoment stretchedExponentialMoment = new StretchedExponentialMoment (
+			null,
+			tau,
+			beta
+		);
+
+		String display = "\t|[" + FormatUtil.FormatDouble (tau, 1, 1, 1.) +
+			"," + FormatUtil.FormatDouble (beta, 1, 1, 1.) + "] => ";
+
+		for (double moment : momentArray)
+		{
+			display = display + FormatUtil.FormatDouble (
+				stretchedExponentialMoment.evaluate (moment), 7, 2, 1.
+			) + " |";
+		}
+
+		System.out.println (display + "|");
+	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -116,57 +139,40 @@ public class DuplicationProperty
 	{
 		EnvManager.InitEnv ("");
 
-		double[] sArray =
+		double[] tauArray =
 		{
-			0.05,
-			0.10,
-			0.15,
-			0.20,
-			0.25,
-			0.30,
-			0.35,
-			0.40,
-			0.45,
-			0.50,
-			0.60,
-			0.70,
-			0.80,
-			0.90,
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+		};
+		double[] betaArray =
+		{
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+		};
+		double[] momentArray =
+		{
+			1.,
+			2.,
+			3.,
+			4.,
+			5.,
 		};
 
-		R1ToR1Property duplicationProperty = EqualityProperties.DuplicationFormula();
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|     GAMMA FUNCTION DUPLICATION PROPERTY      ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                               ||");
-
-		System.out.println ("\t|                - s                           ||");
-
-		System.out.println ("\t|                - LHS Value                   ||");
-
-		System.out.println ("\t|                - RHS Value                   ||");
-
-		System.out.println ("\t|                - Verification Success?       ||");
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		for (double s : sArray)
+		for (double tau : tauArray)
 		{
-			R1ToR1PropertyVerification propertyVerification = duplicationProperty.verify (s);
-
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
-					propertyVerification.verified() + " ||"
-			);
+			for (double beta : betaArray)
+			{
+				Estimate (
+					tau,
+					beta,
+					momentArray
+				);
+			}
 		}
-
-		System.out.println ("\t|----------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

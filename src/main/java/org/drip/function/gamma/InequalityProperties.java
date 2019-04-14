@@ -64,8 +64,8 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>InequalityPropertyContainer</i> contains the Verifiable Inequality Properties of the Gamma Function.
- * The References are:
+ * <i>InequalityProperties</i> contains the Verifiable Inequality Properties of the Gamma Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,7 +101,7 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InequalityPropertyContainer
+public class InequalityProperties
 {
 
 	/**
@@ -133,7 +133,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
+								("InequalityProperties::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
 						}
 
 						return org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate 
@@ -149,7 +149,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
+								("InequalityProperties::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
 						}
 
 						return alpha * java.lang.Math.log (s)  +
@@ -199,7 +199,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t || 1. < t)
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::ExponentiallyConvex::evaluate => Invalid Inputs");
+								("InequalityProperties::ExponentiallyConvex::evaluate => Invalid Inputs");
 						}
 
 						return org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate
@@ -215,7 +215,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t || 1. < t)
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::ExponentiallyConvex::evaluate => Invalid Inputs");
+								("InequalityProperties::ExponentiallyConvex::evaluate => Invalid Inputs");
 						}
 
 						org.drip.function.gamma.InfiniteProduct weierStrass =
@@ -269,7 +269,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x >= y)
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::SpacedPointConvex::evaluate => Invalid Inputs");
+								("InequalityProperties::SpacedPointConvex::evaluate => Invalid Inputs");
 						}
 
 						return (logGammaY - weierStrass.evaluate (x)) / (y - x);
@@ -284,7 +284,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (x))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::SpacedPointConvex::evaluate => Invalid Inputs");
+								("InequalityProperties::SpacedPointConvex::evaluate => Invalid Inputs");
 						}
 
 						org.drip.function.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =
@@ -331,7 +331,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::LogarithmicConvex::evaluate => Invalid Inputs");
+								("InequalityProperties::LogarithmicConvex::evaluate => Invalid Inputs");
 						}
 
 						return java.lang.Math.log (
@@ -351,7 +351,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::LogarithmicConvex::evaluate => Invalid Inputs");
+								("InequalityProperties::LogarithmicConvex::evaluate => Invalid Inputs");
 						}
 
 						return java.lang.Math.log (
@@ -405,7 +405,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::GautschiLeft::evaluate => Invalid Inputs");
+								("InequalityProperties::GautschiLeft::evaluate => Invalid Inputs");
 						}
 
 						return (1. - s) * java.lang.Math.log (z);
@@ -420,7 +420,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::GautschiLeft::evaluate => Invalid Inputs");
+								("InequalityProperties::GautschiLeft::evaluate => Invalid Inputs");
 						}
 
 						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);
@@ -469,7 +469,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::GautschiRight::evaluate => Invalid Inputs");
+								("InequalityProperties::GautschiRight::evaluate => Invalid Inputs");
 						}
 
 						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);
@@ -484,7 +484,7 @@ public class InequalityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("InequalityPropertyContainer::GautschiRight::evaluate => Invalid Inputs");
+								("InequalityProperties::GautschiRight::evaluate => Invalid Inputs");
 						}
 
 						return (1. - s) * java.lang.Math.log (z + 1.);

@@ -64,7 +64,7 @@ package org.drip.function.gamma;
  */
 
 /**
- * <i>EqualityPropertyContainer</i> contains the Verifiable Equality Properties of the Gamma Function. The
+ * <i>EqualityProperties</i> contains the Verifiable Equality Properties of the Gamma Function. The
  * References are:
  * 
  * <br><br>
@@ -101,7 +101,7 @@ package org.drip.function.gamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EqualityPropertyContainer
+public class EqualityProperties
 {
 
 	/**
@@ -125,7 +125,7 @@ public class EqualityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("EqualityPropertyContainer::ReflectionFormula::evaluate => Invalid Inputs");
+								("EqualityProperties::ReflectionFormula::evaluate => Invalid Inputs");
 						}
 
 						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
@@ -144,7 +144,7 @@ public class EqualityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("EqualityPropertyContainer::ReflectionFormula::evaluate => Invalid Inputs");
+								("EqualityProperties::ReflectionFormula::evaluate => Invalid Inputs");
 						}
 
 						return java.lang.Math.PI / java.lang.Math.sin (java.lang.Math.PI * s);
@@ -182,7 +182,7 @@ public class EqualityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("EqualityPropertyContainer::DuplicationFormula::evaluate => Invalid Inputs");
+								("EqualityProperties::DuplicationFormula::evaluate => Invalid Inputs");
 						}
 
 						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
@@ -201,7 +201,7 @@ public class EqualityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("EqualityPropertyContainer::DuplicationFormula::evaluate => Invalid Inputs");
+								("EqualityProperties::DuplicationFormula::evaluate => Invalid Inputs");
 						}
 
 						return (1. - 2. * s) * java.lang.Math.log (2.) +
@@ -249,7 +249,7 @@ public class EqualityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("EqualityPropertyContainer::MultiplicationFormula::evaluate => Invalid Inputs");
+								("EqualityProperties::MultiplicationFormula::evaluate => Invalid Inputs");
 						}
 
 						double logGammaSum = 0.;
@@ -274,7 +274,7 @@ public class EqualityPropertyContainer
 						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 						{
 							throw new java.lang.Exception
-								("EqualityPropertyContainer::MultiplicationFormula::evaluate => Invalid Inputs");
+								("EqualityProperties::MultiplicationFormula::evaluate => Invalid Inputs");
 						}
 
 						return 0.5 * (m - 1.) * java.lang.Math.log (2. * java.lang.Math.PI) +

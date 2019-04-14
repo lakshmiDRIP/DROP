@@ -233,6 +233,27 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Derivatives
 	* Indefinite and Definite Integrals
 	* References
+ * Digamma Function
+	* Introduction and Overview
+	* Relation to the Harmonic Series
+	* Integral Representations
+	* Infinite Product Representation
+	* Series Formula
+	* Evaluation of Sums of Rational Functions
+	* Taylor Series
+	* Newton Series
+	* Series with Gregory’s Coefficients, Cauchy Numbers, and Bernoulli Polynomials of the Second Kind
+	* Reflection Formula
+	* Recurrence Formula and Characterization
+	* Some Finite Sums involving the Digamma Function
+	* Gauss Digamma Theorem
+	* Asymptotic Expansion
+	* Inequalities
+	* Computation and Approximation
+	* Special Values
+	* Roots of the Digamma Function
+	* Regularization
+	* References
  * Error Function
 	* Introduction and Overview
 	* Name

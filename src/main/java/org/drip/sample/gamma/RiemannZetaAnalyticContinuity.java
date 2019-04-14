@@ -3,7 +3,7 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.ReimannZetaProperty;
+import org.drip.function.gamma.ReimannZetaProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -134,7 +134,7 @@ public class RiemannZetaAnalyticContinuity
 			0.90,
 		};
 
-		R1ToR1Property riemannZetaProperty = ReimannZetaProperty.MeromorphicAnalyticContinuation();
+		R1ToR1Property riemannZetaProperty = ReimannZetaProperties.MeromorphicAnalyticContinuation();
 
 		System.out.println ("\t|-------------------------------------------------||");
 

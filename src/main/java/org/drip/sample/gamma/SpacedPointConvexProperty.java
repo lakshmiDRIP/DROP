@@ -3,7 +3,7 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.InequalityPropertyContainer;
+import org.drip.function.gamma.InequalityProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -135,7 +135,7 @@ public class SpacedPointConvexProperty
 
 		System.out.println ("\t|---------------------------------------------------||");
 
-		R1ToR1Property spacedPointConvexProperty = InequalityPropertyContainer.SpacedPointConvex (y);
+		R1ToR1Property spacedPointConvexProperty = InequalityProperties.SpacedPointConvex (y);
 
 		for (double x : xArray)
 		{

@@ -3,7 +3,7 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.EqualityProperties;
+import org.drip.function.gamma.BigPiProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -70,7 +70,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>DuplicationProperty</i> demonstrates the Verification of the Duplication Property of the Gamma
+ * <i>BigPiReflectionProperty</i> demonstrates the Verification of the Reflection Property of the Big Pi
  * Function. The References are:
  * 
  * <br><br>
@@ -107,7 +107,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DuplicationProperty
+public class BigPiReflectionProperty
 {
 
 	public static final void main (
@@ -118,27 +118,27 @@ public class DuplicationProperty
 
 		double[] sArray =
 		{
-			0.05,
-			0.10,
-			0.15,
-			0.20,
-			0.25,
-			0.30,
-			0.35,
-			0.40,
-			0.45,
-			0.50,
-			0.60,
-			0.70,
-			0.80,
-			0.90,
+			-0.95,
+			-0.90,
+			-0.85,
+			-0.80,
+			-0.75,
+			-0.70,
+			-0.65,
+			-0.60,
+			-0.55,
+			-0.50,
+			-0.40,
+			-0.30,
+			-0.20,
+			-0.10,
 		};
 
-		R1ToR1Property duplicationProperty = EqualityProperties.DuplicationFormula();
+		R1ToR1Property reflectionProperty = BigPiProperties.ReflectionFormula();
 
 		System.out.println ("\t|----------------------------------------------||");
 
-		System.out.println ("\t|     GAMMA FUNCTION DUPLICATION PROPERTY      ||");
+		System.out.println ("\t|     BIG PI FUNCTION REFLECTION PROPERTY      ||");
 
 		System.out.println ("\t|----------------------------------------------||");
 
@@ -156,12 +156,12 @@ public class DuplicationProperty
 
 		for (double s : sArray)
 		{
-			R1ToR1PropertyVerification propertyVerification = duplicationProperty.verify (s);
+			R1ToR1PropertyVerification propertyVerification = reflectionProperty.verify (s);
 
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
-					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
+				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " =>" +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 2, 10, 1.) + " |" +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 2, 10, 1.) + " | " +
 					propertyVerification.verified() + " ||"
 			);
 		}
