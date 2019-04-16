@@ -1,7 +1,7 @@
 
 package org.drip.sample.lanczos;
 
-import org.drip.function.lanczos.ChebyshevCoefficientMatrix;
+import org.drip.gamma.lanczos.ChebyshevCoefficientMatrix;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 

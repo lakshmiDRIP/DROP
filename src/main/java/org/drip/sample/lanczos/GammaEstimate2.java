@@ -1,8 +1,8 @@
 
 package org.drip.sample.lanczos;
 
-import org.drip.function.lanczos.ASeriesGenerator;
-import org.drip.function.lanczos.Gamma;
+import org.drip.gamma.lanczos.ASeriesGenerator;
+import org.drip.gamma.lanczos.Estimator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -160,7 +160,7 @@ public class GammaEstimate2
 
 			for (int g : gArray)
 			{
-				Gamma gammaFunction = new Gamma (
+				Estimator gammaFunction = new Estimator (
 					ASeriesGenerator.Standard (
 						g,
 						termCount

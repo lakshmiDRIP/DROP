@@ -1,7 +1,7 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.EulerIntegralSecondKind;
+import org.drip.gamma.estimator.EulerIntegralSecondKind;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.RamanujanGamma;
+import org.drip.gamma.estimator.RamanujanSeries;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -118,7 +118,7 @@ public class RamanujanGammaEstimate
 
 		int factorialCount = 12;
 
-		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
+		RamanujanSeries ramanujanGamma = new RamanujanSeries (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 

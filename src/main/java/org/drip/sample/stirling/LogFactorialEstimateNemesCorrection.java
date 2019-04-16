@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.LogFactorial;
+import org.drip.gamma.log.StirlingSeriesEstimator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R1Estimate;
@@ -119,7 +119,7 @@ public class LogFactorialEstimateNemesCorrection
 
 		int factorialCount = 12;
 
-		LogFactorial logFactorial = new LogFactorial (null);
+		StirlingSeriesEstimator logFactorial = new StirlingSeriesEstimator (null);
 
 		System.out.println ("\t|--------------------------------------------------||");
 

@@ -134,7 +134,7 @@ public class UpperSFixedSeriesTerm
 					return 0. == z ? (0 == order ? 1. : 0.) : (order % 2 == 0 ? 1. : -1.) *
 						java.lang.Math.exp (
 							order * java.lang.Math.log (z) - java.lang.Math.log (order) -
-							new org.drip.function.stirling.NemesLogGamma (null).evaluate (order + 1)
+							new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (order + 1)
 						);
 				}
 			};
@@ -182,7 +182,7 @@ public class UpperSFixedSeriesTerm
 					return 0. == z || n <= order + 1 ? 0. : (order % 2 == 0 ? 1. : -1.) *
 						java.lang.Math.exp (
 							order * java.lang.Math.log (z) +
-							new org.drip.function.stirling.NemesLogGamma (null).evaluate (n - order)
+							new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (n - order)
 						);
 				}
 			};
@@ -231,7 +231,7 @@ public class UpperSFixedSeriesTerm
 						z,
 						order
 					) * java.lang.Math.exp (-z) /
-						new org.drip.function.stirling.NemesGamma (null).evaluate (order + 1);
+						new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (order + 1);
 				}
 			};
 		}

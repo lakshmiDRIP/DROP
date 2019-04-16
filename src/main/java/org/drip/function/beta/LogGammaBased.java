@@ -116,7 +116,7 @@ public class LogGammaBased
 	{
 		try
 		{
-			return new LogGammaBased (org.drip.function.gamma.InfiniteProduct.Weierstrass (termCount));
+			return new LogGammaBased (org.drip.gamma.log.InfiniteSum.Weierstrass (termCount));
 		}
 		catch (java.lang.Exception e)
 		{

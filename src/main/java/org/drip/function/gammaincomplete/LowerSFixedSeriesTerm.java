@@ -137,7 +137,7 @@ public class LowerSFixedSeriesTerm
 					return (0 == z ? 1. : java.lang.Math.pow (
 						z,
 						order
-					)) / new org.drip.function.stirling.NemesGamma (null).evaluate (s + order + 1);
+					)) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s + order + 1);
 				}
 			};
 		}
@@ -180,7 +180,7 @@ public class LowerSFixedSeriesTerm
 
 					return (order % 2 == 0 ? 1. : -1.) * java.lang.Math.exp (
 						order * java.lang.Math.log (z) - java.lang.Math.log (s + order) -
-						(0 == order ? 0. : new org.drip.function.stirling.NemesLogGamma (null).evaluate (order))
+						(0 == order ? 0. : new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (order))
 						- logGammaS
 					);
 				}

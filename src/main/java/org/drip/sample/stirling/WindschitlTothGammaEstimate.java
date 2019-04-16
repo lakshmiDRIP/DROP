@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.WindschitlTothGamma;
+import org.drip.gamma.estimator.WindschitlTothAnalytic;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -118,7 +118,7 @@ public class WindschitlTothGammaEstimate
 
 		int factorialCount = 12;
 
-		WindschitlTothGamma windschitlTothGamma = new WindschitlTothGamma (null);
+		WindschitlTothAnalytic windschitlTothGamma = new WindschitlTothAnalytic (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 

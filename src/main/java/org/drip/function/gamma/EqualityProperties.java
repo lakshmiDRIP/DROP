@@ -128,8 +128,8 @@ public class EqualityProperties
 								("EqualityProperties::ReflectionFormula::evaluate => Invalid Inputs");
 						}
 
-						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+						org.drip.gamma.log.InfiniteSum weierstrassInfiniteProduct =
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 						return java.lang.Math.exp (weierstrassInfiniteProduct.evaluate (1. - s) +
 							weierstrassInfiniteProduct.evaluate (s));
@@ -185,8 +185,8 @@ public class EqualityProperties
 								("EqualityProperties::DuplicationFormula::evaluate => Invalid Inputs");
 						}
 
-						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+						org.drip.gamma.log.InfiniteSum weierstrassInfiniteProduct =
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 						return weierstrassInfiniteProduct.evaluate (s) + weierstrassInfiniteProduct.evaluate
 							(s + 0.5);
@@ -206,7 +206,7 @@ public class EqualityProperties
 
 						return (1. - 2. * s) * java.lang.Math.log (2.) +
 							0.5 * java.lang.Math.log (java.lang.Math.PI)  +
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate (2. * s);
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400).evaluate (2. * s);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
@@ -254,8 +254,8 @@ public class EqualityProperties
 
 						double logGammaSum = 0.;
 
-						org.drip.function.gamma.InfiniteProduct weierstrassInfiniteProduct =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+						org.drip.gamma.log.InfiniteSum weierstrassInfiniteProduct =
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 						for (double i = 0; i < m; ++i)
 						{
@@ -279,7 +279,7 @@ public class EqualityProperties
 
 						return 0.5 * (m - 1.) * java.lang.Math.log (2. * java.lang.Math.PI) +
 							(0.5 - m * s) * java.lang.Math.log (m)  +
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate (m * s);
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400).evaluate (m * s);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE

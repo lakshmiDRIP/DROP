@@ -164,7 +164,7 @@ public abstract class LimitAsymptote
 							throw new java.lang.Exception ("LimitAsymptote::Lower::Infinity::evaluate");
 						}
 
-						return new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+						return new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 					}
 				};
 			}

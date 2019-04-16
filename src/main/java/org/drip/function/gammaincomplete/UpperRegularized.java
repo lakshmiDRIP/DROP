@@ -129,7 +129,7 @@ public abstract class UpperRegularized
 					z,
 					s,
 					n
-				) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}
@@ -158,7 +158,7 @@ public abstract class UpperRegularized
 					z,
 					s,
 					n
-				) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}
@@ -183,7 +183,7 @@ public abstract class UpperRegularized
 				double p = new org.drip.function.gammaincomplete.UpperEulerIntegral (
 					null,
 					z
-				).evaluate (s) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				).evaluate (s) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}
@@ -206,7 +206,7 @@ public abstract class UpperRegularized
 				throws java.lang.Exception
 			{
 				double p = org.drip.function.gammaincomplete.UpperSFixed.Weisstein ((int) s).evaluate (z) /
-					new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+					new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}

@@ -135,7 +135,7 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 						throw new java.lang.Exception ("UpperSFixed::evaluate => Invalid Inputs");
 					}
 
-					return -1. * (org.drip.function.gamma.Definitions.EULER_MASCHERONI +
+					return -1. * (org.drip.gamma.estimator.Definitions.EULER_MASCHERONI +
 						java.lang.Math.log (z) + upperSFixedSeries().evaluate (z));
 				}
 			};
@@ -176,7 +176,7 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 					}
 
 					return upperSFixedSeries().evaluate (z) * java.lang.Math.exp (
-						(0 == s ? 1. : new org.drip.function.stirling.NemesLogGamma (null).evaluate (s))
+						(0 == s ? 1. : new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (s))
 					);
 				}
 			};
@@ -260,6 +260,6 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 		return (
 			upperSRecursiveSeries.evaluate (z) * java.lang.Math.exp (-n * java.lang.Math.log (z) - z) +
 			(n % 2 == 0 ? 1. : -1.) * evaluate (z)
-		) / java.lang.Math.exp (new org.drip.function.stirling.NemesLogGamma (null).evaluate (n));
+		) / java.lang.Math.exp (new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (n));
 	}
 }

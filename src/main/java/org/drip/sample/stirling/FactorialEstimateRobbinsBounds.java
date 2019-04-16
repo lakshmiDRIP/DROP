@@ -1,8 +1,8 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.Factorial;
-import org.drip.function.stirling.RobbinsFactorial;
+import org.drip.gamma.estimator.RobbinsExtension;
+import org.drip.gamma.estimator.StirlingSeries;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R1Estimate;
@@ -120,7 +120,7 @@ public class FactorialEstimateRobbinsBounds
 
 		int factorialCount = 12;
 
-		Factorial robbinsFactorial = new RobbinsFactorial (null);
+		StirlingSeries robbinsFactorial = new RobbinsExtension (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 

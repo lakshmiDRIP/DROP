@@ -1,15 +1,15 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.BinetIntegralFirstKind;
-import org.drip.function.gamma.BinetIntegralSecondKind;
-import org.drip.function.gamma.EulerIntegralSecondKind;
-import org.drip.function.gamma.InfiniteProduct;
 import org.drip.function.gamma.LogReciprocal;
-import org.drip.function.stirling.Factorial;
-import org.drip.function.stirling.NemesGamma;
-import org.drip.function.stirling.RamanujanGamma;
-import org.drip.function.stirling.WindschitlTothGamma;
+import org.drip.gamma.estimator.EulerIntegralSecondKind;
+import org.drip.gamma.estimator.NemesAnalytic;
+import org.drip.gamma.estimator.RamanujanSeries;
+import org.drip.gamma.estimator.StirlingSeries;
+import org.drip.gamma.estimator.WindschitlTothAnalytic;
+import org.drip.gamma.log.BinetIntegralFirstKindEstimator;
+import org.drip.gamma.log.BinetIntegralSecondKindEstimator;
+import org.drip.gamma.log.InfiniteSum;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -160,25 +160,25 @@ public class ComparativeEstimate
 			7.00000,
 		};
 
-		Factorial factorial = new Factorial (null);
+		StirlingSeries factorial = new StirlingSeries (null);
 
-		NemesGamma nemesGamma = new NemesGamma (null);
+		NemesAnalytic nemesGamma = new NemesAnalytic (null);
 
 		LogReciprocal logReciprocal = new LogReciprocal (null);
 
-		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
+		RamanujanSeries ramanujanGamma = new RamanujanSeries (null);
 
-		WindschitlTothGamma windschitlTothGamma = new WindschitlTothGamma (null);
+		WindschitlTothAnalytic windschitlTothGamma = new WindschitlTothAnalytic (null);
 
-		InfiniteProduct eulerInfiniteProduct = InfiniteProduct.Euler (eulerTermCount);
+		InfiniteSum eulerInfiniteProduct = InfiniteSum.Euler (eulerTermCount);
 
-		BinetIntegralFirstKind binetIntegralFirstKind = new BinetIntegralFirstKind (null);
+		BinetIntegralFirstKindEstimator binetIntegralFirstKind = new BinetIntegralFirstKindEstimator (null);
 
-		BinetIntegralSecondKind binetIntegralSecondKind = new BinetIntegralSecondKind (null);
+		BinetIntegralSecondKindEstimator binetIntegralSecondKind = new BinetIntegralSecondKindEstimator (null);
 
 		EulerIntegralSecondKind eulerIntegralSecondKind = new EulerIntegralSecondKind (null);
 
-		InfiniteProduct weierstrassInfiniteProduct = InfiniteProduct.Weierstrass (weierstrassTermCount);
+		InfiniteSum weierstrassInfiniteProduct = InfiniteSum.Weierstrass (weierstrassTermCount);
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
 

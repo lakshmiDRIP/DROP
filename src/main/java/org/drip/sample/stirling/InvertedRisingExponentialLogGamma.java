@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.RaabeLogGamma;
+import org.drip.gamma.log.RaabeSeriesEstimator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R1Estimate;
@@ -120,7 +120,7 @@ public class InvertedRisingExponentialLogGamma
 
 		int factorialCount = 12;
 
-		RaabeLogGamma raabeLogGamma = new RaabeLogGamma (null);
+		RaabeSeriesEstimator raabeLogGamma = new RaabeSeriesEstimator (null);
 
 		System.out.println ("\t|--------------------------------------------------||");
 

@@ -138,7 +138,7 @@ public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Serie
 				org.drip.function.gammaincomplete.LowerSFixedSeriesTerm.WeierstrassLimit (s),
 				termWeightMap,
 				s,
-				0 == s ? 1. : new org.drip.function.stirling.NemesLogGamma (null).evaluate (s)
+				0 == s ? 1. : new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (s)
 			);
 		}
 		catch (java.lang.Exception e)
@@ -164,7 +164,7 @@ public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Serie
 	{
 		try
 		{
-			double logGammaS = new org.drip.function.stirling.NemesLogGamma (null).evaluate (s);
+			double logGammaS = new org.drip.gamma.log.NemesAnalyticEstimator (null).evaluate (s);
 
 			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 				java.util.TreeMap<java.lang.Integer, java.lang.Double>();

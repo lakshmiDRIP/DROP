@@ -1,8 +1,8 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.function.gamma.EulerIntegralSecondKind;
 import org.drip.function.gammaincomplete.GaussContinuedFraction;
+import org.drip.gamma.estimator.EulerIntegralSecondKind;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

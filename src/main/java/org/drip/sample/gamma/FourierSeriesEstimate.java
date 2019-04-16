@@ -1,6 +1,8 @@
 
 package org.drip.sample.gamma;
 
+import org.drip.gamma.log.InfiniteSum;
+import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -112,7 +114,7 @@ public class FourierSeriesEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int termCount = 50;
+		int termCount = 1000000;
 		double[] sArray =
 		{
 			0.05,
@@ -135,6 +137,37 @@ public class FourierSeriesEstimate
 			0.90,
 			0.95,
 		};
+
+		InfiniteSum fourier = InfiniteSum.Fourier (termCount);
+
+		System.out.println ("\t|----------------------------------------||");
+
+		System.out.println ("\t|     FOURIER SERIES GAMMA ESTIMATE      ||");
+
+		System.out.println ("\t|----------------------------------------||");
+
+		System.out.println ("\t|      L -> R:                           ||");
+
+		System.out.println ("\t|            - s                         ||");
+
+		System.out.println ("\t|            - Log Gamma                 ||");
+
+		System.out.println ("\t|            - Gamma                     ||");
+
+		System.out.println ("\t|----------------------------------------||");
+
+		for (double s : sArray)
+		{
+			double logGamma = fourier.evaluate (s);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (logGamma, 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.exp (logGamma), 2, 10, 1.) + " ||"
+			);
+		}
+
+		System.out.println ("\t|----------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

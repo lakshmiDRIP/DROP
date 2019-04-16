@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.NemesGamma;
+import org.drip.gamma.estimator.NemesAnalytic;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
@@ -117,7 +117,7 @@ public class NemesGammaEstimate
 
 		int factorialCount = 12;
 
-		NemesGamma nemesGamma = new NemesGamma (null);
+		NemesAnalytic nemesGamma = new NemesAnalytic (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 

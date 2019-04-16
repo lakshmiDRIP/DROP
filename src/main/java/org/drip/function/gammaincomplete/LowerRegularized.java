@@ -129,7 +129,7 @@ public abstract class LowerRegularized
 					z,
 					s,
 					n
-				) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}
@@ -154,7 +154,7 @@ public abstract class LowerRegularized
 				double p = new org.drip.function.gammaincomplete.LowerEulerIntegral (
 					null,
 					z
-				).evaluate (s) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				).evaluate (s) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}
@@ -182,7 +182,7 @@ public abstract class LowerRegularized
 				double p = org.drip.function.gammaincomplete.LowerSFixed.WeierstrassLimit (
 					s,
 					n
-				).evaluate (z) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				).evaluate (z) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}
@@ -210,7 +210,7 @@ public abstract class LowerRegularized
 				double p = org.drip.function.gammaincomplete.LowerSFixed.NIST2019 (
 					s,
 					n
-				).evaluate (z) / new org.drip.function.stirling.NemesGamma (null).evaluate (s);
+				).evaluate (z) / new org.drip.gamma.estimator.NemesAnalytic (null).evaluate (s);
 
 				return p > 1. ? 1. : p;
 			}

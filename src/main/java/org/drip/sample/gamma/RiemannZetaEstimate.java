@@ -1,7 +1,7 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.RiemannZeta;
+import org.drip.gamma.derived.RiemannZeta;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

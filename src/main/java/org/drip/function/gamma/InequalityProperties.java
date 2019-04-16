@@ -136,7 +136,7 @@ public class InequalityProperties
 								("InequalityProperties::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
 						}
 
-						return org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate 
+						return org.drip.gamma.log.InfiniteSum.Weierstrass (1638400).evaluate 
 							(s + alpha);
 					}
 				},
@@ -153,7 +153,7 @@ public class InequalityProperties
 						}
 
 						return alpha * java.lang.Math.log (s)  +
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate (s);
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400).evaluate (s);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
@@ -202,7 +202,7 @@ public class InequalityProperties
 								("InequalityProperties::ExponentiallyConvex::evaluate => Invalid Inputs");
 						}
 
-						return org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400).evaluate
+						return org.drip.gamma.log.InfiniteSum.Weierstrass (1638400).evaluate
 							(t * z1 + (1. - t) * z2);
 					}
 				},
@@ -218,8 +218,8 @@ public class InequalityProperties
 								("InequalityProperties::ExponentiallyConvex::evaluate => Invalid Inputs");
 						}
 
-						org.drip.function.gamma.InfiniteProduct weierStrass =
-							org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+						org.drip.gamma.log.InfiniteSum weierStrass =
+							org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 						return t * weierStrass.evaluate (z1) + (1. - t) * weierStrass.evaluate (z2);
 					}
@@ -251,8 +251,8 @@ public class InequalityProperties
 			return null;
 		}
 
-		final org.drip.function.gamma.InfiniteProduct weierStrass =
-			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+		final org.drip.gamma.log.InfiniteSum weierStrass =
+			org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 		try
 		{
@@ -287,8 +287,8 @@ public class InequalityProperties
 								("InequalityProperties::SpacedPointConvex::evaluate => Invalid Inputs");
 						}
 
-						org.drip.function.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =
-							new org.drip.function.gamma.EulerIntegralSecondKind (null);
+						org.drip.gamma.estimator.EulerIntegralSecondKind eulerIntegralSecondKind =
+							new org.drip.gamma.estimator.EulerIntegralSecondKind (null);
 
 						return eulerIntegralSecondKind.derivative (
 							x,
@@ -315,8 +315,8 @@ public class InequalityProperties
 
 	public static final org.drip.function.definition.R1ToR1Property LogarithmicConvex()
 	{
-		final org.drip.function.gamma.InfiniteProduct weierStrass =
-			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+		final org.drip.gamma.log.InfiniteSum weierStrass =
+			org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 		try
 		{
@@ -335,7 +335,7 @@ public class InequalityProperties
 						}
 
 						return java.lang.Math.log (
-							new org.drip.function.gamma.EulerIntegralSecondKind (null).derivative (
+							new org.drip.gamma.estimator.EulerIntegralSecondKind (null).derivative (
 								z,
 								2
 							)
@@ -355,7 +355,7 @@ public class InequalityProperties
 						}
 
 						return java.lang.Math.log (
-							new org.drip.function.gamma.EulerIntegralSecondKind (null).derivative (
+							new org.drip.gamma.estimator.EulerIntegralSecondKind (null).derivative (
 								z,
 								1
 							)
@@ -389,8 +389,8 @@ public class InequalityProperties
 			return null;
 		}
 
-		final org.drip.function.gamma.InfiniteProduct weierStrass =
-			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+		final org.drip.gamma.log.InfiniteSum weierStrass =
+			org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 		try
 		{
@@ -453,8 +453,8 @@ public class InequalityProperties
 			return null;
 		}
 
-		final org.drip.function.gamma.InfiniteProduct weierStrass =
-			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+		final org.drip.gamma.log.InfiniteSum weierStrass =
+			org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 		try
 		{
@@ -517,8 +517,8 @@ public class InequalityProperties
 			return null;
 		}
 
-		final org.drip.function.gamma.InfiniteProduct weierStrass =
-			org.drip.function.gamma.InfiniteProduct.Weierstrass (1638400);
+		final org.drip.gamma.log.InfiniteSum weierStrass =
+			org.drip.gamma.log.InfiniteSum.Weierstrass (1638400);
 
 		double[] xArray = multiPoint2D.x();
 

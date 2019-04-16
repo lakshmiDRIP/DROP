@@ -1,7 +1,7 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.StretchedExponentialMoment;
+import org.drip.gamma.derived.StretchedExponentialMoment;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

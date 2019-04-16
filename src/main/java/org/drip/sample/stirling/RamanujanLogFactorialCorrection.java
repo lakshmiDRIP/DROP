@@ -1,7 +1,7 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.function.stirling.RamanujanLogFactorial;
+import org.drip.gamma.log.RamanujanSeriesEstimator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R1Estimate;
@@ -119,7 +119,7 @@ public class RamanujanLogFactorialCorrection
 
 		int factorialCount = 12;
 
-		RamanujanLogFactorial ramanujanLogFactorial = new RamanujanLogFactorial (null);
+		RamanujanSeriesEstimator ramanujanLogFactorial = new RamanujanSeriesEstimator (null);
 
 		System.out.println ("\t|--------------------------------------------------||");
 
