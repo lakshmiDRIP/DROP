@@ -1,9 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.gamma.StretchedExponentialMoment;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StretchedExponentialMomentEstimate</i> demonstrates the Estimation of the Moments of the Stretched
- * Exponential Function. The References are:
+ * <i>LogReciprocal</i> implements the Log Reciprocal Integral Version of the Gamma Function. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,118 +94,54 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StretchedExponentialMomentEstimate
+public class LogReciprocal extends org.drip.function.definition.R1ToR1
 {
 
-	private static final void Estimate (
-		final double tau,
-		final double beta,
-		final double[] momentArray)
-		throws Exception
+	/**
+	 * LogReciprocal Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 */
+
+	public LogReciprocal (
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		StretchedExponentialMoment stretchedExponentialMomentIntegral = new StretchedExponentialMoment (
-			null,
-			tau,
-			beta
-		);
-
-		StretchedExponentialMoment stretchedExponentialMomentWeierstrass =
-			StretchedExponentialMoment.Weierstrass (
-				tau,
-				beta,
-				1638400
-			);
-
-		String display = "\t|[" + FormatUtil.FormatDouble (tau, 1, 1, 1.) +
-			"," + FormatUtil.FormatDouble (beta, 1, 1, 1.) + "] => ";
-
-		for (double moment : momentArray)
-		{
-			display = display + "{" + FormatUtil.FormatDouble (
-				stretchedExponentialMomentIntegral.evaluate (moment), 7, 2, 1.
-			) + " |" + FormatUtil.FormatDouble (
-				Math.exp (stretchedExponentialMomentWeierstrass.evaluate (moment)), 7, 2, 1.
-			) + "}";
-		}
-
-		System.out.println (display + "|");
+		super (dc);
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	@Override public double evaluate (
+		final double s)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
-
-		double[] tauArray =
+		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
 		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-		double[] betaArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-		double[] momentArray =
-		{
-			1.,
-			2.,
-			3.,
-			4.,
-			5.,
-		};
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println
-			("\t|                                             STRETCHED EXPONENTIAL INTEGRAL vs. WERERSTRASS ESTIMATE                                             |");
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println
-			("\t|        L -> R:                                                                                                                                  |");
-
-		System.out.println
-			("\t|                - Tau                                                                                                                            |");
-
-		System.out.println
-			("\t|                - Beta                                                                                                                           |");
-
-		System.out.println
-			("\t|                - Integral vs. Weierstrass Moment Comparison                                                                                     |");
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		for (double tau : tauArray)
-		{
-			for (double beta : betaArray)
-			{
-				Estimate (
-					tau,
-					beta,
-					momentArray
-				);
-			}
+			throw new java.lang.Exception ("LogReciprocal::evaluate => Invalid Inputs");
 		}
 
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		EnvManager.TerminateEnv();
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+			0.,
+			1.,
+			10000000
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					return 1. == t || 0. == t ? 0. : java.lang.Math.pow (
+						java.lang.Math.log (1. / t),
+						s - 1
+					);
+				}
+			}
+		);
 	}
 }

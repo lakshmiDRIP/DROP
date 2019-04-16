@@ -103,7 +103,6 @@ package org.drip.function.gamma;
 
 public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-
 	private org.drip.numerical.estimation.R1ToR1Series _infiniteProductSeries = null;
 
 	/**
@@ -175,6 +174,49 @@ public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1To
 
 					return infiniteProductSeries().evaluate (z) - java.lang.Math.log (z) -
 						z * org.drip.function.gamma.Definitions.EULER_MASCHERONI;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Fourier Infinite Sum Series of Log Gamma Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Fourier Infinite Sum Series of Log Gamma Estimator
+	 */
+
+	public static final InfiniteProduct Fourier (
+		final int termCount)
+	{
+		try
+		{
+			return new InfiniteProduct (
+				org.drip.function.gamma.FourierSeries.MalmstenBlagouchine (termCount),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z || 1. <= z)
+					{
+						throw new java.lang.Exception
+							("InfiniteProduct::Fourier::evaluate => Invalid Inputs");
+					}
+
+					return (0.5 - z) * (org.drip.function.gamma.Definitions.EULER_MASCHERONI +
+						java.lang.Math.log (2.)) + (1. - z) * java.lang.Math.log (java.lang.Math.PI) -
+						0.5 * java.lang.Math.log (java.lang.Math.sin (java.lang.Math.PI * z)) +
+						infiniteProductSeries().evaluate (z) / java.lang.Math.PI;
 				}
 			};
 		}
@@ -260,5 +302,27 @@ public abstract class InfiniteProduct extends org.drip.numerical.estimation.R1To
 		}
 
 		return null;
+	}
+
+	/**
+	 * Compute the Raabe's Integral between (a, a + 1) for the Log Gamma Function
+	 * 
+	 * @param a a
+	 * 
+	 * @return The Raabe's Integral between (a, a + 1) for the Log Gamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double raabeIntegral (
+		final double a)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. > a)
+		{
+			throw new java.lang.Exception ("InfiniteProduct::rabbeIntegral => Invalid Inputs");
+		}
+
+		return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI) + a * java.lang.Math.log (a) - a;
 	}
 }

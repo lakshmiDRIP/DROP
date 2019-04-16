@@ -1,8 +1,11 @@
 
 package org.drip.sample.gamma;
 
+import org.drip.function.gamma.BinetIntegralFirstKind;
+import org.drip.function.gamma.BinetIntegralSecondKind;
 import org.drip.function.gamma.EulerIntegralSecondKind;
 import org.drip.function.gamma.InfiniteProduct;
+import org.drip.function.gamma.LogReciprocal;
 import org.drip.function.stirling.Factorial;
 import org.drip.function.stirling.NemesGamma;
 import org.drip.function.stirling.RamanujanGamma;
@@ -161,41 +164,53 @@ public class ComparativeEstimate
 
 		NemesGamma nemesGamma = new NemesGamma (null);
 
+		LogReciprocal logReciprocal = new LogReciprocal (null);
+
 		RamanujanGamma ramanujanGamma = new RamanujanGamma (null);
 
 		WindschitlTothGamma windschitlTothGamma = new WindschitlTothGamma (null);
 
 		InfiniteProduct eulerInfiniteProduct = InfiniteProduct.Euler (eulerTermCount);
 
-		InfiniteProduct weierstrassInfiniteProduct = InfiniteProduct.Weierstrass (weierstrassTermCount);
+		BinetIntegralFirstKind binetIntegralFirstKind = new BinetIntegralFirstKind (null);
+
+		BinetIntegralSecondKind binetIntegralSecondKind = new BinetIntegralSecondKind (null);
 
 		EulerIntegralSecondKind eulerIntegralSecondKind = new EulerIntegralSecondKind (null);
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------||");
+		InfiniteProduct weierstrassInfiniteProduct = InfiniteProduct.Weierstrass (weierstrassTermCount);
 
-		System.out.println ("\t|                                          GAMMA FUNCTION ESTIMATE                                           ||");
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|                                                               GAMMA FUNCTION ESTIMATE                                                                ||");
 
-		System.out.println ("\t|        L -> R:                                                                                             ||");
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                - s                                                                                         ||");
+		System.out.println ("\t|        L -> R:                                                                                                                                       ||");
 
-		System.out.println ("\t|                - Windschitl-Toth                                                                           ||");
+		System.out.println ("\t|                - s                                                                                                                                   ||");
 
-		System.out.println ("\t|                - Nemes                                                                                     ||");
+		System.out.println ("\t|                - Windschitl-Toth                                                                                                                     ||");
 
-		System.out.println ("\t|                - Euler Infinite Product Series                                                             ||");
+		System.out.println ("\t|                - Nemes                                                                                                                               ||");
 
-		System.out.println ("\t|                - Weierstrass Infinite Product Series                                                       ||");
+		System.out.println ("\t|                - Euler Infinite Product Series                                                                                                       ||");
 
-		System.out.println ("\t|                - Ramanujan                                                                                 ||");
+		System.out.println ("\t|                - Weierstrass Infinite Product Series                                                                                                 ||");
 
-		System.out.println ("\t|                - Stirling                                                                                  ||");
+		System.out.println ("\t|                - Ramanujan                                                                                                                           ||");
 
-		System.out.println ("\t|                - Euler Integral Second Kind                                                                ||");
+		System.out.println ("\t|                - Stirling                                                                                                                            ||");
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|                - Euler Integral Second Kind                                                                                                          ||");
+
+		System.out.println ("\t|                - Log Reciprocal                                                                                                                      ||");
+
+		System.out.println ("\t|                - Binet Integral First Kind                                                                                                           ||");
+
+		System.out.println ("\t|                - Binet Integral Second Kind                                                                                                          ||");
+
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
 		for (double s : sArray)
 		{
@@ -207,11 +222,14 @@ public class ComparativeEstimate
 				FormatUtil.FormatDouble (Math.exp (weierstrassInfiniteProduct.evaluate (s)), 3, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (ramanujanGamma.evaluate (s), 3, 6, 1.) + " | " +
 				FormatUtil.FormatDouble (factorial.evaluate (s), 3, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (eulerIntegralSecondKind.evaluate (s), 3, 6, 1.) + " ||"
+				FormatUtil.FormatDouble (eulerIntegralSecondKind.evaluate (s), 3, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (logReciprocal.evaluate (s), 3, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.exp (binetIntegralFirstKind.evaluate (s)), 3, 6, 1.) + " | " +
+				FormatUtil.FormatDouble (Math.exp (binetIntegralSecondKind.evaluate (s)), 3, 6, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

@@ -1,8 +1,6 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.StretchedExponentialMoment;
-import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -68,8 +66,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StretchedExponentialMomentEstimate</i> demonstrates the Estimation of the Moments of the Stretched
- * Exponential Function. The References are:
+ * <i>FourierSeriesEstimate</i> demonstrates the Estimate of the Log Gamma Function using the
+ * Malmsten-Blagouchine Fourier Series Expansion. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,42 +103,8 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StretchedExponentialMomentEstimate
+public class FourierSeriesEstimate
 {
-
-	private static final void Estimate (
-		final double tau,
-		final double beta,
-		final double[] momentArray)
-		throws Exception
-	{
-		StretchedExponentialMoment stretchedExponentialMomentIntegral = new StretchedExponentialMoment (
-			null,
-			tau,
-			beta
-		);
-
-		StretchedExponentialMoment stretchedExponentialMomentWeierstrass =
-			StretchedExponentialMoment.Weierstrass (
-				tau,
-				beta,
-				1638400
-			);
-
-		String display = "\t|[" + FormatUtil.FormatDouble (tau, 1, 1, 1.) +
-			"," + FormatUtil.FormatDouble (beta, 1, 1, 1.) + "] => ";
-
-		for (double moment : momentArray)
-		{
-			display = display + "{" + FormatUtil.FormatDouble (
-				stretchedExponentialMomentIntegral.evaluate (moment), 7, 2, 1.
-			) + " |" + FormatUtil.FormatDouble (
-				Math.exp (stretchedExponentialMomentWeierstrass.evaluate (moment)), 7, 2, 1.
-			) + "}";
-		}
-
-		System.out.println (display + "|");
-	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -148,67 +112,29 @@ public class StretchedExponentialMomentEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		double[] tauArray =
+		int termCount = 50;
+		double[] sArray =
 		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
+			0.05,
+			0.10,
+			0.15,
+			0.20,
+			0.25,
+			0.30,
+			0.35,
+			0.40,
+			0.45,
+			0.50,
+			0.55,
+			0.60,
+			0.65,
+			0.70,
+			0.75,
+			0.80,
+			0.85,
+			0.90,
+			0.95,
 		};
-		double[] betaArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-		double[] momentArray =
-		{
-			1.,
-			2.,
-			3.,
-			4.,
-			5.,
-		};
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println
-			("\t|                                             STRETCHED EXPONENTIAL INTEGRAL vs. WERERSTRASS ESTIMATE                                             |");
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println
-			("\t|        L -> R:                                                                                                                                  |");
-
-		System.out.println
-			("\t|                - Tau                                                                                                                            |");
-
-		System.out.println
-			("\t|                - Beta                                                                                                                           |");
-
-		System.out.println
-			("\t|                - Integral vs. Weierstrass Moment Comparison                                                                                     |");
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		for (double tau : tauArray)
-		{
-			for (double beta : betaArray)
-			{
-				Estimate (
-					tau,
-					beta,
-					momentArray
-				);
-			}
-		}
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
 
 		EnvManager.TerminateEnv();
 	}

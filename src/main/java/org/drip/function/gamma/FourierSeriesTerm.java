@@ -1,9 +1,5 @@
 
-package org.drip.sample.gamma;
-
-import org.drip.function.gamma.StretchedExponentialMoment;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.function.gamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,8 +64,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StretchedExponentialMomentEstimate</i> demonstrates the Estimation of the Moments of the Stretched
- * Exponential Function. The References are:
+ * <i>FourierSeriesTerm</i> implements a Single Term in the Fourier Series Expansion for the Log Gamma
+ * Estimation. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,118 +94,50 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md">Integrand Estimates of Gamma Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/gamma/README.md">Estimation Techniques for Gamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StretchedExponentialMomentEstimate
+public class FourierSeriesTerm
 {
 
-	private static final void Estimate (
-		final double tau,
-		final double beta,
-		final double[] momentArray)
-		throws Exception
+	/**
+	 * Construct the Malmsten-Blagouchine Fourier Series Term for Log Gamma
+	 * 
+	 * @return The Malmsten-Blagouchine Fourier Series Term for Log Gamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm MalmstenBlagouchine()
 	{
-		StretchedExponentialMoment stretchedExponentialMomentIntegral = new StretchedExponentialMoment (
-			null,
-			tau,
-			beta
-		);
-
-		StretchedExponentialMoment stretchedExponentialMomentWeierstrass =
-			StretchedExponentialMoment.Weierstrass (
-				tau,
-				beta,
-				1638400
-			);
-
-		String display = "\t|[" + FormatUtil.FormatDouble (tau, 1, 1, 1.) +
-			"," + FormatUtil.FormatDouble (beta, 1, 1, 1.) + "] => ";
-
-		for (double moment : momentArray)
+		try
 		{
-			display = display + "{" + FormatUtil.FormatDouble (
-				stretchedExponentialMomentIntegral.evaluate (moment), 7, 2, 1.
-			) + " |" + FormatUtil.FormatDouble (
-				Math.exp (stretchedExponentialMomentWeierstrass.evaluate (moment)), 7, 2, 1.
-			) + "}";
-		}
-
-		System.out.println (display + "|");
-	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		double[] tauArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-		double[] betaArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-		double[] momentArray =
-		{
-			1.,
-			2.,
-			3.,
-			4.,
-			5.,
-		};
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println
-			("\t|                                             STRETCHED EXPONENTIAL INTEGRAL vs. WERERSTRASS ESTIMATE                                             |");
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		System.out.println
-			("\t|        L -> R:                                                                                                                                  |");
-
-		System.out.println
-			("\t|                - Tau                                                                                                                            |");
-
-		System.out.println
-			("\t|                - Beta                                                                                                                           |");
-
-		System.out.println
-			("\t|                - Integral vs. Weierstrass Moment Comparison                                                                                     |");
-
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		for (double tau : tauArray)
-		{
-			for (double beta : betaArray)
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
 			{
-				Estimate (
-					tau,
-					beta,
-					momentArray
-				);
-			}
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z || 1. <= z)
+					{
+						throw new java.lang.Exception
+							("FourierSeriesTerm::MalmstenBlagouchine::value => Invalid Inputs");
+					}
+
+					return java.lang.Math.log (order) *
+						java.lang.Math.sin (2. * java.lang.Math.PI * order * z) / order;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		System.out.println
-			("\t|-------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-		EnvManager.TerminateEnv();
+		return null;
 	}
 }

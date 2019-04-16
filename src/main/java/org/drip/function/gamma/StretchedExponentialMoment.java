@@ -107,6 +107,60 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 	private double _beta = java.lang.Double.NaN;
 
 	/**
+	 * Construct the Weierstrass Version of the Log of StretchedExponentialMoment Estimator
+	 * 
+	 * @param tau Tau
+	 * @param beta Beta
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return Weierstrass Version of the Log of StretchedExponentialMoment Estimator
+	 */
+
+	public static final StretchedExponentialMoment Weierstrass (
+		final double tau,
+		final double beta,
+		final int termCount)
+	{
+		final org.drip.function.gamma.InfiniteProduct weierstrassLogGamma =
+			org.drip.function.gamma.InfiniteProduct.Weierstrass (termCount);
+
+		if (null == weierstrassLogGamma)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new StretchedExponentialMoment (
+				null,
+				tau,
+				beta
+			)
+			{
+				@Override public double evaluate (
+					final double moment)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. > moment)
+					{
+						throw new java.lang.Exception
+							("StretchedExponential::Weierstrass::evaluate => Invalid Inputs");
+					}
+
+					return moment * java.lang.Math.log (tau) + weierstrassLogGamma.evaluate (moment / beta) -
+						java.lang.Math.log (beta);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * StretchedExponentialMoment Constructor
 	 * 
 	 * @param dc The Derivative Control
