@@ -1,9 +1,9 @@
 
 package org.drip.sample.lanczos;
 
-import org.drip.gamma.lanczos.ChebyshevCoefficientMatrix;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.lanczos.ChebyshevCoefficientMatrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

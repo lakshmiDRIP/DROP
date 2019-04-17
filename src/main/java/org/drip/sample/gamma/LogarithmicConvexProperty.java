@@ -3,9 +3,9 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.InequalityProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.GammaInequalityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -132,7 +132,7 @@ public class LogarithmicConvexProperty
 
 		System.out.println ("\t|---------------------------------------------------||");
 
-		R1ToR1Property logarithmicConvexProperty = InequalityProperties.LogarithmicConvex();
+		R1ToR1Property logarithmicConvexProperty = GammaInequalityLemma.LogarithmicConvex();
 
 		for (double x : xArray)
 		{

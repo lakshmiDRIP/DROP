@@ -3,9 +3,9 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.gamma.derived.BigPiProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.BigPiEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -192,7 +192,7 @@ public class BigPiMultiplicationProperty
 			Verifier (
 				m,
 				zArray,
-				BigPiProperties.MultiplicationFormula (m)
+				BigPiEqualityLemma.MultiplicationFormula (m)
 			);
 		}
 

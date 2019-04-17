@@ -3,9 +3,9 @@ package org.drip.sample.lanczos;
 
 import java.util.Map;
 
-import org.drip.gamma.lanczos.ASeriesGenerator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.lanczos.ASeriesGenerator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

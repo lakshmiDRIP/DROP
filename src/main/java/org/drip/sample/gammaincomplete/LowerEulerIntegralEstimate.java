@@ -1,10 +1,10 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.function.gammaincomplete.LowerEulerIntegral;
-import org.drip.gamma.estimator.EulerIntegralSecondKind;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

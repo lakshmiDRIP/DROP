@@ -1,10 +1,10 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.gamma.log.WindschitlTothAnalyticEstimate;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.loggamma.WindschitlTothAnalyticEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -118,7 +118,7 @@ public class WindschitlTothLogGammaEstimate
 
 		int factorialCount = 12;
 
-		WindschitlTothAnalyticEstimate windschitlTothLogGamma = new WindschitlTothAnalyticEstimate (null);
+		WindschitlTothAnalyticEstimator windschitlTothLogGamma = new WindschitlTothAnalyticEstimator (null);
 
 		System.out.println ("\t|------------------------------------------------------------||");
 

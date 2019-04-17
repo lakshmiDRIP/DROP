@@ -1,10 +1,10 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.function.gammaincomplete.UpperEulerIntegral;
-import org.drip.function.gammaincomplete.UpperSFixed;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.incompletegamma.UpperEulerIntegral;
+import org.drip.specialfunction.incompletegamma.UpperSFixed;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

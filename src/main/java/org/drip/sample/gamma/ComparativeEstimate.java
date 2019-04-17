@@ -1,17 +1,17 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.LogReciprocal;
-import org.drip.gamma.estimator.EulerIntegralSecondKind;
-import org.drip.gamma.estimator.NemesAnalytic;
-import org.drip.gamma.estimator.RamanujanSeries;
-import org.drip.gamma.estimator.StirlingSeries;
-import org.drip.gamma.estimator.WindschitlTothAnalytic;
-import org.drip.gamma.log.BinetIntegralFirstKindEstimator;
-import org.drip.gamma.log.BinetIntegralSecondKindEstimator;
-import org.drip.gamma.log.InfiniteSum;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.gamma.LogReciprocal;
+import org.drip.specialfunction.gamma.NemesAnalytic;
+import org.drip.specialfunction.gamma.RamanujanSeries;
+import org.drip.specialfunction.gamma.StirlingSeries;
+import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
+import org.drip.specialfunction.loggamma.BinetIntegralFirstKindEstimator;
+import org.drip.specialfunction.loggamma.BinetIntegralSecondKindEstimator;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -170,7 +170,7 @@ public class ComparativeEstimate
 
 		WindschitlTothAnalytic windschitlTothGamma = new WindschitlTothAnalytic (null);
 
-		InfiniteSum eulerInfiniteProduct = InfiniteSum.Euler (eulerTermCount);
+		InfiniteSumEstimator eulerInfiniteProduct = InfiniteSumEstimator.Euler (eulerTermCount);
 
 		BinetIntegralFirstKindEstimator binetIntegralFirstKind = new BinetIntegralFirstKindEstimator (null);
 
@@ -178,7 +178,7 @@ public class ComparativeEstimate
 
 		EulerIntegralSecondKind eulerIntegralSecondKind = new EulerIntegralSecondKind (null);
 
-		InfiniteSum weierstrassInfiniteProduct = InfiniteSum.Weierstrass (weierstrassTermCount);
+		InfiniteSumEstimator weierstrassInfiniteProduct = InfiniteSumEstimator.Weierstrass (weierstrassTermCount);
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------------------------||");
 

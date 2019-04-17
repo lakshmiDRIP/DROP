@@ -1,9 +1,9 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.gamma.derived.StretchedExponentialMoment;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.derived.StretchedExponentialMoment;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -135,7 +135,7 @@ public class StretchedExponentialMomentEstimate
 			display = display + "{" + FormatUtil.FormatDouble (
 				stretchedExponentialMomentIntegral.evaluate (moment), 7, 2, 1.
 			) + " |" + FormatUtil.FormatDouble (
-				Math.exp (stretchedExponentialMomentWeierstrass.evaluate (moment)), 7, 2, 1.
+				stretchedExponentialMomentWeierstrass.evaluate (moment), 7, 2, 1.
 			) + "}";
 		}
 

@@ -1,9 +1,10 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.gamma.derived.RiemannZeta;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.derived.RiemannZeta;
+import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -145,7 +146,10 @@ public class RiemannZetaEstimate
 			7.00,
 		};
 
-		RiemannZeta riemannZeta = new RiemannZeta (null);
+		RiemannZeta riemannZeta = new RiemannZeta (
+			null,
+			new WindschitlTothAnalytic (null)
+		);
 
 		System.out.println ("\t|----------------||");
 

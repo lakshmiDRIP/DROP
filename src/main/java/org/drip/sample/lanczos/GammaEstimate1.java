@@ -1,10 +1,10 @@
 
 package org.drip.sample.lanczos;
 
-import org.drip.gamma.lanczos.ASeriesGenerator;
-import org.drip.gamma.lanczos.Estimator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.lanczos.ASeriesGenerator;
+import org.drip.specialfunction.lanczos.Estimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

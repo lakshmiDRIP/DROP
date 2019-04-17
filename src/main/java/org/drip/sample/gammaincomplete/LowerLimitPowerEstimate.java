@@ -1,10 +1,10 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.function.gammaincomplete.LowerLimitPowerIntegrand;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.incompletegamma.LowerLimitPowerIntegrand;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

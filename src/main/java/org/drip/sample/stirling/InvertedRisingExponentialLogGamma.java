@@ -1,11 +1,11 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.gamma.log.RaabeSeriesEstimator;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R1Estimate;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.loggamma.RaabeSeriesEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

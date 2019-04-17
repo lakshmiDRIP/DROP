@@ -1,10 +1,10 @@
 
 package org.drip.sample.stirling;
 
-import org.drip.gamma.estimator.RamanujanSeries;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.gamma.RamanujanSeries;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

@@ -3,9 +3,9 @@ package org.drip.sample.gammaincomplete;
 
 import org.drip.function.e2erf.AbramowitzStegun;
 import org.drip.function.e2erf.ErrorFunctionAnalytical;
-import org.drip.function.gammaincomplete.LowerEulerIntegral;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.incompletegamma.LowerEulerIntegral;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

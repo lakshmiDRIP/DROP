@@ -3,9 +3,9 @@ package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
-import org.drip.function.gamma.InequalityProperties;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.GammaInequalityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,7 +116,7 @@ public class UpperAsymptoteProperty
 		throws Exception
 	{
 		R1ToR1Property asymptoticUpperApproximateProperty =
-			InequalityProperties.AsymptoticUpperApproximate (alpha);
+			GammaInequalityLemma.AsymptoticUpperApproximate (alpha);
 
 		System.out.println ("\t|---------------------------------------------------||");
 
