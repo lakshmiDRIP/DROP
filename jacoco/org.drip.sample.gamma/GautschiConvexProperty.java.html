@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GautschiConvexProperty.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gamma</a> &gt; <span class="el_source">GautschiConvexProperty.java</span></div><h1>GautschiConvexProperty.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.gamma;
+
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.GammaInequalityLemma;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;GautschiConvexProperty&lt;/i&gt; demonstrates the Verification of the Gautschi Double-Bound Convex Property
+ * of the Gamma Function. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md&quot;&gt;Integrand Estimates of Gamma Functions&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L110">public class GautschiConvexProperty</span>
+{
+
+	private static final void Verifier (
+		final double s,
+		final double[] zArray)
+		throws Exception
+	{
+<span class="nc" id="L118">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L120">		System.out.println (&quot;\t|               GAMMA FUNCTION GAUTSCHI CONVEX PROPERTY                ||&quot;);</span>
+
+<span class="nc" id="L122">		System.out.println (&quot;\t|                               s = &quot; + FormatUtil.FormatDouble (s, 1, 1, 1.));</span>
+
+<span class="nc" id="L124">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L126">		System.out.println (&quot;\t|        L -&gt; R:                                                       ||&quot;);</span>
+
+<span class="nc" id="L128">		System.out.println (&quot;\t|                - z                                                   ||&quot;);</span>
+
+<span class="nc" id="L130">		System.out.println (&quot;\t|                - LHS Value                                           ||&quot;);</span>
+
+<span class="nc" id="L132">		System.out.println (&quot;\t|                - Middle Value                                        ||&quot;);</span>
+
+<span class="nc" id="L134">		System.out.println (&quot;\t|                - RHS Value                                           ||&quot;);</span>
+
+<span class="nc" id="L136">		System.out.println (&quot;\t|                - Left Verification Success?                          ||&quot;);</span>
+
+<span class="nc" id="L138">		System.out.println (&quot;\t|                - Right Verification Success?                         ||&quot;);</span>
+
+<span class="nc" id="L140">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L142">		R1ToR1Property gautschiLeftProperty = GammaInequalityLemma.GautschiLeft (s);</span>
+
+<span class="nc" id="L144">		R1ToR1Property gautschiRightProperty = GammaInequalityLemma.GautschiRight (s);</span>
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (double z : zArray)</span>
+		{
+<span class="nc" id="L148">			R1ToR1PropertyVerification leftVerification = gautschiLeftProperty.verify (z);</span>
+
+<span class="nc" id="L150">			R1ToR1PropertyVerification rightVerification = gautschiRightProperty.verify (z);</span>
+
+<span class="nc" id="L152">			System.out.println (</span>
+<span class="nc" id="L153">				&quot;\t|&quot; + FormatUtil.FormatDouble (z, 2, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L154">					FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L155">					FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L156">					FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L157">					leftVerification.verified() + &quot; | &quot; +</span>
+<span class="nc" id="L158">					rightVerification.verified() + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L162">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L164">		System.out.println();</span>
+<span class="nc" id="L165">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L171">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L173">		double[] sArray =</span>
+		{
+			0.1,
+			0.2,
+			0.3,
+			0.4,
+			0.5,
+			0.6,
+			0.7,
+			0.8,
+			0.9,
+		};
+<span class="nc" id="L185">		double[] zArray =</span>
+		{
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+			7.5,
+			8.0,
+			8.5,
+			9.0,
+			9.5,
+		};
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (double s : sArray)</span>
+		{
+<span class="nc" id="L208">			Verifier (</span>
+				s,
+				zArray
+			);
+		}
+
+<span class="nc" id="L214">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L215">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

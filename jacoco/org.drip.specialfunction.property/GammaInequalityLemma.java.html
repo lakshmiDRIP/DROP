@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GammaInequalityLemma.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.property</a> &gt; <span class="el_source">GammaInequalityLemma.java</span></div><h1>GammaInequalityLemma.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.property;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;GammaInequalityLemma&lt;/i&gt; contains the Verifiable Inequality Lemmas of the Gamma Function. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class GammaInequalityLemma</span>
+{
+
+	/**
+	 * Construct the Asymptotic Upper Approximate
+	 * 
+	 * @param alpha Alpha
+	 * 
+	 * @return The Asymptotic Upper Approximate
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property AsymptoticUpperApproximate (
+		final double alpha)
+	{
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha))</span>
+		{
+<span class="nc" id="L120">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L125">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.GTE,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L128">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L133" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L135">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::AsymptoticUpperApproximate::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L139">						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate </span>
+<span class="nc" id="L140">							(s + alpha);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L144">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L151">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::AsymptoticUpperApproximate::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L155">						return alpha * java.lang.Math.log (s)  +</span>
+<span class="nc" id="L156">							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate (s);</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L164">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L167">		return null;</span>
+	}
+
+	/**
+	 * Generate the Exponentially Convex Inequality Verifier
+	 * 
+	 * @param z1 z1
+	 * @param z2 z2
+	 * 
+	 * @return The Exponentially Convex Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ExponentiallyConvex (
+		final double z1,
+		final double z2)
+	{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z1) ||</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (z2))</span>
+		{
+<span class="nc" id="L186">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L191">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.LTE,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L194">				{</span>
+					@Override public double evaluate (
+						final double t)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L199" title="All 6 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t || 1. &lt; t)</span>
+						{
+<span class="nc" id="L201">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::ExponentiallyConvex::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L205">						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate</span>
+<span class="nc" id="L206">							(t * z1 + (1. - t) * z2);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L210">				{</span>
+					@Override public double evaluate (
+						final double t)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L215" title="All 6 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t || 1. &lt; t)</span>
+						{
+<span class="nc" id="L217">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::ExponentiallyConvex::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L221">						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L222">							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+<span class="nc" id="L224">						return t * weierStrass.evaluate (z1) + (1. - t) * weierStrass.evaluate (z2);</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L230">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L232">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L235">		return null;</span>
+	}
+
+	/**
+	 * Generate the Spaced Point Convex Inequality Verifier
+	 * 
+	 * @param y y
+	 * 
+	 * @return The Spaced Point Convex Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SpacedPointConvex (
+		final double y)
+	{
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y))</span>
+		{
+<span class="nc" id="L251">			return null;</span>
+		}
+
+<span class="nc" id="L254">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L255">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+		try
+		{
+<span class="nc" id="L259">			final double logGammaY = weierStrass.evaluate (y);</span>
+
+<span class="nc" id="L261">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L264">				{</span>
+					@Override public double evaluate (
+						final double x)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L269" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &gt;= y)</span>
+						{
+<span class="nc" id="L271">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::SpacedPointConvex::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L275">						return (logGammaY - weierStrass.evaluate (x)) / (y - x);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L279">				{</span>
+					@Override public double evaluate (
+						final double x)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L284" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+						{
+<span class="nc" id="L286">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::SpacedPointConvex::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L290">						org.drip.specialfunction.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =</span>
+							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+
+<span class="nc" id="L293">						return eulerIntegralSecondKind.derivative (</span>
+							x,
+							1
+<span class="nc" id="L296">						) - weierStrass.evaluate (x);</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L302">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L304">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L307">		return null;</span>
+	}
+
+	/**
+	 * Generate the Logarithmically Convex Inequality Verifier
+	 * 
+	 * @return The Logarithmically Convex Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property LogarithmicConvex()
+	{
+<span class="nc" id="L318">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L319">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+		try
+		{
+<span class="nc" id="L323">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L326">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L331" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+						{
+<span class="nc" id="L333">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::LogarithmicConvex::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L337">						return java.lang.Math.log (</span>
+<span class="nc" id="L338">							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (</span>
+								z,
+								2
+							)
+<span class="nc" id="L342">						) + weierStrass.evaluate (z);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L346">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L351" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+						{
+<span class="nc" id="L353">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::LogarithmicConvex::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L357">						return java.lang.Math.log (</span>
+<span class="nc" id="L358">							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (</span>
+								z,
+								1
+							)
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L368">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L370">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L373">		return null;</span>
+	}
+
+	/**
+	 * Generate the Gautschi Left Inequality Verifier
+	 * 
+	 * @param s s
+	 * 
+	 * @return The Gautschi Left Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property GautschiLeft (
+		final double s)
+	{
+<span class="nc bnc" id="L387" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. &gt;= s || 1. &lt;= s)</span>
+		{
+<span class="nc" id="L389">			return null;</span>
+		}
+
+<span class="nc" id="L392">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L393">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+		try
+		{
+<span class="nc" id="L397">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L400">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L405" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+						{
+<span class="nc" id="L407">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::GautschiLeft::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L411">						return (1. - s) * java.lang.Math.log (z);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L415">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L420" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+						{
+<span class="nc" id="L422">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::GautschiLeft::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L426">						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L432">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L434">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L437">		return null;</span>
+	}
+
+	/**
+	 * Generate the Gautschi Right Inequality Verifier
+	 * 
+	 * @param s s
+	 * 
+	 * @return The Gautschi Right Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property GautschiRight (
+		final double s)
+	{
+<span class="nc bnc" id="L451" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. &gt;= s || 1. &lt;= s)</span>
+		{
+<span class="nc" id="L453">			return null;</span>
+		}
+
+<span class="nc" id="L456">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L457">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+		try
+		{
+<span class="nc" id="L461">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L464">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L469" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+						{
+<span class="nc" id="L471">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::GautschiRight::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L475">						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L479">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L484" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+						{
+<span class="nc" id="L486">							throw new java.lang.Exception</span>
+								(&quot;GammaInequalityLemma::GautschiRight::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L490">						return (1. - s) * java.lang.Math.log (z + 1.);</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L496">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L498">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L501">		return null;</span>
+	}
+
+	/**
+	 * Generate the Jensen Multi-Point Interpolant Convexity Verification
+	 * 
+	 * @param multiPoint2D Multi-Point 2D
+	 * 
+	 * @return Jensen Multi-Point Interpolant Convexity Verification
+	 */
+
+	public static final org.drip.function.definition.R1ToR1PropertyVerification JensenMultiPointInterpolant (
+		final org.drip.numerical.common.Array2D multiPoint2D)
+	{
+<span class="nc bnc" id="L515" title="All 2 branches missed.">		if (null == multiPoint2D)</span>
+		{
+<span class="nc" id="L517">			return null;</span>
+		}
+
+<span class="nc" id="L520">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =</span>
+<span class="nc" id="L521">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+<span class="nc" id="L523">		double[] xArray = multiPoint2D.x();</span>
+
+<span class="nc" id="L525">		double[] aArray = multiPoint2D.y();</span>
+
+<span class="nc" id="L527">		double interpolantDenominator = 0.;</span>
+<span class="nc" id="L528">		double interpolantNumerator = 0.;</span>
+<span class="nc" id="L529">		int count = aArray.length;</span>
+<span class="nc" id="L530">		double rValue = 0.;</span>
+
+<span class="nc bnc" id="L532" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L534">			interpolantNumerator = interpolantNumerator + aArray[index] * xArray[index];</span>
+<span class="nc" id="L535">			interpolantDenominator = interpolantDenominator + aArray[index];</span>
+		}
+
+<span class="nc" id="L538">		double interpolantDenominatorInverse = 1. / interpolantDenominator;</span>
+
+		try
+		{
+<span class="nc" id="L542">			double lValue = weierStrass.evaluate (interpolantNumerator* interpolantDenominatorInverse);</span>
+
+<span class="nc bnc" id="L544" title="All 2 branches missed.">			for (int index = 0; index &lt; count; ++index)</span>
+			{
+<span class="nc" id="L546">				rValue = rValue + aArray[index] * weierStrass.evaluate (xArray[index]);</span>
+			}
+
+<span class="nc bnc" id="L549" title="All 2 branches missed.">			return new org.drip.function.definition.R1ToR1PropertyVerification (</span>
+				lValue,
+				rValue = rValue * interpolantDenominatorInverse,
+				lValue &lt;= rValue
+			);
+		}
+<span class="nc" id="L555">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L557">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L560">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
