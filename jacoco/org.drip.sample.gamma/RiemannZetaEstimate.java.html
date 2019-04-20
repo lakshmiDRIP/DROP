@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RiemannZetaEstimate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gamma</a> &gt; <span class="el_source">RiemannZetaEstimate.java</span></div><h1>RiemannZetaEstimate.java</h1><pre class="source lang-java linenums">
 package org.drip.sample.gamma;
 
-import org.drip.function.gamma.RiemannZeta;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.derived.RiemannZeta;
+import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -105,16 +106,16 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L108">public class RiemannZetaEstimate</span>
+<span class="nc" id="L109">public class RiemannZetaEstimate</span>
 {
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L115">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L116">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L117">		double[] sArray =</span>
+<span class="nc" id="L118">		double[] sArray =</span>
 		{
 			0.05,
 			0.10,
@@ -145,33 +146,36 @@ import org.drip.service.env.EnvManager;
 			7.00,
 		};
 
-<span class="nc" id="L148">		RiemannZeta riemannZeta = new RiemannZeta (null);</span>
-
-<span class="nc" id="L150">		System.out.println (&quot;\t|----------------||&quot;);</span>
-
-<span class="nc" id="L152">		System.out.println (&quot;\t|  RIEMANN ZETA  ||&quot;);</span>
+<span class="nc" id="L149">		RiemannZeta riemannZeta = new RiemannZeta (</span>
+			null,
+			new WindschitlTothAnalytic (null)
+		);
 
 <span class="nc" id="L154">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t|  L -&gt; R:       ||&quot;);</span>
+<span class="nc" id="L156">		System.out.println (&quot;\t|  RIEMANN ZETA  ||&quot;);</span>
 
-<span class="nc" id="L158">		System.out.println (&quot;\t|     - s        ||&quot;);</span>
+<span class="nc" id="L158">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="nc" id="L160">		System.out.println (&quot;\t|     - Zeta     ||&quot;);</span>
+<span class="nc" id="L160">		System.out.println (&quot;\t|  L -&gt; R:       ||&quot;);</span>
 
-<span class="nc" id="L162">		System.out.println (&quot;\t|----------------||&quot;);</span>
+<span class="nc" id="L162">		System.out.println (&quot;\t|     - s        ||&quot;);</span>
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (double s : sArray)</span>
+<span class="nc" id="L164">		System.out.println (&quot;\t|     - Zeta     ||&quot;);</span>
+
+<span class="nc" id="L166">		System.out.println (&quot;\t|----------------||&quot;);</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (double s : sArray)</span>
 		{
-<span class="nc" id="L166">			System.out.println (</span>
-<span class="nc" id="L167">				&quot;\t|&quot; + FormatUtil.FormatDouble (s, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L168">				FormatUtil.FormatDouble (riemannZeta.evaluate (s), 2, 2, 1.) + &quot; ||&quot;</span>
+<span class="nc" id="L170">			System.out.println (</span>
+<span class="nc" id="L171">				&quot;\t|&quot; + FormatUtil.FormatDouble (s, 1, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L172">				FormatUtil.FormatDouble (riemannZeta.evaluate (s), 2, 2, 1.) + &quot; ||&quot;</span>
 			);
 		}
 
-<span class="nc" id="L172">		System.out.println (&quot;\t|----------------||&quot;);</span>
+<span class="nc" id="L176">		System.out.println (&quot;\t|----------------||&quot;);</span>
 
-<span class="nc" id="L174">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L175">	}</span>
+<span class="nc" id="L178">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L179">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

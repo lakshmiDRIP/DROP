@@ -2,10 +2,10 @@
 package org.drip.sample.gammaincomplete;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.gammaincomplete.LimitAsymptote;
-import org.drip.function.gammaincomplete.UpperEulerIntegral;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.incompletegamma.LimitAsymptote;
+import org.drip.specialfunction.incompletegamma.UpperEulerIntegral;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

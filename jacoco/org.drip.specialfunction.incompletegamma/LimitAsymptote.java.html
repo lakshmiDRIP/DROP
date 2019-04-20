@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LimitAsymptote.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.incompletegamma</a> &gt; <span class="el_source">LimitAsymptote.java</span></div><h1>LimitAsymptote.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.incompletegamma;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;LimitAsymptote&lt;/i&gt; implements the Asymptotes for the Lower/Upper Incomplete Gamma Function. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Geddes, K. O., M. L. Glasser, R. A. Moore, and T. C. Scott (1990): Evaluation of Classes of
+ * 				Definite Integrals involving Elementary Functions via Differentiation of Special Functions
+ * 				&lt;i&gt;Applicable Algebra in Engineering, Communications, and &lt;/i&gt; &lt;b&gt;1 (2)&lt;/b&gt; 149-165
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Gradshteyn, I. S., I. M. Ryzhik, Y. V. Geronimus, M. Y. Tseytlin, and A. Jeffrey (2015):
+ * 				&lt;i&gt;Tables of Integrals, Series, and Products&lt;/i&gt; &lt;b&gt;Academic Press&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Mathar, R. J. (2010): Numerical Evaluation of the Oscillatory Integral over
+ *				e&lt;sup&gt;iÏ€x&lt;/sup&gt; x&lt;sup&gt;(1/x)&lt;/sup&gt; between 1 and âˆž
+ *				https://arxiv.org/pdf/0912.3844.pdf &lt;b&gt;arXiV&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Incomplete Gamma and Related Functions
+ * 				https://dlmf.nist.gov/8
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Incomplete Gamma Function
+ * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md&quot;&gt;Upper/Lower Incomplete Gamma Functions&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class LimitAsymptote
+{
+
+	/**
+	 * Construct the Lower Incomplete Gamma Asymptote Function
+	 * 
+	 * @return The Lower Incomplete Gamma Asymptote Function
+	 */
+
+	public static final LimitAsymptote Lower()
+	{
+<span class="nc" id="L118">		return new LimitAsymptote()</span>
+<span class="nc" id="L119">		{</span>
+
+			@Override public org.drip.function.definition.R1ToR1 zZero (
+				final double s)
+			{
+<span class="nc bnc" id="L124" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+				{
+<span class="nc" id="L126">					return null;</span>
+				}
+
+<span class="nc" id="L129">				return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L130">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L135" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z &lt; 0.)</span>
+						{
+<span class="nc" id="L137">							throw new java.lang.Exception (&quot;LimitAsymptote::Lower::Zero::evaluate&quot;);</span>
+						}
+
+<span class="nc" id="L140">						return java.lang.Math.pow (</span>
+							z,
+							s
+						) / s;
+					}
+				};
+			}
+
+			@Override public org.drip.function.definition.R1ToR1 zInfinity (
+				final double s)
+			{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+				{
+<span class="nc" id="L153">					return null;</span>
+				}
+
+<span class="nc" id="L156">				return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L157">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L162" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z &lt; 0.)</span>
+						{
+<span class="nc" id="L164">							throw new java.lang.Exception (&quot;LimitAsymptote::Lower::Infinity::evaluate&quot;);</span>
+						}
+
+<span class="nc" id="L167">						return new org.drip.specialfunction.gamma.NemesAnalytic (null).evaluate (s);</span>
+					}
+				};
+			}
+		};
+	}
+
+	/**
+	 * Construct the Upper Incomplete Gamma Asymptote Function
+	 * 
+	 * @return The Upper Incomplete Gamma Asymptote Function
+	 */
+
+	public static final LimitAsymptote Upper()
+	{
+<span class="nc" id="L182">		return new LimitAsymptote()</span>
+<span class="nc" id="L183">		{</span>
+
+			@Override public org.drip.function.definition.R1ToR1 zZero (
+				final double s)
+			{
+<span class="nc" id="L188">				return null;</span>
+			}
+
+			@Override public org.drip.function.definition.R1ToR1 zInfinity (
+				final double s)
+			{
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+				{
+<span class="nc" id="L196">					return null;</span>
+				}
+
+<span class="nc" id="L199">				return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L200">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L205" title="All 4 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z &lt; 0.)</span>
+						{
+<span class="nc" id="L207">							throw new java.lang.Exception (&quot;LimitAsymptote::Upper::Infinity::evaluate&quot;);</span>
+						}
+
+<span class="nc" id="L210">						return java.lang.Math.pow (</span>
+							z,
+							s - 1
+<span class="nc" id="L213">						) * java.lang.Math.exp (-z);</span>
+					}
+				};
+			}
+		};
+	}
+
+	private LimitAsymptote()
+<span class="nc" id="L221">	{</span>
+<span class="nc" id="L222">	}</span>
+
+	/**
+	 * Retrieve the z tends to Zero Asymptote
+	 * 
+	 * @param s s
+	 * 
+	 * @return The z tends to Zero Asymptote
+	 */
+
+	public abstract org.drip.function.definition.R1ToR1 zZero (
+		final double s);
+
+	/**
+	 * Retrieve the z tends to Infinity Asymptote
+	 * 
+	 * @param s s
+	 * 
+	 * @return The z tends to Infinity Asymptote
+	 */
+
+	public abstract org.drip.function.definition.R1ToR1 zInfinity (
+		final double s);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
