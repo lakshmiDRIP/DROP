@@ -1,5 +1,5 @@
 
-package org.drip.function.beta;
+package org.drip.specialfunction.digamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,27 +64,29 @@ package org.drip.function.beta;
  */
 
 /**
- * <i>LogGammaBased</i> implements the Log Beta Function using the Log Gamma Function. The References are:
+ * <i>CumulativeSeriesTerm</i> implements a Single Term in the Cumulative Series for Digamma Estimation. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
+ * 				Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
+ * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
+ * 		</li>
+ * 		<li>
+ * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
+ * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
  * 		</li>
  * 		<li>
  * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
  * 				University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
- * 		</li>
- * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
  *
@@ -92,31 +94,43 @@ package org.drip.function.beta;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogGammaBased
+public class CumulativeSeriesTerm
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
 
 	/**
-	 * Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator
+	 * Construct the Abramowitz-Stegun (2007) Cumulative Sum Series Term for DiGamma
 	 * 
-	 * @param termCount Number of Terms in the Estimation
-	 * 
-	 * @return The Weierstrass Infinite Product Series Version of Log Beta Estimator
+	 * @return The Abramowitz-Stegun (2007) Cumulative Sum Series Term for DiGamma
 	 */
 
-	public static final LogGammaBased Weierstrass (
-		final int termCount)
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm AbramowitzStegun2007()
 	{
 		try
 		{
-			return new LogGammaBased (org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount));
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || order == -z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesTerm::AbramowitzStegun2007::value => Invalid Inputs");
+					}
+
+					return z / (order * (order + z));
+				}
+			};
 		}
 		catch (java.lang.Exception e)
 		{
@@ -124,60 +138,5 @@ public class LogGammaBased
 		}
 
 		return null;
-	}
-
-	/**
-	 * LogGammaBased Constructor
-	 * 
-	 * @param r1ToR1LogGamma The Log Gamma Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LogGammaBased (
-		final org.drip.function.definition.R1ToR1 r1ToR1LogGamma)
-		throws java.lang.Exception
-	{
-		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma))
-		{
-			throw new java.lang.Exception ("LogGammaBased Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Log Gamma Function
-	 * 
-	 * @return The Log Gamma Function
-	 */
-
-	public org.drip.function.definition.R1ToR1 r1ToR1LogGamma()
-	{
-		return _r1ToR1LogGamma;
-	}
-
-	/**
-	 * Evaluate the Log Beta Function using the Log Gamma Function
-	 * 
-	 * @param x X
-	 * @param y Y
-	 * 
-	 * @return The Log Beta Function using the LogGamma Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double evaluate (
-		final double x,
-		final double y)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (y))
-		{
-			throw new java.lang.Exception ("LogGammaBased::evaluate => Invalid Inputs");
-		}
-
-		return _r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) -
-			_r1ToR1LogGamma.evaluate (x + y);
 	}
 }

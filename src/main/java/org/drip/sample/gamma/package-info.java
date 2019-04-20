@@ -1,6 +1,6 @@
 
 /**
- * Integrand Estimates of Gamma Functions
+ * Estimates of the Gamma Functions
  *
  * @author Lakshmi Krishnamurthy
  */

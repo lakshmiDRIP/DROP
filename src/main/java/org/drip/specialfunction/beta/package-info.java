@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.function.beta;
+package org.drip.specialfunction.beta;
