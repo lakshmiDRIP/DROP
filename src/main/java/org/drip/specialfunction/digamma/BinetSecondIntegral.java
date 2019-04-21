@@ -1,9 +1,5 @@
 
-package org.drip.sample.digamma;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+package org.drip.specialfunction.digamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,8 +64,8 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  */
 
 /**
- * <i>AbramowitzStegunEstimate</i> demonstrates the Cumulative Series Based Digamma Estimation. The
- * References are:
+ * <i>BinetSecondIntegral</i> demonstrates the Estimation of the Digamma Function using the Binet's Second
+ * Integral. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,79 +101,45 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunEstimate
+public class BinetSecondIntegral extends org.drip.function.definition.R1ToR1
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * BinetSecondIntegral Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 */
+
+	public BinetSecondIntegral (
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		EnvManager.InitEnv ("");
+		super (dc);
+	}
 
-		int[] termCountArray =
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
 		{
-			     10,
-			    100,
-			   1000,
-			  10000,
-			 100000,
-			1000000,
-		};
-
-		double[] zArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
-		};
-
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|                       ABRAMOWITZ STEGUN (2007) DIGAMMA FUNCTION ESTIMATE                        ||");
-
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                                                  ||");
-
-		System.out.println ("\t|                - z                                                                              ||");
-
-		System.out.println ("\t|                - Multi-term Diagamma Estimate                                                   ||");
-
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		for (double z : zArray)
-		{
-			String display = "\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => ";
-
-			for (int termCount : termCountArray)
-			{
-				display = display + FormatUtil.FormatDouble (
-					CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount).evaluate (z),
-					1, 10, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+			throw new java.lang.Exception ("BinetSecondIntegral::evaluate => Invalid Inputs");
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return -2 * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+			0.,
+			1000000
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					return 0. == t || java.lang.Double.isInfinite (t) ? 0. : t / (
+						(t * t + z * z) * (java.lang.Math.exp (2. * java.lang.Math.PI * t) - 1.)
+					);
+				}
+			}
+		) + java.lang.Math.log (z) - 0.5 / z;
 	}
 }

@@ -68,8 +68,8 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  */
 
 /**
- * <i>AbramowitzStegunEstimate</i> demonstrates the Cumulative Series Based Digamma Estimation. The
- * References are:
+ * <i>HarmonicEstimate</i> demonstrates the Cumulative Series Digamma Estimate Based on the Harmonic
+ * Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,7 +105,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunEstimate
+public class HarmonicEstimate
 {
 
 	public static final void main (
@@ -114,69 +114,60 @@ public class AbramowitzStegunEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int[] termCountArray =
-		{
-			     10,
-			    100,
-			   1000,
-			  10000,
-			 100000,
-			1000000,
-		};
-
 		double[] zArray =
 		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
+			 1.,
+			 2.,
+			 3.,
+			 4.,
+			 5.,
+			 6.,
+			 7.,
+			 8.,
+			 9.,
+			10.,
+			11.,
+			12.,
+			13.,
+			14.,
+			15.,
+			16.,
+			17.,
+			18.,
+			19.,
+			20.,
+			21.,
+			22.,
+			23.,
+			24.,
+			25.,
 		};
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------||");
 
-		System.out.println ("\t|                       ABRAMOWITZ STEGUN (2007) DIGAMMA FUNCTION ESTIMATE                        ||");
+		System.out.println ("\t|   HARMONIC ESTIMATE   ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------||");
 
-		System.out.println ("\t|        L -> R:                                                                                  ||");
+		System.out.println ("\t|    L -> R:            ||");
 
-		System.out.println ("\t|                - z                                                                              ||");
+		System.out.println ("\t|        - z            ||");
 
-		System.out.println ("\t|                - Multi-term Diagamma Estimate                                                   ||");
+		System.out.println ("\t|        - Digamma      ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------||");
 
 		for (double z : zArray)
 		{
-			String display = "\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => ";
-
-			for (int termCount : termCountArray)
-			{
-				display = display + FormatUtil.FormatDouble (
-					CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount).evaluate (z),
-					1, 10, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 2, 1, 1.) + " => " +
+				FormatUtil.FormatDouble (
+					CumulativeSeriesEstimator.Harmonic().evaluate (z), 1, 10, 1.
+				) + " ||"
+			);
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------||");
 
 		EnvManager.TerminateEnv();
 	}

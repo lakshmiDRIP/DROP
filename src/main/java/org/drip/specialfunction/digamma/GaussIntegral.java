@@ -1,9 +1,5 @@
 
-package org.drip.sample.digamma;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+package org.drip.specialfunction.digamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,8 +64,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  */
 
 /**
- * <i>AbramowitzStegunEstimate</i> demonstrates the Cumulative Series Based Digamma Estimation. The
- * References are:
+ * <i>GaussIntegral</i> implements Gaussian Integral Based Digamma Estimators. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -98,86 +93,53 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunEstimate
+public class GaussIntegral extends org.drip.function.definition.R1ToR1
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * GaussIntegral Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 */
+
+	public GaussIntegral (
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		EnvManager.InitEnv ("");
+		super (dc);
+	}
 
-		int[] termCountArray =
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
-			     10,
-			    100,
-			   1000,
-			  10000,
-			 100000,
-			1000000,
-		};
-
-		double[] zArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
-		};
-
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|                       ABRAMOWITZ STEGUN (2007) DIGAMMA FUNCTION ESTIMATE                        ||");
-
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                                                  ||");
-
-		System.out.println ("\t|                - z                                                                              ||");
-
-		System.out.println ("\t|                - Multi-term Diagamma Estimate                                                   ||");
-
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
-
-		for (double z : zArray)
-		{
-			String display = "\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => ";
-
-			for (int termCount : termCountArray)
-			{
-				display = display + FormatUtil.FormatDouble (
-					CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount).evaluate (z),
-					1, 10, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+			throw new java.lang.Exception ("GaussIntegral::evaluate => Invalid Inputs");
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+			0.,
+			1000000
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					double ePowerMinusT = java.lang.Math.exp (-t);
 
-		EnvManager.TerminateEnv();
+					return 0. == t || java.lang.Double.isInfinite (t) ? 0. :
+						(ePowerMinusT / t) - (java.lang.Math.exp (-z * t) / (1. - ePowerMinusT));
+				}
+			}
+		);
 	}
 }

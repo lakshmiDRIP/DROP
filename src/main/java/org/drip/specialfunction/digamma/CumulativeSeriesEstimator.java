@@ -130,11 +130,100 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::Euler::evaluate => Invalid Inputs");
+							("CumulativeSeriesEstimator::AbramowitzStegun2007::evaluate => Invalid Inputs");
 					}
 
 					return cumulativeSeries().evaluate (z - 1.) -
 						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Harmonic Cumulative Series of Digamma Estimator
+	 * 
+	 * @return The Harmonic Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator Harmonic()
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				null,
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::Harmonic::evaluate => Invalid Inputs");
+					}
+
+					double harmonicEstimate = 0.;
+
+					for (int i = 1; i < (int) z; ++i)
+					{
+						harmonicEstimate = harmonicEstimate + (1. / i);
+					}
+
+					return harmonicEstimate - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Half-Integer Cumulative Series of Digamma Estimator
+	 * 
+	 * @return The Half-Integer Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator HalfInteger()
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				null,
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z || 0.5 != z - (int) z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::HalfInteger::evaluate => Invalid Inputs");
+					}
+
+					double halfIntegerEstimate = 0.;
+
+					for (int i = 1; i <= (int) z; ++i)
+					{
+						halfIntegerEstimate = halfIntegerEstimate + (1. / (-0.5 + i));
+					}
+
+					return halfIntegerEstimate - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+						- java.lang.Math.log (4.);
 				}
 			};
 		}

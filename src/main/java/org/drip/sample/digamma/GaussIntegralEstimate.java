@@ -4,6 +4,7 @@ package org.drip.sample.digamma;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+import org.drip.specialfunction.digamma.GaussIntegral;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -68,8 +69,8 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  */
 
 /**
- * <i>AbramowitzStegunEstimate</i> demonstrates the Cumulative Series Based Digamma Estimation. The
- * References are:
+ * <i>GaussIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Gauss Integral.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,7 +106,7 @@ import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AbramowitzStegunEstimate
+public class GaussIntegralEstimate
 {
 
 	public static final void main (
@@ -114,16 +115,7 @@ public class AbramowitzStegunEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int[] termCountArray =
-		{
-			     10,
-			    100,
-			   1000,
-			  10000,
-			 100000,
-			1000000,
-		};
-
+		int termCount = 1000000;
 		double[] zArray =
 		{
 			0.5,
@@ -147,36 +139,42 @@ public class AbramowitzStegunEstimate
 			9.5,
 		};
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		GaussIntegral gaussIntegral = new GaussIntegral (null);
 
-		System.out.println ("\t|                       ABRAMOWITZ STEGUN (2007) DIGAMMA FUNCTION ESTIMATE                        ||");
+		CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                                                                  ||");
+		System.out.println ("\t|   GAUSS INTEGRAL DIGAMMA ESTIMATE    ||");
 
-		System.out.println ("\t|                - z                                                                              ||");
+		System.out.println ("\t|--------------------------------------||");
 
-		System.out.println ("\t|                - Multi-term Diagamma Estimate                                                   ||");
+		System.out.println ("\t|    L -> R:                           ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|        - z                           ||");
+
+		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
+
+		System.out.println ("\t|        - Gaussian Integral           ||");
+
+		System.out.println ("\t|--------------------------------------||");
 
 		for (double z : zArray)
 		{
-			String display = "\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => ";
-
-			for (int termCount : termCountArray)
-			{
-				display = display + FormatUtil.FormatDouble (
-					CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount).evaluate (z),
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
+				FormatUtil.FormatDouble (
+					abramowitzStegun2007.evaluate (z),
 					1, 10, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+				) + " | " + FormatUtil.FormatDouble (
+					gaussIntegral.evaluate (z),
+					1, 10, 1.
+				) + " ||"
+			);
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}
