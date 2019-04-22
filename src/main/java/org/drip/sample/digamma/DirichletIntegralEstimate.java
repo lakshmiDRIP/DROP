@@ -2,9 +2,10 @@
 package org.drip.sample.digamma;
 
 import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.DirichletIntegral;
+import org.drip.specialfunction.digamma.IntegralEstimate;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -139,7 +140,7 @@ public class DirichletIntegralEstimate
 			9.5,
 		};
 
-		DirichletIntegral dirichletIntegral = new DirichletIntegral (null);
+		R1ToR1IntegrandEstimator dirichletIntegral = IntegralEstimate.Dirichlet();
 
 		CumulativeSeriesEstimator abramowitzStegun2007 =
 			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);

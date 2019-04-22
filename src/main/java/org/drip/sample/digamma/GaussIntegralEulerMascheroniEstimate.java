@@ -2,9 +2,10 @@
 package org.drip.sample.digamma;
 
 import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.GaussEulerMascheroniIntegral;
+import org.drip.specialfunction.digamma.IntegralEstimate;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -139,7 +140,7 @@ public class GaussIntegralEulerMascheroniEstimate
 			9.5,
 		};
 
-		GaussEulerMascheroniIntegral gaussEulerMascheroniIntegral = new GaussEulerMascheroniIntegral (null);
+		R1ToR1IntegrandEstimator gaussEulerMascheroniIntegral = IntegralEstimate.GaussEulerMascheroni();
 
 		CumulativeSeriesEstimator abramowitzStegun2007 =
 			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);

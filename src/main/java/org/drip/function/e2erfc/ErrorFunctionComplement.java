@@ -102,7 +102,7 @@ package org.drip.function.e2erfc;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1IntegrandEstimator
+public class ErrorFunctionComplement extends org.drip.numerical.estimation.R1ToR1IntegrandLimitEstimator
 {
 	private org.drip.numerical.estimation.R1ToR1Series _r1ToR1SeriesGenerator = null;
 

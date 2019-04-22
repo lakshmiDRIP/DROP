@@ -1,5 +1,10 @@
 
-package org.drip.specialfunction.digamma;
+package org.drip.sample.digamma;
+
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.digamma.BinetFirstIntegral;
+import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +69,8 @@ package org.drip.specialfunction.digamma;
  */
 
 /**
- * <i>GaussEulerMascheroniIntegral</i> demonstrates the Estimation of the Digamma Function using the Gauss
- * Euler-Mascheroni Integral. The References are:
+ * <i>BinetFirstIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Binet
+ * First Integral. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,50 +106,76 @@ package org.drip.specialfunction.digamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GaussEulerMascheroniIntegral extends org.drip.function.definition.R1ToR1
+public class BinetFirstIntegralEstimate
 {
 
-	/**
-	 * GaussEulerMascheroniIntegral Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public GaussEulerMascheroniIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double evaluate (
-		final double z)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		int termCount = 1000000;
+		double[] zArray =
 		{
-			throw new java.lang.Exception ("GaussEulerMascheroniIntegral::evaluate => Invalid Inputs");
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+			7.5,
+			8.0,
+			8.5,
+			9.0,
+			9.5,
+		};
+
+		BinetFirstIntegral binetFirstIntegral = new BinetFirstIntegral (null);
+
+		CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);
+
+		System.out.println ("\t|--------------------------------------||");
+
+		System.out.println ("\t|    BINET FIRST INTEGRAL ESTIMATE     ||");
+
+		System.out.println ("\t|--------------------------------------||");
+
+		System.out.println ("\t|    L -> R:                           ||");
+
+		System.out.println ("\t|        - z                           ||");
+
+		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
+
+		System.out.println ("\t|        - Binet First Integral        ||");
+
+		System.out.println ("\t|--------------------------------------||");
+
+		for (double z : zArray)
+		{
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
+				FormatUtil.FormatDouble (
+					abramowitzStegun2007.evaluate (z),
+					1, 10, 1.
+				) + " | " + FormatUtil.FormatDouble (
+					binetFirstIntegral.evaluate (z),
+					1, 10, 1.
+				) + " ||"
+			);
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-			0.,
-			1.,
-			1000000
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return 0. == t ? 1. - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI :
-						1. == t ? -org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI : (
-							1. - java.lang.Math.pow (
-								t,
-								z - 1.
-							)
-						) / (1. - t) - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
-				}
-			}
-		);
+		System.out.println ("\t|--------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

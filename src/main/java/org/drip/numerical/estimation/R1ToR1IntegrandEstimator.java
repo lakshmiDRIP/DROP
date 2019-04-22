@@ -102,50 +102,136 @@ package org.drip.numerical.estimation;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1ToR1IntegrandEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public class R1ToR1IntegrandEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
 {
-	private double _leftLimit = java.lang.Double.NaN;
 
-	protected R1ToR1IntegrandEstimator (
+	/**
+	 * Set the ZERO_ONE Integrand Limits Setting
+	 */
+
+	public static final int INTEGRAND_LIMITS_SETTING_ZERO_ONE = 0;
+
+	/**
+	 * Set the ZERO_INFINITY Integrand Limits Setting
+	 */
+
+	public static final int INTEGRAND_LIMITS_SETTING_ZERO_INFINITY = 1;
+
+	private int _limitsSetting = -1;
+	private int _quadratureCount = 1000000;
+	private double _integrandScale = java.lang.Double.NaN;
+	private org.drip.numerical.estimation.R1ToR1Estimator _integrandOffset = null;
+	private org.drip.numerical.estimation.R1ToR1IntegrandGenerator _integrandGenerator = null;
+
+	/**
+	 * R1ToR1IntegrandEstimator Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 * @param integrandGenerator The Integrand Generator
+	 * @param limitsSetting The Integrand Limits Setting
+	 * @param integrandScale The Integrand Scale
+	 * @param integrandOffset The Integrand Offset
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1ToR1IntegrandEstimator (
 		final org.drip.numerical.differentiation.DerivativeControl dc,
-		final double leftLimit)
+		final org.drip.numerical.estimation.R1ToR1IntegrandGenerator integrandGenerator,
+		final int limitsSetting,
+		final double integrandScale,
+		final org.drip.numerical.estimation.R1ToR1Estimator integrandOffset)
 		throws java.lang.Exception
 	{
 		super (dc);
 
-		if (java.lang.Double.isNaN (_leftLimit = leftLimit))
+		if (null == (_integrandGenerator = integrandGenerator) ||
+			-1 >= (_limitsSetting = limitsSetting) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_integrandScale = integrandScale) ||
+			null == (_integrandOffset = integrandOffset))
 		{
 			throw new java.lang.Exception ("R1ToR1IntegrandEstimator Contructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> To R<sup>1</sup> erf Integrand
+	 * Retrieve the Integrand
 	 * 
-	 * @return The R<sup>1</sup> To R<sup>1</sup> erf Integrand
+	 * @return The Integrand
 	 */
 
-	public abstract org.drip.function.definition.R1ToR1 integrand();
+	public org.drip.numerical.estimation.R1ToR1IntegrandGenerator integrand()
+	{
+		return _integrandGenerator;
+	}
 
 	/**
-	 * Retrieve the Left Limit
+	 * Retrieve the Integrand Limits Setting
 	 * 
-	 * @return The Left Limit
+	 * @return The Integrand Limits Setting
 	 */
 
-	public double leftLimit()
+	public int limitsSetting()
 	{
-		return _leftLimit;
+		return _limitsSetting;
+	}
+
+	/**
+	 * Retrieve the Integrand Scale
+	 * 
+	 * @return The Integrand Scale
+	 */
+
+	public double integrandScale()
+	{
+		return _integrandScale;
+	}
+
+	/**
+	 * Retrieve the Integrand Offset
+	 * 
+	 * @return The Integrand Offset
+	 */
+
+	public org.drip.numerical.estimation.R1ToR1Estimator integrandOffset()
+	{
+		return _integrandOffset;
 	}
 
 	@Override public double evaluate (
-		final double x)
+		final double z)
 		throws java.lang.Exception
 	{
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-			_leftLimit,
-			x,
-			100
-		).integrate (integrand());
+		if (INTEGRAND_LIMITS_SETTING_ZERO_ONE == _limitsSetting)
+		{
+			return _integrandOffset.evaluate (z) + _integrandScale *
+				org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+					0.,
+					1.,
+					_quadratureCount
+				).integrate (_integrandGenerator.integrand (z));
+		}
+
+		if (INTEGRAND_LIMITS_SETTING_ZERO_INFINITY == _limitsSetting)
+		{
+			return _integrandOffset.evaluate (z) + _integrandScale *
+				org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+					0.,
+					_quadratureCount
+				).integrate (_integrandGenerator.integrand (z));
+		}
+
+		return 0.;
+	}
+
+	/**
+	 * Retrieve the Quadrature Count
+	 * 
+	 * @return The Quadrature Count
+	 */
+
+	public int quadratureCount()
+	{
+		return _quadratureCount;
 	}
 }

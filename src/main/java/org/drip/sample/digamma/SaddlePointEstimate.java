@@ -1,5 +1,10 @@
 
-package org.drip.specialfunction.digamma;
+package org.drip.sample.digamma;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.roots.DigammaSaddlePoints;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +69,8 @@ package org.drip.specialfunction.digamma;
  */
 
 /**
- * <i>BinetSecondIntegral</i> demonstrates the Estimation of the Digamma Function using the Binet's Second
- * Integral. The References are:
+ * <i>SaddlePointEstimate</i> demonstrates the Estimation of the Saddle Point of the Digamma Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,45 +106,58 @@ package org.drip.specialfunction.digamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinetSecondIntegral extends org.drip.function.definition.R1ToR1
+public class SaddlePointEstimate
 {
 
-	/**
-	 * BinetSecondIntegral Constructor
-	 * 
-	 * @param dc The Derivative Control
-	 */
-
-	public BinetSecondIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		super (dc);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double evaluate (
-		final double z)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
+		int[] rootIndexArray =
 		{
-			throw new java.lang.Exception ("BinetSecondIntegral::evaluate => Invalid Inputs");
+			 1,
+			 2,
+			 3,
+			 4,
+			 5,
+			 6,
+			 7,
+			 8,
+			 9,
+			10,
+			11,
+			12,
+			13,
+			14,
+			15,
+			16,
+			17,
+			18,
+			19,
+			20,
+			21,
+			22,
+			23,
+			24,
+			25,
+			26,
+		};
+
+		R1ToR1 hermite = DigammaSaddlePoints.Hermite();
+
+		R1ToR1 hermiteExtension = DigammaSaddlePoints.HermiteExtension();
+
+		for (int rootIndex : rootIndexArray)
+		{
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (rootIndex, 2, 1, 1.) + " => " +
+				FormatUtil.FormatDouble (hermiteExtension.evaluate (rootIndex), 2, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (hermite.evaluate (rootIndex), 2, 8, 1.) + " ||"
+			);
 		}
 
-		return -2 * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			1000000
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					return 0. == t || java.lang.Double.isInfinite (t) ? 0. : t / (
-						(t * t + z * z) * (java.lang.Math.exp (2. * java.lang.Math.PI * t) - 1.)
-					);
-				}
-			}
-		) + java.lang.Math.log (z) - 0.5 / z;
+		EnvManager.TerminateEnv();
 	}
 }

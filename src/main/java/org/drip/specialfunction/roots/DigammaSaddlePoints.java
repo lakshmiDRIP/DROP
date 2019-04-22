@@ -1,11 +1,5 @@
 
-package org.drip.sample.digamma;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.IntegralEstimate;
+package org.drip.specialfunction.roots;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.specialfunction.digamma.IntegralEstimate;
  */
 
 /**
- * <i>BinetSecondIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Binet
- * Second Integral. The References are:
+ * <i>DigammaSaddlePoints</i> contains the Hermite Based Saddle Point Roots of the Digamma Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,82 +95,81 @@ import org.drip.specialfunction.digamma.IntegralEstimate;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/roots/README.md">Estimation of Special Function Roots</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinetSecondIntegralEstimate
+public class DigammaSaddlePoints
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
+	 * 
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
+	 */
+
+	public static final org.drip.function.definition.R1ToR1 Hermite()
 	{
-		EnvManager.InitEnv ("");
-
-		int termCount = 1000000;
-		double[] zArray =
+		try
 		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
-		};
+			return new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (1. > z)
+					{
+						throw new java.lang.Exception
+							("DigammaSaddlePoints::Hermite::evaluate => Invalid Inputs");
+					}
 
-		R1ToR1IntegrandEstimator binetSecondIntegral = IntegralEstimate.BinetSecond();
-
-		CumulativeSeriesEstimator abramowitzStegun2007 =
-			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t|    BINET SECOND INTEGRAL ESTIMATE    ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t|    L -> R:                           ||");
-
-		System.out.println ("\t|        - z                           ||");
-
-		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
-
-		System.out.println ("\t|        - Binet Second Integral       ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		for (double z : zArray)
+					return 1. / java.lang.Math.log (z) - z;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
 		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					abramowitzStegun2007.evaluate (z),
-					1, 10, 1.
-				) + " | " + FormatUtil.FormatDouble (
-					binetSecondIntegral.evaluate (z),
-					1, 10, 1.
-				) + " ||"
-			);
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|--------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
+	 * 
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
+	 */
+
+	public static final org.drip.function.definition.R1ToR1 HermiteExtension()
+	{
+		try
+		{
+			return new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (1. > z)
+					{
+						throw new java.lang.Exception
+							("DigammaSaddlePoints::HermiteExtension::evaluate => Invalid Inputs");
+					}
+
+					return java.lang.Math.atan (java.lang.Math.PI / java.lang.Math.log (z)) /
+						java.lang.Math.PI - z;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

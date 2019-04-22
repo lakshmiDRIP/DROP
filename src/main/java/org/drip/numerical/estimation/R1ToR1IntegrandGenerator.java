@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.digamma;
+package org.drip.numerical.estimation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,28 +64,30 @@ package org.drip.specialfunction.digamma;
  */
 
 /**
- * <i>GaussIntegral</i> implements Gaussian Integral Based Digamma Estimators. The References are:
+ * <i>R1ToR1IntegrandGenerator</i> exposes the Integrand Generation behind the R<sup>1</sup> - R<sup>1</sup>
+ * Approximate Numerical Estimators. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
- * 				Mathematics</b>
+ * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
+ * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
  * 		</li>
  * 		<li>
- * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
- * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
+ * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
+ * 				Functions https://dlmf.nist.gov/5.11
  * 		</li>
  * 		<li>
- * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
- * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
+ * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
+ * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
  * 		</li>
  * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
+ * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
+ * 				http://www.rskey.org/CMS/index.php/the-library/11
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 			Wikipedia (2019): Stirling's Approximation
+ * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
  *
@@ -93,53 +95,24 @@ package org.drip.specialfunction.digamma;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class GaussIntegral extends org.drip.function.definition.R1ToR1
+public interface R1ToR1IntegrandGenerator
 {
 
 	/**
-	 * GaussIntegral Constructor
+	 * Generate the R<sup>1</sup> - R<sup>1</sup> Integrand given the Parametric Variable
 	 * 
-	 * @param dc The Derivative Control
+	 * @param z The Parametric Variable
+	 * 
+	 * @return The R<sup>1</sup> - R<sup>1</sup> Integrand
 	 */
 
-	public GaussIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-	{
-		super (dc);
-	}
-
-	@Override public double evaluate (
-		final double z)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("GaussIntegral::evaluate => Invalid Inputs");
-		}
-
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			1000000
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double t)
-					throws java.lang.Exception
-				{
-					double ePowerMinusT = java.lang.Math.exp (-t);
-
-					return 0. == t || java.lang.Double.isInfinite (t) ? 0. :
-						(ePowerMinusT / t) - (java.lang.Math.exp (-z * t) / (1. - ePowerMinusT));
-				}
-			}
-		);
-	}
+	public abstract org.drip.numerical.estimation.R1ToR1Estimator integrand (
+		final double z);
 }
