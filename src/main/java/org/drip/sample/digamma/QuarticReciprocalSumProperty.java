@@ -1,5 +1,12 @@
 
-package org.drip.specialfunction.roots;
+package org.drip.sample.digamma;
+
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.digamma.SaddlePoints;
+import org.drip.specialfunction.property.DigammaSaddlePointEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +71,8 @@ package org.drip.specialfunction.roots;
  */
 
 /**
- * <i>DigammaSaddlePoints</i> contains the Hermite Based Saddle Point Roots of the Digamma Function. The
- * References are:
+ * <i>QuarticReciprocalSumProperty</i> demonstrates the Quartic Sum Property of the Digamma Saddle Points.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,81 +102,85 @@ package org.drip.specialfunction.roots;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/roots/README.md">Estimation of Special Function Roots</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DigammaSaddlePoints
+public class QuarticReciprocalSumProperty
 {
 
-	/**
-	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
-	 * 
-	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
-	 */
-
-	public static final org.drip.function.definition.R1ToR1 Hermite()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		try
+		EnvManager.InitEnv ("");
+
+		int[] rootIndexArray =
 		{
-			return new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-					if (1. > z)
-					{
-						throw new java.lang.Exception
-							("DigammaSaddlePoints::Hermite::evaluate => Invalid Inputs");
-					}
+			   2,
+			  50,
+			 100,
+			 150,
+			 200,
+			 250,
+			 300,
+			 350,
+			 400,
+			 450,
+			 500,
+			 550,
+			 600,
+			 650,
+			 700,
+			 800,
+			 900,
+			1000,
+			2000,
+			3000,
+			4000,
+			5000,
+			7000,
+			9999
+		};
 
-					return 1. / java.lang.Math.log (z) - z;
-				}
-			};
-		}
-		catch (java.lang.Exception e)
+		R1ToR1Property quarticReciprocalSumProperty = DigammaSaddlePointEqualityLemma.QuarticReciprocalSum
+			(SaddlePoints.HermiteEnhancement());
+
+		System.out.println ("\t|-------------------------------------------------||");
+
+		System.out.println ("\t|         QUARTIC RECIPROCAL SUM PROPERTY         ||");
+
+		System.out.println ("\t|-------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                  ||");
+
+		System.out.println ("\t|                - s                              ||");
+
+		System.out.println ("\t|                - LHS Value                      ||");
+
+		System.out.println ("\t|                - RHS Value                      ||");
+
+		System.out.println ("\t|                - Verification Success?          ||");
+
+		System.out.println ("\t|-------------------------------------------------||");
+
+		for (int rootIndex : rootIndexArray)
 		{
-			e.printStackTrace();
+			R1ToR1PropertyVerification propertyVerification = quarticReciprocalSumProperty.verify
+				(rootIndex);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (rootIndex, 4, 0, 1.) + " => " +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 2, 10, 1.) + " | " +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 2, 10, 1.) + " | " +
+					propertyVerification.verified() + " ||"
+			);
 		}
 
-		return null;
-	}
+		System.out.println ("\t|-------------------------------------------------||");
 
-	/**
-	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
-	 * 
-	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
-	 */
-
-	public static final org.drip.function.definition.R1ToR1 HermiteExtension()
-	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-					if (1. > z)
-					{
-						throw new java.lang.Exception
-							("DigammaSaddlePoints::HermiteExtension::evaluate => Invalid Inputs");
-					}
-
-					return java.lang.Math.atan (java.lang.Math.PI / java.lang.Math.log (z)) /
-						java.lang.Math.PI - z;
-				}
-			};
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

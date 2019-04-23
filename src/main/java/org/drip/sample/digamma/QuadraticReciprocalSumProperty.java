@@ -1,10 +1,12 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R1ToR1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.SaddlePoints;
+import org.drip.specialfunction.property.DigammaSaddlePointEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +71,8 @@ import org.drip.specialfunction.digamma.SaddlePoints;
  */
 
 /**
- * <i>SaddlePointEstimate</i> demonstrates the Estimation of the Saddle Point of the Digamma Function. The
- * References are:
+ * <i>QuadraticReciprocalSumProperty</i> demonstrates the Quadratic Sum Property of the Digamma Saddle
+ * Points. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,7 +108,7 @@ import org.drip.specialfunction.digamma.SaddlePoints;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SaddlePointEstimate
+public class QuadraticReciprocalSumProperty
 {
 
 	public static final void main (
@@ -117,74 +119,67 @@ public class SaddlePointEstimate
 
 		int[] rootIndexArray =
 		{
-			 1,
-			 2,
-			 3,
-			 4,
-			 5,
-			 6,
-			 7,
-			 8,
-			 9,
-			10,
-			11,
-			12,
-			13,
-			14,
-			15,
-			16,
-			17,
-			18,
-			19,
-			20,
-			21,
-			22,
-			23,
-			24,
-			25,
-			26,
+			   2,
+			  50,
+			 100,
+			 150,
+			 200,
+			 250,
+			 300,
+			 350,
+			 400,
+			 450,
+			 500,
+			 550,
+			 600,
+			 650,
+			 700,
+			 800,
+			 900,
+			1000,
+			2000,
+			3000,
+			4000,
+			5000,
+			7000,
+			9999
 		};
 
-		R1ToR1 hermite = SaddlePoints.Hermite();
+		R1ToR1Property quadraticReciprocalSumProperty =
+			DigammaSaddlePointEqualityLemma.QuadraticReciprocalSum (SaddlePoints.HermiteEnhancement());
 
-		R1ToR1 mezoHoffman2017 = SaddlePoints.MezoHoffman2017();
+		System.out.println ("\t|-------------------------------------------------||");
 
-		R1ToR1 hermiteExtension = SaddlePoints.HermiteExtension();
+		System.out.println ("\t|        QUADRATIC RECIPROCAL SUM PROPERTY        ||");
 
-		R1ToR1 hermiteEnhancement = SaddlePoints.HermiteEnhancement();
+		System.out.println ("\t|-------------------------------------------------||");
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|        L -> R:                                  ||");
 
-		System.out.println ("\t|               DIAGAMMA SADDLE POINT ROOTS ESTIMATE                ||");
+		System.out.println ("\t|                - s                              ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|                - LHS Value                      ||");
 
-		System.out.println ("\t|        L -> R:                                                    ||");
+		System.out.println ("\t|                - RHS Value                      ||");
 
-		System.out.println ("\t|                - Root Index                                       ||");
+		System.out.println ("\t|                - Verification Success?          ||");
 
-		System.out.println ("\t|                - Hermite Extension                                ||");
-
-		System.out.println ("\t|                - Hermite Enhancement                              ||");
-
-		System.out.println ("\t|                - Mezo Hoffman (2017)                              ||");
-
-		System.out.println ("\t|                - Hermite (1881)                                   ||");
-
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------||");
 
 		for (int rootIndex : rootIndexArray)
 		{
+			R1ToR1PropertyVerification propertyVerification = quadraticReciprocalSumProperty.verify
+				(rootIndex);
+
 			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (rootIndex, 2, 1, 1.) + " => " +
-				FormatUtil.FormatDouble (hermiteExtension.evaluate (rootIndex), 2, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (hermiteEnhancement.evaluate (rootIndex), 2, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (mezoHoffman2017.evaluate (rootIndex), 2, 8, 1.) + " | " +
-				FormatUtil.FormatDouble (hermite.evaluate (rootIndex), 2, 8, 1.) + " ||"
+				"\t|" + FormatUtil.FormatDouble (rootIndex, 4, 0, 1.) + " => " +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 2, 10, 1.) + " | " +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 2, 10, 1.) + " | " +
+					propertyVerification.verified() + " ||"
 			);
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

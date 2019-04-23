@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.roots;
+package org.drip.specialfunction.digamma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.roots;
  */
 
 /**
- * <i>LeadingDigammaSaddlePoints</i> contains the Leading Saddle Point Roots of the Digamma Function. The
- * References are:
+ * <i>SpecialValues</i> holds a specific Collection of Special Values of the Digamma Function. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,35 +95,108 @@ package org.drip.specialfunction.roots;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/roots/README.md">Estimation of Special Function Roots</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LeadingDigammaSaddlePoints
+public class SpecialValues
 {
 
 	/**
-	 * Generate the Set of Leading Digamma Saddle Points
+	 * Construct the Fractionals Map for Leading Digamma Fractions
 	 * 
-	 * @return Set of Leading Digamma Saddle Points
+	 * @return Fractionals Map for Leading Digamma Fractions
 	 */
 
-	public static final java.util.TreeSet<java.lang.Double> Zeros()
+	public static final java.util.Map<java.lang.Double, java.lang.Double> Fractionals()
 	{
-		java.util.TreeSet<java.lang.Double> zeroSet = new java.util.TreeSet<java.lang.Double>();
+		java.util.Map<java.lang.Double, java.lang.Double> fractionalsMap = new
+			java.util.TreeMap<java.lang.Double, java.lang.Double>();
 
-		zeroSet.add ( 1.461632144968);
+		double log2 = java.lang.Math.log (2.);
 
-		zeroSet.add (-0.504083008000);
+		double log3 = java.lang.Math.log (3.);
 
-		zeroSet.add (-1.573498473000);
+		double sqrt2 = java.lang.Math.sqrt (2.);
 
-		zeroSet.add (-2.610720868000);
+		double sqrt3 = java.lang.Math.sqrt (3.);
 
-		zeroSet.add (-3.635293366000);
+		fractionalsMap.put (
+			1.,
+			-org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+		);
 
-		return zeroSet;
+		fractionalsMap.put (
+			1. / 2.,
+			-2. * log2 - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+		);
+
+		fractionalsMap.put (
+			1. / 3.,
+			-0.5 * java.lang.Math.PI / sqrt3 - 1.5 * log3 -
+				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+		);
+
+		fractionalsMap.put (
+			1. / 4.,
+			-0.5 * java.lang.Math.PI - 3. * log2 -
+				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+		);
+
+		fractionalsMap.put (
+			1. / 6.,
+			-0.5 * java.lang.Math.PI * log3 - 2. * log2 - 1.5 * log3 -
+				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+		);
+
+		fractionalsMap.put (
+			1. / 8.,
+			-0.5 * java.lang.Math.PI - 4. * log2 -
+				(java.lang.Math.PI + java.lang.Math.log (2. + sqrt2) - java.lang.Math.log (2. - sqrt2)) /
+					sqrt2 -
+				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+		);
+
+		return fractionalsMap;
+	}
+
+	/**
+	 * Construct the Unit Imaginary Digamma Complex Number
+	 *  
+	 * @param termCount The Term Count
+	 * 
+	 * @return Unit Imaginary Digamma Complex Number
+	 */
+
+	public static final org.drip.numerical.fourier.ComplexNumber UnitImaginary (
+		final int termCount)
+	{
+		if (0 >= termCount)
+		{
+			return null;
+		}
+
+		double realPart = -1. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+
+		for (int n = 1; n <= termCount; ++n)
+		{
+			realPart = realPart + (1. - n) / (n * n * n + n * n + n + 1);
+		}
+
+		try
+		{
+			return new org.drip.numerical.fourier.ComplexNumber (
+				realPart,
+				0.5 + 0.5 * java.lang.Math.PI / java.lang.Math.tanh (java.lang.Math.PI)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -64,8 +64,8 @@ package org.drip.specialfunction.digamma;
  */
 
 /**
- * <i>CumulativeSeriesTerm</i> implements a Single Term in the Cumulative Series for Digamma Estimation. The
- * References are:
+ * <i>SaddlePoints</i> contains the Hermite Based Saddle Point Roots of the Digamma Function. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -94,41 +94,61 @@ package org.drip.specialfunction.digamma;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/roots/README.md">Estimation of Special Function Roots</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CumulativeSeriesTerm
+public class SaddlePoints
 {
 
 	/**
-	 * Construct the Abramowitz-Stegun (2007) Cumulative Sum Series Term for DiGamma
+	 * Generate the Set of Leading Digamma Saddle Points
 	 * 
-	 * @return The Abramowitz-Stegun (2007) Cumulative Sum Series Term for DiGamma
+	 * @return Set of Leading Digamma Saddle Points
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm AbramowitzStegun2007()
+	public static final java.util.TreeSet<java.lang.Double> LeadingZeros()
+	{
+		java.util.TreeSet<java.lang.Double> zeroSet = new java.util.TreeSet<java.lang.Double>();
+
+		zeroSet.add ( 1.461632144968);
+
+		zeroSet.add (-0.504083008000);
+
+		zeroSet.add (-1.573498473000);
+
+		zeroSet.add (-2.610720868000);
+
+		zeroSet.add (-3.635293366000);
+
+		return zeroSet;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
+	 * 
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
+	 */
+
+	public static final org.drip.function.definition.R1ToR1 Hermite()
 	{
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			return new org.drip.function.definition.R1ToR1 (null)
 			{
-				@Override public double value (
-					final int order,
+				@Override public double evaluate (
 					final double z)
 					throws java.lang.Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || order == -z)
+					if (1. > z)
 					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::AbramowitzStegun2007::value => Invalid Inputs");
+						throw new java.lang.Exception ("SaddlePoints::Hermite::evaluate => Invalid Inputs");
 					}
 
-					return z / (order * (order + z));
+					return 1. / java.lang.Math.log (z) - z;
 				}
 			};
 		}
@@ -141,47 +161,29 @@ public class CumulativeSeriesTerm
 	}
 
 	/**
-	 * Construct the Mezo-Hoffman (2017) Cumulative Sum Series Term for DiGamma
+	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
 	 * 
-	 * @param saddlePointArray Array of the Saddle Points
-	 * 
-	 * @return The Mezo-Hoffman (2017) Cumulative Sum Series Term for DiGamma
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm MezoHoffman2017 (
-		final double[] saddlePointArray)
+	public static final org.drip.function.definition.R1ToR1 HermiteExtension()
 	{
-		if (null == saddlePointArray)
-		{
-			return null;
-		}
-
-		final int saddlePointCount = saddlePointArray.length;
-
-		if (0 == saddlePointCount || !org.drip.numerical.common.NumberUtil.IsValid (saddlePointArray))
-		{
-			return null;
-		}
-
 		try
 		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			return new org.drip.function.definition.R1ToR1 (null)
 			{
-				@Override public double value (
-					final int order,
+				@Override public double evaluate (
 					final double z)
 					throws java.lang.Exception
 				{
-					if (0 > order || order >= saddlePointCount ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
+					if (1. > z)
 					{
 						throw new java.lang.Exception
-							("CumulativeSeriesTerm::MezoHoffman2017::value => Invalid Inputs");
+							("SaddlePoints::HermiteExtension::evaluate => Invalid Inputs");
 					}
 
-					double zOverSaddlePoint = z / saddlePointArray[order];
-
-					return zOverSaddlePoint * java.lang.Math.log (1. - zOverSaddlePoint);
+					return java.lang.Math.atan (java.lang.Math.PI / java.lang.Math.log (z)) /
+						java.lang.Math.PI - z;
 				}
 			};
 		}
@@ -191,5 +193,113 @@ public class CumulativeSeriesTerm
 		}
 
 		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Enhancement Digamma Root Function
+	 * 
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Enhancement Digamma Root Function
+	 */
+
+	public static final org.drip.function.definition.R1ToR1 HermiteEnhancement()
+	{
+		try
+		{
+			return new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (1. > z)
+					{
+						throw new java.lang.Exception
+							("SaddlePoints::HermiteEnhancement::evaluate => Invalid Inputs");
+					}
+
+					return java.lang.Math.atan (java.lang.Math.PI / (java.lang.Math.log (z) + (0.125 / z))) /
+						java.lang.Math.PI - z;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> to R<sup>1</sup> Mezo-Hoffman (2017) Digamma Root Function
+	 * 
+	 * @return The R<sup>1</sup> to R<sup>1</sup> Mezo-Hoffman (2017) Digamma Root Function
+	 */
+
+	public static final org.drip.function.definition.R1ToR1 MezoHoffman2017()
+	{
+		try
+		{
+			return new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (1. > z)
+					{
+						throw new java.lang.Exception
+							("SaddlePoints::MezoHoffman2017::evaluate => Invalid Inputs");
+					}
+
+					double logZReciprocal = 1. / java.lang.Math.log (z);
+
+					return logZReciprocal - z - 0.5 * logZReciprocal * logZReciprocal / z;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Array of Leading Roots
+	 * 
+	 * @param rootFunction The Root Generation Function
+	 * @param rootCount The Root Count
+	 * 
+	 * @return The Array of Leading Roots
+	 */
+
+	public static final double[] LeadingRoots (
+		final org.drip.function.definition.R1ToR1 rootFunction,
+		final int rootCount)
+	{
+		if (null == rootFunction ||
+			0 >= rootCount)
+		{
+			return null;
+		}
+
+		double[] leadingRootArray = new double[rootCount + 1];
+		leadingRootArray[0] = org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION;
+
+		for (int rootIndex = 1; rootIndex <= rootCount; ++rootIndex)
+		{
+			try
+			{
+				leadingRootArray[rootIndex] = rootFunction.evaluate (rootIndex);
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return leadingRootArray;
 	}
 }
