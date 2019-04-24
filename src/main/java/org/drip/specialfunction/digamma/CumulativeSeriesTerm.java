@@ -192,4 +192,161 @@ public class CumulativeSeriesTerm
 
 		return null;
 	}
+
+	/**
+	 * Construct the Gauss Cumulative Sum Series Term for DiGamma
+	 * 
+	 * @param termCount Term Count
+	 * 
+	 * @return The Gauss Cumulative Sum Series Term for DiGamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Gauss (
+		final int termCount)
+	{
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (1 > order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesTerm::Gauss::value => Invalid Inputs");
+					}
+
+					return java.lang.Math.cos (2. * java.lang.Math.PI * order * z) *
+						java.lang.Math.log (java.lang.Math.sin (java.lang.Math.PI * order / termCount));
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Asymptotic Cumulative Sum Series Term for DiGamma
+	 * 
+	 * @return The Asymptotic Cumulative Sum Series Term for DiGamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Asymptotic()
+	{
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0 == z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesTerm::Asymptotic::value => Invalid Inputs");
+					}
+
+					return java.lang.Math.pow (
+						z,
+						-2 * order
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Asymptotic Cumulative Sum Series Term for exp (-diGamma)
+	 * 
+	 * @return The Asymptotic Cumulative Sum Series Term for exp (-diGamma)
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm ExponentialAsymptote()
+	{
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0 == z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesTerm::ExponentialAsymptote::value => Invalid Inputs");
+					}
+
+					return java.lang.Math.pow (
+						z,
+						-1 * order
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Asymptotic Cumulative Sum Series Term for exp (diGamma + 0.5)
+	 * 
+	 * @return The Asymptotic Cumulative Sum Series Term for exp (-diGamma + 0.5)
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm ExponentialAsymptoteHalfShifted()
+	{
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesTerm::ExponentialAsymptoteHalfShifted::value => Invalid Inputs");
+					}
+
+					return java.lang.Math.pow (
+						z,
+						1 - 2 * order
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

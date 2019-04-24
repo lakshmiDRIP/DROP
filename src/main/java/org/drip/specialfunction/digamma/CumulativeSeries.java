@@ -140,4 +140,265 @@ public class CumulativeSeries
 
 		return null;
 	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Infinite Saddle Point Cumulative Series
+	 * 
+	 * @param saddlePointFunction The Saddle Point Generation Function
+	 * @param saddlePointCount The Saddle Point Count
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Saddle Point Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series MezoHoffman2017 (
+		final org.drip.function.definition.R1ToR1 saddlePointFunction,
+		final int saddlePointCount)
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 0; termIndex <= saddlePointCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.MezoHoffman2017 (
+					org.drip.specialfunction.digamma.SaddlePoints.LeadingRoots (
+						saddlePointFunction,
+						saddlePointCount
+					)
+				),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Gauss Cumulative Series
+	 * 
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Gauss Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series Gauss (
+		final int termCount)
+	{
+		int seriesCount = (termCount - 1) / 2;
+
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 1; termIndex <= seriesCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.Gauss (termCount),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Asymptotic Cumulative Series
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Asymptotic Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series Asymptotic()
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			termWeightMap.put (
+				1,
+				-1. / 12.
+			);
+
+			termWeightMap.put (
+				2,
+				1. / 120.
+			);
+
+			termWeightMap.put (
+				3,
+				-1. / 252.
+			);
+
+			termWeightMap.put (
+				4,
+				1. / 240.
+			);
+
+			termWeightMap.put (
+				5,
+				-1. / 132.
+			);
+
+			termWeightMap.put (
+				6,
+				691. / 32760.
+			);
+
+			termWeightMap.put (
+				7,
+				-1. / 12.
+			);
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.Asymptotic(),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Exponential Asymptotic Cumulative Series
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Exponential Asymptotic Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series ExponentialAsymptote()
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			termWeightMap.put (
+				1,
+				1.
+			);
+
+			termWeightMap.put (
+				2,
+				1. / 2.
+			);
+
+			termWeightMap.put (
+				3,
+				5. / 24.
+			);
+
+			termWeightMap.put (
+				4,
+				1. / 16.
+			);
+
+			termWeightMap.put (
+				5,
+				47. / (48. * 120.)
+			);
+
+			termWeightMap.put (
+				6,
+				1. / (16. * 144.)
+			);
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.ExponentialAsymptote(),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Exponential Half-Shifted Asymptotic Cumulative Series
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Exponential Half-Shifted Asymptotic Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series ExponentialAsymptoteHalfShifted()
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			termWeightMap.put (
+				1,
+				1. / org.drip.numerical.common.NumberUtil.Factorial (4)
+			);
+
+			termWeightMap.put (
+				2,
+				-37. / (8. * org.drip.numerical.common.NumberUtil.Factorial (6))
+			);
+
+			termWeightMap.put (
+				3,
+				10313. / (72. * org.drip.numerical.common.NumberUtil.Factorial (8))
+			);
+
+			termWeightMap.put (
+				4,
+				-5509121. / (384. * org.drip.numerical.common.NumberUtil.Factorial (10))
+			);
+
+			termWeightMap.put (
+				5,
+				47. / (48. * 120.)
+			);
+
+			termWeightMap.put (
+				6,
+				1. / (16. * 144.)
+			);
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.ExponentialAsymptoteHalfShifted(),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

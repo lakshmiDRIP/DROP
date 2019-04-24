@@ -236,6 +236,216 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 	}
 
 	/**
+	 * Compute the Saddle-Point Cumulative Series of Digamma Estimator
+	 * 
+	 * @param logGammaEstimator The Log Gamma Estimator
+	 * @param saddlePointFunction The Saddle Point Generation Function
+	 * @param saddlePointCount The Saddle Point Count
+	 * 
+	 * @return The Saddle-Point Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator MezoHoffman2017 (
+		final org.drip.function.definition.R1ToR1 logGammaEstimator,
+		final org.drip.function.definition.R1ToR1 saddlePointFunction,
+		final int saddlePointCount)
+	{
+		if (null == logGammaEstimator)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				org.drip.specialfunction.digamma.CumulativeSeries.MezoHoffman2017 (
+					saddlePointFunction,
+					saddlePointCount
+				),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::MezoHoffman2017::evaluate => Invalid Inputs");
+					}
+
+					return -1. * java.lang.Math.exp (
+						logGammaEstimator.evaluate (z) + 
+						cumulativeSeries().evaluate (z) +
+						2. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI * z
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Gauss Cumulative Series of Digamma Estimator
+	 * 
+	 * @param termCount Term Count
+	 * 
+	 * @return The Gauss Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator Gauss (
+		final int termCount)
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				org.drip.specialfunction.digamma.CumulativeSeries.Gauss (termCount),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z || 1. < z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::Gauss::evaluate => Invalid Inputs");
+					}
+
+					return 2. * cumulativeSeries().evaluate (z) -
+						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI -
+						java.lang.Math.log (2. * termCount) -
+						0.5 * java.lang.Math.PI / java.lang.Math.tan (java.lang.Math.PI * z);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Asymptotic Cumulative Series of Digamma Estimator
+	 * 
+	 * @return The Asymptotic Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator Asymptotic()
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				org.drip.specialfunction.digamma.CumulativeSeries.Asymptotic(),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::Asymptotic::evaluate => Invalid Inputs");
+					}
+
+					return java.lang.Math.log (z) - 0.5 / z + cumulativeSeries().evaluate (z);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Exponential Asymptotic Cumulative Series of Digamma Estimator
+	 * 
+	 * @return The Exponential Asymptotic Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator ExponentialAsymptote()
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				org.drip.specialfunction.digamma.CumulativeSeries.ExponentialAsymptote(),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::ExponentialAsymptote::evaluate => Invalid Inputs");
+					}
+
+					return cumulativeSeries().evaluate (z);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Exponential Asymptotic Cumulative Series of Digamma + 0.5 Estimator
+	 * 
+	 * @return The Exponential Asymptotic Cumulative Series of Digamma + 0.5 Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator ExponentialAsymptoteHalfShifted()
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				org.drip.specialfunction.digamma.CumulativeSeries.ExponentialAsymptoteHalfShifted(),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::ExponentialAsymptoteHalfShifted::evaluate => Invalid Inputs");
+					}
+
+					return z - 0.5 + cumulativeSeries().evaluate (z - 0.5);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * CumulativeSeriesEstimator Constructor
 	 * 
 	 * @param sumSeries R<sup>1</sup> To R<sup>1</sup> Cumulative Series
