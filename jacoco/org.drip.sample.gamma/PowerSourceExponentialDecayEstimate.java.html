@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PowerSourceExponentialDecayEstimate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.gamma</a> &gt; <span class="el_source">PowerSourceExponentialDecayEstimate.java</span></div><h1>PowerSourceExponentialDecayEstimate.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.gamma;
+
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.derived.PowerSourceExponentialDecay;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;PowerSourceExponentialDecayEstimate&lt;/i&gt; demonstrates the Estimation of the Power Source Exponential
+ * Decay Function. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/gamma/README.md&quot;&gt;Integrand Estimates of Gamma Functions&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L109">public class PowerSourceExponentialDecayEstimate</span>
+{
+
+	private static final void Demonstrate (
+		final double[] exponentialDecayCoefficientArray,
+		final double sourcePowerCoefficient)
+		throws Exception
+	{
+<span class="nc" id="L117">		PowerSourceExponentialDecay powerSourceExponentialDecayIntegral =</span>
+			new PowerSourceExponentialDecay (
+				null,
+				sourcePowerCoefficient
+			);
+
+<span class="nc" id="L123">		PowerSourceExponentialDecay powerSourceExponentialDecayAnalytic =</span>
+<span class="nc" id="L124">			PowerSourceExponentialDecay.Analytic (</span>
+<span class="nc" id="L125">				InfiniteSumEstimator.Weierstrass (1000000),</span>
+				sourcePowerCoefficient
+			);
+
+<span class="nc" id="L129">		String display = &quot;\t|&quot; + FormatUtil.FormatDouble (sourcePowerCoefficient, 1, 2, 1.) + &quot; =&gt; &quot;;</span>
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (double exponentialDecayCoefficient : exponentialDecayCoefficientArray)</span>
+		{
+<span class="nc" id="L133">			display = display + &quot;{&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L134">				powerSourceExponentialDecayIntegral.evaluate (exponentialDecayCoefficient), 2, 3, 1.</span>
+<span class="nc" id="L135">			) + &quot; -&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L136">				powerSourceExponentialDecayAnalytic.evaluate (exponentialDecayCoefficient), 2, 3, 1.</span>
+			) + &quot; }&quot;;
+		}
+
+<span class="nc" id="L140">		System.out.println (display + &quot; ||&quot;);</span>
+<span class="nc" id="L141">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L147">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L149">		double[] sourcePowerCoefficientArray =</span>
+		{
+			0.25,
+			0.50,
+			0.75,
+			1.00,
+			1.25,
+			1.50,
+			1.75,
+			2.00,
+			2.25,
+			2.50,
+			2.75,
+			3.00,
+		};
+<span class="nc" id="L164">		double[] exponentialDecayCoefficientArray =</span>
+		{
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+		};
+
+<span class="nc" id="L175">		System.out.println</span>
+<span class="nc" id="L176">			(&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L178">		System.out.println</span>
+<span class="nc" id="L179">			(&quot;\t|                                                    POWER SOURCE EXPONENTIAL DECAY ESTIMATE                                                    ||&quot;);</span>
+
+<span class="nc" id="L181">		System.out.println</span>
+<span class="nc" id="L182">			(&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L184">		System.out.println</span>
+<span class="nc" id="L185">			(&quot;\t|        L -&gt; R:                                                                                                                                ||&quot;);</span>
+
+<span class="nc" id="L187">		System.out.println</span>
+<span class="nc" id="L188">			(&quot;\t|                - Source Power Coefficient                                                                                                     ||&quot;);</span>
+
+<span class="nc" id="L190">		System.out.println</span>
+<span class="nc" id="L191">			(&quot;\t|                - Integral Estimate                                                                                                            ||&quot;);</span>
+
+<span class="nc" id="L193">		System.out.println</span>
+<span class="nc" id="L194">			(&quot;\t|                - Analytic Estimate                                                                                                            ||&quot;);</span>
+
+<span class="nc" id="L196">		System.out.println</span>
+<span class="nc" id="L197">			(&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (double sourcePowerCoefficient : sourcePowerCoefficientArray)</span>
+		{
+<span class="nc" id="L201">			Demonstrate (</span>
+				exponentialDecayCoefficientArray,
+				sourcePowerCoefficient
+			);
+		}
+
+<span class="nc" id="L207">		System.out.println</span>
+<span class="nc" id="L208">			(&quot;\t|-----------------------------------------------------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L210">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L211">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

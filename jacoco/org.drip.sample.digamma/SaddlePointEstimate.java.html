@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaddlePointEstimate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.digamma</a> &gt; <span class="el_source">SaddlePointEstimate.java</span></div><h1>SaddlePointEstimate.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.digamma;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.digamma.SaddlePoints;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SaddlePointEstimate&lt;/i&gt; demonstrates the Estimation of the Saddle Point of the Digamma Function. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions &lt;b&gt;Dover Book on
+ * 				Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
+ * 				Zeta-Functions https://arxiv.org/abs/1606.02044 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
+ * 				Analogue &lt;i&gt;Integral Transforms and Special Functions&lt;/i&gt; &lt;b&gt;28 (28)&lt;/b&gt; 846-858
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md&quot;&gt;Estimates of the Digamma Function&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L109">public class SaddlePointEstimate</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L116">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L118">		int[] rootIndexArray =</span>
+		{
+			 1,
+			 2,
+			 3,
+			 4,
+			 5,
+			 6,
+			 7,
+			 8,
+			 9,
+			10,
+			11,
+			12,
+			13,
+			14,
+			15,
+			16,
+			17,
+			18,
+			19,
+			20,
+			21,
+			22,
+			23,
+			24,
+			25,
+			26,
+		};
+
+<span class="nc" id="L148">		R1ToR1 hermite = SaddlePoints.Hermite();</span>
+
+<span class="nc" id="L150">		R1ToR1 mezoHoffman2017 = SaddlePoints.MezoHoffman2017();</span>
+
+<span class="nc" id="L152">		R1ToR1 hermiteExtension = SaddlePoints.HermiteExtension();</span>
+
+<span class="nc" id="L154">		R1ToR1 hermiteEnhancement = SaddlePoints.HermiteEnhancement();</span>
+
+<span class="nc" id="L156">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L158">		System.out.println (&quot;\t|               DIAGAMMA SADDLE POINT ROOTS ESTIMATE                ||&quot;);</span>
+
+<span class="nc" id="L160">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L162">		System.out.println (&quot;\t|        L -&gt; R:                                                    ||&quot;);</span>
+
+<span class="nc" id="L164">		System.out.println (&quot;\t|                - Root Index                                       ||&quot;);</span>
+
+<span class="nc" id="L166">		System.out.println (&quot;\t|                - Hermite Extension                                ||&quot;);</span>
+
+<span class="nc" id="L168">		System.out.println (&quot;\t|                - Hermite Enhancement                              ||&quot;);</span>
+
+<span class="nc" id="L170">		System.out.println (&quot;\t|                - Mezo Hoffman (2017)                              ||&quot;);</span>
+
+<span class="nc" id="L172">		System.out.println (&quot;\t|                - Hermite (1881)                                   ||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">		for (int rootIndex : rootIndexArray)</span>
+		{
+<span class="nc" id="L178">			System.out.println (</span>
+<span class="nc" id="L179">				&quot;\t|&quot; + FormatUtil.FormatDouble (rootIndex, 2, 1, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L180">				FormatUtil.FormatDouble (hermiteExtension.evaluate (rootIndex), 2, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L181">				FormatUtil.FormatDouble (hermiteEnhancement.evaluate (rootIndex), 2, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L182">				FormatUtil.FormatDouble (mezoHoffman2017.evaluate (rootIndex), 2, 8, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L183">				FormatUtil.FormatDouble (hermite.evaluate (rootIndex), 2, 8, 1.) + &quot; ||&quot;</span>
+			);
+		}
+
+<span class="nc" id="L187">		System.out.println (&quot;\t|-------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L189">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L190">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

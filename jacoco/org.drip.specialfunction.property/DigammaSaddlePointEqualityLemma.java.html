@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DigammaSaddlePointEqualityLemma.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.property</a> &gt; <span class="el_source">DigammaSaddlePointEqualityLemma.java</span></div><h1>DigammaSaddlePointEqualityLemma.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.property;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;DigammaSaddlePointEqualityLemma&lt;/i&gt; contains the Verifiable Equality Lemmas for the Digamma Saddle
+ * Points. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class DigammaSaddlePointEqualityLemma</span>
+{
+
+	/**
+	 * Construct the Quadratic Reciprocal Sum Verifier
+	 * 
+	 * @param digammaSaddlePointsFunction Digamma Saddle Points Function
+	 * 
+	 * @return The Quadratic Reciprocal Sum Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property QuadraticReciprocalSum (
+		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	{
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == digammaSaddlePointsFunction)</span>
+		{
+<span class="nc" id="L120">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L125">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L128">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L133" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L135">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuadraticReciprocalSum::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L139">						double quadraticReciprocalSum = 1. / (</span>
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+						);
+
+<span class="nc bnc" id="L144" title="All 2 branches missed.">						for (int saddlePointIndex = 1; saddlePointIndex &lt;= s; ++saddlePointIndex)</span>
+						{
+<span class="nc" id="L146">							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);</span>
+
+<span class="nc" id="L148">							quadraticReciprocalSum = quadraticReciprocalSum + 1. / (</span>
+								saddlePoint * saddlePoint
+							);
+						}
+
+<span class="nc" id="L153">						return quadraticReciprocalSum;</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L157">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L162" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L164">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuadraticReciprocalSum::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L168">						return org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *</span>
+							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
+							0.5 * java.lang.Math.PI * java.lang.Math.PI;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L176">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L178">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L181">		return null;</span>
+	}
+
+	/**
+	 * Construct the Cubic Reciprocal Sum Verifier
+	 * 
+	 * @param digammaSaddlePointsFunction Digamma Saddle Points Function
+	 * 
+	 * @return The Cubic Reciprocal Sum Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property CubicReciprocalSum (
+		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	{
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null == digammaSaddlePointsFunction)</span>
+		{
+<span class="nc" id="L197">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L202">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L205">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L210" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L212">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::CubicReciprocalSum::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L216">						double cubicReciprocalSum = 1. / (</span>
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+						);
+
+<span class="nc bnc" id="L222" title="All 2 branches missed.">						for (int saddlePointIndex = 1; saddlePointIndex &lt;= s; ++saddlePointIndex)</span>
+						{
+<span class="nc" id="L224">							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);</span>
+
+<span class="nc" id="L226">							cubicReciprocalSum = cubicReciprocalSum + 1. / (</span>
+								saddlePoint * saddlePoint * saddlePoint
+							);
+						}
+
+<span class="nc" id="L231">						return cubicReciprocalSum;</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L235">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L240" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L242">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::CubicReciprocalSum::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L246">						return -4. * new org.drip.specialfunction.derived.RiemannZeta (</span>
+							null,
+							new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null)
+<span class="nc" id="L249">						).evaluate (3.) -</span>
+							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI -
+							0.5 * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								java.lang.Math.PI * java.lang.Math.PI;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L260">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L262">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L265">		return null;</span>
+	}
+
+	/**
+	 * Construct the Quartic Reciprocal Sum Verifier
+	 * 
+	 * @param digammaSaddlePointsFunction Digamma Saddle Points Function
+	 * 
+	 * @return The Quartic Reciprocal Sum Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property QuarticReciprocalSum (
+		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	{
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (null == digammaSaddlePointsFunction)</span>
+		{
+<span class="nc" id="L281">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L286">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L289">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L294" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L296">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuarticReciprocalSum::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L300">						double quarticReciprocalSum = 1. / (</span>
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+						);
+
+<span class="nc bnc" id="L307" title="All 2 branches missed.">						for (int saddlePointIndex = 1; saddlePointIndex &lt;= s; ++saddlePointIndex)</span>
+						{
+<span class="nc" id="L309">							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);</span>
+
+<span class="nc" id="L311">							quarticReciprocalSum = quarticReciprocalSum + 1. / (</span>
+								saddlePoint * saddlePoint * saddlePoint * saddlePoint
+							);
+						}
+
+<span class="nc" id="L316">						return quarticReciprocalSum;</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L320">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L325" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L327">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuarticReciprocalSum::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L331">						return</span>
+							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
+							java.lang.Math.PI * java.lang.Math.PI * java.lang.Math.PI * java.lang.Math.PI /
+								9. +
+							2. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								java.lang.Math.PI * java.lang.Math.PI / 3. +
+							4. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								new org.drip.specialfunction.derived.RiemannZeta (
+									null,
+									new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null)
+<span class="nc" id="L345">								).evaluate (3.);</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L351">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L353">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L356">		return null;</span>
+	}
+
+	/**
+	 * Construct the First Quadratic Polynomial Reciprocal Sum Verifier
+	 * 
+	 * @param digammaSaddlePointsFunction Digamma Saddle Points Function
+	 * 
+	 * @return The First Quadratic Polynomial Reciprocal Sum Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property QuadraticPolynomialReciprocalSum1 (
+		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	{
+<span class="nc bnc" id="L370" title="All 2 branches missed.">		if (null == digammaSaddlePointsFunction)</span>
+		{
+<span class="nc" id="L372">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L377">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L380">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L385" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L387">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum1::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L391">						double quadraticReciprocalSum = 1. / (</span>
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION +
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+						);
+
+<span class="nc bnc" id="L397" title="All 2 branches missed.">						for (int saddlePointIndex = 1; saddlePointIndex &lt;= s; ++saddlePointIndex)</span>
+						{
+<span class="nc" id="L399">							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);</span>
+
+<span class="nc" id="L401">							quadraticReciprocalSum = quadraticReciprocalSum + 1. / (</span>
+								saddlePoint * saddlePoint + saddlePoint
+							);
+						}
+
+<span class="nc" id="L406">						return quadraticReciprocalSum;</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L410">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L415" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L417">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum1::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L421">						return -2.;</span>
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L427">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L429">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L432">		return null;</span>
+	}
+
+	/**
+	 * Construct the Second Quadratic Polynomial Reciprocal Sum Verifier
+	 * 
+	 * @param digammaSaddlePointsFunction Digamma Saddle Points Function
+	 * 
+	 * @return The Second Quadratic Polynomial Reciprocal Sum Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property QuadraticPolynomialReciprocalSum2 (
+		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	{
+<span class="nc bnc" id="L446" title="All 2 branches missed.">		if (null == digammaSaddlePointsFunction)</span>
+		{
+<span class="nc" id="L448">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L453">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L456">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L461" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L463">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum2::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L467">						double quadraticReciprocalSum = 1. / (</span>
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION -
+							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+						);
+
+<span class="nc bnc" id="L473" title="All 2 branches missed.">						for (int saddlePointIndex = 1; saddlePointIndex &lt;= s; ++saddlePointIndex)</span>
+						{
+<span class="nc" id="L475">							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);</span>
+
+<span class="nc" id="L477">							quadraticReciprocalSum = quadraticReciprocalSum + 1. / (</span>
+								saddlePoint * saddlePoint - saddlePoint
+							);
+						}
+
+<span class="nc" id="L482">						return quadraticReciprocalSum;</span>
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L486">				{</span>
+					@Override public double evaluate (
+						final double s)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L491" title="All 2 branches missed.">						if (!org.drip.numerical.common.NumberUtil.IsValid (s))</span>
+						{
+<span class="nc" id="L493">							throw new java.lang.Exception</span>
+								(&quot;DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum2::evaluate =&gt; Invalid Inputs&quot;);
+						}
+
+<span class="nc" id="L497">						return org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI + </span>
+							(java.lang.Math.PI * java.lang.Math.PI /
+								(6. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI));
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L505">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L507">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L510">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
