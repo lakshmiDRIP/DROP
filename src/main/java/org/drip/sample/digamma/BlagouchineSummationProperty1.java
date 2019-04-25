@@ -4,7 +4,7 @@ package org.drip.sample.digamma;
 import org.drip.function.definition.R1ToR1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.property.DigammaInequalityLemma;
+import org.drip.specialfunction.property.DigammaBlagouchineEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +69,8 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  */
 
 /**
- * <i>AsymptoteBoundProperty</i> demonstrates the Estimation of the Asymptote Bounds of the Digamma Function
- * using the Asymptotic Bounds. The References are:
+ * <i>BlagouchineSummationProperty1</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
+ * Functions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,24 +106,21 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoteBoundProperty
+public class BlagouchineSummationProperty1
 {
 
 	private static final void Verifier (
-		final double z)
+		final int m)
 		throws Exception
 	{
-		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);
-
-		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);
+		R1ToR1PropertyVerification verification =
+			DigammaBlagouchineEqualityLemma.SummationIdentity1().verify (m);
 
 		System.out.println (
-			"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + " | " +
-				leftVerification.verified() + " | " +
-				rightVerification.verified() + " ||"
+			"\t|" + FormatUtil.FormatDouble (m, 3, 0, 1.) + " => " +
+			FormatUtil.FormatDouble (verification.lValue(), 1, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 1, 10, 1.) + " | " +
+			verification.verified() + " ||"
 		);
 	}
 
@@ -133,55 +130,38 @@ public class AsymptoteBoundProperty
 	{
 		EnvManager.InitEnv ("");
 
-		double[] zArray =
+		int[] mArray =
 		{
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
+			  10,
+			 100,
+			1000,
+			9999,
 		};
-		System.out.println ("\t|----------------------------------------------------------------------||");
 
-		System.out.println ("\t|              DIGAMMA FUNCTION ASYMPTOTE BOUND PROPERTY               ||");
+		System.out.println ("\t|-----------------------------------------------||");
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|    DIGAMMA BLAGOUCHINE SUMMATION PROPERTY     ||");
 
-		System.out.println ("\t|        L -> R:                                                       ||");
+		System.out.println ("\t|-----------------------------------------------||");
 
-		System.out.println ("\t|                - z                                                   ||");
+		System.out.println ("\t|        L -> R:                                ||");
 
-		System.out.println ("\t|                - LHS Value                                           ||");
+		System.out.println ("\t|                - m                            ||");
 
-		System.out.println ("\t|                - Middle Value                                        ||");
+		System.out.println ("\t|                - LHS Value                    ||");
 
-		System.out.println ("\t|                - RHS Value                                           ||");
+		System.out.println ("\t|                - RHS Value                    ||");
 
-		System.out.println ("\t|                - Left Verification Success?                          ||");
+		System.out.println ("\t|                - Verification Success?        ||");
 
-		System.out.println ("\t|                - Right Verification Success?                         ||");
+		System.out.println ("\t|-----------------------------------------------||");
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-
-		for (double z : zArray)
+		for (int m : mArray)
 		{
-			Verifier (z);
+			Verifier (m);
 		}
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

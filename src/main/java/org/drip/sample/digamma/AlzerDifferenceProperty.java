@@ -1,6 +1,7 @@
 
 package org.drip.sample.digamma;
 
+import org.drip.function.definition.R1ToR1Property;
 import org.drip.function.definition.R1ToR1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -69,8 +70,8 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  */
 
 /**
- * <i>AsymptoteBoundProperty</i> demonstrates the Estimation of the Asymptote Bounds of the Digamma Function
- * using the Asymptotic Bounds. The References are:
+ * <i>AlzerDifferenceProperty</i> demonstrates the Alzer (1997) Difference Property Lemma for Digamma
+ * Functions where s is in (0, 1). The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,25 +107,51 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoteBoundProperty
+public class AlzerDifferenceProperty
 {
 
 	private static final void Verifier (
-		final double z)
+		final double s,
+		final double[] zArray)
 		throws Exception
 	{
-		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);
+		System.out.println ("\t|-----------------------------------------------||");
 
-		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);
+		System.out.println ("\t|  DIGAMMA FUNCTION ALZER DIFFERENCE PROPERTY   ||");
 
-		System.out.println (
-			"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + " | " +
-				leftVerification.verified() + " | " +
-				rightVerification.verified() + " ||"
-		);
+		System.out.println ("\t|                  s = " + FormatUtil.FormatDouble (s, 1, 2, 1.));
+
+		System.out.println ("\t|-----------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                ||");
+
+		System.out.println ("\t|                - z                            ||");
+
+		System.out.println ("\t|                - LHS Value                    ||");
+
+		System.out.println ("\t|                - RHS Value                    ||");
+
+		System.out.println ("\t|                - Verification Success?        ||");
+
+		System.out.println ("\t|-----------------------------------------------||");
+
+		R1ToR1Property alzerDifferenceProperty = DigammaInequalityLemma.AlzerDifference1997 (s);
+
+		for (double z : zArray)
+		{
+			R1ToR1PropertyVerification verification = alzerDifferenceProperty.verify (z);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +
+				FormatUtil.FormatDouble (verification.lValue(), 1, 10, 1.) + " | " +
+				FormatUtil.FormatDouble (verification.rValue(), 1, 10, 1.) + " | " +
+				verification.verified() + " ||"
+			);
+		}
+
+		System.out.println ("\t|-----------------------------------------------||");
+
+		System.out.println();
 	}
 
 	public static final void main (
@@ -133,6 +160,18 @@ public class AsymptoteBoundProperty
 	{
 		EnvManager.InitEnv ("");
 
+		double[] sArray =
+		{
+			0.1,
+			0.2,
+			0.3,
+			0.4,
+			0.5,
+			0.6,
+			0.7,
+			0.8,
+			0.9,
+		};
 		double[] zArray =
 		{
 			1.5,
@@ -153,35 +192,14 @@ public class AsymptoteBoundProperty
 			9.0,
 			9.5,
 		};
-		System.out.println ("\t|----------------------------------------------------------------------||");
 
-		System.out.println ("\t|              DIGAMMA FUNCTION ASYMPTOTE BOUND PROPERTY               ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - LHS Value                                           ||");
-
-		System.out.println ("\t|                - Middle Value                                        ||");
-
-		System.out.println ("\t|                - RHS Value                                           ||");
-
-		System.out.println ("\t|                - Left Verification Success?                          ||");
-
-		System.out.println ("\t|                - Right Verification Success?                         ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-
-		for (double z : zArray)
+		for (double s : sArray)
 		{
-			Verifier (z);
+			Verifier (
+				s,
+				zArray
+			);
 		}
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

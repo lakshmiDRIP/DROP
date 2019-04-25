@@ -69,8 +69,8 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  */
 
 /**
- * <i>AsymptoteBoundProperty</i> demonstrates the Estimation of the Asymptote Bounds of the Digamma Function
- * using the Asymptotic Bounds. The References are:
+ * <i>AlzerJamesonProperty</i> demonstrates the Alzer Jameson (2017) Property Lemma for Digamma Functions.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,24 +106,20 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoteBoundProperty
+public class AlzerJamesonProperty
 {
 
 	private static final void Verifier (
 		final double z)
 		throws Exception
 	{
-		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);
-
-		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);
+		R1ToR1PropertyVerification verification = DigammaInequalityLemma.AlzerJameson2017().verify (z);
 
 		System.out.println (
 			"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +
-				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + " | " +
-				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + " | " +
-				leftVerification.verified() + " | " +
-				rightVerification.verified() + " ||"
+			FormatUtil.FormatDouble (verification.lValue(), 1, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 1, 10, 1.) + " | " +
+			verification.verified() + " ||"
 		);
 	}
 
@@ -135,53 +131,59 @@ public class AsymptoteBoundProperty
 
 		double[] zArray =
 		{
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
+			0.10,
+			0.20,
+			0.30,
+			0.40,
+			0.50,
+			0.60,
+			0.70,
+			0.80,
+			0.90,
+			1.00,
+			1.50,
+			2.00,
+			2.50,
+			3.00,
+			3.50,
+			4.00,
+			4.50,
+			5.00,
+			5.50,
+			6.00,
+			6.50,
+			7.00,
+			7.50,
+			8.00,
+			8.50,
+			9.00,
+			9.50,
 		};
-		System.out.println ("\t|----------------------------------------------------------------------||");
 
-		System.out.println ("\t|              DIGAMMA FUNCTION ASYMPTOTE BOUND PROPERTY               ||");
+		System.out.println ("\t|-----------------------------------------------||");
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|    DIGAMMA FUNCTION ALZER JAMESON PROPERTY    ||");
 
-		System.out.println ("\t|        L -> R:                                                       ||");
+		System.out.println ("\t|-----------------------------------------------||");
 
-		System.out.println ("\t|                - z                                                   ||");
+		System.out.println ("\t|        L -> R:                                ||");
 
-		System.out.println ("\t|                - LHS Value                                           ||");
+		System.out.println ("\t|                - z                            ||");
 
-		System.out.println ("\t|                - Middle Value                                        ||");
+		System.out.println ("\t|                - LHS Value                    ||");
 
-		System.out.println ("\t|                - RHS Value                                           ||");
+		System.out.println ("\t|                - RHS Value                    ||");
 
-		System.out.println ("\t|                - Left Verification Success?                          ||");
+		System.out.println ("\t|                - Verification Success?        ||");
 
-		System.out.println ("\t|                - Right Verification Success?                         ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
+		System.out.println ("\t|-----------------------------------------------||");
 
 		for (double z : zArray)
 		{
 			Verifier (z);
 		}
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

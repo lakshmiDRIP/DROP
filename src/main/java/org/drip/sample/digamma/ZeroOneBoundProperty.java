@@ -69,8 +69,8 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  */
 
 /**
- * <i>AsymptoteBoundProperty</i> demonstrates the Estimation of the Asymptote Bounds of the Digamma Function
- * using the Asymptotic Bounds. The References are:
+ * <i>ZeroOneBoundProperty</i> demonstrates the Estimation of the (0, 1) Bounds of the Digamma Function using
+ * the (0, 1) Bounds. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,16 +106,16 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoteBoundProperty
+public class ZeroOneBoundProperty
 {
 
 	private static final void Verifier (
 		final double z)
 		throws Exception
 	{
-		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);
+		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.ZeroOneLeftBound().verify (z);
 
-		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);
+		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.ZeroOneRightBound().verify (z);
 
 		System.out.println (
 			"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +
@@ -135,23 +135,25 @@ public class AsymptoteBoundProperty
 
 		double[] zArray =
 		{
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
+			0.05,
+			0.10,
+			0.15,
+			0.20,
+			0.25,
+			0.30,
+			0.35,
+			0.40,
+			0.45,
+			0.50,
+			0.55,
+			0.60,
+			0.65,
+			0.70,
+			0.75,
+			0.80,
+			0.85,
+			0.90,
+			0.95,
 		};
 		System.out.println ("\t|----------------------------------------------------------------------||");
 

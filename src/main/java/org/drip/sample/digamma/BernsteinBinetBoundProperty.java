@@ -69,8 +69,8 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  */
 
 /**
- * <i>AsymptoteBoundProperty</i> demonstrates the Estimation of the Asymptote Bounds of the Digamma Function
- * using the Asymptotic Bounds. The References are:
+ * <i>BernsteinBinetBoundProperty</i> demonstrates the Estimation of the Bernstein-Binet Bounds of the
+ * Digamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,16 +106,16 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoteBoundProperty
+public class BernsteinBinetBoundProperty
 {
 
 	private static final void Verifier (
 		final double z)
 		throws Exception
 	{
-		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);
+		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.BernsteinBinetLeftBound().verify (z);
 
-		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);
+		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.BernsteinBinetRightBound().verify (z);
 
 		System.out.println (
 			"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +
@@ -135,27 +135,32 @@ public class AsymptoteBoundProperty
 
 		double[] zArray =
 		{
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
+			0.25,
+			0.50,
+			0.75,
+			1.00,
+			1.25,
+			1.50,
+			2.00,
+			2.50,
+			3.00,
+			3.50,
+			4.00,
+			4.50,
+			5.00,
+			5.50,
+			6.00,
+			6.50,
+			7.00,
+			7.50,
+			8.00,
+			8.50,
+			9.00,
+			9.50,
 		};
 		System.out.println ("\t|----------------------------------------------------------------------||");
 
-		System.out.println ("\t|              DIGAMMA FUNCTION ASYMPTOTE BOUND PROPERTY               ||");
+		System.out.println ("\t|           DIGAMMA FUNCTION BERNSTEIN-BINET BOUND PROPERTY            ||");
 
 		System.out.println ("\t|----------------------------------------------------------------------||");
 
@@ -174,7 +179,6 @@ public class AsymptoteBoundProperty
 		System.out.println ("\t|                - Right Verification Success?                         ||");
 
 		System.out.println ("\t|----------------------------------------------------------------------||");
-
 
 		for (double z : zArray)
 		{

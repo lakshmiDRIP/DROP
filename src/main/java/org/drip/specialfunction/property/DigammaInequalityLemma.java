@@ -174,7 +174,7 @@ public class DigammaInequalityLemma
 		try
 		{
 			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.LT,
+				org.drip.function.definition.R1ToR1Property.GT,
 				new org.drip.function.definition.R1ToR1 (null)
 				{
 					@Override public double evaluate (
@@ -203,6 +203,465 @@ public class DigammaInequalityLemma
 						}
 
 						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Digamma (0, 1) Left Bound Inequality Verifier
+	 * 
+	 * @return The Digamma (0, 1) Left Bound Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ZeroOneLeftBound()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ZeroOneLeftBound::evaluate => Invalid Inputs");
+						}
+
+						return -1. / z - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ZeroOneLeftBound::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Digamma (0, 1) Right Bound Verifier
+	 * 
+	 * @return The Digamma (0, 1) Right Bound Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ZeroOneRightBound()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ZeroOneRightBound::evaluate => Invalid Inputs");
+						}
+
+						return 1. - 1. / z - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ZeroOneRightBound::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Bernstein-Binet Left Bound Inequality Verifier
+	 * 
+	 * @return The Bernstein-Binet Left Bound Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property BernsteinBinetLeftBound()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::BernsteinBinetLeftBound::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.log (z) - 1. / z;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::BernsteinBinetLeftBound::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Bernstein-Binet Right Bound Inequality Verifier
+	 * 
+	 * @return The Bernstein-Binet Right Bound Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property BernsteinBinetRightBound()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::BernsteinBinetRightBound::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.log (z) - 0.5 / z;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::BernsteinBinetRightBound::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Elezovic-Giordano-Pecaric Left Bound Inequality Verifier
+	 * 
+	 * @return The Elezovic-Giordano-Pecaric Left Bound Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ElezovicGiordanoPecaricLeftBound()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ElezovicGiordanoPecaricLeftBound::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.log (z + 0.5) - 1. / z;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ElezovicGiordanoPecaricLeftBound::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Elezovic-Giordano-Pecaric Right Bound Inequality Verifier
+	 * 
+	 * @return The Elezovic-Giordano-Pecaric Right Bound Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property ElezovicGiordanoPecaricRightBound()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.GT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ElezovicGiordanoPecaricRightBound::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.log (
+							z + java.lang.Math.exp (
+								-org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+							)
+						) - 1. / z;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::ElezovicGiordanoPecaricRightBound::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Alzer (1997) Digamma Difference Lemma Verifier
+	 * 
+	 * @param s s
+	 * 
+	 * @return The Alzer (1997) Digamma Difference Lemma Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property AlzerDifference1997 (
+		final double s)
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LT,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::AlzerDifference1997::evaluate => Invalid Inputs");
+						}
+
+						return (1. - s) / (z + s);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::AlzerDifference1997::evaluate => Invalid Inputs");
+						}
+
+						return abramowitzStegun2007.evaluate (z + 1) - abramowitzStegun2007.evaluate (z + s);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Alzer-Jameson (2017) Inequality Verifier
+	 * 
+	 * @return The Alzer-Jameson (2017) Inequality Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property AlzerJameson2017()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.LTE,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::AlzerJameson2017::evaluate => Invalid Inputs");
+						}
+
+						return -1. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("DigammaInequalityLemma::AlzerJameson2017::evaluate => Invalid Inputs");
+						}
+
+						double digammaZ = abramowitzStegun2007.evaluate (z);
+
+						double digammaZInverse = abramowitzStegun2007.evaluate (1. / z);
+
+						return 2. * digammaZ * digammaZInverse / (digammaZ + digammaZInverse);
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
