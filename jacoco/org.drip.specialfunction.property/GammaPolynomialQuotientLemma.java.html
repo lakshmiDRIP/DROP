@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GammaPolynomialQuotientLemma.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.property</a> &gt; <span class="el_source">GammaPolynomialQuotientLemma.java</span></div><h1>GammaPolynomialQuotientLemma.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.property;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;GammaPolynomialQuotientLemma&lt;/i&gt; contains the Verifiable Gamma Polynomial Quotient Equality Lemma. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
+ * 				Integration Methods, and some Related Results &lt;i&gt;Ramanujan Journal&lt;/i&gt; &lt;b&gt;35 (1)&lt;/b&gt; 21-110
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
+ * 				https://arxiv.org/abs/1703.05349 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				&lt;i&gt;American Mathematical Monthly&lt;/i&gt; &lt;b&gt;66 (10)&lt;/b&gt; 849-869
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md&quot;&gt;Special Function Property Lemma Verifiers&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class GammaPolynomialQuotientLemma</span>
+{
+<span class="nc" id="L106">	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP = null;</span>
+<span class="nc" id="L107">	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ = null;</span>
+
+	/**
+	 * Retrieve the Monic Polynomial &quot;P&quot;
+	 * 
+	 * @return The Monic Polynomial &quot;P&quot;
+	 */
+
+	public org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP()
+	{
+<span class="nc" id="L117">		return _monicPolynomialP;</span>
+	}
+
+	/**
+	 * Retrieve the Monic Polynomial &quot;Q&quot;
+	 * 
+	 * @return The Monic Polynomial &quot;Q&quot;
+	 */
+
+	public org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ()
+	{
+<span class="nc" id="L128">		return _monicPolynomialQ;</span>
+	}
+
+	/**
+	 * Run the Equality Lemma over the specified a and b
+	 * 
+	 * @param a a
+	 * @param b b
+	 * 
+	 * @return Result of the Equality Lemma Run
+	 */
+
+	public org.drip.function.definition.R1ToR1PropertyVerification equalityLemma (
+		final int a,
+		final int b)
+	{
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (a &gt;= b)</span>
+		{
+<span class="nc" id="L146">			return null;</span>
+		}
+
+<span class="nc" id="L149">		org.drip.specialfunction.loggamma.InfiniteSumEstimator logGammaEstimator =</span>
+<span class="nc" id="L150">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);</span>
+
+		try
+		{
+<span class="nc" id="L154">			double lValue = 1.;</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			for (int i = a; i &lt;= b; ++i)</span>
+			{
+<span class="nc" id="L158">				lValue = lValue * _monicPolynomialP.evaluate (i) / _monicPolynomialQ.evaluate (i);</span>
+			}
+
+<span class="nc" id="L161">			double rValue = java.lang.Math.exp (</span>
+<span class="nc" id="L162">				_monicPolynomialP.logGammaProduct (</span>
+					a,
+					b,
+					logGammaEstimator
+<span class="nc" id="L166">				) - _monicPolynomialQ.logGammaProduct (</span>
+					a,
+					b,
+					logGammaEstimator
+				)
+			);
+
+<span class="nc" id="L173">			double leftTolerance = java.lang.Math.abs (lValue *</span>
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE);
+
+<span class="nc" id="L176">			double rightTolerance = java.lang.Math.abs (rValue *</span>
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE);
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			double tolerance = leftTolerance &lt; rightTolerance ? leftTolerance: rightTolerance;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			tolerance = tolerance &lt; org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE ?</span>
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE : tolerance;
+
+<span class="nc" id="L183">			return new org.drip.function.definition.R1ToR1PropertyVerification (</span>
+				lValue,
+				rValue,
+<span class="nc bnc" id="L186" title="All 2 branches missed.">				java.lang.Math.abs (lValue - rValue) &lt; tolerance</span>
+			);
+		}
+<span class="nc" id="L189">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L191">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L194">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
