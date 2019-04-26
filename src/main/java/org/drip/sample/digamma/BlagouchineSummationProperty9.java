@@ -69,7 +69,7 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  */
 
 /**
- * <i>BlagouchineSummationProperty1</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
+ * <i>BlagouchineSummationProperty9</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
  * Functions. The References are:
  * 
  * <br><br>
@@ -106,20 +106,22 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlagouchineSummationProperty1
+public class BlagouchineSummationProperty9
 {
 
 	private static final void Verifier (
+		final int k,
 		final int m)
 		throws Exception
 	{
 		R1ToR1PropertyVerification verification =
-			DigammaEqualityLemma.SummationIdentity1().verify (m);
+			DigammaEqualityLemma.SummationIdentity9 (k).verify (m);
 
 		System.out.println (
-			"\t|" + FormatUtil.FormatDouble (m, 2, 0, 1.) + " => " +
-			FormatUtil.FormatDouble (verification.lValue(), 3, 10, 1.) + " | " +
-			FormatUtil.FormatDouble (verification.rValue(), 3, 10, 1.) + " | " +
+			"\t| [" + FormatUtil.FormatDouble (k, 2, 0, 1.) + " =>" +
+			FormatUtil.FormatDouble (m, 2, 0, 1.) + "] => " +
+			FormatUtil.FormatDouble (verification.lValue(), 2, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 2, 10, 1.) + " | " +
 			verification.verified() + " ||"
 		);
 	}
@@ -144,30 +146,38 @@ public class BlagouchineSummationProperty1
 			  50,
 		};
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------||");
 
-		System.out.println ("\t|     DIGAMMA BLAGOUCHINE SUMMATION PROPERTY     ||");
+		System.out.println ("\t|         DIGAMMA BLAGOUCHINE SUMMATION PROPERTY        ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                 ||");
+		System.out.println ("\t|        L -> R:                                        ||");
 
-		System.out.println ("\t|                - m                             ||");
+		System.out.println ("\t|                - k                                    ||");
 
-		System.out.println ("\t|                - LHS Value                     ||");
+		System.out.println ("\t|                - m                                    ||");
 
-		System.out.println ("\t|                - RHS Value                     ||");
+		System.out.println ("\t|                - LHS Value                            ||");
 
-		System.out.println ("\t|                - Verification Success?         ||");
+		System.out.println ("\t|                - RHS Value                            ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|                - Verification Success?                ||");
+
+		System.out.println ("\t|-------------------------------------------------------||");
 
 		for (int m : mArray)
 		{
-			Verifier (m);
+			for (int k : mArray)
+			{
+				Verifier (
+					k,
+					m
+				);
+			}
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

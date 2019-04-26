@@ -446,6 +446,52 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 	}
 
 	/**
+	 * Compute the Taylor-Riemann Zeta Cumulative Series of Digamma Estimator
+	 * 
+	 * @param riemannZetaEstimator The Riemann-Zeta Estimator
+	 * @param termCount Term Count
+	 * 
+	 * @return The Taylor-Riemann Zeta Cumulative Series of Digamma Estimator
+	 */
+
+	public static final CumulativeSeriesEstimator TaylorRiemannZeta (
+		final org.drip.function.definition.R1ToR1 riemannZetaEstimator,
+		final int termCount)
+	{
+		try
+		{
+			return new CumulativeSeriesEstimator (
+				org.drip.specialfunction.digamma.CumulativeSeries.TaylorRiemannZeta (
+					riemannZetaEstimator,
+					termCount
+				),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesEstimator::TaylorRiemannZeta::evaluate => Invalid Inputs");
+					}
+
+					return -1. * cumulativeSeries().evaluate (z - 1.) -
+						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * CumulativeSeriesEstimator Constructor
 	 * 
 	 * @param sumSeries R<sup>1</sup> To R<sup>1</sup> Cumulative Series

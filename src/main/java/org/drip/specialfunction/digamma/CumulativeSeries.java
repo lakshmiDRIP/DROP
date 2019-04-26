@@ -401,4 +401,45 @@ public class CumulativeSeries
 
 		return null;
 	}
+
+	/**
+	 * Construct the R<sup>1</sup> To R<sup>1</sup> Taylor Riemann-Zeta Cumulative Series
+	 * 
+	 * @param riemannZetaEstimator The Riemann-Zeta Estimator
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>1</sup> To R<sup>1</sup> Taylor Riemann-Zeta Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series TaylorRiemannZeta (
+		final org.drip.function.definition.R1ToR1 riemannZetaEstimator,
+		final int termCount)
+	{
+		try
+		{
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R1ToR1Series (
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.TaylorRiemannZeta
+					(riemannZetaEstimator),
+				false,
+				termWeightMap
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

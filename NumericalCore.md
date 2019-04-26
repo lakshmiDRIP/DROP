@@ -146,6 +146,7 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Lanczos Approximation
  * Incomplete Gamma Function
  * Digamma Function
+ * Beta Function
  * Error Function
 
 

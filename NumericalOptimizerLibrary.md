@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.20.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.23.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -253,6 +253,18 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Special Values
 	* Roots of the Digamma Function
 	* Regularization
+	* References
+ * Beta Function
+	* Introduction and Overview
+	* Properties
+	* Relationship between Gamma Function and Beta Function
+	* Derivatives
+	* Integrals
+	* Approximation
+	* Incomplete Beta Function
+	* Incomplete Beta Function - Properties
+	* Multi-variate Beta Function
+	* Software Implementation
 	* References
  * Error Function
 	* Introduction and Overview

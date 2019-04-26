@@ -69,7 +69,7 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  */
 
 /**
- * <i>BlagouchineSummationProperty1</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
+ * <i>BlagouchineSummationProperty10</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
  * Functions. The References are:
  * 
  * <br><br>
@@ -106,7 +106,7 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlagouchineSummationProperty1
+public class BlagouchineSummationProperty10
 {
 
 	private static final void Verifier (
@@ -114,7 +114,7 @@ public class BlagouchineSummationProperty1
 		throws Exception
 	{
 		R1ToR1PropertyVerification verification =
-			DigammaEqualityLemma.SummationIdentity1().verify (m);
+			DigammaEqualityLemma.SummationIdentity10().verify (m);
 
 		System.out.println (
 			"\t|" + FormatUtil.FormatDouble (m, 2, 0, 1.) + " => " +

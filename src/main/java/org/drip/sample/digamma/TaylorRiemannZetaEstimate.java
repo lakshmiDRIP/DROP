@@ -1,10 +1,11 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.function.definition.R1ToR1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.property.DigammaEqualityLemma;
+import org.drip.specialfunction.derived.RiemannZeta;
+import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +70,8 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  */
 
 /**
- * <i>BlagouchineSummationProperty1</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
- * Functions. The References are:
+ * <i>TaylorRiemannZetaEstimate</i> demonstrates the Estimation of the Digamma Function using the
+ * Taylor-Reimann Zeta Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,23 +107,8 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlagouchineSummationProperty1
+public class TaylorRiemannZetaEstimate
 {
-
-	private static final void Verifier (
-		final int m)
-		throws Exception
-	{
-		R1ToR1PropertyVerification verification =
-			DigammaEqualityLemma.SummationIdentity1().verify (m);
-
-		System.out.println (
-			"\t|" + FormatUtil.FormatDouble (m, 2, 0, 1.) + " => " +
-			FormatUtil.FormatDouble (verification.lValue(), 3, 10, 1.) + " | " +
-			FormatUtil.FormatDouble (verification.rValue(), 3, 10, 1.) + " | " +
-			verification.verified() + " ||"
-		);
-	}
 
 	public static final void main (
 		final String[] argumentArray)
@@ -130,44 +116,74 @@ public class BlagouchineSummationProperty1
 	{
 		EnvManager.InitEnv ("");
 
-		int[] mArray =
+		int taylorRiemannZetaTermCount = 50;
+		int abramowitzStegunTermCount = 1000000;
+		double[] zArray =
 		{
-			   5,
-			  10,
-			  15,
-			  20,
-			  25,
-			  30,
-			  35,
-			  40,
-			  45,
-			  50,
+			0.1,
+			0.2,
+			0.3,
+			0.4,
+			0.5,
+			0.6,
+			0.7,
+			0.8,
+			0.9,
+			1.0,
+			1.1,
+			1.2,
+			1.3,
+			1.4,
+			1.5,
+			1.6,
+			1.7,
+			1.8,
+			1.9,
+			2.0,
 		};
 
-		System.out.println ("\t|------------------------------------------------||");
+		CumulativeSeriesEstimator taylorRiemannZetaSeries = CumulativeSeriesEstimator.TaylorRiemannZeta (
+			new RiemannZeta (
+				null,
+				new WindschitlTothAnalytic (null)
+			),
+			taylorRiemannZetaTermCount
+		);
 
-		System.out.println ("\t|     DIGAMMA BLAGOUCHINE SUMMATION PROPERTY     ||");
+		CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (abramowitzStegunTermCount);
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                 ||");
+		System.out.println ("\t| TAYLOR RIEMANN-ZETA SERIES ESTIMATE  ||");
 
-		System.out.println ("\t|                - m                             ||");
+		System.out.println ("\t|--------------------------------------||");
 
-		System.out.println ("\t|                - LHS Value                     ||");
+		System.out.println ("\t|    L -> R:                           ||");
 
-		System.out.println ("\t|                - RHS Value                     ||");
+		System.out.println ("\t|        - z                           ||");
 
-		System.out.println ("\t|                - Verification Success?         ||");
+		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|        - Taylor-Riemann Zeta Series  ||");
 
-		for (int m : mArray)
+		System.out.println ("\t|--------------------------------------||");
+
+		for (double z : zArray)
 		{
-			Verifier (m);
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
+				FormatUtil.FormatDouble (
+					abramowitzStegun2007.evaluate (z),
+					1, 10, 1.
+				) + " | " + FormatUtil.FormatDouble (
+					taylorRiemannZetaSeries.evaluate (z),
+					1, 10, 1.
+				) + " ||"
+			);
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

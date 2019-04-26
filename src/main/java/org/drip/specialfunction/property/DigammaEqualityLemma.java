@@ -128,7 +128,7 @@ public class DigammaEqualityLemma
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("DigammaInequalityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+								("DigammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
 						}
 
 						return abramowitzStegun2007.evaluate (1. - z) - abramowitzStegun2007.evaluate (z);
@@ -143,10 +143,763 @@ public class DigammaEqualityLemma
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("DigammaInequalityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+								("DigammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
 						}
 
 						return java.lang.Math.PI / java.lang.Math.tan (java.lang.Math.PI * z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Gaussian Finite Summation Identity Verifier #1
+	 * 
+	 * @return The Gaussian Finite Summation Identity Verifier #1
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity1()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r <= m; ++r)
+						{
+							summation = summation + abramowitzStegun2007.evaluate (((double) r) / ((double) m));
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs");
+						}
+
+						return -m * (org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
+							java.lang.Math.log (m));
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Gaussian Finite Summation Identity Verifier #2
+	 * 
+	 * @param k k
+	 * 
+	 * @return The Gaussian Finite Summation Identity Verifier #2
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity2 (
+		final int k)
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity2::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) *
+								java.lang.Math.cos (2. * java.lang.Math.PI * k * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity2::evaluate => Invalid Inputs");
+						}
+
+						return m * java.lang.Math.log (2. * java.lang.Math.sin (java.lang.Math.PI * k / m)) +
+							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Gaussian Finite Summation Identity Verifier #3
+	 * 
+	 * @param k k
+	 * 
+	 * @return The Gaussian Finite Summation Identity Verifier #3
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity3 (
+		final int k)
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity3::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) *
+								java.lang.Math.sin (2. * java.lang.Math.PI * k * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity3::evaluate => Invalid Inputs");
+						}
+
+						return 0.5 * java.lang.Math.PI * (2. * k - m);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #4
+	 * 
+	 * @param k k
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #4
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity4 (
+		final int k)
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity4::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 0; r < m; ++r)
+						{
+							double z = (2. * r + 1.) / (2. * m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) *
+								java.lang.Math.cos (2. * java.lang.Math.PI * k * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity4::evaluate => Invalid Inputs");
+						}
+
+						return m * java.lang.Math.log (java.lang.Math.tan (0.5 * java.lang.Math.PI * k / m));
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #5
+	 * 
+	 * @param k k
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #5
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity5 (
+		final int k)
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity5::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 0; r < m; ++r)
+						{
+							double z = (2. * r + 1.) / (2. * m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) *
+								java.lang.Math.sin (2. * java.lang.Math.PI * k * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity5::evaluate => Invalid Inputs");
+						}
+
+						return -0.5 * java.lang.Math.PI * m;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #6
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #6
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity6()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity6::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) /
+								java.lang.Math.tan (java.lang.Math.PI * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity6::evaluate => Invalid Inputs");
+						}
+
+						return -java.lang.Math.PI * (m - 1.) * (m - 2.) / 6.;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #7
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #7
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity7()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity7::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + z * abramowitzStegun2007.evaluate (z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity7::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + z / java.lang.Math.tan (java.lang.Math.PI * z);
+						}
+
+						return -0.5 * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI * (m - 1.)
+							- 0.5 * m * java.lang.Math.log (m)
+							- 0.5 * java.lang.Math.PI * summation;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #8
+	 * 
+	 * @param l l
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #8
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity8 (
+		final double l)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (l))
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity8::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) *
+								java.lang.Math.cos ((2. * l + 1.) * java.lang.Math.PI * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity8::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							double theta = 2. * java.lang.Math.PI * z;
+
+							summation = summation + r * java.lang.Math.sin (theta) / (
+								java.lang.Math.cos (theta) -
+								java.lang.Math.cos ((2. * l + 1.) * java.lang.Math.PI / m)
+							);
+						}
+
+						return -1. * java.lang.Math.PI / m * summation;
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #9
+	 * 
+	 * @param l l
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #9
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity9 (
+		final double l)
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (l))
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity9::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							summation = summation + abramowitzStegun2007.evaluate (z) *
+								java.lang.Math.sin ((2. * l + 1.) * java.lang.Math.PI * z);
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity9::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+						double twoLPlus1PiByM = (2. * l + 1.) * java.lang.Math.PI / m;
+
+						double cos2LPlus1PiByM = java.lang.Math.cos (twoLPlus1PiByM);
+
+						for (int r = 1; r < m; ++r)
+						{
+							double z = ((double) r) / ((double) m);
+
+							double theta = java.lang.Math.PI * z;
+
+							summation = summation + java.lang.Math.log (java.lang.Math.sin (theta)) /
+								(java.lang.Math.cos (2. * theta) - cos2LPlus1PiByM);
+						}
+
+						return java.lang.Math.sin (twoLPlus1PiByM) * summation - 
+							(
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
+								java.lang.Math.log (2. * m)
+							) / java.lang.Math.tan (0.5 * twoLPlus1PiByM);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate the Blagouchine Finite Summation Identity Verifier #10
+	 * 
+	 * @return The Blagouchine Finite Summation Identity Verifier #10
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property SummationIdentity10()
+	{
+		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
+		{
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity10::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int r = 1; r < m; ++r)
+						{
+							double digamma = abramowitzStegun2007.evaluate ((double) r) / ((double) m);
+
+							summation = summation + digamma * digamma;
+						}
+
+						return summation;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double m)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
+						{
+							throw new java.lang.Exception
+								("DigammaEqualityLemma::SummationIdentity10::evaluate => Invalid Inputs");
+						}
+
+						double summation = 0.;
+
+						for (int l = 1; l < m; ++l)
+						{
+							double logSinPiLByM = java.lang.Math.log (
+								java.lang.Math.sin (
+									java.lang.Math.PI * l / m
+								)
+							);
+
+							summation = summation + logSinPiLByM * logSinPiLByM;
+						}
+
+						double log2 = java.lang.Math.log (2.);
+
+						return
+							(m - 1.) * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
+								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
+							m * (
+								2. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
+								java.lang.Math.log (4. * m)
+							) * java.lang.Math.log (m) -
+							log2 * log2 * m * (m - 1.) +
+							java.lang.Math.PI * java.lang.Math.PI / 12. * (2. - 3. * m + m * m) +
+							m * summation;
 					}
 				},
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE

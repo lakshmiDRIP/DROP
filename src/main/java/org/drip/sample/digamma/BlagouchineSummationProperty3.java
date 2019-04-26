@@ -1,5 +1,10 @@
 
-package org.drip.specialfunction.property;
+package org.drip.sample.digamma;
+
+import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.DigammaEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,29 +69,29 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>DigammaBlagouchineEqualityLemma</i> contains the Verifiable Equality Lemmas of the Digamma Function
- * proven by Blagouchine (2014). The References are:
+ * <i>BlagouchineSummationProperty3</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
+ * Functions. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Blagouchine, I. V. (2014): Re-discovery of Malmsten's Integrals, their Evaluation by Contour
- * 				Integration Methods, and some Related Results <i>Ramanujan Journal</i> <b>35 (1)</b> 21-110
+ * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
+ * 				Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Borwein, J. M., and R. M. Corless (2017): Gamma Function and the Factorial in the Monthly
- * 				https://arxiv.org/abs/1703.05349 <b>arXiv</b>
+ * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
+ * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
  * 		</li>
  * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
+ * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
  * 		</li>
  * 		<li>
  * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
  * 				University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
  *
@@ -94,77 +99,89 @@ package org.drip.specialfunction.property;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DigammaBlagouchineEqualityLemma
+public class BlagouchineSummationProperty3
 {
 
-	/**
-	 * Generate the Gaussian Finite Summation Identity Verifier #1
-	 * 
-	 * @return The Gaussian Finite Summation Identity Verifier #1
-	 */
-
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity1()
+	private static final void Verifier (
+		final int k,
+		final int m)
+		throws Exception
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		R1ToR1PropertyVerification verification =
+			DigammaEqualityLemma.SummationIdentity3 (k).verify (m);
 
-		try
+		System.out.println (
+			"\t| [" + FormatUtil.FormatDouble (k, 2, 0, 1.) + " =>" +
+			FormatUtil.FormatDouble (m, 2, 0, 1.) + "] => " +
+			FormatUtil.FormatDouble (verification.lValue(), 2, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 2, 10, 1.) + " | " +
+			verification.verified() + " ||"
+		);
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int[] mArray =
 		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double m)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaBlagouchineEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs");
-						}
+			   5,
+			  10,
+			  15,
+			  20,
+			  25,
+			  30,
+			  35,
+			  40,
+			  45,
+			  50,
+		};
 
-						double summation = 0.;
+		System.out.println ("\t|-------------------------------------------------------||");
 
-						for (int r = 1; r <= m; ++r)
-						{
-							summation = summation + abramowitzStegun2007.evaluate (((double) r) / ((double) m));
-						}
+		System.out.println ("\t|         DIGAMMA BLAGOUCHINE SUMMATION PROPERTY        ||");
 
-						return summation;
-					}
-				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double m)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaBlagouchineEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs");
-						}
+		System.out.println ("\t|-------------------------------------------------------||");
 
-						return -m * (org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-							java.lang.Math.log (m));
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
+		System.out.println ("\t|        L -> R:                                        ||");
+
+		System.out.println ("\t|                - k                                    ||");
+
+		System.out.println ("\t|                - m                                    ||");
+
+		System.out.println ("\t|                - LHS Value                            ||");
+
+		System.out.println ("\t|                - RHS Value                            ||");
+
+		System.out.println ("\t|                - Verification Success?                ||");
+
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		for (int m : mArray)
 		{
-			e.printStackTrace();
+			for (int k : mArray)
+			{
+				if (k < m)
+				{
+					Verifier (
+						k,
+						m
+					);
+				}
+			}
 		}
 
-		return null;
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
