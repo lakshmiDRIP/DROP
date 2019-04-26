@@ -1,11 +1,5 @@
 
-package org.drip.sample.digamma;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.IntegralEstimator;
+package org.drip.specialfunction.beta;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,29 +64,28 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
  */
 
 /**
- * <i>DirichletIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Dirichlet
- * Integral. The References are:
+ * <i>LogGammaEstimator</i> implements the Log Beta Function using the Log Gamma Function. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
- * 				Mathematics</b>
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
- * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
- * 		</li>
- * 		<li>
- * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
- * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
  * 		</li>
  * 		<li>
  * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
  * 				University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -100,83 +93,92 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DirichletIntegralEstimate
+public class LogGammaEstimator
 {
+	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Weierstrass Infinite Product Series Version of Log Beta Estimator
+	 */
+
+	public static final LogGammaEstimator Weierstrass (
+		final int termCount)
 	{
-		EnvManager.InitEnv ("");
-
-		int termCount = 1000000;
-		double[] zArray =
+		try
 		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
-		};
-
-		R1ToR1IntegrandEstimator dirichletIntegral = IntegralEstimator.Dirichlet();
-
-		CumulativeSeriesEstimator abramowitzStegun2007 =
-			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t| DIRICHLET INTEGRAL DIGAMMA ESTIMATE  ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t|    L -> R:                           ||");
-
-		System.out.println ("\t|        - z                           ||");
-
-		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
-
-		System.out.println ("\t|        - Dirichlet Integral          ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		for (double z : zArray)
+			return new LogGammaEstimator (org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount));
+		}
+		catch (java.lang.Exception e)
 		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					abramowitzStegun2007.evaluate (z),
-					1, 10, 1.
-				) + " | " + FormatUtil.FormatDouble (
-					dirichletIntegral.evaluate (z),
-					1, 10, 1.
-				) + " ||"
-			);
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|--------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * LogGammaBased Constructor
+	 * 
+	 * @param r1ToR1LogGamma The Log Gamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LogGammaEstimator (
+		final org.drip.function.definition.R1ToR1 r1ToR1LogGamma)
+		throws java.lang.Exception
+	{
+		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma))
+		{
+			throw new java.lang.Exception ("LogGammaEstimator Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Log Gamma Function
+	 * 
+	 * @return The Log Gamma Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 r1ToR1LogGamma()
+	{
+		return _r1ToR1LogGamma;
+	}
+
+	/**
+	 * Evaluate the Log Beta Function using the Log Gamma Function
+	 * 
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Log Beta Function using the LogGamma Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double evaluate (
+		final double x,
+		final double y)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (y))
+		{
+			throw new java.lang.Exception ("LogGammaEstimator::evaluate => Invalid Inputs");
+		}
+
+		return _r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) -
+			_r1ToR1LogGamma.evaluate (x + y);
 	}
 }

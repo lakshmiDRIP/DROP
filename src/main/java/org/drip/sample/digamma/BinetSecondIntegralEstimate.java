@@ -5,7 +5,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.IntegralEstimate;
+import org.drip.specialfunction.digamma.IntegralEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -140,7 +140,7 @@ public class BinetSecondIntegralEstimate
 			9.5,
 		};
 
-		R1ToR1IntegrandEstimator binetSecondIntegral = IntegralEstimate.BinetSecond();
+		R1ToR1IntegrandEstimator binetSecondIntegral = IntegralEstimator.BinetSecond();
 
 		CumulativeSeriesEstimator abramowitzStegun2007 =
 			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);

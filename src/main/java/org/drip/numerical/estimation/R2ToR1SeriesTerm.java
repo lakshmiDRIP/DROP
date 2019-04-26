@@ -1,11 +1,5 @@
 
-package org.drip.sample.digamma;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.IntegralEstimator;
+package org.drip.numerical.estimation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
  */
 
 /**
- * <i>DirichletIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Dirichlet
- * Integral. The References are:
+ * <i>R2ToR1SeriesTerm</i> exposes the R<sup>2</sup> To R<sup>1</sup> Series Expansion Term in the Ordered
+ * Series of the Numerical Estimate for a Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,83 +94,35 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DirichletIntegralEstimate
+public abstract class R2ToR1SeriesTerm
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	protected R2ToR1SeriesTerm()
 	{
-		EnvManager.InitEnv ("");
-
-		int termCount = 1000000;
-		double[] zArray =
-		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
-		};
-
-		R1ToR1IntegrandEstimator dirichletIntegral = IntegralEstimator.Dirichlet();
-
-		CumulativeSeriesEstimator abramowitzStegun2007 =
-			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t| DIRICHLET INTEGRAL DIGAMMA ESTIMATE  ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		System.out.println ("\t|    L -> R:                           ||");
-
-		System.out.println ("\t|        - z                           ||");
-
-		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
-
-		System.out.println ("\t|        - Dirichlet Integral          ||");
-
-		System.out.println ("\t|--------------------------------------||");
-
-		for (double z : zArray)
-		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					abramowitzStegun2007.evaluate (z),
-					1, 10, 1.
-				) + " | " + FormatUtil.FormatDouble (
-					dirichletIntegral.evaluate (z),
-					1, 10, 1.
-				) + " ||"
-			);
-		}
-
-		System.out.println ("\t|--------------------------------------||");
-
-		EnvManager.TerminateEnv();
 	}
+
+	/**
+	 * Compute the Value of the R<sup>2</sup> To R<sup>1</sup> Series Expansion Term
+	 * 
+	 * @param order Order of the R<sup>2</sup> To R<sup>1</sup> Series Expansion Term
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Value of the R<sup>2</sup> To R<sup>1</sup> Series Expansion Term
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double value (
+		final int order,
+		final double x,
+		final double y)
+		throws java.lang.Exception;
 }

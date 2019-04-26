@@ -397,4 +397,43 @@ public class CumulativeSeriesTerm
 
 		return null;
 	}
+
+	/**
+	 * Construct the Newton-Stern Series Term for Digamma
+	 * 
+	 * @return The Newton-Stern Series Term for Digamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NewtonStern()
+	{
+		try
+		{
+			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
+			{
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0 >= order ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("CumulativeSeriesTerm::TaylorRiemannZeta::value => Invalid Inputs");
+					}
+
+					return (1 == order % 2 ? -1. : 1.) * org.drip.numerical.common.NumberUtil.NCK (
+						(int) z,
+						order
+					) / order;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

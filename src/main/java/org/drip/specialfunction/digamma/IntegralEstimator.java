@@ -64,7 +64,7 @@ package org.drip.specialfunction.digamma;
  */
 
 /**
- * <i>IntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Integral
+ * <i>IntegralEstimator</i> demonstrates the Estimation of the Digamma Function using the Integral
  * Representations. The References are:
  * 
  * <br><br>
@@ -101,7 +101,7 @@ package org.drip.specialfunction.digamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IntegralEstimate
+public class IntegralEstimator
 {
 
 	/**

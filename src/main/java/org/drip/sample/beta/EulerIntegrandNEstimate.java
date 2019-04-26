@@ -1,11 +1,10 @@
 
-package org.drip.sample.digamma;
+package org.drip.sample.beta;
 
 import org.drip.numerical.common.FormatUtil;
-import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
-import org.drip.specialfunction.digamma.IntegralEstimator;
+import org.drip.specialfunction.beta.IntegrandEstimator;
+import org.drip.specialfunction.beta.LogGammaEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,29 +69,28 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
  */
 
 /**
- * <i>DirichletIntegralEstimate</i> demonstrates the Estimation of the Digamma Function using the Dirichlet
- * Integral. The References are:
+ * <i>EulerIntegrandNEstimate</i> illustrates the Beta Function Estimation using the Euler Integrand "N"
+ * Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
- * 				Mathematics</b>
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
- * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
- * 		</li>
- * 		<li>
- * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
- * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
  * 		</li>
  * 		<li>
  * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
  * 				University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -100,14 +98,14 @@ import org.drip.specialfunction.digamma.IntegralEstimator;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DirichletIntegralEstimate
+public class EulerIntegrandNEstimate
 {
 
 	public static final void main (
@@ -116,66 +114,92 @@ public class DirichletIntegralEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int termCount = 1000000;
-		double[] zArray =
+		int eulerIntegrandTermCount = 10000;
+		int logGammaTermCount = 1000000;
+		double[] xArray =
 		{
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-			2.5,
-			3.0,
-			3.5,
-			4.0,
-			4.5,
-			5.0,
-			5.5,
-			6.0,
-			6.5,
-			7.0,
-			7.5,
-			8.0,
-			8.5,
-			9.0,
-			9.5,
+			1.,
+			2.,
+			3.,
+			4.,
+			5.,
+			6.,
+		};
+		double[] yArray =
+		{
+			1.,
+			2.,
+			3.,
+			4.,
+			5.,
+			6.,
 		};
 
-		R1ToR1IntegrandEstimator dirichletIntegral = IntegralEstimator.Dirichlet();
+		IntegrandEstimator eulerFirstIntegrandEstimator0p5 = IntegrandEstimator.EulerFirstN (
+			eulerIntegrandTermCount,
+			0.5
+		);
 
-		CumulativeSeriesEstimator abramowitzStegun2007 =
-			CumulativeSeriesEstimator.AbramowitzStegun2007 (termCount);
+		IntegrandEstimator eulerFirstIntegrandEstimator2p0 = IntegrandEstimator.EulerFirstN (
+			eulerIntegrandTermCount,
+			2.0
+		);
 
-		System.out.println ("\t|--------------------------------------||");
+		LogGammaEstimator logGammaEstimator = LogGammaEstimator.Weierstrass (logGammaTermCount);
 
-		System.out.println ("\t| DIRICHLET INTEGRAL DIGAMMA ESTIMATE  ||");
+		System.out.println ("\t|-----------------------------------------------------------||");
 
-		System.out.println ("\t|--------------------------------------||");
+		System.out.println ("\t|                 BETA FUNCTION ESTIMATION                  ||");
 
-		System.out.println ("\t|    L -> R:                           ||");
+		System.out.println ("\t|-----------------------------------------------------------||");
 
-		System.out.println ("\t|        - z                           ||");
+		System.out.println ("\t|        L -> R:                                            ||");
 
-		System.out.println ("\t|        - Abramowitz-Stegun (2007)    ||");
+		System.out.println ("\t|                - x                                        ||");
 
-		System.out.println ("\t|        - Dirichlet Integral          ||");
+		System.out.println ("\t|                - y                                        ||");
 
-		System.out.println ("\t|--------------------------------------||");
+		System.out.println ("\t|                - Gamma Based Estimate                     ||");
 
-		for (double z : zArray)
+		System.out.println ("\t|                - Euler Integral First Kind Estimate       ||");
+
+		System.out.println ("\t|                - Trigonometric Integral Estimate          ||");
+
+		System.out.println ("\t|-----------------------------------------------------------||");
+
+		for (double x : xArray)
 		{
-			System.out.println (
-				"\t|" + FormatUtil.FormatDouble (z, 1, 1, 1.) + " => " +
-				FormatUtil.FormatDouble (
-					abramowitzStegun2007.evaluate (z),
-					1, 10, 1.
-				) + " | " + FormatUtil.FormatDouble (
-					dirichletIntegral.evaluate (z),
-					1, 10, 1.
-				) + " ||"
-			);
+			for (double y : yArray)
+			{
+				System.out.println (
+					"\t| [" +
+					FormatUtil.FormatDouble (x, 1, 1, 1.) + "," +
+					FormatUtil.FormatDouble (y, 1, 1, 1.) + "] =>" +
+					FormatUtil.FormatDouble (
+						Math.exp (
+							logGammaEstimator.evaluate (
+								x,
+								y
+							)
+						), 1, 10, 1.
+					) + " |" +
+					FormatUtil.FormatDouble (
+						eulerFirstIntegrandEstimator0p5.evaluate (
+							x,
+							y
+						), 1, 10, 1.
+					) + " |" +
+					FormatUtil.FormatDouble (
+						eulerFirstIntegrandEstimator2p0.evaluate (
+							x,
+							y
+						), 1, 10, 1.
+					) + " ||"
+				);
+			}
 		}
 
-		System.out.println ("\t|--------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

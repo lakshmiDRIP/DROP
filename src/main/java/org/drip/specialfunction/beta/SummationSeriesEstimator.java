@@ -64,7 +64,7 @@ package org.drip.specialfunction.beta;
  */
 
 /**
- * <i>LogGammaBased</i> implements the Log Beta Function using the Log Gamma Function. The References are:
+ * <i>SummationSeriesEstimator</i> implements the Summation Series Based Beta Estimation. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -99,85 +99,7 @@ package org.drip.specialfunction.beta;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogGammaBased
+public class SummationSeriesEstimator
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
 
-	/**
-	 * Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator
-	 * 
-	 * @param termCount Number of Terms in the Estimation
-	 * 
-	 * @return The Weierstrass Infinite Product Series Version of Log Beta Estimator
-	 */
-
-	public static final LogGammaBased Weierstrass (
-		final int termCount)
-	{
-		try
-		{
-			return new LogGammaBased (org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount));
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * LogGammaBased Constructor
-	 * 
-	 * @param r1ToR1LogGamma The Log Gamma Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LogGammaBased (
-		final org.drip.function.definition.R1ToR1 r1ToR1LogGamma)
-		throws java.lang.Exception
-	{
-		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma))
-		{
-			throw new java.lang.Exception ("LogGammaBased Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Log Gamma Function
-	 * 
-	 * @return The Log Gamma Function
-	 */
-
-	public org.drip.function.definition.R1ToR1 r1ToR1LogGamma()
-	{
-		return _r1ToR1LogGamma;
-	}
-
-	/**
-	 * Evaluate the Log Beta Function using the Log Gamma Function
-	 * 
-	 * @param x X
-	 * @param y Y
-	 * 
-	 * @return The Log Beta Function using the LogGamma Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double evaluate (
-		final double x,
-		final double y)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (y))
-		{
-			throw new java.lang.Exception ("LogGammaBased::evaluate => Invalid Inputs");
-		}
-
-		return _r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) -
-			_r1ToR1LogGamma.evaluate (x + y);
-	}
 }
