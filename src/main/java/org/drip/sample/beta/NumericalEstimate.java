@@ -5,6 +5,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.IntegrandEstimator;
 import org.drip.specialfunction.beta.LogGammaEstimator;
+import org.drip.specialfunction.beta.SummationSeriesEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,7 +70,7 @@ import org.drip.specialfunction.beta.LogGammaEstimator;
  */
 
 /**
- * <i>IntegrandEstimate</i> illustrates the Beta Function Estimation using Integrand Schemes. The References
+ * <i>NumericalEstimate</i> illustrates the Beta Function Estimation using Integrand Schemes. The References
  * are:
  * 
  * <br><br>
@@ -105,7 +106,7 @@ import org.drip.specialfunction.beta.LogGammaEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IntegrandEstimate
+public class NumericalEstimate
 {
 
 	public static final void main (
@@ -117,6 +118,7 @@ public class IntegrandEstimate
 		int eulerIntegrandRightHalfPlaneTermCount = 1000;
 		int trigonometricIntegrandTermCount = 1000;
 		int eulerIntegrandTermCount = 1000;
+		int summationTermCount = 1000000;
 		int logGammaTermCount = 1000000;
 		double[] xArray =
 		{
@@ -148,27 +150,32 @@ public class IntegrandEstimate
 		IntegrandEstimator trigonometricIntegrandEstimator = IntegrandEstimator.Trigonometric
 			(trigonometricIntegrandTermCount);
 
-		System.out.println ("\t|--------------------------------------------------------------------------||");
+		SummationSeriesEstimator summationSeriesEstimator = SummationSeriesEstimator.AbramowitzStegun2007
+			(summationTermCount);
 
-		System.out.println ("\t|                         BETA FUNCTION ESTIMATION                         ||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|--------------------------------------------------------------------------||");
+		System.out.println ("\t|                                 BETA FUNCTION ESTIMATION                                ||");
 
-		System.out.println ("\t|        L -> R:                                                           ||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                - x                                                       ||");
+		System.out.println ("\t|        L -> R:                                                                          ||");
 
-		System.out.println ("\t|                - y                                                       ||");
+		System.out.println ("\t|                - x                                                                      ||");
 
-		System.out.println ("\t|                - Gamma Based Estimate                                    ||");
+		System.out.println ("\t|                - y                                                                      ||");
 
-		System.out.println ("\t|                - Euler Integral First Kind Estimate                      ||");
+		System.out.println ("\t|                - Gamma Based Estimate                                                   ||");
 
-		System.out.println ("\t|                - Euler Integral First Right Half Plane Estimate          ||");
+		System.out.println ("\t|                - Euler Integral First Kind Estimate                                     ||");
 
-		System.out.println ("\t|                - Trigonometric Integral Estimate                         ||");
+		System.out.println ("\t|                - Euler Integral First Right Half Plane Estimate                         ||");
 
-		System.out.println ("\t|--------------------------------------------------------------------------||");
+		System.out.println ("\t|                - Trigonometric Integral Estimate                                        ||");
+
+		System.out.println ("\t|                - Summation Series Estimate                                              ||");
+
+		System.out.println ("\t|-----------------------------------------------------------------------------------------||");
 
 		for (double x : xArray)
 		{
@@ -203,12 +210,18 @@ public class IntegrandEstimate
 							x,
 							y
 						), 1, 10, 1.
+					) + " |" +
+					FormatUtil.FormatDouble (
+						summationSeriesEstimator.evaluate (
+							x,
+							y
+						), 1, 10, 1.
 					) + " ||"
 				);
 			}
 		}
 
-		System.out.println ("\t|--------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

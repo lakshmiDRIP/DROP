@@ -1,10 +1,10 @@
 
-package org.drip.sample.digamma;
+package org.drip.sample.beta;
 
 import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.property.DigammaEqualityLemma;
+import org.drip.specialfunction.property.BetaEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,29 +69,27 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  */
 
 /**
- * <i>BlagouchineSummationProperty7</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
- * Functions. The References are:
+ * <i>IdentityProperty2</i> illustrates the Beta Function Identity Property Verification. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
- * 				Mathematics</b>
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
- * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
- * 		</li>
- * 		<li>
- * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
- * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
  * 		</li>
  * 		<li>
  * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
  * 				University Press</b> New York
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
  *
@@ -99,27 +97,31 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlagouchineSummationProperty7
+public class IdentityProperty2
 {
 
 	private static final void Verifier (
-		final int m)
+		final double x,
+		final double y)
 		throws Exception
 	{
-		R1PropertyVerification verification =
-			DigammaEqualityLemma.SummationIdentity7().verify (m);
+		R1PropertyVerification verification = BetaEqualityLemma.Identity2().verify (
+			x,
+			y
+		);
 
 		System.out.println (
-			"\t|" + FormatUtil.FormatDouble (m, 2, 0, 1.) + " => " +
-			FormatUtil.FormatDouble (verification.lValue(), 3, 10, 1.) + " | " +
-			FormatUtil.FormatDouble (verification.rValue(), 3, 10, 1.) + " | " +
+			"\t|[" + FormatUtil.FormatDouble (x, 1, 1, 1.) + " ," +
+			FormatUtil.FormatDouble (y, 1, 1, 1.) + "] => " +
+			FormatUtil.FormatDouble (verification.lValue(), 2, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 2, 10, 1.) + " | " +
 			verification.verified() + " ||"
 		);
 	}
@@ -130,44 +132,73 @@ public class BlagouchineSummationProperty7
 	{
 		EnvManager.InitEnv ("");
 
-		int[] mArray =
+		double[] xArray =
 		{
-			   5,
-			  10,
-			  15,
-			  20,
-			  25,
-			  30,
-			  35,
-			  40,
-			  45,
-			  50,
+			0.5,
+			1.0,
+			1.5,
+			2.0,
+			2.5,
+			3.0,
+			3.5,
+			4.0,
+			4.5,
+			5.0,
+			5.5,
+			6.0,
+			6.5,
+			7.0,
+			7.5,
+			8.0,
+			8.5,
+			9.0,
+			9.5,
+		};
+		double[] yArray =
+		{
+			0.1,
+			0.2,
+			0.3,
+			0.4,
+			0.5,
+			0.6,
+			0.7,
+			0.8,
+			0.9,
 		};
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------||");
 
-		System.out.println ("\t|     DIGAMMA BLAGOUCHINE SUMMATION PROPERTY     ||");
+		System.out.println ("\t|            BETA FUNCTION IDENTITY PROPERTY            ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                 ||");
+		System.out.println ("\t|        L -> R:                                        ||");
 
-		System.out.println ("\t|                - m                             ||");
+		System.out.println ("\t|                - x                                    ||");
 
-		System.out.println ("\t|                - LHS Value                     ||");
+		System.out.println ("\t|                - y                                    ||");
 
-		System.out.println ("\t|                - RHS Value                     ||");
+		System.out.println ("\t|                - LHS Value                            ||");
 
-		System.out.println ("\t|                - Verification Success?         ||");
+		System.out.println ("\t|                - RHS Value                            ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|                - Verification Success?                ||");
 
-		for (int m : mArray)
+		System.out.println ("\t|-------------------------------------------------------||");
+
+		for (double x : xArray)
 		{
-			Verifier (m);
+			for (double y : yArray)
+			{
+				Verifier (
+					x,
+					y
+				);
+			}
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

@@ -491,15 +491,6 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 		return null;
 	}
 
-	/**
-	 * CumulativeSeriesEstimator Constructor
-	 * 
-	 * @param sumSeries R<sup>1</sup> To R<sup>1</sup> Cumulative Series
-	 * @param dc Differential Control
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
 	protected CumulativeSeriesEstimator (
 		final org.drip.numerical.estimation.R1ToR1Series cumulativeSeries,
 		final org.drip.numerical.differentiation.DerivativeControl dc)

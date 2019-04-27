@@ -2,7 +2,7 @@
 package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.property.BigPiEqualityLemma;
@@ -138,7 +138,7 @@ public class BigPiMultiplicationProperty
 
 		for (double s : sArray)
 		{
-			R1ToR1PropertyVerification propertyVerification = bigPiMultiplicationProperty.verify (s);
+			R1PropertyVerification propertyVerification = bigPiMultiplicationProperty.verify (s);
 
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +

@@ -9,12 +9,12 @@ package org.drip.function.definition;
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -31,16 +31,17 @@ package org.drip.function.definition;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     => https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
@@ -64,31 +65,8 @@ package org.drip.function.definition;
  */
 
 /**
- * <i>R2ToR1</i> provides the Evaluation of the Objective Function and its derivatives for a specified
- * variate Pair. Default Implementation of the Derivatives are for Non-analytical Black Box Objective
- * Functions.
- * 
- * <br><br>
- * 	<ul>
- * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
- * 		</li>
- * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
- * 		</li>
- * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
- * 		</li>
- * 		<li>
- * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
- * 		</li>
- * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
- * 		</li>
- * 	</ul>
+ * <i>R2ToR1Property</i> evaluates the Specified Pair of R<sup>2</sup> To R<sup>1</sup> Functions, and
+ * verifies the Properties.
  *
  *	<br><br>
  *  <ul>
@@ -101,22 +79,94 @@ package org.drip.function.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface R2ToR1
+public class R2ToR1Property extends org.drip.function.definition.RxToR1Property
 {
+	private org.drip.function.definition.R2ToR1 _r2ToR1Left = null;
+	private org.drip.function.definition.R2ToR1 _r2ToR1Right = null;
 
 	/**
-	 * Evaluate for the given variate Pair
+	 * R2ToR1Property Constructor
+	 * 
+	 * @param type The Comparator Type
+	 * @param r2ToR1Left The Left R<sup>2</sup> To R<sup>1</sup> Function
+	 * @param r2ToR1Right The Right R<sup>2</sup> To R<sup>1</sup> Function
+	 * @param mismatchTolerance The Mismatch Tolerance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R2ToR1Property (
+		final java.lang.String type,
+		final org.drip.function.definition.R2ToR1 r2ToR1Left,
+		final org.drip.function.definition.R2ToR1 r2ToR1Right,
+		final double mismatchTolerance)
+		throws java.lang.Exception
+	{
+		super (
+			type,
+			mismatchTolerance
+		);
+
+		if (null == (_r2ToR1Left = r2ToR1Left) ||
+			null == (_r2ToR1Right = r2ToR1Right))
+		{
+			throw new java.lang.Exception ("R2ToR1Property Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Left R<sup>2</sup> To R<sup>1</sup> Function
+	 * 
+	 * @return The Left R<sup>2</sup> To R<sup>1</sup> Function
+	 */
+
+	public org.drip.function.definition.R2ToR1 r2ToR1Left()
+	{
+		return _r2ToR1Left;
+	}
+
+	/**
+	 * Retrieve the Right R<sup>2</sup> To R<sup>1</sup> Function
+	 * 
+	 * @return The Right R<sup>2</sup> To R<sup>1</sup> Function
+	 */
+
+	public org.drip.function.definition.R2ToR1 r2ToR1Right()
+	{
+		return _r2ToR1Right;
+	}
+
+	/**
+	 * Verify the specified R<sup>2</sup> To R<sup>1</sup> Functions
 	 * 
 	 * @param x X
 	 * @param y Y
-	 *  
-	 * @return Returns the calculated value
 	 * 
-	 * @throws java.lang.Exception Thrown if evaluation cannot be done
+	 * @return Results of the Verification
 	 */
 
-	public abstract double evaluate (
+	public org.drip.function.definition.R1PropertyVerification verify (
 		final double x,
 		final double y)
-		throws java.lang.Exception;
+	{
+		try
+		{
+			return super.verify (
+				_r2ToR1Left.evaluate (
+					x,
+					y
+				),
+				_r2ToR1Right.evaluate (
+					x,
+					y
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

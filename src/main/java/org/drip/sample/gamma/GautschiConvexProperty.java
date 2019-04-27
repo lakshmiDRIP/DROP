@@ -2,7 +2,7 @@
 package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.property.GammaInequalityLemma;
@@ -145,9 +145,9 @@ public class GautschiConvexProperty
 
 		for (double z : zArray)
 		{
-			R1ToR1PropertyVerification leftVerification = gautschiLeftProperty.verify (z);
+			R1PropertyVerification leftVerification = gautschiLeftProperty.verify (z);
 
-			R1ToR1PropertyVerification rightVerification = gautschiRightProperty.verify (z);
+			R1PropertyVerification rightVerification = gautschiRightProperty.verify (z);
 
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (z, 2, 2, 1.) + " => " +

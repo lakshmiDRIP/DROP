@@ -65,7 +65,7 @@ package org.drip.function.definition;
  */
 
 /**
- * <i>R1ToR1Property</i> evaluates the Specified Pair of R<sup>1</sup> To R<sup>1</sup> Functions, and
+ * <i>RxToR1Property</i> evaluates the Specified Pair of R<sup>x</sup> To R<sup>1</sup> Functions, and
  * verifies the Properties.
  *
  *	<br><br>
@@ -79,80 +79,158 @@ package org.drip.function.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ToR1Property extends org.drip.function.definition.RxToR1Property
+public abstract class RxToR1Property
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1Left = null;
-	private org.drip.function.definition.R1ToR1 _r1ToR1Right = null;
 
 	/**
-	 * R1ToR1Property Constructor
-	 * 
-	 * @param type The Comparator Type
-	 * @param r1ToR1Left The Left R<sup>1</sup> To R<sup>1</sup> Function
-	 * @param r1ToR1Right The Right R<sup>1</sup> To R<sup>1</sup> Function
-	 * @param mismatchTolerance The Mismatch Tolerance
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Mismatch Tolerance
 	 */
 
-	public R1ToR1Property (
+	public static final double MISMATCH_TOLERANCE = 0.01;
+
+	/**
+	 * EQUAL To Comparison
+	 */
+
+	public static final java.lang.String EQ = "EQ";
+
+	/**
+	 * LESS THAN OR EQUAL To Comparison
+	 */
+
+	public static final java.lang.String LTE = "LTE";
+
+	/**
+	 * GREATER THAN OR EQUAL To Comparison
+	 */
+
+	public static final java.lang.String GTE = "GTE";
+
+	/**
+	 * LESS THAN To Comparison
+	 */
+
+	public static final java.lang.String LT = "LT";
+
+	/**
+	 * GREATER THAN To Comparison
+	 */
+
+	public static final java.lang.String GT = "GT";
+
+	private java.lang.String _type = "";
+	private double _mismatchTolerance = java.lang.Double.NaN;
+
+	protected RxToR1Property (
 		final java.lang.String type,
-		final org.drip.function.definition.R1ToR1 r1ToR1Left,
-		final org.drip.function.definition.R1ToR1 r1ToR1Right,
 		final double mismatchTolerance)
 		throws java.lang.Exception
 	{
-		super (
-			type,
-			mismatchTolerance
-		);
-
-		if (null == (_r1ToR1Left = r1ToR1Left) ||
-			null == (_r1ToR1Right = r1ToR1Right))
+		if (null == (_type = type) || _type.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_mismatchTolerance = mismatchTolerance))
 		{
-			throw new java.lang.Exception ("R1ToR1Property Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RxToR1Property Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Left R<sup>1</sup> To R<sup>1</sup> Function
+	 * Retrieve the Type of the Comparison
 	 * 
-	 * @return The Left R<sup>1</sup> To R<sup>1</sup> Function
+	 * @return The Type of the Comparison
 	 */
 
-	public org.drip.function.definition.R1ToR1 r1ToR1Left()
+	public java.lang.String type()
 	{
-		return _r1ToR1Left;
+		return _type;
 	}
 
 	/**
-	 * Retrieve the Right R<sup>1</sup> To R<sup>1</sup> Function
+	 * Retrieve the Mismatch Tolerance
 	 * 
-	 * @return The Right R<sup>1</sup> To R<sup>1</sup> Function
+	 * @return The Mismatch Tolerance
 	 */
 
-	public org.drip.function.definition.R1ToR1 r1ToR1Right()
+	public double mismatchTolerance()
 	{
-		return _r1ToR1Right;
+		return _mismatchTolerance;
 	}
 
 	/**
-	 * Verify the specified R<sup>1</sup> To R<sup>1</sup> Functions
+	 * Verify the specified Left and Right Function Values
 	 * 
-	 * @param x X
+	 * @param leftValue Left Function Value
+	 * @param rightValue Right Function Value
 	 * 
 	 * @return Results of the Verification
 	 */
 
 	public org.drip.function.definition.R1PropertyVerification verify (
-		final double x)
+		final double leftValue,
+		final double rightValue)
 	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (leftValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (rightValue))
+		{
+			return null;
+		}
+
+		java.lang.String type = type();
+
 		try
 		{
-			return super.verify (
-				_r1ToR1Left.evaluate (x),
-				_r1ToR1Right.evaluate (x)
-			);
+			if (LT.equalsIgnoreCase (type))
+			{
+				return new org.drip.function.definition.R1PropertyVerification (
+					leftValue,
+					rightValue,
+					leftValue < rightValue
+				);
+			}
+
+			if (GT.equalsIgnoreCase (type))
+			{
+				return new org.drip.function.definition.R1PropertyVerification (
+					leftValue,
+					rightValue,
+					leftValue > rightValue
+				);
+			}
+
+			double mismatchTolerance = mismatchTolerance();
+
+			double leftTolerance = java.lang.Math.abs (leftValue * mismatchTolerance);
+
+			double rightTolerance = java.lang.Math.abs (rightValue * mismatchTolerance);
+
+			double tolerance = leftTolerance < rightTolerance ? leftTolerance: rightTolerance;
+			tolerance = tolerance < mismatchTolerance ? mismatchTolerance : tolerance;
+
+			if (EQ.equalsIgnoreCase (type))
+			{
+				return new org.drip.function.definition.R1PropertyVerification (
+					leftValue,
+					rightValue,
+					java.lang.Math.abs (leftValue - rightValue) < tolerance
+				);
+			}
+
+			if (LTE.equalsIgnoreCase (type))
+			{
+				return new org.drip.function.definition.R1PropertyVerification (
+					leftValue,
+					rightValue,
+					leftValue < rightValue || java.lang.Math.abs (leftValue - rightValue) < tolerance
+				);
+			}
+
+			if (GTE.equalsIgnoreCase (type))
+			{
+				return new org.drip.function.definition.R1PropertyVerification (
+					leftValue,
+					rightValue,
+					leftValue > rightValue || java.lang.Math.abs (leftValue - rightValue) < tolerance
+				);
+			}
 		}
 		catch (java.lang.Exception e)
 		{

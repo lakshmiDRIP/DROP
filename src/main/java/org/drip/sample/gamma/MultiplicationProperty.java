@@ -2,7 +2,7 @@
 package org.drip.sample.gamma;
 
 import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.property.GammaEqualityLemma;
@@ -138,7 +138,7 @@ public class MultiplicationProperty
 
 		for (double s : sArray)
 		{
-			R1ToR1PropertyVerification propertyVerification = multiplicationProperty.verify (s);
+			R1PropertyVerification propertyVerification = multiplicationProperty.verify (s);
 
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (s, 1, 2, 1.) + " => " +

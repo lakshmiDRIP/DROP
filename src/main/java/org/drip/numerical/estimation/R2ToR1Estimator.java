@@ -1,10 +1,5 @@
 
-package org.drip.sample.digamma;
-
-import org.drip.function.definition.R1PropertyVerification;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.property.DigammaEqualityLemma;
+package org.drip.numerical.estimation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,29 +64,30 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  */
 
 /**
- * <i>BlagouchineSummationProperty7</i> demonstrates the Blagouchine (2014) Property Lemma for Digamma
- * Functions. The References are:
+ * <i>R2ToR1Estimator</i> exposes the Stubs behind R<sup></sup> - R<sup>1</sup> Approximate Numerical
+ * Estimators. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on
- * 				Mathematics</b>
+ * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
+ * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
  * 		</li>
  * 		<li>
- * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
- * 				Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
+ * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
+ * 				Functions https://dlmf.nist.gov/5.11
  * 		</li>
  * 		<li>
- * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
- * 				Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
+ * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
+ * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
  * 		</li>
  * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
+ * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
+ * 				http://www.rskey.org/CMS/index.php/the-library/11
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 			Wikipedia (2019): Stirling's Approximation
+ * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
  *
@@ -99,76 +95,111 @@ import org.drip.specialfunction.property.DigammaEqualityLemma;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md">Estimates of the Digamma Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Analysis</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlagouchineSummationProperty7
+public abstract class R2ToR1Estimator implements org.drip.function.definition.R2ToR1
 {
 
-	private static final void Verifier (
-		final int m)
-		throws Exception
-	{
-		R1PropertyVerification verification =
-			DigammaEqualityLemma.SummationIdentity7().verify (m);
+	/**
+	 * R<sup>2</sup> - R<sup>1</sup> Estimator Constructor
+	 * 
+	 * @param dc The Derivative Control
+	 */
 
-		System.out.println (
-			"\t|" + FormatUtil.FormatDouble (m, 2, 0, 1.) + " => " +
-			FormatUtil.FormatDouble (verification.lValue(), 3, 10, 1.) + " | " +
-			FormatUtil.FormatDouble (verification.rValue(), 3, 10, 1.) + " | " +
-			verification.verified() + " ||"
-		);
+	public R2ToR1Estimator()
+	{
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Estimate a Bounded Numerical Approximation of the Function Value
+	 * 
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Bounded Numerical Approximation
+	 */
+
+	public org.drip.numerical.estimation.R1Estimate boundedEstimate (
+		final double x,
+		final double y)
 	{
-		EnvManager.InitEnv ("");
-
-		int[] mArray =
+		try
 		{
-			   5,
-			  10,
-			  15,
-			  20,
-			  25,
-			  30,
-			  35,
-			  40,
-			  45,
-			  50,
-		};
-
-		System.out.println ("\t|------------------------------------------------||");
-
-		System.out.println ("\t|     DIGAMMA BLAGOUCHINE SUMMATION PROPERTY     ||");
-
-		System.out.println ("\t|------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                 ||");
-
-		System.out.println ("\t|                - m                             ||");
-
-		System.out.println ("\t|                - LHS Value                     ||");
-
-		System.out.println ("\t|                - RHS Value                     ||");
-
-		System.out.println ("\t|                - Verification Success?         ||");
-
-		System.out.println ("\t|------------------------------------------------||");
-
-		for (int m : mArray)
+			return org.drip.numerical.estimation.R1Estimate.BaselineOnly (
+				evaluate (
+					x,
+					y
+				)
+			);
+		}
+		catch (java.lang.Exception e)
 		{
-			Verifier (m);
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		return null;
+	}
 
-		EnvManager.TerminateEnv();
+	/**
+	 * Compute the Higher Order Series Estimates
+	 * 
+	 * @param x X
+	 * @param y Y
+	 * @param termWeightMap Error Term Weight Map
+	 * @param r1ToR1SeriesGenerator R<sup>1</sup> To R<sup>1</sup> Series Generator
+	 * 
+	 * @return The Higher Order Series Estimates
+	 */
+
+	public org.drip.numerical.estimation.R1Estimate seriesEstimate (
+		final double x,
+		final double y,
+		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
+		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator)
+	{
+		org.drip.numerical.estimation.R1Estimate r1NumericalEstimate = boundedEstimate (
+			x,
+			y
+		);
+
+		if (null == r1NumericalEstimate ||
+			null == termWeightMap || 0 == termWeightMap.size() ||
+			null == r1ToR1SeriesGenerator)
+		{
+			return r1NumericalEstimate;
+		}
+
+		return r1NumericalEstimate.addOrderedSeriesMap (
+			r1ToR1SeriesGenerator.generate (
+				r1NumericalEstimate.baseline(),
+				x
+			)
+		) ? r1NumericalEstimate : null;
+	}
+
+	/**
+	 * Compute the Built-in Higher Order Series Estimates
+	 * 
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Built-in Higher Order Series Estimates
+	 */
+
+	public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+		final double x,
+		final double y)
+	{
+		return seriesEstimate (
+			x,
+			y,
+			null,
+			null
+		);
 	}
 }

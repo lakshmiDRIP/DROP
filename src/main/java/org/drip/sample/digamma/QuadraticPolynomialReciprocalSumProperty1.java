@@ -2,7 +2,7 @@
 package org.drip.sample.digamma;
 
 import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.SaddlePoints;
@@ -169,7 +169,7 @@ public class QuadraticPolynomialReciprocalSumProperty1
 
 		for (int rootIndex : rootIndexArray)
 		{
-			R1ToR1PropertyVerification propertyVerification = quadraticPolynomialReciprocalSumProperty.verify
+			R1PropertyVerification propertyVerification = quadraticPolynomialReciprocalSumProperty.verify
 				(rootIndex);
 
 			System.out.println (

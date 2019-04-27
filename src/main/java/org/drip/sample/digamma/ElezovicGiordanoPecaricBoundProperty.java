@@ -1,7 +1,7 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.property.DigammaInequalityLemma;
@@ -113,10 +113,10 @@ public class ElezovicGiordanoPecaricBoundProperty
 		final double z)
 		throws Exception
 	{
-		R1ToR1PropertyVerification leftVerification =
+		R1PropertyVerification leftVerification =
 			DigammaInequalityLemma.ElezovicGiordanoPecaricLeftBound().verify (z);
 
-		R1ToR1PropertyVerification rightVerification =
+		R1PropertyVerification rightVerification =
 			DigammaInequalityLemma.ElezovicGiordanoPecaricRightBound().verify (z);
 
 		System.out.println (

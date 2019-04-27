@@ -1,5 +1,5 @@
 
-package org.drip.function.definition;
+package org.drip.specialfunction.beta;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -9,12 +9,12 @@ package org.drip.function.definition;
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three modules:
+ *  DROP is composed of three main modules:
  *  
  *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
@@ -31,17 +31,16 @@ package org.drip.function.definition;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
- * 	- Numerical Optimizer
- * 	- Spline Builder
- * 	- Algorithm Support
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     => https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     => https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   => https://github.com/lakshmiDRIP/DROP
- * 	- Repo Layout Taxonomy     => https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  => https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications => https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         => https://lakshmidrip.github.io/DROP/version.html
@@ -65,81 +64,76 @@ package org.drip.function.definition;
  */
 
 /**
- * <i>R1ToR1PropertyVerification</i> evaluates the Specified Pair of R<sup>1</sup> To R<sup>1</sup>-
- * Functions, and holds the Verification Status.
+ * <i>CombinatorialEstimate</i> implements the Combinatorial Function Estimate using Beta-based Schemes. The
+ * References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
+ * 		</li>
+ * 		<li>
+ * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
+ * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 		</li>
+ * 		<li>
+ * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
+ * 				University Press</b> New York
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md">Definition</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ToR1PropertyVerification
+public class CombinatorialEstimate
 {
-	private boolean _verified = false;
-	private double _lValue = java.lang.Double.NaN;
-	private double _rValue = java.lang.Double.NaN;
 
 	/**
-	 * R1ToR1PropertyVerification Constructor
+	 * Estimate the Binomial Coefficient Using the Beta Function
 	 * 
-	 * @param lValue LHS Value
-	 * @param rValue RHS Value
-	 * @param verified TRUE - The Verification Passes
+	 * @param n n
+	 * @param k k
+	 * @param betaEstimator The Beta Function Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return Binomial Coefficient Using the Beta Function
+	 * 
+	 * @throws java.lang.Exception YThrown if the Inputs are Invalid
 	 */
 
-	public R1ToR1PropertyVerification (
-		final double lValue,
-		final double rValue,
-		final boolean verified)
+	public static final double BetaBinomial (
+		final double n,
+		final double k,
+		final org.drip.function.definition.R2ToR1 betaEstimator)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_lValue = lValue) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_rValue = rValue))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
+			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k ||
+			n < k ||
+			null == betaEstimator)
 		{
-			throw new java.lang.Exception ("R1ToR1PropertyVerification Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("CombinatorialEstimate::BetaBinomial => Invalid Inputs");
 		}
 
-		_verified = verified;
-	}
-
-	/**
-	 * Retrieve the LHS Value
-	 * 
-	 * @return The LHS Value
-	 */
-
-	public double lValue()
-	{
-		return _lValue;
-	}
-
-	/**
-	 * Retrieve the RHS Value
-	 * 
-	 * @return The RHS Value
-	 */
-
-	public double rValue()
-	{
-		return _rValue;
-	}
-
-	/**
-	 * Retrieve the Verification Flag
-	 * 
-	 * @return The Verification Flag
-	 */
-
-	public boolean verified()
-	{
-		return _verified;
+		return 1. / (
+			(n + 1.) * betaEstimator.evaluate (
+				n - k + 1.,
+				k + 1.
+			)
+		);
 	}
 }

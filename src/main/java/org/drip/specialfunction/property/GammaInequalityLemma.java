@@ -509,7 +509,7 @@ public class GammaInequalityLemma
 	 * @return Jensen Multi-Point Interpolant Convexity Verification
 	 */
 
-	public static final org.drip.function.definition.R1ToR1PropertyVerification JensenMultiPointInterpolant (
+	public static final org.drip.function.definition.R1PropertyVerification JensenMultiPointInterpolant (
 		final org.drip.numerical.common.Array2D multiPoint2D)
 	{
 		if (null == multiPoint2D)
@@ -546,7 +546,7 @@ public class GammaInequalityLemma
 				rValue = rValue + aArray[index] * weierStrass.evaluate (xArray[index]);
 			}
 
-			return new org.drip.function.definition.R1ToR1PropertyVerification (
+			return new org.drip.function.definition.R1PropertyVerification (
 				lValue,
 				rValue = rValue * interpolantDenominatorInverse,
 				lValue <= rValue

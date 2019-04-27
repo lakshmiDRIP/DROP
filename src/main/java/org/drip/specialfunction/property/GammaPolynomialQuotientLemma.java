@@ -137,7 +137,7 @@ public class GammaPolynomialQuotientLemma
 	 * @return Result of the Equality Lemma Run
 	 */
 
-	public org.drip.function.definition.R1ToR1PropertyVerification equalityLemma (
+	public org.drip.function.definition.R1PropertyVerification equalityLemma (
 		final int a,
 		final int b)
 	{
@@ -180,7 +180,7 @@ public class GammaPolynomialQuotientLemma
 			tolerance = tolerance < org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE ?
 				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE : tolerance;
 
-			return new org.drip.function.definition.R1ToR1PropertyVerification (
+			return new org.drip.function.definition.R1PropertyVerification (
 				lValue,
 				rValue,
 				java.lang.Math.abs (lValue - rValue) < tolerance

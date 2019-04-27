@@ -1,7 +1,7 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.property.DigammaEqualityLemma;
@@ -114,7 +114,7 @@ public class BlagouchineSummationProperty5
 		final int m)
 		throws Exception
 	{
-		R1ToR1PropertyVerification verification =
+		R1PropertyVerification verification =
 			DigammaEqualityLemma.SummationIdentity5 (k).verify (m);
 
 		System.out.println (

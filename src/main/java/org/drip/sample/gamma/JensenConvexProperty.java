@@ -1,7 +1,7 @@
 
 package org.drip.sample.gamma;
 
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.Array2D;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -149,7 +149,7 @@ public class JensenConvexProperty
 				yArray[multiPointIndex] = Math.random();
 			}
 
-			R1ToR1PropertyVerification r1ToR1PropertyVerification =
+			R1PropertyVerification r1ToR1PropertyVerification =
 				GammaInequalityLemma.JensenMultiPointInterpolant (
 					Array2D.FromArray (
 						xArray,

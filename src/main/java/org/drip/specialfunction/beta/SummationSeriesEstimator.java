@@ -99,7 +99,70 @@ package org.drip.specialfunction.beta;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SummationSeriesEstimator
+public abstract class SummationSeriesEstimator extends org.drip.numerical.estimation.R2ToR1Estimator
 {
+	private org.drip.numerical.estimation.R2ToR1Series _summationSeries = null;
 
+	/**
+	 * Compute the Abramowitz-Stegun (2007) Summation Series of Beta Estimator
+	 * 
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Abramowitz-Stegun (2007) Summation Series of Beta Estimator
+	 */
+
+	public static final SummationSeriesEstimator AbramowitzStegun2007 (
+		final int termCount)
+	{
+		try
+		{
+			return new SummationSeriesEstimator (
+				org.drip.specialfunction.beta.SummationSeries.AbramowitzStegun2007 (termCount)
+			)
+			{
+				@Override public double evaluate (
+					final double x,
+					final double y)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
+						!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
+					{
+						throw new java.lang.Exception
+							("SummationSeriesEstimator::AbramowitzStegun2007::evaluate => Invalid Inputs");
+					}
+
+					return (x + y) * java.lang.Math.exp (
+						summationSeries().evaluate (
+							x,
+							y
+						)
+					) / (x * y);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	protected SummationSeriesEstimator (
+		final org.drip.numerical.estimation.R2ToR1Series summationSeries)
+	{
+		_summationSeries = summationSeries;
+	}
+
+	/**
+	 * Retrieve the Underlying Summation Series
+	 * 
+	 * @return The Underlying Summation Series
+	 */
+
+	public org.drip.numerical.estimation.R2ToR1Series summationSeries()
+	{
+		return _summationSeries;
+	}
 }
