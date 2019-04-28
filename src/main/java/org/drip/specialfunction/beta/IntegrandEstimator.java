@@ -100,19 +100,19 @@ package org.drip.specialfunction.beta;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class IntegrandEstimator
+public abstract class IntegrandEstimator implements org.drip.function.definition.R2ToR1
 {
 	private int _quadratureCount = -1;
 
 	/**
-	 * Construct the Beta Estimator from the Euler Integral of the First Kind
+	 * Construct the Beta Estimator from the Trigonometric Integral
 	 * 
 	 * @param quadratureCount Count of the Integrand Quadrature
 	 * 
-	 * @return Beta Estimator from the Euler Integral of the First Kind
+	 * @return Beta Estimator from the Trigonometric Integral
 	 */
 
-	public static final IntegrandEstimator EulerFirst (
+	public static final IntegrandEstimator Trigonometric (
 		final int quadratureCount)
 	{
 		try
@@ -128,7 +128,7 @@ public abstract class IntegrandEstimator
 						!org.drip.numerical.common.NumberUtil.IsValid (y))
 					{
 						throw new java.lang.Exception
-							("IntegrandEstimator::EulerFirst::evaluate => Invalid Inputs");
+							("IntegrandEstimator::Trigonometric::evaluate => Invalid Inputs");
 					}
 
 					return 2. * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
@@ -165,14 +165,14 @@ public abstract class IntegrandEstimator
 	}
 
 	/**
-	 * Construct the Beta Estimator from the Trigonometric Integral
+	 * Construct the Beta Estimator from the Euler Integral of the First Kind
 	 * 
 	 * @param quadratureCount Count of the Integrand Quadrature
 	 * 
-	 * @return Beta Estimator from the Trigonometric Integral
+	 * @return Beta Estimator from the Euler Integral of the First Kind
 	 */
 
-	public static final IntegrandEstimator Trigonometric (
+	public static final IntegrandEstimator EulerFirst (
 		final int quadratureCount)
 	{
 		try
@@ -188,7 +188,7 @@ public abstract class IntegrandEstimator
 						!org.drip.numerical.common.NumberUtil.IsValid (y))
 					{
 						throw new java.lang.Exception
-							("IntegrandEstimator::Trigonometric::evaluate => Invalid Inputs");
+							("IntegrandEstimator::EulerFirst::evaluate => Invalid Inputs");
 					}
 
 					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
@@ -371,20 +371,4 @@ public abstract class IntegrandEstimator
 	{
 		return _quadratureCount;
 	}
-
-	/**
-	 * Evaluate the Beta Function using the Integrand
-	 * 
-	 * @param x X
-	 * @param y Y
-	 * 
-	 * @return The Beta Function using the Integrand
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract double evaluate (
-		final double x,
-		final double y)
-		throws java.lang.Exception;
 }

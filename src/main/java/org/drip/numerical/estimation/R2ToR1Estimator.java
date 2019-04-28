@@ -64,7 +64,7 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>R2ToR1Estimator</i> exposes the Stubs behind R<sup></sup> - R<sup>1</sup> Approximate Numerical
+ * <i>R2ToR1Estimator</i> exposes the Stubs behind R<sup>2</sup> - R<sup>1</sup> Approximate Numerical
  * Estimators. The References are:
  * 
  * <br><br>
@@ -107,8 +107,6 @@ public abstract class R2ToR1Estimator implements org.drip.function.definition.R2
 
 	/**
 	 * R<sup>2</sup> - R<sup>1</sup> Estimator Constructor
-	 * 
-	 * @param dc The Derivative Control
 	 */
 
 	public R2ToR1Estimator()

@@ -100,7 +100,7 @@ package org.drip.specialfunction.beta;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogGammaEstimator
+public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
 {
 	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
 
@@ -117,7 +117,11 @@ public class LogGammaEstimator
 	{
 		try
 		{
-			return new LogGammaEstimator (org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount));
+			return new LogGammaEstimator (
+				org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (
+					termCount
+				)
+			);
 		}
 		catch (java.lang.Exception e)
 		{
@@ -156,18 +160,7 @@ public class LogGammaEstimator
 		return _r1ToR1LogGamma;
 	}
 
-	/**
-	 * Evaluate the Log Beta Function using the Log Gamma Function
-	 * 
-	 * @param x X
-	 * @param y Y
-	 * 
-	 * @return The Log Beta Function using the LogGamma Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double evaluate (
+	@Override public double evaluate (
 		final double x,
 		final double y)
 		throws java.lang.Exception

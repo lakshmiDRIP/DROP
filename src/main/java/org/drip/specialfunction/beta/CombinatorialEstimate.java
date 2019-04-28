@@ -112,7 +112,7 @@ public class CombinatorialEstimate
 	 * 
 	 * @return Binomial Coefficient Using the Beta Function
 	 * 
-	 * @throws java.lang.Exception YThrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double BetaBinomial (
@@ -135,5 +135,42 @@ public class CombinatorialEstimate
 				k + 1.
 			)
 		);
+	}
+
+	/**
+	 * Estimate the Binomial Coefficient Using a Continuous Interpolation Function
+	 * 
+	 * @param n n
+	 * @param k k
+	 * @param gammaEstimator The Gamma Function Estimator
+	 * 
+	 * @return Binomial Coefficient Using a Continuous Interpolation Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double GammaBinomial (
+		final double n,
+		final double k,
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
+			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k ||
+			n < k ||
+			null == gammaEstimator)
+		{
+			throw new java.lang.Exception ("ContinuousBinomial::GammaBinomial => Invalid Inputs");
+		}
+
+		double gammaBinomial = (1 == n % 2 ? -1. : 1.) * gammaEstimator.evaluate (n + 1.) *
+			java.lang.Math.sin (java.lang.Math.PI * k) / java.lang.Math.PI;
+
+		for (int i = 0; i <= n; ++i)
+		{
+			gammaBinomial = gammaBinomial / (k - i);
+		}
+
+		return gammaBinomial;
 	}
 }

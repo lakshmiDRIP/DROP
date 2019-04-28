@@ -2,6 +2,7 @@
 package org.drip.sample.beta;
 
 import org.drip.numerical.common.FormatUtil;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.CombinatorialEstimate;
 import org.drip.specialfunction.beta.SummationSeriesEstimator;
@@ -127,11 +128,28 @@ public class BinomialCoefficientEstimate
 			4.,
 			3.,
 			2.,
+			1.,
 		};
 		int summationTermCount = 1000000;
 
 		SummationSeriesEstimator summationSeriesEstimator = SummationSeriesEstimator.AbramowitzStegun2007
 			(summationTermCount);
+
+		System.out.println ("\t|------------------||");
+
+		System.out.println ("\t|  BETA BINOMIAL   ||");
+
+		System.out.println ("\t|------------------||");
+
+		System.out.println ("\t|  L -> R:         ||");
+
+		System.out.println ("\t|    - nCk         ||");
+
+		System.out.println ("\t|    - Value       ||");
+
+		System.out.println ("\t|    - Estimate    ||");
+
+		System.out.println ("\t|------------------||");
 
 		for (double n : nArray)
 		{
@@ -141,12 +159,25 @@ public class BinomialCoefficientEstimate
 					"\t|" + FormatUtil.FormatDouble (n, 1, 0, 1.) + "C" +
 					FormatUtil.FormatDouble (k, 1, 0, 1., false) + " => " +
 					FormatUtil.FormatDouble (
-						CombinatorialEstimate.BetaBinomial (n, k, summationSeriesEstimator),
+						NumberUtil.NCK (
+							(int) n,
+							(int) k
+						),
+						2, 0, 1.
+					) + " | " +
+					FormatUtil.FormatDouble (
+						CombinatorialEstimate.BetaBinomial (
+							n,
+							k,
+							summationSeriesEstimator
+						),
 						2, 0, 1.
 					) + " ||"
 				);
 			}
 		}
+
+		System.out.println ("\t|------------------||");
 
 		EnvManager.TerminateEnv();
 	}
