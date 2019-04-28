@@ -401,5 +401,46 @@ package org.drip.specialfunction.digamma;
 
 <span class="nc" id="L402">		return null;</span>
 	}
+
+	/**
+	 * Construct the R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Taylor Riemann-Zeta Cumulative Series
+	 * 
+	 * @param riemannZetaEstimator The Riemann-Zeta Estimator
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Taylor Riemann-Zeta Cumulative Series
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1Series TaylorRiemannZeta (
+		final org.drip.function.definition.R1ToR1 riemannZetaEstimator,
+		final int termCount)
+	{
+		try
+		{
+<span class="nc" id="L420">			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+				java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+<span class="nc bnc" id="L423" title="All 2 branches missed.">			for (int termIndex = 1; termIndex &lt;= termCount; ++termIndex)</span>
+			{
+<span class="nc" id="L425">				termWeightMap.put (</span>
+<span class="nc" id="L426">					termIndex,</span>
+<span class="nc" id="L427">					1.</span>
+				);
+			}
+
+<span class="nc" id="L431">			return new org.drip.numerical.estimation.R1ToR1Series (</span>
+				org.drip.specialfunction.digamma.CumulativeSeriesTerm.TaylorRiemannZeta
+<span class="nc" id="L433">					(riemannZetaEstimator),</span>
+				false,
+				termWeightMap
+			);
+		}
+<span class="nc" id="L438">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L440">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L443">		return null;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

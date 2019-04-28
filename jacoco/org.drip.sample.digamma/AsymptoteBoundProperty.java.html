@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AsymptoteBoundProperty.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.digamma</a> &gt; <span class="el_source">AsymptoteBoundProperty.java</span></div><h1>AsymptoteBoundProperty.java</h1><pre class="source lang-java linenums">
 package org.drip.sample.digamma;
 
-import org.drip.function.definition.R1ToR1PropertyVerification;
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.property.DigammaInequalityLemma;
@@ -113,53 +113,27 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 		final double z)
 		throws Exception
 	{
-<span class="nc" id="L116">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L116">		R1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);</span>
 
-<span class="nc" id="L118">		System.out.println (&quot;\t|               GAMMA FUNCTION GAUTSCHI CONVEX PROPERTY                ||&quot;);</span>
+<span class="nc" id="L118">		R1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);</span>
 
-<span class="nc" id="L120">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L122">		System.out.println (&quot;\t|        L -&gt; R:                                                       ||&quot;);</span>
-
-<span class="nc" id="L124">		System.out.println (&quot;\t|                - z                                                   ||&quot;);</span>
-
-<span class="nc" id="L126">		System.out.println (&quot;\t|                - LHS Value                                           ||&quot;);</span>
-
-<span class="nc" id="L128">		System.out.println (&quot;\t|                - Middle Value                                        ||&quot;);</span>
-
-<span class="nc" id="L130">		System.out.println (&quot;\t|                - RHS Value                                           ||&quot;);</span>
-
-<span class="nc" id="L132">		System.out.println (&quot;\t|                - Left Verification Success?                          ||&quot;);</span>
-
-<span class="nc" id="L134">		System.out.println (&quot;\t|                - Right Verification Success?                         ||&quot;);</span>
-
-<span class="nc" id="L136">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L138">		R1ToR1PropertyVerification leftVerification = DigammaInequalityLemma.LeftAsymptote().verify (z);</span>
-
-<span class="nc" id="L140">		R1ToR1PropertyVerification rightVerification = DigammaInequalityLemma.RightAsymptote().verify (z);</span>
-
-<span class="nc" id="L142">		System.out.println (</span>
-<span class="nc" id="L143">			&quot;\t|&quot; + FormatUtil.FormatDouble (z, 2, 2, 1.) + &quot; =&gt; &quot; +</span>
-<span class="nc" id="L144">				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L145">				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L146">				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
-<span class="nc" id="L147">				leftVerification.verified() + &quot; | &quot; +</span>
-<span class="nc" id="L148">				rightVerification.verified() + &quot; ||&quot;</span>
+<span class="nc" id="L120">		System.out.println (</span>
+<span class="nc" id="L121">			&quot;\t|&quot; + FormatUtil.FormatDouble (z, 2, 2, 1.) + &quot; =&gt; &quot; +</span>
+<span class="nc" id="L122">				FormatUtil.FormatDouble (leftVerification.lValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L123">				FormatUtil.FormatDouble (leftVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L124">				FormatUtil.FormatDouble (rightVerification.rValue(), 1, 10, 1.) + &quot; | &quot; +</span>
+<span class="nc" id="L125">				leftVerification.verified() + &quot; | &quot; +</span>
+<span class="nc" id="L126">				rightVerification.verified() + &quot; ||&quot;</span>
 		);
-
-<span class="nc" id="L151">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L153">		System.out.println();</span>
-<span class="nc" id="L154">	}</span>
+<span class="nc" id="L128">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L160">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L134">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L162">		double[] zArray =</span>
+<span class="nc" id="L136">		double[] zArray =</span>
 		{
 			1.5,
 			2.0,
@@ -179,13 +153,37 @@ import org.drip.specialfunction.property.DigammaInequalityLemma;
 			9.0,
 			9.5,
 		};
+<span class="nc" id="L156">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		for (double z : zArray)</span>
+<span class="nc" id="L158">		System.out.println (&quot;\t|              DIGAMMA FUNCTION ASYMPTOTE BOUND PROPERTY               ||&quot;);</span>
+
+<span class="nc" id="L160">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L162">		System.out.println (&quot;\t|        L -&gt; R:                                                       ||&quot;);</span>
+
+<span class="nc" id="L164">		System.out.println (&quot;\t|                - z                                                   ||&quot;);</span>
+
+<span class="nc" id="L166">		System.out.println (&quot;\t|                - LHS Value                                           ||&quot;);</span>
+
+<span class="nc" id="L168">		System.out.println (&quot;\t|                - Middle Value                                        ||&quot;);</span>
+
+<span class="nc" id="L170">		System.out.println (&quot;\t|                - RHS Value                                           ||&quot;);</span>
+
+<span class="nc" id="L172">		System.out.println (&quot;\t|                - Left Verification Success?                          ||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println (&quot;\t|                - Right Verification Success?                         ||&quot;);</span>
+
+<span class="nc" id="L176">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (double z : zArray)</span>
 		{
-<span class="nc" id="L185">			Verifier (z);</span>
+<span class="nc" id="L181">			Verifier (z);</span>
 		}
 
-<span class="nc" id="L188">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L189">	}</span>
+<span class="nc" id="L184">		System.out.println (&quot;\t|----------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L186">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L187">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

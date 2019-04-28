@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RxToR1Property.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.definition</a> &gt; <span class="el_source">RxToR1Property.java</span></div><h1>RxToR1Property.java</h1><pre class="source lang-java linenums">
+package org.drip.function.definition;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;RxToR1Property&lt;/i&gt; evaluates the Specified Pair of R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Functions, and
+ * verifies the Properties.
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public abstract class RxToR1Property
+{
+
+	/**
+	 * Mismatch Tolerance
+	 */
+
+	public static final double MISMATCH_TOLERANCE = 0.01;
+
+	/**
+	 * EQUAL To Comparison
+	 */
+
+	public static final java.lang.String EQ = &quot;EQ&quot;;
+
+	/**
+	 * LESS THAN OR EQUAL To Comparison
+	 */
+
+	public static final java.lang.String LTE = &quot;LTE&quot;;
+
+	/**
+	 * GREATER THAN OR EQUAL To Comparison
+	 */
+
+	public static final java.lang.String GTE = &quot;GTE&quot;;
+
+	/**
+	 * LESS THAN To Comparison
+	 */
+
+	public static final java.lang.String LT = &quot;LT&quot;;
+
+	/**
+	 * GREATER THAN To Comparison
+	 */
+
+	public static final java.lang.String GT = &quot;GT&quot;;
+
+<span class="nc" id="L121">	private java.lang.String _type = &quot;&quot;;</span>
+<span class="nc" id="L122">	private double _mismatchTolerance = java.lang.Double.NaN;</span>
+
+	protected RxToR1Property (
+		final java.lang.String type,
+		final double mismatchTolerance)
+		throws java.lang.Exception
+<span class="nc" id="L128">	{</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_type = type) || _type.isEmpty() ||</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_mismatchTolerance = mismatchTolerance))</span>
+		{
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;RxToR1Property Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L134">	}</span>
+
+	/**
+	 * Retrieve the Type of the Comparison
+	 * 
+	 * @return The Type of the Comparison
+	 */
+
+	public java.lang.String type()
+	{
+<span class="nc" id="L144">		return _type;</span>
+	}
+
+	/**
+	 * Retrieve the Mismatch Tolerance
+	 * 
+	 * @return The Mismatch Tolerance
+	 */
+
+	public double mismatchTolerance()
+	{
+<span class="nc" id="L155">		return _mismatchTolerance;</span>
+	}
+
+	/**
+	 * Verify the specified Left and Right Function Values
+	 * 
+	 * @param leftValue Left Function Value
+	 * @param rightValue Right Function Value
+	 * 
+	 * @return Results of the Verification
+	 */
+
+	public org.drip.function.definition.R1PropertyVerification verify (
+		final double leftValue,
+		final double rightValue)
+	{
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (leftValue) ||</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (rightValue))</span>
+		{
+<span class="nc" id="L174">			return null;</span>
+		}
+
+<span class="nc" id="L177">		java.lang.String type = type();</span>
+
+		try
+		{
+<span class="nc bnc" id="L181" title="All 2 branches missed.">			if (LT.equalsIgnoreCase (type))</span>
+			{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+					leftValue,
+					rightValue,
+					leftValue &lt; rightValue
+				);
+			}
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (GT.equalsIgnoreCase (type))</span>
+			{
+<span class="nc bnc" id="L192" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+					leftValue,
+					rightValue,
+					leftValue &gt; rightValue
+				);
+			}
+
+<span class="nc" id="L199">			double mismatchTolerance = mismatchTolerance();</span>
+
+<span class="nc" id="L201">			double leftTolerance = java.lang.Math.abs (leftValue * mismatchTolerance);</span>
+
+<span class="nc" id="L203">			double rightTolerance = java.lang.Math.abs (rightValue * mismatchTolerance);</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">			double tolerance = leftTolerance &lt; rightTolerance ? leftTolerance: rightTolerance;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			tolerance = tolerance &lt; mismatchTolerance ? mismatchTolerance : tolerance;</span>
+
+<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (EQ.equalsIgnoreCase (type))</span>
+			{
+<span class="nc" id="L210">				return new org.drip.function.definition.R1PropertyVerification (</span>
+					leftValue,
+					rightValue,
+<span class="nc bnc" id="L213" title="All 2 branches missed.">					java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
+				);
+			}
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">			if (LTE.equalsIgnoreCase (type))</span>
+			{
+<span class="nc bnc" id="L219" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+					leftValue,
+					rightValue,
+<span class="nc bnc" id="L222" title="All 2 branches missed.">					leftValue &lt; rightValue || java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
+				);
+			}
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (GTE.equalsIgnoreCase (type))</span>
+			{
+<span class="nc bnc" id="L228" title="All 2 branches missed.">				return new org.drip.function.definition.R1PropertyVerification (</span>
+					leftValue,
+					rightValue,
+<span class="nc bnc" id="L231" title="All 2 branches missed.">					leftValue &gt; rightValue || java.lang.Math.abs (leftValue - rightValue) &lt; tolerance</span>
+				);
+			}
+		}
+<span class="nc" id="L235">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L237">			e.printStackTrace();</span>
+<span class="nc" id="L238">		}</span>
+
+<span class="nc" id="L240">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

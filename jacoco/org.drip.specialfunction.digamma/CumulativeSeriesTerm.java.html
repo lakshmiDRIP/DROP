@@ -349,5 +349,92 @@ package org.drip.specialfunction.digamma;
 
 <span class="nc" id="L350">		return null;</span>
 	}
+
+	/**
+	 * Construct the Taylor-Riemann Zeta Series Term for Digamma
+	 * 
+	 * @param riemannZetaEstimator The Riemann-Zeta Estimator
+	 * 
+	 * @return The Taylor-Riemann Zeta Series Term for Digamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm TaylorRiemannZeta (
+		final org.drip.function.definition.R1ToR1 riemannZetaEstimator)
+	{
+<span class="nc bnc" id="L364" title="All 2 branches missed.">		if (null == riemannZetaEstimator)</span>
+		{
+<span class="nc" id="L366">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L371">			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()</span>
+<span class="nc" id="L372">			{</span>
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+<span class="nc bnc" id="L378" title="All 2 branches missed.">					if (0 &gt;= order ||</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+					{
+<span class="nc" id="L381">						throw new java.lang.Exception</span>
+							(&quot;CumulativeSeriesTerm::TaylorRiemannZeta::value =&gt; Invalid Inputs&quot;);
+					}
+
+<span class="nc bnc" id="L385" title="All 2 branches missed.">					return (1 == order % 2 ? -1. : 1.) *</span>
+<span class="nc" id="L386">						riemannZetaEstimator.evaluate (order + 1) * java.lang.Math.pow (</span>
+							z,
+							order
+						);
+				}
+			};
+		}
+<span class="nc" id="L393">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L395">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L398">		return null;</span>
+	}
+
+	/**
+	 * Construct the Newton-Stern Series Term for Digamma
+	 * 
+	 * @return The Newton-Stern Series Term for Digamma
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NewtonStern()
+	{
+		try
+		{
+<span class="nc" id="L411">			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()</span>
+<span class="nc" id="L412">			{</span>
+				@Override public double value (
+					final int order,
+					final double z)
+					throws java.lang.Exception
+				{
+<span class="nc bnc" id="L418" title="All 2 branches missed.">					if (0 &gt;= order ||</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+					{
+<span class="nc" id="L421">						throw new java.lang.Exception</span>
+							(&quot;CumulativeSeriesTerm::TaylorRiemannZeta::value =&gt; Invalid Inputs&quot;);
+					}
+
+<span class="nc bnc" id="L425" title="All 2 branches missed.">					return (1 == order % 2 ? -1. : 1.) * org.drip.numerical.common.NumberUtil.NCK (</span>
+						(int) z,
+						order
+					) / order;
+				}
+			};
+		}
+<span class="nc" id="L432">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L434">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L437">		return null;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

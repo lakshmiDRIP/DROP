@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntegralEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.digamma</a> &gt; <span class="el_source">IntegralEstimator.java</span></div><h1>IntegralEstimator.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.digamma;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;IntegralEstimator&lt;/i&gt; demonstrates the Estimation of the Digamma Function using the Integral
+ * Representations. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions &lt;b&gt;Dover Book on
+ * 				Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
+ * 				Zeta-Functions https://arxiv.org/abs/1606.02044 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
+ * 				Analogue &lt;i&gt;Integral Transforms and Special Functions&lt;/i&gt; &lt;b&gt;28 (28)&lt;/b&gt; 846-858
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/digamma/README.md&quot;&gt;Estimates of the Digamma Function&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L104">public class IntegralEstimator</span>
+{
+
+	/**
+	 * Generate the Gaussian Integral Digamma Estimator
+	 * 
+	 * @return The Gaussian Integral Digamma Estimator
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator Gauss()
+	{
+		try
+		{
+<span class="nc" id="L117">			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (</span>
+				null,
+				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
+<span class="nc" id="L120">				{</span>
+					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+						final double z)
+					{
+						try
+						{
+<span class="nc" id="L126">							return new org.drip.numerical.estimation.R1ToR1Estimator (null)</span>
+<span class="nc" id="L127">							{</span>
+								@Override public double evaluate (
+									final double t)
+									throws java.lang.Exception
+								{
+<span class="nc" id="L132">									double ePowerMinusT = java.lang.Math.exp (-t);</span>
+
+<span class="nc bnc" id="L134" title="All 4 branches missed.">									return 0. == t || java.lang.Double.isInfinite (t) ? 0. :</span>
+<span class="nc" id="L135">										(ePowerMinusT / t) - (java.lang.Math.exp (-z * t) /</span>
+											(1. - ePowerMinusT));
+								}
+							};
+						}
+<span class="nc" id="L140">						catch (java.lang.Exception e)</span>
+						{
+<span class="nc" id="L142">							e.printStackTrace();</span>
+						}
+
+<span class="nc" id="L145">						return null;</span>
+					}
+				},
+				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
+				1.,
+				new org.drip.numerical.estimation.R1ToR1Estimator (null)
+<span class="nc" id="L151">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L156">						return 0.;</span>
+					}
+				}
+			);
+		}
+<span class="nc" id="L161">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L163">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L166">		return null;</span>
+	}
+
+	/**
+	 * Generate the Gauss-Euler-Mascheroni Integral Digamma Estimator
+	 * 
+	 * @return The Gauss-Euler-Mascheroni Integral Digamma Estimator
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator GaussEulerMascheroni()
+	{
+		try
+		{
+<span class="nc" id="L179">			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (</span>
+				null,
+				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
+<span class="nc" id="L182">				{</span>
+					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+						final double z)
+					{
+						try
+						{
+<span class="nc" id="L188">							return new org.drip.numerical.estimation.R1ToR1Estimator (null)</span>
+<span class="nc" id="L189">							{</span>
+								@Override public double evaluate (
+									final double t)
+									throws java.lang.Exception
+								{
+<span class="nc bnc" id="L194" title="All 4 branches missed.">									return 0. == t ? 1. -</span>
+										org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI : 1. == t
+										? -org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI : (
+<span class="nc" id="L197">											1. - java.lang.Math.pow (</span>
+												t,
+												z - 1.
+											)
+										) / (1. - t);
+								}
+							};
+						}
+<span class="nc" id="L205">						catch (java.lang.Exception e)</span>
+						{
+<span class="nc" id="L207">							e.printStackTrace();</span>
+						}
+
+<span class="nc" id="L210">						return null;</span>
+					}
+				},
+				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_ONE,
+				1.,
+				new org.drip.numerical.estimation.R1ToR1Estimator (null)
+<span class="nc" id="L216">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L221">						return -org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;</span>
+					}
+				}
+			);
+		}
+<span class="nc" id="L226">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L228">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L231">		return null;</span>
+	}
+
+	/**
+	 * Generate the Dirichlet Integral Digamma Estimator
+	 * 
+	 * @return The Dirichlet Integral Digamma Estimator
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator Dirichlet()
+	{
+		try
+		{
+<span class="nc" id="L244">			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (</span>
+				null,
+				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
+<span class="nc" id="L247">				{</span>
+					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+						final double z)
+					{
+						try
+						{
+<span class="nc" id="L253">							return new org.drip.numerical.estimation.R1ToR1Estimator (null)</span>
+<span class="nc" id="L254">							{</span>
+								@Override public double evaluate (
+									final double t)
+									throws java.lang.Exception
+								{
+<span class="nc bnc" id="L259" title="All 4 branches missed.">									return 0. == t || java.lang.Double.isInfinite (t) ? 0. : (</span>
+<span class="nc" id="L260">										java.lang.Math.exp (-t) - java.lang.Math.pow (</span>
+											1. + t,
+											-z
+										)
+									) / t;
+								}
+							};
+						}
+<span class="nc" id="L268">						catch (java.lang.Exception e)</span>
+						{
+<span class="nc" id="L270">							e.printStackTrace();</span>
+						}
+
+<span class="nc" id="L273">						return null;</span>
+					}
+				},
+				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
+				1.,
+				new org.drip.numerical.estimation.R1ToR1Estimator (null)
+<span class="nc" id="L279">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L284">						return 0.;</span>
+					}
+				}
+			);
+		}
+<span class="nc" id="L289">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L291">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L294">		return null;</span>
+	}
+
+	/**
+	 * Generate the Binet Second Integral Digamma Estimator
+	 * 
+	 * @return The Binet Second Integral Digamma Estimator
+	 */
+
+	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator BinetSecond()
+	{
+		try
+		{
+<span class="nc" id="L307">			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (</span>
+				null,
+				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
+<span class="nc" id="L310">				{</span>
+					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+						final double z)
+					{
+						try
+						{
+<span class="nc" id="L316">							return new org.drip.numerical.estimation.R1ToR1Estimator (null)</span>
+<span class="nc" id="L317">							{</span>
+								@Override public double evaluate (
+									final double t)
+									throws java.lang.Exception
+								{
+<span class="nc bnc" id="L322" title="All 4 branches missed.">									return 0. == t || java.lang.Double.isInfinite (t) ? 0. : t / (</span>
+										(t * t + z * z) *
+<span class="nc" id="L324">											(java.lang.Math.exp (2. * java.lang.Math.PI * t) - 1.)</span>
+									);
+								}
+							};
+						}
+<span class="nc" id="L329">						catch (java.lang.Exception e)</span>
+						{
+<span class="nc" id="L331">							e.printStackTrace();</span>
+						}
+
+<span class="nc" id="L334">						return null;</span>
+					}
+				},
+				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
+				-2.,
+				new org.drip.numerical.estimation.R1ToR1Estimator (null)
+<span class="nc" id="L340">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc bnc" id="L345" title="All 2 branches missed.">						return 0. == z ? 0. : java.lang.Math.log (z) - 0.5 / z;</span>
+					}
+				}
+			);
+		}
+<span class="nc" id="L350">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L352">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L355">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

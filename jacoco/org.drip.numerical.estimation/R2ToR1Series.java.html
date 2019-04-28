@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R2ToR1Series.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.numerical.estimation</a> &gt; <span class="el_source">R2ToR1Series.java</span></div><h1>R2ToR1Series.java</h1><pre class="source lang-java linenums">
+package org.drip.numerical.estimation;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R2ToR1Series&lt;/i&gt; holds the R&lt;sup&gt;2&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Expansion Terms in the Ordered Series of the
+ * Numerical Estimate for a Function. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions &lt;b&gt;Dover Book on
+ * 				Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the
+ * 				Zeta-Functions https://arxiv.org/abs/1606.02044 &lt;b&gt;arXiv&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function
+ * 				Analogue &lt;i&gt;Integral Transforms and Special Functions&lt;/i&gt; &lt;b&gt;28 (28)&lt;/b&gt; 846-858
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Whitaker, E. T., and G. N. Watson (1996): &lt;i&gt;A Course on Modern Analysis&lt;/i&gt; &lt;b&gt;Cambridge
+ * 				University Press&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md&quot;&gt;Function Numerical Estimates/Corrections/Bounds&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R2ToR1Series
+{
+<span class="nc" id="L106">	private boolean _proportional = false;</span>
+<span class="nc" id="L107">	private org.drip.numerical.estimation.R2ToR1SeriesTerm _r2ToR1SeriesTerm = null;</span>
+<span class="nc" id="L108">	private java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; _termWeightMap = null;</span>
+
+	/**
+	 * R2ToR1Series Constructor
+	 * 
+	 * @param r2ToR1SeriesTerm R&lt;sup&gt;2&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term
+	 * @param proportional TRUE - The Expansion Term is Proportional
+	 * @param termWeightMap Error Term Weight Map
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R2ToR1Series (
+		final org.drip.numerical.estimation.R2ToR1SeriesTerm r2ToR1SeriesTerm,
+		final boolean proportional,
+		final java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap)
+		throws java.lang.Exception
+<span class="nc" id="L125">	{</span>
+<span class="nc" id="L126">		_proportional = proportional;</span>
+<span class="nc" id="L127">		_termWeightMap = termWeightMap;</span>
+
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (null == (_r2ToR1SeriesTerm = r2ToR1SeriesTerm))</span>
+		{
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;R2ToR1Series Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L133">	}</span>
+
+	/**
+	 * Retrieve the R&lt;sup&gt;2&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term
+	 * 
+	 * @return The R&lt;sup&gt;2&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term
+	 */
+
+	public org.drip.numerical.estimation.R2ToR1SeriesTerm r1ToR1SeriesTerm()
+	{
+<span class="nc" id="L143">		return _r2ToR1SeriesTerm;</span>
+	}
+
+	/**
+	 * Indicate if the R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term is Proportional
+	 * 
+	 * @return TRUE - The R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term is Proportional
+	 */
+
+	public boolean proportional()
+	{
+<span class="nc" id="L154">		return _proportional;</span>
+	}
+
+	/**
+	 * Retrieve the R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term Weight Map
+	 * 
+	 * @return The R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion Term Weight Map
+	 */
+
+	public java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap()
+	{
+<span class="nc" id="L165">		return _termWeightMap;</span>
+	}
+
+	/**
+	 * Generate the R&lt;sup&gt;2&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion using the Term
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The R&lt;sup&gt;2&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Series Expansion
+	 */
+
+	public java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; generate (
+		final double zeroOrder, 
+		final double x, 
+		final double y)
+	{
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (zeroOrder))</span>
+		{
+<span class="nc" id="L185">			return null;</span>
+		}
+
+<span class="nc" id="L188">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; seriesExpansionMap = new</span>
+			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
+
+<span class="nc bnc" id="L191" title="All 4 branches missed.">		if (null == _termWeightMap || 0 == _termWeightMap.size())</span>
+		{
+<span class="nc" id="L193">			return seriesExpansionMap;</span>
+		}
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		double scale = _proportional ? zeroOrder : 1.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; termWeightEntry :
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			_termWeightMap.entrySet())</span>
+		{
+<span class="nc" id="L201">			int order = termWeightEntry.getKey();</span>
+
+			try
+			{
+<span class="nc" id="L205">				seriesExpansionMap.put (</span>
+<span class="nc" id="L206">					order,</span>
+<span class="nc" id="L207">					scale * termWeightEntry.getValue() * _r2ToR1SeriesTerm.value (</span>
+						order,
+						x,
+						y
+					)
+				);
+			}
+<span class="nc" id="L214">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L216">				e.printStackTrace();</span>
+
+<span class="nc" id="L218">				return null;</span>
+<span class="nc" id="L219">			}</span>
+<span class="nc" id="L220">		}</span>
+
+<span class="nc" id="L222">		return seriesExpansionMap;</span>
+	}
+
+	/**
+	 * Compute the Cumulative Series Value
+	 * 
+	 * @param zeroOrder The Zero Order Estimate
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Cumulative Series Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double cumulative (
+		final double zeroOrder, 
+		final double x,
+		final double y)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L243">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; seriesMap = generate (</span>
+			zeroOrder, 
+			x,
+			y
+		);
+
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (null == seriesMap)</span>
+		{
+<span class="nc" id="L251">			throw new java.lang.Exception (&quot;R2ToR1Series::cumulative =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc" id="L254">		double cumulative = 0.;</span>
+
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; seriesEntry : seriesMap.entrySet())</span>
+		{
+<span class="nc" id="L258">			cumulative = cumulative + seriesEntry.getValue();</span>
+<span class="nc" id="L259">		}</span>
+
+<span class="nc" id="L261">		return cumulative;</span>
+	}
+
+	/**
+	 * Evaluate for the given x, y
+	 * 
+	 * @param x X
+	 * @param y Y
+	 *  
+	 * @return Returns the calculated value
+	 * 
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
+	 */
+
+	public double evaluate (
+		final double x,
+		final double y)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L280" title="All 4 branches missed.">		if (null == _termWeightMap || 0 == _termWeightMap.size())</span>
+		{
+<span class="nc" id="L282">			return 0.;</span>
+		}
+
+<span class="nc" id="L285">		double value = 0.;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		double scale = _proportional ? 0. : 1.;</span>
+
+		for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; termWeightEntry :
+<span class="nc bnc" id="L289" title="All 2 branches missed.">			_termWeightMap.entrySet())</span>
+		{
+<span class="nc" id="L291">			value = value + scale * termWeightEntry.getValue() * _r2ToR1SeriesTerm.value (</span>
+<span class="nc" id="L292">				termWeightEntry.getKey(),</span>
+				x,
+				y
+			);
+<span class="nc" id="L296">		}</span>
+
+<span class="nc" id="L298">		return value;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

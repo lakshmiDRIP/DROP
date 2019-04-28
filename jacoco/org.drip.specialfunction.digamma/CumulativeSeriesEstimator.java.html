@@ -446,23 +446,60 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 	}
 
 	/**
-	 * CumulativeSeriesEstimator Constructor
+	 * Compute the Taylor-Riemann Zeta Cumulative Series of Digamma Estimator
 	 * 
-	 * @param sumSeries R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Cumulative Series
-	 * @param dc Differential Control
+	 * @param riemannZetaEstimator The Riemann-Zeta Estimator
+	 * @param termCount Term Count
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Taylor-Riemann Zeta Cumulative Series of Digamma Estimator
 	 */
+
+	public static final CumulativeSeriesEstimator TaylorRiemannZeta (
+		final org.drip.function.definition.R1ToR1 riemannZetaEstimator,
+		final int termCount)
+	{
+		try
+		{
+<span class="nc" id="L463">			return new CumulativeSeriesEstimator (</span>
+<span class="nc" id="L464">				org.drip.specialfunction.digamma.CumulativeSeries.TaylorRiemannZeta (</span>
+					riemannZetaEstimator,
+					termCount
+				),
+				null
+			)
+<span class="nc" id="L470">			{</span>
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+<span class="nc bnc" id="L475" title="All 4 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &gt; z)</span>
+					{
+<span class="nc" id="L477">						throw new java.lang.Exception</span>
+							(&quot;CumulativeSeriesEstimator::TaylorRiemannZeta::evaluate =&gt; Invalid Inputs&quot;);
+					}
+
+<span class="nc" id="L481">					return -1. * cumulativeSeries().evaluate (z - 1.) -</span>
+						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+				}
+			};
+		}
+<span class="nc" id="L486">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L488">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L491">		return null;</span>
+	}
 
 	protected CumulativeSeriesEstimator (
 		final org.drip.numerical.estimation.R1ToR1Series cumulativeSeries,
 		final org.drip.numerical.differentiation.DerivativeControl dc)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L462">		super (dc);</span>
+<span class="nc" id="L499">		super (dc);</span>
 
-<span class="nc" id="L464">		_cumulativeSeries = cumulativeSeries;</span>
-<span class="nc" id="L465">	}</span>
+<span class="nc" id="L501">		_cumulativeSeries = cumulativeSeries;</span>
+<span class="nc" id="L502">	}</span>
 
 	/**
 	 * Retrieve the Underlying Cumulative Series
@@ -472,7 +509,7 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 
 	public org.drip.numerical.estimation.R1ToR1Series cumulativeSeries()
 	{
-<span class="nc" id="L475">		return _cumulativeSeries;</span>
+<span class="nc" id="L512">		return _cumulativeSeries;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
