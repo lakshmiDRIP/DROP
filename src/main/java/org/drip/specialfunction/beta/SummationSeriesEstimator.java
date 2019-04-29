@@ -99,7 +99,7 @@ package org.drip.specialfunction.beta;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SummationSeriesEstimator extends org.drip.numerical.estimation.R2ToR1Estimator
+public abstract class SummationSeriesEstimator extends org.drip.specialfunction.definition.BetaEstimator
 {
 	private org.drip.numerical.estimation.R2ToR1Series _summationSeries = null;
 

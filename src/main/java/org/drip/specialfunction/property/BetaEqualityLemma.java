@@ -64,7 +64,7 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>SummationSeriesEstimator</i> implements the Summation Series Based Beta Estimation. The References are:
+ * <i>BetaEqualityLemma</i> implements the Equality Lemmas for the Beta Estimation. The References are:
  * 
  * <br><br>
  * 	<ul>

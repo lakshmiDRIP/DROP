@@ -1,12 +1,5 @@
 
-package org.drip.sample.beta;
-
-import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.beta.AsymptoticLogEstimator;
-import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
+package org.drip.specialfunction.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -71,8 +64,7 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
  */
 
 /**
- * <i>AsymptoticEstimate</i> illustrates the Estimation and the Comparison of Asymptotic Estimates of the
- * Beta Function. The References are:
+ * <i>BetaEstimator</i> exposes the Stubs for estimating Beta Function and its Jacobian. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,81 +93,72 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md">Definition of Special Function Estimators</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoticEstimate
+public abstract class BetaEstimator implements org.drip.function.definition.R2ToR1
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Evaluate Beta given x and y
+	 * 
+	 * @param x X
+	 * @param y Y
+	 *  
+	 * @return Beta Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double beta (
+		final double x,
+		final double y)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
+		return evaluate (
+			x,
+			y
+		);
+	}
 
-		double[] xArray =
+	/**
+	 * Calculate the Jacobian
+	 * 
+	 * @param x X
+	 * @param y Y
+	 * 
+	 * @return The Jacobian
+	 */
+
+	public double[] jacobian (
+		final double x,
+		final double y)
+	{
+		org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
+			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+
+		try
 		{
-			 5.,
-			10.,
-			15.,
-			20.,
-			25.
-		};
-		double[] yArray =
-		{
-			 5.,
-			10.,
-			15.,
-			20.,
-			25.
-		};
-		int logGammaTermCount = 1000000;
+			double beta = beta (
+				x,
+				y
+			);
 
-		R2ToR1 stirlingLogBetaEstimator = AsymptoticLogEstimator.Stirling();
+			double digammaXPlusY = abramowitzStegun2007.evaluate (x + y);
 
-		LogGammaEstimator logBetaEstimator = LogGammaEstimator.Weierstrass (logGammaTermCount);
-
-		R2ToR1 largeXLogBetaEstimator = AsymptoticLogEstimator.LargeX (new NemesAnalyticEstimator (null));
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		System.out.println ("\t|       ASYMPTOTIC ESTIMATION OF THE LOG BETA FUNCTION        ||");
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                              ||");
-
-		System.out.println ("\t|                - x                                          ||");
-
-		System.out.println ("\t|                - y                                          ||");
-
-		System.out.println ("\t|                - Log Gamma Based Log Beta Estimation        ||");
-
-		System.out.println ("\t|                - Stirling Asymptote Log Beta Estimation     ||");
-
-		System.out.println ("\t|                - Large X Asymptote Log Beta Estimation      ||");
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		for (double x : xArray)
-		{
-			for (double y : yArray)
+			return new double[]
 			{
-				System.out.println (
-					"\t|[" + FormatUtil.FormatDouble (x, 2, 0, 1., false) + ", " +
-					FormatUtil.FormatDouble (y, 2, 0, 1., false) + "] => " +
-					FormatUtil.FormatDouble (logBetaEstimator.evaluate (x, y), 2, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (stirlingLogBetaEstimator.evaluate (x, y), 2, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (largeXLogBetaEstimator.evaluate (x, y), 2, 10, 1.) + " ||"
-				);
-			}
+				beta * (abramowitzStegun2007.evaluate (x) - digammaXPlusY),
+				beta * (abramowitzStegun2007.evaluate (y) - digammaXPlusY),
+			};
+		} catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return null;
 	}
 }

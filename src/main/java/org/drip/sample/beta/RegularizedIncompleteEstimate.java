@@ -5,7 +5,7 @@ import org.drip.function.definition.R3ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.IncompleteIntegrandEstimator;
-import org.drip.specialfunction.beta.IncompleteRegularized;
+import org.drip.specialfunction.beta.IncompleteRegularizedEstimator;
 import org.drip.specialfunction.beta.IntegrandEstimator;
 
 /*
@@ -179,7 +179,7 @@ public class RegularizedIncompleteEstimate
 		int eulerIntegrandBetaTermCount = 1000;
 		int eulerIntegrandIncompleteBetaTermCount = 1000;
 
-		IncompleteRegularized incompleteRegularizedEstimator = new IncompleteRegularized (
+		IncompleteRegularizedEstimator incompleteRegularizedEstimator = new IncompleteRegularizedEstimator (
 			IncompleteIntegrandEstimator.EulerFirst (eulerIntegrandIncompleteBetaTermCount),
 			IntegrandEstimator.EulerFirstRightPlane (eulerIntegrandBetaTermCount)
 		);

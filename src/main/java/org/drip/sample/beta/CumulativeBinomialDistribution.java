@@ -1,13 +1,6 @@
 
 package org.drip.sample.beta;
 
-import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.beta.AsymptoticLogEstimator;
-import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -71,8 +64,8 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
  */
 
 /**
- * <i>AsymptoticEstimate</i> illustrates the Estimation and the Comparison of Asymptotic Estimates of the
- * Beta Function. The References are:
+ * <i>CumulativeBinomialDistribution</i> illustrates the Computation of the Cumulative Binomial Distribution
+ * Values using the Incomplete Beta Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,75 +100,7 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoticEstimate
+public class CumulativeBinomialDistribution
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		double[] xArray =
-		{
-			 5.,
-			10.,
-			15.,
-			20.,
-			25.
-		};
-		double[] yArray =
-		{
-			 5.,
-			10.,
-			15.,
-			20.,
-			25.
-		};
-		int logGammaTermCount = 1000000;
-
-		R2ToR1 stirlingLogBetaEstimator = AsymptoticLogEstimator.Stirling();
-
-		LogGammaEstimator logBetaEstimator = LogGammaEstimator.Weierstrass (logGammaTermCount);
-
-		R2ToR1 largeXLogBetaEstimator = AsymptoticLogEstimator.LargeX (new NemesAnalyticEstimator (null));
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		System.out.println ("\t|       ASYMPTOTIC ESTIMATION OF THE LOG BETA FUNCTION        ||");
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                              ||");
-
-		System.out.println ("\t|                - x                                          ||");
-
-		System.out.println ("\t|                - y                                          ||");
-
-		System.out.println ("\t|                - Log Gamma Based Log Beta Estimation        ||");
-
-		System.out.println ("\t|                - Stirling Asymptote Log Beta Estimation     ||");
-
-		System.out.println ("\t|                - Large X Asymptote Log Beta Estimation      ||");
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		for (double x : xArray)
-		{
-			for (double y : yArray)
-			{
-				System.out.println (
-					"\t|[" + FormatUtil.FormatDouble (x, 2, 0, 1., false) + ", " +
-					FormatUtil.FormatDouble (y, 2, 0, 1., false) + "] => " +
-					FormatUtil.FormatDouble (logBetaEstimator.evaluate (x, y), 2, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (stirlingLogBetaEstimator.evaluate (x, y), 2, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (largeXLogBetaEstimator.evaluate (x, y), 2, 10, 1.) + " ||"
-				);
-			}
-		}
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
-	}
 }

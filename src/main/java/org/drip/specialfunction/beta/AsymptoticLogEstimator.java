@@ -1,12 +1,5 @@
 
-package org.drip.sample.beta;
-
-import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.beta.AsymptoticLogEstimator;
-import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
+package org.drip.specialfunction.beta;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -71,8 +64,8 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
  */
 
 /**
- * <i>AsymptoticEstimate</i> illustrates the Estimation and the Comparison of Asymptotic Estimates of the
- * Beta Function. The References are:
+ * <i>AsymptoticLogEstimator</i> implements the various Asymptotic Estimators for the Log Beta Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,75 +100,77 @@ import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoticEstimate
+public class AsymptoticLogEstimator
 {
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Stirling Asymptote Estimate for the Log Beta Function
+	 * 
+	 * @return The Stirling Asymptote Estimate for the Log Beta Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final org.drip.function.definition.R2ToR1 Stirling()
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
-
-		double[] xArray =
+		return new org.drip.function.definition.R2ToR1()
 		{
-			 5.,
-			10.,
-			15.,
-			20.,
-			25.
-		};
-		double[] yArray =
-		{
-			 5.,
-			10.,
-			15.,
-			20.,
-			25.
-		};
-		int logGammaTermCount = 1000000;
-
-		R2ToR1 stirlingLogBetaEstimator = AsymptoticLogEstimator.Stirling();
-
-		LogGammaEstimator logBetaEstimator = LogGammaEstimator.Weierstrass (logGammaTermCount);
-
-		R2ToR1 largeXLogBetaEstimator = AsymptoticLogEstimator.LargeX (new NemesAnalyticEstimator (null));
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		System.out.println ("\t|       ASYMPTOTIC ESTIMATION OF THE LOG BETA FUNCTION        ||");
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                              ||");
-
-		System.out.println ("\t|                - x                                          ||");
-
-		System.out.println ("\t|                - y                                          ||");
-
-		System.out.println ("\t|                - Log Gamma Based Log Beta Estimation        ||");
-
-		System.out.println ("\t|                - Stirling Asymptote Log Beta Estimation     ||");
-
-		System.out.println ("\t|                - Large X Asymptote Log Beta Estimation      ||");
-
-		System.out.println ("\t|-------------------------------------------------------------||");
-
-		for (double x : xArray)
-		{
-			for (double y : yArray)
+			@Override public double evaluate (
+				final double x,
+				final double y)
+				throws java.lang.Exception
 			{
-				System.out.println (
-					"\t|[" + FormatUtil.FormatDouble (x, 2, 0, 1., false) + ", " +
-					FormatUtil.FormatDouble (y, 2, 0, 1., false) + "] => " +
-					FormatUtil.FormatDouble (logBetaEstimator.evaluate (x, y), 2, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (stirlingLogBetaEstimator.evaluate (x, y), 2, 10, 1.) + " | " +
-					FormatUtil.FormatDouble (largeXLogBetaEstimator.evaluate (x, y), 2, 10, 1.) + " ||"
-				);
+				if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (y))
+				{
+					throw new java.lang.Exception
+						("AsymptoticLogEstimator::Stirling::evaluate => Invalid Inputs");
+				}
+
+				return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI) +
+					(x - 0.5) * java.lang.Math.log (x) +
+					(y - 0.5) * java.lang.Math.log (y) -
+					(x + y - 0.5) * java.lang.Math.log (x + y);
 			}
+		};
+	}
+
+	/**
+	 * Construct the Large X Asymptote Estimate for the Log Beta Function
+	 * 
+	 * @param logGammaEstimator The Log Gamma Estimator
+	 * 
+	 * @return The Large X Asymptote Estimate for the Log Beta Function
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final org.drip.function.definition.R2ToR1 LargeX (
+		final org.drip.function.definition.R1ToR1 logGammaEstimator)
+		throws java.lang.Exception
+	{
+		if (null == logGammaEstimator)
+		{
+			return null;
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------||");
+		return new org.drip.function.definition.R2ToR1()
+		{
+			@Override public double evaluate (
+				final double x,
+				final double y)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (y))
+				{
+					throw new java.lang.Exception
+						("AsymptoticLogEstimator::LargeX::evaluate => Invalid Inputs");
+				}
 
-		EnvManager.TerminateEnv();
+				return logGammaEstimator.evaluate (y) - y * java.lang.Math.log (x);
+			}
+		};
 	}
 }

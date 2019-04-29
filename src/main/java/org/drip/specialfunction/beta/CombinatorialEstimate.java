@@ -160,7 +160,7 @@ public class CombinatorialEstimate
 			n < k ||
 			null == gammaEstimator)
 		{
-			throw new java.lang.Exception ("ContinuousBinomial::GammaBinomial => Invalid Inputs");
+			throw new java.lang.Exception ("CombinatorialEstimate::GammaBinomial => Invalid Inputs");
 		}
 
 		double gammaBinomial = (1 == n % 2 ? -1. : 1.) * gammaEstimator.evaluate (n + 1.) *
@@ -172,5 +172,42 @@ public class CombinatorialEstimate
 		}
 
 		return gammaBinomial;
+	}
+
+	/**
+	 * Compute the Cumulative Binomial Distribution Function for the specified n, k, and p
+	 * 
+	 * @param n n
+	 * @param k k
+	 * @param p p
+	 * @param incompleteRegularizedEstimator The Incomplete Regularized Beta Estimator
+	 * 
+	 * @return The Cumulative Binomial Distribution Function Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double CumulativeBinomialDistribution (
+		final double n,
+		final double k,
+		final double p,
+		final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
+			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k ||
+			n < k ||
+			!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. > p || 1. < p ||
+			null == incompleteRegularizedEstimator)
+		{
+			throw new java.lang.Exception
+				("CombinatorialEstimate::CumulativeBinomialDistribution => Invalid Inputs");
+		}
+
+		return incompleteRegularizedEstimator.evaluate (
+			1. - p,
+			n - k,
+			k + 1.
+		);
 	}
 }

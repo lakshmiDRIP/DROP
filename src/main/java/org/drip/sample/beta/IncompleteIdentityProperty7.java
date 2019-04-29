@@ -1,5 +1,10 @@
 
-package org.drip.specialfunction.beta;
+package org.drip.sample.beta;
+
+import org.drip.function.definition.R1PropertyVerification;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.IncompleteBetaEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +69,8 @@ package org.drip.specialfunction.beta;
  */
 
 /**
- * <i>AsymptoticEstimator</i> implements the various Asymptotic Estimators for the Log Beta Function. The
- * References are:
+ * <i>IncompleteIdentityProperty7</i> illustrates the Incomplete Beta Function Identity Property
+ * Verification. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,77 +105,102 @@ package org.drip.specialfunction.beta;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AsymptoticEstimator
+public class IncompleteIdentityProperty7
 {
 
-	/**
-	 * Construct the Stirling Asymptote Estimate for the Log Beta Function
-	 * 
-	 * @return The Stirling Asymptote Estimate for the Log Beta Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public static final org.drip.function.definition.R2ToR1 Stirling()
-		throws java.lang.Exception
+	private static final void Verifier (
+		final double x,
+		final double a,
+		final double b)
+		throws Exception
 	{
-		return new org.drip.function.definition.R2ToR1()
-		{
-			@Override public double evaluate (
-				final double x,
-				final double y)
-				throws java.lang.Exception
-			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (y))
-				{
-					throw new java.lang.Exception
-						("AsymptoteEstimator::Stirling::evaluate => Invalid Inputs");
-				}
+		R1PropertyVerification verification = IncompleteBetaEqualityLemma.Identity7().verify (
+			x,
+			a,
+			b
+		);
 
-				return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI) +
-					(x - 0.5) * java.lang.Math.log (x) +
-					(y - 0.5) * java.lang.Math.log (y) -
-					(x + y - 0.5) * java.lang.Math.log (x + y);
-			}
-		};
+		System.out.println (
+			"\t|[" + FormatUtil.FormatDouble (x, 1, 2, 1., false) + "; " +
+			FormatUtil.FormatDouble (a, 1, 2, 1., false) + ", " +
+			FormatUtil.FormatDouble (b, 1, 2, 1., false) + "] => " +
+			FormatUtil.FormatDouble (verification.lValue(), 2, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 2, 10, 1.) + " | " +
+			verification.verified() + " ||"
+		);
 	}
 
-	/**
-	 * Construct the Large X Asymptote Estimate for the Log Beta Function
-	 * 
-	 * @param logGammaEstimator The Log Gamma Estimator
-	 * 
-	 * @return The Large X Asymptote Estimate for the Log Beta Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public static final org.drip.function.definition.R2ToR1 LargeX (
-		final org.drip.function.definition.R1ToR1 logGammaEstimator)
-		throws java.lang.Exception
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (null == logGammaEstimator)
+		EnvManager.InitEnv ("");
+
+		double[] xArray =
 		{
-			return null;
+			0.2,
+			0.4,
+			0.6,
+			0.8,
+		};
+		double[] aArray =
+		{
+			1.0,
+			2.0,
+			3.0,
+			4.0,
+			5.0,
+			6.0,
+		};
+		double[] bArray =
+		{
+			1.0,
+			2.0,
+			3.0,
+			4.0,
+			5.0,
+			6.0,
+		};
+
+		System.out.println ("\t|-------------------------------------------------------------||");
+
+		System.out.println ("\t|          INCOMPLETE BETA FUNCTION IDENTITY PROPERTY         ||");
+
+		System.out.println ("\t|-------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                              ||");
+
+		System.out.println ("\t|                - x                                          ||");
+
+		System.out.println ("\t|                - a                                          ||");
+
+		System.out.println ("\t|                - b                                          ||");
+
+		System.out.println ("\t|                - LHS Value                                  ||");
+
+		System.out.println ("\t|                - RHS Value                                  ||");
+
+		System.out.println ("\t|                - Verification Success?                      ||");
+
+		System.out.println ("\t|-------------------------------------------------------------||");
+
+		for (double x : xArray)
+		{
+			for (double a : aArray)
+			{
+				for (double b : bArray)
+				{
+					Verifier (
+						x,
+						a,
+						b
+					);
+				}
+			}
 		}
 
-		return new org.drip.function.definition.R2ToR1()
-		{
-			@Override public double evaluate (
-				final double x,
-				final double y)
-				throws java.lang.Exception
-			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (y))
-				{
-					throw new java.lang.Exception
-						("AsymptoteEstimator::LargeX::evaluate => Invalid Inputs");
-				}
+		System.out.println ("\t|-------------------------------------------------------------||");
 
-				return logGammaEstimator.evaluate (y) - y * java.lang.Math.log (x);
-			}
-		};
+		EnvManager.TerminateEnv();
 	}
 }
