@@ -703,4 +703,79 @@ public class IncompleteBetaEqualityLemma
 
 		return null;
 	}
+
+	/**
+	 * Construct the Cumulative Binomial Distribution Verifier
+	 * 
+	 * @return The Cumulative Binomial Distribution Verifier
+	 */
+
+	public static final org.drip.function.definition.R3ToR1Property CumulativeBinomialDistribution()
+	{
+		try
+		{
+			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
+				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
+					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
+					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
+				);
+
+			return new org.drip.function.definition.R3ToR1Property (
+				org.drip.function.definition.RxToR1Property.EQ,
+				new org.drip.function.definition.R3ToR1()
+				{
+					@Override public double evaluate (
+						final double p,
+						final double n,
+						final double k)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. >= p ||
+							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
+							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k)
+						{
+							throw new java.lang.Exception
+								("IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate => Invalid Inputs");
+						}
+
+						return incompleteRegularizedEstimator.evaluate (
+							1. - p,
+							n - k,
+							k + 1.
+						);
+					}
+				},
+				new org.drip.function.definition.R3ToR1()
+				{
+					@Override public double evaluate (
+						final double p,
+						final double n,
+						final double k)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. >= p ||
+							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
+							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k)
+						{
+							throw new java.lang.Exception
+								("IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate => Invalid Inputs");
+						}
+
+						return 1. - incompleteRegularizedEstimator.evaluate (
+							p,
+							k + 1.,
+							n - k
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

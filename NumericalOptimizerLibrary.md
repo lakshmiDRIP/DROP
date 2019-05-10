@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.23.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.25.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -266,6 +266,32 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Multi-variate Beta Function
 	* Software Implementation
 	* References
+ * Hypergeometric Function
+	* Introduction and Overview
+	* The Hypergeometric Series
+	* Differentiation Formulas
+	* Special Cases
+	* The Hypergeometric Differential Equation
+	* Solutions at the Singular Points
+	* Kummer’s 24 Solutions
+	* Q-Form
+	* Schwarz Triangle Maps
+	* Monodromy Group
+	* Integral Formulas – Euler Type
+	* Barnes Integral
+	* John Transform
+	* Gauss’ Contiguous Relation
+	* Gauss’ Continued Fraction
+	* Transformation Formula
+	* Fractional Linear Transformations
+	* Quadratic Transformation
+	* Higher Order Transformations
+	* Values at Special Points
+	* Special Values at 𝒛 = 𝟏
+	* Kummer’s Theorem
+	* Special Values at 𝒛 = 0.5
+	* Other Points
+	* References
  * Error Function
 	* Introduction and Overview
 	* Name

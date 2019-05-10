@@ -1,12 +1,10 @@
 
 package org.drip.sample.beta;
 
+import org.drip.function.definition.R1PropertyVerification;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.beta.CombinatorialEstimate;
-import org.drip.specialfunction.beta.IncompleteIntegrandEstimator;
-import org.drip.specialfunction.beta.IncompleteRegularizedEstimator;
-import org.drip.specialfunction.beta.IntegrandEstimator;
+import org.drip.specialfunction.property.IncompleteBetaEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -71,8 +69,8 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
  */
 
 /**
- * <i>CumulativeBinomialDistribution</i> illustrates the Computation of the Cumulative Binomial Distribution
- * Values using the Incomplete Beta Function. The References are:
+ * <i>CumulativeBinomialDistributionProperty</i> illustrates the Verification of the Cumulative Binomial
+ * Distribution Property. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,34 +105,30 @@ import org.drip.specialfunction.beta.IntegrandEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CumulativeBinomialDistribution
+public class CumulativeBinomialDistributionProperty
 {
 
-	private static final void Estimate (
-		final double[] pArray,
+	private static final void Verifier (
+		final double p,
 		final double n,
-		final double k,
-		final IncompleteRegularizedEstimator incompleteRegularizedEstimator)
+		final double k)
 		throws Exception
 	{
-		String display =
-			"\t| {n:" +
-			FormatUtil.FormatDouble (n, 2, 0, 1., false) + ", k:" +
-			FormatUtil.FormatDouble (k, 2, 0, 1., false) + "} =>";
+		R1PropertyVerification verification =
+			IncompleteBetaEqualityLemma.CumulativeBinomialDistribution().verify (
+				p,
+				n,
+				k
+			);
 
-		for (double p : pArray)
-		{
-			display = display + FormatUtil.FormatDouble (
-				CombinatorialEstimate.CumulativeBinomialDistribution (
-					n,
-					k,
-					p,
-					incompleteRegularizedEstimator
-				), 1, 8, 1.
-			) + " |";
-		}
-
-		System.out.println (display + "|");
+		System.out.println (
+			"\t| {p=" + FormatUtil.FormatDouble (p, 1, 2, 1., false) + "; n=" +
+			FormatUtil.FormatDouble (n, 2, 0, 1., false) + ", k=" +
+			FormatUtil.FormatDouble (k, 2, 0, 1., false) + "} => " +
+			FormatUtil.FormatDouble (verification.lValue(), 1, 10, 1.) + " | " +
+			FormatUtil.FormatDouble (verification.rValue(), 1, 10, 1.) + " | " +
+			verification.verified() + " ||"
+		);
 	}
 
 	public static final void main (
@@ -150,7 +144,6 @@ public class CumulativeBinomialDistribution
 			0.60,
 			0.40,
 			0.20,
-			0.00,
 		};
 		double[] nArray =
 		{
@@ -179,44 +172,44 @@ public class CumulativeBinomialDistribution
 			95,
 		};
 
-		int eulerIntegrandBetaTermCount = 1000;
-		int eulerIntegrandIncompleteBetaTermCount = 1000;
+		System.out.println ("\t|--------------------------------------------------------------||");
 
-		IncompleteRegularizedEstimator incompleteRegularizedEstimator = new IncompleteRegularizedEstimator (
-			IncompleteIntegrandEstimator.EulerFirst (eulerIntegrandIncompleteBetaTermCount),
-			IntegrandEstimator.EulerFirstRightPlane (eulerIntegrandBetaTermCount)
-		);
+		System.out.println ("\t|           CUMULATIVE BINOMIAL DISTRIBUTION PROPERTY          ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------||");
 
-		System.out.println ("\t|                          CUMULATIVE BINOMIAL DISTRIBUTION ESTIMATE                          ||");
+		System.out.println ("\t|        L -> R:                                               ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|                - p                                           ||");
 
-		System.out.println ("\t|        L -> R:                                                                              ||");
+		System.out.println ("\t|                - n                                           ||");
 
-		System.out.println ("\t|                - n                                                                          ||");
+		System.out.println ("\t|                - k                                           ||");
 
-		System.out.println ("\t|                - k                                                                          ||");
+		System.out.println ("\t|                - LHS Value                                   ||");
 
-		System.out.println ("\t|                - Cumulative Binomial Distribution Estimate                                  ||");
+		System.out.println ("\t|                - RHS Value                                   ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|                - Verification Success?                       ||");
 
-		for (double n : nArray)
+		System.out.println ("\t|--------------------------------------------------------------||");
+
+		for (double p : pArray)
 		{
-			for (double k : kArray)
+			for (double n : nArray)
 			{
-				Estimate (
-					pArray,
-					n,
-					k,
-					incompleteRegularizedEstimator
-				);
+				for (double k : kArray)
+				{
+					Verifier (
+						p,
+						n,
+						k
+					);
+				}
 			}
 		}
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

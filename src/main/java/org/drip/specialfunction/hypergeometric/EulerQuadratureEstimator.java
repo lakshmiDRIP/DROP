@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.definition;
+package org.drip.specialfunction.hypergeometric;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,27 +64,30 @@ package org.drip.specialfunction.definition;
  */
 
 /**
- * <i>BetaEstimator</i> exposes the Stubs for estimating Beta Function and its Jacobian. The References are:
+ * <i>EulerQuadratureEstimator</i> estimates the Hyper-geometric Function using the Euler Integral
+ * Representation. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series <i>SIAM Journal
+ * 				on Mathematical Analysis</i> <b>13 (2)</b> 295-308
  * 		</li>
  * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation <i>Journal of Symbolic
+ * 				Computation</i> <b>20 (4)</b> 399-417
  * 		</li>
  * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
+ * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
+ * 				Sum of a (_2^3)F(a,b;c;z) <i>Journal of Computational and Applied Mathematics</i> <b>72</b>
+ * 				293-300
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
+ * 				https://dlmf.nist.gov/15
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
  *
@@ -99,66 +102,113 @@ package org.drip.specialfunction.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BetaEstimator implements org.drip.function.definition.R2ToR1
+public class EulerQuadratureEstimator extends org.drip.specialfunction.definition.HypergeometricEstimator
 {
+	private int _quadratureCount = -1;
+	private org.drip.function.definition.R2ToR1 _logBetaEstimator = null;
 
 	/**
-	 * Evaluate Beta given x and y
+	 * EulerQuadratureEstimator Constructor
 	 * 
-	 * @param x X
-	 * @param y Y
-	 *  
-	 * @return Beta Value
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * @param logBetaEstimator Log Beta Estimator
+	 * @param quadratureCount Count of the Integrand Quadrature
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double beta (
-		final double x,
-		final double y)
+	public EulerQuadratureEstimator (
+		final double a,
+		final double b,
+		final double c,
+		final org.drip.function.definition.R2ToR1 logBetaEstimator,
+		final int quadratureCount)
 		throws java.lang.Exception
 	{
-		return evaluate (
-			x,
-			y
+		super (
+			a,
+			b,
+			c
 		);
+
+		if (null == (_logBetaEstimator = logBetaEstimator) ||
+			0 >= (_quadratureCount = quadratureCount))
+		{
+			throw new java.lang.Exception ("EulerQuadratureEstimator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Calculate the Jacobian
+	 * Retrieve the Quadrature Count
 	 * 
-	 * @param x X
-	 * @param y Y
-	 * 
-	 * @return The Jacobian
+	 * @return The Quadrature Count
 	 */
 
-	public double[] jacobian (
-		final double x,
-		final double y)
+	public int quadratureCount()
 	{
-		org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		return _quadratureCount;
+	}
 
-		try
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z < -1. || z > 1.)
 		{
-			double beta = beta (
-				x,
-				y
-			);
-
-			double digammaXPlusY = abramowitzStegun2007.evaluate (x + y);
-
-			return new double[]
-			{
-				beta * (abramowitzStegun2007.evaluate (x) - digammaXPlusY),
-				beta * (abramowitzStegun2007.evaluate (y) - digammaXPlusY),
-			};
-		} catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			throw new java.lang.Exception ("EulerQuadratureEstimator::evaluate => Invalid Inputs");
 		}
 
-		return null;
+		final double a = a();
+
+		final double b = b();
+
+		final double c = c();
+
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+			0.,
+			1.,
+			_quadratureCount
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					return 0. == t || 1. == t ? 0. :
+						java.lang.Math.pow (
+							t,
+							b - 1.
+						) * java.lang.Math.pow (
+							1. - t,
+							c - b - 1.
+						) * java.lang.Math.pow (
+							1. - z * t,
+							-a
+						) * java.lang.Math.exp (
+							-1. * _logBetaEstimator.evaluate (
+								b,
+								c - b
+							)
+						);
+				}
+			}
+		);
+	}
+
+	@Override public double derivative (
+		final double z,
+		final int order)
+		throws java.lang.Exception
+	{
+		return new EulerQuadratureEstimator (
+			a() + order,
+			b() + order,
+			c() + order,
+			_logBetaEstimator,
+			_quadratureCount
+		).hypergeometric (z);
 	}
 }

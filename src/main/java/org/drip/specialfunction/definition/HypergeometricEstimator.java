@@ -64,27 +64,30 @@ package org.drip.specialfunction.definition;
  */
 
 /**
- * <i>BetaEstimator</i> exposes the Stubs for estimating Beta Function and its Jacobian. The References are:
+ * <i>HypergeometricEstimator</i> exposes the Stubs for estimating the Hyper-geometric Function and its
+ * Jacobian. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series <i>SIAM Journal
+ * 				on Mathematical Analysis</i> <b>13 (2)</b> 295-308
  * 		</li>
  * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation <i>Journal of Symbolic
+ * 				Computation</i> <b>20 (4)</b> 399-417
  * 		</li>
  * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
+ * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
+ * 				Sum of a (_2^3)F(a,b;c;z) <i>Journal of Computational and Applied Mathematics</i> <b>72</b>
+ * 				293-300
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
+ * 				https://dlmf.nist.gov/15
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
  *
@@ -99,66 +102,79 @@ package org.drip.specialfunction.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BetaEstimator implements org.drip.function.definition.R2ToR1
+/**
+ * @author DROP
+ *
+ */
+public abstract class HypergeometricEstimator extends org.drip.function.definition.R1ToR1
 {
+	private double _a = java.lang.Double.NaN;
+	private double _b = java.lang.Double.NaN;
+	private double _c = java.lang.Double.NaN;
+
+	protected HypergeometricEstimator (
+		final double a,
+		final double b,
+		final double c)
+		throws java.lang.Exception
+	{
+		super (null);
+
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_a = a) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) || _b <= 0. ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_c = c) || _c <= _b)
+		{
+			throw new java.lang.Exception ("HypergeometricEstimator Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
-	 * Evaluate Beta given x and y
+	 * Retrieve a
 	 * 
-	 * @param x X
-	 * @param y Y
+	 * @return a
+	 */
+
+	public double a()
+	{
+		return _a;
+	}
+
+	/**
+	 * Retrieve b
+	 * 
+	 * @return b
+	 */
+
+	public double b()
+	{
+		return _b;
+	}
+
+	/**
+	 * Retrieve c
+	 * 
+	 * @return c
+	 */
+
+	public double c()
+	{
+		return _c;
+	}
+
+	/**
+	 * Evaluate Hyper-geometric Function
+	 * 
+	 * @param z Z
 	 *  
-	 * @return Beta Value
+	 * @return Hyper-geometric Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double beta (
-		final double x,
-		final double y)
+	public double hypergeometric (
+		final double z)
 		throws java.lang.Exception
 	{
-		return evaluate (
-			x,
-			y
-		);
-	}
-
-	/**
-	 * Calculate the Jacobian
-	 * 
-	 * @param x X
-	 * @param y Y
-	 * 
-	 * @return The Jacobian
-	 */
-
-	public double[] jacobian (
-		final double x,
-		final double y)
-	{
-		org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
-
-		try
-		{
-			double beta = beta (
-				x,
-				y
-			);
-
-			double digammaXPlusY = abramowitzStegun2007.evaluate (x + y);
-
-			return new double[]
-			{
-				beta * (abramowitzStegun2007.evaluate (x) - digammaXPlusY),
-				beta * (abramowitzStegun2007.evaluate (y) - digammaXPlusY),
-			};
-		} catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return evaluate (z);
 	}
 }
