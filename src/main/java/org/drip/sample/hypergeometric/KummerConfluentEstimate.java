@@ -5,6 +5,8 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
+import org.drip.specialfunction.definition.ConfluentHypergeometricEstimator;
+import org.drip.specialfunction.derived.KummerHypergeometricFunction;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /*
@@ -70,8 +72,8 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  */
 
 /**
- * <i>DerivativeEstimate</i> estimates the Hyper-geometric Function Derivative using the Euler Integral
- * Representation. The References are:
+ * <i>KummerConfluentEstimate</i> estimates the Kummer's Confluent Hyper-geometric Function. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -108,46 +110,37 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DerivativeEstimate
+public class KummerConfluentEstimate
 {
 
-	private static final void Hypergeometric (
+	private static final void ConfluentHypergeometric (
 		final double a,
 		final double b,
 		final double c,
 		final R2ToR1 logBetaEstimator,
 		final int quadratureCount,
-		final double[] zArray,
-		final int[] derivativeOrderArray)
+		final double[] zArray)
 		throws Exception
 	{
-		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (
-			a,
-			b,
-			c,
-			logBetaEstimator,
-			quadratureCount
+		ConfluentHypergeometricEstimator confluentHypergeometricEstimator = new KummerHypergeometricFunction (
+			new EulerQuadratureEstimator (
+				a,
+				b,
+				c,
+				logBetaEstimator,
+				quadratureCount
+			)
 		);
 
 		for (double z : zArray)
 		{
-			String display = "\t| {a=" +
+			System.out.println ("\t| {a=" +
 				FormatUtil.FormatDouble (a, 1, 2, 1., false) + ", b=" +
-				FormatUtil.FormatDouble (b, 1, 2, 1., false) + "; c=" +
-				FormatUtil.FormatDouble (c, 1, 2, 1., false) + "; z=" +
-				FormatUtil.FormatDouble (z, 1, 2, 1.) + "} => ";
-
-			for (int derivativeOrder : derivativeOrderArray)
-			{
-				display = display + FormatUtil.FormatDouble (
-					eulerQuadratureEstimator.derivative (
-						z,
-						derivativeOrder
-					), 2, 10, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+				FormatUtil.FormatDouble (b, 2, 2, 1., false) + "; c=" +
+				FormatUtil.FormatDouble (c, 2, 2, 1., false) + "; z=" +
+				FormatUtil.FormatDouble (z, 1, 2, 1.) + "} => " +
+				FormatUtil.FormatDouble (confluentHypergeometricEstimator.evaluate (z), 1, 10, 1., false) + " ||"
+			);
 		}
 	}
 
@@ -162,15 +155,19 @@ public class DerivativeEstimate
 			1.,
 			2.,
 		};
-		double[] bArray =
-		{
-			3.,
-			4.,
-		};
 		double[] cArray =
 		{
+			15.,
+			16.,
+		};
+		double[] cMinusBArray =
+		{
+			1.,
+			2.,
+			3.,
+			4.,
 			5.,
-			6.,
+			6.
 		};
 		double[] zArray =
 		{
@@ -184,57 +181,50 @@ public class DerivativeEstimate
 			 0.75,
 			 1.00
 		};
-		int[] derivativeOrderArray =
-		{
-			1,
-			2,
-			3,
-		};
 		int logBetaTermCount = 1000;
 		int hypergeometricQuadratureCount = 10000;
 
 		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|                HYPER-GEOMETRIC FUNCTION EULER QUADRATURE DERIVATIVE                 ||");
+		System.out.println ("\t| KUMMER CONFLUENT HYPER-GEOMETRIC FUNCTION ESTIMATE  ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                                                      ||");
+		System.out.println ("\t|        L -> R:                                      ||");
 
-		System.out.println ("\t|                - a                                                                  ||");
+		System.out.println ("\t|                - a                                  ||");
 
-		System.out.println ("\t|                - b                                                                  ||");
+		System.out.println ("\t|                - b                                  ||");
 
-		System.out.println ("\t|                - c                                                                  ||");
+		System.out.println ("\t|                - c Minus b                          ||");
 
-		System.out.println ("\t|                - z                                                                  ||");
+		System.out.println ("\t|                - z                                  ||");
 
-		System.out.println ("\t|                - Derivatives                                                        ||");
+		System.out.println ("\t|                - Estimate                           ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		for (double a : aArray)
 		{
-			for (double b : bArray)
+			for (double cMinusB : cMinusBArray)
 			{
 				for (double c : cArray)
 				{
-					Hypergeometric (
+					ConfluentHypergeometric (
 						a,
-						b,
+						c - cMinusB,
 						c,
 						logBetaEstimator,
 						hypergeometricQuadratureCount,
-						zArray,
-						derivativeOrderArray
+						zArray
 					);
 				}
 			}
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

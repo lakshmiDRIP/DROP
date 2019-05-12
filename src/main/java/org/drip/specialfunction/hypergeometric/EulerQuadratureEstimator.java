@@ -102,7 +102,7 @@ package org.drip.specialfunction.hypergeometric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimator extends org.drip.specialfunction.definition.HypergeometricEstimator
+public class EulerQuadratureEstimator extends org.drip.specialfunction.definition.RegularHypergeometricEstimator
 {
 	private int _quadratureCount = -1;
 	private org.drip.function.definition.R2ToR1 _logBetaEstimator = null;
@@ -151,13 +151,13 @@ public class EulerQuadratureEstimator extends org.drip.specialfunction.definitio
 		return _quadratureCount;
 	}
 
-	@Override public double evaluate (
+	@Override public double regularHypergeometric (
 		final double z)
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z < -1. || z > 1.)
 		{
-			throw new java.lang.Exception ("EulerQuadratureEstimator::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("EulerQuadratureEstimator::regularHypergeometric => Invalid Inputs");
 		}
 
 		final double a = a();
@@ -187,14 +187,14 @@ public class EulerQuadratureEstimator extends org.drip.specialfunction.definitio
 						) * java.lang.Math.pow (
 							1. - z * t,
 							-a
-						) * java.lang.Math.exp (
-							-1. * _logBetaEstimator.evaluate (
-								b,
-								c - b
-							)
 						);
 				}
 			}
+		) * java.lang.Math.exp (
+		-1. * _logBetaEstimator.evaluate (
+				b,
+				c - b
+			)
 		);
 	}
 
@@ -209,6 +209,6 @@ public class EulerQuadratureEstimator extends org.drip.specialfunction.definitio
 			c() + order,
 			_logBetaEstimator,
 			_quadratureCount
-		).hypergeometric (z);
+		).regularHypergeometric (z);
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.beta;
+package org.drip.specialfunction.derived;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,28 +64,30 @@ package org.drip.specialfunction.beta;
  */
 
 /**
- * <i>LogGammaEstimator</i> implements the Log Beta Function using the Log Gamma Function. The References
- * are:
+ * <i>LegendreFunction</i> implements the Legendre Function from the 2F1 Hyper-geometric Function. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
- * 				on Mathematics</b>
+ * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series <i>SIAM Journal
+ * 				on Mathematical Analysis</i> <b>13 (2)</b> 295-308
  * 		</li>
  * 		<li>
- * 			Davis, P. J. (1959): Leonhard Euler's Integral: A Historical Profile of the Gamma Function
- * 				<i>American Mathematical Monthly</i> <b>66 (10)</b> 849-869
+ * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation <i>Journal of Symbolic
+ * 				Computation</i> <b>20 (4)</b> 399-417
  * 		</li>
  * 		<li>
- * 			Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge
- * 				University Press</b> New York
+ * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
+ * 				Sum of a (_2^3)F(a,b;c;z) <i>Journal of Computational and Applied Mathematics</i> <b>72</b>
+ * 				293-300
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Beta Function https://en.wikipedia.org/wiki/Beta_function
+ * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
+ * 				https://dlmf.nist.gov/15
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
+ * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
  *
@@ -93,85 +95,14 @@ package org.drip.specialfunction.beta;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
+public class LegendreFunction
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
 
-	/**
-	 * Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator
-	 * 
-	 * @param termCount Number of Terms in the Estimation
-	 * 
-	 * @return The Weierstrass Infinite Product Series Version of Log Beta Estimator
-	 */
-
-	public static final LogGammaEstimator Weierstrass (
-		final int termCount)
-	{
-		try
-		{
-			return new LogGammaEstimator (
-				org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (
-					termCount
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * LogGammaBased Constructor
-	 * 
-	 * @param r1ToR1LogGamma The Log Gamma Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LogGammaEstimator (
-		final org.drip.function.definition.R1ToR1 r1ToR1LogGamma)
-		throws java.lang.Exception
-	{
-		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma))
-		{
-			throw new java.lang.Exception ("LogGammaEstimator Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Log Gamma Function
-	 * 
-	 * @return The Log Gamma Function
-	 */
-
-	public org.drip.function.definition.R1ToR1 r1ToR1LogGamma()
-	{
-		return _r1ToR1LogGamma;
-	}
-
-	@Override public double evaluate (
-		final double x,
-		final double y)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (y))
-		{
-			throw new java.lang.Exception ("LogGammaEstimator::evaluate => Invalid Inputs");
-		}
-
-		return 0. == x || 0. == y ? 0. : _r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) -
-			_r1ToR1LogGamma.evaluate (x + y);
-	}
 }

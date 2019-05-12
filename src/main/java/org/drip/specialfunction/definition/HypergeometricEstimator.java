@@ -64,8 +64,8 @@ package org.drip.specialfunction.definition;
  */
 
 /**
- * <i>HypergeometricEstimator</i> exposes the Stubs for estimating the Hyper-geometric Function and its
- * Jacobian. The References are:
+ * <i>HypergeometricEstimator</i> exposes the parameters Common to the Variants of the Hyper-geometric
+ * Function and its Jacobian. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,10 +102,6 @@ package org.drip.specialfunction.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-/**
- * @author DROP
- *
- */
 public abstract class HypergeometricEstimator extends org.drip.function.definition.R1ToR1
 {
 	private double _a = java.lang.Double.NaN;
@@ -122,7 +118,7 @@ public abstract class HypergeometricEstimator extends org.drip.function.definiti
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_a = a) ||
 			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) || _b <= 0. ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_c = c) || _c <= _b)
+			!org.drip.numerical.common.NumberUtil.IsValid (_c = c) || _c < _b)
 		{
 			throw new java.lang.Exception ("HypergeometricEstimator Constructor => Invalid Inputs");
 		}
@@ -159,22 +155,5 @@ public abstract class HypergeometricEstimator extends org.drip.function.definiti
 	public double c()
 	{
 		return _c;
-	}
-
-	/**
-	 * Evaluate Hyper-geometric Function
-	 * 
-	 * @param z Z
-	 *  
-	 * @return Hyper-geometric Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double hypergeometric (
-		final double z)
-		throws java.lang.Exception
-	{
-		return evaluate (z);
 	}
 }
