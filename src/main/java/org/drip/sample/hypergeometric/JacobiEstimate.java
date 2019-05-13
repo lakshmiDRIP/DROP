@@ -5,7 +5,8 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+import org.drip.specialfunction.definition.JacobiEstimator;
+import org.drip.specialfunction.derived.JacobiFunction;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +71,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  */
 
 /**
- * <i>EulerQuadratureEstimate</i> estimates the Hyper-geometric Function using the Euler Integral
- * Representation. The References are:
+ * <i>JacobiEstimate</i> estimates the Jacobi Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -108,34 +108,34 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimate
+public class JacobiEstimate
 {
 
-	private static final void Hypergeometric (
-		final double a,
-		final double b,
-		final double c,
+	private static final void Jacobi (
+		final double alpha,
+		final double beta,
+		final int n,
 		final R2ToR1 logBetaEstimator,
 		final int quadratureCount,
 		final double[] zArray)
 		throws Exception
 	{
-		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (
-			a,
-			b,
-			c,
+		JacobiEstimator jacobiEstimator = new JacobiFunction (
+			alpha,
+			beta,
+			n,
 			logBetaEstimator,
 			quadratureCount
 		);
 
 		for (double z : zArray)
 		{
-			System.out.println ("\t| {a=" +
-				FormatUtil.FormatDouble (a, 1, 2, 1., false) + ", b=" +
-				FormatUtil.FormatDouble (b, 1, 2, 1., false) + "; c=" +
-				FormatUtil.FormatDouble (c, 1, 2, 1., false) + "; z=" +
+			System.out.println ("\t| {alpha=" +
+				FormatUtil.FormatDouble (alpha, 1, 2, 1., false) + "; beta=" +
+				FormatUtil.FormatDouble (beta, 2, 2, 1., false) + "; n=" +
+				FormatUtil.FormatDouble (n, 1, 0, 1.) + "; z=" +
 				FormatUtil.FormatDouble (z, 1, 2, 1.) + "} => " +
-				FormatUtil.FormatDouble (eulerQuadratureEstimator.evaluate (z), 2, 10, 1., false) + " ||"
+				FormatUtil.FormatDouble (jacobiEstimator.evaluate (z), 4, 2, 1., false) + " ||"
 			);
 		}
 	}
@@ -146,69 +146,71 @@ public class EulerQuadratureEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		double[] aArray =
+		double[] alphaArray =
 		{
-			1.,
-			2.,
+			 4.0,
+			 5.0,
+			 6.0,
 		};
-		double[] bArray =
+		double[] betaArray =
 		{
-			3.,
-			4.,
+			-4.,
+			-5.,
+			-6.,
 		};
-		double[] cArray =
+		int[] nArray =
 		{
-			5.,
-			6.,
+			3,
+			4,
 		};
 		double[] zArray =
 		{
-			-1.00,
-			-0.75,
-			-0.50,
-			-0.25,
-			 0.00,
+			 0.05,
+			 0.10,
+			 0.15,
+			 0.20,
 			 0.25,
+			 0.30,
+			 0.35,
+			 0.40,
+			 0.45,
 			 0.50,
-			 0.75,
-			 1.00
 		};
 		int logBetaTermCount = 1000;
 		int hypergeometricQuadratureCount = 10000;
 
 		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t| HYPER-GEOMETRIC FUNCTION EULER QUADRATURE ESTIMATE ||");
+		System.out.println ("\t|      JACOBI HYPER-GEOMETRIC FUNCTION ESTIMATE       ||");
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                     ||");
+		System.out.println ("\t|        L -> R:                                      ||");
 
-		System.out.println ("\t|                - a                                 ||");
+		System.out.println ("\t|                - Alpha                              ||");
 
-		System.out.println ("\t|                - b                                 ||");
+		System.out.println ("\t|                - Beta                               ||");
 
-		System.out.println ("\t|                - c                                 ||");
+		System.out.println ("\t|                - n                                  ||");
 
-		System.out.println ("\t|                - z                                 ||");
+		System.out.println ("\t|                - z                                  ||");
 
-		System.out.println ("\t|                - Estimate                          ||");
+		System.out.println ("\t|                - Estimate                           ||");
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
-		for (double a : aArray)
+		for (double alpha : alphaArray)
 		{
-			for (double b : bArray)
+			for (double beta : betaArray)
 			{
-				for (double c : cArray)
+				for (int n : nArray)
 				{
-					Hypergeometric (
-						a,
-						b,
-						c,
-						logBetaEstimator,
+					Jacobi (
+						alpha,
+						beta,
+						n,						logBetaEstimator,
 						hypergeometricQuadratureCount,
 						zArray
 					);
@@ -216,7 +218,7 @@ public class EulerQuadratureEstimate
 			}
 		}
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|-----------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

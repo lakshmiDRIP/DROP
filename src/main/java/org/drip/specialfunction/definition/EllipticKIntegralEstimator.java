@@ -1,11 +1,5 @@
 
-package org.drip.sample.hypergeometric;
-
-import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+package org.drip.specialfunction.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  */
 
 /**
- * <i>EulerQuadratureEstimate</i> estimates the Hyper-geometric Function using the Euler Integral
- * Representation. The References are:
+ * <i>EllipticKIntegralEstimator</i> exposes the Stubs for estimating the Elliptic K-Integral and its
+ * Jacobian using the 2F1 Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,123 +95,45 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/README.md">Estimates of Hyper-geometric Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimate
+public abstract class EllipticKIntegralEstimator extends
+	org.drip.specialfunction.definition.HypergeometricEstimator
 {
 
-	private static final void Hypergeometric (
-		final double a,
-		final double b,
-		final double c,
-		final R2ToR1 logBetaEstimator,
-		final int quadratureCount,
-		final double[] zArray)
-		throws Exception
+	protected EllipticKIntegralEstimator()
+		throws java.lang.Exception
 	{
-		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (
-			a,
-			b,
-			c,
-			logBetaEstimator,
-			quadratureCount
+		super (
+			0.5,
+			0.5,
+			1.
 		);
-
-		for (double z : zArray)
-		{
-			System.out.println ("\t| {a=" +
-				FormatUtil.FormatDouble (a, 1, 2, 1., false) + ", b=" +
-				FormatUtil.FormatDouble (b, 1, 2, 1., false) + "; c=" +
-				FormatUtil.FormatDouble (c, 1, 2, 1., false) + "; z=" +
-				FormatUtil.FormatDouble (z, 1, 2, 1.) + "} => " +
-				FormatUtil.FormatDouble (eulerQuadratureEstimator.evaluate (z), 2, 10, 1., false) + " ||"
-			);
-		}
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	@Override public double evaluate (
+		final double k)
+		throws java.lang.Exception
 	{
-		EnvManager.InitEnv ("");
-
-		double[] aArray =
-		{
-			1.,
-			2.,
-		};
-		double[] bArray =
-		{
-			3.,
-			4.,
-		};
-		double[] cArray =
-		{
-			5.,
-			6.,
-		};
-		double[] zArray =
-		{
-			-1.00,
-			-0.75,
-			-0.50,
-			-0.25,
-			 0.00,
-			 0.25,
-			 0.50,
-			 0.75,
-			 1.00
-		};
-		int logBetaTermCount = 1000;
-		int hypergeometricQuadratureCount = 10000;
-
-		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		System.out.println ("\t| HYPER-GEOMETRIC FUNCTION EULER QUADRATURE ESTIMATE ||");
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                     ||");
-
-		System.out.println ("\t|                - a                                 ||");
-
-		System.out.println ("\t|                - b                                 ||");
-
-		System.out.println ("\t|                - c                                 ||");
-
-		System.out.println ("\t|                - z                                 ||");
-
-		System.out.println ("\t|                - Estimate                          ||");
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		for (double a : aArray)
-		{
-			for (double b : bArray)
-			{
-				for (double c : cArray)
-				{
-					Hypergeometric (
-						a,
-						b,
-						c,
-						logBetaEstimator,
-						hypergeometricQuadratureCount,
-						zArray
-					);
-				}
-			}
-		}
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return ellipticKIntegral (k);
 	}
+
+	/**
+	 * Evaluate The Elliptic K Integral Function
+	 * 
+	 * @param k K
+	 *  
+	 * @return The Elliptic K Integral Function Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double ellipticKIntegral (
+		final double k)
+		throws java.lang.Exception;
 }

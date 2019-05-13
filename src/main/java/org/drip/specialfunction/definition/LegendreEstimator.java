@@ -106,15 +106,37 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 {
 
 	protected LegendreEstimator (
-		final double a,
-		final double c)
+		final double alpha,
+		final double ceta)
 		throws java.lang.Exception
 	{
 		super (
-			a,
-			1. - a,
-			c
+			-1. * alpha,
+			1. + alpha,
+			1. - ceta
 		);
+	}
+
+	/**
+	 * Retrieve Legendre Alpha
+	 * 
+	 * @return The Legendre Alpha
+	 */
+
+	public double alpha()
+	{
+		return -1. * a();
+	}
+
+	/**
+	 * Retrieve Legendre Ceta
+	 * 
+	 * @return The Legendre Ceta
+	 */
+
+	public double ceta()
+	{
+		return 1. - c();
 	}
 
 	@Override public double evaluate (
@@ -125,11 +147,11 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 	}
 
 	/**
-	 * Evaluate Legendre Function
+	 * Evaluate the Legendre Function
 	 * 
 	 * @param z Z
 	 *  
-	 * @return Legendre Value
+	 * @return The Legendre Function Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

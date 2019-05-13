@@ -117,10 +117,10 @@ public abstract class HypergeometricEstimator extends org.drip.function.definiti
 		super (null);
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_a = a) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) || _b <= 0. ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) || _b < 0. ||
 			!org.drip.numerical.common.NumberUtil.IsValid (_c = c) || _c < _b)
 		{
-			throw new java.lang.Exception ("HypergeometricEstimator Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("HypergeometricEstimator Constructor => Invalid Inputs : " + a + "|" + b + "|" + c);
 		}
 	}
 

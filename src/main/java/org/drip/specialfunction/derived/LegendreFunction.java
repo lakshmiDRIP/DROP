@@ -102,7 +102,86 @@ package org.drip.specialfunction.derived;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LegendreFunction
+public class LegendreFunction extends org.drip.specialfunction.definition.LegendreEstimator
 {
+	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator
+		_regularHypergeometricEstimator = null;
 
+	/**
+	 * LegendreFunction Constructor
+	 * 
+	 * @param alpha Alpha
+	 * @param ceta Ceta
+	 * @param logBetaEstimator Log Beta Estimator
+	 * @param quadratureCount Quadrature Count
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LegendreFunction (
+		final double alpha,
+		final double ceta,
+		final org.drip.function.definition.R2ToR1 logBetaEstimator,
+		final int quadratureCount,
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		throws java.lang.Exception
+	{
+		super (
+			alpha,
+			ceta
+		);
+
+		if (null == (_gammaEstimator = gammaEstimator))
+		{
+			throw new java.lang.Exception ("LegendreFunction Constructor => Invalid Inputs");
+		}
+
+		_regularHypergeometricEstimator = new
+			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+				super.a(),
+				super.b(),
+				super.c(),
+				logBetaEstimator,
+				quadratureCount
+			);
+	}
+
+	/**
+	 * Retrieve the 2F1 Hyper-geometric Function Estimator
+	 * 
+	 * @return The 2F1 Hyper-geometric Function Estimator
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator
+		regularHypergeometricEstimator()
+	{
+		return _regularHypergeometricEstimator;
+	}
+
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return The Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	{
+		return _gammaEstimator;
+	}
+
+	@Override public double legendre (
+		final double z)
+		throws java.lang.Exception
+	{
+		double c = c();
+
+		double z2F1 = 1. - 2. * z;
+
+		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * java.lang.Math.pow (
+			z2F1 / (1. - z2F1),
+			0.5 * (c - 1.)
+		) / _gammaEstimator.evaluate (c);
+	}
 }

@@ -5,7 +5,8 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+import org.drip.specialfunction.definition.EllipticEIntegralEstimator;
+import org.drip.specialfunction.derived.EllipticEIntegral;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +71,8 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  */
 
 /**
- * <i>EulerQuadratureEstimate</i> estimates the Hyper-geometric Function using the Euler Integral
- * Representation. The References are:
+ * <i>EllipticEIntegralEstimate</i> estimates the Elliptic E-Integral Function using the 2F1 Hyper-geometric
+ * Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -108,34 +109,25 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimate
+public class EllipticEIntegralEstimate
 {
 
-	private static final void Hypergeometric (
-		final double a,
-		final double b,
-		final double c,
+	private static final void EllipticEIntegral (
 		final R2ToR1 logBetaEstimator,
 		final int quadratureCount,
 		final double[] zArray)
 		throws Exception
 	{
-		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (
-			a,
-			b,
-			c,
+		EllipticEIntegralEstimator ellipticEIntegralEstimator = new EllipticEIntegral (
 			logBetaEstimator,
 			quadratureCount
 		);
 
 		for (double z : zArray)
 		{
-			System.out.println ("\t| {a=" +
-				FormatUtil.FormatDouble (a, 1, 2, 1., false) + ", b=" +
-				FormatUtil.FormatDouble (b, 1, 2, 1., false) + "; c=" +
-				FormatUtil.FormatDouble (c, 1, 2, 1., false) + "; z=" +
+			System.out.println ("\t| {z=" +
 				FormatUtil.FormatDouble (z, 1, 2, 1.) + "} => " +
-				FormatUtil.FormatDouble (eulerQuadratureEstimator.evaluate (z), 2, 10, 1., false) + " ||"
+				FormatUtil.FormatDouble (ellipticEIntegralEstimator.evaluate (z), 1, 10, 1., false) + " ||"
 			);
 		}
 	}
@@ -146,31 +138,28 @@ public class EulerQuadratureEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		double[] aArray =
-		{
-			1.,
-			2.,
-		};
-		double[] bArray =
-		{
-			3.,
-			4.,
-		};
-		double[] cArray =
-		{
-			5.,
-			6.,
-		};
 		double[] zArray =
 		{
 			-1.00,
-			-0.75,
+			-0.90,
+			-0.80,
+			-0.70,
+			-0.60,
 			-0.50,
-			-0.25,
+			-0.40,
+			-0.30,
+			-0.20,
+			-0.10,
 			 0.00,
-			 0.25,
+			 0.10,
+			 0.20,
+			 0.30,
+			 0.40,
 			 0.50,
-			 0.75,
+			 0.60,
+			 0.70,
+			 0.80,
+			 0.90,
 			 1.00
 		};
 		int logBetaTermCount = 1000;
@@ -178,45 +167,27 @@ public class EulerQuadratureEstimate
 
 		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|---------------------------||");
 
-		System.out.println ("\t| HYPER-GEOMETRIC FUNCTION EULER QUADRATURE ESTIMATE ||");
+		System.out.println ("\t|    ELLIPTIC E INTEGRAL    ||");
 
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|---------------------------||");
 
-		System.out.println ("\t|        L -> R:                                     ||");
+		System.out.println ("\t|        L -> R:            ||");
 
-		System.out.println ("\t|                - a                                 ||");
+		System.out.println ("\t|                - k        ||");
 
-		System.out.println ("\t|                - b                                 ||");
+		System.out.println ("\t|                - Estimate ||");
 
-		System.out.println ("\t|                - c                                 ||");
+		System.out.println ("\t|---------------------------||");
 
-		System.out.println ("\t|                - z                                 ||");
+		EllipticEIntegral (
+			logBetaEstimator,
+			hypergeometricQuadratureCount,
+			zArray
+		);
 
-		System.out.println ("\t|                - Estimate                          ||");
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		for (double a : aArray)
-		{
-			for (double b : bArray)
-			{
-				for (double c : cArray)
-				{
-					Hypergeometric (
-						a,
-						b,
-						c,
-						logBetaEstimator,
-						hypergeometricQuadratureCount,
-						zArray
-					);
-				}
-			}
-		}
-
-		System.out.println ("\t|----------------------------------------------------||");
+		System.out.println ("\t|---------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

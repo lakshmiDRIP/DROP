@@ -1,11 +1,5 @@
 
-package org.drip.sample.hypergeometric;
-
-import org.drip.function.definition.R2ToR1;
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.beta.LogGammaEstimator;
-import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+package org.drip.specialfunction.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -70,8 +64,8 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  */
 
 /**
- * <i>EulerQuadratureEstimate</i> estimates the Hyper-geometric Function using the Euler Integral
- * Representation. The References are:
+ * <i>JacobiEstimator</i> exposes the Stubs for estimating the Jacobi Function and its Jacobian using the 2F1
+ * Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,123 +95,86 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/README.md">Estimates of Hyper-geometric Function</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimate
+public abstract class JacobiEstimator extends org.drip.specialfunction.definition.HypergeometricEstimator
 {
+	private int _n = java.lang.Integer.MAX_VALUE;
 
-	private static final void Hypergeometric (
-		final double a,
-		final double b,
-		final double c,
-		final R2ToR1 logBetaEstimator,
-		final int quadratureCount,
-		final double[] zArray)
-		throws Exception
+	protected JacobiEstimator (
+		final double alpha,
+		final double beta,
+		final int n)
+		throws java.lang.Exception
 	{
-		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (
-			a,
-			b,
-			c,
-			logBetaEstimator,
-			quadratureCount
+		super (
+			-n,
+			alpha + beta + n + 1.,
+			alpha + 1.
 		);
 
-		for (double z : zArray)
+		if (java.lang.Integer.MAX_VALUE == (_n = n))
 		{
-			System.out.println ("\t| {a=" +
-				FormatUtil.FormatDouble (a, 1, 2, 1., false) + ", b=" +
-				FormatUtil.FormatDouble (b, 1, 2, 1., false) + "; c=" +
-				FormatUtil.FormatDouble (c, 1, 2, 1., false) + "; z=" +
-				FormatUtil.FormatDouble (z, 1, 2, 1.) + "} => " +
-				FormatUtil.FormatDouble (eulerQuadratureEstimator.evaluate (z), 2, 10, 1., false) + " ||"
-			);
+			throw new java.lang.Exception ("JacobiEstimator Constructor => Invalid Inputs");
 		}
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve Jacobi Alpha
+	 * 
+	 * @return The Jacobi Alpha
+	 */
+
+	public double alpha()
 	{
-		EnvManager.InitEnv ("");
-
-		double[] aArray =
-		{
-			1.,
-			2.,
-		};
-		double[] bArray =
-		{
-			3.,
-			4.,
-		};
-		double[] cArray =
-		{
-			5.,
-			6.,
-		};
-		double[] zArray =
-		{
-			-1.00,
-			-0.75,
-			-0.50,
-			-0.25,
-			 0.00,
-			 0.25,
-			 0.50,
-			 0.75,
-			 1.00
-		};
-		int logBetaTermCount = 1000;
-		int hypergeometricQuadratureCount = 10000;
-
-		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		System.out.println ("\t| HYPER-GEOMETRIC FUNCTION EULER QUADRATURE ESTIMATE ||");
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                     ||");
-
-		System.out.println ("\t|                - a                                 ||");
-
-		System.out.println ("\t|                - b                                 ||");
-
-		System.out.println ("\t|                - c                                 ||");
-
-		System.out.println ("\t|                - z                                 ||");
-
-		System.out.println ("\t|                - Estimate                          ||");
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		for (double a : aArray)
-		{
-			for (double b : bArray)
-			{
-				for (double c : cArray)
-				{
-					Hypergeometric (
-						a,
-						b,
-						c,
-						logBetaEstimator,
-						hypergeometricQuadratureCount,
-						zArray
-					);
-				}
-			}
-		}
-
-		System.out.println ("\t|----------------------------------------------------||");
-
-		EnvManager.TerminateEnv();
+		return c() - 1.;
 	}
+
+	/**
+	 * Retrieve Jacobi Beta
+	 * 
+	 * @return The Jacobi Beta
+	 */
+
+	public double beta()
+	{
+		return 1. - _n - alpha();
+	}
+
+	/**
+	 * Retrieve n
+	 * 
+	 * @return n
+	 */
+
+	public int n()
+	{
+		return _n;
+	}
+
+	@Override public double evaluate (
+		final double z)
+		throws java.lang.Exception
+	{
+		return jacobi (z);
+	}
+
+	/**
+	 * Evaluate The Jacobi Function
+	 * 
+	 * @param z Z
+	 *  
+	 * @return The Jacobi Function Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double jacobi (
+		final double z)
+		throws java.lang.Exception;
 }
