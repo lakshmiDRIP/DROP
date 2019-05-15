@@ -160,7 +160,7 @@ package org.drip.specialfunction.beta;
 			n &lt; k ||
 			null == gammaEstimator)
 		{
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;ContinuousBinomial::GammaBinomial =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L163">			throw new java.lang.Exception (&quot;CombinatorialEstimate::GammaBinomial =&gt; Invalid Inputs&quot;);</span>
 		}
 
 <span class="nc bnc" id="L166" title="All 2 branches missed.">		double gammaBinomial = (1 == n % 2 ? -1. : 1.) * gammaEstimator.evaluate (n + 1.) *</span>
@@ -172,6 +172,43 @@ package org.drip.specialfunction.beta;
 		}
 
 <span class="nc" id="L174">		return gammaBinomial;</span>
+	}
+
+	/**
+	 * Compute the Cumulative Binomial Distribution Function for the specified n, k, and p
+	 * 
+	 * @param n n
+	 * @param k k
+	 * @param p p
+	 * @param incompleteRegularizedEstimator The Incomplete Regularized Beta Estimator
+	 * 
+	 * @return The Cumulative Binomial Distribution Function Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double CumulativeBinomialDistribution (
+		final double n,
+		final double k,
+		final double p,
+		final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L197" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. &gt;= n ||</span>
+<span class="nc bnc" id="L198" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. &gt;= k ||</span>
+			n &lt; k ||
+<span class="nc bnc" id="L200" title="All 8 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt; p || 1. &lt; p ||</span>
+			null == incompleteRegularizedEstimator)
+		{
+<span class="nc" id="L203">			throw new java.lang.Exception</span>
+				(&quot;CombinatorialEstimate::CumulativeBinomialDistribution =&gt; Invalid Inputs&quot;);
+		}
+
+<span class="nc" id="L207">		return incompleteRegularizedEstimator.evaluate (</span>
+			1. - p,
+			n - k,
+			k + 1.
+		);
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

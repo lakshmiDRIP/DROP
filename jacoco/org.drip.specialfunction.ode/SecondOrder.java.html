@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecondOrder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.ode</a> &gt; <span class="el_source">SecondOrder.java</span></div><h1>SecondOrder.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.ode;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SecondOrder&lt;/i&gt; exposes the Coefficient Terms in the Second-Order ODE. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series &lt;i&gt;SIAM Journal
+ * 				on Mathematical Analysis&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 295-308
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation &lt;i&gt;Journal of Symbolic
+ * 				Computation&lt;/i&gt; &lt;b&gt;20 (4)&lt;/b&gt; 399-417
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
+ * 				Sum of a (_2^3)F(a,b;c;z) &lt;i&gt;Journal of Computational and Applied Mathematics&lt;/i&gt; &lt;b&gt;72&lt;/b&gt;
+ * 				293-300
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
+ * 				https://dlmf.nist.gov/15
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class SecondOrder
+{
+<span class="nc" id="L106">	private org.drip.function.definition.R2ToR1 _zeroDerivativeCoefficient = null;</span>
+<span class="nc" id="L107">	private org.drip.function.definition.R2ToR1 _firstDerivativeCoefficient = null;</span>
+<span class="nc" id="L108">	private org.drip.function.definition.R2ToR1 _secondDerivativeCoefficient = null;</span>
+
+	/**
+	 * SecondOrder Constructor
+	 * 
+	 * @param secondDerivativeCoefficient Second Order Derivative Coefficient Term
+	 * @param firstDerivativeCoefficient First Order Derivative Coefficient Term
+	 * @param zeroDerivativeCoefficient Zero Order Derivative Coefficient Term
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SecondOrder (
+		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
+		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
+		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
+		throws java.lang.Exception
+<span class="nc" id="L125">	{</span>
+<span class="nc bnc" id="L126" title="All 6 branches missed.">		if (null == (_secondDerivativeCoefficient = secondDerivativeCoefficient) ||</span>
+			null == (_firstDerivativeCoefficient = firstDerivativeCoefficient) ||
+			null == (_zeroDerivativeCoefficient = zeroDerivativeCoefficient))
+		{
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;SecondOrder Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L132">	}</span>
+
+	/**
+	 * Retrieve the R&lt;sup&gt;2&lt;/sup&gt; to R&lt;sup&gt;1&lt;/sup&gt; Second Derivative Coefficient Function
+	 * 
+	 * @return The R&lt;sup&gt;2&lt;/sup&gt; to R&lt;sup&gt;1&lt;/sup&gt; Second Derivative Coefficient Function
+	 */
+
+	public org.drip.function.definition.R2ToR1 secondDerivativeCoefficient()
+	{
+<span class="nc" id="L142">		return _secondDerivativeCoefficient;</span>
+	}
+
+	/**
+	 * Retrieve the R&lt;sup&gt;2&lt;/sup&gt; to R&lt;sup&gt;1&lt;/sup&gt; First Derivative Coefficient Function
+	 * 
+	 * @return The R&lt;sup&gt;2&lt;/sup&gt; to R&lt;sup&gt;1&lt;/sup&gt; First Derivative Coefficient Function
+	 */
+
+	public org.drip.function.definition.R2ToR1 firstDerivativeCoefficient()
+	{
+<span class="nc" id="L153">		return _firstDerivativeCoefficient;</span>
+	}
+
+	/**
+	 * Retrieve the R&lt;sup&gt;2&lt;/sup&gt; to R&lt;sup&gt;1&lt;/sup&gt; Zero Derivative Coefficient Function
+	 * 
+	 * @return The R&lt;sup&gt;2&lt;/sup&gt; to R&lt;sup&gt;1&lt;/sup&gt; Zero Derivative Coefficient Function
+	 */
+
+	public org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient()
+	{
+<span class="nc" id="L164">		return _zeroDerivativeCoefficient;</span>
+	}
+
+	/**
+	 * Retrieve the Ordered Regular Singular Points of the Second Order ODE
+	 * 
+	 * @return The Ordered Regular Singular Points of the Second Order ODE
+	 */
+
+	public java.util.TreeSet&lt;java.lang.Double&gt; orderedRegularSingularPoints()
+	{
+<span class="nc" id="L175">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
