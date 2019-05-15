@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.derived;
+package org.drip.specialfunction.ode;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.derived;
  */
 
 /**
- * <i>LegendreFunction</i> implements the Legendre Function from the 2F1 Hyper-geometric Function. The
- * References are:
+ * <i>RegularSingularityIndependentSolution2F1</i> holds the Array of Linearly Independent Solutions to the
+ * 2F1 Hyper-geometric Equation at the Singularities {0, 1, and INF}. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,93 +95,49 @@ package org.drip.specialfunction.derived;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LegendreFunction extends org.drip.specialfunction.definition.LegendreEstimator
+public class RegularSingularityIndependentSolution2F1
 {
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator
-		_regularHypergeometricEstimator = null;
 
 	/**
-	 * LegendreFunction Constructor
+	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
 	 * 
-	 * @param alpha Alpha
-	 * @param ceta Ceta
-	 * @param logBetaEstimator Log Beta Estimator
-	 * @param quadratureCount Quadrature Count
-	 * @param gammaEstimator Gamma Estimator
+	 * @param eulerQuadratureEstimator 2F1 Euler Quadrature Hyper-geometric Estimator Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
 	 */
 
-	public LegendreFunction (
-		final double alpha,
-		final double ceta,
-		final org.drip.function.definition.R2ToR1 logBetaEstimator,
-		final int quadratureCount,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
+		final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator eulerQuadratureEstimator)
 	{
-		super (
-			alpha,
-			ceta
+		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
+			regularSingularityIndependentSolution = new
+				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
+
+		regularSingularityIndependentSolution.add (
+			0.,
+			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
+				(eulerQuadratureEstimator)
 		);
 
-		if (null == (_gammaEstimator = gammaEstimator))
-		{
-			throw new java.lang.Exception ("LegendreFunction Constructor => Invalid Inputs");
-		}
+		regularSingularityIndependentSolution.add (
+			1.,
+			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
+				(eulerQuadratureEstimator)
+		);
 
-		_regularHypergeometricEstimator = new
-			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-				super.a(),
-				super.b(),
-				super.c(),
-				logBetaEstimator,
-				quadratureCount
-			);
-	}
+		regularSingularityIndependentSolution.add (
+			java.lang.Double.POSITIVE_INFINITY,
+			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
+				(eulerQuadratureEstimator)
+		);
 
-	/**
-	 * Retrieve the 2F1 Hyper-geometric Function Estimator
-	 * 
-	 * @return The 2F1 Hyper-geometric Function Estimator
-	 */
-
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator
-		regularHypergeometricEstimator()
-	{
-		return _regularHypergeometricEstimator;
-	}
-
-	/**
-	 * Retrieve the Gamma Estimator
-	 * 
-	 * @return The Gamma Estimator
-	 */
-
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
-	{
-		return _gammaEstimator;
-	}
-
-	@Override public double legendre (
-		final double z)
-		throws java.lang.Exception
-	{
-		double c = c();
-
-		double z2F1 = 1. - 2. * z;
-
-		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * java.lang.Math.pow (
-			z2F1 / (1. - z2F1),
-			0.5 * (c - 1.)
-		) / _gammaEstimator.evaluate (c);
+		return regularSingularityIndependentSolution;
 	}
 }

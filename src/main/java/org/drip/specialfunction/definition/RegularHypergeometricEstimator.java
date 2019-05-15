@@ -139,4 +139,137 @@ public abstract class RegularHypergeometricEstimator extends
 	public abstract double regularHypergeometric (
 		final double z)
 		throws java.lang.Exception;
+
+	/**
+	 * Albinate (i.e., Clone + Mutate) an Instance of Regular Hyper-geometric Estimator
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * @param valueScaler The Estimator Value Scaler
+	 * @param zTransformer The Z Transformation Function
+	 * 
+	 * @return Albinated Instance of Regular Hyper-geometric Estimator
+	 */
+
+	public abstract org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
+		final double a,
+		final double b,
+		final double c,
+		final org.drip.function.definition.R1ToR1 valueScaler,
+		final org.drip.function.definition.R1ToR1 zTransformer);
+
+	/**
+	 * Construct the Kummer24 Euler Transformation on 2F1
+	 * 
+	 * @return The Kummer24 Euler Transformation on 2F1
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinateEuler()
+	{
+		final double a = a();
+
+		final double b = b();
+
+		final double c = c();
+
+		return albinate (
+			c - a,
+			c - b,
+			c,
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					return java.lang.Math.pow (
+						1. - z,
+						c - a - b
+					);
+				}
+			},
+			null
+		);
+	}
+
+	/**
+	 * Construct the Kummer24 Pfaff First Transformation on 2F1
+	 * 
+	 * @return The Kummer24 Pfaff First Transformation on 2F1
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffFirst()
+	{
+		final double a = a();
+
+		final double c = c();
+
+		return albinate (
+			a,
+			c - b(),
+			c,
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					return java.lang.Math.pow (
+						1. - z,
+						-a
+					);
+				}
+			},
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					return z / (z - 1.);
+				}
+			}
+		);
+	}
+
+	/**
+	 * Construct the Kummer24 Pfaff Second Transformation on 2F1
+	 * 
+	 * @return The Kummer24 Pfaff Second Transformation on 2F1
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffSecond()
+	{
+		final double b = b();
+
+		final double c = c();
+
+		return albinate (
+			c - a(),
+			b,
+			c,
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					return java.lang.Math.pow (
+						1. - z,
+						-b
+					);
+				}
+			},
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					return z / (z - 1.);
+				}
+			}
+		);
+	}
 }

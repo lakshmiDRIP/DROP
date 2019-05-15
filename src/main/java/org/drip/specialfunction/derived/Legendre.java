@@ -64,8 +64,8 @@ package org.drip.specialfunction.derived;
  */
 
 /**
- * <i>KummerHypergeometricFunction</i> implements the Kummer's Confluent Hyper-geometric Function from the
- * 2F1 Hyper-geometric Function. The References are:
+ * <i>Legendre</i> implements the Legendre Function from the 2F1 Hyper-geometric Function. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,35 +102,50 @@ package org.drip.specialfunction.derived;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KummerHypergeometricFunction extends
-	org.drip.specialfunction.definition.ConfluentHypergeometricEstimator
+public class Legendre extends org.drip.specialfunction.definition.LegendreEstimator
 {
+	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
 	private org.drip.specialfunction.definition.RegularHypergeometricEstimator
 		_regularHypergeometricEstimator = null;
 
 	/**
-	 * KummerHypergeometricFunction Constructor
+	 * Legendre Constructor
 	 * 
-	 * @param regularHypergeometricEstimator Regular Hyper-geometric Estimator
+	 * @param alpha Alpha
+	 * @param ceta Ceta
+	 * @param logBetaEstimator Log Beta Estimator
+	 * @param quadratureCount Quadrature Count
+	 * @param gammaEstimator Gamma Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public KummerHypergeometricFunction (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+	public Legendre (
+		final double alpha,
+		final double ceta,
+		final org.drip.function.definition.R2ToR1 logBetaEstimator,
+		final int quadratureCount,
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
 		throws java.lang.Exception
 	{
 		super (
-			regularHypergeometricEstimator.a(),
-			regularHypergeometricEstimator.b(),
-			regularHypergeometricEstimator.c()
+			alpha,
+			ceta
 		);
 
-		if (null == (_regularHypergeometricEstimator = regularHypergeometricEstimator))
+		if (null == (_gammaEstimator = gammaEstimator))
 		{
-			throw new java.lang.Exception ("KummerHypergeometricFunction Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("Legendre Constructor => Invalid Inputs");
 		}
+
+		_regularHypergeometricEstimator = new
+			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+				super.a(),
+				super.b(),
+				super.c(),
+				logBetaEstimator,
+				quadratureCount
+			);
 	}
 
 	/**
@@ -145,10 +160,28 @@ public class KummerHypergeometricFunction extends
 		return _regularHypergeometricEstimator;
 	}
 
-	@Override public double confluentHypergeometric (
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return The Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	{
+		return _gammaEstimator;
+	}
+
+	@Override public double legendre (
 		final double z)
 		throws java.lang.Exception
 	{
-		return _regularHypergeometricEstimator.regularHypergeometric (z / b());
+		double c = c();
+
+		double z2F1 = 1. - 2. * z;
+
+		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * java.lang.Math.pow (
+			z2F1 / (1. - z2F1),
+			0.5 * (c - 1.)
+		) / _gammaEstimator.evaluate (c);
 	}
 }

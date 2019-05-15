@@ -141,6 +141,7 @@ public class R3ToR1Property extends org.drip.function.definition.RxToR1Property
 	 * 
 	 * @param x X
 	 * @param y Y
+	 * @param z Z
 	 * 
 	 * @return Results of the Verification
 	 */

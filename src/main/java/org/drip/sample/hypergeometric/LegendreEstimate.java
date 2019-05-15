@@ -7,7 +7,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
 import org.drip.specialfunction.definition.LegendreEstimator;
-import org.drip.specialfunction.derived.LegendreFunction;
+import org.drip.specialfunction.derived.Legendre;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /*
@@ -122,7 +122,7 @@ public class LegendreEstimate
 		final double[] zArray)
 		throws Exception
 	{
-		LegendreEstimator legendreEstimator = new LegendreFunction (
+		LegendreEstimator legendreEstimator = new Legendre (
 			alpha,
 			ceta,
 			logBetaEstimator,

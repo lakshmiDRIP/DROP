@@ -681,4 +681,43 @@ public class NumberUtil {
 
 		return pochhammerSymbol;
 	}
+
+	/**
+	 * Indicate if z is an Integer
+	 * 
+	 * @param z Z
+	 * 
+	 * @return TRUE - z is an Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean IsInteger (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("NumberUtil::IsInteger => Invalid Inputs");
+		}
+
+		return 0. == z - (int) z;
+	}
+
+	/**
+	 * Indicate if z is a Non-Positive Integer
+	 * 
+	 * @param z Z
+	 * 
+	 * @return TRUE - z is a Non-Positive Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean IsNonPositiveInteger (
+		final double z)
+		throws java.lang.Exception
+	{
+		return IsInteger (z) && z <= 0.;
+	}
 }

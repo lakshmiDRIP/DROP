@@ -102,7 +102,8 @@ package org.drip.specialfunction.hypergeometric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimator extends org.drip.specialfunction.definition.RegularHypergeometricEstimator
+public class EulerQuadratureEstimator extends
+	org.drip.specialfunction.definition.RegularHypergeometricEstimator
 {
 	private int _quadratureCount = -1;
 	private org.drip.function.definition.R2ToR1 _logBetaEstimator = null;
@@ -149,6 +150,17 @@ public class EulerQuadratureEstimator extends org.drip.specialfunction.definitio
 	public int quadratureCount()
 	{
 		return _quadratureCount;
+	}
+
+	/**
+	 * Retrieve the Log Beta Estimator
+	 * 
+	 * @return The Log Beta Estimator
+	 */
+
+	public org.drip.function.definition.R2ToR1 logBetaEstimator()
+	{
+		return _logBetaEstimator;
 	}
 
 	@Override public double regularHypergeometric (
@@ -210,5 +222,39 @@ public class EulerQuadratureEstimator extends org.drip.specialfunction.definitio
 			_logBetaEstimator,
 			_quadratureCount
 		).regularHypergeometric (z);
+	}
+
+	@Override public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
+		final double a,
+		final double b,
+		final double c,
+		final org.drip.function.definition.R1ToR1 valueScaler,
+		final org.drip.function.definition.R1ToR1 zTransformer)
+	{
+		try
+		{
+			return new EulerQuadratureEstimator (
+				a,
+				b,
+				c,
+				_logBetaEstimator,
+				_quadratureCount
+			)
+			{
+				@Override public double regularHypergeometric (
+					final double z)
+					throws java.lang.Exception
+				{
+					return (null == valueScaler ? 1. : valueScaler.evaluate (z)) *
+						super.regularHypergeometric (null == zTransformer ? z : zTransformer.evaluate (z));
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -6,7 +6,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
 import org.drip.specialfunction.definition.ConfluentHypergeometricEstimator;
-import org.drip.specialfunction.derived.KummerHypergeometricFunction;
+import org.drip.specialfunction.derived.Kummer;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /*
@@ -122,7 +122,7 @@ public class KummerConfluentEstimate
 		final double[] zArray)
 		throws Exception
 	{
-		ConfluentHypergeometricEstimator confluentHypergeometricEstimator = new KummerHypergeometricFunction (
+		ConfluentHypergeometricEstimator confluentHypergeometricEstimator = new Kummer (
 			new EulerQuadratureEstimator (
 				a,
 				b,

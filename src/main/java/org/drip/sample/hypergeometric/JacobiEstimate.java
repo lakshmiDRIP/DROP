@@ -6,7 +6,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
 import org.drip.specialfunction.definition.JacobiEstimator;
-import org.drip.specialfunction.derived.JacobiFunction;
+import org.drip.specialfunction.derived.Jacobi;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -120,7 +120,7 @@ public class JacobiEstimate
 		final double[] zArray)
 		throws Exception
 	{
-		JacobiEstimator jacobiEstimator = new JacobiFunction (
+		JacobiEstimator jacobiEstimator = new Jacobi (
 			alpha,
 			beta,
 			n,
