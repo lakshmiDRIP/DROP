@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.group;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>RegularSingularityIndependentSolution2F1</i> holds the Array of Linearly Independent Solutions to the
- * 2F1 Hyper-geometric Equation at the Singularities {0, 1, and INF}. The References are:
+ * <i>FundamentalGroupPathExponent2F1</i> holds the Exponents of the Monodromy Loop Paths around the Singular
+ * Points 0, 1, and Infinity. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,55 +95,73 @@ package org.drip.specialfunction.ode;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RegularSingularityIndependentSolution2F1
+public class FundamentalGroupPathExponent2F1
 {
+	private double _beta = java.lang.Double.NaN;
+	private double _alpha = java.lang.Double.NaN;
+	private double _gamma = java.lang.Double.NaN;
 
 	/**
-	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
+	 * FundamentalGroupPathExponent2F1 Constructor
 	 * 
-	 * @param regularHypergeometricEstimator 2F1 Regular Hyper-geometric Estimator
+	 * @param alpha Exponent corresponding to the Loop around 0
+	 * @param beta Exponent corresponding to the Loop around 1
+	 * @param gamma Exponent corresponding to the Loop around Infinity
 	 * 
-	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+	public FundamentalGroupPathExponent2F1 (
+		final double alpha,
+		final double beta,
+		final double gamma)
+		throws java.lang.Exception
 	{
-		if (null == regularHypergeometricEstimator)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_gamma = gamma))
 		{
-			return null;
+			throw new java.lang.Exception ("FundamentalGroupPathExponent2F1 Constructor => Invalid Inputs");
 		}
+	}
 
-		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-			regularSingularityIndependentSolution = new
-				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
+	/**
+	 * Retrieve the Exponent corresponding to the Loop around 0
+	 * 
+	 * @return Exponent corresponding to the Loop around 0
+	 */
 
-		regularSingularityIndependentSolution.add (
-			0.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
-				(regularHypergeometricEstimator)
-		);
+	public double alpha()
+	{
+		return _alpha;
+	}
 
-		regularSingularityIndependentSolution.add (
-			1.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
-				(regularHypergeometricEstimator)
-		);
+	/**
+	 * Retrieve the Exponent corresponding to the Loop around 1
+	 * 
+	 * @return Exponent corresponding to the Loop around 1
+	 */
 
-		regularSingularityIndependentSolution.add (
-			java.lang.Double.POSITIVE_INFINITY,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
-				(regularHypergeometricEstimator)
-		);
+	public double beta()
+	{
+		return _beta;
+	}
 
-		return regularSingularityIndependentSolution;
+	/**
+	 * Retrieve the Exponent corresponding to the Loop around Infinity
+	 * 
+	 * @return Exponent corresponding to the Loop around Infinity
+	 */
+
+	public double gamma()
+	{
+		return _gamma;
 	}
 }

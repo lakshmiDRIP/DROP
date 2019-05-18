@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.group;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>RegularSingularityIndependentSolution2F1</i> holds the Array of Linearly Independent Solutions to the
- * 2F1 Hyper-geometric Equation at the Singularities {0, 1, and INF}. The References are:
+ * <i>RiemannSphereSpanner</i> determines the Conformality and Tile Scheme of the Schwarz Singular Triangle
+ * Maps over the Riemann Sphere. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,55 +95,138 @@ package org.drip.specialfunction.ode;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RegularSingularityIndependentSolution2F1
+public class RiemannSphereSpanner
 {
 
 	/**
-	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
-	 * 
-	 * @param regularHypergeometricEstimator 2F1 Regular Hyper-geometric Estimator
-	 * 
-	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
+	 * Schwarz Triangle Tiles Nothing
 	 */
 
-	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+	public static final int SCHWARZ_TRIANGLE_TILES_NOTHING = 0;
+
+	/**
+	 * Schwarz Triangle Tiles the Riemann Sphere
+	 */
+
+	public static final int SCHWARZ_TRIANGLE_TILES_RIEMANN_SPHERE = 1;
+
+	/**
+	 * Schwarz Triangle Tiles the Complex Plane
+	 */
+
+	public static final int SCHWARZ_TRIANGLE_TILES_COMPLEX_PLANE = 2;
+
+	/**
+	 * Schwarz Triangle Tiles the Upper Half Plane
+	 */
+
+	public static final int SCHWARZ_TRIANGLE_TILES_UPPER_HALF_PLANE = 3;
+
+	private org.drip.specialfunction.group.SchwarzTriangleMap[] _schwarzTriangleMapArray = null;
+
+	/**
+	 * RiemannSphereSpanner Constructor
+	 * 
+	 * @param schwarzTriangleMapArray The Schwarz Triangle Map Array
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RiemannSphereSpanner (
+		final org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray)
+		throws java.lang.Exception
 	{
-		if (null == regularHypergeometricEstimator)
+		if (null == (_schwarzTriangleMapArray = schwarzTriangleMapArray))
 		{
-			return null;
+			throw new java.lang.Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
 		}
 
-		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-			regularSingularityIndependentSolution = new
-				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
+		int singularityCount = _schwarzTriangleMapArray.length;
 
-		regularSingularityIndependentSolution.add (
-			0.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
-				(regularHypergeometricEstimator)
-		);
+		if (0 == singularityCount)
+		{
+			throw new java.lang.Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
+		}
 
-		regularSingularityIndependentSolution.add (
-			1.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
-				(regularHypergeometricEstimator)
-		);
+		for (int singularityIndex = 0; singularityIndex < singularityCount; ++singularityIndex)
+		{
+			if (null == _schwarzTriangleMapArray[singularityCount])
+			{
+				throw new java.lang.Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
+			}
+		}
+	}
 
-		regularSingularityIndependentSolution.add (
-			java.lang.Double.POSITIVE_INFINITY,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
-				(regularHypergeometricEstimator)
-		);
+	/**
+	 * Retrieve the Schwarz Triangle Map Array
+	 * 
+	 * @return The Schwarz Triangle Map Array
+	 */
 
-		return regularSingularityIndependentSolution;
+	public org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray()
+	{
+		return _schwarzTriangleMapArray;
+	}
+
+	/**
+	 * Indicate if the Spanner is Conformal
+	 * 
+	 * @return TRUE - The Spanner is Conformal
+	 */
+
+	public boolean isConformal()
+	{
+		for (org.drip.specialfunction.group.SchwarzTriangleMap schwarzTriangleMap : _schwarzTriangleMapArray)
+		{
+			if (!schwarzTriangleMap.isConformal())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Indicate how the Schwarz Triangle Tiles the Riemann Sphere
+	 * 
+	 * @return Indicator of how the Schwarz Triangle Tiles the Riemann Sphere
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public int tileIndicator()
+		throws java.lang.Exception
+	{
+		double connectionCoefficientCumulative = 0.;
+		int singularityCount = _schwarzTriangleMapArray.length;
+
+		for (int singularityIndex = 0; singularityIndex < singularityCount; ++singularityIndex)
+		{
+			double connectionCoefficient =
+				_schwarzTriangleMapArray[singularityIndex].connectionCoefficient();
+
+			if (!org.drip.numerical.common.NumberUtil.IsInteger (1. / connectionCoefficient))
+			{
+				return SCHWARZ_TRIANGLE_TILES_NOTHING;
+			}
+
+			connectionCoefficientCumulative = connectionCoefficientCumulative + connectionCoefficient;
+		}
+
+		if (0. == connectionCoefficientCumulative)
+		{
+			return SCHWARZ_TRIANGLE_TILES_COMPLEX_PLANE;
+		}
+
+		return 0. > connectionCoefficientCumulative ? SCHWARZ_TRIANGLE_TILES_UPPER_HALF_PLANE :
+			SCHWARZ_TRIANGLE_TILES_COMPLEX_PLANE;
 	}
 }

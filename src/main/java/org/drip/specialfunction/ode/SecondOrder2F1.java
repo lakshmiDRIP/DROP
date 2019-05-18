@@ -64,8 +64,7 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>RegularSingularityIndependentSolution2F1</i> holds the Array of Linearly Independent Solutions to the
- * 2F1 Hyper-geometric Equation at the Singularities {0, 1, and INF}. The References are:
+ * <i>SecondOrder2F1</i> exposes the Coefficient Terms in the 2F1 Hyper-geometric ODE. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,48 +101,92 @@ package org.drip.specialfunction.ode;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RegularSingularityIndependentSolution2F1
+public class SecondOrder2F1
 {
 
 	/**
-	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
+	 * Construct the 2F1 Hyper-geometric Equation Second ODE
 	 * 
-	 * @param regularHypergeometricEstimator 2F1 Regular Hyper-geometric Estimator
+	 * @param a A
+	 * @param b B
+	 * @param c C
 	 * 
-	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
+	 * @return The 2F1 Hyper-geometric Equation Second ODE
 	 */
 
-	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+	public static final org.drip.specialfunction.ode.SecondOrder Create (
+		final double a,
+		final double b,
+		final double c)
 	{
-		if (null == regularHypergeometricEstimator)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (b) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (c))
 		{
 			return null;
 		}
 
-		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-			regularSingularityIndependentSolution = new
-				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
+		try
+		{
+			return new SecondOrder (
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (w))
+						{
+							throw new java.lang.Exception
+								("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
+						}
 
-		regularSingularityIndependentSolution.add (
-			0.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
-				(regularHypergeometricEstimator)
-		);
+						return z * (1. - z);
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (w))
+						{
+							throw new java.lang.Exception
+								("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
+						}
 
-		regularSingularityIndependentSolution.add (
-			1.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
-				(regularHypergeometricEstimator)
-		);
+						return c - z * (a + b + 1.);
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (w))
+						{
+							throw new java.lang.Exception
+								("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
+						}
 
-		regularSingularityIndependentSolution.add (
-			java.lang.Double.POSITIVE_INFINITY,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
-				(regularHypergeometricEstimator)
-		);
+						return a * b * w;
+					}
+				}
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		return regularSingularityIndependentSolution;
+		return null;
 	}
 }

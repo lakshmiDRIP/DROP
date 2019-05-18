@@ -215,13 +215,28 @@ public class EulerQuadratureEstimator extends
 		final int order)
 		throws java.lang.Exception
 	{
+		double a = a();
+
+		double b = b();
+
+		double c = c();
+
 		return new EulerQuadratureEstimator (
-			a() + order,
-			b() + order,
-			c() + order,
+			a + order,
+			b + order,
+			c + order,
 			_logBetaEstimator,
 			_quadratureCount
-		).regularHypergeometric (z);
+		).regularHypergeometric (z) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (
+			a,
+			order
+		) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (
+			b,
+			order
+		) / org.drip.numerical.common.NumberUtil.PochhammerSymbol (
+			c,
+			order
+		);
 	}
 
 	@Override public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (

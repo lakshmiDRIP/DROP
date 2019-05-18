@@ -1,5 +1,11 @@
 
-package org.drip.specialfunction.group;
+package org.drip.sample.hypergeometric;
+
+import org.drip.function.definition.R1PropertyVerification;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.property.GaussContiguousEqualityLemma;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +70,8 @@ package org.drip.specialfunction.group;
  */
 
 /**
- * <i>TileSpanner</i> determines the Conformality and Tile Scheme of the Schwarz Singular Triangle Maps. The
- * References are:
+ * <i>GaussContiguousProperty7</i> verifies the Gauss Contiguous Identity #7 Lemma for Hyper-geometric
+ * Functions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,25 +101,123 @@ package org.drip.specialfunction.group;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/hypergeometric/README.md">Estimates of Hyper-geometric Function</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TileSpanner
+public class GaussContiguousProperty7
 {
-	private org.drip.specialfunction.group.SchwarzTriangleMap[] _schwarzTriangleMapArray = null;
 
-	/**
-	 * Retrieve the Schwarz Triangle Map Array
-	 * 
-	 * @return The Schwarz Triangle Map Array
-	 */
-
-	public org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray()
+	private static final void Verifier (
+		final double a,
+		final double b,
+		final double c,
+		final double[] zArray,
+		final R1ToR1Property gaussContiguousProperty7)
+		throws Exception
 	{
-		return _schwarzTriangleMapArray;
+		System.out.println ("\t|----------------------------------------------||");
+
+		System.out.println ("\t|        GAUSS CONTIGUOUS PROPERTY #7          ||");
+
+		System.out.println ("\t|                  a = " + FormatUtil.FormatDouble (a, 1, 1, 1.));
+
+		System.out.println ("\t|                  b = " + FormatUtil.FormatDouble (b, 1, 1, 1.));
+
+		System.out.println ("\t|                  c = " + FormatUtil.FormatDouble (c, 1, 1, 1.));
+
+		System.out.println ("\t|----------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                               ||");
+
+		System.out.println ("\t|                - z                           ||");
+
+		System.out.println ("\t|                - LHS Value                   ||");
+
+		System.out.println ("\t|                - RHS Value                   ||");
+
+		System.out.println ("\t|                - Verification Success?       ||");
+
+		System.out.println ("\t|----------------------------------------------||");
+
+		for (double z : zArray)
+		{
+			R1PropertyVerification propertyVerification = gaussContiguousProperty7.verify (z);
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (z, 1, 2, 1.) + " => " +
+					FormatUtil.FormatDouble (propertyVerification.lValue(), 1, 10, 1.) + " | " +
+					FormatUtil.FormatDouble (propertyVerification.rValue(), 1, 10, 1.) + " | " +
+					propertyVerification.verified() + " ||"
+			);
+		}
+
+		System.out.println ("\t|----------------------------------------------||");
+
+		System.out.println();
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		double[] aArray =
+		{
+			1.,
+			2.,
+			3.,
+			4.,
+			5.,
+		};
+		double[] bArray =
+		{
+			3.,
+			4.,
+		};
+		double[] cArray =
+		{
+			5.,
+			6.,
+		};
+		double[] zArray =
+		{
+			-0.80,
+			-0.60,
+			-0.40,
+			-0.20,
+			 0.00,
+			 0.20,
+			 0.40,
+			 0.60,
+			 0.80
+		};
+
+		for (double a : aArray)
+		{
+			for (double b : bArray)
+			{
+				for (double c : cArray)
+				{
+					Verifier (
+						a,
+						b,
+						c,
+						zArray,
+						GaussContiguousEqualityLemma.RelationIdentity7 (
+							a,
+							b,
+							c
+						)
+					);
+				}
+			}
+		}
+
+		EnvManager.TerminateEnv();
 	}
 }

@@ -64,8 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>RegularSingularityIndependentSolution2F1</i> holds the Array of Linearly Independent Solutions to the
- * 2F1 Hyper-geometric Equation at the Singularities {0, 1, and INF}. The References are:
+ * <i>HilleQForm2F1</i> exposes the Coefficient Terms on the Q-form 2F1 Hyper-geometric ODE. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,48 +102,164 @@ package org.drip.specialfunction.ode;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RegularSingularityIndependentSolution2F1
+public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 {
+	private org.drip.function.definition.R1ToR1 _q = null;
+	private org.drip.function.definition.R1ToR1 _v = null;
 
 	/**
-	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
+	 * Construct the Hille Q-Form of 2F1 ODE
 	 * 
-	 * @param regularHypergeometricEstimator 2F1 Regular Hyper-geometric Estimator
+	 * @param a A
+	 * @param b B
+	 * @param c C
 	 * 
-	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
+	 * @return Hille Q-Form of 2F1 ODE
 	 */
 
-	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+	public static final HilleQForm2F1 Standard (
+		final double a,
+		final double b,
+		final double c)
 	{
-		if (null == regularHypergeometricEstimator)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (b) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (c))
 		{
 			return null;
 		}
 
-		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-			regularSingularityIndependentSolution = new
-				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
+		final org.drip.function.definition.R1ToR1 q = new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("HilleQForm2F1::Standard::q::evaluate => Invalid Inputs");
+				}
 
-		regularSingularityIndependentSolution.add (
-			0.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
-				(regularHypergeometricEstimator)
+				double aMinusB = a - b;
+				double zMinus1 = z - 1.;
+
+				return (z * z * (1. - aMinusB * aMinusB) + z * (2. * c * (a + b - 1.) - 4. * a * b) + c *
+					(2. - c)) / (4. * z * z * zMinus1 * zMinus1);
+			}
+		};
+
+		try
+		{
+			return new HilleQForm2F1 (
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double u)
+						throws java.lang.Exception
+					{
+						return 1.;
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						return 0.;
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double u)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (u))
+						{
+							throw new java.lang.Exception
+								("HilleQForm2F1::Standard::ZeroOrder::evaluate => Invalid Inputs");
+						}
+
+						return q.evaluate (z) * u;
+					}
+				},
+				q,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("HilleQForm2F1::Standard::v::evaluate => Invalid Inputs");
+						}
+
+						return java.lang.Math.pow (
+							z,
+							-0.5 * c
+						) * java.lang.Math.pow (
+							1. - z,
+							0.5 * (c - a - b - 1.)
+						);
+					}
+				}
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private HilleQForm2F1 (
+		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
+		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
+		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient,
+		final org.drip.function.definition.R1ToR1 q,
+		final org.drip.function.definition.R1ToR1 v)
+		throws java.lang.Exception
+	{
+		super (
+			secondDerivativeCoefficient,
+			firstDerivativeCoefficient,
+			zeroDerivativeCoefficient
 		);
 
-		regularSingularityIndependentSolution.add (
-			1.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
-				(regularHypergeometricEstimator)
-		);
+		if (null == (_q = q) ||
+			null == (_v = v))
+		{
+			throw new java.lang.Exception ("HilleQForm2F1 Constructor => Invalid Inputs");
+		}
+	}
 
-		regularSingularityIndependentSolution.add (
-			java.lang.Double.POSITIVE_INFINITY,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
-				(regularHypergeometricEstimator)
-		);
+	/**
+	 * Retrieve the Q Form Function
+	 * 
+	 * @return The Q Form Function
+	 */
 
-		return regularSingularityIndependentSolution;
+	public org.drip.function.definition.R1ToR1 q()
+	{
+		return _q;
+	}
+
+	/**
+	 * Retrieve the v Function
+	 * 
+	 * @return The v Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 v()
+	{
+		return _v;
 	}
 }

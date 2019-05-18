@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.hypergeometric;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>RegularSingularityIndependentSolution2F1</i> holds the Array of Linearly Independent Solutions to the
- * 2F1 Hyper-geometric Equation at the Singularities {0, 1, and INF}. The References are:
+ * <i>GaussContiguousRelations</i> holds the Gauss Contiguous 2F1 Relations of the Regular Hyper-geometric
+ * Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -95,55 +95,178 @@ package org.drip.specialfunction.ode;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Function</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RegularSingularityIndependentSolution2F1
+public class GaussContiguousRelations
 {
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlus = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bPlus = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cPlus = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aMinus = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bMinus = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cMinus = null;
+	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlusBPlusCPlus = null;
 
 	/**
-	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
+	 * GaussContiguousRelations Constructor
 	 * 
-	 * @param regularHypergeometricEstimator 2F1 Regular Hyper-geometric Estimator
+	 * @param regularHypergeometricEstimator The Regular Hyper-geometric Estimator
 	 * 
-	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
+	public GaussContiguousRelations (
 		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
 			regularHypergeometricEstimator)
+		throws java.lang.Exception
 	{
 		if (null == regularHypergeometricEstimator)
 		{
-			return null;
+			throw new java.lang.Exception ("GaussContiguousRelations Constructor => Invalid Inputs");
 		}
 
-		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-			regularSingularityIndependentSolution = new
-				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
+		double a = regularHypergeometricEstimator.a();
 
-		regularSingularityIndependentSolution.add (
-			0.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
-				(regularHypergeometricEstimator)
+		double b = regularHypergeometricEstimator.b();
+
+		double c = regularHypergeometricEstimator.c();
+
+		_aPlus = regularHypergeometricEstimator.albinate (
+			a + 1,
+			b,
+			c,
+			null,
+			null
 		);
 
-		regularSingularityIndependentSolution.add (
-			1.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
-				(regularHypergeometricEstimator)
+		_aMinus = regularHypergeometricEstimator.albinate (
+			a - 1,
+			b,
+			c,
+			null,
+			null
 		);
 
-		regularSingularityIndependentSolution.add (
-			java.lang.Double.POSITIVE_INFINITY,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
-				(regularHypergeometricEstimator)
+		_bPlus = regularHypergeometricEstimator.albinate (
+			a,
+			b + 1,
+			c,
+			null,
+			null
 		);
 
-		return regularSingularityIndependentSolution;
+		_bMinus = regularHypergeometricEstimator.albinate (
+			a,
+			b - 1,
+			c,
+			null,
+			null
+		);
+
+		_cPlus = regularHypergeometricEstimator.albinate (
+			a,
+			b,
+			c + 1,
+			null,
+			null
+		);
+
+		_cMinus = regularHypergeometricEstimator.albinate (
+			a,
+			b,
+			c - 1,
+			null,
+			null
+		);
+
+		_aPlusBPlusCPlus = regularHypergeometricEstimator.albinate (
+			a + 1,
+			b + 1,
+			c + 1,
+			null,
+			null
+		);
+	}
+
+	/**
+	 * Retrieve the a+ Gauss Contiguous Function
+	 * 
+	 * @return The a+ Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aPlus()
+	{
+		return _aPlus;
+	}
+
+	/**
+	 * Retrieve the a- Gauss Contiguous Function
+	 * 
+	 * @return The a- Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aMinus()
+	{
+		return _aMinus;
+	}
+
+	/**
+	 * Retrieve the b+ Gauss Contiguous Function
+	 * 
+	 * @return The b+ Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator bPlus()
+	{
+		return _bPlus;
+	}
+
+	/**
+	 * Retrieve the b- Gauss Contiguous Function
+	 * 
+	 * @return The b- Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator bMinus()
+	{
+		return _bMinus;
+	}
+
+	/**
+	 * Retrieve the c+ Gauss Contiguous Function
+	 * 
+	 * @return The c+ Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator cPlus()
+	{
+		return _cPlus;
+	}
+
+	/**
+	 * Retrieve the c- Gauss Contiguous Function
+	 * 
+	 * @return The c- Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator cMinus()
+	{
+		return _cMinus;
+	}
+
+	/**
+	 * Retrieve the a+b+c+ Gauss Contiguous Function
+	 * 
+	 * @return The a+b+c+ Gauss Contiguous Function
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aPlusBPlusCPlus()
+	{
+		return _aPlusBPlusCPlus;
 	}
 }
