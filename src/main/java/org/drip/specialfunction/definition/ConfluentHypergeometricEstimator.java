@@ -106,16 +106,10 @@ public abstract class ConfluentHypergeometricEstimator extends
 	org.drip.specialfunction.definition.HypergeometricEstimator
 {
 	protected ConfluentHypergeometricEstimator (
-		final double a,
-		final double b,
-		final double c)
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
 		throws java.lang.Exception
 	{
-		super (
-			a,
-			b,
-			c
-		);
+		super (hypergeometricParameters);
 	}
 
 	@Override public double evaluate (

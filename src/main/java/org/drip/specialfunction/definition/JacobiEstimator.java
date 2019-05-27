@@ -113,9 +113,11 @@ public abstract class JacobiEstimator extends org.drip.specialfunction.definitio
 		throws java.lang.Exception
 	{
 		super (
-			-n,
-			alpha + beta + n + 1.,
-			alpha + 1.
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				-n,
+				alpha + beta + n + 1.,
+				alpha + 1.
+			)
 		);
 
 		if (java.lang.Integer.MAX_VALUE == (_n = n))
@@ -132,7 +134,7 @@ public abstract class JacobiEstimator extends org.drip.specialfunction.definitio
 
 	public double alpha()
 	{
-		return c() - 1.;
+		return hypergeometricParameters().c() - 1.;
 	}
 
 	/**

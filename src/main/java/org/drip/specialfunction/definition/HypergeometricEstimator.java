@@ -104,56 +104,28 @@ package org.drip.specialfunction.definition;
 
 public abstract class HypergeometricEstimator extends org.drip.function.definition.R1ToR1
 {
-	private double _a = java.lang.Double.NaN;
-	private double _b = java.lang.Double.NaN;
-	private double _c = java.lang.Double.NaN;
+	private org.drip.specialfunction.definition.HypergeometricParameters _hypergeometricParameters = null;
 
 	protected HypergeometricEstimator (
-		final double a,
-		final double b,
-		final double c)
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_a = a) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) || _b < 0. ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_c = c) || _c < _b)
+		if (null == (_hypergeometricParameters = hypergeometricParameters))
 		{
 			throw new java.lang.Exception ("HypergeometricEstimator Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve a
+	 * Retrieve the Parameters Instance
 	 * 
-	 * @return a
+	 * @return The Parameters Instance
 	 */
 
-	public double a()
+	public org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters()
 	{
-		return _a;
-	}
-
-	/**
-	 * Retrieve b
-	 * 
-	 * @return b
-	 */
-
-	public double b()
-	{
-		return _b;
-	}
-
-	/**
-	 * Retrieve c
-	 * 
-	 * @return c
-	 */
-
-	public double c()
-	{
-		return _c;
+		return _hypergeometricParameters;
 	}
 }

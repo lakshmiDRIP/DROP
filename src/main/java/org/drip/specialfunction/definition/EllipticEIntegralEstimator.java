@@ -110,9 +110,11 @@ public abstract class EllipticEIntegralEstimator extends
 		throws java.lang.Exception
 	{
 		super (
-			-0.5,
-			 0.5,
-			 1.
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				-0.5,
+				 0.5,
+				 1.0
+			)
 		);
 	}
 

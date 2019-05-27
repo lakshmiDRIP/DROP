@@ -125,9 +125,7 @@ public class EllipticEIntegral extends org.drip.specialfunction.definition.Ellip
 
 		_regularHypergeometricEstimator = new
 			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-				super.a(),
-				super.b(),
-				super.c(),
+				hypergeometricParameters(),
 				logBetaEstimator,
 				quadratureCount
 			);

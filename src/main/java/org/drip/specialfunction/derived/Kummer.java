@@ -121,16 +121,9 @@ public class Kummer extends
 			regularHypergeometricEstimator)
 		throws java.lang.Exception
 	{
-		super (
-			regularHypergeometricEstimator.a(),
-			regularHypergeometricEstimator.b(),
-			regularHypergeometricEstimator.c()
-		);
+		super (regularHypergeometricEstimator.hypergeometricParameters());
 
-		if (null == (_regularHypergeometricEstimator = regularHypergeometricEstimator))
-		{
-			throw new java.lang.Exception ("Kummer Constructor => Invalid Inputs");
-		}
+		_regularHypergeometricEstimator = regularHypergeometricEstimator;
 	}
 
 	/**
@@ -149,6 +142,6 @@ public class Kummer extends
 		final double z)
 		throws java.lang.Exception
 	{
-		return _regularHypergeometricEstimator.regularHypergeometric (z / b());
+		return _regularHypergeometricEstimator.regularHypergeometric (z / hypergeometricParameters().b());
 	}
 }

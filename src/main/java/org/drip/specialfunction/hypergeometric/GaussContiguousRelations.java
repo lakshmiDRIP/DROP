@@ -130,67 +130,84 @@ public class GaussContiguousRelations
 			throw new java.lang.Exception ("GaussContiguousRelations Constructor => Invalid Inputs");
 		}
 
-		double a = regularHypergeometricEstimator.a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			regularHypergeometricEstimator.hypergeometricParameters();
 
-		double b = regularHypergeometricEstimator.b();
+		double a = hypergeometricParameters.a();
 
-		double c = regularHypergeometricEstimator.c();
+		double b = hypergeometricParameters.b();
+
+		double c = hypergeometricParameters.c();
 
 		_aPlus = regularHypergeometricEstimator.albinate (
-			a + 1,
-			b,
-			c,
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				a + 1,
+				b,
+				c
+			),
 			null,
 			null
 		);
 
 		_aMinus = regularHypergeometricEstimator.albinate (
-			a - 1,
-			b,
-			c,
-			null,
-			null
-		);
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+					a - 1,
+					b,
+					c
+				),
+				null,
+				null
+			);
 
 		_bPlus = regularHypergeometricEstimator.albinate (
-			a,
-			b + 1,
-			c,
-			null,
-			null
-		);
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+					a,
+					b + 1,
+					c
+				),
+				null,
+				null
+			);
 
 		_bMinus = regularHypergeometricEstimator.albinate (
-			a,
-			b - 1,
-			c,
-			null,
-			null
-		);
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+					a,
+					b - 1,
+					c
+				),
+				null,
+				null
+			);
 
 		_cPlus = regularHypergeometricEstimator.albinate (
-			a,
-			b,
-			c + 1,
-			null,
-			null
-		);
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+					a,
+					b,
+					c + 1
+				),
+				null,
+				null
+			);
 
 		_cMinus = regularHypergeometricEstimator.albinate (
-			a,
-			b,
-			c - 1,
-			null,
-			null
-		);
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+					a,
+					b,
+					c - 1
+				),
+				null,
+				null
+			);
 
 		_aPlusBPlusCPlus = regularHypergeometricEstimator.albinate (
-			a + 1,
-			b + 1,
-			c + 1,
-			null,
-			null
-		);
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+					a + 1,
+					b + 1,
+					c + 1
+				),
+				null,
+				null
+			);
 	}
 
 	/**

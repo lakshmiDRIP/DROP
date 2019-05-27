@@ -140,9 +140,7 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 
 		_regularHypergeometricEstimator = new
 			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-				super.a(),
-				super.b(),
-				super.c(),
+				hypergeometricParameters(),
 				logBetaEstimator,
 				quadratureCount
 			);
@@ -175,7 +173,7 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 		final double z)
 		throws java.lang.Exception
 	{
-		double c = c();
+		double c = hypergeometricParameters().c();
 
 		double z2F1 = 1. - 2. * z;
 

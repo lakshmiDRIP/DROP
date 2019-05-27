@@ -107,16 +107,10 @@ public abstract class RegularHypergeometricEstimator extends
 {
 
 	protected RegularHypergeometricEstimator (
-		final double a,
-		final double b,
-		final double c)
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
 		throws java.lang.Exception
 	{
-		super (
-			a,
-			b,
-			c
-		);
+		super (hypergeometricParameters);
 	}
 
 	@Override public double evaluate (
@@ -143,9 +137,7 @@ public abstract class RegularHypergeometricEstimator extends
 	/**
 	 * Albinate (i.e., Clone + Mutate) an Instance of Regular Hyper-geometric Estimator
 	 * 
-	 * @param a A
-	 * @param b B
-	 * @param c C
+	 * @param hypergeometricParametersAlbinate The Albination Hyper-geometric Parameters
 	 * @param valueScaler The Estimator Value Scaler
 	 * @param zTransformer The Z Transformation Function
 	 * 
@@ -153,9 +145,7 @@ public abstract class RegularHypergeometricEstimator extends
 	 */
 
 	public abstract org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
-		final double a,
-		final double b,
-		final double c,
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParametersAlbinate,
 		final org.drip.function.definition.R1ToR1 valueScaler,
 		final org.drip.function.definition.R1ToR1 zTransformer);
 
@@ -167,30 +157,44 @@ public abstract class RegularHypergeometricEstimator extends
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinateEuler()
 	{
-		final double a = a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			hypergeometricParameters();
 
-		final double b = b();
+		final double a = hypergeometricParameters.a();
 
-		final double c = c();
+		final double b = hypergeometricParameters.b();
 
-		return albinate (
-			c - a,
-			c - b,
-			c,
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
+		final double c = hypergeometricParameters.c();
+
+		try
+		{
+			return albinate (
+				new org.drip.specialfunction.definition.HypergeometricParameters (
+					c - a,
+					c - b,
+					c
+				),
+				new org.drip.function.definition.R1ToR1 (null)
 				{
-					return java.lang.Math.pow (
-						1. - z,
-						c - a - b
-					);
-				}
-			},
-			null
-		);
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return java.lang.Math.pow (
+							1. - z,
+							c - a - b
+						);
+					}
+				},
+				null
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -201,36 +205,50 @@ public abstract class RegularHypergeometricEstimator extends
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffFirst()
 	{
-		final double a = a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			hypergeometricParameters();
 
-		final double c = c();
+		final double a = hypergeometricParameters.a();
 
-		return albinate (
-			a,
-			c - b(),
-			c,
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
+		final double c = hypergeometricParameters.c();
+
+		try
+		{
+			return albinate (
+				new org.drip.specialfunction.definition.HypergeometricParameters (
+					a,
+					c - hypergeometricParameters.b(),
+					c
+				),
+				new org.drip.function.definition.R1ToR1 (null)
 				{
-					return java.lang.Math.pow (
-						1. - z,
-						-a
-					);
-				}
-			},
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return java.lang.Math.pow (
+							1. - z,
+							-a
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
 				{
-					return z / (z - 1.);
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return z / (z - 1.);
+					}
 				}
-			}
-		);
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -241,35 +259,48 @@ public abstract class RegularHypergeometricEstimator extends
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffSecond()
 	{
-		final double b = b();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			hypergeometricParameters();
 
-		final double c = c();
+		final double b = hypergeometricParameters.b();
 
-		return albinate (
-			c - a(),
-			b,
-			c,
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
+		final double c = hypergeometricParameters.c();
+
+		try {
+			return albinate (
+				new org.drip.specialfunction.definition.HypergeometricParameters (
+					c - hypergeometricParameters.a(),
+					b,
+					c
+				),
+				new org.drip.function.definition.R1ToR1 (null)
 				{
-					return java.lang.Math.pow (
-						1. - z,
-						-b
-					);
-				}
-			},
-			new org.drip.function.definition.R1ToR1 (null)
-			{
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return java.lang.Math.pow (
+							1. - z,
+							-b
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
 				{
-					return z / (z - 1.);
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return z / (z - 1.);
+					}
 				}
-			}
-		);
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

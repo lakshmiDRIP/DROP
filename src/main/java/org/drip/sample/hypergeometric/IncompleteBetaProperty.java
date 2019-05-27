@@ -162,25 +162,25 @@ public class IncompleteBetaProperty
 			 0.99,
 		};
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------||");
 
-		System.out.println ("\t|                  INCOMPLETE BETA PROPERTY VERIFIER                ||");
+		System.out.println ("\t|               INCOMPLETE BETA PROPERTY VERIFIER             ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                                    ||");
+		System.out.println ("\t|        L -> R:                                              ||");
 
-		System.out.println ("\t|                - p                                                ||");
+		System.out.println ("\t|                - p                                          ||");
 
-		System.out.println ("\t|                - q                                                ||");
+		System.out.println ("\t|                - q                                          ||");
 
-		System.out.println ("\t|                - LHS                                              ||");
+		System.out.println ("\t|                - LHS                                        ||");
 
-		System.out.println ("\t|                - RHS                                              ||");
+		System.out.println ("\t|                - RHS                                        ||");
 
-		System.out.println ("\t|                - Verified?                                        ||");
+		System.out.println ("\t|                - Verified?                                  ||");
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------||");
 
 		for (double p : pArray)
 		{
@@ -198,7 +198,7 @@ public class IncompleteBetaProperty
 			}
 		}
 
-		System.out.println ("\t|-------------------------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

@@ -5,6 +5,7 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /*
@@ -121,9 +122,11 @@ public class EulerQuadratureEstimate
 		throws Exception
 	{
 		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (
-			a,
-			b,
-			c,
+			new HypergeometricParameters (
+				a,
+				b,
+				c
+			),
 			logBetaEstimator,
 			quadratureCount
 		);

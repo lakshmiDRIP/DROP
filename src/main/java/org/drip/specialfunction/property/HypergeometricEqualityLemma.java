@@ -157,18 +157,22 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					a + 1,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						a + 1
+					),
 					logBetaEstimator,
 					10000
 				);
 
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					b,
-					a,
-					a + 1,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						b,
+						a,
+						a + 1
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -235,9 +239,11 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					a + 1,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						a + 1
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -301,9 +307,11 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					1.,
-					1.,
-					2.,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						1.,
+						1.,
+						2.
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -362,9 +370,11 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					1.,
-					1.,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						1.,
+						1.
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -423,9 +433,11 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					0.5,
-					0.5,
-					1.5,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						0.5,
+						0.5,
+						1.5
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -486,18 +498,22 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					2. * b,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						2. * b
+					),
 					logBetaEstimator,
 					100000
 				);
 
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					0.5 * a,
-					b - 0.5 * a,
-					b + 0.5,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						0.5 * a,
+						b - 0.5 * a,
+						b + 0.5
+					),
 					logBetaEstimator,
 					100000
 				);
@@ -561,18 +577,22 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					1.5 * a,
-					1.5 * a - 0.5,
-					a + 0.5,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						1.5 * a,
+						1.5 * a - 0.5,
+						a + 0.5
+					),
 					logBetaEstimator,
 					100000
 				);
 
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a - (1. / 3.),
-					a,
-					2. * a,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a - (1. / 3.),
+						a,
+						2. * a
+					),
 					logBetaEstimator,
 					100000
 				);
@@ -635,18 +655,22 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					0.25,
-					0.375,
-					0.875,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						0.25,
+						0.375,
+						0.875
+					),
 					logBetaEstimator,
 					100000
 				);
 
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					1./ 48.,
-					17. / 48.,
-					0.875,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						1./ 48.,
+						17. / 48.,
+						0.875
+					),
 					logBetaEstimator,
 					100000
 				);
@@ -725,9 +749,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							a,
-							b,
-							c,
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								a,
+								b,
+								c
+							),
 							logBetaEstimator,
 							100000
 						).regularHypergeometric (1.);
@@ -786,9 +812,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							-m,
-							b,
-							c,
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								-m,
+								b,
+								c
+							),
 							logBetaEstimator,
 							100000
 						).regularHypergeometric (1.);
@@ -853,9 +881,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							a,
-							b,
-							1. + a - b,
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								a,
+								b,
+								1. + a - b
+							),
 							logBetaEstimator,
 							100000
 						).regularHypergeometric (-1.);
@@ -916,9 +946,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							a,
-							b,
-							0.5 * (1. + a + b),
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								a,
+								b,
+								0.5 * (1. + a + b)
+							),
 							logBetaEstimator,
 							100000
 						).regularHypergeometric (0.5);
@@ -980,9 +1012,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							a,
-							1. - a,
-							c,
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								a,
+								1. - a,
+								c
+							),
 							logBetaEstimator,
 							100000
 						).regularHypergeometric (0.5);
@@ -1041,9 +1075,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							a,
-							-1. * a,
-							0.5,
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								a,
+								-1. * a,
+								0.5
+							),
 							logBetaEstimator,
 							1000000
 						).regularHypergeometric (0.25 * z * z / (z - 1.));
@@ -1106,9 +1142,11 @@ public class HypergeometricEqualityLemma
 						throws java.lang.Exception
 					{
 						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-							a,
-							-1. * a,
-							0.5,
+							new org.drip.specialfunction.definition.HypergeometricParameters (
+								a,
+								-1. * a,
+								0.5
+							),
 							logBetaEstimator,
 							1000000
 						).regularHypergeometric (0.5 * (1. - java.lang.Math.cos (z)));
@@ -1162,18 +1200,22 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					10000
 				);
 
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a + 1,
-					b,
-					c + 1,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a + 1,
+						b,
+						c + 1
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -1230,7 +1272,7 @@ public class HypergeometricEqualityLemma
 		final double q)
 	{
 		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
 
 		if (null == logBetaEstimator)
 		{
@@ -1244,9 +1286,11 @@ public class HypergeometricEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					p,
-					1. - q,
-					p + 1.,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						p,
+						1. - q,
+						p + 1.
+					),
 					logBetaEstimator,
 					10000
 				);

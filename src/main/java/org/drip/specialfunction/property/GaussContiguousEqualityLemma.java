@@ -132,9 +132,11 @@ public class GaussContiguousEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -208,9 +210,11 @@ public class GaussContiguousEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					10000
 				);
@@ -284,9 +288,11 @@ public class GaussContiguousEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					100000
 				);
@@ -360,9 +366,11 @@ public class GaussContiguousEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					100000
 				);
@@ -436,9 +444,11 @@ public class GaussContiguousEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					100000
 				);
@@ -512,9 +522,11 @@ public class GaussContiguousEqualityLemma
 		{
 			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
 				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					a,
-					b,
-					c,
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
 					logBetaEstimator,
 					100000
 				);

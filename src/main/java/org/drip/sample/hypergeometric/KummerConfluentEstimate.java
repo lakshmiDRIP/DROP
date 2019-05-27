@@ -6,6 +6,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
 import org.drip.specialfunction.definition.ConfluentHypergeometricEstimator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
 import org.drip.specialfunction.derived.Kummer;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
@@ -124,9 +125,11 @@ public class KummerConfluentEstimate
 	{
 		ConfluentHypergeometricEstimator confluentHypergeometricEstimator = new Kummer (
 			new EulerQuadratureEstimator (
-				a,
-				b,
-				c,
+				new HypergeometricParameters (
+					a,
+					b,
+					c
+				),
 				logBetaEstimator,
 				quadratureCount
 			)

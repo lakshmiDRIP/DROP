@@ -111,9 +111,7 @@ public class EulerQuadratureEstimator extends
 	/**
 	 * EulerQuadratureEstimator Constructor
 	 * 
-	 * @param a A
-	 * @param b B
-	 * @param c C
+	 * @param hypergeometricParameters Hyper-geometric Parameters
 	 * @param logBetaEstimator Log Beta Estimator
 	 * @param quadratureCount Count of the Integrand Quadrature
 	 * 
@@ -121,18 +119,12 @@ public class EulerQuadratureEstimator extends
 	 */
 
 	public EulerQuadratureEstimator (
-		final double a,
-		final double b,
-		final double c,
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters,
 		final org.drip.function.definition.R2ToR1 logBetaEstimator,
 		final int quadratureCount)
 		throws java.lang.Exception
 	{
-		super (
-			a,
-			b,
-			c
-		);
+		super (hypergeometricParameters);
 
 		if (null == (_logBetaEstimator = logBetaEstimator) ||
 			0 >= (_quadratureCount = quadratureCount))
@@ -172,11 +164,14 @@ public class EulerQuadratureEstimator extends
 			throw new java.lang.Exception ("EulerQuadratureEstimator::regularHypergeometric => Invalid Inputs");
 		}
 
-		final double a = a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			hypergeometricParameters();
 
-		final double b = b();
+		final double a = hypergeometricParameters.a();
 
-		final double c = c();
+		final double b = hypergeometricParameters.b();
+
+		final double c = hypergeometricParameters.c();
 
 		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
 			0.,
@@ -215,16 +210,21 @@ public class EulerQuadratureEstimator extends
 		final int order)
 		throws java.lang.Exception
 	{
-		double a = a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			hypergeometricParameters();
 
-		double b = b();
+		double a = hypergeometricParameters.a();
 
-		double c = c();
+		double b = hypergeometricParameters.b();
+
+		double c = hypergeometricParameters.c();
 
 		return new EulerQuadratureEstimator (
-			a + order,
-			b + order,
-			c + order,
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				a + order,
+				b + order,
+				c + order
+			),
 			_logBetaEstimator,
 			_quadratureCount
 		).regularHypergeometric (z) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (
@@ -240,18 +240,14 @@ public class EulerQuadratureEstimator extends
 	}
 
 	@Override public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
-		final double a,
-		final double b,
-		final double c,
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParametersAlbinate,
 		final org.drip.function.definition.R1ToR1 valueScaler,
 		final org.drip.function.definition.R1ToR1 zTransformer)
 	{
 		try
 		{
 			return new EulerQuadratureEstimator (
-				a,
-				b,
-				c,
+				hypergeometricParametersAlbinate,
 				_logBetaEstimator,
 				_quadratureCount
 			)

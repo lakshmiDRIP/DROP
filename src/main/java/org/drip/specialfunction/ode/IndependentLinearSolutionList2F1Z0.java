@@ -122,11 +122,14 @@ public class IndependentLinearSolutionList2F1Z0
 			return null;
 		}
 
-		final double a = regularHypergeometricEstimator.a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			regularHypergeometricEstimator.hypergeometricParameters();
 
-		final double b = regularHypergeometricEstimator.b();
+		final double a = hypergeometricParameters.a();
 
-		final double c = regularHypergeometricEstimator.c();
+		final double b = hypergeometricParameters.b();
+
+		final double c = hypergeometricParameters.c();
 
 		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList2F1Z0 = new
 			org.drip.specialfunction.ode.IndependentLinearSolutionList();
@@ -146,9 +149,11 @@ public class IndependentLinearSolutionList2F1Z0
 			{
 				if (!independentLinearSolutionList2F1Z0.add (
 					regularHypergeometricEstimator.albinate (
-						a + oneMinusC,
-						b + oneMinusC,
-						1. + oneMinusC,
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							a + oneMinusC,
+							b + oneMinusC,
+							1. + oneMinusC
+						),
 						new org.drip.function.definition.R1ToR1 (null)
 						{
 							@Override public double evaluate (
@@ -172,9 +177,11 @@ public class IndependentLinearSolutionList2F1Z0
 			if (org.drip.numerical.common.NumberUtil.IsInteger (c) ||
 				!independentLinearSolutionList2F1Z0.add (
 					regularHypergeometricEstimator.albinate (
-						1. + a - c,
-						1. + b - c,
-						2. - c,
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							1. + a - c,
+							1. + b - c,
+							2. - c
+						),
 						new org.drip.function.definition.R1ToR1 (null)
 						{
 							@Override public double evaluate (

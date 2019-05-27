@@ -122,11 +122,14 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 			return null;
 		}
 
-		final double a = regularHypergeometricEstimator.a();
+		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+			regularHypergeometricEstimator.hypergeometricParameters();
 
-		final double b = regularHypergeometricEstimator.b();
+		final double a = hypergeometricParameters.a();
 
-		final double c = regularHypergeometricEstimator.c();
+		final double b = hypergeometricParameters.b();
+
+		final double c = hypergeometricParameters.c();
 
 		try
 		{
@@ -134,9 +137,11 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 				new org.drip.function.definition.R1ToR1[]
 				{
 					regularHypergeometricEstimator.albinate (
-						a,
-						c - b,
-						c,
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							a,
+							c - b,
+							c
+						),
 						new org.drip.function.definition.R1ToR1 (null)
 						{
 							@Override public double evaluate (
@@ -160,9 +165,11 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 						}
 					),
 					regularHypergeometricEstimator.albinate (
-						a,
-						b,
-						1. + a + b - c,
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							a,
+							b,
+							1. + a + b - c
+						),
 						null,
 						new org.drip.function.definition.R1ToR1 (null)
 						{
@@ -175,9 +182,11 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 						}
 					),
 					regularHypergeometricEstimator.albinate (
-						c - a,
-						b,
-						c,
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							c - a,
+							b,
+							c
+						),
 						new org.drip.function.definition.R1ToR1 (null)
 						{
 							@Override public double evaluate (
@@ -219,9 +228,9 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	}
 
 	/**
-	 * Generate the Transposition (12) under the FUchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * Generate the Transposition (12) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 * 
-	 * @return The Transposition (12) under the FUchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * @return The Transposition (12) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 */
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition12()
@@ -231,9 +240,9 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	}
 
 	/**
-	 * Generate the Transposition (23) under the FUchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * Generate the Transposition (23) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 * 
-	 * @return The Transposition (23) under the FUchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * @return The Transposition (23) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 */
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition23()
@@ -243,9 +252,9 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	}
 
 	/**
-	 * Generate the Transposition (34) under the FUchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * Generate the Transposition (34) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 * 
-	 * @return The Transposition (34) under the FUchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * @return The Transposition (34) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 */
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition34()
