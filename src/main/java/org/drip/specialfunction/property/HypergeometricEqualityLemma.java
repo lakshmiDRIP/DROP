@@ -105,6 +105,33 @@ package org.drip.specialfunction.property;
 public class HypergeometricEqualityLemma
 {
 
+	private static final double RecursiveGaussContinedFraction (
+		final double a,
+		final double b,
+		final double c,
+		final double z,
+		final int termCurrent,
+		final int termCount)
+	{
+		if (termCurrent == termCount)
+		{
+			return 1.;
+		}
+
+		double gaussContinedFraction = 1. + ((b - c - termCurrent - 1.) * (a + termCurrent) /
+			((c + termCurrent + 1.) * (c + termCurrent + 2.))) * z / RecursiveGaussContinedFraction (
+				a,
+				b,
+				c,
+				z,
+				termCurrent + 1,
+				termCount
+			);
+
+		return 1. + (a - c - termCurrent) * (b + termCurrent) /
+			((c + termCurrent) * (c + termCurrent + 1)) * z / gaussContinedFraction;
+	}
+
 	/**
 	 * Construct the First-Order Derivative Switch Verifier
 	 * 
@@ -652,6 +679,602 @@ public class HypergeometricEqualityLemma
 								z * z * z * z - 60. * z * z * z + 134. * z * z - 60. * z + 1.,
 								-3.
 							)
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Gauss Van der Monde z = +1 Verifier
+	 * 
+	 * @return The Gauss Van der Monde z = +1 Verifier
+	 */
+
+	public static final org.drip.function.definition.R3ToR1Property GaussVanderMondeZPlusOne()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =
+			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
+
+		try
+		{
+			return new org.drip.function.definition.R3ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R3ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double b,
+						final double c)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							a,
+							b,
+							c,
+							logBetaEstimator,
+							100000
+						).regularHypergeometric (1.);
+					}
+				},
+				new org.drip.function.definition.R3ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double b,
+						final double c)
+						throws java.lang.Exception
+					{
+						return gammaEstimator.evaluate (c) * gammaEstimator.evaluate (c - a - b) / (
+							gammaEstimator.evaluate (c - a) * gammaEstimator.evaluate (c - b)
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Gauss-Dougall z = +1 Verifier
+	 * 
+	 * @return The Gauss-Dougall z = +1 Verifier
+	 */
+
+	public static final org.drip.function.definition.R3ToR1Property GaussDougallZPlusOne()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.function.definition.R3ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R3ToR1()
+				{
+					@Override public double evaluate (
+						final double m,
+						final double b,
+						final double c)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							-m,
+							b,
+							c,
+							logBetaEstimator,
+							100000
+						).regularHypergeometric (1.);
+					}
+				},
+				new org.drip.function.definition.R3ToR1()
+				{
+					@Override public double evaluate (
+						final double m,
+						final double b,
+						final double c)
+						throws java.lang.Exception
+					{
+						return org.drip.numerical.common.NumberUtil.PochhammerSymbol (
+							c - b,
+							(int) m
+						) / org.drip.numerical.common.NumberUtil.PochhammerSymbol (
+							c,
+							(int) m
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Gauss Kummer z = -1 Verifier
+	 * 
+	 * @return The Gauss Kummer z = -1 Verifier
+	 */
+
+	public static final org.drip.function.definition.R2ToR1Property GaussKummerZMinusOne()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =
+			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
+
+		try
+		{
+			return new org.drip.function.definition.R2ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double b)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							a,
+							b,
+							1. + a - b,
+							logBetaEstimator,
+							100000
+						).regularHypergeometric (-1.);
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double b)
+						throws java.lang.Exception
+					{
+						return gammaEstimator.evaluate (1. + a - b) * gammaEstimator.evaluate (1. + 0.5 * a)
+						/ (
+							gammaEstimator.evaluate (1. + a) * gammaEstimator.evaluate (1. + 0.5 * a - b)
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Gauss Second Summation z = 0.5 Verifier
+	 * 
+	 * @return The Gauss Second Summation z = 0.5 Verifier
+	 */
+
+	public static final org.drip.function.definition.R2ToR1Property GaussSecondSummationZPlusHalf()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =
+			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
+
+		try
+		{
+			return new org.drip.function.definition.R2ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double b)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							a,
+							b,
+							0.5 * (1. + a + b),
+							logBetaEstimator,
+							100000
+						).regularHypergeometric (0.5);
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double b)
+						throws java.lang.Exception
+					{
+						return gammaEstimator.evaluate (0.5) * gammaEstimator.evaluate (0.5 * (1. + a + b)) /
+						(
+							gammaEstimator.evaluate (0.5 * (1. + a)) *
+							gammaEstimator.evaluate (0.5 * (1. + b))
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Gauss Bailey z = +0.5 Verifier
+	 * 
+	 * @return The Gauss Bailey z = +0.5 Verifier
+	 */
+
+	public static final org.drip.function.definition.R2ToR1Property GaussBaileyZPlusHalf()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.gamma.WindschitlTothAnalytic gammaEstimator =
+			new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null);
+
+		try
+		{
+			return new org.drip.function.definition.R2ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double c)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							a,
+							1. - a,
+							c,
+							logBetaEstimator,
+							100000
+						).regularHypergeometric (0.5);
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double c)
+						throws java.lang.Exception
+					{
+						return gammaEstimator.evaluate (0.5 * c) * gammaEstimator.evaluate (0.5 * (1. + c)) /
+						(
+							gammaEstimator.evaluate (0.5 * (c + a)) *
+							gammaEstimator.evaluate (0.5 * (1. + c - a))
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the First Gessel Stanton Koepf Rational Z Verifier
+	 * 
+	 * @return The First Gessel Stanton Koepf Rational Z Verifier
+	 */
+
+	public static final org.drip.function.definition.R2ToR1Property FirstGesselStantonKoepf()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (100000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.function.definition.R2ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double z)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							a,
+							-1. * a,
+							0.5,
+							logBetaEstimator,
+							1000000
+						).regularHypergeometric (0.25 * z * z / (z - 1.));
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double z)
+						throws java.lang.Exception
+					{
+						return 0.5 * (
+							java.lang.Math.pow (
+								1. - z,
+								a
+							) + java.lang.Math.pow (
+								1. - z,
+								-a
+							)
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Second Gessel Stanton Koepf Rational Z Verifier
+	 * 
+	 * @return The Second Gessel Stanton Koepf Rational Z Verifier
+	 */
+
+	public static final org.drip.function.definition.R2ToR1Property SecondGesselStantonKoepf()
+	{
+		final org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (100000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		try
+		{
+			return new org.drip.function.definition.R2ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double z)
+						throws java.lang.Exception
+					{
+						return new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+							a,
+							-1. * a,
+							0.5,
+							logBetaEstimator,
+							1000000
+						).regularHypergeometric (0.5 * (1. - java.lang.Math.cos (z)));
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double a,
+						final double z)
+						throws java.lang.Exception
+					{
+						return java.lang.Math.cos (a * z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Gauss Continued Fraction Recursive Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Gauss Continued Fraction Recursive Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property GaussContinuedFractionRecursive (
+		final double a,
+		final double b,
+		final double c)
+	{
+		org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		try
+		{
+			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator1 =
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					a,
+					b,
+					c,
+					logBetaEstimator,
+					10000
+				);
+
+			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator2 =
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					a + 1,
+					b,
+					c + 1,
+					logBetaEstimator,
+					10000
+				);
+
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return hypergeometricEstimator2.evaluate (z) / hypergeometricEstimator1.evaluate (z);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return 1. / RecursiveGaussContinedFraction (
+							a,
+							b,
+							c,
+							z,
+							0,
+							10
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Incomplete Beta Verifier
+	 * 
+	 * @param p P
+	 * @param q Q
+	 * 
+	 * @return The Incomplete Beta Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property IncompleteBeta (
+		final double p,
+		final double q)
+	{
+		org.drip.function.definition.R2ToR1 logBetaEstimator =
+			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);
+
+		if (null == logBetaEstimator)
+		{
+			return null;
+		}
+
+		final org.drip.specialfunction.beta.IncompleteIntegrandEstimator incompleteBetaEstimator =
+			org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (10000);
+
+		try
+		{
+			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					p,
+					1. - q,
+					p + 1.,
+					logBetaEstimator,
+					10000
+				);
+
+			return new org.drip.function.definition.R1ToR1Property (
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return java.lang.Math.pow (
+							z,
+							p
+						) * hypergeometricEstimator.evaluate (z) / p;
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+						return incompleteBetaEstimator.evaluate (
+							z,
+							p,
+							q
 						);
 					}
 				},
