@@ -122,101 +122,108 @@ package org.drip.specialfunction.ode;
 <span class="nc" id="L122">			return null;</span>
 		}
 
-<span class="nc" id="L125">		final double a = regularHypergeometricEstimator.a();</span>
+<span class="nc" id="L125">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L126">			regularHypergeometricEstimator.hypergeometricParameters();</span>
 
-<span class="nc" id="L127">		final double b = regularHypergeometricEstimator.b();</span>
+<span class="nc" id="L128">		final double a = hypergeometricParameters.a();</span>
 
-<span class="nc" id="L129">		final double c = regularHypergeometricEstimator.c();</span>
+<span class="nc" id="L130">		final double b = hypergeometricParameters.b();</span>
+
+<span class="nc" id="L132">		final double c = hypergeometricParameters.c();</span>
 
 		try
 		{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsInteger (a - b))</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			if (org.drip.numerical.common.NumberUtil.IsInteger (a - b))</span>
 			{
-<span class="nc" id="L135">				return null;</span>
+<span class="nc" id="L138">				return null;</span>
 			}
 		}
-<span class="nc" id="L138">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L141">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L140">			e.printStackTrace();</span>
+<span class="nc" id="L143">			e.printStackTrace();</span>
 
-<span class="nc" id="L142">			return null;</span>
-<span class="nc" id="L143">		}</span>
+<span class="nc" id="L145">			return null;</span>
+<span class="nc" id="L146">		}</span>
 
-<span class="nc" id="L145">		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList2F1ZInfinity</span>
+<span class="nc" id="L148">		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList2F1ZInfinity</span>
 			= new org.drip.specialfunction.ode.IndependentLinearSolutionList();
 
 		try
 		{
-<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1ZInfinity.add (</span>
-<span class="nc" id="L151">				regularHypergeometricEstimator.albinate (</span>
-					b,
-					1. + b + c,
-					1. + b - a,
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1ZInfinity.add (</span>
+<span class="nc" id="L154">				regularHypergeometricEstimator.albinate (</span>
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						b,
+						1. + b + c,
+						1. + b - a
+					),
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L156">					{</span>
+<span class="nc" id="L161">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L161">							return java.lang.Math.pow (</span>
+<span class="nc" id="L166">							return java.lang.Math.pow (</span>
 								z,
 								-b
 							);
 						}
 					},
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L168">					{</span>
+<span class="nc" id="L173">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L173">							return 1. / z;</span>
+<span class="nc" id="L178">							return 1. / z;</span>
 						}
 					}
 				)
 			))
 			{
-<span class="nc" id="L179">				return null;</span>
+<span class="nc" id="L184">				return null;</span>
 			}
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1ZInfinity.add (</span>
-<span class="nc" id="L183">				regularHypergeometricEstimator.albinate (</span>
-					a,
-					1. + a - c,
-					1. + a - b,
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (!independentLinearSolutionList2F1ZInfinity.add (</span>
+<span class="nc" id="L188">				regularHypergeometricEstimator.albinate (</span>
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						1. + a - c,
+						1. + a - b
+					),
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L188">					{</span>
+<span class="nc" id="L195">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L193">							return java.lang.Math.pow (</span>
+<span class="nc" id="L200">							return java.lang.Math.pow (</span>
 								z,
 								-a
 							);
 						}
 					},
 					new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L200">					{</span>
+<span class="nc" id="L207">					{</span>
 						@Override public double evaluate (
 							final double z)
 							throws java.lang.Exception
 						{
-<span class="nc" id="L205">							return 1. / z;</span>
+<span class="nc" id="L212">							return 1. / z;</span>
 						}
 					}
 				)
 			))
 			{
-<span class="nc" id="L211">				return null;</span>
+<span class="nc" id="L218">				return null;</span>
 			}
 		}
-<span class="nc" id="L214">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L216">			e.printStackTrace();</span>
-<span class="nc" id="L217">		}</span>
+<span class="nc" id="L223">			e.printStackTrace();</span>
+<span class="nc" id="L224">		}</span>
 
-<span class="nc" id="L219">		return independentLinearSolutionList2F1ZInfinity;</span>
+<span class="nc" id="L226">		return independentLinearSolutionList2F1ZInfinity;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

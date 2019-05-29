@@ -111,9 +111,7 @@ public class EulerQuadratureEstimator extends
 	/**
 	 * EulerQuadratureEstimator Constructor
 	 * 
-	 * @param a A
-	 * @param b B
-	 * @param c C
+	 * @param hypergeometricParameters Hyper-geometric Parameters
 	 * @param logBetaEstimator Log Beta Estimator
 	 * @param quadratureCount Count of the Integrand Quadrature
 	 * 
@@ -121,25 +119,19 @@ public class EulerQuadratureEstimator extends
 	 */
 
 	public EulerQuadratureEstimator (
-		final double a,
-		final double b,
-		final double c,
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters,
 		final org.drip.function.definition.R2ToR1 logBetaEstimator,
 		final int quadratureCount)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L131">		super (</span>
-			a,
-			b,
-			c
-		);
+<span class="nc" id="L127">		super (hypergeometricParameters);</span>
 
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (null == (_logBetaEstimator = logBetaEstimator) ||</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_logBetaEstimator = logBetaEstimator) ||</span>
 			0 &gt;= (_quadratureCount = quadratureCount))
 		{
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;EulerQuadratureEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;EulerQuadratureEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L142">	}</span>
+<span class="nc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the Quadrature Count
@@ -149,7 +141,7 @@ public class EulerQuadratureEstimator extends
 
 	public int quadratureCount()
 	{
-<span class="nc" id="L152">		return _quadratureCount;</span>
+<span class="nc" id="L144">		return _quadratureCount;</span>
 	}
 
 	/**
@@ -160,50 +152,53 @@ public class EulerQuadratureEstimator extends
 
 	public org.drip.function.definition.R2ToR1 logBetaEstimator()
 	{
-<span class="nc" id="L163">		return _logBetaEstimator;</span>
+<span class="nc" id="L155">		return _logBetaEstimator;</span>
 	}
 
 	@Override public double regularHypergeometric (
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L170" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z &lt; -1. || z &gt; 1.)</span>
+<span class="nc bnc" id="L162" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z &lt; -1. || z &gt; 1.)</span>
 		{
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;EulerQuadratureEstimator::regularHypergeometric =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L164">			throw new java.lang.Exception (&quot;EulerQuadratureEstimator::regularHypergeometric =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L175">		final double a = a();</span>
+<span class="nc" id="L167">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L168">			hypergeometricParameters();</span>
 
-<span class="nc" id="L177">		final double b = b();</span>
+<span class="nc" id="L170">		final double a = hypergeometricParameters.a();</span>
 
-<span class="nc" id="L179">		final double c = c();</span>
+<span class="nc" id="L172">		final double b = hypergeometricParameters.b();</span>
 
-<span class="nc" id="L181">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (</span>
+<span class="nc" id="L174">		final double c = hypergeometricParameters.c();</span>
+
+<span class="nc" id="L176">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (</span>
 			0.,
 			1.,
 			_quadratureCount
-<span class="nc" id="L185">		).integrate (</span>
+<span class="nc" id="L180">		).integrate (</span>
 			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L187">			{</span>
+<span class="nc" id="L182">			{</span>
 				@Override public double evaluate (
 					final double t)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L192" title="All 4 branches missed.">					return 0. == t || 1. == t ? 0. :</span>
-<span class="nc" id="L193">						java.lang.Math.pow (</span>
+<span class="nc bnc" id="L187" title="All 4 branches missed.">					return 0. == t || 1. == t ? 0. :</span>
+<span class="nc" id="L188">						java.lang.Math.pow (</span>
 							t,
 							b - 1.
-<span class="nc" id="L196">						) * java.lang.Math.pow (</span>
+<span class="nc" id="L191">						) * java.lang.Math.pow (</span>
 							1. - t,
 							c - b - 1.
-<span class="nc" id="L199">						) * java.lang.Math.pow (</span>
+<span class="nc" id="L194">						) * java.lang.Math.pow (</span>
 							1. - z * t,
 							-a
 						);
 				}
 			}
-<span class="nc" id="L205">		) * java.lang.Math.exp (</span>
-<span class="nc" id="L206">		-1. * _logBetaEstimator.evaluate (</span>
+<span class="nc" id="L200">		) * java.lang.Math.exp (</span>
+<span class="nc" id="L201">		-1. * _logBetaEstimator.evaluate (</span>
 				b,
 				c - b
 			)
@@ -215,47 +210,63 @@ public class EulerQuadratureEstimator extends
 		final int order)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L218">		return new EulerQuadratureEstimator (</span>
-<span class="nc" id="L219">			a() + order,</span>
-<span class="nc" id="L220">			b() + order,</span>
-<span class="nc" id="L221">			c() + order,</span>
+<span class="nc" id="L213">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L214">			hypergeometricParameters();</span>
+
+<span class="nc" id="L216">		double a = hypergeometricParameters.a();</span>
+
+<span class="nc" id="L218">		double b = hypergeometricParameters.b();</span>
+
+<span class="nc" id="L220">		double c = hypergeometricParameters.c();</span>
+
+<span class="nc" id="L222">		return new EulerQuadratureEstimator (</span>
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				a + order,
+				b + order,
+				c + order
+			),
 			_logBetaEstimator,
 			_quadratureCount
-<span class="nc" id="L224">		).regularHypergeometric (z);</span>
+<span class="nc" id="L230">		).regularHypergeometric (z) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
+			a,
+			order
+<span class="nc" id="L233">		) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
+			b,
+			order
+<span class="nc" id="L236">		) / org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
+			c,
+			order
+		);
 	}
 
 	@Override public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
-		final double a,
-		final double b,
-		final double c,
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParametersAlbinate,
 		final org.drip.function.definition.R1ToR1 valueScaler,
 		final org.drip.function.definition.R1ToR1 zTransformer)
 	{
 		try
 		{
-<span class="nc" id="L236">			return new EulerQuadratureEstimator (</span>
-				a,
-				b,
-				c,
+<span class="nc" id="L249">			return new EulerQuadratureEstimator (</span>
+				hypergeometricParametersAlbinate,
 				_logBetaEstimator,
 				_quadratureCount
 			)
-<span class="nc" id="L243">			{</span>
+<span class="nc" id="L254">			{</span>
 				@Override public double regularHypergeometric (
 					final double z)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L248" title="All 4 branches missed.">					return (null == valueScaler ? 1. : valueScaler.evaluate (z)) *</span>
-<span class="nc" id="L249">						super.regularHypergeometric (null == zTransformer ? z : zTransformer.evaluate (z));</span>
+<span class="nc bnc" id="L259" title="All 4 branches missed.">					return (null == valueScaler ? 1. : valueScaler.evaluate (z)) *</span>
+<span class="nc" id="L260">						super.regularHypergeometric (null == zTransformer ? z : zTransformer.evaluate (z));</span>
 				}
 			};
 		}
-<span class="nc" id="L253">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L264">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L255">			e.printStackTrace();</span>
+<span class="nc" id="L266">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L258">		return null;</span>
+<span class="nc" id="L269">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

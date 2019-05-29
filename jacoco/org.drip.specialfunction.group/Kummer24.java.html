@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Kummer24.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.group</a> &gt; <span class="el_source">Kummer24.java</span></div><h1>Kummer24.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.group;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;Kummer24&lt;/i&gt; contains the Isomorphic Klein-4 Group of the Transformations built out of the Solutions
+ * emanating from the Singularities of the Hyper-geometric 2F1 Function. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series &lt;i&gt;SIAM Journal
+ * 				on Mathematical Analysis&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 295-308
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation &lt;i&gt;Journal of Symbolic
+ * 				Computation&lt;/i&gt; &lt;b&gt;20 (4)&lt;/b&gt; 399-417
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
+ * 				Sum of a (_2^3)F(a,b;c;z) &lt;i&gt;Journal of Computational and Applied Mathematics&lt;/i&gt; &lt;b&gt;72&lt;/b&gt;
+ * 				293-300
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
+ * 				https://dlmf.nist.gov/15
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md&quot;&gt;Special Function Singularity Solution Group&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
+{
+
+	/**
+	 * Construct the Kummer24 Isomorphic Array Version of the Fuchsian Equation
+	 * 
+	 * @param regularHypergeometricEstimator The Regular Hyper-geometric Estimator
+	 * 
+	 * @return The Kummer24 Isomorphic Array Version of the Fuchsian Equation
+	 */
+
+	public static final Kummer24 Standard (
+		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+			regularHypergeometricEstimator)
+	{
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == regularHypergeometricEstimator)</span>
+		{
+<span class="nc" id="L122">			return null;</span>
+		}
+
+<span class="nc" id="L125">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L126">			regularHypergeometricEstimator.hypergeometricParameters();</span>
+
+<span class="nc" id="L128">		final double a = hypergeometricParameters.a();</span>
+
+<span class="nc" id="L130">		final double b = hypergeometricParameters.b();</span>
+
+<span class="nc" id="L132">		final double c = hypergeometricParameters.c();</span>
+
+		try
+		{
+<span class="nc" id="L136">			return new Kummer24 (</span>
+				new org.drip.function.definition.R1ToR1[]
+				{
+<span class="nc" id="L139">					regularHypergeometricEstimator.albinate (</span>
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							a,
+							c - b,
+							c
+						),
+						new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L146">						{</span>
+							@Override public double evaluate (
+								final double z)
+								throws java.lang.Exception
+							{
+<span class="nc" id="L151">								return java.lang.Math.pow (</span>
+									1. - z,
+									-a
+								);
+							}
+						},
+						new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L158">						{</span>
+							@Override public double evaluate (
+								final double z)
+								throws java.lang.Exception
+							{
+<span class="nc" id="L163">								return z / (z - 1.);</span>
+							}
+						}
+					),
+<span class="nc" id="L167">					regularHypergeometricEstimator.albinate (</span>
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							a,
+							b,
+							1. + a + b - c
+						),
+						null,
+						new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L175">						{</span>
+							@Override public double evaluate (
+								final double z)
+								throws java.lang.Exception
+							{
+<span class="nc" id="L180">								return 1. - z;</span>
+							}
+						}
+					),
+<span class="nc" id="L184">					regularHypergeometricEstimator.albinate (</span>
+						new org.drip.specialfunction.definition.HypergeometricParameters (
+							c - a,
+							b,
+							c
+						),
+						new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L191">						{</span>
+							@Override public double evaluate (
+								final double z)
+								throws java.lang.Exception
+							{
+<span class="nc" id="L196">								return java.lang.Math.pow (</span>
+									1. - z,
+									-b
+								);
+							}
+						},
+						new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L203">						{</span>
+							@Override public double evaluate (
+								final double z)
+								throws java.lang.Exception
+							{
+<span class="nc" id="L208">								return z / (z - 1.);</span>
+							}
+						}
+					),
+				}
+			);
+		}
+<span class="nc" id="L215">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L217">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L220">		return null;</span>
+	}
+
+	protected Kummer24 (
+		final org.drip.function.definition.R1ToR1[] kleinGroupFunctionArray)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L227">		super (kleinGroupFunctionArray);</span>
+<span class="nc" id="L228">	}</span>
+
+	/**
+	 * Generate the Transposition (12) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * 
+	 * @return The Transposition (12) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition12()
+	{
+<span class="nc" id="L238">		return (org.drip.specialfunction.definition.RegularHypergeometricEstimator)</span>
+<span class="nc" id="L239">			kleinGroupFunctionArray()[0];</span>
+	}
+
+	/**
+	 * Generate the Transposition (23) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * 
+	 * @return The Transposition (23) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition23()
+	{
+<span class="nc" id="L250">		return (org.drip.specialfunction.definition.RegularHypergeometricEstimator)</span>
+<span class="nc" id="L251">			kleinGroupFunctionArray()[1];</span>
+	}
+
+	/**
+	 * Generate the Transposition (34) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 * 
+	 * @return The Transposition (34) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
+	 */
+
+	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition34()
+	{
+<span class="nc" id="L262">		return (org.drip.specialfunction.definition.RegularHypergeometricEstimator)</span>
+<span class="nc" id="L263">			kleinGroupFunctionArray()[2];</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

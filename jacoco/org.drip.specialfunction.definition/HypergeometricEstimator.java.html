@@ -104,57 +104,29 @@ package org.drip.specialfunction.definition;
 
 public abstract class HypergeometricEstimator extends org.drip.function.definition.R1ToR1
 {
-<span class="nc" id="L107">	private double _a = java.lang.Double.NaN;</span>
-<span class="nc" id="L108">	private double _b = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _c = java.lang.Double.NaN;</span>
+<span class="nc" id="L107">	private org.drip.specialfunction.definition.HypergeometricParameters _hypergeometricParameters = null;</span>
 
 	protected HypergeometricEstimator (
-		final double a,
-		final double b,
-		final double c)
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L117">		super (null);</span>
+<span class="nc" id="L113">		super (null);</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_a = a) ||</span>
-<span class="nc bnc" id="L120" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) || _b &lt; 0. ||</span>
-<span class="nc bnc" id="L121" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_c = c) || _c &lt; _b)</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (null == (_hypergeometricParameters = hypergeometricParameters))</span>
 		{
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;HypergeometricEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;HypergeometricEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L125">	}</span>
+<span class="nc" id="L119">	}</span>
 
 	/**
-	 * Retrieve a
+	 * Retrieve the Parameters Instance
 	 * 
-	 * @return a
+	 * @return The Parameters Instance
 	 */
 
-	public double a()
+	public org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters()
 	{
-<span class="nc" id="L135">		return _a;</span>
-	}
-
-	/**
-	 * Retrieve b
-	 * 
-	 * @return b
-	 */
-
-	public double b()
-	{
-<span class="nc" id="L146">		return _b;</span>
-	}
-
-	/**
-	 * Retrieve c
-	 * 
-	 * @return c
-	 */
-
-	public double c()
-	{
-<span class="nc" id="L157">		return _c;</span>
+<span class="nc" id="L129">		return _hypergeometricParameters;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

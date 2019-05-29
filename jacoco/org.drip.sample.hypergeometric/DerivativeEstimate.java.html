@@ -5,6 +5,7 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
 /*
@@ -108,7 +109,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L111">public class DerivativeEstimate</span>
+<span class="nc" id="L112">public class DerivativeEstimate</span>
 {
 
 	private static final void Hypergeometric (
@@ -121,58 +122,60 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 		final int[] derivativeOrderArray)
 		throws Exception
 	{
-<span class="nc" id="L124">		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (</span>
-			a,
-			b,
-			c,
+<span class="nc" id="L125">		EulerQuadratureEstimator eulerQuadratureEstimator = new EulerQuadratureEstimator (</span>
+			new HypergeometricParameters (
+				a,
+				b,
+				c
+			),
 			logBetaEstimator,
 			quadratureCount
 		);
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (double z : zArray)</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (double z : zArray)</span>
 		{
-<span class="nc" id="L134">			String display = &quot;\t| {a=&quot; +</span>
-<span class="nc" id="L135">				FormatUtil.FormatDouble (a, 1, 2, 1., false) + &quot;, b=&quot; +</span>
-<span class="nc" id="L136">				FormatUtil.FormatDouble (b, 1, 2, 1., false) + &quot;; c=&quot; +</span>
-<span class="nc" id="L137">				FormatUtil.FormatDouble (c, 1, 2, 1., false) + &quot;; z=&quot; +</span>
-<span class="nc" id="L138">				FormatUtil.FormatDouble (z, 1, 2, 1.) + &quot;} =&gt; &quot;;</span>
+<span class="nc" id="L137">			String display = &quot;\t| {a=&quot; +</span>
+<span class="nc" id="L138">				FormatUtil.FormatDouble (a, 1, 2, 1., false) + &quot;, b=&quot; +</span>
+<span class="nc" id="L139">				FormatUtil.FormatDouble (b, 1, 2, 1., false) + &quot;; c=&quot; +</span>
+<span class="nc" id="L140">				FormatUtil.FormatDouble (c, 1, 2, 1., false) + &quot;; z=&quot; +</span>
+<span class="nc" id="L141">				FormatUtil.FormatDouble (z, 1, 2, 1.) + &quot;} =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			for (int derivativeOrder : derivativeOrderArray)</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			for (int derivativeOrder : derivativeOrderArray)</span>
 			{
-<span class="nc" id="L142">				display = display + FormatUtil.FormatDouble (</span>
-<span class="nc" id="L143">					eulerQuadratureEstimator.derivative (</span>
+<span class="nc" id="L145">				display = display + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L146">					eulerQuadratureEstimator.derivative (</span>
 						z,
 						derivativeOrder
 					), 2, 10, 1.
 				) + &quot; |&quot;;
 			}
 
-<span class="nc" id="L150">			System.out.println (display + &quot;|&quot;);</span>
+<span class="nc" id="L153">			System.out.println (display + &quot;|&quot;);</span>
 		}
-<span class="nc" id="L152">	}</span>
+<span class="nc" id="L155">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L158">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L161">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L160">		double[] aArray =</span>
+<span class="nc" id="L163">		double[] aArray =</span>
 		{
 			1.,
 			2.,
 		};
-<span class="nc" id="L165">		double[] bArray =</span>
+<span class="nc" id="L168">		double[] bArray =</span>
 		{
 			3.,
 			4.,
 		};
-<span class="nc" id="L170">		double[] cArray =</span>
+<span class="nc" id="L173">		double[] cArray =</span>
 		{
 			5.,
 			6.,
 		};
-<span class="nc" id="L175">		double[] zArray =</span>
+<span class="nc" id="L178">		double[] zArray =</span>
 		{
 			-1.00,
 			-0.75,
@@ -184,44 +187,44 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			 0.75,
 			 1.00
 		};
-<span class="nc" id="L187">		int[] derivativeOrderArray =</span>
+<span class="nc" id="L190">		int[] derivativeOrderArray =</span>
 		{
 			1,
 			2,
 			3,
 		};
-<span class="nc" id="L193">		int logBetaTermCount = 1000;</span>
-<span class="nc" id="L194">		int hypergeometricQuadratureCount = 10000;</span>
+<span class="nc" id="L196">		int logBetaTermCount = 1000;</span>
+<span class="nc" id="L197">		int hypergeometricQuadratureCount = 10000;</span>
 
-<span class="nc" id="L196">		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);</span>
+<span class="nc" id="L199">		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);</span>
 
-<span class="nc" id="L198">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L201">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L200">		System.out.println (&quot;\t|                HYPER-GEOMETRIC FUNCTION EULER QUADRATURE DERIVATIVE                 ||&quot;);</span>
+<span class="nc" id="L203">		System.out.println (&quot;\t|                HYPER-GEOMETRIC FUNCTION EULER QUADRATURE DERIVATIVE                 ||&quot;);</span>
 
-<span class="nc" id="L202">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L204">		System.out.println (&quot;\t|        L -&gt; R:                                                                      ||&quot;);</span>
+<span class="nc" id="L207">		System.out.println (&quot;\t|        L -&gt; R:                                                                      ||&quot;);</span>
 
-<span class="nc" id="L206">		System.out.println (&quot;\t|                - a                                                                  ||&quot;);</span>
+<span class="nc" id="L209">		System.out.println (&quot;\t|                - a                                                                  ||&quot;);</span>
 
-<span class="nc" id="L208">		System.out.println (&quot;\t|                - b                                                                  ||&quot;);</span>
+<span class="nc" id="L211">		System.out.println (&quot;\t|                - b                                                                  ||&quot;);</span>
 
-<span class="nc" id="L210">		System.out.println (&quot;\t|                - c                                                                  ||&quot;);</span>
+<span class="nc" id="L213">		System.out.println (&quot;\t|                - c                                                                  ||&quot;);</span>
 
-<span class="nc" id="L212">		System.out.println (&quot;\t|                - z                                                                  ||&quot;);</span>
+<span class="nc" id="L215">		System.out.println (&quot;\t|                - z                                                                  ||&quot;);</span>
 
-<span class="nc" id="L214">		System.out.println (&quot;\t|                - Derivatives                                                        ||&quot;);</span>
+<span class="nc" id="L217">		System.out.println (&quot;\t|                - Derivatives                                                        ||&quot;);</span>
 
-<span class="nc" id="L216">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L219">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (double a : aArray)</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		for (double a : aArray)</span>
 		{
-<span class="nc bnc" id="L220" title="All 2 branches missed.">			for (double b : bArray)</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">			for (double b : bArray)</span>
 			{
-<span class="nc bnc" id="L222" title="All 2 branches missed.">				for (double c : cArray)</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">				for (double c : cArray)</span>
 				{
-<span class="nc" id="L224">					Hypergeometric (</span>
+<span class="nc" id="L227">					Hypergeometric (</span>
 						a,
 						b,
 						c,
@@ -234,9 +237,9 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			}
 		}
 
-<span class="nc" id="L237">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L240">		System.out.println (&quot;\t|-------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L239">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L240">	}</span>
+<span class="nc" id="L242">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L243">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

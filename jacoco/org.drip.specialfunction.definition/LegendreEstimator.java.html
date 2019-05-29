@@ -111,11 +111,13 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 		throws java.lang.Exception
 	{
 <span class="nc" id="L113">		super (</span>
-			-1. * alpha,
-			1. + alpha,
-			1. - ceta
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				-1. * alpha,
+				1. + alpha,
+				1. - ceta
+			)
 		);
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L120">	}</span>
 
 	/**
 	 * Retrieve Legendre Alpha
@@ -125,7 +127,7 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 
 	public double alpha()
 	{
-<span class="nc" id="L128">		return -1. * a();</span>
+<span class="nc" id="L130">		return -1. * hypergeometricParameters().a();</span>
 	}
 
 	/**
@@ -136,14 +138,14 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 
 	public double ceta()
 	{
-<span class="nc" id="L139">		return 1. - c();</span>
+<span class="nc" id="L141">		return 1. - hypergeometricParameters().c();</span>
 	}
 
 	@Override public double evaluate (
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L146">		return legendre (z);</span>
+<span class="nc" id="L148">		return legendre (z);</span>
 	}
 
 	/**

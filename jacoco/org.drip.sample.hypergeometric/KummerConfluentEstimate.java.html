@@ -6,6 +6,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
 import org.drip.specialfunction.definition.ConfluentHypergeometricEstimator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
 import org.drip.specialfunction.derived.Kummer;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
@@ -110,7 +111,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L113">public class KummerConfluentEstimate</span>
+<span class="nc" id="L114">public class KummerConfluentEstimate</span>
 {
 
 	private static final void ConfluentHypergeometric (
@@ -122,45 +123,47 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 		final double[] zArray)
 		throws Exception
 	{
-<span class="nc" id="L125">		ConfluentHypergeometricEstimator confluentHypergeometricEstimator = new Kummer (</span>
+<span class="nc" id="L126">		ConfluentHypergeometricEstimator confluentHypergeometricEstimator = new Kummer (</span>
 			new EulerQuadratureEstimator (
-				a,
-				b,
-				c,
+				new HypergeometricParameters (
+					a,
+					b,
+					c
+				),
 				logBetaEstimator,
 				quadratureCount
 			)
 		);
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (double z : zArray)</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (double z : zArray)</span>
 		{
-<span class="nc" id="L137">			System.out.println (&quot;\t| {a=&quot; +</span>
-<span class="nc" id="L138">				FormatUtil.FormatDouble (a, 1, 2, 1., false) + &quot;, b=&quot; +</span>
-<span class="nc" id="L139">				FormatUtil.FormatDouble (b, 2, 2, 1., false) + &quot;; c=&quot; +</span>
-<span class="nc" id="L140">				FormatUtil.FormatDouble (c, 2, 2, 1., false) + &quot;; z=&quot; +</span>
-<span class="nc" id="L141">				FormatUtil.FormatDouble (z, 1, 2, 1.) + &quot;} =&gt; &quot; +</span>
-<span class="nc" id="L142">				FormatUtil.FormatDouble (confluentHypergeometricEstimator.evaluate (z), 1, 10, 1., false) + &quot; ||&quot;</span>
+<span class="nc" id="L140">			System.out.println (&quot;\t| {a=&quot; +</span>
+<span class="nc" id="L141">				FormatUtil.FormatDouble (a, 1, 2, 1., false) + &quot;, b=&quot; +</span>
+<span class="nc" id="L142">				FormatUtil.FormatDouble (b, 2, 2, 1., false) + &quot;; c=&quot; +</span>
+<span class="nc" id="L143">				FormatUtil.FormatDouble (c, 2, 2, 1., false) + &quot;; z=&quot; +</span>
+<span class="nc" id="L144">				FormatUtil.FormatDouble (z, 1, 2, 1.) + &quot;} =&gt; &quot; +</span>
+<span class="nc" id="L145">				FormatUtil.FormatDouble (confluentHypergeometricEstimator.evaluate (z), 1, 10, 1., false) + &quot; ||&quot;</span>
 			);
 		}
-<span class="nc" id="L145">	}</span>
+<span class="nc" id="L148">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L151">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L154">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L153">		double[] aArray =</span>
+<span class="nc" id="L156">		double[] aArray =</span>
 		{
 			1.,
 			2.,
 		};
-<span class="nc" id="L158">		double[] cArray =</span>
+<span class="nc" id="L161">		double[] cArray =</span>
 		{
 			15.,
 			16.,
 		};
-<span class="nc" id="L163">		double[] cMinusBArray =</span>
+<span class="nc" id="L166">		double[] cMinusBArray =</span>
 		{
 			1.,
 			2.,
@@ -169,7 +172,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			5.,
 			6.
 		};
-<span class="nc" id="L172">		double[] zArray =</span>
+<span class="nc" id="L175">		double[] zArray =</span>
 		{
 			-1.00,
 			-0.75,
@@ -181,38 +184,38 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			 0.75,
 			 1.00
 		};
-<span class="nc" id="L184">		int logBetaTermCount = 1000;</span>
-<span class="nc" id="L185">		int hypergeometricQuadratureCount = 10000;</span>
+<span class="nc" id="L187">		int logBetaTermCount = 1000;</span>
+<span class="nc" id="L188">		int hypergeometricQuadratureCount = 10000;</span>
 
-<span class="nc" id="L187">		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);</span>
+<span class="nc" id="L190">		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);</span>
 
-<span class="nc" id="L189">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L192">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L191">		System.out.println (&quot;\t| KUMMER CONFLUENT HYPER-GEOMETRIC FUNCTION ESTIMATE  ||&quot;);</span>
+<span class="nc" id="L194">		System.out.println (&quot;\t| KUMMER CONFLUENT HYPER-GEOMETRIC FUNCTION ESTIMATE  ||&quot;);</span>
 
-<span class="nc" id="L193">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L196">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L195">		System.out.println (&quot;\t|        L -&gt; R:                                      ||&quot;);</span>
+<span class="nc" id="L198">		System.out.println (&quot;\t|        L -&gt; R:                                      ||&quot;);</span>
 
-<span class="nc" id="L197">		System.out.println (&quot;\t|                - a                                  ||&quot;);</span>
+<span class="nc" id="L200">		System.out.println (&quot;\t|                - a                                  ||&quot;);</span>
 
-<span class="nc" id="L199">		System.out.println (&quot;\t|                - b                                  ||&quot;);</span>
+<span class="nc" id="L202">		System.out.println (&quot;\t|                - b                                  ||&quot;);</span>
 
-<span class="nc" id="L201">		System.out.println (&quot;\t|                - c Minus b                          ||&quot;);</span>
+<span class="nc" id="L204">		System.out.println (&quot;\t|                - c Minus b                          ||&quot;);</span>
 
-<span class="nc" id="L203">		System.out.println (&quot;\t|                - z                                  ||&quot;);</span>
+<span class="nc" id="L206">		System.out.println (&quot;\t|                - z                                  ||&quot;);</span>
 
-<span class="nc" id="L205">		System.out.println (&quot;\t|                - Estimate                           ||&quot;);</span>
+<span class="nc" id="L208">		System.out.println (&quot;\t|                - Estimate                           ||&quot;);</span>
 
-<span class="nc" id="L207">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L210">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">		for (double a : aArray)</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		for (double a : aArray)</span>
 		{
-<span class="nc bnc" id="L211" title="All 2 branches missed.">			for (double cMinusB : cMinusBArray)</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			for (double cMinusB : cMinusBArray)</span>
 			{
-<span class="nc bnc" id="L213" title="All 2 branches missed.">				for (double c : cArray)</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">				for (double c : cArray)</span>
 				{
-<span class="nc" id="L215">					ConfluentHypergeometric (</span>
+<span class="nc" id="L218">					ConfluentHypergeometric (</span>
 						a,
 						c - cMinusB,
 						c,
@@ -224,9 +227,9 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			}
 		}
 
-<span class="nc" id="L227">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
+<span class="nc" id="L230">		System.out.println (&quot;\t|-----------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L229">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L230">	}</span>
+<span class="nc" id="L232">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L233">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

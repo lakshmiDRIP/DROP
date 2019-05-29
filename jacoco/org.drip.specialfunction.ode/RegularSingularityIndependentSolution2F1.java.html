@@ -108,37 +108,43 @@ package org.drip.specialfunction.ode;
 	/**
 	 * Generate the 2F1 Instance of RegularSingularityIndependentSolution
 	 * 
-	 * @param eulerQuadratureEstimator 2F1 Euler Quadrature Hyper-geometric Estimator Instance
+	 * @param regularHypergeometricEstimator 2F1 Regular Hyper-geometric Estimator
 	 * 
 	 * @return The 2F1 Instance of RegularSingularityIndependentSolution
 	 */
 
 	public static final org.drip.specialfunction.ode.RegularSingularityIndependentSolution Create (
-		final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator eulerQuadratureEstimator)
+		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+			regularHypergeometricEstimator)
 	{
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == regularHypergeometricEstimator)</span>
+		{
+<span class="nc" id="L122">			return null;</span>
+		}
+
 		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-<span class="nc" id="L120">			regularSingularityIndependentSolution = new</span>
+<span class="nc" id="L126">			regularSingularityIndependentSolution = new</span>
 				org.drip.specialfunction.ode.RegularSingularityIndependentSolution();
 
-<span class="nc" id="L123">		regularSingularityIndependentSolution.add (</span>
+<span class="nc" id="L129">		regularSingularityIndependentSolution.add (</span>
 			0.,
 			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z0.Generate
-<span class="nc" id="L126">				(eulerQuadratureEstimator)</span>
-		);
-
-<span class="nc" id="L129">		regularSingularityIndependentSolution.add (</span>
-			1.,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
-<span class="nc" id="L132">				(eulerQuadratureEstimator)</span>
+<span class="nc" id="L132">				(regularHypergeometricEstimator)</span>
 		);
 
 <span class="nc" id="L135">		regularSingularityIndependentSolution.add (</span>
-			java.lang.Double.POSITIVE_INFINITY,
-			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
-<span class="nc" id="L138">				(eulerQuadratureEstimator)</span>
+			1.,
+			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1Z1.Generate
+<span class="nc" id="L138">				(regularHypergeometricEstimator)</span>
 		);
 
-<span class="nc" id="L141">		return regularSingularityIndependentSolution;</span>
+<span class="nc" id="L141">		regularSingularityIndependentSolution.add (</span>
+			java.lang.Double.POSITIVE_INFINITY,
+			org.drip.specialfunction.ode.IndependentLinearSolutionList2F1ZInfinity.Generate
+<span class="nc" id="L144">				(regularHypergeometricEstimator)</span>
+		);
+
+<span class="nc" id="L147">		return regularSingularityIndependentSolution;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
