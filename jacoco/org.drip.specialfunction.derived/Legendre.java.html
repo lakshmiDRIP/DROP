@@ -140,13 +140,11 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 
 <span class="nc" id="L141">		_regularHypergeometricEstimator = new</span>
 			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-<span class="nc" id="L143">				super.a(),</span>
-<span class="nc" id="L144">				super.b(),</span>
-<span class="nc" id="L145">				super.c(),</span>
+<span class="nc" id="L143">				hypergeometricParameters(),</span>
 				logBetaEstimator,
 				quadratureCount
 			);
-<span class="nc" id="L149">	}</span>
+<span class="nc" id="L147">	}</span>
 
 	/**
 	 * Retrieve the 2F1 Hyper-geometric Function Estimator
@@ -157,7 +155,7 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator
 		regularHypergeometricEstimator()
 	{
-<span class="nc" id="L160">		return _regularHypergeometricEstimator;</span>
+<span class="nc" id="L158">		return _regularHypergeometricEstimator;</span>
 	}
 
 	/**
@@ -168,21 +166,21 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 
 	public org.drip.function.definition.R1ToR1 gammaEstimator()
 	{
-<span class="nc" id="L171">		return _gammaEstimator;</span>
+<span class="nc" id="L169">		return _gammaEstimator;</span>
 	}
 
 	@Override public double legendre (
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L178">		double c = c();</span>
+<span class="nc" id="L176">		double c = hypergeometricParameters().c();</span>
 
-<span class="nc" id="L180">		double z2F1 = 1. - 2. * z;</span>
+<span class="nc" id="L178">		double z2F1 = 1. - 2. * z;</span>
 
-<span class="nc" id="L182">		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * java.lang.Math.pow (</span>
+<span class="nc" id="L180">		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * java.lang.Math.pow (</span>
 			z2F1 / (1. - z2F1),
 			0.5 * (c - 1.)
-<span class="nc" id="L185">		) / _gammaEstimator.evaluate (c);</span>
+<span class="nc" id="L183">		) / _gammaEstimator.evaluate (c);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

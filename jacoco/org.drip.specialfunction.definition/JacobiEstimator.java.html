@@ -113,16 +113,18 @@ public abstract class JacobiEstimator extends org.drip.specialfunction.definitio
 		throws java.lang.Exception
 	{
 <span class="nc" id="L115">		super (</span>
-			-n,
-			alpha + beta + n + 1.,
-			alpha + 1.
+			new org.drip.specialfunction.definition.HypergeometricParameters (
+				-n,
+				alpha + beta + n + 1.,
+				alpha + 1.
+			)
 		);
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == (_n = n))</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (java.lang.Integer.MAX_VALUE == (_n = n))</span>
 		{
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;JacobiEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;JacobiEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L125">	}</span>
+<span class="nc" id="L127">	}</span>
 
 	/**
 	 * Retrieve Jacobi Alpha
@@ -132,7 +134,7 @@ public abstract class JacobiEstimator extends org.drip.specialfunction.definitio
 
 	public double alpha()
 	{
-<span class="nc" id="L135">		return c() - 1.;</span>
+<span class="nc" id="L137">		return hypergeometricParameters().c() - 1.;</span>
 	}
 
 	/**
@@ -143,7 +145,7 @@ public abstract class JacobiEstimator extends org.drip.specialfunction.definitio
 
 	public double beta()
 	{
-<span class="nc" id="L146">		return 1. - _n - alpha();</span>
+<span class="nc" id="L148">		return 1. - _n - alpha();</span>
 	}
 
 	/**
@@ -154,14 +156,14 @@ public abstract class JacobiEstimator extends org.drip.specialfunction.definitio
 
 	public int n()
 	{
-<span class="nc" id="L157">		return _n;</span>
+<span class="nc" id="L159">		return _n;</span>
 	}
 
 	@Override public double evaluate (
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L164">		return jacobi (z);</span>
+<span class="nc" id="L166">		return jacobi (z);</span>
 	}
 
 	/**

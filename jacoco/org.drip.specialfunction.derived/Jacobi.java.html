@@ -134,13 +134,11 @@ public class Jacobi extends org.drip.specialfunction.definition.JacobiEstimator
 
 <span class="nc" id="L135">		_regularHypergeometricEstimator = new</span>
 			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-<span class="nc" id="L137">				super.a(),</span>
-<span class="nc" id="L138">				super.b(),</span>
-<span class="nc" id="L139">				super.c(),</span>
+<span class="nc" id="L137">				hypergeometricParameters(),</span>
 				logBetaEstimator,
 				quadratureCount
 			);
-<span class="nc" id="L143">	}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the 2F1 Hyper-geometric Function Estimator
@@ -151,20 +149,20 @@ public class Jacobi extends org.drip.specialfunction.definition.JacobiEstimator
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator
 		regularHypergeometricEstimator()
 	{
-<span class="nc" id="L154">		return _regularHypergeometricEstimator;</span>
+<span class="nc" id="L152">		return _regularHypergeometricEstimator;</span>
 	}
 
 	@Override public double jacobi (
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L161">		int n = n();</span>
+<span class="nc" id="L159">		int n = n();</span>
 
-<span class="nc" id="L163">		return _regularHypergeometricEstimator.regularHypergeometric (1. - 2. * z) *</span>
-<span class="nc" id="L164">			org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
-<span class="nc" id="L165">				alpha() + 1,</span>
+<span class="nc" id="L161">		return _regularHypergeometricEstimator.regularHypergeometric (1. - 2. * z) *</span>
+<span class="nc" id="L162">			org.drip.numerical.common.NumberUtil.PochhammerSymbol (</span>
+<span class="nc" id="L163">				alpha() + 1,</span>
 				n
-<span class="nc" id="L167">			) / org.drip.numerical.common.NumberUtil.Factorial (n);</span>
+<span class="nc" id="L165">			) / org.drip.numerical.common.NumberUtil.Factorial (n);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

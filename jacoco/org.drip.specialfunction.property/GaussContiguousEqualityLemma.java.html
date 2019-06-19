@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GaussContiguousEqualityLemma.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.specialfunction.property</a> &gt; <span class="el_source">GaussContiguousEqualityLemma.java</span></div><h1>GaussContiguousEqualityLemma.java</h1><pre class="source lang-java linenums">
+package org.drip.specialfunction.property;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;GaussContiguousEqualityLemma&lt;/i&gt; verifies the Hyper-geometric Gauss Contiguous Equality Lemma
+ * Properties. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series &lt;i&gt;SIAM Journal
+ * 				on Mathematical Analysis&lt;/i&gt; &lt;b&gt;13 (2)&lt;/b&gt; 295-308
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation &lt;i&gt;Journal of Symbolic
+ * 				Computation&lt;/i&gt; &lt;b&gt;20 (4)&lt;/b&gt; 399-417
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
+ * 				Sum of a (_2^3)F(a,b;c;z) &lt;i&gt;Journal of Computational and Applied Mathematics&lt;/i&gt; &lt;b&gt;72&lt;/b&gt;
+ * 				293-300
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
+ * 				https://dlmf.nist.gov/15
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md&quot;&gt;Definition of Special Function Estimators&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L105">public class GaussContiguousEqualityLemma</span>
+{
+
+	/**
+	 * Construct the Hyper-geometric Gauss Contiguous Identity #2 Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Hyper-geometric Gauss Contiguous Identity #2 Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property RelationIdentity2 (
+		final double a,
+		final double b,
+		final double c)
+	{
+<span class="nc" id="L123">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L124">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+		{
+<span class="nc" id="L128">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L133">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
+					logBetaEstimator,
+					10000
+				);
+
+			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+<span class="nc" id="L145">				aPlusRegularHypergeometricEstimator = new</span>
+					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
+<span class="nc" id="L147">						(hypergeometricEstimator).aPlus();</span>
+
+<span class="nc" id="L149">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L152">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L157">						return z * hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L164">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L169">						return a * (</span>
+<span class="nc" id="L170">							aPlusRegularHypergeometricEstimator.regularHypergeometric (z) -</span>
+<span class="nc" id="L171">							hypergeometricEstimator.regularHypergeometric (z)</span>
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L180">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L183">		return null;</span>
+	}
+
+	/**
+	 * Construct the Hyper-geometric Gauss Contiguous Identity #3 Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Hyper-geometric Gauss Contiguous Identity #3 Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property RelationIdentity3 (
+		final double a,
+		final double b,
+		final double c)
+	{
+<span class="nc" id="L201">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L202">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+		{
+<span class="nc" id="L206">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L211">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
+					logBetaEstimator,
+					10000
+				);
+
+			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+<span class="nc" id="L223">				bPlusHypergeometricEstimator = new</span>
+					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
+<span class="nc" id="L225">						(hypergeometricEstimator).bPlus();</span>
+
+<span class="nc" id="L227">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L230">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L235">						return z * hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L242">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L247">						return b * (</span>
+<span class="nc" id="L248">							bPlusHypergeometricEstimator.regularHypergeometric (z) -</span>
+<span class="nc" id="L249">							hypergeometricEstimator.regularHypergeometric (z)</span>
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L256">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L258">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L261">		return null;</span>
+	}
+
+	/**
+	 * Construct the Hyper-geometric Gauss Contiguous Identity #4 Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Hyper-geometric Gauss Contiguous Identity #4 Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property RelationIdentity4 (
+		final double a,
+		final double b,
+		final double c)
+	{
+<span class="nc" id="L279">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L280">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+		{
+<span class="nc" id="L284">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L289">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
+					logBetaEstimator,
+					100000
+				);
+
+			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+<span class="nc" id="L301">				cMinusHypergeometricEstimator = new</span>
+					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
+<span class="nc" id="L303">						(hypergeometricEstimator).cMinus();</span>
+
+<span class="nc" id="L305">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L308">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L313">						return z * hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L320">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L325">						return (c - 1.) * (</span>
+<span class="nc" id="L326">							cMinusHypergeometricEstimator.regularHypergeometric (z) -</span>
+<span class="nc" id="L327">							hypergeometricEstimator.regularHypergeometric (z)</span>
+						);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L334">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L336">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L339">		return null;</span>
+	}
+
+	/**
+	 * Construct the Hyper-geometric Gauss Contiguous Identity #5 Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Hyper-geometric Gauss Contiguous Identity #5 Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property RelationIdentity5 (
+		final double a,
+		final double b,
+		final double c)
+	{
+<span class="nc" id="L357">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L358">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+		{
+<span class="nc" id="L362">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L367">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
+					logBetaEstimator,
+					100000
+				);
+
+			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+<span class="nc" id="L379">				aMinusHypergeometricEstimator = new</span>
+					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
+<span class="nc" id="L381">						(hypergeometricEstimator).aMinus();</span>
+
+<span class="nc" id="L383">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L386">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L391">						return z * hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L398">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L403">						return (</span>
+<span class="nc" id="L404">							(c - a) * aMinusHypergeometricEstimator.regularHypergeometric (z) +</span>
+<span class="nc" id="L405">							(a - c + b * z) * hypergeometricEstimator.regularHypergeometric (z)</span>
+						) / (1. - z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L412">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L414">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L417">		return null;</span>
+	}
+
+	/**
+	 * Construct the Hyper-geometric Gauss Contiguous Identity #6 Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Hyper-geometric Gauss Contiguous Identity #6 Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property RelationIdentity6 (
+		final double a,
+		final double b,
+		final double c)
+	{
+<span class="nc" id="L435">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L436">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+
+<span class="nc bnc" id="L438" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+		{
+<span class="nc" id="L440">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L445">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
+					logBetaEstimator,
+					100000
+				);
+
+			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+<span class="nc" id="L457">				bMinusHypergeometricEstimator = new</span>
+					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
+<span class="nc" id="L459">						(hypergeometricEstimator).bMinus();</span>
+
+<span class="nc" id="L461">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L464">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L469">						return z * hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L476">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L481">						return (</span>
+<span class="nc" id="L482">							(c - b) * bMinusHypergeometricEstimator.regularHypergeometric (z) +</span>
+<span class="nc" id="L483">							(b - c + a * z) * hypergeometricEstimator.regularHypergeometric (z)</span>
+						) / (1. - z);
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L490">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L492">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L495">		return null;</span>
+	}
+
+	/**
+	 * Construct the Hyper-geometric Gauss Contiguous Identity #7 Verifier
+	 * 
+	 * @param a A
+	 * @param b B
+	 * @param c C
+	 * 
+	 * @return The Hyper-geometric Gauss Contiguous Identity #7 Verifier
+	 */
+
+	public static final org.drip.function.definition.R1ToR1Property RelationIdentity7 (
+		final double a,
+		final double b,
+		final double c)
+	{
+<span class="nc" id="L513">		org.drip.function.definition.R2ToR1 logBetaEstimator =</span>
+<span class="nc" id="L514">			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);</span>
+
+<span class="nc bnc" id="L516" title="All 2 branches missed.">		if (null == logBetaEstimator)</span>
+		{
+<span class="nc" id="L518">			return null;</span>
+		}
+
+		try
+		{
+<span class="nc" id="L523">			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =</span>
+				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
+					new org.drip.specialfunction.definition.HypergeometricParameters (
+						a,
+						b,
+						c
+					),
+					logBetaEstimator,
+					100000
+				);
+
+			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
+<span class="nc" id="L535">				cPlusHypergeometricEstimator = new</span>
+					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
+<span class="nc" id="L537">						(hypergeometricEstimator).cPlus();</span>
+
+<span class="nc" id="L539">			return new org.drip.function.definition.R1ToR1Property (</span>
+				org.drip.function.definition.R1ToR1Property.EQ,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L542">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L547">						return hypergeometricEstimator.derivative (</span>
+							z,
+							1
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L554">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L559">						return (</span>
+<span class="nc" id="L560">							(c - a) * (c - b) * cPlusHypergeometricEstimator.regularHypergeometric (z) +</span>
+<span class="nc" id="L561">							c * (a + b - c) * hypergeometricEstimator.regularHypergeometric (z)</span>
+						) / (c * (1. - z));
+					}
+				},
+				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		}
+<span class="nc" id="L568">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L570">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L573">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

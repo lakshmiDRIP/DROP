@@ -5,6 +5,7 @@ import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.beta.LogGammaEstimator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
 import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
 import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 
@@ -109,7 +110,7 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L112">public class KummerEulerTransformation</span>
+<span class="nc" id="L113">public class KummerEulerTransformation</span>
 {
 
 	private static final void Hypergeometric (
@@ -121,52 +122,54 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 		final double[] zArray)
 		throws Exception
 	{
-<span class="nc" id="L124">		RegularHypergeometricEstimator regularHypergeometricEstimator = new EulerQuadratureEstimator (</span>
-			a,
-			b,
-			c,
+<span class="nc" id="L125">		RegularHypergeometricEstimator regularHypergeometricEstimator = new EulerQuadratureEstimator (</span>
+			new HypergeometricParameters (
+				a,
+				b,
+				c
+			),
 			logBetaEstimator,
 			quadratureCount
 		);
 
-<span class="nc" id="L132">		RegularHypergeometricEstimator regularHypergeometricEstimatorEulerTransform =</span>
-<span class="nc" id="L133">			regularHypergeometricEstimator.albinateEuler();</span>
+<span class="nc" id="L135">		RegularHypergeometricEstimator regularHypergeometricEstimatorEulerTransform =</span>
+<span class="nc" id="L136">			regularHypergeometricEstimator.albinateEuler();</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (double z : zArray)</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (double z : zArray)</span>
 		{
-<span class="nc" id="L137">			System.out.println (&quot;\t| {a=&quot; +</span>
-<span class="nc" id="L138">				FormatUtil.FormatDouble (a, 1, 2, 1., false) + &quot;, b=&quot; +</span>
-<span class="nc" id="L139">				FormatUtil.FormatDouble (b, 1, 2, 1., false) + &quot;; c=&quot; +</span>
-<span class="nc" id="L140">				FormatUtil.FormatDouble (c, 1, 2, 1., false) + &quot;; z=&quot; +</span>
-<span class="nc" id="L141">				FormatUtil.FormatDouble (z, 1, 2, 1.) + &quot;} =&gt; &quot; +</span>
-<span class="nc" id="L142">				FormatUtil.FormatDouble (regularHypergeometricEstimator.evaluate (z), 2, 10, 1., false) + &quot; | &quot; +</span>
-<span class="nc" id="L143">				FormatUtil.FormatDouble (regularHypergeometricEstimatorEulerTransform.evaluate (z), 2, 10, 1., false) + &quot; ||&quot;</span>
+<span class="nc" id="L140">			System.out.println (&quot;\t| {a=&quot; +</span>
+<span class="nc" id="L141">				FormatUtil.FormatDouble (a, 1, 2, 1., false) + &quot;, b=&quot; +</span>
+<span class="nc" id="L142">				FormatUtil.FormatDouble (b, 1, 2, 1., false) + &quot;; c=&quot; +</span>
+<span class="nc" id="L143">				FormatUtil.FormatDouble (c, 1, 2, 1., false) + &quot;; z=&quot; +</span>
+<span class="nc" id="L144">				FormatUtil.FormatDouble (z, 1, 2, 1.) + &quot;} =&gt; &quot; +</span>
+<span class="nc" id="L145">				FormatUtil.FormatDouble (regularHypergeometricEstimator.evaluate (z), 2, 10, 1., false) + &quot; | &quot; +</span>
+<span class="nc" id="L146">				FormatUtil.FormatDouble (regularHypergeometricEstimatorEulerTransform.evaluate (z), 2, 10, 1., false) + &quot; ||&quot;</span>
 			);
 		}
-<span class="nc" id="L146">	}</span>
+<span class="nc" id="L149">	}</span>
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L152">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L155">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L154">		double[] aArray =</span>
+<span class="nc" id="L157">		double[] aArray =</span>
 		{
 			1.,
 			2.,
 		};
-<span class="nc" id="L159">		double[] bArray =</span>
+<span class="nc" id="L162">		double[] bArray =</span>
 		{
 			3.,
 			4.,
 		};
-<span class="nc" id="L164">		double[] cArray =</span>
+<span class="nc" id="L167">		double[] cArray =</span>
 		{
 			5.,
 			6.,
 		};
-<span class="nc" id="L169">		double[] zArray =</span>
+<span class="nc" id="L172">		double[] zArray =</span>
 		{
 			-1.00,
 			-0.75,
@@ -178,38 +181,38 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			 0.75,
 			 0.99
 		};
-<span class="nc" id="L181">		int logBetaTermCount = 1000;</span>
-<span class="nc" id="L182">		int hypergeometricQuadratureCount = 10000;</span>
+<span class="nc" id="L184">		int logBetaTermCount = 1000;</span>
+<span class="nc" id="L185">		int hypergeometricQuadratureCount = 10000;</span>
 
-<span class="nc" id="L184">		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);</span>
+<span class="nc" id="L187">		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (logBetaTermCount);</span>
 
-<span class="nc" id="L186">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L189">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L188">		System.out.println (&quot;\t|          HYPER-GEOMETRIC KUMMER EULER TRANSFORM RECONCILE          ||&quot;);</span>
+<span class="nc" id="L191">		System.out.println (&quot;\t|          HYPER-GEOMETRIC KUMMER EULER TRANSFORM RECONCILE          ||&quot;);</span>
 
-<span class="nc" id="L190">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L193">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L192">		System.out.println (&quot;\t|        L -&gt; R:                                                     ||&quot;);</span>
+<span class="nc" id="L195">		System.out.println (&quot;\t|        L -&gt; R:                                                     ||&quot;);</span>
 
-<span class="nc" id="L194">		System.out.println (&quot;\t|                - a                                                 ||&quot;);</span>
+<span class="nc" id="L197">		System.out.println (&quot;\t|                - a                                                 ||&quot;);</span>
 
-<span class="nc" id="L196">		System.out.println (&quot;\t|                - b                                                 ||&quot;);</span>
+<span class="nc" id="L199">		System.out.println (&quot;\t|                - b                                                 ||&quot;);</span>
 
-<span class="nc" id="L198">		System.out.println (&quot;\t|                - c                                                 ||&quot;);</span>
+<span class="nc" id="L201">		System.out.println (&quot;\t|                - c                                                 ||&quot;);</span>
 
-<span class="nc" id="L200">		System.out.println (&quot;\t|                - z                                                 ||&quot;);</span>
+<span class="nc" id="L203">		System.out.println (&quot;\t|                - z                                                 ||&quot;);</span>
 
-<span class="nc" id="L202">		System.out.println (&quot;\t|                - Estimate                                          ||&quot;);</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t|                - Estimate                                          ||&quot;);</span>
 
-<span class="nc" id="L204">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L207">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (double a : aArray)</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		for (double a : aArray)</span>
 		{
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			for (double b : bArray)</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">			for (double b : bArray)</span>
 			{
-<span class="nc bnc" id="L210" title="All 2 branches missed.">				for (double c : cArray)</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">				for (double c : cArray)</span>
 				{
-<span class="nc" id="L212">					Hypergeometric (</span>
+<span class="nc" id="L215">					Hypergeometric (</span>
 						a,
 						b,
 						c,
@@ -221,9 +224,9 @@ import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
 			}
 		}
 
-<span class="nc" id="L224">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L227">		System.out.println (&quot;\t|--------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L226">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L227">	}</span>
+<span class="nc" id="L229">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L230">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -107,23 +107,17 @@ public abstract class RegularHypergeometricEstimator extends
 {
 
 	protected RegularHypergeometricEstimator (
-		final double a,
-		final double b,
-		final double c)
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L115">		super (</span>
-			a,
-			b,
-			c
-		);
-<span class="nc" id="L120">	}</span>
+<span class="nc" id="L113">		super (hypergeometricParameters);</span>
+<span class="nc" id="L114">	}</span>
 
 	@Override public double evaluate (
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L126">		return regularHypergeometric (z);</span>
+<span class="nc" id="L120">		return regularHypergeometric (z);</span>
 	}
 
 	/**
@@ -143,9 +137,7 @@ public abstract class RegularHypergeometricEstimator extends
 	/**
 	 * Albinate (i.e., Clone + Mutate) an Instance of Regular Hyper-geometric Estimator
 	 * 
-	 * @param a A
-	 * @param b B
-	 * @param c C
+	 * @param hypergeometricParametersAlbinate The Albination Hyper-geometric Parameters
 	 * @param valueScaler The Estimator Value Scaler
 	 * @param zTransformer The Z Transformation Function
 	 * 
@@ -153,9 +145,7 @@ public abstract class RegularHypergeometricEstimator extends
 	 */
 
 	public abstract org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
-		final double a,
-		final double b,
-		final double c,
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParametersAlbinate,
 		final org.drip.function.definition.R1ToR1 valueScaler,
 		final org.drip.function.definition.R1ToR1 zTransformer);
 
@@ -167,30 +157,44 @@ public abstract class RegularHypergeometricEstimator extends
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinateEuler()
 	{
-<span class="nc" id="L170">		final double a = a();</span>
+<span class="nc" id="L160">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L161">			hypergeometricParameters();</span>
 
-<span class="nc" id="L172">		final double b = b();</span>
+<span class="nc" id="L163">		final double a = hypergeometricParameters.a();</span>
 
-<span class="nc" id="L174">		final double c = c();</span>
+<span class="nc" id="L165">		final double b = hypergeometricParameters.b();</span>
 
-<span class="nc" id="L176">		return albinate (</span>
-			c - a,
-			c - b,
-			c,
-			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L181">			{</span>
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-<span class="nc" id="L186">					return java.lang.Math.pow (</span>
-						1. - z,
-						c - a - b
-					);
-				}
-			},
-			null
-		);
+<span class="nc" id="L167">		final double c = hypergeometricParameters.c();</span>
+
+		try
+		{
+<span class="nc" id="L171">			return albinate (</span>
+				new org.drip.specialfunction.definition.HypergeometricParameters (
+					c - a,
+					c - b,
+					c
+				),
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L178">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L183">						return java.lang.Math.pow (</span>
+							1. - z,
+							c - a - b
+						);
+					}
+				},
+				null
+			);
+		}
+<span class="nc" id="L192">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L194">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L197">		return null;</span>
 	}
 
 	/**
@@ -201,36 +205,50 @@ public abstract class RegularHypergeometricEstimator extends
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffFirst()
 	{
-<span class="nc" id="L204">		final double a = a();</span>
+<span class="nc" id="L208">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L209">			hypergeometricParameters();</span>
 
-<span class="nc" id="L206">		final double c = c();</span>
+<span class="nc" id="L211">		final double a = hypergeometricParameters.a();</span>
 
-<span class="nc" id="L208">		return albinate (</span>
-			a,
-<span class="nc" id="L210">			c - b(),</span>
-			c,
-			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L213">			{</span>
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-<span class="nc" id="L218">					return java.lang.Math.pow (</span>
-						1. - z,
-						-a
-					);
+<span class="nc" id="L213">		final double c = hypergeometricParameters.c();</span>
+
+		try
+		{
+<span class="nc" id="L217">			return albinate (</span>
+				new org.drip.specialfunction.definition.HypergeometricParameters (
+					a,
+<span class="nc" id="L220">					c - hypergeometricParameters.b(),</span>
+					c
+				),
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L224">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L229">						return java.lang.Math.pow (</span>
+							1. - z,
+							-a
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L236">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L241">						return z / (z - 1.);</span>
+					}
 				}
-			},
-			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L225">			{</span>
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-<span class="nc" id="L230">					return z / (z - 1.);</span>
-				}
-			}
-		);
+			);
+		}
+<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L248">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L251">		return null;</span>
 	}
 
 	/**
@@ -241,36 +259,49 @@ public abstract class RegularHypergeometricEstimator extends
 
 	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffSecond()
 	{
-<span class="nc" id="L244">		final double b = b();</span>
+<span class="nc" id="L262">		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =</span>
+<span class="nc" id="L263">			hypergeometricParameters();</span>
 
-<span class="nc" id="L246">		final double c = c();</span>
+<span class="nc" id="L265">		final double b = hypergeometricParameters.b();</span>
 
-<span class="nc" id="L248">		return albinate (</span>
-<span class="nc" id="L249">			c - a(),</span>
-			b,
-			c,
-			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L253">			{</span>
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-<span class="nc" id="L258">					return java.lang.Math.pow (</span>
-						1. - z,
-						-b
-					);
+<span class="nc" id="L267">		final double c = hypergeometricParameters.c();</span>
+
+		try {
+<span class="nc" id="L270">			return albinate (</span>
+				new org.drip.specialfunction.definition.HypergeometricParameters (
+<span class="nc" id="L272">					c - hypergeometricParameters.a(),</span>
+					b,
+					c
+				),
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L277">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L282">						return java.lang.Math.pow (</span>
+							1. - z,
+							-b
+						);
+					}
+				},
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L289">				{</span>
+					@Override public double evaluate (
+						final double z)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L294">						return z / (z - 1.);</span>
+					}
 				}
-			},
-			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L265">			{</span>
-				@Override public double evaluate (
-					final double z)
-					throws java.lang.Exception
-				{
-<span class="nc" id="L270">					return z / (z - 1.);</span>
-				}
-			}
-		);
+			);
+		}
+<span class="nc" id="L299">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L301">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L304">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
