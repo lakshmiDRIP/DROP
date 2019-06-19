@@ -148,6 +148,7 @@ Numerical Core Module contains libraries the implement Spline Builder, Statistic
  * Digamma Function
  * Beta Function
  * Hypergeometric Function
+ * Bessel Function
  * Error Function
 
 

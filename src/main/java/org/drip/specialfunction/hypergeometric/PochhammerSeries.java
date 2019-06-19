@@ -123,7 +123,7 @@ public class PochhammerSeries
 			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
 			{
 				termWeightMap.put (
 					termIndex,

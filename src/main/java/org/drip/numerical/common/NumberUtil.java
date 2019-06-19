@@ -652,6 +652,42 @@ public class NumberUtil {
 	}
 
 	/**
+	 * Compute the Rising Pochhammer Symbol for the Specified s and k
+	 * 
+	 * @param s s
+	 * @param k k
+	 * 
+	 * @return The Rising Pochhammer Symbol
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double RisingPochhammerSymbol (
+		final double s,
+		final int k)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 > k)
+		{
+			throw new java.lang.Exception ("NumberUtil::RisingPochhammerSymbol => Invalid Inputs");
+		}
+
+		if (0 == k)
+		{
+			return 1.;
+		}
+
+		double pochhammerSymbol = s;
+
+		for (int index = 1; index < k; ++index)
+		{
+			pochhammerSymbol = pochhammerSymbol * (s + index);
+		}
+
+		return pochhammerSymbol;
+	}
+
+	/**
 	 * Compute the Pochhammer Symbol for the Specified s and k
 	 * 
 	 * @param s s

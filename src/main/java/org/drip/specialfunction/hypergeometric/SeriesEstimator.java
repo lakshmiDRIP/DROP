@@ -102,7 +102,73 @@ package org.drip.specialfunction.hypergeometric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SeriesEstimator
+public abstract class SeriesEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
 {
+	private org.drip.numerical.estimation.R1ToR1Series _series = null;
 
+	/**
+	 * Compute the Pochhammer Cumulative Series of Hyper-geometric Estimator
+	 * 
+	 * @param hypergeometricParameters The Hyper-geometric Parameters
+	 * @param termCount Number of Terms in the Estimation
+	 * 
+	 * @return The Pochhammer Cumulative Series of Hyper-geometric Estimator
+	 */
+
+	public static final SeriesEstimator Pochhammer (
+		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters,
+		final int termCount)
+	{
+		try
+		{
+			return new SeriesEstimator (
+				org.drip.specialfunction.hypergeometric.PochhammerSeries.Create (
+					hypergeometricParameters,
+					termCount
+				),
+				null
+			)
+			{
+				@Override public double evaluate (
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("SeriesEstimator::Pochhammer::evaluate => Invalid Inputs");
+					}
+
+					return series().evaluate (z);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	protected SeriesEstimator (
+		final org.drip.numerical.estimation.R1ToR1Series series,
+		final org.drip.numerical.differentiation.DerivativeControl dc)
+		throws java.lang.Exception
+	{
+		super (dc);
+
+		_series = series;
+	}
+
+	/**
+	 * Retrieve the Underlying Cumulative Series
+	 * 
+	 * @return The Underlying Cumulative Series
+	 */
+
+	public org.drip.numerical.estimation.R1ToR1Series series()
+	{
+		return _series;
+	}
 }

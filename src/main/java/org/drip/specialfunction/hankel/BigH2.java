@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.hypergeometric;
+package org.drip.specialfunction.hankel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,30 +64,29 @@ package org.drip.specialfunction.hypergeometric;
  */
 
 /**
- * <i>PochhammerSeriesTerm</i> refers to a Single Series Term in the Pochhammer Series Expansion of the
- * Hyper-geometric Function. The References are:
+ * <i>BigH2</i> implements the Estimator for the Cylindrical Hankel Function of the Second Kind. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Gessel, I., and D. Stanton (1982): Strange Evaluations of Hyper-geometric Series <i>SIAM Journal
- * 				on Mathematical Analysis</i> <b>13 (2)</b> 295-308
+ * 			Abramowitz, M., and I. A. Stegun (2007): <i>Handbook of Mathematics Functions</i> <b>Dover Book
+ * 				on Mathematics</b>
  * 		</li>
  * 		<li>
- * 			Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation <i>Journal of Symbolic
- * 				Computation</i> <b>20 (4)</b> 399-417
+ * 			Arfken, G. B., and H. J. Weber (2005): <i>Mathematical Methods for Physicists 6<sup>th</sup>
+ * 				Edition</i> <b>Harcourt</b> San Diego
  * 		</li>
  * 		<li>
- * 			Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple’s Theorem on the
- * 				Sum of a (_2^3)F(a,b;c;z) <i>Journal of Computational and Applied Mathematics</i> <b>72</b>
- * 				293-300
+ * 			Temme N. M. (1996): <i>Special Functions: An Introduction to the Classical Functions of
+ * 				Mathematical Physics 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2019): Hyper-geometric Function
- * 				https://dlmf.nist.gov/15
+ * 			Watson, G. N. (1995): <i>A Treatise on the Theory of Bessel Functions</i> <b>Cambridge University
+ * 				Press</b>
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
+ * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
  *
@@ -95,71 +94,83 @@ package org.drip.specialfunction.hypergeometric;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Function</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PochhammerSeriesTerm extends org.drip.numerical.estimation.R1ToR1SeriesTerm
+public class BigH2 extends org.drip.specialfunction.definition.HankelFirstKindEstimator
 {
-	private org.drip.specialfunction.definition.HypergeometricParameters _hypergeometricParameters = null;
+	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
-	 * PochhammerSeriesTerm Constructor
+	 * BigH2 Constructor
 	 * 
-	 * @param hypergeometricParameters The Hyper-geometric Parameters
+	 * @param besselFirstKindEstimator Bessel Function of the First Kind Estimator
+	 * @param besselSecondKindEstimator Bessel Function of the Second Kind Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PochhammerSeriesTerm (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
+	public BigH2 (
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
+		final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator)
 		throws java.lang.Exception
 	{
-		if (null == (_hypergeometricParameters = hypergeometricParameters))
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator) ||
+			null == (_besselSecondKindEstimator = besselSecondKindEstimator))
 		{
-			throw new java.lang.Exception ("PochhammerSeriesTerm Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BigH2 Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Hyper-geometric Parameters
+	 * Retrieve the Estimator of the Bessel Function of the First Kind
 	 * 
-	 * @return The Hyper-geometric Parameters
+	 * @return Estimator of the Bessel Function of the First Kind
 	 */
 
-	public org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters()
+	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
 	{
-		return _hypergeometricParameters;
+		return _besselFirstKindEstimator;
 	}
 
-	@Override public double value (
-		final int order,
-		final double z)
-		throws java.lang.Exception
+	/**
+	 * Retrieve the Estimator of the Bessel Function of the Second Kind
+	 * 
+	 * @return Estimator of the Bessel Function of the Second Kind
+	 */
+
+	public org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator()
 	{
-		if (0 > order)
+		return _besselSecondKindEstimator;
+	}
+
+	@Override public org.drip.numerical.fourier.ComplexNumber bigH1 (
+		final double alpha,
+		final double z)
+	{
+		try
 		{
-			throw new java.lang.Exception ("PochhammerSeriesTerm::value => Invalid Inputs");
+			return new org.drip.numerical.fourier.ComplexNumber (
+				_besselFirstKindEstimator.bigJ (
+					alpha,
+					z
+				),
+				-1. * _besselSecondKindEstimator.bigY (
+					alpha,
+					z
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
-
-		return org.drip.numerical.common.NumberUtil.RisingPochhammerSymbol (
-			hypergeometricParameters.a(),
-			order
-		) * org.drip.numerical.common.NumberUtil.RisingPochhammerSymbol (
-			hypergeometricParameters.b(),
-			order
-		) / org.drip.numerical.common.NumberUtil.RisingPochhammerSymbol (
-			hypergeometricParameters.c(),
-			order
-		) * java.lang.Math.pow (
-			z,
-			order
-		) / org.drip.numerical.common.NumberUtil.Factorial (order);
+		return null;
 	}
 }

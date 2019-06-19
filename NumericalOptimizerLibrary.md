@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.25.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimization_v4.28.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -291,6 +291,30 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Kummer’s Theorem
 	* Special Values at 𝒛 = 0.5
 	* Other Points
+	* References
+ * Bessel Function
+	* Introduction and Overview
+	* Applications of Bessel Functions
+	* Definitions
+	* Bessel Functions of the First Kind J_α
+	* Bessel’s Integrals
+	* Relation to the Hypergeometric Series
+	* Relation to the Laguerre Polynomials
+	* Bessel Function of the Second Kind Y_α
+	* Hankel Functions 〖H_α〗^((1) ) and 〖H_α〗^((2) )
+	* Modified Bessel Functions I_α, K_α
+	* Spherical Bessel Functions j_n and y_n
+	* Generating Function
+	* Differential Relations
+	* Spherical Hankel Functions
+	* Riccati-Bessel Functions - S_n, C_n, ξ_n, ζ_n
+	* Asymptotic Forms
+	* Full Domain Approximations with Elementary Functions
+	* Properties
+	* Recurrence Relations
+	* Multiplication Theorem
+	* Zeros of the Bessel Function – Bourget’s Hypothesis
+	* Numerical Approaches
 	* References
  * Error Function
 	* Introduction and Overview
