@@ -33,7 +33,6 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
 
 ## Coverage
-
  * Introduction
 	* Framework Glossary
 	* Document Layout
