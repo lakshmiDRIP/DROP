@@ -64,8 +64,8 @@ package org.drip.specialfunction.hankel;
  */
 
 /**
- * <i>BigH2</i> implements the Estimator for the Cylindrical Hankel Function of the Second Kind. The
- * References are:
+ * <i>BigH2FromBigJ</i> implements the Estimator for the Cylindrical Hankel Function of the Second Kind from
+ * the Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,29 +101,25 @@ package org.drip.specialfunction.hankel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BigH2 extends org.drip.specialfunction.definition.HankelFirstKindEstimator
+public class BigH2FromBigJ extends org.drip.specialfunction.definition.HankelSecondKindEstimator
 {
 	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
-	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
-	 * BigH2 Constructor
+	 * BigH2FromBigJ Constructor
 	 * 
 	 * @param besselFirstKindEstimator Bessel Function of the First Kind Estimator
-	 * @param besselSecondKindEstimator Bessel Function of the Second Kind Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public BigH2 (
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
-		final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator)
+	public BigH2FromBigJ (
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
 		throws java.lang.Exception
 	{
-		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator) ||
-			null == (_besselSecondKindEstimator = besselSecondKindEstimator))
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))
 		{
-			throw new java.lang.Exception ("BigH2 Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("BigH2FromBigJ Constructor => Invalid Inputs");
 		}
 	}
 
@@ -138,32 +134,27 @@ public class BigH2 extends org.drip.specialfunction.definition.HankelFirstKindEs
 		return _besselFirstKindEstimator;
 	}
 
-	/**
-	 * Retrieve the Estimator of the Bessel Function of the Second Kind
-	 * 
-	 * @return Estimator of the Bessel Function of the Second Kind
-	 */
-
-	public org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator()
-	{
-		return _besselSecondKindEstimator;
-	}
-
-	@Override public org.drip.numerical.fourier.ComplexNumber bigH1 (
+	@Override public org.drip.numerical.fourier.ComplexNumber bigH2 (
 		final double alpha,
 		final double z)
 	{
 		try
 		{
 			return new org.drip.numerical.fourier.ComplexNumber (
-				_besselFirstKindEstimator.bigJ (
-					alpha,
+				-1. * _besselFirstKindEstimator.bigJ (
+					-1. * alpha,
 					z
 				),
-				-1. * _besselSecondKindEstimator.bigY (
-					alpha,
-					z
-				)
+				(
+					_besselFirstKindEstimator.bigJ (
+						alpha,
+						z
+					) * java.lang.Math.cos (java.lang.Math.PI * alpha) +
+					_besselFirstKindEstimator.bigJ (
+						-1. * alpha,
+						z
+					)
+				) / java.lang.Math.sin (java.lang.Math.PI * alpha)
 			);
 		}
 		catch (java.lang.Exception e)

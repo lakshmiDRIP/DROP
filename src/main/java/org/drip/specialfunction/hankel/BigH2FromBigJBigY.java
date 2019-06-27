@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.property;
+package org.drip.specialfunction.hankel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>BesselFirstEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>BigH2FromBigJBigY</i> implements the Estimator for the Cylindrical Hankel Function of the Second Kind
+ * from the Bessel Functions of the First Kind and the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,147 +101,69 @@ package org.drip.specialfunction.property;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BesselFirstEqualityLemma
+public class BigH2FromBigJBigY extends org.drip.specialfunction.definition.HankelFirstKindEstimator
 {
+	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
-	 * Construct the Bessel First Kind Mirror Identity Verifier
+	 * BigH2FromBigJBigY Constructor
 	 * 
-	 * @return The Bessel First Kind Mirror Identity Verifier
+	 * @param besselFirstKindEstimator Bessel Function of the First Kind Estimator
+	 * @param besselSecondKindEstimator Bessel Function of the Second Kind Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
+	public BigH2FromBigJBigY (
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
+		final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator)
+		throws java.lang.Exception
 	{
-		final org.drip.specialfunction.bessel.FrobeniusSeriesEstimator frobeniusEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null),
-				50
-			);
-
-		try
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator) ||
+			null == (_besselSecondKindEstimator = besselSecondKindEstimator))
 		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return frobeniusEstimator.bigJ (
-							-1. * alpha,
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) z) % 2 ? 1. : -1.) * frobeniusEstimator.bigJ (
-							alpha,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
+			throw new java.lang.Exception ("BigH2FromBigJBigY Constructor => Invalid Inputs");
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	/**
-	 * Construct the Bessel First Kind Half-Integer Identity Verifier
+	 * Retrieve the Estimator of the Bessel Function of the First Kind
 	 * 
-	 * @return The Bessel First Kind Half-Integer Identity Verifier
+	 * @return Estimator of the Bessel Function of the First Kind
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property HalfIntegerIdentity()
+	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
 	{
-		org.drip.function.definition.R1ToR1 gammaEstimator = new
-			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+		return _besselFirstKindEstimator;
+	}
 
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				gammaEstimator,
-				50
-			);
+	/**
+	 * Retrieve the Estimator of the Bessel Function of the Second Kind
+	 * 
+	 * @return Estimator of the Bessel Function of the Second Kind
+	 */
 
+	public org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator()
+	{
+		return _besselSecondKindEstimator;
+	}
+
+	@Override public org.drip.numerical.fourier.ComplexNumber bigH1 (
+		final double alpha,
+		final double z)
+	{
 		try
 		{
-			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
-					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
-					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-						gammaEstimator,
-						40
-					),
-					40
-				);
-
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return besselFirstKindEstimator.bigJ (
-							-1. * (alpha + 0.5),
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) (alpha + 1)) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
-							alpha + 0.5,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			return new org.drip.numerical.fourier.ComplexNumber (
+				_besselFirstKindEstimator.bigJ (
+					alpha,
+					z
+				),
+				-1. * _besselSecondKindEstimator.bigY (
+					alpha,
+					z
+				)
 			);
 		}
 		catch (java.lang.Exception e)

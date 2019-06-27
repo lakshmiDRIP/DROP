@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.property;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>BesselFirstEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>BesselSecondWatsonIntegralEstimator</i> implements the Integral Estimator for the Cylindrical Bessel
+ * Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,67 +101,74 @@ package org.drip.specialfunction.property;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BesselFirstEqualityLemma
+public abstract class BesselSecondWatsonIntegralEstimator extends
+	org.drip.specialfunction.definition.BesselSecondKindEstimator
 {
+	private int _quadratureCount = -1;
 
 	/**
-	 * Construct the Bessel First Kind Mirror Identity Verifier
+	 * Construct the Bessel Second Kind Estimator from the Watson Integer Integral Form
 	 * 
-	 * @return The Bessel First Kind Mirror Identity Verifier
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Bessel Second Kind Estimator from the Watson Integer Integral Form
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
+	public static final BesselSecondWatsonIntegralEstimator IntegerForm (
+		final int quadratureCount)
 	{
-		final org.drip.specialfunction.bessel.FrobeniusSeriesEstimator frobeniusEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null),
-				50
-			);
-
 		try
 		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
+			return new BesselSecondWatsonIntegralEstimator (quadratureCount)
+			{
+				@Override public double bigY (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
 				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
+					if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return frobeniusEstimator.bigJ (
-							-1. * alpha,
-							z
-						);
+						throw new java.lang.Exception
+							("BesselSecondWatsonIntegralEstimator::IntegerForm::evaluate => Invalid Inputs");
 					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
 
-						return (0 == ((int) z) % 2 ? 1. : -1.) * frobeniusEstimator.bigJ (
-							alpha,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
+					return (org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+						0.,
+						java.lang.Math.PI,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double theta)
+								throws java.lang.Exception
+							{
+								return java.lang.Math.sin (z * java.lang.Math.sin (theta) - alpha * theta);
+							}
+						}
+					) / java.lang.Math.PI) -
+					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						0.,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double t)
+								throws java.lang.Exception
+							{
+								double ePowerAlphaT = java.lang.Math.exp (alpha * t);
+
+								double expPrefix = 0 == (alpha % 2) ? ePowerAlphaT + 1. / ePowerAlphaT :
+									ePowerAlphaT - 1. / ePowerAlphaT;
+
+								return expPrefix * java.lang.Math.exp (-z * java.lang.Math.sinh (t));
+							}
+						}
+					) / java.lang.Math.PI;
+				}
+			};
 		}
 		catch (java.lang.Exception e)
 		{
@@ -171,84 +178,25 @@ public class BesselFirstEqualityLemma
 		return null;
 	}
 
+	protected BesselSecondWatsonIntegralEstimator (
+		final int quadratureCount)
+		throws java.lang.Exception
+	{
+		if (0 >= (_quadratureCount = quadratureCount))
+		{
+			throw new java.lang.Exception
+				("BesselSecondWatsonIntegralEstimator Constructor => Invalid Inputs");
+		}
+	}
+
 	/**
-	 * Construct the Bessel First Kind Half-Integer Identity Verifier
+	 * Retrieve the Quadrature Count
 	 * 
-	 * @return The Bessel First Kind Half-Integer Identity Verifier
+	 * @return The Quadrature Count
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property HalfIntegerIdentity()
+	public int quadratureCount()
 	{
-		org.drip.function.definition.R1ToR1 gammaEstimator = new
-			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
-
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				gammaEstimator,
-				50
-			);
-
-		try
-		{
-			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
-					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
-					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-						gammaEstimator,
-						40
-					),
-					40
-				);
-
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return besselFirstKindEstimator.bigJ (
-							-1. * (alpha + 0.5),
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) (alpha + 1)) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
-							alpha + 0.5,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _quadratureCount;
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.hankel;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.hankel;
  */
 
 /**
- * <i>BigH1</i> implements the Estimator for the Cylindrical Hankel Function of the First Kind. The
- * References are:
+ * <i>BesselSecondNISTSeries</i> implements the Series for the Cylindrical Bessel Function of the Second Kind
+ * using the NIST Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,69 +101,44 @@ package org.drip.specialfunction.hankel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BigH1 extends org.drip.specialfunction.definition.HankelFirstKindEstimator
+public class BesselSecondNISTSeries
 {
-	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
-	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
-	 * BigH1 Constructor
+	 * Construct the R<sup>2</sup> To R<sup>1</sup> Bessel Second Kind NIST Summation Series
 	 * 
-	 * @param besselFirstKindEstimator Bessel Function of the First Kind Estimator
-	 * @param besselSecondKindEstimator Bessel Function of the Second Kind Estimator
+	 * @param digammaEstimator Digamma Function Estimator
+	 * @param gammaEstimator The Gamma Estimator
+	 * @param termCount Count of the Number of Terms
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The R<sup>2</sup> To R<sup>1</sup> Bessel Second Kind NIST Summation Series
 	 */
 
-	public BigH1 (
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
-		final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator)
-		throws java.lang.Exception
-	{
-		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator) ||
-			null == (_besselSecondKindEstimator = besselSecondKindEstimator))
-		{
-			throw new java.lang.Exception ("BigH1 Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Estimator of the Bessel Function of the First Kind
-	 * 
-	 * @return Estimator of the Bessel Function of the First Kind
-	 */
-
-	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
-	{
-		return _besselFirstKindEstimator;
-	}
-
-	/**
-	 * Retrieve the Estimator of the Bessel Function of the Second Kind
-	 * 
-	 * @return Estimator of the Bessel Function of the Second Kind
-	 */
-
-	public org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator()
-	{
-		return _besselSecondKindEstimator;
-	}
-
-	@Override public org.drip.numerical.fourier.ComplexNumber bigH1 (
-		final double alpha,
-		final double z)
+	public static final org.drip.numerical.estimation.R2ToR1Series SecondKind (
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final int termCount)
 	{
 		try
 		{
-			return new org.drip.numerical.fourier.ComplexNumber (
-				_besselFirstKindEstimator.bigJ (
-					alpha,
-					z
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+			{
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
+			}
+
+			return new org.drip.numerical.estimation.R2ToR1Series (
+				new org.drip.specialfunction.bessel.BesselSecondNISTSeriesTerm (
+					digammaEstimator,
+					gammaEstimator
 				),
-				_besselSecondKindEstimator.bigY (
-					alpha,
-					z
-				)
+				false,
+				termWeightMap
 			);
 		}
 		catch (java.lang.Exception e)

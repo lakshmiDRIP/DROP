@@ -1,5 +1,14 @@
 
-package org.drip.specialfunction.property;
+package org.drip.sample.bessel;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator;
+import org.drip.specialfunction.bessel.FrobeniusSeriesEstimator;
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+import org.drip.specialfunction.digamma.BinetFirstIntegral;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +73,8 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>BesselFirstEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>BesselSecondNISTEstimate</i> illustrates the Bessel Second NIST Estimation for the Cylindrical Bessel
+ * Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,154 +110,124 @@ package org.drip.specialfunction.property;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BesselFirstEqualityLemma
+public class BesselSecondNISTEstimate
 {
 
-	/**
-	 * Construct the Bessel First Kind Mirror Identity Verifier
-	 * 
-	 * @return The Bessel First Kind Mirror Identity Verifier
-	 */
-
-	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
+	private static final void BesselY (
+		final BesselSecondKindEstimator besselSecondKindEstimator,
+		final int termCount,
+		final double[] zArray,
+		final double[] alphaArray)
+		throws Exception
 	{
-		final org.drip.specialfunction.bessel.FrobeniusSeriesEstimator frobeniusEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null),
-				50
-			);
+		System.out.println ("\t|----------------------------------------------------------------------||");
 
-		try
+		System.out.println ("\t|                   BESSEL SECOND KIND NIST ESTIMATE                   ||");
+
+		System.out.println ("\t|----------------------------------------------------------------------||");
+
+		System.out.println ("\t|    Term Count => " + termCount);
+
+		System.out.println ("\t|----------------------------------------------------------------------||");
+
+		System.out.println ("\t|        L -> R:                                                       ||");
+
+		System.out.println ("\t|                - z                                                   ||");
+
+		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
+
+		System.out.println ("\t|----------------------------------------------------------------------||");
+
+		for (double z : zArray)
 		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
+			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
 
-						return frobeniusEstimator.bigJ (
-							-1. * alpha,
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
+			for (double alpha : alphaArray)
+			{
+				display = display + " " + FormatUtil.FormatDouble (
+					besselSecondKindEstimator.bigY (
+						alpha,
+						z
+					), 1, 6, 1.
+				) + " |";
+			}
 
-						return (0 == ((int) z) % 2 ? 1. : -1.) * frobeniusEstimator.bigJ (
-							alpha,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			System.out.println (display + "|");
 		}
 
-		return null;
+		System.out.println ("\t|----------------------------------------------------------------------||");
+
+		System.out.println();
 	}
 
-	/**
-	 * Construct the Bessel First Kind Half-Integer Identity Verifier
-	 * 
-	 * @return The Bessel First Kind Half-Integer Identity Verifier
-	 */
-
-	public static final org.drip.function.definition.R2ToR1Property HalfIntegerIdentity()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		org.drip.function.definition.R1ToR1 gammaEstimator = new
-			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+		EnvManager.InitEnv ("");
 
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				gammaEstimator,
-				50
-			);
-
-		try
+		int besselFirstTermCount = 40;
+		int[] besselSecondTermCountArray =
 		{
-			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
-					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
+			20,
+			30,
+			40,
+		};
+		double[] zArray =
+		{
+			 0.,
+			 1.,
+			 2.,
+			 3.,
+			 4.,
+			 5.,
+			 6.,
+			 7.,
+			 8.,
+			 9.,
+			10.,
+			11.,
+			12.,
+			13.,
+			14.,
+			15.,
+			16.,
+			17.,
+			18.,
+			19.,
+			20.,
+		};
+		double[] alphaArray =
+		{
+			0.0,
+			1.0,
+			2.0,
+			3.0,
+			4.0,
+		};
+
+		R1ToR1 digammaEstimator = new BinetFirstIntegral (null);
+
+		R1ToR1 gammaEstimator = new EulerIntegralSecondKind (null);
+
+		for (int besselSecondTermCount : besselSecondTermCountArray)
+		{
+			BesselY (
+				BesselSecondNISTSeriesEstimator.Standard (
+					digammaEstimator,
 					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+					FrobeniusSeriesEstimator.Standard (
 						gammaEstimator,
-						40
+						besselFirstTermCount
 					),
-					40
-				);
-
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return besselFirstKindEstimator.bigJ (
-							-1. * (alpha + 0.5),
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) (alpha + 1)) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
-							alpha + 0.5,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+					besselSecondTermCount
+				),
+				besselSecondTermCount,
+				zArray,
+				alphaArray
 			);
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
 
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

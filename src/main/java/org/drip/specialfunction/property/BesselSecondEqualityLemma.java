@@ -64,8 +64,8 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>BesselFirstEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>BesselSecondEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
+ * Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,25 +101,33 @@ package org.drip.specialfunction.property;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BesselFirstEqualityLemma
+public class BesselSecondEqualityLemma
 {
 
 	/**
-	 * Construct the Bessel First Kind Mirror Identity Verifier
+	 * Construct the Bessel Second Kind Mirror Identity Verifier
 	 * 
-	 * @return The Bessel First Kind Mirror Identity Verifier
+	 * @return The Bessel Second Kind Mirror Identity Verifier
 	 */
 
 	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
 	{
-		final org.drip.specialfunction.bessel.FrobeniusSeriesEstimator frobeniusEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null),
-				50
-			);
-
 		try
 		{
+			org.drip.function.definition.R1ToR1 gammaEstimator = new
+				org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+
+			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
+				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
+					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
+					gammaEstimator,
+					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+						gammaEstimator,
+						40
+					),
+					40
+				);
+
 			return new org.drip.function.definition.R2ToR1Property (
 				org.drip.function.definition.RxToR1Property.EQ,
 				new org.drip.function.definition.R2ToR1()
@@ -135,7 +143,7 @@ public class BesselFirstEqualityLemma
 								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
 						}
 
-						return frobeniusEstimator.bigJ (
+						return besselSecondKindEstimator.bigY (
 							-1. * alpha,
 							z
 						);
@@ -154,7 +162,7 @@ public class BesselFirstEqualityLemma
 								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
 						}
 
-						return (0 == ((int) z) % 2 ? 1. : -1.) * frobeniusEstimator.bigJ (
+						return (0 == ((int) z) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
 							alpha,
 							z
 						);
@@ -172,9 +180,9 @@ public class BesselFirstEqualityLemma
 	}
 
 	/**
-	 * Construct the Bessel First Kind Half-Integer Identity Verifier
+	 * Construct the Bessel Second Kind Half-Integer Identity Verifier
 	 * 
-	 * @return The Bessel First Kind Half-Integer Identity Verifier
+	 * @return The Bessel Second Kind Half-Integer Identity Verifier
 	 */
 
 	public static final org.drip.function.definition.R2ToR1Property HalfIntegerIdentity()
@@ -213,10 +221,10 @@ public class BesselFirstEqualityLemma
 						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
 						{
 							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
+								("BesselSecondEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
 						}
 
-						return besselFirstKindEstimator.bigJ (
+						return besselSecondKindEstimator.bigY (
 							-1. * (alpha + 0.5),
 							z
 						);
@@ -232,10 +240,10 @@ public class BesselFirstEqualityLemma
 						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
 						{
 							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
+								("BesselSecondEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
 						}
 
-						return (0 == ((int) (alpha + 1)) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
+						return (0 == ((int) (alpha)) % 2 ? 1. : -1.) * besselFirstKindEstimator.bigJ (
 							alpha + 0.5,
 							z
 						);

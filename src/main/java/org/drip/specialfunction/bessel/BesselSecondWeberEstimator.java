@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.property;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,8 +64,8 @@ package org.drip.specialfunction.property;
  */
 
 /**
- * <i>BesselFirstEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>BesselSecondWeberEstimator</i> implements the Weber Estimation for the Cylindrical Bessel Function of
+ * the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,154 +101,58 @@ package org.drip.specialfunction.property;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BesselFirstEqualityLemma
+public class BesselSecondWeberEstimator extends org.drip.specialfunction.definition.BesselSecondKindEstimator
 {
+	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstEstimator = null;
 
 	/**
-	 * Construct the Bessel First Kind Mirror Identity Verifier
+	 * BesselSecondWeberEstimator Constructor
 	 * 
-	 * @return The Bessel First Kind Mirror Identity Verifier
+	 * @param besselFirstEstimator Bessel Function First Kind Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
+	public BesselSecondWeberEstimator (
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstEstimator)
+		throws java.lang.Exception
 	{
-		final org.drip.specialfunction.bessel.FrobeniusSeriesEstimator frobeniusEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null),
-				50
-			);
-
-		try
+		if (null == (_besselFirstEstimator = besselFirstEstimator))
 		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return frobeniusEstimator.bigJ (
-							-1. * alpha,
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) z) % 2 ? 1. : -1.) * frobeniusEstimator.bigJ (
-							alpha,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
+			throw new java.lang.Exception ("BesselSecondWeberEstimator Constructor => Invalid Inputs");
 		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	/**
-	 * Construct the Bessel First Kind Half-Integer Identity Verifier
+	 * Retrieve the Bessel Function First Kind Estimator
 	 * 
-	 * @return The Bessel First Kind Half-Integer Identity Verifier
+	 * @return The Bessel Function First Kind Estimator
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property HalfIntegerIdentity()
+	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstEstimator()
 	{
-		org.drip.function.definition.R1ToR1 gammaEstimator = new
-			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+		return _besselFirstEstimator;
+	}
 
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-				gammaEstimator,
-				50
-			);
-
-		try
+	@Override public double bigY (
+		final double alpha,
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
-			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
-					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
-					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
-						gammaEstimator,
-						40
-					),
-					40
-				);
-
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return besselFirstKindEstimator.bigJ (
-							-1. * (alpha + 0.5),
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) (alpha + 1)) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
-							alpha + 0.5,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			throw new java.lang.Exception ("BesselSecondWeberEstimator::bigY => Invalid Inputs");
 		}
 
-		return null;
+		return (
+			java.lang.Math.cos (java.lang.Math.PI * alpha) * _besselFirstEstimator.bigJ (
+				alpha,
+				z
+			) - _besselFirstEstimator.bigJ (
+				-1. * alpha,
+				z
+			)
+		) / java.lang.Math.sin (java.lang.Math.PI * alpha);
 	}
 }
