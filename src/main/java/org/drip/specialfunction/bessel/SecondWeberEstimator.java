@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +64,8 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>SecondWeberEstimator</i> implements the Weber Estimation for the Cylindrical Bessel Function of the
+ * Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,114 +101,58 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public class SecondWeberEstimator extends org.drip.specialfunction.definition.BesselSecondKindEstimator
 {
+	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * SecondWeberEstimator Constructor
+	 * 
+	 * @param besselFirstKindEstimator Bessel Function First Kind Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SecondWeberEstimator (
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
+		throws java.lang.Exception
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
-
-			for (double alpha : alphaArray)
-			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+			throw new java.lang.Exception ("SecondWeberEstimator Constructor => Invalid Inputs");
 		}
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve the Bessel Function First Kind Estimator
+	 * 
+	 * @return The Bessel Function First Kind Estimator
+	 */
+
+	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
 	{
-		EnvManager.InitEnv ("");
+		return _besselFirstKindEstimator;
+	}
 
-		int[] termCountArray =
+	@Override public double bigY (
+		final double alpha,
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
-				zArray,
-				alphaArray
-			);
+			throw new java.lang.Exception ("SecondWeberEstimator::bigY => Invalid Inputs");
 		}
 
-		EnvManager.TerminateEnv();
+		return (
+			java.lang.Math.cos (java.lang.Math.PI * alpha) * _besselFirstKindEstimator.bigJ (
+				alpha,
+				z
+			) - _besselFirstKindEstimator.bigJ (
+				-1. * alpha,
+				z
+			)
+		) / java.lang.Math.sin (java.lang.Math.PI * alpha);
 	}
 }

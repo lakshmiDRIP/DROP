@@ -4,8 +4,8 @@ package org.drip.sample.bessel;
 import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator;
-import org.drip.specialfunction.bessel.FrobeniusSeriesEstimator;
+import org.drip.specialfunction.bessel.SecondNISTSeriesEstimator;
+import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
 import org.drip.specialfunction.definition.BesselSecondKindEstimator;
 import org.drip.specialfunction.digamma.BinetFirstIntegral;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
@@ -213,10 +213,10 @@ public class BesselSecondNISTEstimate
 		for (int besselSecondTermCount : besselSecondTermCountArray)
 		{
 			BesselY (
-				BesselSecondNISTSeriesEstimator.Standard (
+				SecondNISTSeriesEstimator.Standard (
 					digammaEstimator,
 					gammaEstimator,
-					FrobeniusSeriesEstimator.Standard (
+					FirstFrobeniusSeriesEstimator.Standard (
 						gammaEstimator,
 						besselFirstTermCount
 					),

@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +64,8 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>ModifiedFirstFrobeniusSeries</i> implements the Frobenius Series for the Modified Bessel Function of
+ * the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,114 +101,46 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public class ModifiedFirstFrobeniusSeries
 {
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * Construct the R<sup>2</sup> To R<sup>1</sup> Modified Bessel First Kind Frobenius Summation Series
+	 * 
+	 * @param gammaEstimator The Gamma Estimator
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The R<sup>2</sup> To R<sup>1</sup> Modified Bessel First Kind Frobenius Summation Series
+	 */
+
+	public static final org.drip.numerical.estimation.R2ToR1Series Summation (
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final int termCount)
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		try
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
+			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-			for (double alpha : alphaArray)
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
 			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
+				termWeightMap.put (
+					termIndex,
+					1.
+				);
 			}
 
-			System.out.println (display + "|");
-		}
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
-	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		int[] termCountArray =
-		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
-				zArray,
-				alphaArray
+			return new org.drip.numerical.estimation.R2ToR1Series (
+				new org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesTerm (gammaEstimator),
+				false,
+				termWeightMap
 			);
 		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		EnvManager.TerminateEnv();
+		return null;
 	}
 }

@@ -112,8 +112,8 @@ public class BesselFirstEqualityLemma
 
 	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
 	{
-		final org.drip.specialfunction.bessel.FrobeniusSeriesEstimator frobeniusEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+		final org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator frobeniusEstimator =
+			org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
 				new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null),
 				50
 			);
@@ -183,7 +183,7 @@ public class BesselFirstEqualityLemma
 			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
 
 		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+			org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
 				gammaEstimator,
 				50
 			);
@@ -191,10 +191,10 @@ public class BesselFirstEqualityLemma
 		try
 		{
 			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
+				org.drip.specialfunction.bessel.SecondNISTSeriesEstimator.Standard (
 					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
 					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+					org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
 						gammaEstimator,
 						40
 					),

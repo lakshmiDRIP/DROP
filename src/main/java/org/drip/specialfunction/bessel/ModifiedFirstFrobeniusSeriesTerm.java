@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,7 +64,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
+ * <i>ModifiedFirstFrobeniusSeriesTerm</i> implements the Frobenius Series Term for the Modified Bessel
  * Function of the First Kind. The References are:
  * 
  * <br><br>
@@ -106,114 +101,59 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public class ModifiedFirstFrobeniusSeriesTerm extends org.drip.numerical.estimation.R2ToR1SeriesTerm
 {
+	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * ModifiedFirstFrobeniusSeriesTerm Constructor
+	 * 
+	 * @param gammaEstimator The Gamma Estimator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ModifiedFirstFrobeniusSeriesTerm (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		throws java.lang.Exception
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		if (null == (_gammaEstimator = gammaEstimator))
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
-
-			for (double alpha : alphaArray)
-			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
+			throw new java.lang.Exception ("ModifiedFirstFrobeniusSeriesTerm Constructor => Invalid Input");
 		}
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return The Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
 	{
-		EnvManager.InitEnv ("");
+		return _gammaEstimator;
+	}
 
-		int[] termCountArray =
+	@Override public double value (
+		final int order,
+		final double alpha,
+		final double z)
+		throws java.lang.Exception
+	{
+		if (0 > order ||
+			!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (z))
 		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
-				zArray,
-				alphaArray
-			);
+			throw new java.lang.Exception ("ModifiedFirstFrobeniusSeriesTerm::value => Invalid Inputs");
 		}
 
-		EnvManager.TerminateEnv();
+		return java.lang.Math.pow (
+			0.5 * z,
+			2. * order + alpha
+		) /
+		(
+			_gammaEstimator.evaluate (order + 1) *
+			_gammaEstimator.evaluate (order + alpha + 1)
+		);
 	}
 }

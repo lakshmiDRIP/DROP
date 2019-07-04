@@ -3,8 +3,8 @@ package org.drip.sample.bessel;
 
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.bessel.ModifiedSecondIntegralEstimator;
+import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +69,8 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>ModifiedSecondIntegralEstimate</i> illustrates the Integral Based Estimation for the Modified Bessel
+ * Function of the Second Kind for Non-Integer Orders. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,52 +106,52 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public class ModifiedSecondIntegralEstimate
 {
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
+	private static final void BesselK (
+		final ModifiedBesselSecondKindEstimator modifiedBesselSecondKindEstimator,
+		final int quadratureCount,
 		final double[] zArray,
 		final double[] alphaArray)
 		throws Exception
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
+		System.out.println ("\t|              MODIFIED BESSEL SECOND KIND INTEGRAL ESTIMATE               ||");
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------------||");
 
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
+		System.out.println ("\t|    Quadrature Term Count => " + quadratureCount);
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------------||");
 
-		System.out.println ("\t|        L -> R:                                                       ||");
+		System.out.println ("\t|        L -> R:                                                           ||");
 
-		System.out.println ("\t|                - z                                                   ||");
+		System.out.println ("\t|                - z                                                       ||");
 
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
+		System.out.println ("\t|                - Alpha Bessel Estimate Row                               ||");
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------------||");
 
 		for (double z : zArray)
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
+			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] =>";
 
 			for (double alpha : alphaArray)
 			{
 				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
+					modifiedBesselSecondKindEstimator.bigK (
 						alpha,
 						z
-					), 1, 6, 1.
+					), 2, 6, 1.
 				) + " |";
 			}
 
 			System.out.println (display + "|");
 		}
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
+		System.out.println ("\t|--------------------------------------------------------------------------||");
 
 		System.out.println();
 	}
@@ -162,35 +162,20 @@ public class FrobeniusEstimate
 	{
 		EnvManager.InitEnv ("");
 
-		int[] termCountArray =
+		int[] quadratureCountArray =
 		{
-			20,
-			30,
-			40,
+			25,
+			50,
+			75,
 		};
 		double[] zArray =
 		{
-			 0.,
 			 1.,
 			 2.,
 			 3.,
 			 4.,
 			 5.,
 			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
 		};
 		double[] alphaArray =
 		{
@@ -201,14 +186,11 @@ public class FrobeniusEstimate
 			2.0,
 		};
 
-		for (int termCount : termCountArray)
+		for (int quadratureCount : quadratureCountArray)
 		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
+			BesselK (
+				ModifiedSecondIntegralEstimator.Standard (quadratureCount),
+				quadratureCount,
 				zArray,
 				alphaArray
 			);

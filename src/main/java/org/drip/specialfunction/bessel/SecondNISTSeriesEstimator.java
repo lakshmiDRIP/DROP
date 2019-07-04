@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +64,8 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>SecondNISTSeriesEstimator</i> implements the NIST Series Estimator for the Cylindrical Bessel Function
+ * of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,114 +101,93 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public class SecondNISTSeriesEstimator extends
+	org.drip.specialfunction.definition.BesselSecondKindEstimator
 {
+	private org.drip.numerical.estimation.R2ToR1Series _besselSecondKindNISTSeries = null;
+	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * Construct a Standard Instance of SecondNISTSeriesEstimator
+	 * 
+	 * @param digammaEstimator The Digamma Estimator
+	 * @param gammaEstimator The Gamma Estimator
+	 * @param besselFirstKindEstimator The Bessel Function First Kind Estimator
+	 * @param termCount Count of the Number of Terms
+	 * 
+	 * @return The Standard Instance of SecondNISTSeriesEstimator
+	 */
+
+	public static final SecondNISTSeriesEstimator Standard (
+		final org.drip.function.definition.R1ToR1 digammaEstimator,
+		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
+		final int termCount)
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		try
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
-
-			for (double alpha : alphaArray)
-			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
-			}
-
-			System.out.println (display + "|");
-		}
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
-	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		int[] termCountArray =
-		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
+			return new SecondNISTSeriesEstimator (
+				org.drip.specialfunction.bessel.SecondNISTSeries.SecondKind (
+					digammaEstimator,
+					gammaEstimator,
 					termCount
 				),
-				termCount,
-				zArray,
-				alphaArray
+				besselFirstKindEstimator
 			);
 		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		EnvManager.TerminateEnv();
+		return null;
+	}
+
+	protected SecondNISTSeriesEstimator (
+		final org.drip.numerical.estimation.R2ToR1Series besselSecondKindNISTSeries,
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
+		throws java.lang.Exception
+	{
+		if (null == (_besselSecondKindNISTSeries = besselSecondKindNISTSeries) ||
+			null == (_besselFirstKindEstimator = besselFirstKindEstimator))
+		{
+			throw new java.lang.Exception ("SecondNISTSeriesEstimator Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Bessel Second Kind NIST Series
+	 * 
+	 * @return The Bessel Second Kind NIST Series
+	 */
+
+	public org.drip.numerical.estimation.R2ToR1Series besselSecondKindNISTSeries()
+	{
+		return _besselSecondKindNISTSeries;
+	}
+
+	/**
+	 * Retrieve the Bessel Function First Kind Estimator
+	 * 
+	 * @return The Bessel Function First Kind Estimator
+	 */
+
+	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
+	{
+		return _besselFirstKindEstimator;
+	}
+
+	@Override public double bigY (
+		final double alpha,
+		final double z)
+		throws java.lang.Exception
+	{
+		return _besselSecondKindNISTSeries.evaluate (
+			alpha,
+			z
+		) + 2. / java.lang.Math.PI * java.lang.Math.log (0.5 * z) * _besselFirstKindEstimator.bigJ (
+			alpha,
+			z
+		);
 	}
 }

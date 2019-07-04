@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +64,8 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>ModifiedSecondIntegralEstimator</i> implements the Integral Estimator for the Modified Bessel Function
+ * of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,114 +101,135 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public abstract class ModifiedSecondIntegralEstimator extends
+	org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator
 {
+	private int _quadratureCount = -1;
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * Construct the Modified Bessel Second Kind Estimator from the Integral Form
+	 * 
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Modified Bessel Second Kind Estimator from the Integral Form
+	 */
+
+	public static final ModifiedSecondIntegralEstimator Standard (
+		final int quadratureCount)
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		try
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
-
-			for (double alpha : alphaArray)
+			return new ModifiedSecondIntegralEstimator (quadratureCount)
 			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
-			}
+				@Override public double bigK (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ModifiedSecondIntegralEstimator::Standard::evaluate => Invalid Inputs");
+					}
 
-			System.out.println (display + "|");
+					return
+					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						0.,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double t)
+								throws java.lang.Exception
+							{
+								return java.lang.Math.exp (-z * java.lang.Math.cosh (t)) *
+									java.lang.Math.cosh (alpha * t);
+							}
+						}
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
+		return null;
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Modified Bessel Second Kind Zero Order Estimator from the Integral Form
+	 * 
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Modified Bessel Second Kind Zero Order Estimator from the Integral Form
+	 */
+
+	public static final ModifiedSecondIntegralEstimator ZeroOrder (
+		final int quadratureCount)
 	{
-		EnvManager.InitEnv ("");
+		try
+		{
+			return new ModifiedSecondIntegralEstimator (quadratureCount)
+			{
+				@Override public double bigK (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (0. != alpha ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ModifiedSecondIntegralEstimator::ZeroOrder::evaluate => Invalid Inputs");
+					}
 
-		int[] termCountArray =
+					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussHermite (
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double t)
+								throws java.lang.Exception
+							{
+								return java.lang.Math.exp (java.lang.Math.cos (z * t)) /
+									java.lang.Math.sqrt (t * t + 1.);
+							}
+						}
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
 		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
-				zArray,
-				alphaArray
-			);
+			e.printStackTrace();
 		}
 
-		EnvManager.TerminateEnv();
+		return null;
+	}
+
+	protected ModifiedSecondIntegralEstimator (
+		final int quadratureCount)
+		throws java.lang.Exception
+	{
+		if (0 >= (_quadratureCount = quadratureCount))
+		{
+			throw new java.lang.Exception ("ModifiedSecondIntegralEstimator Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Quadrature Count
+	 * 
+	 * @return The Quadrature Count
+	 */
+
+	public int quadratureCount()
+	{
+		return _quadratureCount;
 	}
 }

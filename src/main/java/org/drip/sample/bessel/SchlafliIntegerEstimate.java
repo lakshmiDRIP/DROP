@@ -3,7 +3,7 @@ package org.drip.sample.bessel;
 
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.SchlafliIntegralEstimator;
+import org.drip.specialfunction.bessel.FirstSchlafliIntegralEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -109,7 +109,7 @@ public class SchlafliIntegerEstimate
 {
 
 	private static final void BesselJ (
-		final SchlafliIntegralEstimator besselEstimator,
+		final FirstSchlafliIntegralEstimator besselEstimator,
 		final int quadratureCount,
 		final double[] zArray,
 		final double[] alphaArray)
@@ -203,7 +203,7 @@ public class SchlafliIntegerEstimate
 		for (int quadratureCount : quadratureCountArray)
 		{
 			BesselJ (
-				SchlafliIntegralEstimator.IntegerForm (quadratureCount),
+				FirstSchlafliIntegralEstimator.IntegerForm (quadratureCount),
 				quadratureCount,
 				zArray,
 				alphaArray

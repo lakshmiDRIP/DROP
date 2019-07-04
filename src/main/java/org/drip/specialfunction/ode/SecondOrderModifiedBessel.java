@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.ode;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,8 +64,8 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * <i>SecondOrderModifiedBessel</i> exposes the Coefficient Terms in the Modified Bessel ODE. The References
+ * are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,114 +101,116 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public class SecondOrderModifiedBessel extends org.drip.specialfunction.ode.SecondOrder
 {
+	private double _alpha = java.lang.Double.NaN;
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * Construct the Standard Second Order Modified Bessel ODE
+	 * 
+	 * @param alpha Alpha
+	 * 
+	 * @return The Standard Second Order Modified Bessel ODE
+	 */
+
+	public static final SecondOrderModifiedBessel Standard (
+		final double alpha)
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		try
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
+			return new SecondOrderModifiedBessel (
+				alpha,
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("SecondOrderModifiedBessel::SecondOrder::evaluate => Invalid Inputs");
+						}
 
-			for (double alpha : alphaArray)
-			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
-			}
+						return z * z;
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						{
+							throw new java.lang.Exception
+								("SecondOrderModifiedBessel::SecondOrder::evaluate => Invalid Inputs");
+						}
 
-			System.out.println (display + "|");
-		}
+						return z;
+					}
+				},
+				new org.drip.function.definition.R2ToR1()
+				{
+					@Override public double evaluate (
+						final double z,
+						final double w)
+						throws java.lang.Exception
+					{
+						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (w))
+						{
+							throw new java.lang.Exception
+								("SecondOrderModifiedBessel::SecondOrder::evaluate => Invalid Inputs");
+						}
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
-	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		int[] termCountArray =
-		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
-				zArray,
-				alphaArray
+						return -1. * (z * z + alpha * alpha) * w;
+					}
+				}
 			);
 		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
 
-		EnvManager.TerminateEnv();
+		return null;
+	}
+
+	private SecondOrderModifiedBessel (
+		final double alpha,
+		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
+		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
+		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
+		throws java.lang.Exception
+	{
+		super (
+			secondDerivativeCoefficient,
+			firstDerivativeCoefficient,
+			zeroDerivativeCoefficient
+		);
+
+		if (!org.drip.numerical.common.NumberUtil.IsValid(_alpha = alpha))
+		{
+			throw new java.lang.Exception ("SecondOrderModifiedBessel Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Alpha
+	 * 
+	 * @return Alpha
+	 */
+
+	public double alpha()
+	{
+		return _alpha;
+	}
+
+	@Override public java.util.TreeSet<java.lang.Double> orderedRegularSingularPoints()
+	{
+		return null;
 	}
 }

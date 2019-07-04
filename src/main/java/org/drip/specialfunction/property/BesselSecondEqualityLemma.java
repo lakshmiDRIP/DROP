@@ -118,10 +118,10 @@ public class BesselSecondEqualityLemma
 				org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
 
 			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
+				org.drip.specialfunction.bessel.SecondNISTSeriesEstimator.Standard (
 					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
 					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+					org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
 						gammaEstimator,
 						40
 					),
@@ -191,7 +191,7 @@ public class BesselSecondEqualityLemma
 			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
 
 		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+			org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
 				gammaEstimator,
 				50
 			);
@@ -199,10 +199,10 @@ public class BesselSecondEqualityLemma
 		try
 		{
 			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.BesselSecondNISTSeriesEstimator.Standard (
+				org.drip.specialfunction.bessel.SecondNISTSeriesEstimator.Standard (
 					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
 					gammaEstimator,
-					org.drip.specialfunction.bessel.FrobeniusSeriesEstimator.Standard (
+					org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
 						gammaEstimator,
 						40
 					),

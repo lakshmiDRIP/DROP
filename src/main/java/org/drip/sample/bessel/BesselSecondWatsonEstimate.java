@@ -3,7 +3,7 @@ package org.drip.sample.bessel;
 
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.BesselSecondWatsonIntegralEstimator;
+import org.drip.specialfunction.bessel.SecondWatsonIntegralEstimator;
 import org.drip.specialfunction.definition.BesselSecondKindEstimator;
 
 /*
@@ -203,7 +203,7 @@ public class BesselSecondWatsonEstimate
 		for (int quadratureCount : quadratureCountArray)
 		{
 			BesselY (
-				BesselSecondWatsonIntegralEstimator.IntegerForm (quadratureCount),
+				SecondWatsonIntegralEstimator.IntegerForm (quadratureCount),
 				quadratureCount,
 				zArray,
 				alphaArray

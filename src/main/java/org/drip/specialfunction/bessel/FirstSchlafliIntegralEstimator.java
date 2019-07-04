@@ -1,10 +1,5 @@
 
-package org.drip.sample.bessel;
-
-import org.drip.numerical.common.FormatUtil;
-import org.drip.service.env.EnvManager;
-import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
-import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -69,7 +64,7 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  */
 
 /**
- * <i>FrobeniusEstimate</i> illustrates the Frobenius Series Based Estimation for the Cylindrical Bessel
+ * <i>FirstSchlafliIntegralEstimator</i> implements the Integral Estimator for the Cylindrical Bessel
  * Function of the First Kind. The References are:
  * 
  * <br><br>
@@ -106,114 +101,149 @@ import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FrobeniusEstimate
+public abstract class FirstSchlafliIntegralEstimator extends
+	org.drip.specialfunction.definition.BesselFirstKindEstimator
 {
+	private int _quadratureCount = -1;
 
-	private static final void BesselJ (
-		final FirstFrobeniusSeriesEstimator besselEstimator,
-		final int termCount,
-		final double[] zArray,
-		final double[] alphaArray)
-		throws Exception
+	/**
+	 * Construct the Bessel First Kind Estimator from the Schlafli Integer Integral Form
+	 * 
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Bessel First Kind Estimator from the Schlafli Integer Integral Form
+	 */
+
+	public static final FirstSchlafliIntegralEstimator IntegerForm (
+		final int quadratureCount)
 	{
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|                 BESSEL FIRST KIND FROBENIUS ESTIMATE                 ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|    Frobenius Term Count => " + termCount);
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println ("\t|        L -> R:                                                       ||");
-
-		System.out.println ("\t|                - z                                                   ||");
-
-		System.out.println ("\t|                - Alpha Bessel Estimate Row                           ||");
-
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		for (double z : zArray)
+		try
 		{
-			String display = "\t| [" + FormatUtil.FormatDouble (z, 2, 1, 1., false) + "] => ";
-
-			for (double alpha : alphaArray)
+			return new FirstSchlafliIntegralEstimator (quadratureCount)
 			{
-				display = display + " " + FormatUtil.FormatDouble (
-					besselEstimator.bigJ (
-						alpha,
-						z
-					), 1, 6, 1.
-				) + " |";
-			}
+				@Override public double bigJ (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("FirstSchlafliIntegralEstimator::IntegerForm::evaluate => Invalid Inputs");
+					}
 
-			System.out.println (display + "|");
+					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+						0.,
+						java.lang.Math.PI,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double theta)
+								throws java.lang.Exception
+							{
+								return java.lang.Math.cos (alpha * theta - z * java.lang.Math.sin (theta));
+							}
+						}
+					) / java.lang.Math.PI;
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
 		}
 
-		System.out.println ("\t|----------------------------------------------------------------------||");
-
-		System.out.println();
+		return null;
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Construct the Bessel First Kind Estimator from the Schlafli Non-Integer Integral Form
+	 * 
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Bessel First Kind Estimator from the Schlafli Non-Integer Integral Form
+	 */
+
+	public static final FirstSchlafliIntegralEstimator NonIntegerForm (
+		final int quadratureCount)
 	{
-		EnvManager.InitEnv ("");
+		try
+		{
+			return new FirstSchlafliIntegralEstimator (quadratureCount)
+			{
+				@Override public double bigJ (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("FirstSchlafliIntegralEstimator::NonIntegerForm::evaluate => Invalid Inputs");
+					}
 
-		int[] termCountArray =
+					return (org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+						0.,
+						java.lang.Math.PI,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double theta)
+								throws java.lang.Exception
+							{
+								return java.lang.Math.cos (alpha * theta - z * java.lang.Math.sin (theta));
+							}
+						}
+					) / java.lang.Math.PI) - (0. == alpha ? 0. :
+					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						0.,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double t)
+								throws java.lang.Exception
+							{
+								return java.lang.Math.exp (-z * java.lang.Math.sinh (t) - alpha * t);
+							}
+						}
+					) * java.lang.Math.sin (alpha * java.lang.Math.PI) / java.lang.Math.PI);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
 		{
-			20,
-			30,
-			40,
-		};
-		double[] zArray =
-		{
-			 0.,
-			 1.,
-			 2.,
-			 3.,
-			 4.,
-			 5.,
-			 6.,
-			 7.,
-			 8.,
-			 9.,
-			10.,
-			11.,
-			12.,
-			13.,
-			14.,
-			15.,
-			16.,
-			17.,
-			18.,
-			19.,
-			20.,
-		};
-		double[] alphaArray =
-		{
-			0.0,
-			0.5,
-			1.0,
-			1.5,
-			2.0,
-		};
-
-		for (int termCount : termCountArray)
-		{
-			BesselJ (
-				FirstFrobeniusSeriesEstimator.Standard (
-					new EulerIntegralSecondKind (null),
-					termCount
-				),
-				termCount,
-				zArray,
-				alphaArray
-			);
+			e.printStackTrace();
 		}
 
-		EnvManager.TerminateEnv();
+		return null;
+	}
+
+	protected FirstSchlafliIntegralEstimator (
+		final int quadratureCount)
+		throws java.lang.Exception
+	{
+		if (0 >= (_quadratureCount = quadratureCount))
+		{
+			throw new java.lang.Exception ("FirstSchlafliIntegralEstimator Constructor => Invalid Inputs");
+		} 
+	}
+
+	/**
+	 * Retrieve the Quadrature Count
+	 * 
+	 * @return The Quadrature Count
+	 */
+
+	public int quadratureCount()
+	{
+		return _quadratureCount;
 	}
 }
