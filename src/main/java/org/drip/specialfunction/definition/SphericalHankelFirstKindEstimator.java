@@ -111,8 +111,6 @@ public abstract class SphericalHankelFirstKindEstimator implements org.drip.func
 	 * @param z Z
 	 *  
 	 * @return Spherical Hankel Function First Kind h1 Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract org.drip.numerical.fourier.ComplexNumber smallH1 (

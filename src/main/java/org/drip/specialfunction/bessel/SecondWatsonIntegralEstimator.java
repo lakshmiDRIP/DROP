@@ -130,7 +130,7 @@ public abstract class SecondWatsonIntegralEstimator extends
 						!org.drip.numerical.common.NumberUtil.IsValid (z))
 					{
 						throw new java.lang.Exception
-							("SecondWatsonIntegralEstimator::IntegerForm::evaluate => Invalid Inputs");
+							("SecondWatsonIntegralEstimator::IntegerForm::evaluate => Invalid Inputs " + alpha);
 					}
 
 					return (org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
@@ -144,6 +144,11 @@ public abstract class SecondWatsonIntegralEstimator extends
 								final double theta)
 								throws java.lang.Exception
 							{
+								if (java.lang.Double.isInfinite (theta))
+								{
+									return 0.;
+								}
+
 								return java.lang.Math.sin (z * java.lang.Math.sin (theta) - alpha * theta);
 							}
 						}
@@ -158,6 +163,11 @@ public abstract class SecondWatsonIntegralEstimator extends
 								final double t)
 								throws java.lang.Exception
 							{
+								if (java.lang.Double.isInfinite (t))
+								{
+									return 0.;
+								}
+
 								double ePowerAlphaT = java.lang.Math.exp (alpha * t);
 
 								double expPrefix = 0 == (alpha % 2) ? ePowerAlphaT + 1. / ePowerAlphaT :

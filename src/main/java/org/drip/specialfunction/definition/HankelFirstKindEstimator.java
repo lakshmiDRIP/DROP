@@ -111,8 +111,6 @@ public abstract class HankelFirstKindEstimator implements org.drip.function.defi
 	 * @param z Z
 	 *  
 	 * @return Hankel Function First Kind H1 Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract org.drip.numerical.fourier.ComplexNumber bigH1 (

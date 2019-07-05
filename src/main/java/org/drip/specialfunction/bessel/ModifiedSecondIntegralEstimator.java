@@ -144,8 +144,9 @@ public abstract class ModifiedSecondIntegralEstimator extends
 								final double t)
 								throws java.lang.Exception
 							{
-								return java.lang.Math.exp (-z * java.lang.Math.cosh (t)) *
-									java.lang.Math.cosh (alpha * t);
+								return java.lang.Double.isInfinite (t) ? 0. :
+									java.lang.Math.exp (-z * java.lang.Math.cosh (t)) *
+										java.lang.Math.cosh (alpha * t);
 							}
 						}
 					);
@@ -187,7 +188,7 @@ public abstract class ModifiedSecondIntegralEstimator extends
 							("ModifiedSecondIntegralEstimator::ZeroOrder::evaluate => Invalid Inputs");
 					}
 
-					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussHermite (
+					return 0.5 * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussHermite (
 						quadratureCount
 					).integrate (
 						new org.drip.function.definition.R1ToR1 (null)
@@ -196,8 +197,136 @@ public abstract class ModifiedSecondIntegralEstimator extends
 								final double t)
 								throws java.lang.Exception
 							{
-								return java.lang.Math.exp (java.lang.Math.cos (z * t)) /
-									java.lang.Math.sqrt (t * t + 1.);
+								return java.lang.Double.isInfinite (t) ? 0. :
+									java.lang.Math.cos (z * t) / java.lang.Math.sqrt (t * t + 1.);
+							}
+						}
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Modified Bessel Second Kind Estimator for the 1. / 3. Order from the Integral Form
+	 * 
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Modified Bessel Second Kind Estimator for the 1. / 3. Order from the Integral Form
+	 */
+
+	public static final ModifiedSecondIntegralEstimator OneThirdOrder (
+		final int quadratureCount)
+	{
+		try
+		{
+			return new ModifiedSecondIntegralEstimator (quadratureCount)
+			{
+				@Override public double bigK (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (1. / 3. != alpha ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ModifiedSecondIntegralEstimator::OneThirdOrder::evaluate => Invalid Inputs");
+					}
+
+					return java.lang.Math.sqrt (3.) *
+					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						0.,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double x)
+								throws java.lang.Exception
+							{
+								if (java.lang.Double.isInfinite (x))
+								{
+									return 0.;
+								}
+
+								double xSquaredOver3 = x * x / 3.;
+
+								return java.lang.Math.exp (
+									-z * (1. + 4. * xSquaredOver3) * java.lang.Math.sqrt (1. + xSquaredOver3)
+								);
+							}
+						}
+					);
+				}
+			};
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Modified Bessel Second Kind Estimator for the 2. / 3. Order from the Integral Form
+	 * 
+	 * @param quadratureCount Count of the Integrand Quadrature
+	 * 
+	 * @return Modified Bessel Second Kind Estimator for the 2. / 3. Order from the Integral Form
+	 */
+
+	public static final ModifiedSecondIntegralEstimator TwoThirdOrder (
+		final int quadratureCount)
+	{
+		try
+		{
+			return new ModifiedSecondIntegralEstimator (quadratureCount)
+			{
+				@Override public double bigK (
+					final double alpha,
+					final double z)
+					throws java.lang.Exception
+				{
+					if (2. / 3. != alpha ||
+						!org.drip.numerical.common.NumberUtil.IsValid (z))
+					{
+						throw new java.lang.Exception
+							("ModifiedSecondIntegralEstimator::TwoThirdOrder::evaluate => Invalid Inputs");
+					}
+
+					return 1. / java.lang.Math.sqrt (3.) *
+					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						0.,
+						quadratureCount
+					).integrate (
+						new org.drip.function.definition.R1ToR1 (null)
+						{
+							@Override public double evaluate (
+								final double x)
+								throws java.lang.Exception
+							{
+								if (java.lang.Double.isInfinite (x))
+								{
+									return 0.;
+								}
+
+								double xSquared = x * x;
+								double xSquaredOver3 = xSquared / 3.;
+
+								double sqrt_OnePlusXSquaredOver3_ = java.lang.Math.sqrt (1. + xSquaredOver3);
+
+								return (3. + 2. * xSquared) / sqrt_OnePlusXSquaredOver3_ *
+									java.lang.Math.exp (
+										-z * (1. + 4. * xSquaredOver3) * sqrt_OnePlusXSquaredOver3_
+									);
 							}
 						}
 					);

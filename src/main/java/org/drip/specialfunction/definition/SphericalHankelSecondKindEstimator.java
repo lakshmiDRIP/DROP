@@ -111,8 +111,6 @@ public abstract class SphericalHankelSecondKindEstimator implements org.drip.fun
 	 * @param z Z
 	 *  
 	 * @return Spherical Hankel Function Second Kind h2 Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract org.drip.numerical.fourier.ComplexNumber smallH2 (

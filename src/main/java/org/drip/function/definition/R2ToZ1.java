@@ -111,8 +111,6 @@ public interface R2ToZ1
 	 * @param y Y
 	 *  
 	 * @return Returns the Calculated Complex Value
-	 * 
-	 * @throws java.lang.Exception Thrown if evaluation cannot be done
 	 */
 
 	public abstract org.drip.numerical.fourier.ComplexNumber evaluate (

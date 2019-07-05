@@ -111,8 +111,6 @@ public abstract class HankelSecondKindEstimator implements org.drip.function.def
 	 * @param z Z
 	 *  
 	 * @return Hankel Function Second Kind H2 Value
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract org.drip.numerical.fourier.ComplexNumber bigH2 (

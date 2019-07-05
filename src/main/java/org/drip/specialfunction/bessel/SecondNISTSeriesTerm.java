@@ -190,6 +190,8 @@ public class SecondNISTSeriesTerm extends org.drip.numerical.estimation.R2ToR1Se
 				_gammaEstimator.evaluate (order + 1) * _zSquaredOver4_PowerOrder;
 		}
 
+		System.out.println ("\t\t" + bigY);
+
 		return bigY;
 	}
 }
