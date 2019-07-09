@@ -295,7 +295,7 @@ public class ComplexNumber {
 	}
 
 	/**
-	 * Exponentiate the  Complex Number
+	 * Exponentiate the Complex Number
 	 * 
 	 * @param cn The Complex Number
 	 * 
