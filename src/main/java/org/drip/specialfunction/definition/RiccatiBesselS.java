@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,7 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Bessel ODE. The References are:
+ * <i>RiccatiBesselS</i> exposes the Estimator for the Riccati-Bessel S Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,116 +100,33 @@ package org.drip.specialfunction.ode;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
+public abstract class RiccatiBesselS implements org.drip.function.definition.R2ToR1
 {
-	private double _alpha = java.lang.Double.NaN;
 
 	/**
-	 * Construct the Standard Second Order Bessel ODE
+	 * Evaluate Riccati-Bessel S Function given Alpha and z
 	 * 
 	 * @param alpha Alpha
+	 * @param z Z
+	 *  
+	 * @return Riccati-Bessel S Function J Value
 	 * 
-	 * @return The Standard Second Order Bessel ODE
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final SecondOrderBessel Standard (
-		final double alpha)
-	{
-		try
-		{
-			return new SecondOrderBessel (
-				alpha,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z * z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return (z * z - alpha * alpha) * w;
-					}
-				}
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private SecondOrderBessel (
+	public abstract double bigS (
 		final double alpha,
-		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
+		final double z)
+		throws java.lang.Exception;
+
+	@Override public double evaluate (
+		final double alpha,
+		final double z)
 		throws java.lang.Exception
 	{
-		super (
-			secondDerivativeCoefficient,
-			firstDerivativeCoefficient,
-			zeroDerivativeCoefficient
+		return bigS (
+			alpha,
+			z
 		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))
-		{
-			throw new java.lang.Exception ("SecondOrderBessel Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Alpha
-	 * 
-	 * @return Alpha
-	 */
-
-	public double alpha()
-	{
-		return _alpha;
-	}
-
-	@Override public java.util.TreeSet<java.lang.Double> orderedRegularSingularPoints()
-	{
-		return null;
 	}
 }

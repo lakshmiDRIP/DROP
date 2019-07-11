@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.bessel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Bessel ODE. The References are:
+ * <i>RiccatiSEstimator</i> implements the Riccati-Bessel S Function Estimator using the Cylindrical Bessel
+ * Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,116 +101,47 @@ package org.drip.specialfunction.ode;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
+public class RiccatiSEstimator extends org.drip.specialfunction.definition.RiccatiBesselS
 {
-	private double _alpha = java.lang.Double.NaN;
+	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
 	/**
-	 * Construct the Standard Second Order Bessel ODE
+	 * RiccatiSEstimator Constructor
 	 * 
-	 * @param alpha Alpha
+	 * @param besselFirstKindEstimator Bessel Function First Kind
 	 * 
-	 * @return The Standard Second Order Bessel ODE
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final SecondOrderBessel Standard (
-		final double alpha)
-	{
-		try
-		{
-			return new SecondOrderBessel (
-				alpha,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z * z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return (z * z - alpha * alpha) * w;
-					}
-				}
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private SecondOrderBessel (
-		final double alpha,
-		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
+	public RiccatiSEstimator (
+		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
 		throws java.lang.Exception
 	{
-		super (
-			secondDerivativeCoefficient,
-			firstDerivativeCoefficient,
-			zeroDerivativeCoefficient
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))
 		{
-			throw new java.lang.Exception ("SecondOrderBessel Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("RiccatiSEstimator Constructor => Invalid Inputs");
 		}
 	}
 
-	/**
-	 * Retrieve the Alpha
-	 * 
-	 * @return Alpha
-	 */
-
-	public double alpha()
+	@Override public double bigS (
+		final double alpha,
+		final double z)
+		throws java.lang.Exception
 	{
-		return _alpha;
+		return java.lang.Math.sqrt (0.5 * java.lang.Math.PI * z) * _besselFirstKindEstimator.bigJ (
+			alpha + 0.5,
+			z
+		);
 	}
 
-	@Override public java.util.TreeSet<java.lang.Double> orderedRegularSingularPoints()
+	/**
+	 * Retrieve the Bessel Function First Kind
+	 * 
+	 * @return The Bessel Function First Kind
+	 */
+
+	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
 	{
-		return null;
+		return _besselFirstKindEstimator;
 	}
 }

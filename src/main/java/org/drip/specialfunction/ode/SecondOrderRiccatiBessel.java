@@ -64,7 +64,7 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Bessel ODE. The References are:
+ * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Riccati-Bessel ODE. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -100,24 +100,24 @@ package org.drip.specialfunction.ode;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
+public class SecondOrderRiccatiBessel extends org.drip.specialfunction.ode.SecondOrder
 {
 	private double _alpha = java.lang.Double.NaN;
 
 	/**
-	 * Construct the Standard Second Order Bessel ODE
+	 * Construct the Standard Second Order Riccati-Bessel ODE
 	 * 
 	 * @param alpha Alpha
 	 * 
-	 * @return The Standard Second Order Bessel ODE
+	 * @return The Standard Second Order Riccati-Bessel ODE
 	 */
 
-	public static final SecondOrderBessel Standard (
+	public static final SecondOrderRiccatiBessel Standard (
 		final double alpha)
 	{
 		try
 		{
-			return new SecondOrderBessel (
+			return new SecondOrderRiccatiBessel (
 				alpha,
 				new org.drip.function.definition.R2ToR1()
 				{
@@ -129,28 +129,13 @@ public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
 						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
 						{
 							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
+								("SecondOrderRiccatiBessel::SecondOrder::evaluate => Invalid Inputs");
 						}
 
 						return z * z;
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z;
-					}
-				},
+				null,
 				new org.drip.function.definition.R2ToR1()
 				{
 					@Override public double evaluate (
@@ -165,7 +150,7 @@ public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
 								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
 						}
 
-						return (z * z - alpha * alpha) * w;
+						return (z * z - alpha * (alpha + 1.)) * w;
 					}
 				}
 			);
@@ -178,7 +163,7 @@ public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
 		return null;
 	}
 
-	private SecondOrderBessel (
+	private SecondOrderRiccatiBessel (
 		final double alpha,
 		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
 		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
@@ -193,7 +178,7 @@ public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))
 		{
-			throw new java.lang.Exception ("SecondOrderBessel Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("SecondOrderRiccatiBessel Constructor => Invalid Inputs");
 		}
 	}
 

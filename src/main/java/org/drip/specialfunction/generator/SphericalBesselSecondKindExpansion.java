@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.generator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Bessel ODE. The References are:
+ * <i>SphericalBesselSecondKindExpansion</i> implements the Generating Function and the Expansion Terms for
+ * the Spherical Bessel Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -94,122 +95,105 @@ package org.drip.specialfunction.ode;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/generator/README.md">Special Function Series Term Generators</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
+public class SphericalBesselSecondKindExpansion extends org.drip.specialfunction.generator.SeriesExpansion
 {
-	private double _alpha = java.lang.Double.NaN;
+	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
+	private org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
+		_sphericalBesselSecondKindEstimator = null;
 
 	/**
-	 * Construct the Standard Second Order Bessel ODE
+	 * SphericalBesselSecondKindExpansion Constructor
 	 * 
-	 * @param alpha Alpha
+	 * @param sphericalBesselSecondKindEstimator First Second Spherical Bessel Function Estimator
+	 * @param gammaEstimator The Gamma Estimator
 	 * 
-	 * @return The Standard Second Order Bessel ODE
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final SecondOrderBessel Standard (
-		final double alpha)
-	{
-		try
-		{
-			return new SecondOrderBessel (
-				alpha,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z * z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return (z * z - alpha * alpha) * w;
-					}
-				}
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private SecondOrderBessel (
-		final double alpha,
-		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
+	public SphericalBesselSecondKindExpansion (
+		final org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
+			sphericalBesselSecondKindEstimator,
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
 		throws java.lang.Exception
 	{
-		super (
-			secondDerivativeCoefficient,
-			firstDerivativeCoefficient,
-			zeroDerivativeCoefficient
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))
+		if (null == (_sphericalBesselSecondKindEstimator = sphericalBesselSecondKindEstimator) ||
+			null == (_gammaEstimator = gammaEstimator))
 		{
-			throw new java.lang.Exception ("SecondOrderBessel Constructor => Invalid Inputs");
+			throw new java.lang.Exception
+				("SphericalBesselSecondKindExpansion Constructor => Invalid Inputs");
 		}
 	}
 
-	/**
-	 * Retrieve the Alpha
-	 * 
-	 * @return Alpha
-	 */
-
-	public double alpha()
+	@Override public double evaluate (
+		final double z,
+		final double t)
+		throws java.lang.Exception
 	{
-		return _alpha;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (t))
+		{
+			throw new java.lang.Exception
+				("SphericalBesselSecondKindExpansion::evaluate => Invalid Inputs");
+		}
+
+		return java.lang.Math.sin (java.lang.Math.sqrt (z * z + 2. * z * t)) / z;
 	}
 
-	@Override public java.util.TreeSet<java.lang.Double> orderedRegularSingularPoints()
+	/**
+	 * Retrieve the Second Kind Spherical Bessel Function Estimator
+	 * 
+	 * @return The Second Kind Spherical Bessel Function Estimator
+	 */
+
+	public org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
+		sphericalBesselFirstKindEstimator()
 	{
-		return null;
+		return _sphericalBesselSecondKindEstimator;
+	}
+
+	/**
+	 * Retrieve the Gamma Estimator
+	 * 
+	 * @return The Gamma Estimator
+	 */
+
+	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	{
+		return _gammaEstimator;
+	}
+
+	@Override public org.drip.numerical.estimation.R2ToR1SeriesTerm seriesTerm()
+	{
+		return new org.drip.numerical.estimation.R2ToR1SeriesTerm()
+		{
+			@Override public double value (
+				final int order,
+				final double z,
+				final double t)
+				throws java.lang.Exception
+			{
+				if (0 > order ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (t))
+				{
+					throw new java.lang.Exception
+						("SphericalBesselSecondKindExpansion::seriesTerm::value => Invalid Inputs");
+				}
+
+				return (0 == order % 2 ? 1. : -1.) * java.lang.Math.pow (
+					t,
+					order
+				) * _sphericalBesselSecondKindEstimator.evaluate (
+					order - 1,
+					z
+				) / _gammaEstimator.evaluate (order + 1);
+			}
+		};
 	}
 }

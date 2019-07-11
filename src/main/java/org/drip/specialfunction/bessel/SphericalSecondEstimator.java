@@ -107,6 +107,126 @@ public class SphericalSecondEstimator extends
 	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
+	 * Retrieve the Order 0 Spherical Bessel Second Kind Estimator
+	 * 
+	 * @return The Order 0 Spherical Bessel Second Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator OrderZero()
+	{
+		return new org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator()
+		{
+			@Override public double smallY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("SphericalFirstEstimator::OrderZero::smallY => Invalid Inputs");
+				}
+
+				return java.lang.Math.cos (z) / z;
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order +1 Spherical Bessel Second Kind Estimator
+	 * 
+	 * @return The Order +1 Spherical Bessel Second Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator OrderPlusOne()
+	{
+		return new org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator()
+		{
+			@Override public double smallY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (1. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("SphericalFirstEstimator::OrderPlusOne::smallY => Invalid Inputs");
+				}
+
+				double oneOverZ = 1. / z;
+
+				return -1. * java.lang.Math.cos (z) * oneOverZ * oneOverZ -
+					java.lang.Math.sin (z) * oneOverZ;
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order +2 Spherical Bessel Second Kind Estimator
+	 * 
+	 * @return The Order +2 Spherical Bessel Second Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator OrderPlusTwo()
+	{
+		return new org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator()
+		{
+			@Override public double smallY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (2. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("SphericalFirstEstimator::OrderPlusTwo::smallY => Invalid Inputs");
+				}
+
+				double oneOverZ = 1. / z;
+				double oneOverZ2 = oneOverZ * oneOverZ;
+
+				return (1. - 3. * oneOverZ2) * java.lang.Math.cos (z) * oneOverZ -
+					3. * java.lang.Math.sin (z) * oneOverZ2;
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order +3 Spherical Bessel Second Kind Estimator
+	 * 
+	 * @return The Order +3 Spherical Bessel Second Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
+		OrderPlusThree()
+	{
+		return new org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator()
+		{
+			@Override public double smallY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (3. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("SphericalFirstEstimator::OrderOrderPlusThree::smallY => Invalid Inputs");
+				}
+
+				double oneOverZ = 1. / z;
+				double oneOverZ2 = oneOverZ * oneOverZ;
+
+				return (6. * oneOverZ - 15. * oneOverZ2 * oneOverZ) * java.lang.Math.cos (z) * oneOverZ -
+					(15. * oneOverZ2 - 1.) * java.lang.Math.sin (z) * oneOverZ;
+			}
+		};
+	}
+
+	/**
 	 * SphericalSecondEstimator Constructor
 	 * 
 	 * @param besselSecondKindEstimator Bessel Function Second Kind Estimator

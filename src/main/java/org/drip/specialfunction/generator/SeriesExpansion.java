@@ -1,5 +1,5 @@
 
-package org.drip.specialfunction.ode;
+package org.drip.specialfunction.generator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -64,7 +64,8 @@ package org.drip.specialfunction.ode;
  */
 
 /**
- * <i>SecondOrderBessel</i> exposes the Coefficient Terms in the Bessel ODE. The References are:
+ * <i>SeriesExpansion</i> implements the Generating Function and the Expansion Terms for the specified
+ * Special Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -94,80 +95,51 @@ package org.drip.specialfunction.ode;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Project</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/generator/README.md">Special Function Series Term Generators</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
+public abstract class SeriesExpansion implements org.drip.function.definition.R2ToR1
 {
-	private double _alpha = java.lang.Double.NaN;
 
 	/**
-	 * Construct the Standard Second Order Bessel ODE
+	 * Generate the Special Function Series Expansion Term
 	 * 
-	 * @param alpha Alpha
-	 * 
-	 * @return The Standard Second Order Bessel ODE
+	 * @return The Special Function Series Expansion Term
 	 */
 
-	public static final SecondOrderBessel Standard (
-		final double alpha)
+	public abstract org.drip.numerical.estimation.R2ToR1SeriesTerm seriesTerm();
+
+	/**
+	 * Generate the Special Function Series
+	 * 
+	 * @param termCount Term Count
+	 * 
+	 * @return The Special Function Series
+	 */
+
+	public org.drip.numerical.estimation.R2ToR1Series series (
+		final int termCount)
 	{
+		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
+			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		{
+			termWeightMap.put (
+				termIndex,
+				1.
+			);
+		}
+
 		try
 		{
-			return new SecondOrderBessel (
-				alpha,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z * z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return z;
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double z,
-						final double w)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrderBessel::SecondOrder::evaluate => Invalid Inputs");
-						}
-
-						return (z * z - alpha * alpha) * w;
-					}
-				}
+			return new org.drip.numerical.estimation.R2ToR1Series (
+				seriesTerm(),
+				false,
+				termWeightMap
 			);
 		}
 		catch (java.lang.Exception e)
@@ -175,41 +147,6 @@ public class SecondOrderBessel extends org.drip.specialfunction.ode.SecondOrder
 			e.printStackTrace();
 		}
 
-		return null;
-	}
-
-	private SecondOrderBessel (
-		final double alpha,
-		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
-		throws java.lang.Exception
-	{
-		super (
-			secondDerivativeCoefficient,
-			firstDerivativeCoefficient,
-			zeroDerivativeCoefficient
-		);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha))
-		{
-			throw new java.lang.Exception ("SecondOrderBessel Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Alpha
-	 * 
-	 * @return Alpha
-	 */
-
-	public double alpha()
-	{
-		return _alpha;
-	}
-
-	@Override public java.util.TreeSet<java.lang.Double> orderedRegularSingularPoints()
-	{
 		return null;
 	}
 }
