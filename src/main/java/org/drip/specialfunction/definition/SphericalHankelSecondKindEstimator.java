@@ -113,11 +113,11 @@ public abstract class SphericalHankelSecondKindEstimator implements org.drip.fun
 	 * @return Spherical Hankel Function Second Kind h2 Value
 	 */
 
-	public abstract org.drip.numerical.fourier.ComplexNumber smallH2 (
+	public abstract org.drip.function.definition.CartesianComplexNumber smallH2 (
 		final double alpha,
 		final double z);
 
-	@Override public org.drip.numerical.fourier.ComplexNumber evaluate (
+	@Override public org.drip.function.definition.CartesianComplexNumber evaluate (
 		final double alpha,
 		final double z)
 	{

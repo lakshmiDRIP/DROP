@@ -135,6 +135,15 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 	    return _dblSigma;
 	}
 
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			java.lang.Double.NEGATIVE_INFINITY,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
@@ -180,6 +189,16 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 	}
 
 	@Override public double mean()
+	{
+	    return _dblMean;
+	}
+
+	@Override public double median()
+	{
+	    return _dblMean;
+	}
+
+	@Override public double mode()
 	{
 	    return _dblMean;
 	}

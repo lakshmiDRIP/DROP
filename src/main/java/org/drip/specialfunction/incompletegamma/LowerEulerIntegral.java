@@ -153,7 +153,7 @@ public class LowerEulerIntegral extends org.drip.function.definition.R1ToR1
 		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
 			0.,
 			_limit,
-			100
+			10000
 		).integrate (
 			new org.drip.function.definition.R1ToR1 (null)
 			{

@@ -130,21 +130,6 @@ public class SphericalBesselFirstKindExpansion extends org.drip.specialfunction.
 		}
 	}
 
-	@Override public double evaluate (
-		final double z,
-		final double t)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (t))
-		{
-			throw new java.lang.Exception
-				("SphericalBesselFirstKindExpansion::evaluate => Invalid Inputs");
-		}
-
-		return java.lang.Math.cos (java.lang.Math.sqrt (z * z - 2. * z * t)) / z;
-	}
-
 	/**
 	 * Retrieve the First Kind Spherical Bessel Function Estimator
 	 * 
@@ -166,6 +151,21 @@ public class SphericalBesselFirstKindExpansion extends org.drip.specialfunction.
 	public org.drip.function.definition.R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
+	}
+
+	@Override public double evaluate (
+		final double z,
+		final double t)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (t))
+		{
+			throw new java.lang.Exception
+				("SphericalBesselFirstKindExpansion::evaluate => Invalid Inputs");
+		}
+
+		return java.lang.Math.cos (java.lang.Math.sqrt (z * z - 2. * z * t)) / z;
 	}
 
 	@Override public org.drip.numerical.estimation.R2ToR1SeriesTerm seriesTerm()
@@ -195,5 +195,19 @@ public class SphericalBesselFirstKindExpansion extends org.drip.specialfunction.
 				) / _gammaEstimator.evaluate (order + 1);
 			}
 		};
+	}
+
+	/**
+	 * Generate the Default Series
+	 * 
+	 * @return The Default Series
+	 */
+
+	public org.drip.numerical.estimation.R2ToR1Series series()
+	{
+		return series (
+			0,
+			java.lang.Integer.MAX_VALUE
+		);
 	}
 }

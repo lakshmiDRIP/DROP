@@ -114,7 +114,7 @@ public class MonodromyTransform2F1
 	 * @return The Monodromy Group Matrix G0 around the '0' Singularity
 	 */
 
-	public static final org.drip.numerical.fourier.ComplexNumber[][] G0 (
+	public static final org.drip.function.definition.CartesianComplexNumber[][] G0 (
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
 	{
@@ -123,7 +123,7 @@ public class MonodromyTransform2F1
 			return null;
 		}
 
-		org.drip.numerical.fourier.ComplexNumber[][] g0 = new org.drip.numerical.fourier.ComplexNumber[2][2];
+		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];
 
 		double theta1 = 2. * java.lang.Math.PI * pathExponent1.alpha();
 
@@ -131,22 +131,22 @@ public class MonodromyTransform2F1
 
 		try
 		{
-			g0[0][0] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (
 				java.lang.Math.cos (theta1),
 				java.lang.Math.sin (theta1)
 			);
 
-			g0[0][1] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (
 				0.,
 				0.
 			);
 
-			g0[1][0] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (
 				0.,
 				0.
 			);
 
-			g0[1][1] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (
 				java.lang.Math.cos (theta2),
 				java.lang.Math.sin (theta2)
 			);
@@ -205,7 +205,7 @@ public class MonodromyTransform2F1
 	 * @return The Monodromy Group Matrix G1 around the '1' Singularity
 	 */
 
-	public static final org.drip.numerical.fourier.ComplexNumber[][] G1 (
+	public static final org.drip.function.definition.CartesianComplexNumber[][] G1 (
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
 	{
@@ -214,7 +214,7 @@ public class MonodromyTransform2F1
 			return null;
 		}
 
-		org.drip.numerical.fourier.ComplexNumber[][] g0 = new org.drip.numerical.fourier.ComplexNumber[2][2];
+		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];
 
 		double theta1 = 2. * java.lang.Math.PI * pathExponent1.beta();
 
@@ -230,24 +230,24 @@ public class MonodromyTransform2F1
 			double muMinus1 = g1Mu - 1.;
 			double muMinus1Squared = muMinus1 * muMinus1;
 
-			g0[0][0] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (
 				(g1Mu * java.lang.Math.cos (theta1) - java.lang.Math.cos (theta2)) / muMinus1,
 				(g1Mu * java.lang.Math.sin (theta1) - java.lang.Math.sin (theta2)) / muMinus1
 			);
 
-			g0[0][1] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (
 				java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1),
 				java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)
 			);
 
-			g0[1][0] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (
 				g1Mu * (java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) /
 					(muMinus1Squared * muMinus1Squared),
 				g1Mu * (java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) /
 					(muMinus1Squared * muMinus1Squared)
 			);
 
-			g0[1][1] = new org.drip.numerical.fourier.ComplexNumber (
+			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (
 				(g1Mu * java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) / muMinus1,
 				(g1Mu * java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) / muMinus1
 			);

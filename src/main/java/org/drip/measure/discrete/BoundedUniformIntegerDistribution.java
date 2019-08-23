@@ -126,6 +126,15 @@ public class BoundedUniformIntegerDistribution extends org.drip.measure.continuo
 		return _iFinish;
 	}
 
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			_iStart,
+			_iFinish
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception

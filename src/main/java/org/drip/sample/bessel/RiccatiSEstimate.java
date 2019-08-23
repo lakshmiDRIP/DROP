@@ -6,7 +6,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
 import org.drip.specialfunction.bessel.RiccatiSEstimator;
-import org.drip.specialfunction.definition.RiccatiBesselS;
+import org.drip.specialfunction.definition.RiccatiBesselSEstimator;
 import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
 
 /*
@@ -113,7 +113,7 @@ public class RiccatiSEstimate
 {
 
 	private static final void BesselS (
-		final RiccatiBesselS riccatiBesselS,
+		final RiccatiBesselSEstimator riccatiBesselS,
 		final int termCount,
 		final double[] zArray,
 		final double[] alphaArray)

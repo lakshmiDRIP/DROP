@@ -105,6 +105,39 @@ public abstract class ModifiedBesselFirstKindEstimator implements org.drip.funct
 {
 
 	/**
+	 * Construct the Alpha Positive Asymptotic Version of ModifiedBesselFirstKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Positive Asymptotic Version of ModifiedBesselFirstKindEstimator
+	 */
+
+	public static final ModifiedBesselFirstKindEstimator AlphaPositiveAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+		return null == gammaEstimator ? null : new ModifiedBesselFirstKindEstimator()
+		{
+			@Override public double bigI (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0. > alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("ModifiedBesselFirstKindEstimator::AlphaPositiveAsymptote => Invalid Inputs");
+				}
+
+				return java.lang.Math.pow (
+					0.5 * z,
+					alpha
+				) / gammaEstimator.evaluate (alpha + 1.);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Modified Bessel Function First Kind I given Alpha and z
 	 * 
 	 * @param alpha Alpha

@@ -131,6 +131,15 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 		return _dblRightPredictorOrdinateEdge;
 	}
 
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			_dblLeftPredictorOrdinateEdge,
+			_dblRightPredictorOrdinateEdge
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception

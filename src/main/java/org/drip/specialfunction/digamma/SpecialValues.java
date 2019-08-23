@@ -170,7 +170,7 @@ public class SpecialValues
 	 * @return Unit Imaginary Digamma Complex Number
 	 */
 
-	public static final org.drip.numerical.fourier.ComplexNumber UnitImaginary (
+	public static final org.drip.function.definition.CartesianComplexNumber UnitImaginary (
 		final int termCount)
 	{
 		if (0 >= termCount)
@@ -187,7 +187,7 @@ public class SpecialValues
 
 		try
 		{
-			return new org.drip.numerical.fourier.ComplexNumber (
+			return new org.drip.function.definition.CartesianComplexNumber (
 				realPart,
 				0.5 + 0.5 * java.lang.Math.PI / java.lang.Math.tanh (java.lang.Math.PI)
 			);

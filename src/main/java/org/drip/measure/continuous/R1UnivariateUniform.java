@@ -164,6 +164,15 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 		return org.drip.numerical.common.NumberUtil.IsValid (x) && x >= _leftSupport || x <= _rightSupport;			
 	}
 
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			_leftSupport,
+			_rightSupport
+		};
+	}
+
 	@Override public double cumulative (
 		final double x)
 		throws java.lang.Exception

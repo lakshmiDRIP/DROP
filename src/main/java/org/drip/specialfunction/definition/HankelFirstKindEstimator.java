@@ -105,6 +105,30 @@ public abstract class HankelFirstKindEstimator implements org.drip.function.defi
 {
 
 	/**
+	 * Construct the Large z Asymptotic Form of Hankel First Kind Estimator
+	 * 
+	 * @return Large z Asymptotic Form of Hankel First Kind Estimator
+	 */
+
+	public static final HankelFirstKindEstimator LargeZAsymptote()
+	{
+		return new HankelFirstKindEstimator()
+		{
+			@Override public org.drip.function.definition.CartesianComplexNumber bigH1 (
+				final double alpha,
+				final double z)
+			{
+				return !org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z) ? null :
+					org.drip.function.definition.CartesianComplexNumber.FromPolar (
+						java.lang.Math.sqrt (2. / java.lang.Math.PI / z),
+						z - 0.5 * java.lang.Math.PI * alpha - 0.25 * java.lang.Math.PI
+					);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Hankel Function First Kind H1 given Alpha and z
 	 * 
 	 * @param alpha Alpha
@@ -113,11 +137,11 @@ public abstract class HankelFirstKindEstimator implements org.drip.function.defi
 	 * @return Hankel Function First Kind H1 Value
 	 */
 
-	public abstract org.drip.numerical.fourier.ComplexNumber bigH1 (
+	public abstract org.drip.function.definition.CartesianComplexNumber bigH1 (
 		final double alpha,
 		final double z);
 
-	@Override public org.drip.numerical.fourier.ComplexNumber evaluate (
+	@Override public org.drip.function.definition.CartesianComplexNumber evaluate (
 		final double alpha,
 		final double z)
 	{

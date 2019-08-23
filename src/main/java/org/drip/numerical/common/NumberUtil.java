@@ -737,7 +737,26 @@ public class NumberUtil {
 			throw new java.lang.Exception ("NumberUtil::IsInteger => Invalid Inputs");
 		}
 
-		return 0. == z - (int) z;
+		double absoluteZ = java.lang.Math.abs (z);
+
+		return 0. == absoluteZ - (int) absoluteZ;
+	}
+
+	/**
+	 * Indicate if z is a Positive Integer
+	 * 
+	 * @param z Z
+	 * 
+	 * @return TRUE - z is a Positive Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean IsPositiveInteger (
+		final double z)
+		throws java.lang.Exception
+	{
+		return IsInteger (z) && z > 0.;
 	}
 
 	/**
@@ -755,5 +774,98 @@ public class NumberUtil {
 		throws java.lang.Exception
 	{
 		return IsInteger (z) && z <= 0.;
+	}
+
+	/**
+	 * Indicate if z is a Negative Integer
+	 * 
+	 * @param z Z
+	 * 
+	 * @return TRUE - z is a Negative Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean IsNegativeInteger (
+		final double z)
+		throws java.lang.Exception
+	{
+		return IsInteger (z) && z < 0.;
+	}
+
+	/**
+	 * Indicate if z is a Non-Negative Integer
+	 * 
+	 * @param z Z
+	 * 
+	 * @return TRUE - z is a Non-Negative Integer
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean IsNonNegativeInteger (
+		final double z)
+		throws java.lang.Exception
+	{
+		return IsInteger (z) && z >= 0.;
+	}
+
+	/**
+	 * Indicate the Sign of z
+	 * 
+	 * @param z Z
+	 * 
+	 * @return Sign of z
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Sign (
+		final double z)
+		throws java.lang.Exception
+	{
+		if (!IsValid (z))
+		{
+			throw new java.lang.Exception ("NumberUtil::Sign => Invalid Inputs");
+		}
+
+		return 0. == z ? 1. : java.lang.Math.abs (z) / z;
+	}
+
+	/**
+	 * Check if the Array Elements are Normalized and Positive
+	 * 
+	 * @param array Array
+	 * 
+	 * @return TRUE - The Array Elements are Normalized and Positive
+	 */
+
+	public static final boolean NormalizedPositive (
+		final double[] array)
+	{
+		if (null == array)
+		{
+			return false;
+		}
+
+		double sum = 0.;
+		int size = array.length;
+
+		if (0 == size)
+		{
+			return false;
+		}
+
+		for (int index = 0; index < size; ++index)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (array[index]) || 0. >= array[index])
+			{
+				return false;
+			}
+
+			sum = sum + array[index];
+		}
+
+		return 1. == sum;
 	}
 }

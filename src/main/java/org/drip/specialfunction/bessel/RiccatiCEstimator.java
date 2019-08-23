@@ -101,7 +101,7 @@ package org.drip.specialfunction.bessel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiccatiCEstimator extends org.drip.specialfunction.definition.RiccatiBesselC
+public class RiccatiCEstimator extends org.drip.specialfunction.definition.RiccatiBesselCEstimator
 {
 	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
 

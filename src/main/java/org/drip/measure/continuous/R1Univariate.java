@@ -87,6 +87,49 @@ package org.drip.measure.continuous;
 public abstract class R1Univariate {
 
 	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
+	public abstract double[] support();
+
+	/**
+	 * Indicate if x is inside the Supported Range
+	 * 
+	 * @param x X
+	 * 
+	 * @return TRUE - x is inside of the Supported Range
+	 */
+
+	public boolean supported (
+		final double x)
+	{
+		if (java.lang.Double.isNaN (x))
+		{
+			return false;
+		}
+
+		double[] range = support();
+
+		return range[0] <= x && x <= range[1];
+	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param dblX Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws java.lang.Exception Thrown if the input is invalid
+	 */
+
+	public abstract double density (
+		final double dblX)
+		throws java.lang.Exception;
+
+	/**
 	 * Compute the cumulative under the distribution to the given value
 	 * 
 	 * @param dblX Variate to which the cumulative is to be computed
@@ -122,65 +165,255 @@ public abstract class R1Univariate {
 	/**
 	 * Compute the inverse cumulative under the distribution corresponding to the given value
 	 * 
-	 * @param dblX Value corresponding to which the inverse cumulative is to be computed
+	 * @param p Value corresponding to which the inverse cumulative is to be computed
 	 * 
 	 * @return The inverse cumulative
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws java.lang.Exception Thrown if the Input is invalid
 	 */
 
-	public abstract double invCumulative (
-		final double dblX)
-		throws java.lang.Exception;
+	public double invCumulative (
+		final double p)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. > p || 1. < p)
+		{
+			throw new java.lang.Exception ("R1Univariate::invCumulative => Invalid Inputs");
+		}
 
-	/**
-	 * Compute the Density under the Distribution at the given Variate
-	 * 
-	 * @param dblX Variate at which the Density needs to be computed
-	 * 
-	 * @return The Density
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
-	 */
+		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =
+			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
+				0.,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double u)
+						throws java.lang.Exception
+					{
+						return cumulative (u) - p;
+					}
+				},
+				true
+			).findRoot();
 
-	public abstract double density (
-		final double dblX)
-		throws java.lang.Exception;
+		if (null == fixedPointFinderOutput)
+		{
+			throw new java.lang.Exception ("R1Univariate::invCumulative => Cannot find Root");
+		}
+
+		return fixedPointFinderOutput.getRoot();
+	}
 
 	/**
 	 * Retrieve the Mean of the Distribution
 	 * 
 	 * @return The Mean of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Mean cannot be estimated
 	 */
 
-	public abstract double mean();
+	public abstract double mean()
+		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Median cannot be estimated
+	 */
+
+	public double median()
+		throws java.lang.Exception
+	{
+		return invCumulative (0.50);
+	}
+
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Mode cannot be estimated
+	 */
+
+	public double mode()
+		throws java.lang.Exception
+	{
+		final org.drip.function.definition.R1ToR1 densityFunction =
+			new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double u)
+				throws java.lang.Exception
+			{
+				return density (u);
+			}
+		};
+
+		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =
+			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
+				0.,
+				new org.drip.function.definition.R1ToR1 (null)
+				{
+					@Override public double evaluate (
+						final double u)
+						throws java.lang.Exception
+					{
+						return densityFunction.derivative (
+							u,
+							1
+						);
+					}
+				},
+				true
+			).findRoot();
+
+		if (null == fixedPointFinderOutput)
+		{
+			throw new java.lang.Exception ("R1Univariate::invCumulative => Cannot find Root");
+		}
+
+		return fixedPointFinderOutput.getRoot();
+	}
 
 	/**
 	 * Retrieve the Variance of the Distribution
 	 * 
 	 * @return The Variance of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Variance cannot be estimated
 	 */
 
-	public abstract double variance();
+	public abstract double variance()
+		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Skewness cannot be estimated
+	 */
+
+	public double skewness()
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::skewness => Not implemented");
+	}
+
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Skewness cannot be estimated
+	 */
+
+	public double excessKurtosis()
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1Univariate::excessKurtosis => Not implemented");
+	}
+
+	/**
+	 * Retrieve the Differential Entropy of the Distribution
+	 * 
+	 * @return The Differential Entropy of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Entropy cannot be estimated
+	 */
+
+	public double differentialEntropy()
+		throws java.lang.Exception
+	{
+		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+			0.,
+			10000
+		).integrate (
+			new org.drip.function.definition.R1ToR1 (null)
+			{
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+					double density = density (t);
+
+					return density * java.lang.Math.log (density);
+				}
+			}
+		);
+	}
+
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+		return null;
+	}
+
+	/**
+	 * Construct the Probability Generating Function
+	 * 
+	 * @return The Probability Generating Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	{
+		return null;
+	}
 
 	/**
 	 * Generate a Random Variable corresponding to the Distribution
 	 * 
 	 * @return Random Variable corresponding to the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Random Instance cannot be estimated
 	 */
 
 	public double random()
+		throws java.lang.Exception
 	{
-		try
+		return invCumulative (java.lang.Math.random());
+	}
+
+	/**
+	 * Retrieve the Array of Generated Random Variables
+	 * 
+	 * @param arrayCount Number of Elements
+	 * 
+	 * @return Array of Generated Random Variables
+	 */
+
+	public double[] randomArray (
+		final int arrayCount)
+	{
+		if (0 >= arrayCount)
 		{
-			return invCumulative (java.lang.Math.random());
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
+			return null;
 		}
 
-		return java.lang.Double.NaN;
+		double[] randomArray = new double[arrayCount];
+
+		for (int index = 0; index < arrayCount; ++index)
+		{
+			try
+			{
+				randomArray[index] = random();
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return randomArray;
 	}
 
 	/**
@@ -212,5 +445,8 @@ public abstract class R1Univariate {
 	 * @return The Univariate Weighted Histogram
 	 */
 
-	public abstract org.drip.numerical.common.Array2D histogram();
+	public org.drip.numerical.common.Array2D histogram()
+	{
+		return null;
+	}
 }

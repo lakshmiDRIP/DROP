@@ -5,7 +5,7 @@ import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.bessel.RiccatiCEstimator;
 import org.drip.specialfunction.bessel.SecondWatsonIntegralEstimator;
-import org.drip.specialfunction.definition.RiccatiBesselC;
+import org.drip.specialfunction.definition.RiccatiBesselCEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -111,7 +111,7 @@ public class RiccatiCEstimate
 {
 
 	private static final void BesselC (
-		final RiccatiBesselC riccatiBesselC,
+		final RiccatiBesselCEstimator riccatiBesselC,
 		final int termCount,
 		final double[] zArray,
 		final double[] alphaArray)

@@ -131,6 +131,15 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 		return _lambda;
 	}
 
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
 	@Override public double cumulative (
 		final double x)
 		throws java.lang.Exception

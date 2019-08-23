@@ -115,18 +115,20 @@ public abstract class SeriesExpansion implements org.drip.function.definition.R2
 	/**
 	 * Generate the Special Function Series
 	 * 
-	 * @param termCount Term Count
+	 * @param lowerIndex Term Lower Index
+	 * @param upperIndex Term Upper Index
 	 * 
 	 * @return The Special Function Series
 	 */
 
 	public org.drip.numerical.estimation.R2ToR1Series series (
-		final int termCount)
+		final int lowerIndex,
+		final int upperIndex)
 	{
 		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
 			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
 
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
+		for (int termIndex = lowerIndex; termIndex <= upperIndex; ++termIndex)
 		{
 			termWeightMap.put (
 				termIndex,

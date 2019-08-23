@@ -285,9 +285,12 @@ public class SingleSequenceAgnosticMetrics {
 	 * Retrieve the Population Mean
 	 * 
 	 * @return The Population Mean
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double populationMean()
+		throws java.lang.Exception
 	{
 		return null == _distPopulation ? java.lang.Double.NaN : _distPopulation.mean();
 	}
@@ -307,9 +310,12 @@ public class SingleSequenceAgnosticMetrics {
 	 * Retrieve the Population Variance
 	 * 
 	 * @return The Population Variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double populationVariance()
+		throws java.lang.Exception
 	{
 		return null == _distPopulation ? java.lang.Double.NaN : _distPopulation.variance();
 	}
@@ -389,14 +395,14 @@ public class SingleSequenceAgnosticMetrics {
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
-		double dblPopulationVariance = populationVariance();
-
-		double dblMeanDepartureBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
-			dblPopulationVariance : _dblEmpiricalVariance) / (dblLevel * dblLevel);
-
-		dblMeanDepartureBound = dblMeanDepartureBound < 1. ? dblMeanDepartureBound : 1.;
-
 		try {
+			double dblPopulationVariance = populationVariance();
+
+			double dblMeanDepartureBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
+				dblPopulationVariance : _dblEmpiricalVariance) / (dblLevel * dblLevel);
+
+			dblMeanDepartureBound = dblMeanDepartureBound < 1. ? dblMeanDepartureBound : 1.;
+
 			return new org.drip.sequence.metrics.PivotedDepartureBounds
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN, java.lang.Double.NaN,
 					dblMeanDepartureBound, dblMeanDepartureBound);
@@ -451,12 +457,12 @@ public class SingleSequenceAgnosticMetrics {
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
-		double dblPopulationVariance = populationVariance();
-
-		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
-			dblPopulationVariance : _dblEmpiricalVariance);
-
 		try {
+			double dblPopulationVariance = populationVariance();
+
+			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
+				dblPopulationVariance : _dblEmpiricalVariance);
+
 			return new org.drip.sequence.metrics.PivotedDepartureBounds
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN, java.lang.Double.NaN,
 					java.lang.Double.NaN, dblVariance / (dblVariance + dblLevel * dblLevel));
@@ -527,15 +533,15 @@ public class SingleSequenceAgnosticMetrics {
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
-		double dblPopulationVariance = populationVariance();
-
-		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
-			dblPopulationVariance : _dblEmpiricalVariance);
-
-		double dblBound = dblVariance / (_adblSequence.length * dblLevel * dblLevel);
-		dblBound = dblBound < 1. ? dblBound : 1.;
-
 		try {
+			double dblPopulationVariance = populationVariance();
+
+			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
+				dblPopulationVariance : _dblEmpiricalVariance);
+
+			double dblBound = dblVariance / (_adblSequence.length * dblLevel * dblLevel);
+			dblBound = dblBound < 1. ? dblBound : 1.;
+
 			return new org.drip.sequence.metrics.PivotedDepartureBounds
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
 					java.lang.Double.NaN, dblBound, dblBound);

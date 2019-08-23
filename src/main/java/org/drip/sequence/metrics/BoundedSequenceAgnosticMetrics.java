@@ -162,22 +162,22 @@ public class BoundedSequenceAgnosticMetrics extends
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
-		double dblPopulationVariance = populationVariance();
-
-		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
-			dblPopulationVariance : empiricalVariance());
-
-		double dblBennettFactor = _dblSupport * dblLevel / dblVariance;
-
-		dblBennettFactor = (1. + dblBennettFactor) * java.lang.Math.log (1. + dblBennettFactor) -
-			dblBennettFactor;
-
-		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblVariance * dblBennettFactor /
-			(_dblSupport * _dblSupport));
-
-		dblBound = dblBound < 1. ? dblBound : 1.;
-
 		try {
+			double dblPopulationVariance = populationVariance();
+
+			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
+				dblPopulationVariance : empiricalVariance());
+
+			double dblBennettFactor = _dblSupport * dblLevel / dblVariance;
+
+			dblBennettFactor = (1. + dblBennettFactor) * java.lang.Math.log (1. + dblBennettFactor) -
+				dblBennettFactor;
+
+			double dblBound = java.lang.Math.exp (-1. * sequence().length * dblVariance * dblBennettFactor /
+				(_dblSupport * _dblSupport));
+
+			dblBound = dblBound < 1. ? dblBound : 1.;
+
 			return new org.drip.sequence.metrics.PivotedDepartureBounds
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
 					java.lang.Double.NaN, dblBound, dblBound);
@@ -201,17 +201,17 @@ public class BoundedSequenceAgnosticMetrics extends
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.) return null;
 
-		double dblPopulationVariance = populationVariance();
-
-		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
-			dblPopulationVariance : empiricalVariance());
-
-		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *
-			dblVariance + (2. * _dblSupport * dblLevel / 3.)));
-
-		dblBound = dblBound < 1. ? dblBound : 1.;
-
 		try {
+			double dblPopulationVariance = populationVariance();
+
+			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?
+				dblPopulationVariance : empiricalVariance());
+
+			double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *
+				dblVariance + (2. * _dblSupport * dblLevel / 3.)));
+
+			dblBound = dblBound < 1. ? dblBound : 1.;
+
 			return new org.drip.sequence.metrics.PivotedDepartureBounds
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
 					java.lang.Double.NaN, dblBound, dblBound);

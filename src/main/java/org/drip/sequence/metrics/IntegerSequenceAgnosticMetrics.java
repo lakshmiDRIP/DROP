@@ -111,9 +111,12 @@ public class IntegerSequenceAgnosticMetrics extends
 	 * Retrieve the Upper Bound on Probability of X gt 0
 	 * 
 	 * @return The Upper Bound on Probability of X gt 0
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double probGreaterThanZeroUpperBound()
+		throws java.lang.Exception
 	{
 		double dblPopulationMean = populationMean();
 
@@ -127,9 +130,12 @@ public class IntegerSequenceAgnosticMetrics extends
 	 * Retrieve the Upper Bound on Probability of X = 0
 	 * 
 	 * @return The Upper Bound on Probability of X = 0
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double probEqualToZeroUpperBound()
+		throws java.lang.Exception
 	{
 		double dblPopulationMean = populationMean();
 

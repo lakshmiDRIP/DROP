@@ -155,13 +155,13 @@ public class SmallH2 extends org.drip.specialfunction.definition.SphericalHankel
 		return _sphericalBesselSecondKindEstimator;
 	}
 
-	@Override public org.drip.numerical.fourier.ComplexNumber smallH2 (
+	@Override public org.drip.function.definition.CartesianComplexNumber smallH2 (
 		final double alpha,
 		final double z)
 	{
 		try
 		{
-			return new org.drip.numerical.fourier.ComplexNumber (
+			return new org.drip.function.definition.CartesianComplexNumber (
 				_sphericalBesselFirstKindEstimator.smallJ (
 					alpha,
 					z

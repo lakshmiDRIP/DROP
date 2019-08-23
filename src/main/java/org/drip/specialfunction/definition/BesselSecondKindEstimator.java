@@ -105,6 +105,133 @@ public abstract class BesselSecondKindEstimator implements org.drip.function.def
 {
 
 	/**
+	 * Construct the Alpha Zero Asymptotic Version of BesselSecondKindEstimator
+	 * 
+	 * @return Alpha Zero Asymptotic Version of BesselSecondKindEstimator
+	 */
+
+	public static final BesselSecondKindEstimator AlphaZeroAsymptote()
+	{
+		return new BesselSecondKindEstimator()
+		{
+			@Override public double bigY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselSecondKindEstimator::AlphaZeroAsymptote => Invalid Inputs");
+				}
+
+				return 2. / java.lang.Math.PI * (java.lang.Math.log (0.5 * z) +
+					org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Alpha Non-Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Non-Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 */
+
+	public static final BesselSecondKindEstimator AlphaNonNegativeIntegerAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+		return null == gammaEstimator ? null : new BesselSecondKindEstimator()
+		{
+			@Override public double bigY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsNonNegativeInteger (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselSecondKindEstimator::AlphaNonNegativeIntegerAsymptote => Invalid Inputs");
+				}
+
+				return -1. * gammaEstimator.evaluate (alpha) / java.lang.Math.PI * java.lang.Math.pow (
+					2. / z,
+					alpha
+				) + java.lang.Math.pow (
+					0.5 * z,
+					alpha
+				) / java.lang.Math.tan (java.lang.Math.PI * alpha) / gammaEstimator.evaluate (alpha + 1.);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Alpha Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 */
+
+	public static final BesselSecondKindEstimator AlphaNegativeIntegerAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+		return null == gammaEstimator ? null : new BesselSecondKindEstimator()
+		{
+			@Override public double bigY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsNegativeInteger (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselSecondKindEstimator::AlphaNegativeIntegerAsymptote => Invalid Inputs");
+				}
+
+				return (0 == alpha % 2 ? -1. : 1.) * gammaEstimator.evaluate (-1. * alpha) /
+					java.lang.Math.PI * java.lang.Math.pow (
+						0.5 * z,
+						alpha
+					);
+			}
+		};
+	}
+
+	/**
+	 * Construct the High z Asymptotic Version of BesselSecondKindEstimator
+	 * 
+	 * @return High z Asymptotic Version of BesselSecondKindEstimator
+	 */
+
+	public static final BesselSecondKindEstimator HighZAsymptote()
+	{
+		return new BesselSecondKindEstimator()
+		{
+			@Override public double bigY (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselSecondKindEstimator::HighZAsymptote => Invalid Inputs");
+				}
+
+				return java.lang.Math.sqrt (2. / java.lang.Math.PI / z) * java.lang.Math.sin (
+					z - 0.5 * java.lang.Math.PI * alpha - 0.25 * java.lang.Math.PI
+				);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Bessel Function Second Kind Y given Alpha and z
 	 * 
 	 * @param alpha Alpha

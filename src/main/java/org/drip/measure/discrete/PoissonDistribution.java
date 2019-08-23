@@ -115,6 +115,15 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 		return _dblLambda;
 	}
 
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception

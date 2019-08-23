@@ -134,13 +134,13 @@ public class BigH2FromBigJ extends org.drip.specialfunction.definition.HankelSec
 		return _besselFirstKindEstimator;
 	}
 
-	@Override public org.drip.numerical.fourier.ComplexNumber bigH2 (
+	@Override public org.drip.function.definition.CartesianComplexNumber bigH2 (
 		final double alpha,
 		final double z)
 	{
 		try
 		{
-			return new org.drip.numerical.fourier.ComplexNumber (
+			return new org.drip.function.definition.CartesianComplexNumber (
 				-1. * _besselFirstKindEstimator.bigJ (
 					-1. * alpha,
 					z

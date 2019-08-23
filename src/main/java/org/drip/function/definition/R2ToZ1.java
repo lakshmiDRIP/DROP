@@ -113,7 +113,7 @@ public interface R2ToZ1
 	 * @return Returns the Calculated Complex Value
 	 */
 
-	public abstract org.drip.numerical.fourier.ComplexNumber evaluate (
+	public abstract org.drip.function.definition.CartesianComplexNumber evaluate (
 		final double x,
 		final double y);
 }

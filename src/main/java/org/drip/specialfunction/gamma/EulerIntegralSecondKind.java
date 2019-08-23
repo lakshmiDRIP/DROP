@@ -127,7 +127,7 @@ public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
 
 		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
 			0.,
-			100
+			10000
 		).integrate (
 			new org.drip.function.definition.R1ToR1 (null)
 			{

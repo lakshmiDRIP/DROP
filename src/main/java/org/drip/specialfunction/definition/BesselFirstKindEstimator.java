@@ -105,6 +105,174 @@ public abstract class BesselFirstKindEstimator implements org.drip.function.defi
 {
 
 	/**
+	 * Construct the Alpha Positive Integer or Zero Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Positive Integer or Zero Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator AlphaPositiveIntegerOrZeroAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+		return null == gammaEstimator ? null : new BesselFirstKindEstimator()
+		{
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha) || 0. > alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselFirstKindEstimator::AlphaPositiveIntegerOrZeroAsymptote => Invalid Inputs");
+				}
+
+				return java.lang.Math.pow (
+					0.5 * z,
+					alpha
+				) / gammaEstimator.evaluate (alpha + 1.);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Alpha Negative Integer Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Negative Integer Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator AlphaNegativeIntegerAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+		return null == gammaEstimator ? null : new BesselFirstKindEstimator()
+		{
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsNegativeInteger (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselFirstKindEstimator::AlphaNegativeIntegerAsymptote => Invalid Inputs");
+				}
+
+				double negativeAlpha = -1. * alpha;
+
+				return (0 == negativeAlpha % 2 ? 1. : -1.) * java.lang.Math.pow (
+					0.5 * z,
+					negativeAlpha
+				) / gammaEstimator.evaluate (negativeAlpha);
+			}
+		};
+	}
+
+	/**
+	 * Construct the High z Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @return High z Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator HighZAsymptote()
+	{
+		return new BesselFirstKindEstimator()
+		{
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselFirstKindEstimator::HighZAsymptote => Invalid Inputs");
+				}
+
+				return java.lang.Math.sqrt (2. / java.lang.Math.PI / z) * java.lang.Math.cos (
+					z - 0.5 * java.lang.Math.PI * alpha - 0.25 * java.lang.Math.PI
+				);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Alpha=0 Negative z Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @return Alpha=0 Negative z Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator AlphaZeroNegativeZAsymptote()
+	{
+		return new BesselFirstKindEstimator()
+		{
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. < z)
+				{
+					throw new java.lang.Exception
+						("BesselFirstKindEstimator::AlphaZeroNegativeZAsymptote => Invalid Inputs");
+				}
+
+				return java.lang.Math.sqrt (-2. / java.lang.Math.PI / z) * java.lang.Math.cos (
+					z + 0.25 * java.lang.Math.PI
+				);
+			}
+		};
+	}
+
+	public static final BesselFirstKindEstimator AlphaZeroApproximate()
+	{
+		return new BesselFirstKindEstimator()
+		{
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+				if (0. != alpha ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z))
+				{
+					throw new java.lang.Exception
+						("BesselFirstKindEstimator::AlphaZeroApproximate => Invalid Inputs");
+				}
+
+				double oneOver_OnePlus__zOver7_Power20__ = 1. / (
+					1 + java.lang.Math.pow (
+						z / 7.,
+						20.
+					)
+				);
+
+				double zAbsolute = java.lang.Math.abs (z);
+
+				double zOver2 = z / 2.;
+				double zSign = 0 == z ? 1. : zAbsolute / z;
+
+				return oneOver_OnePlus__zOver7_Power20__ * (
+					(1. + java.lang.Math.cos (z)) / 6. + (
+						java.lang.Math.cos (zOver2) + java.lang.Math.cos (java.lang.Math.sqrt (3.) * zOver2)
+					) / 3.
+				) +
+				(1. - oneOver_OnePlus__zOver7_Power20__) * java.lang.Math.sqrt (
+					2. / java.lang.Math.PI / zAbsolute
+				) * java.lang.Math.cos (
+					z -  0.25 * java.lang.Math.PI * zSign
+				);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Bessel Function First Kind J given Alpha and z
 	 * 
 	 * @param alpha Alpha

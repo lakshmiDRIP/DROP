@@ -105,6 +105,30 @@ public abstract class HankelSecondKindEstimator implements org.drip.function.def
 {
 
 	/**
+	 * Construct the Large z Asymptotic Form of Hankel Second Kind Estimator
+	 * 
+	 * @return Large z Asymptotic Form of Hankel Second Kind Estimator
+	 */
+
+	public static final HankelSecondKindEstimator LargeZAsymptote()
+	{
+		return new HankelSecondKindEstimator()
+		{
+			@Override public org.drip.function.definition.CartesianComplexNumber bigH2 (
+				final double alpha,
+				final double z)
+			{
+				return !org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (z) ? null :
+					org.drip.function.definition.CartesianComplexNumber.FromPolar (
+						java.lang.Math.sqrt (2. / java.lang.Math.PI / z),
+						0.5 * java.lang.Math.PI * alpha + 0.25 * java.lang.Math.PI - z
+					);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Hankel Function Second Kind H2 given Alpha and z
 	 * 
 	 * @param alpha Alpha
@@ -113,11 +137,11 @@ public abstract class HankelSecondKindEstimator implements org.drip.function.def
 	 * @return Hankel Function Second Kind H2 Value
 	 */
 
-	public abstract org.drip.numerical.fourier.ComplexNumber bigH2 (
+	public abstract org.drip.function.definition.CartesianComplexNumber bigH2 (
 		final double alpha,
 		final double z);
 
-	@Override public org.drip.numerical.fourier.ComplexNumber evaluate (
+	@Override public org.drip.function.definition.CartesianComplexNumber evaluate (
 		final double alpha,
 		final double z)
 	{
