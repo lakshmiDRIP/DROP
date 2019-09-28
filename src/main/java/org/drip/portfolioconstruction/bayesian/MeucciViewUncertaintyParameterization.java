@@ -88,44 +88,66 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MeucciViewUncertaintyParameterization {
+public class MeucciViewUncertaintyParameterization
+{
 
 	/**
 	 * Generate the Projection Co-variance from the Scoping Co-variance and the Meucci Alpha Parameter
 	 * 
-	 * @param aadblScopingCovariance The Scoping Co-variance
-	 * @param dblAlpha Meucci Alpha Parameter
+	 * @param scopingCovarianceMatrix The Scoping Co-variance
+	 * @param alphaArray Meucci Alpha Parameter
 	 * 
 	 * @return The Projection Co-variance Instance
 	 */
 
 	public static final org.drip.measure.gaussian.Covariance ProjectionCovariance (
-		final double[][] aadblScopingCovariance,
-		final double dblAlpha)
+		final double[][] scopingCovarianceMatrix,
+		final double alphaArray)
 	{
-		if (null == aadblScopingCovariance || !org.drip.numerical.common.NumberUtil.IsValid (dblAlpha))
+		if (null == scopingCovarianceMatrix || !org.drip.numerical.common.NumberUtil.IsValid (alphaArray))
+		{
 			return null;
+		}
 
-		int iNumScopingEntity = aadblScopingCovariance.length;
-		double[][] aadblProjectionCovariance = 0 == iNumScopingEntity ? null : new
-			double[iNumScopingEntity][iNumScopingEntity];
+		int scopingEntityCount = scopingCovarianceMatrix.length;
+		double[][] projectionCovarianceMatrix = 0 == scopingEntityCount ?
+			null : new double[scopingEntityCount][scopingEntityCount];
 
-		if (0 == iNumScopingEntity) return null;
+		if (0 == scopingEntityCount)
+		{
+			return null;
+		}
 
-		for (int i = 0; i < iNumScopingEntity; ++i) {
-			if (null == aadblScopingCovariance[i] || iNumScopingEntity != aadblScopingCovariance[i].length)
+		for (int scopingEntityIndexI = 0; scopingEntityIndexI < scopingEntityCount; ++scopingEntityIndexI)
+		{
+			if (null == scopingCovarianceMatrix[scopingEntityIndexI] ||
+				scopingEntityCount != scopingCovarianceMatrix[scopingEntityIndexI].length)
+			{
 				return null;
+			}
 
-			for (int j = 0; j < iNumScopingEntity; ++j) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblScopingCovariance[i][j])) return null;
+			for (int scopingEntityIndexJ = 0;
+				scopingEntityIndexJ < scopingEntityCount;
+				++scopingEntityIndexJ)
+			{
+				if (!org.drip.numerical.common.NumberUtil.IsValid (
+					scopingCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ]
+				))
+				{
+					return null;
+				}
 
-				aadblProjectionCovariance[i][j] = dblAlpha * aadblScopingCovariance[i][j];
+				projectionCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ] = alphaArray *
+					scopingCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ];
 			}
 		}
 
-		try {
-			return new org.drip.measure.gaussian.Covariance (aadblProjectionCovariance);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.measure.gaussian.Covariance (projectionCovarianceMatrix);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

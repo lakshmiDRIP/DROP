@@ -81,43 +81,53 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-	private double[][] _aadblAssetCovariance = null;
-	private double[] _adblBenchmarkConstrictedHoldings = null;
+public abstract class RiskTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+{
+	private double[][] _assetCovarianceMatrix = null;
+	private double[] _benchmarkConstrictedHoldingsArray = null;
 
 	protected RiskTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"RISK",
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-		int iNumAsset = adblInitialHoldings.length;
+		int assetCount = initialHoldingsArray.length;
 
-		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=
-			_aadblAssetCovariance.length)
+		if (null == (_assetCovarianceMatrix = assetCovarianceMatrix) ||
+			assetCount != _assetCovarianceMatrix.length)
+		{
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aadblAssetCovariance[i] || !org.drip.numerical.common.NumberUtil.IsValid
-				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)
-				throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
 		}
 
-		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) && (iNumAsset !=
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.numerical.common.NumberUtil.IsValid
-				(_adblBenchmarkConstrictedHoldings)))
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _assetCovarianceMatrix[assetIndex] ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_assetCovarianceMatrix[assetIndex]) ||
+				assetCount != _assetCovarianceMatrix[assetIndex].length)
+			{
+				throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
+			}
+		}
+
+		if (null != (_benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldingsArray) &&
+			(assetCount != _benchmarkConstrictedHoldingsArray.length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_benchmarkConstrictedHoldingsArray)))
+		{
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -128,7 +138,7 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 
 	public double[][] assetCovariance()
 	{
-		return _aadblAssetCovariance;
+		return _assetCovarianceMatrix;
 	}
 
 	/**
@@ -139,6 +149,6 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 
 	public double[] benchmarkConstrictedHoldings()
 	{
-		return _adblBenchmarkConstrictedHoldings;
+		return _benchmarkConstrictedHoldingsArray;
 	}
 }

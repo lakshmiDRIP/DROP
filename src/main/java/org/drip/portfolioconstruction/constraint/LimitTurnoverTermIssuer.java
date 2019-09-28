@@ -80,50 +80,55 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitTurnoverTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblPrice = null;
-	private double[] _adblInitialHoldings = null;
-	private double[] _adblIssuerSelection = null;
+	private double[] _priceArray = null;
+	private double[] _initialHoldingsArray = null;
+	private double[] _issuerSelectionArray = null;
 
 	protected LimitTurnoverTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblInitialHoldings,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] initialHoldingsArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_TRADES",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (null == (_adblPrice = adblPrice) ||
-			null == (_adblInitialHoldings = adblInitialHoldings) ||
-			null == (_adblIssuerSelection = adblIssuerSelection))
+		if (null == (_priceArray = priceArray) ||
+			null == (_initialHoldingsArray = initialHoldingsArray) ||
+			null == (_issuerSelectionArray = issuerSelectionArray))
+		{
 			throw new java.lang.Exception ("LimitTurnoverTermIssuer Constructor => Invalid Section");
+		}
 
-		int iNumAsset = _adblPrice.length;
+		int assetCount = _priceArray.length;
 
-		if (0 == iNumAsset ||
-			_adblInitialHoldings.length == iNumAsset ||
-			_adblIssuerSelection.length == iNumAsset ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblPrice) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))
+		if (0 == assetCount ||
+			_initialHoldingsArray.length == assetCount ||
+			_issuerSelectionArray.length == assetCount ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray))
+		{
 			throw new java.lang.Exception ("LimitTurnoverTermIssuer Constructor => Invalid Section");
+		}
 	}
 
 	/**
@@ -132,9 +137,9 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 	 * @return Array of Asset Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-		return _adblPrice;
+		return _priceArray;
 	}
 
 	/**
@@ -143,9 +148,9 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 	 * @return Array of Initial Holdings
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-		return _adblInitialHoldings;
+		return _initialHoldingsArray;
 	}
 
 	/**
@@ -154,8 +159,8 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 	 * @return Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-		return _adblIssuerSelection;
+		return _issuerSelectionArray;
 	}
 }

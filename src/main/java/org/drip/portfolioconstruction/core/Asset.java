@@ -80,35 +80,42 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Asset extends org.drip.portfolioconstruction.core.Block {
-	public java.lang.String _strSector = "";
-	public java.lang.String _strCurrency = "";
+public class Asset extends org.drip.portfolioconstruction.core.Block
+{
+	public java.lang.String _sector = "";
+	public java.lang.String _currency = "";
 
 	/**
 	 * Asset Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Asset Currency
-	 * @param strSector The Asset Sector
+	 * @param name The Asset Name
+	 * @param id The Asset ID
+	 * @param description The Asset Description
+	 * @param currency The Asset Currency
+	 * @param sector The Asset Sector
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Asset (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency,
-		final java.lang.String strSector)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String currency,
+		final java.lang.String sector)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strSector =
-			strSector) || _strSector.isEmpty())
+		if (null == (_currency = currency) || _currency.isEmpty() ||
+			null == (_sector = sector) || _sector.isEmpty())
+		{
 			throw new java.lang.Exception ("Asset Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -119,7 +126,7 @@ public class Asset extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	/**
@@ -130,6 +137,6 @@ public class Asset extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String sector()
 	{
-		return _strSector;
+		return _sector;
 	}
 }

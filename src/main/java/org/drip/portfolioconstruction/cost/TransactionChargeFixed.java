@@ -80,36 +80,38 @@ package org.drip.portfolioconstruction.cost;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionChargeFixed extends org.drip.portfolioconstruction.cost.TransactionCharge {
-	private double _dblFixedCharge = java.lang.Double.NaN;
+public class TransactionChargeFixed extends org.drip.portfolioconstruction.cost.TransactionCharge
+{
+	private double _fixedCharge = java.lang.Double.NaN;
 
 	/**
 	 * TransactionChargeFixed Constructor
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblFixedCharge Fixed Transaction Charge
+	 * @param name Transaction Charge Name
+	 * @param id Transaction Charge ID
+	 * @param description Description of the Transaction Charge
+	 * @param fixedCharge Fixed Transaction Charge
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	 public TransactionChargeFixed (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblFixedCharge)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double fixedCharge)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription
+			name,
+			id,
+			description
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFixedCharge = dblFixedCharge) || 0. >
-			_dblFixedCharge)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_fixedCharge = fixedCharge) || 0. > _fixedCharge)
+		{
 			throw new java.lang.Exception ("TransactionChargeFixed Constructor => Invalid Charge");
+		}
 	}
 
 	/**
@@ -120,18 +122,20 @@ public class TransactionChargeFixed extends org.drip.portfolioconstruction.cost.
 
 	public double fixedCharge()
 	{
-		return _dblFixedCharge;
+		return _fixedCharge;
 	}
 
 	@Override public double estimate (
-		final double dblInitial,
-		final double dblFinal)
+		final double initialSize,
+		final double finalSize)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblFinal))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (initialSize) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (finalSize))
+		{
 			throw new java.lang.Exception ("TransactionChargeFixed::estimate => Invalid Inputs");
+		}
 
-		return _dblFixedCharge;
+		return _fixedCharge;
 	}
 }

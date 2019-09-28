@@ -188,7 +188,7 @@ public class DaJagannathan2005d {
 			new PortfolioConstructionParameters (
 				astrID,
 				CustomRiskUtilitySettings.RiskTolerant (0.078),
-				PortfolioEqualityConstraintSettings.FullyInvested()
+				EqualityConstraintSettings.FullyInvested()
 			),
 			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
 				MultivariateMoments.Standard (
@@ -199,7 +199,7 @@ public class DaJagannathan2005d {
 			)
 		);
 
-		AssetComponent[] aAC = op.optimalPortfolio().assets();
+		AssetComponent[] aAC = op.optimalPortfolio().assetComponentArray();
 
 		double[] adblMarketImpliedReturn = Matrix.Product (
 			aadblHistoricalCovariance,

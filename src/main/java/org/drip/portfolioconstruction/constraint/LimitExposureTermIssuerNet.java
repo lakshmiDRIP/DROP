@@ -80,44 +80,44 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerNet extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
+public class LimitExposureTermIssuerNet
+	extends org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
 {
 
 	/**
 	 * LimitExposureTermIssuerNet Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of Asset Prices
-	 * @param adblIssuerSelection Array of Issuer Selection
+	 * @param minimum Minimum Value of the Constraint
+	 * @param maximum Maximum Value of the Constraint
+	 * @param priceArray Array of Asset Prices
+	 * @param issuerSelectionArray Array of Issuer Selection
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitExposureTermIssuerNet (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_ISSUER_NET_EXPOSURE",
 			"Constrains the Issuer Net Exposure",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			priceArray,
+			issuerSelectionArray
 		);
 	}
 
@@ -127,29 +127,35 @@ public class LimitExposureTermIssuerNet extends
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return priceArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] priceArray = priceArray();
 
-				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
+				double limitExposureIssuerNet = 0.;
+				int assetCount = priceArray.length;
 
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitExposureTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblFinalHoldings[i];
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitExposureIssuerNet += issuerSelectionArray[assetIndex] * priceArray[assetIndex] *
+						finalHoldingsArray[assetIndex];
+				}
 
-				return dblConstraintValue;
+				return limitExposureIssuerNet;
 			}
 		};
 	}

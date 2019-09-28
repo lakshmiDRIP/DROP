@@ -253,13 +253,13 @@ public class ProjectionImpliedConfidenceLevel {
 
 		ProjectionImpliedConfidenceOutput pico = blce.impliedConfidenceRun();
 
-		ForwardReverseOptimizationOutput frooCustomProjectionConfidence = pico.customConfidenceOutput().adjustedMetrics();
+		ForwardReverseOptimizationOutput frooCustomProjectionConfidence = pico.customConfidenceOutput().adjustedOptimizationOutput();
 
-		double[] adblCustomConfidenceReturns = frooCustomProjectionConfidence.expectedAssetExcessReturns();
+		double[] adblCustomConfidenceReturns = frooCustomProjectionConfidence.expectedAssetExcessReturnsArray();
 
-		ForwardReverseOptimizationOutput frooFullProjectionConfidence = pico.fullConfidenceOutput().adjustedMetrics();
+		ForwardReverseOptimizationOutput frooFullProjectionConfidence = pico.fullConfidenceOutput().adjustedOptimizationOutput();
 
-		double[] adblFullConfidenceReturns = frooFullProjectionConfidence.expectedAssetExcessReturns();
+		double[] adblFullConfidenceReturns = frooFullProjectionConfidence.expectedAssetExcessReturnsArray();
 
 		double[] adblFullConfidenceWeight = pico.fullProjectionConfidenceWeight();
 
@@ -269,7 +269,7 @@ public class ProjectionImpliedConfidenceLevel {
 
 		double[] adblCustomWeightDeviation = pico.customProjectionConfidenceDeviation();
 
-		double[] adblImpliedConfidenceLevel = pico.level();
+		double[] adblImpliedConfidenceLevel = pico.impliedConfidenceLevelArray();
 
 		System.out.println ("\n\n\t|----------------------------------------------------||");
 

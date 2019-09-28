@@ -81,37 +81,41 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscountRate {
-	private double _dblYield = java.lang.Double.NaN;
-	private double _dblBasicConsumptionSpread = java.lang.Double.NaN;
-	private double _dblWorkingAgeIncomeSpread = java.lang.Double.NaN;
-	private double _dblPensionBenefitsIncomeSpread = java.lang.Double.NaN;
+public class DiscountRate
+{
+	private double _yield = java.lang.Double.NaN;
+	private double _basicConsumptionSpread = java.lang.Double.NaN;
+	private double _workingAgeIncomeSpread = java.lang.Double.NaN;
+	private double _pensionBenefitsIncomeSpread = java.lang.Double.NaN;
 
 	/**
 	 * DiscountRate Constructor
 	 * 
-	 * @param dblYield The Base Discounting Yield
-	 * @param dblWorkingAgeIncomeSpread The Working Age Income Spread
-	 * @param dblPensionBenefitsIncomeSpread The Pension Benefits Income Spread
-	 * @param dblBasicConsumptionSpread The Basic Consumption Spread
+	 * @param yield The Base Discounting Yield
+	 * @param workingAgeIncomeSpread The Working Age Income Spread
+	 * @param pensionBenefitsIncomeSpread The Pension Benefits Income Spread
+	 * @param basicConsumptionSpread The Basic Consumption Spread
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiscountRate (
-		final double dblYield,
-		final double dblWorkingAgeIncomeSpread,
-		final double dblPensionBenefitsIncomeSpread,
-		final double dblBasicConsumptionSpread)
+		final double yield,
+		final double workingAgeIncomeSpread,
+		final double pensionBenefitsIncomeSpread,
+		final double basicConsumptionSpread)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblYield = dblYield) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncomeSpread =
-				dblWorkingAgeIncomeSpread) || !org.drip.numerical.common.NumberUtil.IsValid
-					(_dblBasicConsumptionSpread = dblBasicConsumptionSpread) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsIncomeSpread =
-							dblPensionBenefitsIncomeSpread))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_yield = yield) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncomeSpread =
+				workingAgeIncomeSpread) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumptionSpread =
+				basicConsumptionSpread) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefitsIncomeSpread =
+				pensionBenefitsIncomeSpread))
+		{
 			throw new java.lang.Exception ("DiscountRate Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -122,7 +126,7 @@ public class DiscountRate {
 
 	public double yield()
 	{
-		return _dblYield;
+		return _yield;
 	}
 
 	/**
@@ -133,7 +137,7 @@ public class DiscountRate {
 
 	public double workingAgeIncomeSpread()
 	{
-		return _dblWorkingAgeIncomeSpread;
+		return _workingAgeIncomeSpread;
 	}
 
 	/**
@@ -144,7 +148,7 @@ public class DiscountRate {
 
 	public double workingAgeIncomeRate()
 	{
-		return _dblYield + _dblWorkingAgeIncomeSpread;
+		return _yield + _workingAgeIncomeSpread;
 	}
 
 	/**
@@ -162,9 +166,11 @@ public class DiscountRate {
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))
+		{
 			throw new java.lang.Exception ("DiscountRate::workingAgeIncomeDF => Invalid Inputs");
+		}
 
-		return java.lang.Math.exp (-1. * dblHorizon * (_dblYield + _dblWorkingAgeIncomeSpread));
+		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _workingAgeIncomeSpread));
 	}
 
 	/**
@@ -175,7 +181,7 @@ public class DiscountRate {
 
 	public double pensionBenefitsIncomeSpread()
 	{
-		return _dblPensionBenefitsIncomeSpread;
+		return _pensionBenefitsIncomeSpread;
 	}
 
 	/**
@@ -186,7 +192,7 @@ public class DiscountRate {
 
 	public double pensionBenefitsIncomeRate()
 	{
-		return _dblYield + _dblPensionBenefitsIncomeSpread;
+		return _yield + _pensionBenefitsIncomeSpread;
 	}
 
 	/**
@@ -204,9 +210,11 @@ public class DiscountRate {
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))
+		{
 			throw new java.lang.Exception ("DiscountRate::pensionBenefitsIncomeDF => Invalid Inputs");
+		}
 
-		return java.lang.Math.exp (-1. * dblHorizon * (_dblYield + _dblPensionBenefitsIncomeSpread));
+		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _pensionBenefitsIncomeSpread));
 	}
 
 	/**
@@ -217,7 +225,7 @@ public class DiscountRate {
 
 	public double basicConsumptionSpread()
 	{
-		return _dblBasicConsumptionSpread;
+		return _basicConsumptionSpread;
 	}
 
 	/**
@@ -228,7 +236,7 @@ public class DiscountRate {
 
 	public double basicConsumptionRate()
 	{
-		return _dblYield + _dblBasicConsumptionSpread;
+		return _yield + _basicConsumptionSpread;
 	}
 
 	/**
@@ -246,8 +254,10 @@ public class DiscountRate {
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))
+		{
 			throw new java.lang.Exception ("DiscountRate::basicConsumptionDF => Invalid Inputs");
+		}
 
-		return java.lang.Math.exp (-1. * dblHorizon * (_dblYield + _dblBasicConsumptionSpread));
+		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _basicConsumptionSpread));
 	}
 }

@@ -80,24 +80,29 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Factor extends org.drip.portfolioconstruction.core.Block {
+public class Factor extends org.drip.portfolioconstruction.core.Block
+{
 
 	/**
 	 * Factor Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
+	 * @param name The Asset Name
+	 * @param id The Asset ID
+	 * @param description The Asset Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Factor (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 }

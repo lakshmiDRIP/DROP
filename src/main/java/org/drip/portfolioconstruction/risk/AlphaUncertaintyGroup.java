@@ -80,24 +80,30 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlphaUncertaintyGroup extends org.drip.portfolioconstruction.risk.AttributeJointDense {
+public class AlphaUncertaintyGroup
+	extends org.drip.portfolioconstruction.risk.AttributeJointDense
+{
 
 	/**
 	 * AlphaUncertaintyGroup Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AlphaUncertaintyGroup (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 }

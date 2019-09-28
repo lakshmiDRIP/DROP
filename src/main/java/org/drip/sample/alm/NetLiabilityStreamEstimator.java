@@ -128,7 +128,7 @@ public class NetLiabilityStreamEstimator {
 			dblAfterTaxIncome
 		);
 
-		NetLiabilityMetrics nlm = nls.metrics (
+		NetLiabilityMetrics nlm = nls.generateMetrics (
 			dblStartAge,
 			dblEndAge,
 			new DiscountRate (
@@ -165,7 +165,7 @@ public class NetLiabilityStreamEstimator {
 
 		System.out.println ("\t||---------------------------------------------------------------||");
 
-		for (NetLiabilityCashFlow nlcf : nlm.cashFlowList())
+		for (NetLiabilityCashFlow nlcf : nlm.netLiabilityCashFlowList())
 			System.out.println (
 				"\t||" +
 				FormatUtil.FormatDouble (nlcf.age(), 3, 0, 1.) + " | " +

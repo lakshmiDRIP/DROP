@@ -81,31 +81,32 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class LinearChargeTerm
+	extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
 	 * LinearChargeTerm Conastructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCL Array of Linear Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Initial Holdings
+	 * @param linearTransactionChargeArray Array of Linear Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LinearChargeTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionChargeLinear[] aTCL)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionChargeLinear[] linearTransactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_LINEAR_TRANSACTION_COST",
 			"Linear Charge Transaction Cost Objective Function",
-			adblInitialHoldings,
-			aTCL
+			initialHoldingsArray,
+			linearTransactionChargeArray
 		);
 	}
 
@@ -115,37 +116,44 @@ public class LinearChargeTerm extends org.drip.portfolioconstruction.objective.T
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception ("LinearChargeTerm::rdToR1::evaluate => Invalid Input");
-
-				org.drip.portfolioconstruction.cost.TransactionChargeLinear[] aTCL =
-					(org.drip.portfolioconstruction.cost.TransactionChargeLinear[]) transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				double dblLinearChargeTerm = 0.;
-				int iNumAsset = aTCL.length;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("LinearChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i) {
-					if (adblVariate[i] > adblInitialHoldings[i])
-						dblLinearChargeTerm += aTCL[i].estimate (
-							adblInitialHoldings[i],
-							adblVariate[i]
-					);
 				}
 
-				return dblLinearChargeTerm;
+				org.drip.portfolioconstruction.cost.TransactionChargeLinear[] linearTransactionChargeArray =
+					(org.drip.portfolioconstruction.cost.TransactionChargeLinear[]) transactionChargeArray();
+
+				double[] initialHoldingsArray = initialHoldingsArray();
+
+				double linearChargeTerm = 0.;
+				int assetCount = linearTransactionChargeArray.length;
+
+				if (variateArray.length != assetCount)
+				{
+					throw new java.lang.Exception
+						("LinearChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
+
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					if (variateArray[assetIndex] > initialHoldingsArray[assetIndex])
+					{
+						linearChargeTerm += linearTransactionChargeArray[assetIndex].estimate (
+							initialHoldingsArray[assetIndex],
+							variateArray[assetIndex]
+						);
+					}
+				}
+
+				return linearChargeTerm;
 			}
 		};
 	}

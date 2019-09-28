@@ -80,43 +80,44 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitTaxTermLongGains extends org.drip.portfolioconstruction.constraint.LimitTaxTerm
+public class LimitTaxTermLongGains
+	extends org.drip.portfolioconstruction.constraint.LimitTaxTerm
 {
 
 	/**
 	 * LimitTaxTermLongGains Constructor
 	 * 
-	 * @param strName Name of the LimitTaxTermLongGains Constraint
+	 * @param name Name of the LimitTaxTermLongGains Constraint
 	 * @param scope Scope of the LimitTaxTermLongGains Constraint
 	 * @param unit Unit of the LimitTaxTermLongGains Constraint
-	 * @param dblMinimum Minimum Value of the LimitTaxTermLongGains Constraint
-	 * @param dblMaximum Maximum Value of the LimitTaxTermLongGains Constraint
+	 * @param minimum Minimum Value of the LimitTaxTermLongGains Constraint
+	 * @param maximum Maximum Value of the LimitTaxTermLongGains Constraint
 	 * @param taxationScheme Taxation Scheme
-	 * @param adblInitialHoldings Array of the Initial Holdings
+	 * @param initialHoldingsArray Array of the Initial Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitTaxTermLongGains (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
+		final double minimum,
+		final double maximum,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme,
-		final double[] adblInitialHoldings)
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_LONG_TERM_TAX_GAINS",
 			"Constrains the Long Term Tax Gains",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
+			minimum,
+			maximum,
 			taxationScheme,
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 	}
 
@@ -126,16 +127,16 @@ public class LimitTaxTermLongGains extends org.drip.portfolioconstruction.constr
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
 				return taxationScheme().longTermTaxGain (
-					initialHoldings(),
-					adblFinalHoldings
+					initialHoldingsArray(),
+					finalHoldingsArray
 				);
 			}
 		};

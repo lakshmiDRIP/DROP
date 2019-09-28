@@ -80,40 +80,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitHoldingsTermAbsolute extends org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
+public class LimitHoldingsTermAbsolute
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
 
 	/**
 	 * LimitHoldingsTermAbsolute Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param iSize Size of the Holdings
+	 * @param minimum Minimum Value of the Constraint
+	 * @param maximum Maximum Value of the Constraint
+	 * @param size Size of the Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitHoldingsTermAbsolute (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final int iSize)
+		final double minimum,
+		final double maximum,
+		final int size)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_ABSOLUTE_HOLDINGS",
 			"Constrains the Absolute Holdings",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			iSize
+			minimum,
+			maximum,
+			size
 		);
 	}
 
@@ -127,22 +128,27 @@ public class LimitHoldingsTermAbsolute extends org.drip.portfolioconstruction.co
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				int iNumAsset = size();
+				int assetCount = size();
 
-				double dblConstraintValue = 0.;
+				double limitHoldingsAbsolute = 0.;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitHoldingsTermAbsolute::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += java.lang.Math.abs (adblFinalHoldings[i]);
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitHoldingsAbsolute += java.lang.Math.abs (finalHoldingsArray[assetIndex]);
+				}
 
-				return dblConstraintValue;
+				return limitHoldingsAbsolute;
 			}
 		};
 	}

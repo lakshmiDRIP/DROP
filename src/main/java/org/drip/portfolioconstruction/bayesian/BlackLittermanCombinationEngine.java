@@ -94,85 +94,121 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlackLittermanCombinationEngine {
-	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _ps = null;
-	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _pcs = null;
-	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput _frooUnadjusted = null;
+public class BlackLittermanCombinationEngine
+{
+	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _projectionSpecification = null;
+	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _priorControlSpecification =
+		null;
+	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		_forwardReverseOptimizationOutputUnadjusted = null;
 
-	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionDistribution()
+	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution
+		scopingProjectionVariateDistribution()
 	{
-		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();
+		double[][] assetExcessReturnsCovarianceMatrix =
+			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		double[] adblPriorMean = _frooUnadjusted.expectedAssetExcessReturns();
+		double[] priorExpectedAssetReturnsArray =
+			_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray();
 
-		int iNumAsset = aadblAssetSpaceExcessReturnsCovariance.length;
-		double[][] aadblPriorCovariance = new double[iNumAsset][iNumAsset];
+		int assetCount = assetExcessReturnsCovarianceMatrix.length;
+		double[][] priorCovarianceMatrix = new double[assetCount][assetCount];
 
-		double dblRiskFreeRate = _pcs.riskFreeRate();
+		double riskFreeRate = _priorControlSpecification.riskFreeRate();
 
-		double dblTau = _pcs.tau();
+		double tau = _priorControlSpecification.tau();
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			adblPriorMean[i] = adblPriorMean[i] + dblRiskFreeRate;
+		for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+		{
+			priorExpectedAssetReturnsArray[assetIndexI] = priorExpectedAssetReturnsArray[assetIndexI] +
+				riskFreeRate;
 
-			for (int j = 0; j < iNumAsset; ++j)
-				aadblPriorCovariance[i][j] = aadblAssetSpaceExcessReturnsCovariance[i][j] * dblTau;
+			for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+			{
+				priorCovarianceMatrix[assetIndexI][assetIndexJ] =
+					assetExcessReturnsCovarianceMatrix[assetIndexI][assetIndexJ] * tau;
+			}
 		}
 
-		try {
-			org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd = new
-				org.drip.measure.bayesian.ScopingProjectionVariateDistribution
-					(org.drip.measure.gaussian.R1MultivariateNormal.Standard
-						(_frooUnadjusted.optimalPortfolio().meta(), adblPriorMean, aadblPriorCovariance));
+		try
+		{
+			org.drip.measure.bayesian.ScopingProjectionVariateDistribution
+				scopingProjectionVariateDistribution =
+					new org.drip.measure.bayesian.ScopingProjectionVariateDistribution (
+						org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+							_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta(),
+							priorExpectedAssetReturnsArray,
+							priorCovarianceMatrix
+						)
+					);
 
-			return spvd.addProjectionDistributionLoading ("VIEW", new
-				org.drip.measure.bayesian.ProjectionDistributionLoading (_ps.excessReturnsDistribution(),
-					_ps.assetSpaceLoading())) ? spvd : null;
-		} catch (java.lang.Exception e) {
+			return scopingProjectionVariateDistribution.addProjectionDistributionLoading (
+				"VIEW",
+				new org.drip.measure.bayesian.ProjectionDistributionLoading (
+					_projectionSpecification.excessReturnsDistribution(),
+					_projectionSpecification.assetSpaceLoadingMatrix()
+				)
+			) ? scopingProjectionVariateDistribution : null;
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	private double[] allocationTilt (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted)
+	private double[] allocationTiltArray (
+		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputAdjusted)
 	{
-		double[] adblUnadjustedWeights = _frooUnadjusted.optimalPortfolio().weights();
+		double[] adjustedWeightArray =
+			forwardReverseOptimizationOutputAdjusted.optimalPortfolio().weightArray();
 
-		double[] adblAdjustedWeights = frooAdjusted.optimalPortfolio().weights();
+		double[] unAdjustedWeightArray =
+			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray();
 
-		int iNumAsset = adblUnadjustedWeights.length;
-		double[] adblAllocationTilt = new double[iNumAsset];
+		int assetCount = unAdjustedWeightArray.length;
+		double[] allocationTiltArray = new double[assetCount];
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblAllocationTilt[i] = adblAdjustedWeights[i] - adblUnadjustedWeights[i];
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			allocationTiltArray[assetIndex] = adjustedWeightArray[assetIndex] -
+				unAdjustedWeightArray[assetIndex];
+		}
 
-		return adblAllocationTilt;
+		return allocationTiltArray;
 	}
 
 	/**
 	 * BlackLittermanCombinationEngine Construction
 	 * 
-	 * @param frooUnadjusted The Unadjusted Instance of FROO
-	 * @param pcs The Prior Control Specification Instance
-	 * @param ps The View Projection Specification Settings
+	 * @param forwardReverseOptimizationOutputUnadjusted The Unadjusted Instance of
+	 * 	ForwardReverseOptimizationOutput
+	 * @param priorControlSpecification The Prior Control Specification Instance
+	 * @param projectionSpecification The View Projection Specification Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlackLittermanCombinationEngine (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooUnadjusted,
-		final org.drip.portfolioconstruction.bayesian.PriorControlSpecification pcs,
-		final org.drip.portfolioconstruction.bayesian.ProjectionSpecification ps)
+		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputUnadjusted,
+		final org.drip.portfolioconstruction.bayesian.PriorControlSpecification priorControlSpecification,
+		final org.drip.portfolioconstruction.bayesian.ProjectionSpecification projectionSpecification)
 		throws java.lang.Exception
 	{
-		if (null == (_frooUnadjusted = frooUnadjusted) || null == (_pcs = pcs) || null == (_ps = ps))
+		if (null == (_forwardReverseOptimizationOutputUnadjusted =
+				forwardReverseOptimizationOutputUnadjusted) ||
+			null == (_priorControlSpecification = priorControlSpecification) ||
+			null == (_projectionSpecification = projectionSpecification))
+		{
 			throw new java.lang.Exception ("BlackLittermanCombinationEngine Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Conduct a Black Litterman Run using a Theil-like Mixed Model Estimator For 0% Confidence in the
+	 * Conduct a Black Litterman Run using a Theil-like Mixed Model Estimator for 0% Confidence in the
 	 * 	Projection
 	 * 
 	 * @return Output of the Black Litterman Run
@@ -180,30 +216,44 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput noConfidenceRun()
 	{
-		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();
+		double tau = _priorControlSpecification.tau();
 
-		double dblTau = _pcs.tau();
+		double[][] assetExcessReturnsCovarianceMatrix =
+			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		int iNumAsset = aadblAssetSpaceExcessReturnsCovariance.length;
-		double[][] aadblBayesianExcessReturnsCovariance = new double[iNumAsset][iNumAsset];
+		int assetCount = assetExcessReturnsCovarianceMatrix.length;
+		double[][] assetBayesianExcessReturnsCovarianceMatrix = new double[assetCount][assetCount];
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			for (int j = 0; j < iNumAsset; ++j)
-				aadblBayesianExcessReturnsCovariance[i][j] = aadblAssetSpaceExcessReturnsCovariance[i][j] *
-					dblTau;
+		for (int i = 0; i < assetCount; ++i)
+		{
+			for (int j = 0; j < assetCount; ++j)
+			{
+				assetBayesianExcessReturnsCovarianceMatrix[i][j] = assetExcessReturnsCovarianceMatrix[i][j] *
+					tau;
+			}
 		}
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted =
-			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-				(_frooUnadjusted.optimalPortfolio().meta().names(),
-					_frooUnadjusted.expectedAssetExcessReturns(), aadblBayesianExcessReturnsCovariance,
-						_frooUnadjusted.riskAversion());
+		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputAdjusted =
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().names(),
+					_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray(),
+					assetBayesianExcessReturnsCovarianceMatrix,
+					_forwardReverseOptimizationOutputUnadjusted.riskAversion()
+				);
 
-		try {
-			return null == frooAdjusted ? null : new
-				org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (frooAdjusted, allocationTilt
-					(frooAdjusted));
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return null == forwardReverseOptimizationOutputAdjusted ? null :
+				new org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (
+					forwardReverseOptimizationOutputAdjusted,
+					allocationTiltArray (
+						forwardReverseOptimizationOutputAdjusted
+					)
+				);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -219,37 +269,66 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceRun()
 	{
-		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();
+		double[][] assetExcessReturnsCovarianceMatrix =
+			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		org.drip.measure.continuous.MultivariateMeta meta = _frooUnadjusted.optimalPortfolio().meta();
+		org.drip.measure.continuous.MultivariateMeta portfolioMeta =
+			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =
-			scopingProjectionDistribution();
+		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+			scopingProjectionVariateDistribution();
 
-		if (null == spvd) return null;
+		if (null == scopingProjectionVariateDistribution)
+		{
+			return null;
+		}
 
-		org.drip.measure.bayesian.JointPosteriorMetrics jpm =
-			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (spvd, "VIEW",
-				org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,
-					spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));
+		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =
+			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (
+				scopingProjectionVariateDistribution,
+				"VIEW",
+				org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+					portfolioMeta,
+					scopingProjectionVariateDistribution.scopingDistribution().mean(),
+					assetExcessReturnsCovarianceMatrix
+				)
+			);
 
-		if (null == jpm) return null;
+		if (null == jointPosteriorMetrics)
+		{
+			return null;
+		}
 
-		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();
+		org.drip.measure.continuous.R1Multivariate r1mPosterior = jointPosteriorMetrics.posterior();
 
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted =
-			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (meta.names(),
-				r1mPosterior.mean(), _pcs.useAlternateReferenceModel() ?
-					aadblAssetSpaceExcessReturnsCovariance :
+		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputAdjusted =
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					portfolioMeta.names(),
+					r1mPosterior.mean(),
+					_priorControlSpecification.useAlternateReferenceModel() ?
+						assetExcessReturnsCovarianceMatrix :
 						((org.drip.measure.gaussian.R1MultivariateNormal)
-							r1mPosterior).covariance().covarianceMatrix(), _frooUnadjusted.riskAversion());
+							r1mPosterior).covariance().covarianceMatrix(),
+					_forwardReverseOptimizationOutputUnadjusted.riskAversion()
+				);
 
-		if (null == frooAdjusted) return null;
+		if (null == forwardReverseOptimizationOutputAdjusted)
+		{
+			return null;
+		}
 
 		try {
-			return new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput
-				(frooAdjusted, allocationTilt (frooAdjusted), jpm);
-		} catch (java.lang.Exception e) {
+			return new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput (
+				forwardReverseOptimizationOutputAdjusted,
+				allocationTiltArray (
+					forwardReverseOptimizationOutputAdjusted
+				),
+				jointPosteriorMetrics
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -265,43 +344,74 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
 	{
-		org.drip.measure.continuous.MultivariateMeta meta = _frooUnadjusted.optimalPortfolio().meta();
+		org.drip.measure.continuous.MultivariateMeta portfolioMeta =
+			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
-		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();
+		double[][] assetExcessReturnsCovarianceMatrix =
+			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		double dblRiskAversion = _frooUnadjusted.riskAversion();
+		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
 
-		java.lang.String[] astrAssetID = meta.names();
+		java.lang.String[] assetIDArray = portfolioMeta.names();
 
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =
-			scopingProjectionDistribution();
+		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+			scopingProjectionVariateDistribution();
 
-		if (null == spvd) return null;
-
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted = null;
-
-		if (_pcs.useAlternateReferenceModel())
-			frooAdjusted = org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-				(astrAssetID,
-					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (spvd,
-						"VIEW"), aadblAssetSpaceExcessReturnsCovariance, dblRiskAversion);
-		else {
-			org.drip.measure.gaussian.R1MultivariateNormal r1mnCombined =
-				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution
-					(spvd, "VIEW", org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,
-						spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));
-
-			frooAdjusted = null == r1mnCombined ? null :
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-					(astrAssetID, r1mnCombined.mean(), aadblAssetSpaceExcessReturnsCovariance,
-						dblRiskAversion);
+		if (null == scopingProjectionVariateDistribution)
+		{
+			return null;
 		}
 
-		try {
-			return null == frooAdjusted ? null : new
-				org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (frooAdjusted, allocationTilt
-					(frooAdjusted));
-		} catch (java.lang.Exception e) {
+		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputAdjusted = null;
+
+		if (_priorControlSpecification.useAlternateReferenceModel())
+		{
+			forwardReverseOptimizationOutputAdjusted =
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					assetIDArray,
+					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (
+						scopingProjectionVariateDistribution,
+						"VIEW"
+					),
+					assetExcessReturnsCovarianceMatrix,
+					riskAversion
+				);
+		}
+		else
+		{
+			org.drip.measure.gaussian.R1MultivariateNormal combinedDistribution =
+				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution (
+					scopingProjectionVariateDistribution,
+					"VIEW",
+					org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+						portfolioMeta,
+						scopingProjectionVariateDistribution.scopingDistribution().mean(),
+						assetExcessReturnsCovarianceMatrix
+					)
+				);
+
+			forwardReverseOptimizationOutputAdjusted = null == combinedDistribution ? null :
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					assetIDArray,
+					combinedDistribution.mean(),
+					assetExcessReturnsCovarianceMatrix,
+					riskAversion
+				);
+		}
+
+		try
+		{
+			return null == forwardReverseOptimizationOutputAdjusted ? null :
+				new org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (
+					forwardReverseOptimizationOutputAdjusted,
+					allocationTiltArray (
+						forwardReverseOptimizationOutputAdjusted
+					)
+				);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -316,68 +426,120 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput impliedConfidenceRun()
 	{
-		double[][] aadblAssetSpaceExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();
+		double[][] assetExcessReturnsCovarianceMatrix =
+			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		org.drip.portfolioconstruction.asset.Portfolio pfUnadjusted = _frooUnadjusted.optimalPortfolio();
+		org.drip.portfolioconstruction.asset.Portfolio unadjustedPortfolio =
+			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio();
 
-		org.drip.measure.continuous.MultivariateMeta meta = pfUnadjusted.meta();
+		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+			scopingProjectionVariateDistribution();
 
-		boolean bUseAlternateReferenceModel = _pcs.useAlternateReferenceModel();
+		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();
 
-		double dblRiskAversion = _frooUnadjusted.riskAversion();
+		org.drip.measure.continuous.MultivariateMeta portfolioMeta = unadjustedPortfolio.meta();
 
-		java.lang.String[] astrAssetID = meta.names();
+		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
 
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =
-			scopingProjectionDistribution();
+		java.lang.String[] assetIDArray = portfolioMeta.names();
 
-		if (null == spvd) return null;
-
-		org.drip.measure.bayesian.JointPosteriorMetrics jpm =
-			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (spvd, "VIEW",
-				org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,
-					spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));
-
-		if (null == jpm) return null;
-
-		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();
-
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooCustomConfidence =
-			org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (astrAssetID,
-				r1mPosterior.mean(), bUseAlternateReferenceModel ? aadblAssetSpaceExcessReturnsCovariance :
-					((org.drip.measure.gaussian.R1MultivariateNormal)
-						r1mPosterior).covariance().covarianceMatrix(), dblRiskAversion);
-
-		if (null == frooCustomConfidence) return null;
-
-		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooFullConfidence = null;
-
-		if (bUseAlternateReferenceModel)
-			frooFullConfidence =
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-					(astrAssetID,
-						org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean
-							(spvd, "VIEW"), aadblAssetSpaceExcessReturnsCovariance, dblRiskAversion);
-		else {
-			org.drip.measure.gaussian.R1MultivariateNormal r1mnCombined =
-				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution
-					(spvd, "VIEW", org.drip.measure.gaussian.R1MultivariateNormal.Standard (meta,
-						spvd.scopingDistribution().mean(), aadblAssetSpaceExcessReturnsCovariance));
-
-			frooFullConfidence = null == r1mnCombined ? null :
-				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward
-					(astrAssetID, r1mnCombined.mean(), aadblAssetSpaceExcessReturnsCovariance,
-						dblRiskAversion);
+		if (null == scopingProjectionVariateDistribution)
+		{
+			return null;
 		}
 
-		try {
-			return new org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput
-				(pfUnadjusted.weights(), new
-					org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput
-						(frooCustomConfidence, allocationTilt (frooCustomConfidence), jpm), new
-							org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (frooFullConfidence,
-								allocationTilt (frooFullConfidence)));
-		} catch (java.lang.Exception e) {
+		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =
+			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (
+				scopingProjectionVariateDistribution,
+				"VIEW",
+				org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+					portfolioMeta,
+					scopingProjectionVariateDistribution.scopingDistribution().mean(),
+					assetExcessReturnsCovarianceMatrix
+				)
+			);
+
+		if (null == jointPosteriorMetrics)
+		{
+			return null;
+		}
+
+		org.drip.measure.continuous.R1Multivariate posteriorDistribution = jointPosteriorMetrics.posterior();
+
+		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputCustomConfidence =
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					assetIDArray,
+					posteriorDistribution.mean(),
+					useAlternateReferenceModel ? assetExcessReturnsCovarianceMatrix :
+						((org.drip.measure.gaussian.R1MultivariateNormal)
+							posteriorDistribution).covariance().covarianceMatrix(),
+					riskAversion
+				);
+
+		if (null == forwardReverseOptimizationOutputCustomConfidence)
+		{
+			return null;
+		}
+
+		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutputFullConfidence = null;
+
+		if (useAlternateReferenceModel)
+		{
+			forwardReverseOptimizationOutputFullConfidence =
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					assetIDArray,
+					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (
+						scopingProjectionVariateDistribution,
+						"VIEW"
+					),
+					assetExcessReturnsCovarianceMatrix,
+					riskAversion
+				);
+		}
+		else
+		{
+			org.drip.measure.gaussian.R1MultivariateNormal combinedDistribution =
+				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution (
+					scopingProjectionVariateDistribution,
+					"VIEW",
+					org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+						portfolioMeta,
+						scopingProjectionVariateDistribution.scopingDistribution().mean(),
+						assetExcessReturnsCovarianceMatrix
+					)
+				);
+
+			forwardReverseOptimizationOutputFullConfidence = null == combinedDistribution ? null :
+				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (
+					assetIDArray,
+					combinedDistribution.mean(),
+					assetExcessReturnsCovarianceMatrix,
+					riskAversion
+				);
+		}
+
+		try
+		{
+			return new org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput (
+				unadjustedPortfolio.weightArray(),
+				new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput (
+					forwardReverseOptimizationOutputCustomConfidence,
+					allocationTiltArray (
+						forwardReverseOptimizationOutputCustomConfidence
+					),
+					jointPosteriorMetrics
+				), new org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (
+					forwardReverseOptimizationOutputFullConfidence,
+					allocationTiltArray (
+						forwardReverseOptimizationOutputFullConfidence
+					)
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -392,76 +554,119 @@ public class BlackLittermanCombinationEngine {
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution()
 	{
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd =
-			scopingProjectionDistribution();
+		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+			scopingProjectionVariateDistribution();
 
-		if (null == spvd) return null;
-
-		double[] adblIntraViewComponent =
-			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (spvd,
-				"VIEW");
-
-		if (null == adblIntraViewComponent) return null;
-
-		double dblTau = _pcs.tau();
-
-		double dblRiskAversion = _frooUnadjusted.riskAversion();
-
-		double[][] aadblProjectionSpaceLoading = _ps.assetSpaceLoading();
-
-		double[][] aadblAssetExcessReturnsCovariance = _frooUnadjusted.assetExcessReturnsCovariance();
-
-		int iNumView = adblIntraViewComponent.length;
-		double dblProjectionConfidenceScaler = 1. / dblTau;
-		double dblAssetConfidenceScaler = 1. / (1. + dblTau);
-		int iNumAsset = aadblAssetExcessReturnsCovariance.length;
-		double[][] aadblCompositeConfidenceCovariance = new double[iNumView][iNumView];
-
-		for (int i = 0; i < iNumView; ++i)
-			adblIntraViewComponent[i] = adblIntraViewComponent[i] * dblTau / dblRiskAversion;
-
-		double[][] aadblProjectionSpaceAssetCovariance = org.drip.numerical.linearalgebra.Matrix.Product
-			(org.drip.numerical.linearalgebra.Matrix.Product (aadblProjectionSpaceLoading,
-				aadblAssetExcessReturnsCovariance), org.drip.numerical.linearalgebra.Matrix.Transpose
-					(aadblProjectionSpaceLoading));
-
-		if (null == aadblProjectionSpaceAssetCovariance) return null;
-
-		double[][] aadblProjectionCovariance =
-			_ps.excessReturnsDistribution().covariance().covarianceMatrix();
-
-		for (int i = 0; i < iNumView; ++i) {
-			for (int j = 0; j < iNumView; ++j)
-				aadblCompositeConfidenceCovariance[i][j] = aadblProjectionCovariance[i][j] *
-					dblProjectionConfidenceScaler + aadblProjectionSpaceAssetCovariance[i][j] *
-						dblAssetConfidenceScaler;
+		if (null == scopingProjectionVariateDistribution)
+		{
+			return null;
 		}
 
-		double[][] aadblCompositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.Matrix.Product
-			(org.drip.numerical.linearalgebra.Matrix.Product
-				(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
-					(aadblCompositeConfidenceCovariance), aadblProjectionSpaceLoading),
-						aadblAssetExcessReturnsCovariance);
+		double[] intraViewComponentArray =
+			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (
+				scopingProjectionVariateDistribution,
+				"VIEW"
+			);
 
-		if (null == aadblCompositePrecisionProjectionScoping) return null;
-
-		for (int i = 0; i < iNumView; ++i) {
-			for (int j = 0; j < iNumAsset; ++j)
-				aadblCompositePrecisionProjectionScoping[i][j] = -1. * dblAssetConfidenceScaler *
-					aadblCompositePrecisionProjectionScoping[i][j];
+		if (null == intraViewComponentArray)
+		{
+			return null;
 		}
 
-		try {
-			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (adblIntraViewComponent,
-				org.drip.numerical.linearalgebra.Matrix.Product (aadblCompositePrecisionProjectionScoping,
-					_frooUnadjusted.optimalPortfolio().weights()),
-						org.drip.numerical.linearalgebra.Matrix.Product
-							(org.drip.numerical.linearalgebra.Matrix.Product
-								(aadblCompositePrecisionProjectionScoping,
-									org.drip.numerical.linearalgebra.Matrix.Transpose
-										(aadblProjectionSpaceLoading)), adblIntraViewComponent),
-											aadblCompositeConfidenceCovariance);
-		} catch (java.lang.Exception e) {
+		double tau = _priorControlSpecification.tau();
+
+		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
+
+		double[][] assetSpaceLoadingMatrix = _projectionSpecification.assetSpaceLoadingMatrix();
+
+		double[][] assetExcessReturnsCovarianceMatrix =
+			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
+
+		double projectionConfidenceScaler = 1. / tau;
+		int viewCount = intraViewComponentArray.length;
+		double assetConfidenceScaler = 1. / (1. + tau);
+		int assetCount = assetExcessReturnsCovarianceMatrix.length;
+		double[][] compositeConfidenceCovarianceMatrix = new double[viewCount][viewCount];
+
+		for (int viewIndex = 0; viewIndex < viewCount; ++viewIndex)
+		{
+			intraViewComponentArray[viewIndex] = intraViewComponentArray[viewIndex] * tau / riskAversion;
+		}
+
+		double[][] projectionSpaceAssetLoadingsMatrix = org.drip.numerical.linearalgebra.Matrix.Product (
+			org.drip.numerical.linearalgebra.Matrix.Product (
+				assetSpaceLoadingMatrix,
+				assetExcessReturnsCovarianceMatrix
+			),
+			org.drip.numerical.linearalgebra.Matrix.Transpose (
+				assetSpaceLoadingMatrix
+			)
+		);
+
+		if (null == projectionSpaceAssetLoadingsMatrix)
+		{
+			return null;
+		}
+
+		double[][] projectionCovarianceMatrix =
+			_projectionSpecification.excessReturnsDistribution().covariance().covarianceMatrix();
+
+		for (int viewIndexI = 0; viewIndexI < viewCount; ++viewIndexI)
+		{
+			for (int viewIndexJ = 0; viewIndexJ < viewCount; ++viewIndexJ)
+			{
+				compositeConfidenceCovarianceMatrix[viewIndexI][viewIndexJ] =
+					projectionCovarianceMatrix[viewIndexI][viewIndexJ] * projectionConfidenceScaler +
+					projectionSpaceAssetLoadingsMatrix[viewIndexI][viewIndexJ] * assetConfidenceScaler;
+			}
+		}
+
+		double[][] compositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.Matrix.Product (
+			org.drip.numerical.linearalgebra.Matrix.Product (
+				org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (
+					compositeConfidenceCovarianceMatrix
+				),
+				assetSpaceLoadingMatrix
+			),
+			assetExcessReturnsCovarianceMatrix
+		);
+
+		if (null == compositePrecisionProjectionScoping)
+		{
+			return null;
+		}
+
+		for (int viewIndexI = 0; viewIndexI < viewCount; ++viewIndexI)
+		{
+			for (int viewIndexJ = 0; viewIndexJ < assetCount; ++viewIndexJ)
+			{
+				compositePrecisionProjectionScoping[viewIndexI][viewIndexJ] = -1. * assetConfidenceScaler *
+					compositePrecisionProjectionScoping[viewIndexI][viewIndexJ];
+			}
+		}
+
+		try
+		{
+			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (
+				intraViewComponentArray,
+				org.drip.numerical.linearalgebra.Matrix.Product (
+					compositePrecisionProjectionScoping,
+					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray()
+				),
+				org.drip.numerical.linearalgebra.Matrix.Product (
+					org.drip.numerical.linearalgebra.Matrix.Product (
+						compositePrecisionProjectionScoping,
+						org.drip.numerical.linearalgebra.Matrix.Transpose (
+							assetSpaceLoadingMatrix
+						)
+					),
+					intraViewComponentArray
+				),
+				compositeConfidenceCovarianceMatrix
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -469,144 +674,208 @@ public class BlackLittermanCombinationEngine {
 	}
 
 	/**
-	 * Compute the Idzorek Implied Tilt from the User Projection Confidence Level
+	 * Compute the Idzorek Implied Tilt Matrix from the User Projection Confidence Level
 	 * 
-	 * @param adblUserSpecifiedProjectionConfidence Array of User-specified Projection Confidence
+	 * @param userSpecifiedProjectionConfidenceArray Array of User-specified Projection Confidence
 	 * 
-	 * @return The Idzorek Implied Tilt from the Projection Confidence Level
+	 * @return The Idzorek Implied Tilt Matric from the Projection Confidence Level
 	 */
 
-	public double[][] userConfidenceProjectionTilt (
-		final double[] adblUserSpecifiedProjectionConfidence)
+	public double[][] userConfidenceProjectionTitMatrix (
+		final double[] userSpecifiedProjectionConfidenceArray)
 	{
-		if (null == adblUserSpecifiedProjectionConfidence) return null;
-
-		double[][] aadblAssetSpaceLoading = _ps.assetSpaceLoading();
-
-		int iNumAsset = aadblAssetSpaceLoading[0].length;
-		int iNumProjection = aadblAssetSpaceLoading.length;
-		double[][] aadblProjectionTilt = new double[iNumProjection][iNumAsset];
-
-		if (iNumProjection != adblUserSpecifiedProjectionConfidence.length) return null;
-
-		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput bloFullConfidence = fullConfidenceRun();
-
-		if (null == bloFullConfidence) return null;
-
-		double[] adblFullConfidenceWeightsDeviation = bloFullConfidence.allocationAdjustmentTilt();
-
-		for (int i = 0; i < iNumProjection; ++i) {
-			for (int j = 0; j < iNumAsset; ++j)
-				aadblProjectionTilt[i][j] = adblFullConfidenceWeightsDeviation[j] *
-					aadblAssetSpaceLoading[i][j] * adblUserSpecifiedProjectionConfidence[i];
+		if (null == userSpecifiedProjectionConfidenceArray)
+		{
+			return null;
 		}
 
-		return aadblProjectionTilt;
+		double[][] assetSpaceLoadingMatrix = _projectionSpecification.assetSpaceLoadingMatrix();
+
+		int assetCount = assetSpaceLoadingMatrix[0].length;
+		int projectionCount = assetSpaceLoadingMatrix.length;
+		double[][] userConfidenceProjectionTitMatrix = new double[projectionCount][assetCount];
+
+		if (projectionCount != userSpecifiedProjectionConfidenceArray.length)
+		{
+			return null;
+		}
+
+		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput =
+			fullConfidenceRun();
+
+		if (null == fullConfidenceOutput)
+		{
+			return null;
+		}
+
+		double[] fullConfidenceWeightsDeviationArray = fullConfidenceOutput.allocationAdjustmentTiltArray();
+
+		for (int projectionIndex = 0; projectionIndex < projectionCount; ++projectionIndex)
+		{
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				userConfidenceProjectionTitMatrix[projectionIndex][assetIndex] =
+					fullConfidenceWeightsDeviationArray[assetIndex] *
+					assetSpaceLoadingMatrix[projectionIndex][assetIndex] *
+					userSpecifiedProjectionConfidenceArray[projectionIndex];
+			}
+		}
+
+		return userConfidenceProjectionTitMatrix;
 	}
 
 	/**
 	 * Compute the Mismatch between the User Specified Projection and the Custom Confidence Implied Tilts
 	 * 
-	 * @param adblUserConfidenceProjectionTilt Array of the User Confidence induced Projection Tilts
-	 * @param iProjectionIndex The Index into the Projection Meta
-	 * @param dblProjectionVariance The Projection Variance
+	 * @param userConfidenceProjectionTiltArray Array of the User Confidence induced Projection Tilts
+	 * @param projectionIndex The Index into the Projection Meta
+	 * @param projectionVariance The Projection Variance
 	 * 
 	 * @return The Squared Mismatch
 	 * 
 	 * @throws java.lang.Exception Thrown if the Squared Mismatch cannot be calculated
 	 */
 
-	public double tiltMismatch (
-		final double[] adblUserConfidenceProjectionTilt,
-		final int iProjectionIndex,
-		final double dblProjectionVariance)
+	public double tiltMismatchSquared (
+		final double[] userConfidenceProjectionTiltArray,
+		final int projectionIndex,
+		final double projectionVariance)
 		throws java.lang.Exception
 	{
-		if (null == adblUserConfidenceProjectionTilt || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblProjectionVariance))
+		if (null == userConfidenceProjectionTiltArray ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				projectionVariance
+			))
+		{
 			throw new java.lang.Exception
-				("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
-
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnTotal = _ps.excessReturnsDistribution();
-
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnProjection =
-			org.drip.measure.gaussian.R1MultivariateNormal.Standard (new java.lang.String[]
-				{r1mnTotal.meta().names()[iProjectionIndex]}, new double[]
-					{r1mnTotal.mean()[iProjectionIndex]}, new double[][] {{dblProjectionVariance}});
-
-		if (null == r1mnProjection)
-			throw new java.lang.Exception
-				("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
-
-		org.drip.portfolioconstruction.bayesian.ProjectionSpecification psProjection = new
-			org.drip.portfolioconstruction.bayesian.ProjectionSpecification (r1mnProjection, new double[][]
-				{_ps.assetSpaceLoading()[iProjectionIndex]});
-
-		BlackLittermanCombinationEngine blceProjection = new BlackLittermanCombinationEngine
-			(_frooUnadjusted, _pcs, psProjection);
-
-		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blcco =
-			blceProjection.customConfidenceRun();
-
-		if (null == blcco)
-			throw new java.lang.Exception
-				("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
-
-		double[] adblPosteriorTilt = blcco.allocationAdjustmentTilt();
-
-		int iNumAsset = adblPosteriorTilt.length;
-		double dblTiltGap = 0.;
-
-		if (iNumAsset != adblUserConfidenceProjectionTilt.length)
-			throw new java.lang.Exception
-				("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblUserConfidenceProjectionTilt[i]))
-				throw new java.lang.Exception
-					("BlackLittermanCombinationEngine::tiltMismatch => Invalid Inputs");
-
-			double dblAssetTiltGap = adblPosteriorTilt[i] - adblUserConfidenceProjectionTilt[i];
-			dblTiltGap = dblTiltGap + dblAssetTiltGap * dblAssetTiltGap;
+				("BlackLittermanCombinationEngine::tiltMismatchSquared => Invalid Inputs");
 		}
 
-		return dblTiltGap;
+		org.drip.measure.gaussian.R1MultivariateNormal totalExcessReturnsDistribution =
+			_projectionSpecification.excessReturnsDistribution();
+
+		org.drip.measure.gaussian.R1MultivariateNormal projectionDistribution =
+			org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+				new java.lang.String[] {
+					totalExcessReturnsDistribution.meta().names()[projectionIndex]
+				},
+				new double[] {
+					totalExcessReturnsDistribution.mean()[projectionIndex]
+				},
+				new double[][]
+				{
+					{
+						projectionVariance
+					}
+				}
+			);
+
+		if (null == projectionDistribution)
+		{
+			throw new java.lang.Exception
+				("BlackLittermanCombinationEngine::tiltMismatchSquared => Invalid Inputs");
+		}
+
+		BlackLittermanCombinationEngine projectionEngine =
+			new BlackLittermanCombinationEngine (
+				_forwardReverseOptimizationOutputUnadjusted,
+				_priorControlSpecification,
+				new org.drip.portfolioconstruction.bayesian.ProjectionSpecification (
+					projectionDistribution,
+					new double[][]
+					{
+						_projectionSpecification.assetSpaceLoadingMatrix()[projectionIndex]
+					}
+				)
+			);
+
+		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceOuput =
+			projectionEngine.customConfidenceRun();
+
+		if (null == customConfidenceOuput)
+		{
+			throw new java.lang.Exception
+				("BlackLittermanCombinationEngine::tiltMismatchSquared => Invalid Inputs");
+		}
+
+		double[] posteriorTiltArray = customConfidenceOuput.allocationAdjustmentTiltArray();
+
+		int assetCount = posteriorTiltArray.length;
+		double tiltMismatchSquared = 0.;
+
+		if (assetCount != userConfidenceProjectionTiltArray.length)
+		{
+			throw new java.lang.Exception
+				("BlackLittermanCombinationEngine::tiltMismatchSquared => Invalid Inputs");
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (
+				userConfidenceProjectionTiltArray[assetIndex]
+			))
+			{
+				throw new java.lang.Exception
+					("BlackLittermanCombinationEngine::tiltMismatchSquared => Invalid Inputs");
+			}
+
+			double dblAssetTiltGap = posteriorTiltArray[assetIndex] -
+				userConfidenceProjectionTiltArray[assetIndex];
+			tiltMismatchSquared = tiltMismatchSquared + dblAssetTiltGap * dblAssetTiltGap;
+		}
+
+		return tiltMismatchSquared;
 	}
 
 	/**
-	 * Generate the Squared Tilt Departure R^1 To R^1
+	 * Generate the Squared Tilt Departure R<sup>1</sup> To R<sup>1</sup>
 	 * 
-	 * @param adblUserConfidenceProjectionTilt Array of the User Confidence induced Projection Tilts
-	 * @param iProjectionIndex The Index into the Projection Meta
-	 * @param bDerivative TRUE - Generate the Derivative of the Tilt Departure
+	 * @param userConfidenceProjectionTiltArray Array of the User Confidence induced Projection Tilts
+	 * @param projectionIndex The Index into the Projection Meta
+	 * @param generateDerivative TRUE - Generate the Derivative of the Tilt Departure
 	 * 
-	 * @return The Squared Tilt Departure R^1 To R^1
+	 * @return The Squared Tilt Departure R<sup>1</sup> To R<sup>1</sup>
 	 */
 
 	public org.drip.function.definition.R1ToR1 tiltDepartureR1ToR1 (
-		final double[] adblUserConfidenceProjectionTilt,
-		final int iProjectionIndex,
-		final boolean bDerivative)
+		final double[] userConfidenceProjectionTiltArray,
+		final int projectionIndex,
+		final boolean generateDerivative)
 	{
-		final org.drip.function.definition.R1ToR1 r1ToR1TiltDeparture = new
-			org.drip.function.definition.R1ToR1 (null) {
+		final org.drip.function.definition.R1ToR1 tiltDepartureFunction =
+			new org.drip.function.definition.R1ToR1 (
+				null
+			)
+		{
 			@Override public double evaluate (
-				final double dblProjectionVariance)
+				final double projectionVariance)
 				throws java.lang.Exception
 			{
-				return tiltMismatch (adblUserConfidenceProjectionTilt, iProjectionIndex,
-					dblProjectionVariance);
+				return tiltMismatchSquared (
+					userConfidenceProjectionTiltArray,
+					projectionIndex,
+					projectionVariance
+				);
 			}
 		};
 
-		if (!bDerivative) return r1ToR1TiltDeparture;
+		if (!generateDerivative)
+		{
+			return tiltDepartureFunction;
+		}
 
-		return new org.drip.function.definition.R1ToR1 (null) {
+		return new org.drip.function.definition.R1ToR1 (
+			null
+		)
+		{
 			@Override public double evaluate (
-				final double dblProjectionVariance)
+				final double projectionVariance)
 				throws java.lang.Exception
 			{
-				return r1ToR1TiltDeparture.derivative (dblProjectionVariance, 1);
+				return tiltDepartureFunction.derivative (
+					projectionVariance,
+					1
+				);
 			}
 		};
 	}

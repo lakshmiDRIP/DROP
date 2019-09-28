@@ -80,47 +80,47 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitTurnoverTermIssuerShort extends
-	org.drip.portfolioconstruction.constraint.LimitTurnoverTermIssuer
+public class LimitTurnoverTermIssuerShort
+	extends org.drip.portfolioconstruction.constraint.LimitTurnoverTermIssuer
 {
 
 	/**
 	 * LimitTurnoverTermIssuerShort Constructor
 	 * 
-	 * @param strName Name of the LimitTurnoverTermIssuerShort Constraint
+	 * @param name Name of the LimitTurnoverTermIssuerShort Constraint
 	 * @param scope Scope of the LimitTurnoverTermIssuerShort Constraint
 	 * @param unit Unit of the LimitTurnoverTermIssuerShort Constraint
-	 * @param dblMinimum Minimum Value for the Constraint
-	 * @param dblMaximum Maximum Value for the Constraint
-	 * @param adblPrice Array of Asset Prices
-	 * @param adblIssuerSelection Issuer Selection Flag Array
-	 * @param adblInitialHoldings Initial Holdings Array
+	 * @param minimum Minimum Value for the Constraint
+	 * @param maximum Maximum Value for the Constraint
+	 * @param priceArray Array of Asset Prices
+	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param issuerSelectionArray Issuer Selection Flag Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Inconsistent/Invalid
 	 */
 
 	public LimitTurnoverTermIssuerShort (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblInitialHoldings,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] initialHoldingsArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_TURNOVER_OF_SHORT_TRADES",
 			"Constrains the Total Turnover of Short Trades",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice,
-			adblInitialHoldings,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			priceArray,
+			initialHoldingsArray,
+			issuerSelectionArray
 		);
 	}
 
@@ -130,35 +130,41 @@ public class LimitTurnoverTermIssuerShort extends
 		{
 			@Override public int dimension()
 			{
-				return issuerSelection().length;
+				return issuerSelectionArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				double[] adblInitialHoldings = initialHoldings();
+				double[] initialHoldingsArray = initialHoldingsArray();
 
-				int iNumAsset = adblIssuerSelection.length;
-				double dblTurnover = 0;
+				int assetCount = issuerSelectionArray.length;
+				double turnover = 0;
 
-				double[] adblPrice = price();
+				double[] priceArray = priceArray();
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
-					throw new java.lang.Exception
-						("LimitTurnoverTermIssuerSell::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
 				{
-					if (adblInitialHoldings[i] < adblFinalHoldings[i])
-						dblTurnover += adblIssuerSelection[i] * adblPrice[i] *(adblFinalHoldings[i] -
-							adblInitialHoldings[i]);
+					throw new java.lang.Exception
+						("LimitTurnoverTermIssuerShort::rdToR1::evaluate => Invalid Variate Dimension");
 				}
 
-				return dblTurnover;
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					if (initialHoldingsArray[assetIndex] < finalHoldingsArray[assetIndex])
+					{
+						turnover += issuerSelectionArray[assetIndex] * priceArray[assetIndex] * (
+							finalHoldingsArray[assetIndex] - initialHoldingsArray[assetIndex]
+						);
+					}
+				}
+
+				return turnover;
 			}
 		};
 	}

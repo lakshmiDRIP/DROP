@@ -80,51 +80,54 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
+public class LimitRiskTermVariance
+	extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
 {
-	private double[] _adblBenchmarkHoldings = null;
+	private double[] _benchmarkHoldingsArray = null;
 
 	/**
 	 * LimitRiskTermVariance Constructor
 	 * 
-	 * @param strName Name of the LimitRiskTermVariance Constraint
+	 * @param name Name of the LimitRiskTermVariance Constraint
 	 * @param scope Scope of the LimitRiskTermVariance Constraint
 	 * @param unit Unit of the LimitRiskTermVariance Constraint
-	 * @param dblMinimum Minimum Limit Value of the LimitRiskTermVariance Constraint
-	 * @param dblMaximum Maximum Limit Value of the LimitRiskTermVariance Constraint
-	 * @param aadblAssetCovariance Asset Co-variance
-	 * @param adblBenchmarkHoldings Array of the Benchmark Holdings
+	 * @param minimum Minimum Limit Value of the LimitRiskTermVariance Constraint
+	 * @param maximum Maximum Limit Value of the LimitRiskTermVariance Constraint
+	 * @param assetCovarianceMatrix Asset Co-variance Matrix
+	 * @param benchmarkHoldingsArray Array of the Benchmark Holdings Array
 	 * 
 	 * @throws java.lang.Exception Throw if the Inputs are Invalid
 	 */
 
 	public LimitRiskTermVariance (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkHoldings)
+		final double minimum,
+		final double maximum,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_TOTAL_RISK",
 			"Limits the Variance Based Total Risk",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			aadblAssetCovariance
+			minimum,
+			maximum,
+			assetCovarianceMatrix
 		);
 
-		int iNumBenchmarkHoldings = null == (_adblBenchmarkHoldings = adblBenchmarkHoldings) ? 0 :
-			_adblBenchmarkHoldings.length;
+		int benchmarkHoldingsCount = null == (_benchmarkHoldingsArray = benchmarkHoldingsArray) ?
+			0 : _benchmarkHoldingsArray.length;
 
-		if (0 != iNumBenchmarkHoldings && (aadblAssetCovariance[0].length != iNumBenchmarkHoldings ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblBenchmarkHoldings)))
+		if (0 != benchmarkHoldingsCount && (assetCovarianceMatrix[0].length != benchmarkHoldingsCount ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_benchmarkHoldingsArray)))
+		{
 			throw new java.lang.Exception ("LimitRiskTermVariance Constructor => Invalid Benchmark");
+		}
 	}
 
 	/**
@@ -133,9 +136,9 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 	 * @return The Constricted Benchmark Holdings
 	 */
 
-	public double[] benchmarkHoldings()
+	public double[] benchmarkHoldingsArray()
 	{
-		return _adblBenchmarkHoldings;
+		return _benchmarkHoldingsArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -144,40 +147,50 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 		{
 			@Override public int dimension()
 			{
-				return assetCovariance().length;
+				return assetCovarianceMatrix().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[][] aadblAssetCovariance = assetCovariance();
+				double[][] assetCovarianceMatrix = assetCovarianceMatrix();
 
-				int iNumAsset = aadblAssetCovariance.length;
-				double dblVariance = 0;
+				int assetCount = assetCovarianceMatrix.length;
+				double variance = 0;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
-					throw new java.lang.Exception
-						("LimitRiskTermVariance::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
 				{
-					double dblHoldingsOffsetI = adblFinalHoldings[i];
+					throw new java.lang.Exception
+					("LimitRiskTermVariance::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-					if (null != _adblBenchmarkHoldings) dblHoldingsOffsetI -= _adblBenchmarkHoldings[i];
+				for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+				{
+					double dblHoldingsOffsetI = finalHoldingsArray[assetIndexI];
 
-					for (int j = 0; j < iNumAsset; ++j)
+					if (null != _benchmarkHoldingsArray)
 					{
-						double dblHoldingsOffsetJ = adblFinalHoldings[j];
+						dblHoldingsOffsetI -= _benchmarkHoldingsArray[assetIndexI];
+					}
 
-						if (null != _adblBenchmarkHoldings) dblHoldingsOffsetJ -= _adblBenchmarkHoldings[j];
+					for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+					{
+						double dblHoldingsOffsetJ = finalHoldingsArray[assetIndexJ];
 
-						dblVariance += dblHoldingsOffsetI * aadblAssetCovariance[i][j] * dblHoldingsOffsetJ;
+						if (null != _benchmarkHoldingsArray)
+						{
+							dblHoldingsOffsetJ -= _benchmarkHoldingsArray[assetIndexJ];
+						}
+
+						variance += dblHoldingsOffsetI * assetCovarianceMatrix[assetIndexI][assetIndexJ] *
+							dblHoldingsOffsetJ;
 					}
 				}
 
-				return dblVariance;
+				return variance;
 			}
 		};
 	}

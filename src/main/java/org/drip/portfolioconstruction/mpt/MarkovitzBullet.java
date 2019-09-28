@@ -81,37 +81,48 @@ package org.drip.portfolioconstruction.mpt;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarkovitzBullet {
-	private org.drip.portfolioconstruction.allocator.OptimizationOutput _opGlobalMinimumVariance = null;
-	private org.drip.portfolioconstruction.allocator.OptimizationOutput _opLongOnlyMaximumReturns = null;
+public class MarkovitzBullet
+{
+	private org.drip.portfolioconstruction.allocator.OptimizationOutput
+		_globalMinimumVarianceOptimizationOutput = null;
+	private org.drip.portfolioconstruction.allocator.OptimizationOutput
+		_longOnlyMaximumReturnsOptimizationOutput = null;
 
 	private java.util.TreeMap<java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput>
-		_mapOptimalPortfolio = new java.util.TreeMap<java.lang.Double,
+		_optimalPortfolioMap = new java.util.TreeMap<java.lang.Double,
 			org.drip.portfolioconstruction.allocator.OptimizationOutput>();
 
 	/**
 	 * MarkovitzBullet Constructor
 	 * 
-	 * @param opGlobalMinimumVariance The Global Minimum Variance Optimal Portfolio
-	 * @param opLongOnlyMaximumReturns The Long Only Maximum Returns Optimal Portfolio
+	 * @param globalMinimumVarianceOptimizationOutput The Global Minimum Variance Optimal Portfolio
+	 * @param longOnlyMaximumReturnsOptimizationOutput The Long Only Maximum Returns Optimal Portfolio
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarkovitzBullet (
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput opGlobalMinimumVariance,
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput opLongOnlyMaximumReturns)
+		final org.drip.portfolioconstruction.allocator.OptimizationOutput
+			globalMinimumVarianceOptimizationOutput,
+		final org.drip.portfolioconstruction.allocator.OptimizationOutput
+			longOnlyMaximumReturnsOptimizationOutput)
 		throws java.lang.Exception
 	{
-		if (null == (_opGlobalMinimumVariance = opGlobalMinimumVariance) || null ==
-			(_opLongOnlyMaximumReturns = opLongOnlyMaximumReturns))
+		if (null == (_globalMinimumVarianceOptimizationOutput = globalMinimumVarianceOptimizationOutput) ||
+			null == (_longOnlyMaximumReturnsOptimizationOutput = longOnlyMaximumReturnsOptimizationOutput))
+		{
 			throw new java.lang.Exception ("MarkovitzBullet Constructor => Invalid inputs");
+		}
 
-		_mapOptimalPortfolio.put (_opGlobalMinimumVariance.optimalMetrics().excessReturnsMean(),
-			_opGlobalMinimumVariance);
+		_optimalPortfolioMap.put (
+			_globalMinimumVarianceOptimizationOutput.optimalMetrics().excessReturnsMean(),
+			_globalMinimumVarianceOptimizationOutput
+		);
 
-		_mapOptimalPortfolio.put (_opLongOnlyMaximumReturns.optimalMetrics().excessReturnsMean(),
-			_opLongOnlyMaximumReturns);
+		_optimalPortfolioMap.put (
+			_longOnlyMaximumReturnsOptimizationOutput.optimalMetrics().excessReturnsMean(),
+			_longOnlyMaximumReturnsOptimizationOutput
+		);
 	}
 
 	/**
@@ -122,7 +133,7 @@ public class MarkovitzBullet {
 
 	public org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVariance()
 	{
-		return _opGlobalMinimumVariance;
+		return _globalMinimumVarianceOptimizationOutput;
 	}
 
 	/**
@@ -133,23 +144,29 @@ public class MarkovitzBullet {
 
 	public org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturns()
 	{
-		return _opLongOnlyMaximumReturns;
+		return _longOnlyMaximumReturnsOptimizationOutput;
 	}
 
 	/**
 	 * Add a Returns Constrained Optimal Portfolio
 	 * 
-	 * @param op The Returns Constrained Optimal Portfolio
+	 * @param optimizationOutput The Returns Constrained Optimal Portfolio
 	 * 
 	 * @return TRUE - The Returns Constrained Optimal Portfolio Successfully Added
 	 */
 
 	public boolean addOptimalPortfolio (
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput op)
+		final org.drip.portfolioconstruction.allocator.OptimizationOutput optimizationOutput)
 	{
-		if (null == op) return false;
+		if (null == optimizationOutput)
+		{
+			return false;
+		}
 
-		_mapOptimalPortfolio.put (op.optimalMetrics().excessReturnsMean(), op);
+		_optimalPortfolioMap.put (
+			optimizationOutput.optimalMetrics().excessReturnsMean(),
+			optimizationOutput
+		);
 
 		return true;
 	}
@@ -161,8 +178,8 @@ public class MarkovitzBullet {
 	 */
 
 	public java.util.TreeMap<java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput>
-		optimalPortfolios()
+		optimalPortfolioMap()
 	{
-		return _mapOptimalPortfolio;
+		return _optimalPortfolioMap;
 	}
 }

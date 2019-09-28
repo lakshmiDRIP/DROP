@@ -82,35 +82,37 @@ package org.drip.portfolioconstruction.cost;
 
 public class TransactionChargeLinear extends org.drip.portfolioconstruction.cost.TransactionCharge
 {
-	private double _dblLinearCharge = java.lang.Double.NaN;
+	private double _linearCharge = java.lang.Double.NaN;
 
 	/**
 	 * TransactionChargeLinear Constructor
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblLinearCharge Linear Transaction Charge
+	 * @param name Transaction Charge Name
+	 * @param id Transaction Charge ID
+	 * @param description Description of the Transaction Charge
+	 * @param linearCharge Linear Transaction Charge
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	 public TransactionChargeLinear (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblLinearCharge)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double linearCharge)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription
+			name,
+			id,
+			description
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLinearCharge = dblLinearCharge) || 0. >
-			_dblLinearCharge)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_linearCharge = linearCharge) || 0. >
+			_linearCharge)
+		{
 			throw new java.lang.Exception ("TransactionChargeLinear Constuctor => Invalid Linear Charge");
+		}
 	}
 
 	/**
@@ -121,18 +123,20 @@ public class TransactionChargeLinear extends org.drip.portfolioconstruction.cost
 
 	public double linearCharge()
 	{
-		return _dblLinearCharge;
+		return _linearCharge;
 	}
 
 	@Override public double estimate (
-		final double dblInitial,
-		final double dblFinal)
+		final double initialSize,
+		final double finalSize)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblFinal))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (initialSize) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (finalSize))
+		{
 			throw new java.lang.Exception ("TransactionChargeLinear::estimate => Invalid Inputs");
+		}
 
-		return _dblLinearCharge * java.lang.Math.abs (dblFinal - dblInitial);
+		return _linearCharge * java.lang.Math.abs (finalSize - initialSize);
 	}
 }

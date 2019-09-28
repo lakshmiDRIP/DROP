@@ -79,45 +79,56 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlockClassification extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Boolean> _mapMembership = new
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Boolean>();
+public class BlockClassification extends org.drip.portfolioconstruction.core.Block
+{
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Boolean> _membershipMap =
+		new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Boolean>();
 
 	/**
 	 * Classification Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlockClassification (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 
 	/**
 	 * Add an Asset's Membership
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param bMembership The Membership TURUE or FALSE
+	 * @param assetID The Asset ID
+	 * @param membership The Membership TURUE or FALSE
 	 * 
 	 * @return TRUE - The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final boolean bMembership)
+		final java.lang.String assetID,
+		final boolean membership)
 	{
-		if (null == strAssetID || strAssetID.isEmpty()) return false;
+		if (null == assetID || assetID.isEmpty())
+		{
+			return false;
+		}
 
-		_mapMembership.put (strAssetID, bMembership);
+		_membershipMap.put (
+			assetID,
+			membership
+		);
 
 		return true;
 	}
@@ -125,7 +136,7 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	/**
 	 * Retrieve the Asset's Membership
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset's Membership
 	 * 
@@ -133,13 +144,15 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	 */
 
 	public boolean membership (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapMembership.containsKey (strAssetID))
-			throw new java.lang.Exception ("Classification::membership => Invalid Inputs");
+		if (null == assetID || assetID.isEmpty() || !_membershipMap.containsKey (assetID))
+		{
+			throw new java.lang.Exception ("BlockClassification::membership => Invalid Inputs");
+		}
 
-		return _mapMembership.get (strAssetID);
+		return _membershipMap.get (assetID);
 	}
 
 	/**
@@ -148,9 +161,9 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	 * @return Map of the Asset Classification
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Boolean> membership()
+	public java.util.Map<java.lang.String, java.lang.Boolean> membershipMap()
 	{
-		return _mapMembership;
+		return _membershipMap;
 	}
 
 	/**
@@ -164,33 +177,53 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		if (null == holdings) return null;
+		if (null == holdings)
+		{
+			return null;
+		}
 
-		java.util.Set<java.lang.String> setAsset = holdings.assets();
+		java.util.Set<java.lang.String> assetIDSet = holdings.assetIDSet();
 
-		java.util.List<java.lang.Double> lsValue = new java.util.ArrayList<java.lang.Double>();
+		java.util.List<java.lang.Double> classificationValueList =
+			new java.util.ArrayList<java.lang.Double>();
 
-		for (java.lang.String strAssetID : setAsset) {
-			try {
-				lsValue.add (java.lang.Double.parseDouble (java.lang.Boolean.toString (membership
-					(strAssetID)).toString()));
-			} catch (java.lang.Exception e) {
+		for (java.lang.String strAssetID : assetIDSet)
+		{
+			try
+			{
+				classificationValueList.add (
+					java.lang.Double.parseDouble (
+						java.lang.Boolean.toString (
+							membership (
+								strAssetID
+							)
+						).toString()
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iNumAsset = setAsset.size();
+		int assetCount = assetIDSet.size();
 
-		if (lsValue.size() != iNumAsset) return null;
+		if (classificationValueList.size() != assetCount)
+		{
+			return null;
+		}
 
-		int iAssetCount = 0;
-		double[] adblAssetAttributeValue = new double[iNumAsset];
+		int assetIndex = 0;
+		double[] assetClassificationValueArray = new double[assetCount];
 
-		for (double dblAssetValue : lsValue)
-			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
+		for (double assetClassificationValue : classificationValueList)
+		{
+			assetClassificationValueArray[assetIndex++] = assetClassificationValue;
+		}
 
-		return adblAssetAttributeValue;
+		return assetClassificationValueArray;
 	}
 }

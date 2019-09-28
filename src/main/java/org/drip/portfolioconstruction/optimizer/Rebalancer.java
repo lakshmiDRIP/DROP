@@ -80,7 +80,8 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Rebalancer extends org.drip.portfolioconstruction.core.Block
+public class Rebalancer
+	extends org.drip.portfolioconstruction.core.Block
 {
 	private org.drip.portfolioconstruction.core.Account _account = null;
 	private org.drip.portfolioconstruction.optimizer.Strategy _strategy = null;
@@ -88,9 +89,9 @@ public class Rebalancer extends org.drip.portfolioconstruction.core.Block
 	/**
 	 * Rebalancer Constructor
 	 * 
-	 * @param strName The Rebalancer Name
-	 * @param strID The Rebalancer ID
-	 * @param strDescription The Rebalancer Description
+	 * @param name The Rebalancer Name
+	 * @param id The Rebalancer ID
+	 * @param description The Rebalancer Description
 	 * @param account The Account to Rebalance
 	 * @param strategy The Strategy to use for the Rebalancing
 	 * 
@@ -98,17 +99,24 @@ public class Rebalancer extends org.drip.portfolioconstruction.core.Block
 	 */
 
 	public Rebalancer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.core.Account account,
 		final org.drip.portfolioconstruction.optimizer.Strategy strategy)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		if (null == (_account = account) || null == (_strategy = strategy))
+		if (null == (_account = account) ||
+			null == (_strategy = strategy))
+		{
 			throw new java.lang.Exception ("Rebalancer Construtor => Invalid Inputs");
+		}
 	}
 
 	/**

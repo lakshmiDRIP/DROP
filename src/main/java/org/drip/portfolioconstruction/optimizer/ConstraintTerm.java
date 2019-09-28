@@ -81,12 +81,14 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ConstraintTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-	private double _dblMaximum = java.lang.Double.NaN;
-	private double _dblMinimum = java.lang.Double.NaN;
+public abstract class ConstraintTerm
+	extends org.drip.portfolioconstruction.optimizer.FormulationTerm
+{
+	private double _maximum = java.lang.Double.NaN;
+	private double _minimum = java.lang.Double.NaN;
 	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;
 	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;
-	private org.drip.portfolioconstruction.optimizer.SoftConstraint _sc = null;
+	private org.drip.portfolioconstruction.optimizer.SoftConstraint _softConstraint = null;
 
 	protected ConstraintTerm (
 		final java.lang.String strName,
@@ -95,8 +97,8 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 		final java.lang.String strCategory,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum)
+		final double minimum,
+		final double maximum)
 		throws java.lang.Exception
 	{
 		super (
@@ -108,9 +110,11 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 		if (null == (_scope = scope) ||
 			null == (_unit = unit) ||
-			(!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimum = dblMinimum) &&
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaximum = dblMaximum)))
+			(!org.drip.numerical.common.NumberUtil.IsValid (_minimum = minimum) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_maximum = maximum)))
+		{
 			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -121,7 +125,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
 	{
-		return _sc;
+		return _softConstraint;
 	}
 
 	/**
@@ -154,7 +158,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public double minimum()
 	{
-		return _dblMinimum;
+		return _minimum;
 	}
 
 	/**
@@ -165,7 +169,7 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public double maximum()
 	{
-		return _dblMaximum;
+		return _maximum;
 	}
 
 	/**
@@ -176,23 +180,26 @@ public abstract class ConstraintTerm extends org.drip.portfolioconstruction.opti
 
 	public boolean isEquality()
 	{
-		return _dblMaximum == _dblMinimum;
+		return _maximum == _minimum;
 	}
 
 	/**
 	 * Set the Soft Constraint
 	 * 
-	 * @param sc The Soft Constraint
+	 * @param softConstraint The Soft Constraint
 	 * 
 	 * @return TRUE - The Soft Constraint successfully set
 	 */
 
 	public boolean setSoftConstraint (
-		final org.drip.portfolioconstruction.optimizer.SoftConstraint sc)
+		final org.drip.portfolioconstruction.optimizer.SoftConstraint softConstraint)
 	{
-		if (null == sc) return false;
+		if (null == softConstraint)
+		{
+			return false;
+		}
 
-		_sc = sc;
+		_softConstraint = softConstraint;
 		return true;
 	}
 }

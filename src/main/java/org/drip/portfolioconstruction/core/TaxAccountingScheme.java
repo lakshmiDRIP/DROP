@@ -80,42 +80,50 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Block {
-	private int _iWashDays = -1;
-	private int _iShortTermDays = -1;
-	private double _dblLongTermTaxRate = java.lang.Double.NaN;
-	private double _dblShortTermTaxRate = java.lang.Double.NaN;
+public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Block
+{
+	private int _washDays = -1;
+	private int _shortTermDays = -1;
+	private double _longTermTaxRate = java.lang.Double.NaN;
+	private double _shortTermTaxRate = java.lang.Double.NaN;
 
 	/**
 	 * TaxAccountingScheme Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
-	 * @param dblShortTermTaxRate Short Term Tax Rate
-	 * @param dblLongTermTaxRate Long Term Tax Rate
-	 * @param iShortTermDays Short Term Days
-	 * @param iWashDays Wash Days
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
+	 * @param shortTermTaxRate Short Term Tax Rate
+	 * @param longTermTaxRate Long Term Tax Rate
+	 * @param shortTermDays Short Term Days
+	 * @param washDays Wash Days
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TaxAccountingScheme (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblShortTermTaxRate,
-		final double dblLongTermTaxRate,
-		final int iShortTermDays,
-		final int iWashDays)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double shortTermTaxRate,
+		final double longTermTaxRate,
+		final int shortTermDays,
+		final int washDays)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblShortTermTaxRate = dblShortTermTaxRate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblLongTermTaxRate = dblLongTermTaxRate) || -1 >=
-				(_iShortTermDays = iShortTermDays) || -1 >= (_iWashDays = iWashDays))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_shortTermTaxRate = shortTermTaxRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_longTermTaxRate = longTermTaxRate) ||
+			-1 >= (_shortTermDays = shortTermDays) ||
+			-1 >= (_washDays = washDays))
+		{
 			throw new java.lang.Exception ("TaxAccountingScheme Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -126,7 +134,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public double shortTermTaxRate()
 	{
-		return _dblShortTermTaxRate;
+		return _shortTermTaxRate;
 	}
 
 	/**
@@ -137,7 +145,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public double longTermTaxRate()
 	{
-		return _dblLongTermTaxRate;
+		return _longTermTaxRate;
 	}
 
 	/**
@@ -148,7 +156,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public int shortTermDays()
 	{
-		return _iShortTermDays;
+		return _shortTermDays;
 	}
 
 	/**
@@ -159,6 +167,6 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public int washDays()
 	{
-		return _iWashDays;
+		return _washDays;
 	}
 }

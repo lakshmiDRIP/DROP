@@ -80,7 +80,8 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Unit {
+public class Unit
+{
 
 	/**
 	 * Constraint Unit - PERCENT
@@ -100,23 +101,26 @@ public class Unit {
 
 	public static final int CURRENCY = 3;
 
-	private int _iDenomination = 0;
+	private int _denomination = 0;
 
 	/**
 	 * Unit Constructor
 	 * 
-	 * @param iDenomination The Unit Denomination
+	 * @param denomination The Unit Denomination
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Unit (
-		final int iDenomination)
+		final int denomination)
 		throws java.lang.Exception
 	{
-		if (PERCENT != (_iDenomination = iDenomination) && QUANTITY != _iDenomination && CURRENCY !=
-			_iDenomination)
+		if (PERCENT != (_denomination = denomination) &&
+			QUANTITY != _denomination &&
+			CURRENCY != _denomination)
+		{
 			throw new java.lang.Exception ("Unit Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -127,6 +131,6 @@ public class Unit {
 
 	public int denomination()
 	{
-		return _iDenomination;
+		return _denomination;
 	}
 }

@@ -79,31 +79,43 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Benchmark extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strType = "";
-	private java.lang.String _strCategory = "";
+public class Benchmark
+	extends org.drip.portfolioconstruction.core.Block
+{
+	private java.lang.String _type = "";
+	private java.lang.String _category = "";
 	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;
 
 	/**
 	 * Construct a Standard Benchmark Instance Without Cash
 	 * 
-	 * @param strName The Benchmark Name
-	 * @param strType The Benchmark Type
-	 * @param strCategory The Benchmark Category
+	 * @param name The Benchmark Name
+	 * @param type The Benchmark Type
+	 * @param category The Benchmark Category
 	 * @param holdings The Benchmark Holdings
 	 * 
 	 * @return The Standard Benchmark Instance Without Cash
 	 */
 
 	public static final Benchmark Standard (
-		final java.lang.String strName,
-		final java.lang.String strType,
-		final java.lang.String strCategory,
+		final java.lang.String name,
+		final java.lang.String type,
+		final java.lang.String category,
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		try {
-			return new Benchmark (strName, strName, strName, strType, strCategory, holdings);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new Benchmark (
+				name,
+				name,
+				name,
+				type,
+				category,
+				holdings
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -113,30 +125,37 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 	/**
 	 * Benchmark Constructor
 	 * 
-	 * @param strName The Benchmark Name
-	 * @param strID The Benchmark ID
-	 * @param strDescription The Benchmark Description
-	 * @param strType The Benchmark Type
-	 * @param strCategory The Benchmark Category
+	 * @param name The Benchmark Name
+	 * @param id The Benchmark ID
+	 * @param description The Benchmark Description
+	 * @param type The Benchmark Type
+	 * @param category The Benchmark Category
 	 * @param holdings The Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Benchmark (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strType,
-		final java.lang.String strCategory,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String type,
+		final java.lang.String category,
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		if (null == (_strType = strType) || _strType.isEmpty() || null == (_strCategory = strCategory) ||
-			_strCategory.isEmpty() || null == (_holdings = holdings))
+		if (null == (_type = type) || _type.isEmpty() ||
+			null == (_category = category) || _category.isEmpty() ||
+			null == (_holdings = holdings))
+		{
 			throw new java.lang.Exception ("Benchmark Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -147,7 +166,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String type()
 	{
-		return _strType;
+		return _type;
 	}
 
 	/**
@@ -158,7 +177,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String category()
 	{
-		return _strCategory;
+		return _category;
 	}
 
 	/**

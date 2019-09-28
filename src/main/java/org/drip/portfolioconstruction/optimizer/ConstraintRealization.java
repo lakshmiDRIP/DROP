@@ -83,26 +83,26 @@ package org.drip.portfolioconstruction.optimizer;
 
 public class ConstraintRealization
 {
-	private double _dblValue = java.lang.Double.NaN;
-	private double _dblLowerBound = java.lang.Double.NaN;
-	private double _dblUpperBound = java.lang.Double.NaN;
+	private double _value = java.lang.Double.NaN;
+	private double _lowerBound = java.lang.Double.NaN;
+	private double _upperBound = java.lang.Double.NaN;
 
 	/**
 	 * ConstraintRealization Constructor
 	 * 
-	 * @param dblValue The Constraint Value
-	 * @param dblLowerBound The Constraint Lower Bound
-	 * @param dblUpperBound The Constraint Upper Bound
+	 * @param value The Constraint Value
+	 * @param lowerBound The Constraint Lower Bound
+	 * @param upperBound The Constraint Upper Bound
 	 */
 
 	public ConstraintRealization (
-		final double dblValue,
-		final double dblLowerBound,
-		final double dblUpperBound)
+		final double value,
+		final double lowerBound,
+		final double upperBound)
 	{
-		_dblValue = dblValue;
-		_dblLowerBound = dblLowerBound;
-		_dblUpperBound = dblUpperBound;
+		_value = value;
+		_lowerBound = lowerBound;
+		_upperBound = upperBound;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class ConstraintRealization
 
 	public double lowerBound()
 	{
-		return _dblLowerBound;
+		return _lowerBound;
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class ConstraintRealization
 
 	public double upperBound()
 	{
-		return _dblUpperBound;
+		return _upperBound;
 	}
 
 	/**
@@ -135,6 +135,6 @@ public class ConstraintRealization
 
 	public double value()
 	{
-		return _dblValue;
+		return _value;
 	}
 }

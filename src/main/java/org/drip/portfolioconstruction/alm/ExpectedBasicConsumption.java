@@ -81,28 +81,32 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedBasicConsumption {
-	private double _dblWorkingAgeConsumptionRate = java.lang.Double.NaN;
-	private double _dblRetirementAgeConsumptionRate = java.lang.Double.NaN;
+public class ExpectedBasicConsumption
+{
+	private double _workingAgeConsumptionRate = java.lang.Double.NaN;
+	private double _retirementAgeConsumptionRate = java.lang.Double.NaN;
 
 	/**
 	 * ExpectedBasicConsumption Constructor
 	 * 
-	 * @param dblWorkingAgeConsumptionRate The Working Age Consumption Rate
-	 * @param dblRetirementAgeConsumptionRate The Retirement Age Consumption Rate
+	 * @param workingAgeConsumptionRate The Working Age Consumption Rate
+	 * @param retirementAgeConsumptionRate The Retirement Age Consumption Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedBasicConsumption (
-		final double dblWorkingAgeConsumptionRate,
-		final double dblRetirementAgeConsumptionRate)
+		final double workingAgeConsumptionRate,
+		final double retirementAgeConsumptionRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeConsumptionRate =
-			dblWorkingAgeConsumptionRate) || !org.drip.numerical.common.NumberUtil.IsValid
-				(_dblRetirementAgeConsumptionRate = dblRetirementAgeConsumptionRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeConsumptionRate =
+				workingAgeConsumptionRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_retirementAgeConsumptionRate =
+				retirementAgeConsumptionRate))
+		{
 			throw new java.lang.Exception ("ExpectedBasicConsumption Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -113,7 +117,7 @@ public class ExpectedBasicConsumption {
 
 	public double workingAgeConsumptionRate()
 	{
-		return _dblWorkingAgeConsumptionRate;
+		return _workingAgeConsumptionRate;
 	}
 
 	/**
@@ -124,14 +128,14 @@ public class ExpectedBasicConsumption {
 
 	public double retirementAgeConsumptionRate()
 	{
-		return _dblRetirementAgeConsumptionRate;
+		return _retirementAgeConsumptionRate;
 	}
 
 	/**
 	 * Compute the Expected Consumption Rate
 	 * 
-	 * @param dblAge The Age whose Investment Phase is needed
-	 * @param ics The Investor's Time Cliff Settings Instance
+	 * @param age The Age whose Investment Phase is needed
+	 * @param investorCliffSettings The Investor's Time Cliff Settings Instance
 	 * 
 	 * @return The Expected Consumption Rate
 	 * 
@@ -139,21 +143,27 @@ public class ExpectedBasicConsumption {
 	 */
 
 	public double rate (
-		final double dblAge,
-		final org.drip.portfolioconstruction.alm.InvestorCliffSettings ics)
+		final double age,
+		final org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings)
 		throws java.lang.Exception
 	{
-		if (null == ics) throw new java.lang.Exception ("ExpectedBasicConsumption::rate => Invalid Inputs");
+		if (null == investorCliffSettings)
+		{
+			throw new java.lang.Exception ("ExpectedBasicConsumption::rate => Invalid Inputs");
+		}
 
-		int iAgePhase = ics.phase (dblAge);
+		int agePhase = investorCliffSettings.phase (age);
 
 		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==
-			iAgePhase)
-			return _dblWorkingAgeConsumptionRate;
+			agePhase)
+		{
+			return _workingAgeConsumptionRate;
+		}
 
-		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT ==
-			iAgePhase)
-			return _dblRetirementAgeConsumptionRate;
+		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT == agePhase)
+		{
+			return _retirementAgeConsumptionRate;
+		}
 
 		return 0.;
 	}

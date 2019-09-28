@@ -67,7 +67,7 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /**
- * <i>BlackLittermanCustomConfidenceOutput</i> holds the Outputs generated from a Custom COnfidence Black
+ * <i>BlackLittermanCustomConfidenceOutput</i> holds the Outputs generated from a Custom Confidence Black
  * Litterman Bayesian Combination Run. The References are:
  *  
  *  <br><br>
@@ -93,31 +93,38 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlackLittermanCustomConfidenceOutput extends
-	org.drip.portfolioconstruction.bayesian.BlackLittermanOutput {
-	private org.drip.measure.bayesian.JointPosteriorMetrics _jpm = null;
+public class BlackLittermanCustomConfidenceOutput
+	extends org.drip.portfolioconstruction.bayesian.BlackLittermanOutput
+{
+	private org.drip.measure.bayesian.JointPosteriorMetrics _jointPosteriorMetrics = null;
 
 	/**
 	 * BlackLittermanCustomConfidenceOutput Constructor
 	 * 
-	 * @param frooAdjusted The Adjusted Forward Reverse Equilibrium Optimization Output
-	 * @param adblAllocationAdjustmentTilt Array of the Allocation Adjustment Tilts
-	 * @param jpm The Bayesian Joint/Posterior Metrics Instance
+	 * @param forwardReverseOptimizationOutput The Adjusted Forward Reverse Equilibrium Optimization Output
+	 * @param allocationAdjustmentTiltArray Array of the Allocation Adjustment Tilts
+	 * @param jointPosteriorMetrics The Bayesian Joint/Posterior Metrics Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlackLittermanCustomConfidenceOutput (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted,
-		final double[] adblAllocationAdjustmentTilt,
-		final org.drip.measure.bayesian.JointPosteriorMetrics jpm)
+		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutput,
+		final double[] allocationAdjustmentTiltArray,
+		final org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics)
 		throws java.lang.Exception
 	{
-		super (frooAdjusted, adblAllocationAdjustmentTilt);
+		super (
+			forwardReverseOptimizationOutput,
+			allocationAdjustmentTiltArray
+		);
 
-		if (null == (_jpm = jpm))
+		if (null == (_jointPosteriorMetrics = jointPosteriorMetrics))
+		{
 			throw new java.lang.Exception
 				("BlackLittermanCustomConfidenceOutput Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -126,8 +133,8 @@ public class BlackLittermanCustomConfidenceOutput extends
 	 * @return The Bayesian Joint/Posterior Metrics
 	 */
 
-	public org.drip.measure.bayesian.JointPosteriorMetrics combinationMetrics()
+	public org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics()
 	{
-		return _jpm;
+		return _jointPosteriorMetrics;
 	}
 }

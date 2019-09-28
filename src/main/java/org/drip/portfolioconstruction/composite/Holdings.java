@@ -79,34 +79,41 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Holdings extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strCurrency = "";
+public class Holdings extends org.drip.portfolioconstruction.core.Block
+{
+	private java.lang.String _currency = "";
 
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _mapQuantity = new
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _quantityMap =
+		new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
 	/**
 	 * Holdings Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Account Currency
+	 * @param name The Asset Name
+	 * @param id The Asset ID
+	 * @param description The Asset Description
+	 * @param currency The Account Currency
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Holdings (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String currency)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		if (null == (_strCurrency = strCurrency))
+		if (null == (_currency = currency))
+		{
 			throw new java.lang.Exception ("Holdings Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -115,9 +122,9 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 * @return The Set of Asset IDs
 	 */
 
-	public java.util.Set<java.lang.String> assets()
+	public java.util.Set<java.lang.String> assetIDSet()
 	{
-		return _mapQuantity.keySet();
+		return _quantityMap.keySet();
 	}
 
 	/**
@@ -128,27 +135,32 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public java.util.Map<java.lang.String, java.lang.Double> quantityMap()
 	{
-		return _mapQuantity;
+		return _quantityMap;
 	}
 
 	/**
 	 * Add an Asset/Amount Pair
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblQuantity The Amount in the Portfolio
+	 * @param assetID The Asset ID
+	 * @param quantity The Amount in the Portfolio
 	 * 
 	 * @return TRUE - The Asset/Amount has been successfully added
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final double dblQuantity)
+		final java.lang.String assetID,
+		final double quantity)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblQuantity))
+		if (null == assetID || assetID.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (quantity))
+		{
 			return false;
+		}
 
-		_mapQuantity.put (strAssetID, dblQuantity);
+		_quantityMap.put (
+			assetID,
+			quantity
+		);
 
 		return true;
 	}
@@ -156,21 +168,21 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	/**
 	 * Indicates if an Asset exists in the Holdings
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-		return null != strAssetID && !_mapQuantity.containsKey (strAssetID);
+		return null != assetID && !_quantityMap.containsKey (assetID);
 	}
 
 	/**
 	 * Retrieves the Holdings Quantity for the Asset (if it exists)
 	 * 
-	 * @param strID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Holdings Quantity for the Asset (if it exists)
 	 * 
@@ -178,12 +190,15 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 */
 
 	public double quantity (
-		final java.lang.String strID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-		if (!contains (strID)) throw new java.lang.Exception ("Holdings::quantity => Invalid Inputs");
+		if (!contains (assetID))
+		{
+			throw new java.lang.Exception ("Holdings::quantity => Invalid Inputs");
+		}
 
-		return _mapQuantity.get (strID);
+		return _quantityMap.get (assetID);
 	}
 
 	/**
@@ -194,7 +209,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	/**
@@ -205,9 +220,12 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public double cash()
 	{
-		try {
-			return quantity ("CASH::" + _strCurrency);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return quantity ("CASH::" + _currency);
+		}
+		catch (java.lang.Exception e)
+		{
 		}
 
 		return 0.;
@@ -221,17 +239,23 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public double[] toArray()
 	{
-		int iSize = _mapQuantity.size();
+		int size = _quantityMap.size();
 
-		if (0 == iSize) return null;
+		if (0 == size)
+		{
+			return null;
+		}
 
-		int i = 0;
-		double[] adblQuantity = new double[iSize];
+		int assetIndex = 0;
+		double[] quantityArray = new double[size];
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> meQuantity : _mapQuantity.entrySet())
-			adblQuantity[i++] = meQuantity.getValue();
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> quantityMapEntry :
+			_quantityMap.entrySet())
+		{
+			quantityArray[assetIndex++] = quantityMapEntry.getValue();
+		}
 
-		return adblQuantity;
+		return quantityArray;
 	}
 
 	/**
@@ -245,32 +269,50 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdingsOther)
 	{
-		if (null == holdingsOther) return null;
+		if (null == holdingsOther)
+		{
+			return null;
+		}
 
-		java.util.Set<java.lang.String> setAsset = holdingsOther.assets();
+		java.util.Set<java.lang.String> assetIDSet = holdingsOther.assetIDSet();
 
-		java.util.List<java.lang.Double> lsValue = new java.util.ArrayList<java.lang.Double>();
+		java.util.List<java.lang.Double> quantityList = new java.util.ArrayList<java.lang.Double>();
 
-		for (java.lang.String strAssetID : setAsset) {
-			try {
-				lsValue.add (contains (strAssetID) ? quantity (strAssetID) : 0.);
-			} catch (java.lang.Exception e) {
+		for (java.lang.String assetID : assetIDSet)
+		{
+			try
+			{
+				quantityList.add (
+					contains (
+						assetID
+					) ? quantity (
+						assetID
+					) : 0.
+				);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iNumAsset = setAsset.size();
+		int assetCount = assetIDSet.size();
 
-		if (lsValue.size() != iNumAsset) return null;
+		if (quantityList.size() != assetCount)
+		{
+			return null;
+		}
 
-		int iAssetCount = 0;
-		double[] adblAssetAttributeValue = new double[iNumAsset];
+		int assetIndex = 0;
+		double[] assetQuantityArray = new double[assetCount];
 
-		for (double dblAssetValue : lsValue)
-			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
+		for (double quantity : quantityList)
+		{
+			assetQuantityArray[assetIndex++] = quantity;
+		}
 
-		return adblAssetAttributeValue;
+		return assetQuantityArray;
 	}
 }

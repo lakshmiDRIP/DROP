@@ -80,27 +80,30 @@ package org.drip.portfolioconstruction.asset;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetComponent {
-	private java.lang.String _strID = "";
-	private double _dblAmount = java.lang.Double.NaN;
+public class AssetComponent
+{
+	private java.lang.String _id = "";
+	private double _amount = java.lang.Double.NaN;
 
 	/**
 	 * AssetComponent Constructor
 	 * 
-	 * @param strID Asset ID
-	 * @param dblAmount Asset Amount
+	 * @param id Asset ID
+	 * @param amount Asset Amount
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetComponent (
-		final java.lang.String strID,
-		final double dblAmount)
+		final java.lang.String id,
+		final double amount)
 		throws java.lang.Exception
 	{
-		if (null == (_strID = strID) || _strID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
-			(_dblAmount = dblAmount))
+		if (null == (_id = id) || _id.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_amount = amount))
+		{
 			throw new java.lang.Exception ("AssetComponent Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -111,7 +114,7 @@ public class AssetComponent {
 
 	public java.lang.String id()
 	{
-		return _strID;
+		return _id;
 	}
 
 	/**
@@ -122,6 +125,6 @@ public class AssetComponent {
 
 	public double amount()
 	{
-		return _dblAmount;
+		return _amount;
 	}
 }

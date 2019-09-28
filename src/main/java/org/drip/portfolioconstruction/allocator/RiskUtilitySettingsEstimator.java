@@ -81,15 +81,16 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskUtilitySettingsEstimator {
+public class RiskUtilitySettingsEstimator
+{
 
 	/**
 	 * Compute the Equilibrium Risk Aversion from the Portfolio Equilibrium Returns/Variance and the Risk
 	 *  Free Rate
 	 * 
-	 * @param dblEquilibriumReturns The Portfolio Equilibrium Returns
-	 * @param dblRiskFreeRate The Risk Free Rate
-	 * @param dblEquilibriumVariance The Portfolio Equilibrium Variance
+	 * @param equilibriumReturns The Portfolio Equilibrium Returns
+	 * @param riskFreeRate The Risk Free Rate
+	 * @param equilibriumVariance The Portfolio Equilibrium Variance
 	 * 
 	 * @return The Estimated Equilibrium Risk Aversion Value
 	 * 
@@ -97,25 +98,27 @@ public class RiskUtilitySettingsEstimator {
 	 */
 
 	public static final double EquilibriumRiskAversion (
-		final double dblEquilibriumReturns,
-		final double dblRiskFreeRate,
-		final double dblEquilibriumVariance)
+		final double equilibriumReturns,
+		final double riskFreeRate,
+		final double equilibriumVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumReturns) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (equilibriumReturns) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (riskFreeRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (equilibriumVariance))
+		{
 			throw new java.lang.Exception
 				("RiskUtilitySettingsEstimator::EquilibriumRiskAversion => Invalid Inputs");
+		}
 
-		return (dblEquilibriumReturns - dblRiskFreeRate) / dblEquilibriumVariance;
+		return (equilibriumReturns - riskFreeRate) / equilibriumVariance;
 	}
 
 	/**
 	 * Compute the Equilibrium Risk Aversion from the Portfolio Equilibrium Returns/Variance
 	 * 
-	 * @param dblEquilibriumReturns The Portfolio Equilibrium Returns
-	 * @param dblEquilibriumVariance The Portfolio Equilibrium Variance
+	 * @param equilibriumReturns The Portfolio Equilibrium Returns
+	 * @param equilibriumVariance The Portfolio Equilibrium Variance
 	 * 
 	 * @return The Estimated Equilibrium Risk Aversion Value
 	 * 
@@ -123,15 +126,17 @@ public class RiskUtilitySettingsEstimator {
 	 */
 
 	public static final double EquilibriumRiskAversion (
-		final double dblEquilibriumReturns,
-		final double dblEquilibriumVariance)
+		final double equilibriumReturns,
+		final double equilibriumVariance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumReturns) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumVariance))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (equilibriumReturns) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (equilibriumVariance))
+		{
 			throw new java.lang.Exception
 				("RiskUtilitySettingsEstimator::EquilibriumRiskAversion => Invalid Inputs");
+		}
 
-		return dblEquilibriumReturns / dblEquilibriumVariance;
+		return equilibriumReturns / equilibriumVariance;
 	}
 }

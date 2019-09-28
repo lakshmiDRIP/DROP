@@ -80,35 +80,37 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitHoldingsTermIssuer extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
+public abstract class LimitHoldingsTermIssuer
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
-	private double[] _adblIssuerSelection = null;
+	private double[] _issuerSelectionArray = null;
 
 	protected LimitHoldingsTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			null == adblIssuerSelection ? 0 : adblIssuerSelection.length
+			minimum,
+			maximum,
+			null == issuerSelectionArray ? 0 : issuerSelectionArray.length
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 != _adblIssuerSelection.length)
+		if (null == (_issuerSelectionArray = issuerSelectionArray) || 0 != _issuerSelectionArray.length)
+		{
 			throw new java.lang.Exception ("LimitHoldingsTermIssuer Constructor => Invalid Selection");
+		}
 	}
 
 	/**
@@ -117,8 +119,8 @@ public abstract class LimitHoldingsTermIssuer extends
 	 * @return The Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-		return _adblIssuerSelection;
+		return _issuerSelectionArray;
 	}
 }

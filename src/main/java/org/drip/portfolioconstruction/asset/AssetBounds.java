@@ -80,30 +80,33 @@ package org.drip.portfolioconstruction.asset;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetBounds {
-	private double _dblLower = java.lang.Double.NaN;
-	private double _dblUpper = java.lang.Double.NaN;
+public class AssetBounds
+{
+	private double _lower = java.lang.Double.NaN;
+	private double _upper = java.lang.Double.NaN;
 
 	/**
 	 * AssetBounds Constructor
 	 * 
-	 * @param dblLower The Asset Lower Bound
-	 * @param dblUpper The Asset Upper Bound
+	 * @param lower The Asset Lower Bound
+	 * @param upper The Asset Upper Bound
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetBounds (
-		final double dblLower,
-		final double dblUpper)
+		final double lower,
+		final double upper)
 		throws java.lang.Exception
 	{
-		_dblLower = dblLower;
-		_dblUpper = dblUpper;
+		_lower = lower;
+		_upper = upper;
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (_dblLower) && org.drip.numerical.common.NumberUtil.IsValid
-			(_dblUpper) && _dblLower >= _dblUpper)
+		if (org.drip.numerical.common.NumberUtil.IsValid (_lower) &&
+			org.drip.numerical.common.NumberUtil.IsValid (_upper) && _lower >= _upper)
+		{
 			throw new java.lang.Exception ("AssetBounds Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -114,7 +117,7 @@ public class AssetBounds {
 
 	public double lower()
 	{
-		return _dblLower;
+		return _lower;
 	}
 
 	/**
@@ -125,7 +128,7 @@ public class AssetBounds {
 
 	public double upper()
 	{
-		return _dblUpper;
+		return _upper;
 	}
 
 	/**
@@ -136,21 +139,29 @@ public class AssetBounds {
 
 	public double feasibleStart()
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLower) &&
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lower) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_upper))
+		{
 			return 0.;
+		}
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLower)) return 0.5 * _dblUpper;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lower))
+		{
+			return 0.5 * _upper;
+		}
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper)) return 2.0 * _dblLower;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_upper))
+		{
+			return 2.0 * _lower;
+		}
 
-		return 0.5 * (_dblLower + _dblUpper);
+		return 0.5 * (_lower + _upper);
 	}
 
 	/**
 	 * Localize the Variate Value to within the Bounds
 	 * 
-	 * @param dblVariate The Variate Value
+	 * @param variate The Variate Value
 	 * 
 	 * @return The Localized Variate Value
 	 * 
@@ -158,20 +169,30 @@ public class AssetBounds {
 	 */
 
 	public double localize (
-		final double dblVariate)
+		final double variate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (variate))
+		{
 			throw new java.lang.Exception ("AssetBounds::localize => Invalid Inputs");
+		}
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLower) &&
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblUpper))
-			return dblVariate;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_lower) &&
+			!org.drip.numerical.common.NumberUtil.IsValid (_upper))
+		{
+			return variate;
+		}
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (_dblLower) && dblVariate < _dblLower) return _dblLower;
+		if (org.drip.numerical.common.NumberUtil.IsValid (_lower) && variate < _lower)
+		{
+			return _lower;
+		}
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (_dblUpper) && dblVariate > _dblUpper) return _dblUpper;
+		if (org.drip.numerical.common.NumberUtil.IsValid (_upper) && variate > _upper)
+		{
+			return _upper;
+		}
 
-		return dblVariate;
+		return variate;
 	}
 }

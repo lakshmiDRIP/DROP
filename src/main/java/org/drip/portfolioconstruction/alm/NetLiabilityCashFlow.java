@@ -80,67 +80,67 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NetLiabilityCashFlow {
-	private boolean _bIsAlive = false;
-	private boolean _bIsRetired = false;
-	private double _dblAge = java.lang.Double.NaN;
-	private double _dblHorizon = java.lang.Double.NaN;
-	private double _dblAfterTaxIncome = java.lang.Double.NaN;
-	private double _dblPensionBenefits = java.lang.Double.NaN;
-	private double _dblBasicConsumption = java.lang.Double.NaN;
-	private double _dblWorkingAgeIncome = java.lang.Double.NaN;
-	private double _dblPensionBenefitsDF = java.lang.Double.NaN;
-	private double _dblBasicConsumptionDF = java.lang.Double.NaN;
-	private double _dblWorkingAgeIncomeDF = java.lang.Double.NaN;
+public class NetLiabilityCashFlow
+{
+	private boolean _isAlive = false;
+	private boolean _isRetired = false;
+	private double _age = java.lang.Double.NaN;
+	private double _horizon = java.lang.Double.NaN;
+	private double _afterTaxIncome = java.lang.Double.NaN;
+	private double _pensionBenefits = java.lang.Double.NaN;
+	private double _basicConsumption = java.lang.Double.NaN;
+	private double _workingAgeIncome = java.lang.Double.NaN;
+	private double _pensionBenefitsDF = java.lang.Double.NaN;
+	private double _basicConsumptionDF = java.lang.Double.NaN;
+	private double _workingAgeIncomeDF = java.lang.Double.NaN;
 
 	/**
 	 * NetLiabilityCashFlow Constructor
 	 * 
-	 * @param dblAge The Investor Age
-	 * @param bIsRetired The Retirement Indicator Flag
-	 * @param bIsAlive The "Is Alive" Indicator Flag
-	 * @param dblHorizon The Snapshot's Investment Horizon
-	 * @param dblAfterTaxIncome The Basic After-Tax Income
-	 * @param dblWorkingAgeIncome The Investor Working Age Income
-	 * @param dblPensionBenefits The Investor Pension Benefits
-	 * @param dblBasicConsumption The Investor Basic Consumption
-	 * @param dblWorkingAgeIncomeDF The Investor Working Age Income Discount Factor
-	 * @param dblPensionBenefitsDF The Investor Pension Benefits Discount Factor
-	 * @param dblBasicConsumptionDF The Investor Basic Consumption Discount Factor
+	 * @param age The Investor Age
+	 * @param isRetired The Retirement Indicator Flag
+	 * @param isAlive The "Is Alive" Indicator Flag
+	 * @param horizon The Snapshot's Investment Horizon
+	 * @param afterTaxIncome The Basic After-Tax Income
+	 * @param workingAgeIncome The Investor Working Age Income
+	 * @param pensionBenefits The Investor Pension Benefits
+	 * @param basicConsumption The Investor Basic Consumption
+	 * @param workingAgeIncomeDF The Investor Working Age Income Discount Factor
+	 * @param pensionBenefitsDF The Investor Pension Benefits Discount Factor
+	 * @param basicConsumptionDF The Investor Basic Consumption Discount Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public NetLiabilityCashFlow (
-		final double dblAge,
-		final boolean bIsRetired,
-		final boolean bIsAlive,
-		final double dblHorizon,
-		final double dblAfterTaxIncome,
-		final double dblWorkingAgeIncome,
-		final double dblPensionBenefits,
-		final double dblBasicConsumption,
-		final double dblWorkingAgeIncomeDF,
-		final double dblPensionBenefitsDF,
-		final double dblBasicConsumptionDF)
+		final double age,
+		final boolean isRetired,
+		final boolean isAlive,
+		final double horizon,
+		final double afterTaxIncome,
+		final double workingAgeIncome,
+		final double pensionBenefits,
+		final double basicConsumption,
+		final double workingAgeIncomeDF,
+		final double pensionBenefitsDF,
+		final double basicConsumptionDF)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAge = dblAge) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblHorizon = dblHorizon) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncome = dblWorkingAgeIncome) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefits = dblPensionBenefits)
-							|| !org.drip.numerical.common.NumberUtil.IsValid (_dblBasicConsumption =
-								dblBasicConsumption) || !org.drip.numerical.common.NumberUtil.IsValid
-									(_dblWorkingAgeIncomeDF = dblWorkingAgeIncomeDF) ||
-										!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsDF =
-											dblPensionBenefitsDF) ||
-												!org.drip.numerical.common.NumberUtil.IsValid
-													(_dblBasicConsumptionDF = dblBasicConsumptionDF))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_age = age) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_horizon = horizon) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_afterTaxIncome = afterTaxIncome) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncome = workingAgeIncome) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefits = pensionBenefits) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumption = basicConsumption) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncomeDF = workingAgeIncomeDF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefitsDF = pensionBenefitsDF) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumptionDF = basicConsumptionDF))
+		{
 			throw new java.lang.Exception ("NetLiabilityCashFlow Constructor => Invalid Inputs");
+		}
 
-		_bIsAlive = bIsAlive;
-		_bIsRetired = bIsRetired;
+		_isAlive = isAlive;
+		_isRetired = isRetired;
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class NetLiabilityCashFlow {
 
 	public double age()
 	{
-		return _dblAge;
+		return _age;
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class NetLiabilityCashFlow {
 
 	public boolean isRetired()
 	{
-		return _bIsRetired;
+		return _isRetired;
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class NetLiabilityCashFlow {
 
 	public boolean isAlive()
 	{
-		return _bIsAlive;
+		return _isAlive;
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class NetLiabilityCashFlow {
 
 	public double horizon()
 	{
-		return _dblHorizon;
+		return _horizon;
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class NetLiabilityCashFlow {
 
 	public double afterTaxIncome()
 	{
-		return _dblAfterTaxIncome;
+		return _afterTaxIncome;
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class NetLiabilityCashFlow {
 
 	public double workingAgeIncome()
 	{
-		return _dblWorkingAgeIncome;
+		return _workingAgeIncome;
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class NetLiabilityCashFlow {
 
 	public double pensionBenefits()
 	{
-		return _dblPensionBenefits;
+		return _pensionBenefits;
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class NetLiabilityCashFlow {
 
 	public double basicConsumption()
 	{
-		return _dblBasicConsumption;
+		return _basicConsumption;
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class NetLiabilityCashFlow {
 
 	public double workingAgeIncomeDF()
 	{
-		return _dblWorkingAgeIncomeDF;
+		return _workingAgeIncomeDF;
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class NetLiabilityCashFlow {
 
 	public double pensionBenefitsDF()
 	{
-		return _dblPensionBenefitsDF;
+		return _pensionBenefitsDF;
 	}
 
 	/**
@@ -261,6 +261,6 @@ public class NetLiabilityCashFlow {
 
 	public double basicConsumptionDF()
 	{
-		return _dblBasicConsumptionDF;
+		return _basicConsumptionDF;
 	}
 }

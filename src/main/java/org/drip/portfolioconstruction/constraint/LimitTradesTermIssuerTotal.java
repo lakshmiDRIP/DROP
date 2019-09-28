@@ -80,44 +80,44 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitTradesTermIssuerTotal extends
-	org.drip.portfolioconstruction.constraint.LimitTradesTermIssuer
+public class LimitTradesTermIssuerTotal
+	extends org.drip.portfolioconstruction.constraint.LimitTradesTermIssuer
 {
 
 	/**
 	 * LimitTradesTermIssuerTotal Constructor
 	 * 
-	 * @param strName Name of the LimitTradesTermIssuerNet Constraint
+	 * @param name Name of the LimitTradesTermIssuerNet Constraint
 	 * @param scope Scope of the LimitTradesTermIssuerNet Constraint
 	 * @param unit Unit of the LimitTradesTermIssuerNet Constraint
-	 * @param dblMinimum Minimum Value for the Constraint
-	 * @param dblMaximum Maximum Value for the Constraint
-	 * @param adblIssuerSelection Issuer Selection Flag Array
-	 * @param adblInitialHoldings Initial Holdings Array
+	 * @param minimum Minimum Value for the Constraint
+	 * @param maximum Maximum Value for the Constraint
+	 * @param issuerSelectionArray Issuer Selection Flag Array
+	 * @param initialHoldingsArray Initial Holdings Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Inconsistent/Invalid
 	 */
 
 	public LimitTradesTermIssuerTotal (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection,
-		final double[] adblInitialHoldings)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_NUMBER_OF_TRADES",
 			"Constrains the Total Count of Buy and Sell Trades",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection,
-			adblInitialHoldings
+			minimum,
+			maximum,
+			issuerSelectionArray,
+			initialHoldingsArray
 		);
 	}
 
@@ -127,32 +127,37 @@ public class LimitTradesTermIssuerTotal extends
 		{
 			@Override public int dimension()
 			{
-				return issuerSelection().length;
+				return issuerSelectionArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblInitialHoldings = initialHoldings();
+				double[] initialHoldingsArray = initialHoldingsArray();
 
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				int iNumAsset = adblIssuerSelection.length;
-				double dblTradeCount = 0;
+				int assetCount = issuerSelectionArray.length;
+				double tradeCount = 0;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitTradesTermIssuerTotal::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (adblInitialHoldings[i] != adblFinalHoldings[i])
-						dblTradeCount += adblIssuerSelection[i];
 				}
 
-				return dblTradeCount;
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					if (initialHoldingsArray[assetIndex] != finalHoldingsArray[assetIndex])
+					{
+						tradeCount += issuerSelectionArray[assetIndex];
+					}
+				}
+
+				return tradeCount;
 			}
 		};
 	}

@@ -80,36 +80,44 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-	private double[] _adblMagnitude = null;
-	private double[] _adblMembership = null;
+public abstract class TiltTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+{
+	private double[] _magnitudeArray = null;
+	private double[] _membershipArray = null;
 
 	protected TiltTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final double[] adblMagnitude,
-		final double[] adblMembership)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final double[] magnitudeArray,
+		final double[] membershipArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"TILT",
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-		int iNumInitialHoldings = adblInitialHoldings.length;
+		int assetCount = initialHoldingsArray.length;
 
-		if (null == (_adblMagnitude = adblMagnitude) || !org.drip.numerical.common.NumberUtil.IsValid
-			(_adblMagnitude) || iNumInitialHoldings != _adblMagnitude.length)
+		if (null == (_magnitudeArray = magnitudeArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_magnitudeArray) ||
+			assetCount != _magnitudeArray.length)
+		{
 			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
+		}
 
-		if (null == (_adblMembership = adblMembership) || !org.drip.numerical.common.NumberUtil.IsValid
-			(_adblMembership) || iNumInitialHoldings != _adblMembership.length)
+		if (null == (_membershipArray = membershipArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_membershipArray) ||
+			assetCount != _membershipArray.length)
+		{
 			throw new java.lang.Exception ("TiltTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -118,9 +126,9 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 	 * @return The Array of Tilt Magnitudes
 	 */
 
-	public double[] magnitude()
+	public double[] magnitudeArray()
 	{
-		return _adblMagnitude;
+		return _magnitudeArray;
 	}
 
 	/**
@@ -129,8 +137,8 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 	 * @return The Array of Tilt Memberships
 	 */
 
-	public double[] membership()
+	public double[] membershipArray()
 	{
-		return _adblMembership;
+		return _membershipArray;
 	}
 }

@@ -80,56 +80,70 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCovarianceDense extends org.drip.portfolioconstruction.risk.AttributeJointDense implements
-	org.drip.portfolioconstruction.risk.AssetCovariance {
+public class AssetCovarianceDense
+	extends org.drip.portfolioconstruction.risk.AttributeJointDense
+	implements org.drip.portfolioconstruction.risk.AssetCovariance
+{
 
 	/**
 	 * AssetCovarianceDense Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetCovarianceDense (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 
 	@Override public double[][] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		if (null == holdings) return null;
-
-		java.util.Set<java.lang.String> setAsset = holdings.assets();
-
-		int iSize = setAsset.size();
-
-		java.util.Map<java.lang.String, java.lang.Double> mapCovariance = attribute();
-
-		int i = 0;
-		double[][] aadblAssetCovariance = new double[iSize][iSize];
-
-		for (java.lang.String strAsset1 : setAsset) {
-			int j = 0;
-
-			for (java.lang.String strAsset2 : setAsset) {
-				java.lang.String strKey = strAsset1 + "::" + strAsset2;
-
-				if (!mapCovariance.containsKey (strKey)) return null;
-
-				aadblAssetCovariance[i][j++] = mapCovariance.get (strKey);
-			}
-
-			++i;
+		if (null == holdings)
+		{
+			return null;
 		}
 
-		return aadblAssetCovariance;
+		java.util.Set<java.lang.String> assetIDSet = holdings.assetIDSet();
+
+		int size = assetIDSet.size();
+
+		java.util.Map<java.lang.String, java.lang.Double> covarianceMap = attributeMap();
+
+		int assetIndexI = 0;
+		double[][] assetCovarianceMatrix = new double[size][size];
+
+		for (java.lang.String assetID1 : assetIDSet)
+		{
+			int assetIndexJ = 0;
+
+			for (java.lang.String assetID2 : assetIDSet)
+			{
+				java.lang.String key = assetID1 + "::" + assetID2;
+
+				if (!covarianceMap.containsKey (key))
+				{
+					return null;
+				}
+
+				assetCovarianceMatrix[assetIndexI][assetIndexJ++] = covarianceMap.get (key);
+			}
+
+			++assetIndexI;
+		}
+
+		return assetCovarianceMatrix;
 	}
 }

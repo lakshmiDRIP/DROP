@@ -537,7 +537,7 @@ public class SequenceGenerator
 	 * @return Rank-reduced Chi-Squared Distributed Array
 	 */
 
-	public double[] RankReducedChiSquare (
+	public static final double[] RankReducedChiSquare (
 		final int count,
 		final double[][] covarianceMatrix)
 	{
@@ -601,7 +601,7 @@ public class SequenceGenerator
 	 * @return Pillai (2016) Special Chi-Squared Distributed Array
 	 */
 
-	public double[] PillaiSpecialChiSquare (
+	public static final double[] PillaiSpecialChiSquare (
 		final int count,
 		final double[][] covarianceMatrix,
 		final double[] weightArray)

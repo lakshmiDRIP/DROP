@@ -80,51 +80,66 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+public class AttributeJointDense
+	extends org.drip.portfolioconstruction.core.Block
+{
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _attributeMap =
+		new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
 	/**
 	 * AttributeJointDense Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AttributeJointDense (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 
 	/**
 	 * Add the Attribute for an Asset Pair
 	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * @param dblAttribute The Attribute
+	 * @param assetID1 The Asset ID #1
+	 * @param assetID2 The Asset ID #2
+	 * @param attribute The Attribute
 	 * 
 	 * @return TRUE - The Asset Pair's Attribute successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2,
-		final double dblAttribute)
+		final java.lang.String assetID1,
+		final java.lang.String assetID2,
+		final double attribute)
 	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblAttribute))
+		if (null == assetID1 || assetID1.isEmpty() ||
+			null == assetID2 || assetID2.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (attribute))
+		{
 			return false;
+		}
 
-		_mapAttribute.put (strAssetID1 + "::" + strAssetID2, dblAttribute);
+		_attributeMap.put (
+			assetID1 + "::" + assetID2,
+			attribute
+		);
 
-		_mapAttribute.put (strAssetID2 + "::" + strAssetID1, dblAttribute);
+		_attributeMap.put (
+			assetID2 + "::" + assetID1,
+			attribute
+		);
 
 		return true;
 	}
@@ -132,8 +147,8 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	/**
 	 * Retrieve the Pair Attribute
 	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
+	 * @param assetID1 The Asset ID #1
+	 * @param assetID2 The Asset ID #2
 	 * 
 	 * @return The Pair Attribute
 	 * 
@@ -141,19 +156,26 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 */
 
 	public double attribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
+		final java.lang.String assetID1,
+		final java.lang.String assetID2)
 		throws java.lang.Exception
 	{
-		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())
+		if (null == assetID1 || assetID1.isEmpty() ||
+			null == assetID2 || assetID2.isEmpty())
+		{
 			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+		}
 
-		java.lang.String strJointAtributeKey = strAssetID1 + "::" + strAssetID2;
+		java.lang.String jointAtributeKey = assetID1 + "::" + assetID2;
 
-		if (!_mapAttribute.containsKey (strAssetID1 + "::" + strAssetID2))
+		if (!_attributeMap.containsKey (
+			jointAtributeKey
+		))
+		{
 			throw new java.lang.Exception ("AttributeJointDense::attribute => Invalid Inputs");
+		}
 
-		return _mapAttribute.get (strJointAtributeKey);
+		return _attributeMap.get (jointAtributeKey);
 	}
 
 	/**
@@ -162,8 +184,8 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 * @return Map of the Asset Attributes
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> attribute()
+	public java.util.Map<java.lang.String, java.lang.Double> attributeMap()
 	{
-		return _mapAttribute;
+		return _attributeMap;
 	}
 }

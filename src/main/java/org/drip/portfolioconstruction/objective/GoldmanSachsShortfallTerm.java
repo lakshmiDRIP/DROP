@@ -82,31 +82,34 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class GoldmanSachsShortfallTerm
+	extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
 	 * GoldmanSachsShortfallTerm Constructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCGSS Array of Asset Goldman Sachs Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Initial Holdings
+	 * @param goldmanSachsShortfallTransactionChargeArray Array of Asset Goldman Sachs Transaction Charge
+	 * 	Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GoldmanSachsShortfallTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[]
+			goldmanSachsShortfallTransactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_GOLDMAN_SACHS_SHORTFALL_TRANSACTION_CHARGE",
 			"Goldman Sachs Shortfall Objective Function",
-			adblInitialHoldings,
-			aTCGSS
+			initialHoldingsArray,
+			goldmanSachsShortfallTransactionChargeArray
 		);
 	}
 
@@ -116,37 +119,45 @@ public class GoldmanSachsShortfallTerm extends org.drip.portfolioconstruction.ob
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception
 						("GoldmanSachsShortfallTerm::rdToR1::evaluate => Invalid Input");
+				}
 
-				org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[] aTCGSS =
-					(org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[])
-						transactionCharge();
+				org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[]
+					goldmanSachsShortfallTransactionChargeArray =
+						(org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[])
+							transactionChargeArray();
 
-				double[] adblInitialHoldings = initialHoldings();
+				double[] initialHoldingsArray = initialHoldingsArray();
 
-				int iNumAsset = aTCGSS.length;
-				double dblGoldmanSachsShortfallChargeTerm = 0.;
+				int assetCount = goldmanSachsShortfallTransactionChargeArray.length;
+				double goldmanSachsShortfallChargeTerm = 0.;
 
-				if (adblVariate.length != iNumAsset)
+				if (variateArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("GoldmanSachsShortfallTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblGoldmanSachsShortfallChargeTerm += aTCGSS[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
-					);
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					goldmanSachsShortfallChargeTerm +=
+						goldmanSachsShortfallTransactionChargeArray[assetIndex].estimate (
+							initialHoldingsArray[assetIndex],
+							variateArray[assetIndex]
+						);
+				}
 
-				return dblGoldmanSachsShortfallChargeTerm;
+				return goldmanSachsShortfallChargeTerm;
 			}
 		};
 	}

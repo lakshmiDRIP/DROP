@@ -80,32 +80,35 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SoftConstraint {
-	private java.lang.String _strPenaltyType = "";
-	private double _dblPenaltyAmount = java.lang.Double.NaN;
-	private double _dblViolationEdgeLimit = java.lang.Double.NaN;
+public class SoftConstraint
+{
+	private java.lang.String _penaltyType = "";
+	private double _penaltyAmount = java.lang.Double.NaN;
+	private double _violationEdgeLimit = java.lang.Double.NaN;
 
 	/**
 	 * SoftConstraint Constructor
 	 * 
-	 * @param strPenaltyType The Penalty Type
-	 * @param dblPenaltyAmount The Penalty Amount
-	 * @param dblViolationEdgeLimit The Limit that is considered to be a Violation
+	 * @param penaltyType The Penalty Type
+	 * @param penaltyAmount The Penalty Amount
+	 * @param violationEdgeLimit The Limit that is considered to be a Violation
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SoftConstraint (
-		final java.lang.String strPenaltyType,
-		final double dblPenaltyAmount,
-		final double dblViolationEdgeLimit)
+		final java.lang.String penaltyType,
+		final double penaltyAmount,
+		final double violationEdgeLimit)
 		throws java.lang.Exception
 	{
-		if (null == (_strPenaltyType = strPenaltyType) || _strPenaltyType.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblPenaltyAmount = dblPenaltyAmount))
+		if (null == (_penaltyType = penaltyType) || _penaltyType.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_penaltyAmount = penaltyAmount))
+		{
 			throw new java.lang.Exception ("SoftConstraint Constructor => Invalid Inputs");
+		}
 
-		_dblViolationEdgeLimit = dblViolationEdgeLimit;
+		_violationEdgeLimit = violationEdgeLimit;
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class SoftConstraint {
 
 	public java.lang.String penaltyType()
 	{
-		return _strPenaltyType;
+		return _penaltyType;
 	}
 
 	/**
@@ -127,7 +130,7 @@ public class SoftConstraint {
 
 	public double penaltyAmount()
 	{
-		return _dblPenaltyAmount;
+		return _penaltyAmount;
 	}
 
 	/**
@@ -138,6 +141,6 @@ public class SoftConstraint {
 
 	public double violationEdgeLimit()
 	{
-		return _dblViolationEdgeLimit;
+		return _violationEdgeLimit;
 	}
 }

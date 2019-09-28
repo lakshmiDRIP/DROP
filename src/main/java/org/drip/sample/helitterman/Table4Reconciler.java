@@ -234,7 +234,7 @@ public class Table4Reconciler {
 			)
 		);
 
-		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();
+		JointPosteriorMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();
 
@@ -250,7 +250,7 @@ public class Table4Reconciler {
 			new PortfolioConstructionParameters (
 				astrAssetID,
 				CustomRiskUtilitySettings.RiskAversion (dblRiskAversion),
-				PortfolioEqualityConstraintSettings.Unconstrained()
+				EqualityConstraintSettings.Unconstrained()
 			),
 			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
 				MultivariateMoments.Standard (
@@ -261,17 +261,17 @@ public class Table4Reconciler {
 			)
 		);
 
-		AssetComponent[] aAC = op.optimalPortfolio().assets();
+		AssetComponent[] aAC = op.optimalPortfolio().assetComponentArray();
 
 		ProjectionExposure pe = blce.projectionExposureAttribution();
 
-		double[] adblInterViewComponent = pe.interViewComponent();
+		double[] adblInterViewComponent = pe.interViewComponentArray();
 
-		double[] adblIntraViewComponent = pe.intraViewComponent();
+		double[] adblIntraViewComponent = pe.intraViewComponentArray();
 
-		double[] adblPriorViewComponent = pe.priorViewComponent();
+		double[] adblPriorViewComponent = pe.priorViewComponentArray();
 
-		double[] adblCumulativeComponent = pe.cumulativeViewComponent();
+		double[] adblCumulativeComponent = pe.cumulativeViewComponentLoadingArray();
 
 		System.out.println ("\n\t|------------------------||");
 

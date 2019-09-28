@@ -427,7 +427,9 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 	{
 		if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
 			_fphp.phaseTrackerType() && null == rcpt)
+		{
 			return null;
+		}
 
 		if (PAYOFF_TRANSFORM_SCHEME_HESTON_1993 == _fphp.payoffTransformScheme())
 			return fourierTransformHeston93 (dblStrike, dbTimeToExpiry, dblRiskFreeRate, dblSpot,

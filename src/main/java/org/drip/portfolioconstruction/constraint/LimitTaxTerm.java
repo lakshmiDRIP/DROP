@@ -80,38 +80,42 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTaxTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitTaxTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblInitialHoldings = null;
+	private double[] _initialHoldingsArray = null;
 	private org.drip.portfolioconstruction.objective.TaxationScheme _taxationScheme = null;
 
 	protected LimitTaxTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
+		final double minimum,
+		final double maximum,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme,
-		final double[] adblInitialHoldings)
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_TAX",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings) ||
+		if (null == (_initialHoldingsArray = initialHoldingsArray) ||
+			0 == _initialHoldingsArray.length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray) ||
 			null == (_taxationScheme = taxationScheme))
+		{
 			throw new java.lang.Exception ("LimitTaxTerm Constructor => Invalid Taxation Scheme");
+		}
 	}
 
 	/**
@@ -120,9 +124,9 @@ public abstract class LimitTaxTerm extends org.drip.portfolioconstruction.optimi
 	 * @return The Initial Holdings Array
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-		return _adblInitialHoldings;
+		return _initialHoldingsArray;
 	}
 
 	/**

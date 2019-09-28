@@ -80,30 +80,31 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.TaxTerm
+public class TaxLiabilityTerm
+	extends org.drip.portfolioconstruction.objective.TaxTerm
 {
 
 	/**
 	 * TaxLiabilityTerm Constructor
 	 * 
-	 * @param strName Name of the Objective Function
-	 * @param adblInitialHoldings The Initial Holdings
+	 * @param name Name of the Objective Function
+	 * @param initialHoldingsArray The Initial Holdings
 	 * @param taxationScheme The Taxation Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TaxLiabilityTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_TAX_LIABILITY",
 			"Portfolio Net Tax Liability Objective Term",
-			adblInitialHoldings,
+			initialHoldingsArray,
 			taxationScheme
 		);
 	}
@@ -114,16 +115,16 @@ public class TaxLiabilityTerm extends org.drip.portfolioconstruction.objective.T
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
 				return taxationScheme().taxLiability (
-					initialHoldings(),
-					adblVariate
+					initialHoldingsArray(),
+					variateArray
 				);
 			}
 		};

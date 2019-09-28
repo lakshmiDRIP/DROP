@@ -254,7 +254,7 @@ public class UserConfidenceProjectionCalibration {
 			)
 		);
 
-		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTilt (adblUserSpecifiedProjectionConfidence);
+		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTitMatrix (adblUserSpecifiedProjectionConfidence);
 
 		System.out.println ("\n\n");
 

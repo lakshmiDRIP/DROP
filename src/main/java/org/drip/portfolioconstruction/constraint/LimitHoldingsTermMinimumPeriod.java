@@ -80,34 +80,34 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitHoldingsTermMinimumPeriod extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
+public abstract class LimitHoldingsTermMinimumPeriod
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
-	private double _dblMinimumHoldingsPeriod = java.lang.Double.NaN;
+	private double _minimumHoldingsPeriod = java.lang.Double.NaN;
 
 	protected LimitHoldingsTermMinimumPeriod (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final int iSize,
-		final double dblMinimumHoldingsPeriod)
+		final double minimum,
+		final double maximum,
+		final int size,
+		final double minimumHoldingsPeriod)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_MINIMUM_HOLDING_PERIOD",
 			"Constrains the Minimum Holdings Period",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			iSize
+			minimum,
+			maximum,
+			size
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumHoldingsPeriod = dblMinimumHoldingsPeriod)
-			|| 0. >= _dblMinimumHoldingsPeriod)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_minimumHoldingsPeriod = minimumHoldingsPeriod) ||
+			0. >= _minimumHoldingsPeriod)
 			throw new java.lang.Exception ("LimitHoldingsTermMinimumPeriod Constructor => Invalid Inputs");
 	}
 
@@ -119,6 +119,6 @@ public abstract class LimitHoldingsTermMinimumPeriod extends
 
 	public double minimumHoldingsPeriod()
 	{
-		return _dblMinimumHoldingsPeriod;
+		return _minimumHoldingsPeriod;
 	}
 }

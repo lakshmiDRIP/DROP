@@ -139,8 +139,8 @@ public class PortfolioConstructionProcessor {
 		try {
 			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
-					0.), new org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
-						(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
+						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 						java.lang.Double.NaN));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -158,7 +158,7 @@ public class PortfolioConstructionProcessor {
 
 		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();
 
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assets();
+		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assetComponentArray();
 
 		if (null == aAC || aAC.length != iNumAsset) return null;
 
@@ -255,9 +255,9 @@ public class PortfolioConstructionProcessor {
 		try {
 			pdp = new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
 				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
-					0.), new org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
-						(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
-						| org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
+					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
+						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
+						| org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT,
 						dblPortfolioDesignReturn));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -275,7 +275,7 @@ public class PortfolioConstructionProcessor {
 
 		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();
 
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assets();
+		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assetComponentArray();
 
 		if (null == aAC || aAC.length != iNumAsset) return null;
 

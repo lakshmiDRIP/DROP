@@ -81,7 +81,8 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface AssetCovariance {
+public interface AssetCovariance
+{
 
 	/**
 	 * Constrict the Co-variance Matrix to those of the Holdings

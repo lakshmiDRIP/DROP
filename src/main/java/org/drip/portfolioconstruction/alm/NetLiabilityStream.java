@@ -81,33 +81,38 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NetLiabilityStream {
-	private double _dblAfterTaxIncome = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.alm.InvestorCliffSettings _ics = null;
-	private org.drip.portfolioconstruction.alm.ExpectedBasicConsumption _ebc = null;
-	private org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome _enfi = null;
+public class NetLiabilityStream
+{
+	private double _afterTaxIncome = java.lang.Double.NaN;
+	private org.drip.portfolioconstruction.alm.InvestorCliffSettings _investorCliffSettings = null;
+	private org.drip.portfolioconstruction.alm.ExpectedBasicConsumption _expectedBasicConsumption = null;
+	private org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome _expectedNonFinancialIncome = null;
 
 	/**
 	 * NetLiabilityStream Constructor
 	 * 
-	 * @param ics The Investor's Time Cliff Settings
-	 * @param enfi The Investor's Non-Financial Income Settings
-	 * @param ebc The Investor's Basic Consumption Settings
-	 * @param dblAfterTaxIncome The Basic After-Tax Income
+	 * @param investorCliffSettings The Investor's Time Cliff Settings
+	 * @param expectedNonFinancialIncome The Investor's Non-Financial Income Settings
+	 * @param expectedBasicConsumption The Investor's Basic Consumption Settings
+	 * @param afterTaxIncome The Basic After-Tax Income
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NetLiabilityStream (
-		final org.drip.portfolioconstruction.alm.InvestorCliffSettings ics,
-		final org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome enfi,
-		final org.drip.portfolioconstruction.alm.ExpectedBasicConsumption ebc,
-		final double dblAfterTaxIncome)
+		final org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings,
+		final org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome expectedNonFinancialIncome,
+		final org.drip.portfolioconstruction.alm.ExpectedBasicConsumption expectedBasicConsumption,
+		final double afterTaxIncome)
 		throws java.lang.Exception
 	{
-		if (null == (_ics = ics) || null == (_enfi = enfi) || null == (_ebc = ebc) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome))
+		if (null == (_investorCliffSettings = investorCliffSettings) ||
+			null == (_expectedNonFinancialIncome = expectedNonFinancialIncome) ||
+			null == (_expectedBasicConsumption = expectedBasicConsumption) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_afterTaxIncome = afterTaxIncome))
+		{
 			throw new java.lang.Exception ("NetLiabilityStream Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -118,7 +123,7 @@ public class NetLiabilityStream {
 
 	public org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings()
 	{
-		return _ics;
+		return _investorCliffSettings;
 	}
 
 	/**
@@ -129,7 +134,7 @@ public class NetLiabilityStream {
 
 	public org.drip.portfolioconstruction.alm.ExpectedBasicConsumption basicConsumption()
 	{
-		return _ebc;
+		return _expectedBasicConsumption;
 	}
 
 	/**
@@ -140,7 +145,7 @@ public class NetLiabilityStream {
 
 	public org.drip.portfolioconstruction.alm.ExpectedNonFinancialIncome nonFinancialIncome()
 	{
-		return _enfi;
+		return _expectedNonFinancialIncome;
 	}
 
 	/**
@@ -151,76 +156,111 @@ public class NetLiabilityStream {
 
 	public double afterTaxIncome()
 	{
-		return _dblAfterTaxIncome;
+		return _afterTaxIncome;
 	}
 
 	/**
 	 * Generate the NetLiabilityMetrics Instance
 	 * 
-	 * @param dblStartAge The Starting Age
-	 * @param dblEndAge The Ending Age
-	 * @param dr The Discount Rate Instance
+	 * @param startAge The Starting Age
+	 * @param endAge The Ending Age
+	 * @param discountRate The Discount Rate Instance
 	 * 
 	 * @return The NetLiabilityMetrics Instance
 	 */
 
-	public org.drip.portfolioconstruction.alm.NetLiabilityMetrics metrics (
-		final double dblStartAge,
-		final double dblEndAge,
-		final org.drip.portfolioconstruction.alm.DiscountRate dr)
+	public org.drip.portfolioconstruction.alm.NetLiabilityMetrics generateMetrics (
+		final double startAge,
+		final double endAge,
+		final org.drip.portfolioconstruction.alm.DiscountRate discountRate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStartAge) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblEndAge) || dblStartAge >= dblEndAge || null == dr)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (startAge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (endAge) ||
+			startAge >= endAge ||
+			null == discountRate)
+		{
 			return null;
+		}
 
-		java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> lsNLCF = new
-			java.util.ArrayList<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow>();
+		java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> netLiabilityCashFlowList =
+			new java.util.ArrayList<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow>();
 
-		double dblBasicConsumptionPV = 0.;
-		double dblWorkingAgeIncomePV = 0.;
-		double dblPensionBenefitsIncomePV = 0.;
+		double basicConsumptionPV = 0.;
+		double workingAgeIncomePV = 0.;
+		double pensionBenefitsIncomePV = 0.;
 
-		for (double dblCurrentAge = dblStartAge + 1.; dblCurrentAge <= dblEndAge; ++dblCurrentAge) {
-			try {
-				double dblHorizon = dblCurrentAge - dblStartAge;
+		for (double currentAge = startAge + 1.; currentAge <= endAge; ++currentAge)
+		{
+			double horizon = currentAge - startAge;
 
-				boolean bIsAlive = _ics.isAlive (dblCurrentAge);
+			try
+			{
+				boolean isAlive = _investorCliffSettings.isAlive (currentAge);
 
-				boolean bIsRetirement = _ics.retirementIndicator (dblCurrentAge);
+				double basicConsumptionDF = discountRate.basicConsumptionDF (horizon);
 
-				double dblBasicConsumptionDF = dr.basicConsumptionDF (dblHorizon);
+				double workingAgeIncomeDF = discountRate.workingAgeIncomeDF (horizon);
 
-				double dblWorkingAgeIncomeDF = dr.workingAgeIncomeDF (dblHorizon);
+				boolean isRetirement = _investorCliffSettings.retirementIndicator (currentAge);
 
-				double dblPensionBenefitsIncomeDF = dr.pensionBenefitsIncomeDF (dblHorizon);
+				double pensionBenefitsIncomeDF = discountRate.pensionBenefitsIncomeDF (horizon);
 
-				double dblBasicConsumption = _dblAfterTaxIncome * _ebc.rate (dblCurrentAge, _ics);
+				double basicConsumption = _afterTaxIncome * _expectedBasicConsumption.rate (
+					currentAge,
+					_investorCliffSettings
+				);
 
-				double dblWorkingAgeIncome = !bIsRetirement && bIsAlive ? _dblAfterTaxIncome * _enfi.rate
-					(dblCurrentAge, _ics) : 0.;
+				double workingAgeIncome = !isRetirement && isAlive ?
+					_afterTaxIncome * _expectedNonFinancialIncome.rate (
+						currentAge,
+						_investorCliffSettings
+					) : 0.;
 
-				double dblPensionBenefitsIncome = bIsRetirement && bIsAlive ? _dblAfterTaxIncome * _enfi.rate
-					(dblCurrentAge, _ics) : 0.;
+				double pensionBenefitsIncome = isRetirement && isAlive ?
+					_afterTaxIncome * _expectedNonFinancialIncome.rate (
+						currentAge,
+						_investorCliffSettings
+					) : 0.;
 
-				lsNLCF.add (new org.drip.portfolioconstruction.alm.NetLiabilityCashFlow (dblCurrentAge,
-					bIsRetirement, bIsAlive, dblHorizon, _dblAfterTaxIncome, dblWorkingAgeIncome,
-						dblPensionBenefitsIncome, dblBasicConsumption, dblWorkingAgeIncomeDF,
-							dblPensionBenefitsIncomeDF, dblBasicConsumptionDF));
+				netLiabilityCashFlowList.add (
+					new org.drip.portfolioconstruction.alm.NetLiabilityCashFlow (
+						currentAge,
+						isRetirement,
+						isAlive,
+						horizon,
+						_afterTaxIncome,
+						workingAgeIncome,
+						pensionBenefitsIncome,
+						basicConsumption,
+						workingAgeIncomeDF,
+						pensionBenefitsIncomeDF,
+						basicConsumptionDF
+					)
+				);
 
-				dblBasicConsumptionPV += dblBasicConsumption * dblBasicConsumptionDF;
-				dblWorkingAgeIncomePV += dblWorkingAgeIncome * dblWorkingAgeIncomeDF;
-				dblPensionBenefitsIncomePV += dblPensionBenefitsIncome * dblPensionBenefitsIncomeDF;
-			} catch (java.lang.Exception e) {
+				basicConsumptionPV += basicConsumption * basicConsumptionDF;
+				workingAgeIncomePV += workingAgeIncome * workingAgeIncomeDF;
+				pensionBenefitsIncomePV += pensionBenefitsIncome * pensionBenefitsIncomeDF;
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		try {
-			return new org.drip.portfolioconstruction.alm.NetLiabilityMetrics (lsNLCF, dblWorkingAgeIncomePV,
-				dblPensionBenefitsIncomePV, dblBasicConsumptionPV);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.portfolioconstruction.alm.NetLiabilityMetrics (
+				netLiabilityCashFlowList,
+				workingAgeIncomePV,
+				pensionBenefitsIncomePV,
+				basicConsumptionPV
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

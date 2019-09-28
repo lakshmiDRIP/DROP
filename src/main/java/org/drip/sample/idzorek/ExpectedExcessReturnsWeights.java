@@ -111,13 +111,13 @@ public class ExpectedExcessReturnsWeights {
 	{
 		Portfolio fromPortfolio = from.optimalPortfolio();
 
-		String[] astrAssetID = fromPortfolio.id();
+		String[] astrAssetID = fromPortfolio.assetIDArray();
 
-		double[] adblWeight = fromPortfolio.weights();
+		double[] adblWeight = fromPortfolio.weightArray();
 
-		AssetComponent acMaxWeight = fromPortfolio.maxWeight();
+		AssetComponent acMaxWeight = fromPortfolio.highestWeightAsset();
 
-		AssetComponent acMinWeight = fromPortfolio.minWeight();
+		AssetComponent acMinWeight = fromPortfolio.lowestWeightAsset();
 
 		System.out.println ("\t|------------------------------------------------------||");
 
@@ -250,7 +250,7 @@ public class ExpectedExcessReturnsWeights {
 			dblRiskAversion
 		);
 
-		double[] adblImpliedEquilibriumExcessReturns = fromPrior.expectedAssetExcessReturns();
+		double[] adblImpliedEquilibriumExcessReturns = fromPrior.expectedAssetExcessReturnsArray();
 
 		System.out.println ("\n\t|---------------------------------------------------------------------||");
 

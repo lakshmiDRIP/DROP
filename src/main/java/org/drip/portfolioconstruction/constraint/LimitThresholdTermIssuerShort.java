@@ -81,41 +81,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitThresholdTermIssuerShort extends
-	org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
+public class LimitThresholdTermIssuerShort
+	extends org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
 {
 
 	/**
 	 * LimitThresholdTermIssuerShort Constructor
 	 * 
-	 * @param strName Name of the LimitThresholdTermIssuerNet Constraint
+	 * @param name Name of the LimitThresholdTermIssuerNet Constraint
 	 * @param scope Scope of the LimitThresholdTermIssuerNet Constraint
 	 * @param unit Unit of the LimitThresholdTermIssuerNet Constraint
-	 * @param dblMinimum Minimum Limit Value of the Constraint
-	 * @param dblMaximum Maximum Limit Value of the Constraint
-	 * @param adblIssuerSelection Array of the Issuer Selections
+	 * @param minimum Minimum Limit Value of the Constraint
+	 * @param maximum Maximum Limit Value of the Constraint
+	 * @param issuerSelectionArray Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitThresholdTermIssuerShort (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_THRESHOLD_SHORT_HOLDINGS",
 			"Issuer Threshold Limit Short Issuer Holdings",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
 	}
 
@@ -125,27 +125,32 @@ public class LimitThresholdTermIssuerShort extends
 		{
 			@Override public int dimension()
 			{
-				return issuerSelection().length;
+				return issuerSelectionArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				int iNumAsset = adblIssuerSelection.length;
+				int assetCount = issuerSelectionArray.length;
 				double dblConstraintValue = 0.;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitThresholdTermIssuerShort::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 				{
-					if (adblFinalHoldings[i] < 0.)
-						dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];
+					if (finalHoldingsArray[assetIndex] < 0.)
+					{
+						dblConstraintValue += issuerSelectionArray[assetIndex] * finalHoldingsArray[assetIndex];
+					}
 				}
 
 				return dblConstraintValue;

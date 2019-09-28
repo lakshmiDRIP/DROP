@@ -79,47 +79,57 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _mapAttribute = new
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
+{
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _attributeMap =
+		new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
 	/**
 	 * BlockAttribute Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlockAttribute (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 
 	/**
 	 * Add an Asset's Attribute
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblAttribute The Attribute
+	 * @param assetID The Asset ID
+	 * @param attribute The Attribute
 	 * 
 	 * @return TRUE - The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final double dblAttribute)
+		final java.lang.String assetID,
+		final double attribute)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblAttribute))
+		if (null == assetID || assetID.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (attribute))
+		{
 			return false;
+		}
 
-		_mapAttribute.put (strAssetID, dblAttribute);
+		_attributeMap.put (
+			assetID,
+			attribute
+		);
 
 		return true;
 	}
@@ -127,21 +137,21 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	/**
 	 * Indicates if an Asset exists in the Holdings
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-		return null != strAssetID && !_mapAttribute.containsKey (strAssetID);
+		return null != assetID && !_attributeMap.containsKey (assetID);
 	}
 
 	/**
 	 * Retrieve the Asset's Attribute Value
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset's Attribute Value
 	 * 
@@ -149,13 +159,15 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	 */
 
 	public double value (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))
+		if (null == assetID || assetID.isEmpty() || !_attributeMap.containsKey (assetID))
+		{
 			throw new java.lang.Exception ("BlockAttribute::attribute => Invalid Inputs");
+		}
 
-		return _mapAttribute.get (strAssetID);
+		return _attributeMap.get (assetID);
 	}
 
 	/**
@@ -166,7 +178,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 
 	public java.util.Map<java.lang.String, java.lang.Double> attribute()
 	{
-		return _mapAttribute;
+		return _attributeMap;
 	}
 
 	/**
@@ -180,32 +192,48 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		if (null == holdings) return null;
+		if (null == holdings)
+		{
+			return null;
+		}
 
-		java.util.Set<java.lang.String> setAsset = holdings.assets();
+		java.util.Set<java.lang.String> assetIDSet = holdings.assetIDSet();
 
-		java.util.List<java.lang.Double> lsValue = new java.util.ArrayList<java.lang.Double>();
+		java.util.List<java.lang.Double> attributeValueList = new java.util.ArrayList<java.lang.Double>();
 
-		for (java.lang.String strAssetID : setAsset) {
-			try {
-				lsValue.add (value (strAssetID));
-			} catch (java.lang.Exception e) {
+		for (java.lang.String assetID : assetIDSet)
+		{
+			try
+			{
+				attributeValueList.add (
+					value (
+						assetID
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iNumAsset = setAsset.size();
+		int assetCount = assetIDSet.size();
 
-		if (lsValue.size() != iNumAsset) return null;
+		if (attributeValueList.size() != assetCount)
+		{
+			return null;
+		}
 
-		int iAssetCount = 0;
-		double[] adblAssetAttributeValue = new double[iNumAsset];
+		int assetIndex = 0;
+		double[] assetAttributeValueArray = new double[assetCount];
 
-		for (double dblAssetValue : lsValue)
-			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;
+		for (double assetAttributeValue : attributeValueList)
+		{
+			assetAttributeValueArray[assetIndex++] = assetAttributeValue;
+		}
 
-		return adblAssetAttributeValue;
+		return assetAttributeValueArray;
 	}
 }

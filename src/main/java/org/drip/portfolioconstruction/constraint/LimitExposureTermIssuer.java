@@ -80,37 +80,39 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitExposureTermIssuer extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTerm
+public abstract class LimitExposureTermIssuer
+	extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
 {
-	private double[] _adblIssuerSelection = null;
+	private double[] _issuerSelectionArray = null;
 
 	protected LimitExposureTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice
+			minimum,
+			maximum,
+			priceArray
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || adblPrice.length !=
-			_adblIssuerSelection.length)
+		if (null == (_issuerSelectionArray = issuerSelectionArray) ||
+			priceArray.length != _issuerSelectionArray.length)
+		{
 			throw new java.lang.Exception ("LimitExposureTermIssuer Constructor => Invalid Index");
+		}
 	}
 
 	/**
@@ -119,8 +121,8 @@ public abstract class LimitExposureTermIssuer extends
 	 * @return The Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-		return _adblIssuerSelection;
+		return _issuerSelectionArray;
 	}
 }

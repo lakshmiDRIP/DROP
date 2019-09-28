@@ -81,48 +81,50 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitHoldingsTermModelDeviation extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
+public class LimitHoldingsTermModelDeviation
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
-	private double[] _adblBenchmarkHoldings = null;
+	private double[] _benchmarkHoldingsArray = null;
 
 	/**
 	 * LimitHoldingsTermModelDeviation Constructor
 	 * 
-	 * @param strName Name of the LimitHoldingsTermModelDeviation Constraint
+	 * @param name Name of the LimitHoldingsTermModelDeviation Constraint
 	 * @param scope Scope of the LimitHoldingsTermModelDeviation Constraint
 	 * @param unit Unit of the LimitHoldingsTermModelDeviation Constraint
-	 * @param dblMinimum Minimum Value of the LimitHoldingsTermModelDeviation Constraint
-	 * @param dblMaximum Maximum Value of the LimitHoldingsTermModelDeviation Constraint
-	 * @param adblBenchmarkHoldings Array of the Constricted Benchmark Holdings
+	 * @param minimum Minimum Value of the LimitHoldingsTermModelDeviation Constraint
+	 * @param maximum Maximum Value of the LimitHoldingsTermModelDeviation Constraint
+	 * @param benchmarkHoldingsArray Array of the Constricted Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid/Inconsistent
 	 */
 
 	public LimitHoldingsTermModelDeviation (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblBenchmarkHoldings)
+		final double minimum,
+		final double maximum,
+		final double[] benchmarkHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_MODEL_DEVIATION",
 			"Limit Holdings Model Deviation Constaint Term",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			null == adblBenchmarkHoldings ? 0 : adblBenchmarkHoldings.length
+			minimum,
+			maximum,
+			null == benchmarkHoldingsArray ? 0 : benchmarkHoldingsArray.length
 		);
 
-		if (null == (_adblBenchmarkHoldings = adblBenchmarkHoldings) || 0 != _adblBenchmarkHoldings.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblBenchmarkHoldings))
+		if (null == (_benchmarkHoldingsArray = benchmarkHoldingsArray) || 0 != _benchmarkHoldingsArray.length
+			|| !org.drip.numerical.common.NumberUtil.IsValid (_benchmarkHoldingsArray))
+		{
 			throw new java.lang.Exception
 				("LimitHoldingsTermModelDeviation Constructor => Invalid Selection");
+		}
 	}
 
 	/**
@@ -131,9 +133,9 @@ public class LimitHoldingsTermModelDeviation extends
 	 * @return Array of Benchmark Constricted Holdings
 	 */
 
-	public double[] benchmarkHoldings()
+	public double[] benchmarkHoldingsArray()
 	{
-		return _adblBenchmarkHoldings;
+		return _benchmarkHoldingsArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -146,22 +148,28 @@ public class LimitHoldingsTermModelDeviation extends
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double dblConstraintValue = 0.;
-				int iNumAsset = _adblBenchmarkHoldings.length;
+				double limitHoldingsModelDeviation = 0.;
+				int assetCount = _benchmarkHoldingsArray.length;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitHoldingsTermModelDeviation::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += java.lang.Math.abs (_adblBenchmarkHoldings[i] -
-						adblFinalHoldings[i]);
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitHoldingsModelDeviation += java.lang.Math.abs (
+						_benchmarkHoldingsArray[assetIndex] - finalHoldingsArray[assetIndex]
+					);
+				}
 
-				return dblConstraintValue;
+				return limitHoldingsModelDeviation;
 			}
 		};
 	}

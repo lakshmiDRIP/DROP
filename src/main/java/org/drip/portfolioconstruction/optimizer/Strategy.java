@@ -80,47 +80,56 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Strategy extends org.drip.portfolioconstruction.core.Block {
-	private boolean _bAllowCrossOver = false;
-	private boolean _bIgnoreCompliance = false;
-	private boolean _bAllowGrandFathering = false;
-	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _of = null;
-	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _ch = null;
+public class Strategy
+	extends org.drip.portfolioconstruction.core.Block
+{
+	private boolean _allowCrossOver = false;
+	private boolean _ignoreCompliance = false;
+	private boolean _allowGrandFathering = false;
+	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _objectiveFunction = null;
+	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _constraintHierarchy = null;
 
 	/**
 	 * Strategy Constructor
 	 * 
-	 * @param strName The Constraint Name
-	 * @param strID The Constraint ID
-	 * @param strDescription The Constraint Description
-	 * @param of The Objective Function
-	 * @param ch Constraint Hierarchy
-	 * @param bAllowGrandFathering TRUE - Grand-fathering of the "Previous" is to be performed
-	 * @param bAllowCrossOver TRUE - Cross-Over is allowed
-	 * @param bIgnoreCompliance TRUE - Ignore Compliance
+	 * @param name The Constraint Name
+	 * @param id The Constraint ID
+	 * @param description The Constraint Description
+	 * @param objectiveFunction The Objective Function
+	 * @param constraintHierarchy Constraint Hierarchy
+	 * @param allowGrandFathering TRUE - Grand-fathering of the "Previous" is to be performed
+	 * @param allowCrossOver TRUE - Cross-Over is allowed
+	 * @param ignoreCompliance TRUE - Ignore Compliance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Strategy (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.optimizer.ObjectiveFunction of,
-		final org.drip.portfolioconstruction.optimizer.ConstraintHierarchy ch,
-		final boolean bAllowGrandFathering,
-		final boolean bAllowCrossOver,
-		final boolean bIgnoreCompliance)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction,
+		final org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy,
+		final boolean allowGrandFathering,
+		final boolean allowCrossOver,
+		final boolean ignoreCompliance)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		_ch = ch;
-		_bAllowCrossOver = bAllowCrossOver;
-		_bIgnoreCompliance = bIgnoreCompliance;
-		_bAllowGrandFathering = bAllowGrandFathering;
+		_constraintHierarchy = constraintHierarchy;
+		_allowCrossOver = allowCrossOver;
+		_ignoreCompliance = ignoreCompliance;
+		_allowGrandFathering = allowGrandFathering;
 
-		if (null == (_of = of)) throw new java.lang.Exception ("Strategy Construtor => Invalid Inputs");
+		if (null == (_objectiveFunction = objectiveFunction))
+		{
+			throw new java.lang.Exception ("Strategy Construtor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -131,7 +140,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean allowGrandFathering()
 	{
-		return _bAllowGrandFathering;
+		return _allowGrandFathering;
 	}
 
 	/**
@@ -142,7 +151,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean allowCrossOver()
 	{
-		return _bAllowCrossOver;
+		return _allowCrossOver;
 	}
 
 	/**
@@ -153,7 +162,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean ignoreCompliance()
 	{
-		return _bIgnoreCompliance;
+		return _ignoreCompliance;
 	}
 
 	/**
@@ -164,7 +173,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction()
 	{
-		return _of;
+		return _objectiveFunction;
 	}
 
 	/**
@@ -175,7 +184,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy()
 	{
-		return _ch;
+		return _constraintHierarchy;
 	}
 
 	/**

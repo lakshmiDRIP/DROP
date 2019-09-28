@@ -80,33 +80,35 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.TiltTerm {
+public class ShortTiltTerm
+	extends org.drip.portfolioconstruction.objective.TiltTerm
+{
 
 	/**
 	 * ShortTiltTerm Constructor
 	 * 
-	 * @param strName The Objective Term Name
-	 * @param adblInitialHoldings The Initial Holdings
-	 * @param adblMagnitude The Tilt Magnitude Block Attribute
-	 * @param adblMembership The Tilt Membership Block Classification
+	 * @param name The Objective Term Name
+	 * @param initialHoldingsArray The Initial Holdings
+	 * @param magnitudeArray The Tilt Magnitude Block Attribute Array
+	 * @param membershipArray The Tilt Membership Block Classification Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ShortTiltTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[] adblMagnitude,
-		final double[] adblMembership)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[] magnitudeArray,
+		final double[] membershipArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OBJECTIVE_TERM_SHORT_TILT",
 			"Short Tilt Objective Term",
-			adblInitialHoldings,
-			adblMagnitude,
-			adblMembership
+			initialHoldingsArray,
+			magnitudeArray,
+			membershipArray
 		);
 	}
 
@@ -115,54 +117,74 @@ public class ShortTiltTerm extends org.drip.portfolioconstruction.objective.Tilt
 		return new org.drip.function.definition.RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception ("ShortTiltTerm::rdToR1::evaluate => Invalid Inputs");
+				}
 
-				double dblValue = 0.;
-				int iDimension = adblVariate.length;
+				double tiltValue = 0.;
+				int dimension = variateArray.length;
 
-				if (iDimension != dimension())
+				if (dimension != dimension())
+				{
 					throw new java.lang.Exception ("ShortTiltTerm::rdToR1::evaluate => Invalid Inputs");
+				}
 
-				double[] adblMagnitude = magnitude();
+				double[] magnitudeArray = magnitudeArray();
 
-				double[] adblMembership = membership();
+				double[] membershipArray = membershipArray();
 
-				double[] adblInitialHoldings = initialHoldings();
+				double[] initialHoldingsArray = initialHoldingsArray();
 
-				for (int i = 0; i < iDimension; ++i)
-					dblValue -= adblMagnitude[i] * adblMembership[i] * (java.lang.Math.abs (adblVariate[i]) -
-						java.lang.Math.abs (adblInitialHoldings[i]));
+				for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex)
+				{
+					tiltValue -= magnitudeArray[dimensionIndex] * membershipArray[dimensionIndex] *
+					(
+						java.lang.Math.abs (
+							variateArray[dimensionIndex]
+						) -
+						java.lang.Math.abs (
+							initialHoldingsArray[dimensionIndex]
+						)
+					);
+				}
 
-				return dblValue;
+				return tiltValue;
 			}
 
 			@Override public double derivative (
-				final double[] adblVariate,
-				final int iVariateIndex,
-				final int iOrder)
+				final double[] variateArray,
+				final int variateIndex,
+				final int derivativeOrder)
 				throws java.lang.Exception
 			{
-				if (0 == iOrder || null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblVariate))
+				if (0 == derivativeOrder ||
+					null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception ("ShortTiltTerm::rdToR1::derivative => Invalid Inputs");
+				}
 
-				int iDimension = adblVariate.length;
+				int dimension = variateArray.length;
 
-				if (iDimension != dimension() || iVariateIndex >= iDimension)
+				if (dimension != dimension() || variateIndex >= dimension)
+				{
 					throw new java.lang.Exception ("ShortTiltTerm::rdToR1::derivative => Invalid Inputs");
+				}
 
-				if (2 <= iOrder) return 0.;
+				if (2 <= derivativeOrder)
+				{
+					return 0.;
+				}
 
-				return (adblVariate[iVariateIndex] > initialHoldings()[iVariateIndex] ? -1. : 1.) *
-					magnitude()[iVariateIndex] * membership()[iVariateIndex];
+				return (variateArray[variateIndex] > initialHoldingsArray()[variateIndex] ? -1. : 1.) *
+					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
 			}
 		};
 	}

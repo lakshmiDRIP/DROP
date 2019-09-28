@@ -101,7 +101,7 @@ public class BoundedMarkovitzBullet {
 		final OptimizationOutput optPort)
 		throws Exception
 	{
-		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();
+		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assetComponentArray();
 
 		String strDump = "\t|" +
 			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "% |" +
@@ -246,8 +246,8 @@ public class BoundedMarkovitzBullet {
 		BoundedPortfolioConstructionParameters bpcp = new BoundedPortfolioConstructionParameters (
 			astrAssetName,
 			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 				Double.NaN
 			)
 		);
@@ -288,7 +288,7 @@ public class BoundedMarkovitzBullet {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n\n");
 
-		TreeMap<Double, OptimizationOutput> mapFrontierPortfolio = mb.optimalPortfolios();
+		TreeMap<Double, OptimizationOutput> mapFrontierPortfolio = mb.optimalPortfolioMap();
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 

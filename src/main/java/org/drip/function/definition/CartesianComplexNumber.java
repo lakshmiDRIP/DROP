@@ -296,7 +296,7 @@ public class CartesianComplexNumber
 
 		double modulus = complexNumber.modulus();
 
-		if (0. == (modulus = modulus * modulus))
+		if (0. == modulus)
 		{
 			try
 			{

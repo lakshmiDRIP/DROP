@@ -82,20 +82,27 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 public class QuadraticMeanVarianceOptimizer extends
-	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer {
+	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer
+{
 
 	protected org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters constrainedPCP (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcpDesign,
-		final double dblReturnsConstraint)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			designPortfolioConstructionParameters,
+		final double returnsConstraint)
 	{
 		try {
-			return new org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
-				(pcpDesign.assets(), pcpDesign.optimizerSettings(), new
-					org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
-						(pcpDesign.constraintSettings().constraintType() |
-							org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
-							dblReturnsConstraint));
-		} catch (java.lang.Exception e) {
+			return new org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters (
+				designPortfolioConstructionParameters.assetIDArray(),
+				designPortfolioConstructionParameters.customRiskUtilitySettings(),
+				new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings (
+					designPortfolioConstructionParameters.equalityConstraintSettings().constraintType() |
+						org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT,
+					returnsConstraint
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -110,160 +117,266 @@ public class QuadraticMeanVarianceOptimizer extends
 	{
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+		longOnlyMaximumReturnsAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties)
 	{
-		if (null == pcp || null == ausp) return null;
+		if (null == portfolioConstructionParameters || null == assetUniverseStatisticalProperties)
+		{
+			return null;
+		}
 
-		java.lang.String[] astrAssetID = pcp.assets();
+		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
 
-		int iNumAsset = astrAssetID.length;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
+		int assetCount = assetIDArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
 
-		double[] adblExpectedAssetReturns = ausp.expectedReturns (astrAssetID);
+		double[] expectedAssetReturnsArray = assetUniverseStatisticalProperties.expectedReturns (
+			assetIDArray
+		);
 
-		if (null == adblExpectedAssetReturns || iNumAsset != adblExpectedAssetReturns.length) return null;
+		if (null == expectedAssetReturnsArray || assetCount != expectedAssetReturnsArray.length)
+		{
+			return null;
+		}
 
-		double dblMaximumReturns = adblExpectedAssetReturns[0];
-		java.lang.String strMaximumReturnsAsset = astrAssetID[0];
+		double maximumReturns = expectedAssetReturnsArray[0];
+		java.lang.String maximumReturnsAssetID = assetIDArray[0];
 
-		for (int i = 1; i < iNumAsset; ++i) {
-			if (adblExpectedAssetReturns[i] > dblMaximumReturns) {
-				strMaximumReturnsAsset = astrAssetID[i];
-				dblMaximumReturns = adblExpectedAssetReturns[i];
+		for (int i = 1; i < assetCount; ++i)
+		{
+			if (expectedAssetReturnsArray[i] > maximumReturns)
+			{
+				maximumReturnsAssetID = assetIDArray[i];
+				maximumReturns = expectedAssetReturnsArray[i];
 			}
 		}
 
-		try {
-			for (int i = 0; i < iNumAsset; ++i)
-				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],
-					astrAssetID[i].equalsIgnoreCase (strMaximumReturnsAsset) ? 1. : 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			for (int i = 0; i < assetCount; ++i)
+			{
+				assetComponentArray[i] = new org.drip.portfolioconstruction.asset.AssetComponent (
+					assetIDArray[i],
+					assetIDArray[i].equalsIgnoreCase (maximumReturnsAssetID) ? 1. : 0.
+				);
+			}
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);
+		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+			assetComponentArray,
+			assetUniverseStatisticalProperties
+		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+		globalMinimumVarianceAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties)
 	{
-		if (null == pcp || null == ausp) return null;
+		if (null == portfolioConstructionParameters || null == assetUniverseStatisticalProperties)
+		{
+			return null;
+		}
 
-		java.lang.String[] astrAssetID = pcp.assets();
+		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
 
-		int iNumAsset = astrAssetID.length;
-		org.drip.function.rdtor1.LagrangianMultivariate lm = null;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
+		int assetCount = assetIDArray.length;
+		org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate = null;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
 
-		try {
-			lm = new org.drip.function.rdtor1.LagrangianMultivariate
-				(pcp.optimizerSettings().riskObjectiveUtility (astrAssetID, ausp), new
-					org.drip.function.definition.RdToR1[] {pcp.fullyInvestedConstraint()});
-		} catch (java.lang.Exception e) {
+		try
+		{
+			lagrangianMultivariate = new org.drip.function.rdtor1.LagrangianMultivariate (
+				portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (
+					assetIDArray,
+					assetUniverseStatisticalProperties
+				),
+				new org.drip.function.definition.RdToR1[]
+				{
+					portfolioConstructionParameters.fullyInvestedConstraint()
+				}
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
-		int iLagrangianDimension = lm.dimension();
+		int lagrangianDimension = lagrangianMultivariate.dimension();
 
-		double[] adblRHS = new double[iLagrangianDimension];
-		double[] adblVariate = new double[iLagrangianDimension];
+		double[] rhsArray = new double[lagrangianDimension];
+		double[] variateArray = new double[lagrangianDimension];
 
-		double dblRiskToleranceFactor = pcp.optimizerSettings().riskTolerance();
+		double riskToleranceFactor =
+			portfolioConstructionParameters.customRiskUtilitySettings().riskTolerance();
 
-		double[] adblEqualityConstraintValue = pcp.equalityConstraintValue (ausp);
+		double[] equalityConstraintRHSArray = portfolioConstructionParameters.equalityConstraintRHS();
 
-		for (int i = 0; i < iLagrangianDimension; ++i) {
-			adblVariate[i] = 0.;
+		for (int lagrangianIndex = 0; lagrangianIndex < lagrangianDimension; ++lagrangianIndex)
+		{
+			variateArray[lagrangianIndex] = 0.;
 
-			if (i < iNumAsset) {
-				if (0. != dblRiskToleranceFactor) {
-					org.drip.portfolioconstruction.params.AssetStatisticalProperties asp = ausp.asp
-						(astrAssetID[i]);
+			if (lagrangianIndex < assetCount)
+			{
+				if (0. != riskToleranceFactor)
+				{
+					org.drip.portfolioconstruction.params.AssetStatisticalProperties
+						assetStatisticalProperties =
+							assetUniverseStatisticalProperties.assetStatisticalProperties (
+								assetIDArray[lagrangianIndex]
+							);
 
-					if (null == asp) return null;
+					if (null == assetStatisticalProperties)
+					{
+						return null;
+					}
 
-					adblRHS[i] = asp.expectedReturn() * dblRiskToleranceFactor;
-				} else
-					adblRHS[i] = 0.;
-			} else
-				adblRHS[i] = adblEqualityConstraintValue[i - iNumAsset];
+					rhsArray[lagrangianIndex] = assetStatisticalProperties.expectedReturn() *
+						riskToleranceFactor;
+				}
+				else
+				{
+					rhsArray[lagrangianIndex] = 0.;
+				}
+			}
+			else
+			{
+				rhsArray[lagrangianIndex] = equalityConstraintRHSArray[lagrangianIndex - assetCount];
+			}
 		}
 
-		org.drip.numerical.linearalgebra.LinearizationOutput lo =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (lm.hessian
-				(adblVariate), adblRHS);
+		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (
+				lagrangianMultivariate.hessian (variateArray),
+				rhsArray
+			);
 
-		if (null == lo) return null;
+		if (null == linearizationOutput)
+		{
+			return null;
+		}
 
-		double[] adblAmount = lo.getTransformedRHS();
+		double[] assetHoldingsArray = linearizationOutput.getTransformedRHS();
 
-		if (null == adblAmount || adblAmount.length != iLagrangianDimension) return null;
+		if (null == assetHoldingsArray || assetHoldingsArray.length != lagrangianDimension)
+		{
+			return null;
+		}
 
-		try {
-			for (int i = 0; i < iNumAsset; ++i)
-				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],
-					adblAmount[i]);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (
+					assetIDArray[assetIndex],
+					assetHoldingsArray[assetIndex]
+				);
+			}
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);
+		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+			assetComponentArray,
+			assetUniverseStatisticalProperties
+		);
 	}
 
 	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			portfolioConstructionParameters,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 	{
-		if (null == pcp || null == ausp) return null;
+		if (null == portfolioConstructionParameters || null == assetUniverseStatisticalProperties)
+		{
+			return null;
+		}
 
-		java.lang.String[] astrAssetID = pcp.assets();
+		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
 
-		int iNumAsset = astrAssetID.length;
-		org.drip.function.rdtor1.LagrangianMultivariate lm = null;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
+		int assetCount = assetIDArray.length;
+		org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate = null;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
 
-		try {
-			lm = new org.drip.function.rdtor1.LagrangianMultivariate
-				(pcp.optimizerSettings().riskObjectiveUtility (astrAssetID, ausp),
-					pcp.equalityConstraintRdToR1 (ausp));
-		} catch (java.lang.Exception e) {
+		try
+		{
+			lagrangianMultivariate = new org.drip.function.rdtor1.LagrangianMultivariate (
+				portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (
+					assetIDArray,
+					assetUniverseStatisticalProperties
+				),
+				portfolioConstructionParameters.equalityConstraintArray (
+					assetUniverseStatisticalProperties
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
-		int iLagrangianDimension = lm.dimension();
+		int lagrangianDimension = lagrangianMultivariate.dimension();
 
-		double[] adblVariate = new double[iLagrangianDimension];
+		double[] variateArray = new double[lagrangianDimension];
 
-		org.drip.numerical.linearalgebra.LinearizationOutput lo =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (lm.hessian
-				(adblVariate), lm.jacobian (adblVariate));
+		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =
+			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (
+				lagrangianMultivariate.hessian (variateArray),
+				lagrangianMultivariate.jacobian (variateArray)
+			);
 
-		if (null == lo) return null;
+		if (null == linearizationOutput)
+		{
+			return null;
+		}
 
-		double[] adblAmount = lo.getTransformedRHS();
+		double[] assetHoldingsArray = linearizationOutput.getTransformedRHS();
 
-		if (null == adblAmount || adblAmount.length != iLagrangianDimension) return null;
+		if (null == assetHoldingsArray || assetHoldingsArray.length != lagrangianDimension)
+		{
+			return null;
+		}
 
-		try {
-			for (int i = 0; i < iNumAsset; ++i)
-				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i], -1. *
-					adblAmount[i]);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (
+					assetIDArray[assetIndex],
+					-1. * assetHoldingsArray[assetIndex]
+				);
+			}
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);
+		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+			assetComponentArray,
+			assetUniverseStatisticalProperties
+		);
 	}
 }

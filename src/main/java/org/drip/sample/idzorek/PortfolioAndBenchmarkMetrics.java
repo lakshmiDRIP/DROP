@@ -199,7 +199,7 @@ public class PortfolioAndBenchmarkMetrics {
 			)
 		);
 
-		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();
+		JointPosteriorMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();
 

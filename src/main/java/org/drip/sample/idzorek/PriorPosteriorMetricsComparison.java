@@ -115,13 +115,13 @@ public class PriorPosteriorMetricsComparison {
 	{
 		Portfolio fromPortfolio = from.optimalPortfolio();
 
-		String[] astrAssetID = fromPortfolio.id();
+		String[] astrAssetID = fromPortfolio.assetIDArray();
 
-		double[] adblWeight = fromPortfolio.weights();
+		double[] adblWeight = fromPortfolio.weightArray();
 
-		AssetComponent acMaxWeight = fromPortfolio.maxWeight();
+		AssetComponent acMaxWeight = fromPortfolio.highestWeightAsset();
 
-		AssetComponent acMinWeight = fromPortfolio.minWeight();
+		AssetComponent acMinWeight = fromPortfolio.lowestWeightAsset();
 
 		System.out.println ("\t|--------------------------------------------------------||");
 
@@ -290,7 +290,7 @@ public class PriorPosteriorMetricsComparison {
 			)
 		);
 
-		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();
+		JointPosteriorMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
 		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jpm.prior();
 
@@ -313,7 +313,7 @@ public class PriorPosteriorMetricsComparison {
 			dblRiskAversion
 		);
 
-		double[] adblPosteriorWeight = fromPosterior.optimalPortfolio().weights();
+		double[] adblPosteriorWeight = fromPosterior.optimalPortfolio().weightArray();
 
 		System.out.println ("\n\t|---------------------------||");
 

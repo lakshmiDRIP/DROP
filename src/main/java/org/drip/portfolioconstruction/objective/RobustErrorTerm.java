@@ -81,62 +81,79 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm {
-	private double[][] _aadblAssetCovariance = null;
-	private double[][] _aadblAlphaUncertainty = null;
-	private double _dblConfidenceLevel = java.lang.Double.NaN;
+public abstract class RobustErrorTerm
+	extends org.drip.portfolioconstruction.objective.ReturnsTerm
+{
+	private double[][] _assetCovarianceMatrix = null;
+	private double[][] _alphaUncertaintyMatrix = null;
+	private double _confidenceLevel = java.lang.Double.NaN;
 
 	/**
 	 * RobustErrorTerm Constructor
 	 * 
-	 * @param strName Name of the Expected Returns Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param adblAlpha Asset Alpha
-	 * @param aadblAlphaUncertainty Alpha Uncertainty Matrix
-	 * @param aadblAssetCovariance Asset Co-variance Matrix
-	 * @param adblBenchmarkConstrictedHoldings Benchmark Constricted Holdings
+	 * @param name Name of the Expected Returns Objective Term
+	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param alphaArray Asset Alpha Array
+	 * @param alphaUncertaintyMatrix Alpha Uncertainty Matrix
+	 * @param assetCovarianceMatrix Asset Co-variance Matrix
+	 * @param benchmarkConstrictedHoldingsArray Benchmark Constricted Holdings Array
+	 * @param confidenceLevel Confidence Level (i.e., Eta)
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RobustErrorTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[] adblAlpha,
-		final double[][] aadblAlphaUncertainty,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[] alphaArray,
+		final double[][] alphaUncertaintyMatrix,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkConstrictedHoldingsArray,
+		final double confidenceLevel)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_ROBUST",
 			"Robust Error Portfolio Returns Objective Term",
-			adblInitialHoldings,
-			adblAlpha,
-			adblBenchmarkConstrictedHoldings
+			initialHoldingsArray,
+			alphaArray,
+			benchmarkConstrictedHoldingsArray
 		);
 
-		int iNumAsset = adblInitialHoldings.length;
+		int assetCount = initialHoldingsArray.length;
 
-		if (null == (_aadblAlphaUncertainty = aadblAlphaUncertainty) || iNumAsset !=
-			_aadblAlphaUncertainty.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_confidenceLevel = confidenceLevel) ||
+			null == (_alphaUncertaintyMatrix = alphaUncertaintyMatrix) ||
+			assetCount != _alphaUncertaintyMatrix.length)
+		{
 			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aadblAlphaUncertainty[i] || !org.drip.numerical.common.NumberUtil.IsValid
-				(_aadblAlphaUncertainty[i]) || iNumAsset != _aadblAlphaUncertainty[i].length)
-				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
 		}
 
-		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=
-			_aadblAssetCovariance.length)
-			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aadblAssetCovariance[i] || !org.drip.numerical.common.NumberUtil.IsValid
-				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _alphaUncertaintyMatrix[assetIndex] ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_alphaUncertaintyMatrix[assetIndex]) ||
+				assetCount != _alphaUncertaintyMatrix[assetIndex].length)
+			{
 				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
+			}
+		}
+
+		if (null == (_assetCovarianceMatrix = assetCovarianceMatrix) ||
+			assetCount != _assetCovarianceMatrix.length)
+		{
+			throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _assetCovarianceMatrix[assetIndex] ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_assetCovarianceMatrix[assetIndex]) ||
+				assetCount != _assetCovarianceMatrix[assetIndex].length)
+			{
+				throw new java.lang.Exception ("RobustErrorTerm Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -148,7 +165,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 
 	public double confidenceLevel()
 	{
-		return _dblConfidenceLevel;
+		return _confidenceLevel;
 	}
 
 	/**
@@ -159,7 +176,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 
 	public double[][] assetCovariance()
 	{
-		return _aadblAssetCovariance;
+		return _assetCovarianceMatrix;
 	}
 
 	/**
@@ -170,6 +187,6 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 
 	public double[][] alphaUncertainty()
 	{
-		return _aadblAlphaUncertainty;
+		return _alphaUncertaintyMatrix;
 	}
 }

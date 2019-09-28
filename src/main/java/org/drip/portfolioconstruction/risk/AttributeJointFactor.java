@@ -81,102 +81,141 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Block {
-	private java.util.Map<java.lang.String, java.lang.Double> _mapAssetFactorLoading = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class AttributeJointFactor
+	extends org.drip.portfolioconstruction.core.Block
+{
+	private java.util.Map<java.lang.String, java.lang.Double> _assetFactorLoadingMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorAssetLoading = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private java.util.Map<java.lang.String, java.lang.Double> _factorAssetLoadingMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-	private java.util.Map<java.lang.String, java.lang.Double> _mapFactorFactorAttribute = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private java.util.Map<java.lang.String, java.lang.Double> _factorFactorAttributeMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
-	private java.util.Map<java.lang.String, java.lang.Double> _mapAssetSpecificAttribute = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private java.util.Map<java.lang.String, java.lang.Double> _mapAssetSpecificAttribute =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
 	 * Generate a Standard Instance of AttributeJointFactor
 	 * 
-	 * @param strName AttributeJointFactor Instance Name
-	 * @param strID AttributeJointFactor Instance ID
-	 * @param strDescription AttributeJointFactor Description
-	 * @param astrAssetID Array of Asset IDs
-	 * @param astrFactorID Array of FactorIDs
-	 * @param aadblAssetFactorLoading Matrix of Asset-Factor Loadings
-	 * @param aadblCrossFactorAttribute Matrix of Factor-Factor Attributes
-	 * @param adblSpecificAttribute Array of Specific Attributes
+	 * @param name AttributeJointFactor Instance Name
+	 * @param id AttributeJointFactor Instance ID
+	 * @param description AttributeJointFactor Description
+	 * @param assetIDArray Array of Asset IDs
+	 * @param factorIDArray Array of FactorIDs
+	 * @param assetFactorLoadingGrid Matrix of Asset-Factor Loadings
+	 * @param crossFactorAttributeGrid Matrix of Factor-Factor Attributes
+	 * @param assetSpecificAttributeArray Array of Specific Attributes
 	 * 
 	 * @return The Standard Instance of AttributeJointFactor
 	 */
 
 	public static final AttributeJointFactor Standard (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String[] astrAssetID,
-		final java.lang.String[] astrFactorID,
-		final double[][] aadblAssetFactorLoading,
-		final double[][] aadblCrossFactorAttribute,
-		final double[] adblSpecificAttribute)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String[] assetIDArray,
+		final java.lang.String[] factorIDArray,
+		final double[][] assetFactorLoadingGrid,
+		final double[][] crossFactorAttributeGrid,
+		final double[] assetSpecificAttributeArray)
 	{
-		if (null == astrAssetID || null == astrFactorID || null == aadblAssetFactorLoading || null ==
-			aadblCrossFactorAttribute || null == adblSpecificAttribute)
+		if (null == assetIDArray ||
+			null == factorIDArray ||
+			null == assetFactorLoadingGrid ||
+			null == crossFactorAttributeGrid ||
+			null == assetSpecificAttributeArray)
+		{
 			return null;
+		}
 
-		AttributeJointFactor ajf = null;
-		int iNumAsset = astrAssetID.length;
-		int iNumFactor = astrFactorID.length;
+		int assetCount = assetIDArray.length;
+		int factorCount = factorIDArray.length;
+		AttributeJointFactor attributeJointFactor = null;
 
-		if (0 == iNumAsset || 0 == iNumFactor || iNumAsset != aadblAssetFactorLoading.length || iNumFactor !=
-			aadblCrossFactorAttribute.length || iNumAsset != adblSpecificAttribute.length)
+		if (0 == assetCount ||
+			0 == factorCount ||
+			assetCount != assetFactorLoadingGrid.length ||
+			factorCount != crossFactorAttributeGrid.length ||
+			assetCount != assetSpecificAttributeArray.length)
+		{
 			return null;
+		}
 
-		try {
-			ajf = new AttributeJointFactor (strName, strID, strDescription);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			attributeJointFactor = new AttributeJointFactor (
+				name,
+				id,
+				description
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int iAsset = 0; iAsset < iNumAsset; ++iAsset) {
-			for (int iFactor = 0; iFactor < iNumFactor; ++iFactor) {
-				if (!ajf.addAssetFactorLoading (astrAssetID[iAsset], astrFactorID[iAsset],
-					aadblAssetFactorLoading[iAsset][iFactor]))
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			for (int factorIndex = 0; factorIndex < factorCount; ++factorIndex)
+			{
+				if (!attributeJointFactor.addAssetFactorLoading (
+					assetIDArray[assetIndex],
+					factorIDArray[factorIndex],
+					assetFactorLoadingGrid[assetIndex][factorIndex]
+				))
+				{
 					return null;
+				}
 			}
 
-			if (!ajf.addSpecificAttribute (astrAssetID[iAsset], adblSpecificAttribute[iAsset])) return null;
-		}
-
-		for (int iFactor1 = 0; iFactor1 < iNumFactor; ++iFactor1) {
-			for (int iFactor2 = 0; iFactor2 < iNumFactor; ++iFactor2) {
-				if (!ajf.addFactorAttribute (astrFactorID[iFactor1], astrFactorID[iFactor2],
-					aadblCrossFactorAttribute[iFactor1][iFactor2]))
-					return null;
+			if (!attributeJointFactor.addSpecificAttribute (
+				assetIDArray[assetIndex],
+				assetSpecificAttributeArray[assetIndex]
+			))
+			{
+				return null;
 			}
 		}
 
-		return ajf;
+		for (int factorIndex1 = 0; factorIndex1 < factorCount; ++factorIndex1)
+		{
+			for (int factorIndex2 = 0; factorIndex2 < factorCount; ++factorIndex2)
+			{
+				if (!attributeJointFactor.addFactorAttribute (
+					factorIDArray[factorIndex1],
+					factorIDArray[factorIndex2],
+					crossFactorAttributeGrid[factorIndex1][factorIndex2]
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return attributeJointFactor;
 	}
 
 	/**
 	 * AttributeJointFactor Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AttributeJointFactor (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (name, id, description);
 	}
 
 	/**
@@ -187,7 +226,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 
 	public java.util.Map<java.lang.String, java.lang.Double> assetFactorLoading()
 	{
-		return _mapAssetFactorLoading;
+		return _assetFactorLoadingMap;
 	}
 
 	/**
@@ -198,7 +237,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 
 	public java.util.Map<java.lang.String, java.lang.Double> factorAssetLoading()
 	{
-		return _mapFactorAssetLoading;
+		return _factorAssetLoadingMap;
 	}
 
 	/**
@@ -209,7 +248,7 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 
 	public java.util.Map<java.lang.String, java.lang.Double> factorJointAttribute()
 	{
-		return _mapFactorFactorAttribute;
+		return _factorFactorAttributeMap;
 	}
 
 	/**
@@ -226,25 +265,34 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	/**
 	 * Add the Asset's Factor Loading Coefficient
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param strFactorID The Factor ID
-	 * @param dblFactorLoading The Factor Loading Coefficient
+	 * @param assetID The Asset ID
+	 * @param factorID The Factor ID
+	 * @param factorLoading The Factor Loading Coefficient
 	 * 
 	 * @return TRUE - The Asset's Factor Loading Coefficient successfully added
 	 */
 
 	public boolean addAssetFactorLoading (
-		final java.lang.String strAssetID,
-		final java.lang.String strFactorID,
-		final double dblFactorLoading)
+		final java.lang.String assetID,
+		final java.lang.String factorID,
+		final double factorLoading)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || null == strFactorID || strFactorID.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblFactorLoading))
+		if (null == assetID || assetID.isEmpty() ||
+			null == factorID || factorID.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (factorLoading))
+		{
 			return false;
+		}
 
-		_mapAssetFactorLoading.put (strAssetID + "::" + strFactorID, dblFactorLoading);
+		_assetFactorLoadingMap.put (
+			assetID + "::" + factorID,
+			factorLoading
+		);
 
-		_mapFactorAssetLoading.put (strFactorID + "::" + strAssetID, dblFactorLoading);
+		_factorAssetLoadingMap.put (
+			factorID + "::" + assetID,
+			factorLoading
+		);
 
 		return true;
 	}
@@ -252,25 +300,34 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	/**
 	 * Add the Cross Factor Attribute
 	 * 
-	 * @param strFactorID1 The Factor #1 ID
-	 * @param strFactorID2 The Factor #2 ID
-	 * @param dblCrossFactorAttribute The Cross Factor Attribute
+	 * @param factorID1 The Factor #1 ID
+	 * @param factorID2 The Factor #2 ID
+	 * @param crossFactorAttribute The Cross Factor Attribute
 	 * 
 	 * @return TRUE - The Cross Factor Attribute successfully added
 	 */
 
 	public boolean addFactorAttribute (
-		final java.lang.String strFactorID1,
-		final java.lang.String strFactorID2,
-		final double dblCrossFactorAttribute)
+		final java.lang.String factorID1,
+		final java.lang.String factorID2,
+		final double crossFactorAttribute)
 	{
-		if (null == strFactorID1 || strFactorID1.isEmpty() || null == strFactorID2 || strFactorID2.isEmpty()
-			|| !org.drip.numerical.common.NumberUtil.IsValid (dblCrossFactorAttribute))
+		if (null == factorID1 || factorID1.isEmpty() ||
+			null == factorID2 || factorID2.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (crossFactorAttribute))
+		{
 			return false;
+		}
 
-		_mapFactorFactorAttribute.put (strFactorID1 + "::" + strFactorID2, dblCrossFactorAttribute);
+		_factorFactorAttributeMap.put (
+			factorID1 + "::" + factorID2,
+			crossFactorAttribute
+		);
 
-		_mapFactorFactorAttribute.put (strFactorID2 + "::" + strFactorID1, dblCrossFactorAttribute);
+		_factorFactorAttributeMap.put (
+			factorID2 + "::" + factorID1,
+			crossFactorAttribute
+		);
 
 		return true;
 	}
@@ -278,21 +335,26 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	/**
 	 * Add the Asset's Specific Attribute
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblSpecificAttribute The Asset's Specific Attribute
+	 * @param assetID The Asset ID
+	 * @param specificAttribute The Asset's Specific Attribute
 	 * 
 	 * @return TRUE - The Asset's Specific Risk successfully added
 	 */
 
 	public boolean addSpecificAttribute (
-		final java.lang.String strAssetID,
-		final double dblSpecificAttribute)
+		final java.lang.String assetID,
+		final double specificAttribute)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblSpecificAttribute))
+		if (null == assetID || assetID.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (specificAttribute))
+		{
 			return false;
+		}
 
-		_mapAssetSpecificAttribute.put (strAssetID, dblSpecificAttribute);
+		_mapAssetSpecificAttribute.put (
+			assetID,
+			specificAttribute
+		);
 
 		return true;
 	}
@@ -300,90 +362,108 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	/**
 	 * Check if the Asset is represented
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset is represented
 	 */
 
 	public boolean containsAsset (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-		return null != strAssetID && !strAssetID.isEmpty() && _mapAssetFactorLoading.containsKey
-			(strAssetID) && _mapAssetSpecificAttribute.containsKey (strAssetID);
+		return null != assetID && !assetID.isEmpty() &&
+			_assetFactorLoadingMap.containsKey (assetID) &&
+			_mapAssetSpecificAttribute.containsKey (assetID);
 	}
 
 	/**
 	 * Check if the Factor is available
 	 * 
-	 * @param strFactorID The Factor ID
+	 * @param factorID The Factor ID
 	 * 
 	 * @return TRUE - The Factor is available
 	 */
 
 	public boolean containsFactor (
-		final java.lang.String strFactorID)
+		final java.lang.String factorID)
 	{
-		return null != strFactorID && !strFactorID.isEmpty() && _mapFactorAssetLoading.containsKey
-			(strFactorID) && _mapFactorFactorAttribute.containsKey (strFactorID);
+		return null != factorID && !factorID.isEmpty() &&
+			_factorAssetLoadingMap.containsKey (factorID) &&
+			_factorFactorAttributeMap.containsKey (factorID);
 	}
 
 	/**
 	 * Retrieve the Factor Loading for the specified Asset
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Factor Loading for the specified Asset
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> assetFactorLoading (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-		if (!containsAsset (strAssetID)) return null;
-
-		java.util.Map<java.lang.String, java.lang.Double> mapAssetFactorLoading = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> meAssetFactorLoading :
-			_mapAssetFactorLoading.entrySet())
+		if (!containsAsset (assetID))
 		{
-			if (meAssetFactorLoading.getKey().startsWith (strAssetID))
-				mapAssetFactorLoading.put (strAssetID, meAssetFactorLoading.getValue());
+			return null;
 		}
 
-		return mapAssetFactorLoading;
+		java.util.Map<java.lang.String, java.lang.Double> assetFactorLoadingMap =
+			new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> assetFactorLoadingEntry :
+			_assetFactorLoadingMap.entrySet())
+		{
+			if (assetFactorLoadingEntry.getKey().startsWith (assetID))
+			{
+				assetFactorLoadingMap.put (
+					assetID,
+					assetFactorLoadingEntry.getValue()
+				);
+			}
+		}
+
+		return assetFactorLoadingMap;
 	}
 
 	/**
 	 * Retrieve the Loadings for the specified Factor
 	 * 
-	 * @param strFactorID The Factor ID
+	 * @param factorID The Factor ID
 	 * 
 	 * @return The Loadings for the specified Factor
 	 */
 
 	public java.util.Map<java.lang.String, java.lang.Double> factorAssetLoading (
-		final java.lang.String strFactorID)
+		final java.lang.String factorID)
 	{
-		if (!containsFactor (strFactorID)) return null;
-
-		java.util.Map<java.lang.String, java.lang.Double> mapFactorAssetLoading = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> meFactorAssetLoading :
-			_mapFactorAssetLoading.entrySet())
+		if (!containsFactor (factorID))
 		{
-			if (meFactorAssetLoading.getKey().startsWith (strFactorID))
-				mapFactorAssetLoading.put (strFactorID, meFactorAssetLoading.getValue());
+			return null;
 		}
 
-		return mapFactorAssetLoading;
+		java.util.Map<java.lang.String, java.lang.Double> factorAssetLoadingMap = new
+			org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> factorAssetLoadingEntry :
+			_factorAssetLoadingMap.entrySet())
+		{
+			if (factorAssetLoadingEntry.getKey().startsWith (factorID))
+			{
+				factorAssetLoadingMap.put (
+					factorID,
+					factorAssetLoadingEntry.getValue()
+				);
+			}
+		}
+
+		return factorAssetLoadingMap;
 	}
 
 	/**
 	 * Retrieve the Cross Factor Attribute Entry
 	 * 
-	 * @param strFactorID1 The Factor ID #1
-	 * @param strFactorID2 The Factor ID #2
+	 * @param factorID1 The Factor ID #1
+	 * @param factorID2 The Factor ID #2
 	 * 
 	 * @return The Cross Factor Attribute Entry
 	 * 
@@ -391,20 +471,23 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 */
 
 	public double crossFactorAttribute (
-		final java.lang.String strFactorID1,
-		final java.lang.String strFactorID2)
+		final java.lang.String factorID1,
+		final java.lang.String factorID2)
 		throws java.lang.Exception
 	{
-		if (!containsFactor (strFactorID1) || !containsFactor (strFactorID2))
+		if (!containsFactor (factorID1) ||
+			!containsFactor (factorID2))
+		{
 			throw new java.lang.Exception ("AttributeJointFactor::crossFactorAttribute => Invalid Inputs");
+		}
 
-		return _mapFactorFactorAttribute.get (strFactorID1 + "::" + strFactorID2);
+		return _factorFactorAttributeMap.get (factorID1 + "::" + factorID2);
 	}
 
 	/**
 	 * Retrieve the Asset Specific Attribute
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset Specific Attribute
 	 * 
@@ -412,20 +495,22 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 */
 
 	public double assetSpecificAttribute (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-		if (!containsFactor (strAssetID))
+		if (!containsFactor (assetID))
+		{
 			throw new java.lang.Exception ("AttributeJointFactor::assetSpecificAttribute => Invalid Inputs");
+		}
 
-		return _mapAssetSpecificAttribute.get (strAssetID);
+		return _mapAssetSpecificAttribute.get (assetID);
 	}
 
 	/**
 	 * Compute the Cross Asset Attribute
 	 * 
-	 * @param strAssetID1 Asset ID #1
-	 * @param strAssetID2 Asset ID #2
+	 * @param assetID1 Asset ID #1
+	 * @param assetID2 Asset ID #2
 	 * 
 	 * @return The Cross Asset Attribute
 	 * 
@@ -433,37 +518,49 @@ public class AttributeJointFactor extends org.drip.portfolioconstruction.core.Bl
 	 */
 
 	public double crossAssetAttribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
+		final java.lang.String assetID1,
+		final java.lang.String assetID2)
 		throws java.lang.Exception
 	{
-		java.util.Map<java.lang.String, java.lang.Double> mapAsset1FactorLoading = assetFactorLoading
-			(strAssetID1);
+		java.util.Map<java.lang.String, java.lang.Double> asset1FactorLoadingMap = assetFactorLoading (
+			assetID1
+		);
 
-		java.util.Map<java.lang.String, java.lang.Double> mapAsset2FactorLoading = assetFactorLoading
-			(strAssetID2);
+		java.util.Map<java.lang.String, java.lang.Double> asset2FactorLoadingMap = assetFactorLoading (
+			assetID2
+		);
 
-		if (null == mapAsset1FactorLoading || null == mapAsset2FactorLoading)
+		if (null == asset1FactorLoadingMap || null == asset2FactorLoadingMap)
+		{
 			throw new java.lang.Exception
 				("AttributeJointFactor::crossAssetAttribute => Invalid Factor Loadings");
-
-		double dblCrossAssetAttribute = 0.;
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> meAsset1FactorLoading :
-			mapAsset1FactorLoading.entrySet())
-		{
-			java.lang.String strFactorID = meAsset1FactorLoading.getKey();
-
-			if (!mapAsset2FactorLoading.containsKey (strFactorID) || !_mapFactorFactorAttribute.containsKey
-				(strFactorID))
-				throw new java.lang.Exception
-					("AttributeJointFactor::crossAssetAttribute => Loading not available for " + strAssetID2
-						+ "for factor " + strFactorID);
-
-			dblCrossAssetAttribute += mapAsset1FactorLoading.get (strFactorID) * mapAsset2FactorLoading.get
-				(strFactorID) * crossFactorAttribute (strFactorID, strFactorID);
 		}
 
-		return dblCrossAssetAttribute;
+		double crossAssetAttribute = 0.;
+
+		for (java.util.Map.Entry<java.lang.String, java.lang.Double> asset1FactorLoadingEntry :
+			asset1FactorLoadingMap.entrySet())
+		{
+			java.lang.String factorID = asset1FactorLoadingEntry.getKey();
+
+			if (!asset2FactorLoadingMap.containsKey (factorID) ||
+				!_factorFactorAttributeMap.containsKey (factorID))
+			{
+				throw new java.lang.Exception
+					("AttributeJointFactor::crossAssetAttribute => Loading not available for " + assetID2 +
+						" for factor " + factorID);
+			}
+
+			crossAssetAttribute += asset1FactorLoadingMap.get (
+				factorID
+			) * asset2FactorLoadingMap.get (
+				factorID
+			) * crossFactorAttribute (
+				factorID,
+				factorID
+			);
+		}
+
+		return crossAssetAttribute;
 	}
 }

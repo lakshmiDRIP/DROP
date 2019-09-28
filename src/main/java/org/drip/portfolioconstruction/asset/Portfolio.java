@@ -80,37 +80,51 @@ package org.drip.portfolioconstruction.asset;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Portfolio {
-	private org.drip.portfolioconstruction.asset.AssetComponent[] _aAC = null;
+public class Portfolio
+{
+	private org.drip.portfolioconstruction.asset.AssetComponent[] _assetComponentArray = null;
 
 	/**
 	 * Construct a Portfolio Instance from the Array of Asset ID's and their Amounts
 	 * 
-	 * @param astrAssetID Array of Asset IDs
-	 * @param adblAmount Array of Amounts
+	 * @param assetIDArray Array of Asset IDs
+	 * @param amountArray Array of Amounts
 	 * 
 	 * @return The Portfolio Instance
 	 */
 
 	public static final Portfolio Standard (
-		final java.lang.String[] astrAssetID,
-		final double[] adblAmount)
+		final java.lang.String[] assetIDArray,
+		final double[] amountArray)
 	{
-		if (null == astrAssetID || null == adblAmount) return null;
+		if (null == assetIDArray || null == amountArray)
+		{
+			return null;
+		}
 
-		int iNumAsset = astrAssetID.length;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = 0 == iNumAsset ? null : new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
+		int assetCount = assetIDArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = 0 == assetCount ?
+			null : new org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
 
-		if (0 == iNumAsset || iNumAsset != adblAmount.length) return null;
+		if (0 == assetCount || assetCount != amountArray.length)
+		{
+			return null;
+		}
 
-		try {
-			for (int i = 0; i < iNumAsset; ++i)
-				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],
-					adblAmount[i]);
+		try
+		{
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (
+					assetIDArray[assetIndex],
+					amountArray[assetIndex]
+				);
+			}
 
-			return new Portfolio (aAC);
-		} catch (java.lang.Exception e) {
+			return new Portfolio (assetComponentArray);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -120,23 +134,33 @@ public class Portfolio {
 	/**
 	 * Portfolio Constructor
 	 * 
-	 * @param aAC Array of the Asset Components
+	 * @param assetComponentArray Array of the Asset Components
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Portfolio (
-		final org.drip.portfolioconstruction.asset.AssetComponent[] aAC)
+		final org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray)
 		throws java.lang.Exception
 	{
-		if (null == (_aAC = aAC)) throw new java.lang.Exception ("Portfolio Constructor => Invalid Inputs");
+		if (null == (_assetComponentArray = assetComponentArray))
+		{
+			throw new java.lang.Exception ("Portfolio Constructor => Invalid Inputs");
+		}
 
-		int iNumAsset = _aAC.length;
+		int assetCount = _assetComponentArray.length;
 
-		if (0 == iNumAsset) throw new java.lang.Exception ("Portfolio Constructor => Invalid Inputs");
+		if (0 == assetCount)
+		{
+			throw new java.lang.Exception ("Portfolio Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == _aAC[i]) throw new java.lang.Exception ("Portfolio Constructor => Invalid Inputs");
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _assetComponentArray[assetIndex])
+			{
+				throw new java.lang.Exception ("Portfolio Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -146,9 +170,9 @@ public class Portfolio {
 	 * @return Array of the Asset Components
 	 */
 
-	public org.drip.portfolioconstruction.asset.AssetComponent[] assets()
+	public org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray()
 	{
-		return _aAC;
+		return _assetComponentArray;
 	}
 
 	/**
@@ -159,13 +183,15 @@ public class Portfolio {
 
 	public double notional()
 	{
-		double dblTotalWeight = 0.;
-		int iNumAsset = _aAC.length;
+		double notional = 0.;
+		int assetCount = _assetComponentArray.length;
 
-		for (int i = 0; i < iNumAsset; ++i)
-			dblTotalWeight += _aAC[i].amount();
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			notional += _assetComponentArray[assetIndex].amount();
+		}
 
-		return dblTotalWeight;
+		return notional;
 	}
 
 	/**
@@ -174,15 +200,17 @@ public class Portfolio {
 	 * @return The Array of Asset IDs
 	 */
 
-	public java.lang.String[] id()
+	public java.lang.String[] assetIDArray()
 	{
-		int iNumAsset = _aAC.length;
-		java.lang.String[] astrAssetID = new java.lang.String[iNumAsset];
+		int assetCount = _assetComponentArray.length;
+		java.lang.String[] assetIDArray = new java.lang.String[assetCount];
 
-		for (int i = 0; i < iNumAsset; ++i)
-			astrAssetID[i] = _aAC[i].id();
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			assetIDArray[assetIndex] = _assetComponentArray[assetIndex].id();
+		}
 
-		return astrAssetID;
+		return assetIDArray;
 	}
 
 	/**
@@ -193,9 +221,12 @@ public class Portfolio {
 
 	public org.drip.measure.continuous.MultivariateMeta meta()
 	{
-		try {
-			return new org.drip.measure.continuous.MultivariateMeta (id());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.measure.continuous.MultivariateMeta (assetIDArray());
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -208,71 +239,77 @@ public class Portfolio {
 	 * @return The Array of Asset Weights
 	 */
 
-	public double[] weights()
+	public double[] weightArray()
 	{
-		int iNumAsset = _aAC.length;
-		double[] adblWeight = new double[iNumAsset];
+		int assetCount = _assetComponentArray.length;
+		double[] weightArray = new double[assetCount];
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblWeight[i] = _aAC[i].amount();
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			weightArray[assetIndex] = _assetComponentArray[assetIndex].amount();
+		}
 
-		return adblWeight;
+		return weightArray;
 	}
 
 	/**
-	 * Retrieve the Asset Component with the Minimal Weight
+	 * Retrieve the Asset Component with the Lowest Weight
 	 * 
-	 * @return The Asset Component with the Minimal Weight
+	 * @return The Asset Component with the Lowest Weight
 	 */
 
-	public org.drip.portfolioconstruction.asset.AssetComponent minWeight()
+	public org.drip.portfolioconstruction.asset.AssetComponent lowestWeightAsset()
 	{
-		int iNumAsset = _aAC.length;
-		org.drip.portfolioconstruction.asset.AssetComponent acMinWeight = _aAC[0];
+		int assetCount = _assetComponentArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent lowestWeightAsset = _assetComponentArray[0];
 
-		double dblMinWeight = _aAC[0].amount();
+		double lowestWeight = _assetComponentArray[0].amount();
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			double dblAmount = _aAC[i].amount();
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			double amount = _assetComponentArray[assetIndex].amount();
 
-			if (dblAmount < dblMinWeight) {
-				acMinWeight = _aAC[i];
-				dblMinWeight = dblAmount;
+			if (amount < lowestWeight)
+			{
+				lowestWeightAsset = _assetComponentArray[assetIndex];
+				lowestWeight = amount;
 			}
 		}
 
-		return acMinWeight;
+		return lowestWeightAsset;
 	}
 
 	/**
-	 * Retrieve the Asset Component with the Maximal Weight
+	 * Retrieve the Asset Component with the Highest Weight
 	 * 
-	 * @return The Asset Component with the Maximal Weight
+	 * @return The Asset Component with the Highest Weight
 	 */
 
-	public org.drip.portfolioconstruction.asset.AssetComponent maxWeight()
+	public org.drip.portfolioconstruction.asset.AssetComponent highestWeightAsset()
 	{
-		int iNumAsset = _aAC.length;
-		org.drip.portfolioconstruction.asset.AssetComponent acMaxWeight = _aAC[0];
+		int assetCount = _assetComponentArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent highestWeightAsset = _assetComponentArray[0];
 
-		double dblMaxWeight = _aAC[0].amount();
+		double highestWeight = _assetComponentArray[0].amount();
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			double dblAmount = _aAC[i].amount();
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			double amount = _assetComponentArray[assetIndex].amount();
 
-			if (dblAmount > dblMaxWeight) {
-				acMaxWeight = _aAC[i];
-				dblMaxWeight = dblAmount;
+			if (amount > highestWeight)
+			{
+				highestWeightAsset = _assetComponentArray[assetIndex];
+				highestWeight = amount;
 			}
 		}
 
-		return acMaxWeight;
+		return highestWeightAsset;
 	}
 
 	/**
 	 * Retrieve the Expected Returns of the Portfolio
 	 * 
-	 * @param apsp The Asset Pool Statistical Properties Instance
+	 * @param assetUniverseStatisticalProperties The Asset Pool Statistical Properties Instance
 	 * 
 	 * @return Expected Returns of the Portfolio
 	 * 
@@ -280,27 +317,35 @@ public class Portfolio {
 	 */
 
 	public double expectedReturn (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties apsp)
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 		throws java.lang.Exception
 	{
-		int iNumAsset = _aAC.length;
-		double dblExpectedReturn = 0.;
+		int assetCount = _assetComponentArray.length;
+		double expectedReturn = 0.;
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			org.drip.portfolioconstruction.params.AssetStatisticalProperties asp = apsp.asp (_aAC[i].id());
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =
+				assetUniverseStatisticalProperties.assetStatisticalProperties
+					(_assetComponentArray[assetIndex].id());
 
-			if (null == asp) throw new java.lang.Exception ("Portfolio::expectedReturn => Invalid Inputs");
+			if (null == assetStatisticalProperties)
+			{
+				throw new java.lang.Exception ("Portfolio::expectedReturn => Invalid Inputs");
+			}
 
-			dblExpectedReturn += _aAC[i].amount() * asp.expectedReturn();
+			expectedReturn += _assetComponentArray[assetIndex].amount() *
+				assetStatisticalProperties.expectedReturn();
 		}
 
-		return dblExpectedReturn;
+		return expectedReturn;
 	}
 
 	/**
 	 * Retrieve the Variance of the Portfolio
 	 * 
-	 * @param apsp The Asset Pool Statistical Properties Instance
+	 * @param assetUniverseStatisticalProperties The Asset Pool Statistical Properties Instance
 	 * 
 	 * @return Variance of the Portfolio
 	 * 
@@ -308,35 +353,52 @@ public class Portfolio {
 	 */
 
 	public double variance (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties apsp)
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 		throws java.lang.Exception
 	{
-		double dblVariance = 0.;
-		int iNumAsset = _aAC.length;
+		double variance = 0.;
+		int assetCount = _assetComponentArray.length;
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			double dblAmountI = _aAC[i].amount();
+		for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+		{
+			double amountI = _assetComponentArray[assetIndexI].amount();
 
-			java.lang.String strIDI = _aAC[i].id();
+			java.lang.String idI = _assetComponentArray[assetIndexI].id();
 
-			org.drip.portfolioconstruction.params.AssetStatisticalProperties aspI = apsp.asp (strIDI);
+			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesI =
+				assetUniverseStatisticalProperties.assetStatisticalProperties (idI);
 
-			if (null == aspI) throw new java.lang.Exception ("Portfolio::variance => Invalid Inputs");
+			if (null == assetStatisticalPropertiesI)
+			{
+				throw new java.lang.Exception ("Portfolio::variance => Invalid Inputs");
+			}
 
-			double dblVarianceI = aspI.variance();
+			double varianceI = assetStatisticalPropertiesI.variance();
 
-			for (int j = 0; j < iNumAsset; ++j) {
-				java.lang.String strIDJ = _aAC[j].id();
+			for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+			{
+				java.lang.String idJ = _assetComponentArray[assetIndexJ].id();
 
-				org.drip.portfolioconstruction.params.AssetStatisticalProperties aspJ = apsp.asp (strIDJ);
+				org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesJ
+					= assetUniverseStatisticalProperties.assetStatisticalProperties (idJ);
 
-				if (null == aspJ) throw new java.lang.Exception ("Portfolio::variance => Invalid Inputs");
+				if (null == assetStatisticalPropertiesJ)
+				{
+					throw new java.lang.Exception ("Portfolio::variance => Invalid Inputs");
+				}
 
-				dblVariance += dblAmountI * _aAC[j].amount() * java.lang.Math.sqrt (dblVarianceI *
-					aspJ.variance()) * (i == j ? 1. : apsp.correlation (strIDI, strIDJ));
+				variance += amountI * _assetComponentArray[assetIndexJ].amount() * java.lang.Math.sqrt (
+					varianceI * assetStatisticalPropertiesJ.variance()
+				) * (
+					assetIndexI == assetIndexJ ? 1. : assetUniverseStatisticalProperties.correlation (
+						idI,
+						idJ
+					)
+				);
 			}
 		}
 
-		return dblVariance;
+		return variance;
 	}
 }

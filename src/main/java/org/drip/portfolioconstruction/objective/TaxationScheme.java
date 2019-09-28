@@ -80,13 +80,14 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface TaxationScheme {
+public interface TaxationScheme
+{
 
 	/**
 	 * Compute the Standard Net US Tax Gain
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Net Standard US Tax Gain
 	 * 
@@ -94,15 +95,15 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double standardNetTaxGainUS (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Custom Net Tax Gain
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Custom Net Tax Gain
 	 * 
@@ -110,15 +111,15 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double customNetTaxGain (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Custom Gross Tax Gain
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Custom Net Tax Gain
 	 * 
@@ -126,15 +127,15 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double customGrossTaxGain (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Custom Net Tax Loss
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Custom Net Tax Loss
 	 * 
@@ -142,15 +143,15 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double customNetTaxLoss (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Custom Gross Tax Loss
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Custom Net Tax Loss
 	 * 
@@ -158,15 +159,15 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double customGrossTaxLoss (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Long Term Tax Gain
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Long Term Tax Gain
 	 * 
@@ -174,15 +175,15 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double longTermTaxGain (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Tax Liability
 	 * 
-	 * @param adblInitialHoldings The Initial Holdings Array
-	 * @param adblFinalHoldings The Final Holdings Array
+	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param finalHoldingsArray The Final Holdings Array
 	 * 
 	 * @return The Tax Liability
 	 * 
@@ -190,7 +191,7 @@ public interface TaxationScheme {
 	 */
 
 	public abstract double taxLiability (
-		final double[] adblInitialHoldings,
-		final double[] adblFinalHoldings)
+		final double[] initialHoldingsArray,
+		final double[] finalHoldingsArray)
 		throws java.lang.Exception;
 }

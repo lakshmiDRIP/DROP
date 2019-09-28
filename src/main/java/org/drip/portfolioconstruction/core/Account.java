@@ -80,40 +80,45 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Account extends org.drip.portfolioconstruction.core.Block {
-	private org.drip.portfolioconstruction.composite.Holdings _ah = null;
-	private org.drip.portfolioconstruction.composite.AlphaGroup _ag = null;
-	private org.drip.portfolioconstruction.core.TaxAccountingScheme _tas = null;
-	private org.drip.portfolioconstruction.composite.Benchmark _bmTracking = null;
-	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _aug = null;
-	private org.drip.portfolioconstruction.composite.Benchmark _bmObjective = null;
-	private org.drip.portfolioconstruction.risk.AssetCovariance _acRiskModel = null;
-	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _tcg = null;
+public class Account extends org.drip.portfolioconstruction.core.Block
+{
+	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;
+	private org.drip.portfolioconstruction.composite.AlphaGroup _alphaGroup = null;
+	private org.drip.portfolioconstruction.composite.Benchmark _trackingBenchmark = null;
+	private org.drip.portfolioconstruction.composite.Benchmark _objectiveBenchmark = null;
+	private org.drip.portfolioconstruction.core.TaxAccountingScheme _taxAccountingScheme = null;
+	private org.drip.portfolioconstruction.risk.AssetCovariance _assetCovarianceRiskModel = null;
+	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _alphaUncertaintyGroup = null;
+	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _transactionChargeGroup = null;
 
 	/**
 	 * Account Constructor
 	 * 
-	 * @param strName The Account Name
-	 * @param strID The Account ID
-	 * @param strDescription The Account Description
-	 * @param ah The Account Holdings
-	 * @param tas The Tax Accounting Scheme
+	 * @param name The Account Name
+	 * @param id The Account ID
+	 * @param description The Account Description
+	 * @param holdings The Account Holdings
+	 * @param taxAccountingScheme The Tax Accounting Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Account (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.composite.Holdings ah,
-		final org.drip.portfolioconstruction.core.TaxAccountingScheme tas)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final org.drip.portfolioconstruction.composite.Holdings holdings,
+		final org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 
-		_ah = ah;
-		_tas = tas;
+		_holdings = holdings;
+		_taxAccountingScheme = taxAccountingScheme;
 	}
 
 	/**
@@ -124,7 +129,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Holdings holdings()
 	{
-		return _ah;
+		return _holdings;
 	}
 
 	/**
@@ -135,7 +140,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String currency()
 	{
-		return _ah.currency();
+		return _holdings.currency();
 	}
 
 	/**
@@ -146,7 +151,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Benchmark trackingBenchmark()
 	{
-		return _bmTracking;
+		return _trackingBenchmark;
 	}
 
 	/**
@@ -157,7 +162,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Benchmark objectiveBenchmark()
 	{
-		return _bmObjective;
+		return _objectiveBenchmark;
 	}
 
 	/**
@@ -168,7 +173,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.AlphaGroup alphaGroup()
 	{
-		return _ag;
+		return _alphaGroup;
 	}
 
 	/**
@@ -179,18 +184,18 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup alphaUncertaintyGroup()
 	{
-		return _aug;
+		return _alphaUncertaintyGroup;
 	}
 
 	/**
-	 * Retrieve the Risk Model
+	 * Retrieve the Asset Co-variance Risk Model
 	 * 
-	 * @return The Risk Model
+	 * @return The Asset Co-variance Risk Model
 	 */
 
-	public org.drip.portfolioconstruction.risk.AssetCovariance riskModel()
+	public org.drip.portfolioconstruction.risk.AssetCovariance assetCovariance()
 	{
-		return _acRiskModel;
+		return _assetCovarianceRiskModel;
 	}
 
 	/**
@@ -199,9 +204,9 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	 * @return The Transaction Cost Group Instance
 	 */
 
-	public org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionCostGroup()
+	public org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionChargeGroup()
 	{
-		return _tcg;
+		return _transactionChargeGroup;
 	}
 
 	/**
@@ -212,108 +217,126 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme()
 	{
-		return _tas;
+		return _taxAccountingScheme;
 	}
 
 	/**
 	 * Set the Tracking Benchmark Instance
 	 * 
-	 * @param bmTracking The Tracking Benchmark
+	 * @param trackingBenchmark The Tracking Benchmark
 	 * 
 	 * @return The Tracking Benchmark successfully set
 	 */
 
 	public boolean setTrackingBenchmark (
-		final org.drip.portfolioconstruction.composite.Benchmark bmTracking)
+		final org.drip.portfolioconstruction.composite.Benchmark trackingBenchmark)
 	{
-		if (null == bmTracking) return false;
+		if (null == trackingBenchmark)
+		{
+			return false;
+		}
 
-		_bmTracking = bmTracking;
+		_trackingBenchmark = trackingBenchmark;
 		return true;
 	}
 
 	/**
 	 * Set the Objective Benchmark Instance
 	 * 
-	 * @param bmObjective The Objective Benchmark
+	 * @param objectiveBenchmark The Objective Benchmark
 	 * 
 	 * @return The Objective Benchmark successfully set
 	 */
 
 	public boolean setObjectiveBenchmark (
-		final org.drip.portfolioconstruction.composite.Benchmark bmObjective)
+		final org.drip.portfolioconstruction.composite.Benchmark objectiveBenchmark)
 	{
-		if (null == bmObjective) return false;
+		if (null == objectiveBenchmark)
+		{
+			return false;
+		}
 
-		_bmObjective = bmObjective;
+		_objectiveBenchmark = objectiveBenchmark;
 		return true;
 	}
 
 	/**
 	 * Set the Alpha Group
 	 * 
-	 * @param ag The Alpha Group Instance
+	 * @param alphaGroup The Alpha Group Instance
 	 * 
 	 * @return The Alpha Group successfully set
 	 */
 
 	public boolean setAlphaGroup (
-		final org.drip.portfolioconstruction.composite.AlphaGroup ag)
+		final org.drip.portfolioconstruction.composite.AlphaGroup alphaGroup)
 	{
-		if (null == ag) return false;
+		if (null == alphaGroup)
+		{
+			return false;
+		}
 
-		_ag = ag;
+		_alphaGroup = alphaGroup;
 		return true;
 	}
 
 	/**
 	 * Set the Alpha Uncertainty Group
 	 * 
-	 * @param aug The Alpha Uncertainty Group Instance
+	 * @param alphaUncertaintyGroup The Alpha Uncertainty Group Instance
 	 * 
 	 * @return The Alpha Uncertainty Group successfully set
 	 */
 
 	public boolean setAlphaUncertaintyGroup (
-		final org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup aug)
+		final org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup alphaUncertaintyGroup)
 	{
-		if (null == aug) return false;
+		if (null == alphaUncertaintyGroup)
+		{
+			return false;
+		}
 
-		_aug = aug;
+		_alphaUncertaintyGroup = alphaUncertaintyGroup;
 		return true;
 	}
 
 	/**
-	 * Set the Risk Model
+	 * Set the Asset Co-variance Risk Model
 	 * 
-	 * @param acRiskModel The Risk Model
+	 * @param assetCovarianceRiskModel The Asset Co-variance Risk Model
 	 * 
-	 * @return The Risk Model
+	 * @return The Asset Co-variance Risk Model
 	 */
 
-	public boolean setRiskModel (
-		final org.drip.portfolioconstruction.risk.AssetCovariance acRiskModel)
+	public boolean setAssetCovariance (
+		final org.drip.portfolioconstruction.risk.AssetCovariance assetCovarianceRiskModel)
 	{
-		if (null == acRiskModel) return false;
+		if (null == assetCovarianceRiskModel)
+		{
+			return false;
+		}
 
-		_acRiskModel = acRiskModel;
+		_assetCovarianceRiskModel = assetCovarianceRiskModel;
 		return true;
 	}
 
 	/**
 	 * Set the Transaction Cost Group
 	 * 
-	 * @param tcg The Transaction Cost Group Instance
+	 * @param transactionChargeGroup The Transaction Cost Group Instance
 	 * 
 	 * @return The Transaction Cost Group successfully set
 	 */
 
 	public boolean setTransactionCostGroup (
-		final org.drip.portfolioconstruction.composite.TransactionChargeGroup tcg)
+		final org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionChargeGroup)
 	{
-		if (null == tcg) return false;
+		if (null == transactionChargeGroup)
+		{
+			return false;
+		}
 
-		_tcg = tcg;
+		_transactionChargeGroup = transactionChargeGroup;
 		return true;
 	}
 }

@@ -99,7 +99,7 @@ public class NetLiabilityDiscountDependence {
 		final double dblBasicConsumptionSpread)
 		throws Exception
 	{
-		NetLiabilityMetrics nlm = nls.metrics (
+		NetLiabilityMetrics nlm = nls.generateMetrics (
 			dblStartAge,
 			dblEndAge,
 			new DiscountRate (

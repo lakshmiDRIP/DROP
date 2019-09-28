@@ -82,53 +82,69 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 public class BoundedPortfolioConstructionParameters extends
-	org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters {
+	org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+{
 	private org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>
-		_mapBounds = new
+		_assetBoundsMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.asset.AssetBounds>();
 
 	/**
 	 * BoundedPortfolioConstructionParameters Constructor
 	 * 
-	 * @param astrAssetID Array of Assets ID
-	 * @param qcru The Quadratic Custom Risk Utility Settings
-	 * @param pecs The Portfolio Equality Constraint Settings
+	 * @param assetIDArray Array of Assets ID
+	 * @param customRiskUtilitySettings The Quadratic Custom Risk Utility Settings
+	 * @param equalityConstraintSettings The Portfolio Equality Constraint Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BoundedPortfolioConstructionParameters (
-		final java.lang.String[] astrAssetID,
-		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings qcru,
-		final org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings pecs)
+		final java.lang.String[] assetIDArray,
+		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings,
+		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings)
 		throws java.lang.Exception
 	{
-		super (astrAssetID, qcru, pecs);
+		super (
+			assetIDArray,
+			customRiskUtilitySettings,
+			equalityConstraintSettings
+		);
 	}
 
 	/**
 	 * Set the Bounds for the specified Asset
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblLowerBound The Asset Share Lower Bound
-	 * @param dblUpperBound The Asset Share Upper Bound
+	 * @param assetID The Asset ID
+	 * @param lowerBound The Asset Share Lower Bound
+	 * @param upperBound The Asset Share Upper Bound
 	 * 
 	 * @return TRUE - The Asset Bounds successfully set
 	 */
 
 	public boolean addBound (
-		final java.lang.String strAssetID,
-		final double dblLowerBound,
-		final double dblUpperBound)
+		final java.lang.String assetID,
+		final double lowerBound,
+		final double upperBound)
 	{
-		if (null == strAssetID || strAssetID.isEmpty()) return false;
+		if (null == assetID || assetID.isEmpty())
+		{
+			return false;
+		}
 
-		try {
-			_mapBounds.put (strAssetID, new org.drip.portfolioconstruction.asset.AssetBounds (dblLowerBound,
-				dblUpperBound));
+		try
+		{
+			_assetBoundsMap.put (
+				assetID,
+				new org.drip.portfolioconstruction.asset.AssetBounds (
+					lowerBound,
+					upperBound
+				)
+			);
 
 			return true;
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -138,7 +154,7 @@ public class BoundedPortfolioConstructionParameters extends
 	/**
 	 * Retrieve the Lower Bound for the Specified Asset ID
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Lower Bound for the Specified Asset ID
 	 * 
@@ -146,20 +162,22 @@ public class BoundedPortfolioConstructionParameters extends
 	 */
 
 	public double lowerBound (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-		if (!_mapBounds.containsKey (strAssetID))
+		if (!_assetBoundsMap.containsKey (assetID))
+		{
 			throw new java.lang.Exception
 				("BoundedPortfolioConstructionParameters::lowerBound => Invalid Inputs");
+		}
 
-		return _mapBounds.get (strAssetID).lower();
+		return _assetBoundsMap.get (assetID).lower();
 	}
 
 	/**
 	 * Retrieve the Upper Bound for the Specified Asset ID
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Upper Bound for the Specified Asset ID
 	 * 
@@ -167,69 +185,101 @@ public class BoundedPortfolioConstructionParameters extends
 	 */
 
 	public double upperBound (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-		if (!_mapBounds.containsKey (strAssetID))
+		if (!_assetBoundsMap.containsKey (assetID))
+		{
 			throw new java.lang.Exception
 				("BoundedPortfolioConstructionParameters::upperBound => Invalid Inputs");
+		}
 
-		return _mapBounds.get (strAssetID).upper();
+		return _assetBoundsMap.get (assetID).upper();
 	}
 
 	/**
 	 * Retrieve the Array of the Inequality Constraint Functions
 	 * 
-	 * @param iNumExtraneousVariate Number of Extraneous Variatea
+	 * @param extraneousVariateCount Number of Extraneous Variates
 	 * 
 	 * @return The Array of the Inequality Constraint Functions
 	 */
 
-	public org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraints (
-		final int iNumExtraneousVariate)
+	public org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraintsArray (
+		final int extraneousVariateCount)
 	{
-		java.lang.String[] astrAssetID = assets();
+		java.util.List<org.drip.function.rdtor1.AffineBoundMultivariate> boundingConstraintsList =
+			new java.util.ArrayList<org.drip.function.rdtor1.AffineBoundMultivariate>();
 
-		int iNumAsset = astrAssetID.length;
+		java.lang.String[] assetIDArray = assetIDArray();
 
-		java.util.List<org.drip.function.rdtor1.AffineBoundMultivariate> lsRdToR1 = new
-			java.util.ArrayList<org.drip.function.rdtor1.AffineBoundMultivariate>();
+		int assetCount = assetIDArray.length;
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (!_mapBounds.containsKey (astrAssetID[i])) continue;
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (!_assetBoundsMap.containsKey (assetIDArray[assetIndex]))
+			{
+				continue;
+			}
 
-			org.drip.portfolioconstruction.asset.AssetBounds ab = _mapBounds.get (astrAssetID[i]);
+			org.drip.portfolioconstruction.asset.AssetBounds assetBounds = _assetBoundsMap.get (
+				assetIDArray[assetIndex]
+			);
 
-			double dblLowerBound = ab.lower();
+			double lowerBound = assetBounds.lower();
 
-			double dblUpperBound = ab.upper();
+			double upperBound = assetBounds.upper();
 
-			try {
-				if (org.drip.numerical.common.NumberUtil.IsValid (dblLowerBound))
-					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (false, i, iNumAsset +
-						iNumExtraneousVariate, dblLowerBound));
+			try
+			{
+				if (org.drip.numerical.common.NumberUtil.IsValid (lowerBound))
+				{
+					boundingConstraintsList.add (
+						new org.drip.function.rdtor1.AffineBoundMultivariate (
+							false,
+							assetIndex,
+							assetCount + extraneousVariateCount,
+							lowerBound
+						)
+					);
+				}
 
-				if (org.drip.numerical.common.NumberUtil.IsValid (dblUpperBound))
-					lsRdToR1.add (new org.drip.function.rdtor1.AffineBoundMultivariate (true, i, iNumAsset +
-						iNumExtraneousVariate, dblUpperBound));
-			} catch (java.lang.Exception e) {
+				if (org.drip.numerical.common.NumberUtil.IsValid (upperBound))
+				{
+					boundingConstraintsList.add (
+						new org.drip.function.rdtor1.AffineBoundMultivariate (
+							true,
+							assetIndex,
+							assetCount + extraneousVariateCount,
+							upperBound
+						)
+					);
+				}
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iNumConstraint = lsRdToR1.size();
+		int constraintCount = boundingConstraintsList.size();
 
-		if (0 == iNumConstraint) return null;
+		if (0 == constraintCount)
+		{
+			return null;
+		}
 
-		org.drip.function.rdtor1.AffineBoundMultivariate[] aRdToR1Constraint = new
-			org.drip.function.rdtor1.AffineBoundMultivariate[iNumConstraint];
+		org.drip.function.rdtor1.AffineBoundMultivariate[] boundingConstraintsArray =
+			new org.drip.function.rdtor1.AffineBoundMultivariate[constraintCount];
 
-		for (int i = 0; i < iNumConstraint; ++i)
-			aRdToR1Constraint[i] = lsRdToR1.get (i);
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		{
+			boundingConstraintsArray[constraintIndex] = boundingConstraintsList.get (constraintIndex);
+		}
 
-		return aRdToR1Constraint;
+		return boundingConstraintsArray;
 	}
 
 	/**
@@ -240,21 +290,27 @@ public class BoundedPortfolioConstructionParameters extends
 
 	public double[] feasibleStart()
 	{
-		boolean bReturnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid
-			(constraintSettings().returnsConstraint());
+		boolean returnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid (
+			equalityConstraintSettings().returnsConstraint()
+		);
 
-		java.lang.String[] astrAssetID = assets();
+		java.lang.String[] assetIDArray = assetIDArray();
 
-		int iNumAsset = astrAssetID.length;
-		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];
+		int assetCount = assetIDArray.length;
+		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).feasibleStart();
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			startingVariateArray[assetIndex] = _assetBoundsMap.get (assetIDArray[assetIndex]).feasibleStart();
+		}
 
-		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;
+		if (returnsConstraintPresent)
+		{
+			startingVariateArray[assetCount + 1] = 0.;
+		}
 
-		adblStartingVariate[iNumAsset] = 0.;
-		return adblStartingVariate;
+		startingVariateArray[assetCount] = 0.;
+		return startingVariateArray;
 	}
 
 	/**
@@ -265,31 +321,41 @@ public class BoundedPortfolioConstructionParameters extends
 
 	public double[] weightConstrainedFeasibleStart()
 	{
-		boolean bReturnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid
-			(constraintSettings().returnsConstraint());
+		boolean returnsConstraintPresent = org.drip.numerical.common.NumberUtil.IsValid (
+			equalityConstraintSettings().returnsConstraint()
+		);
 
-		java.lang.String[] astrAssetID = assets();
+		java.lang.String[] assetIDArray = assetIDArray();
 
-		double dblCumulativeWeight = 0.;
-		int iNumAsset = astrAssetID.length;
-		double[] adblStartingVariate = new double[iNumAsset + (bReturnsConstraintPresent ? 2 : 1)];
+		double cumulativeWeight = 0.;
+		int assetCount = assetIDArray.length;
+		double[] startingVariateArray = new double[assetCount + (returnsConstraintPresent ? 2 : 1)];
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			adblStartingVariate[i] = _mapBounds.get (astrAssetID[i]).lower();
+		for (int i = 0; i < assetCount; ++i)
+		{
+			startingVariateArray[i] = _assetBoundsMap.get (assetIDArray[i]).lower();
 
-			dblCumulativeWeight += adblStartingVariate[i];
+			cumulativeWeight += startingVariateArray[i];
 		}
 
-		if (1. < dblCumulativeWeight) return null;
+		if (1. < cumulativeWeight)
+		{
+			return null;
+		}
 
-		double dblWeightGap = (1. - dblCumulativeWeight) / iNumAsset;
+		double weightGap = (1. - cumulativeWeight) / assetCount;
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblStartingVariate[i] += dblWeightGap;
+		for (int i = 0; i < assetCount; ++i)
+		{
+			startingVariateArray[i] += weightGap;
+		}
 
-		if (bReturnsConstraintPresent) adblStartingVariate[iNumAsset + 1] = 0.;
+		if (returnsConstraintPresent)
+		{
+			startingVariateArray[assetCount + 1] = 0.;
+		}
 
-		adblStartingVariate[iNumAsset] = 0.;
-		return adblStartingVariate;
+		startingVariateArray[assetCount] = 0.;
+		return startingVariateArray;
 	}
 }

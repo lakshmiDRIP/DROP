@@ -80,7 +80,8 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Scope {
+public class Scope
+{
 
 	/**
 	 * Applicable Scope Level - ASSET
@@ -100,21 +101,23 @@ public class Scope {
 
 	public static final int PORTFOLIO = 3;
 
-	private int _iLevel = 0;
+	private int _level = 0;
 
 	/**
 	 * Scope Constructor
 	 * 
-	 * @param iLevel The Level of the Scope
+	 * @param level The Level of the Scope
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Scope (
-		final int iLevel)
+		final int level)
 		throws java.lang.Exception
 	{
-		if (ASSET != (_iLevel = iLevel) && SELECTION != _iLevel && PORTFOLIO != _iLevel)
+		if (ASSET != (_level = level) &&
+			SELECTION != _level &&
+			PORTFOLIO != _level)
 			throw new java.lang.Exception ("Scope Constructor => Invalid Inputs");
 	}
 
@@ -126,6 +129,6 @@ public class Scope {
 
 	public int level()
 	{
-		return _iLevel;
+		return _level;
 	}
 }

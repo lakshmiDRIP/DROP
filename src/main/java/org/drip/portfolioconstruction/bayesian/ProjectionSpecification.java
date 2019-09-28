@@ -93,46 +93,52 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProjectionSpecification {
-	private double[][] _aadblAssetSpaceLoading = null;
-	private org.drip.measure.gaussian.R1MultivariateNormal _r1mnExcessReturnsDistribution = null;
+public class ProjectionSpecification
+{
+	private double[][] _assetSpaceLoadingMatrix = null;
+	private org.drip.measure.gaussian.R1MultivariateNormal _excessReturnsDistribution = null;
 
 	/**
 	 * ProjectionSpecification Constructor
 	 * 
-	 * @param r1mnExcessReturnsDistribution The R^1 Projection Space Excess Returns Normal Distribution
-	 * @param aadblAssetSpaceLoading Double Array of Asset To-From Projection Portfolio Pick Weights
+	 * @param excessReturnsDistribution The R<sup>1</sup> Projection Space Excess Returns Normal Distribution
+	 * @param assetSpaceLoadingMatrix Double Array of Asset To-From Projection Portfolio Pick Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProjectionSpecification (
-		final org.drip.measure.gaussian.R1MultivariateNormal r1mnExcessReturnsDistribution,
-		final double[][] aadblAssetSpaceLoading)
+		final org.drip.measure.gaussian.R1MultivariateNormal excessReturnsDistribution,
+		final double[][] assetSpaceLoadingMatrix)
 		throws java.lang.Exception
 	{
-		if (null == (_r1mnExcessReturnsDistribution = r1mnExcessReturnsDistribution) || null ==
-			(_aadblAssetSpaceLoading = aadblAssetSpaceLoading))
+		if (null == (_excessReturnsDistribution = excessReturnsDistribution) ||
+			null == (_assetSpaceLoadingMatrix = assetSpaceLoadingMatrix))
+		{
 			throw new java.lang.Exception ("ProjectionSpecification Constructor => Invalid Inputs");
+		}
 
-		int iNumProjection = _aadblAssetSpaceLoading.length;
+		int projectionCount = _assetSpaceLoadingMatrix.length;
 
-		for (int i = 0; i < iNumProjection; ++i) {
-			if (null == _aadblAssetSpaceLoading[i] || !org.drip.numerical.common.NumberUtil.IsValid
-				(_aadblAssetSpaceLoading[i]))
+		for (int projectionIndex = 0; projectionIndex < projectionCount; ++projectionIndex)
+		{
+			if (null == _assetSpaceLoadingMatrix[projectionIndex] ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_assetSpaceLoadingMatrix[projectionIndex]))
+			{
 				throw new java.lang.Exception ("ProjectionSpecification Constructor => Invalid Inputs");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the R^1 Projection Space Excess Returns Normal Distribution
+	 * Retrieve the R<sup>1</sup> Projection Space Excess Returns Normal Distribution
 	 * 
-	 * @return The R^1 Projection Space Excess Returns Normal Distribution
+	 * @return The R<sup>1</sup> Projection Space Excess Returns Normal Distribution
 	 */
 
 	public org.drip.measure.gaussian.R1MultivariateNormal excessReturnsDistribution()
 	{
-		return _r1mnExcessReturnsDistribution;
+		return _excessReturnsDistribution;
 	}
 
 	/**
@@ -141,8 +147,8 @@ public class ProjectionSpecification {
 	 * @return The Matrix of Asset To-From Projection Portfolio Pick Weights
 	 */
 
-	public double[][] assetSpaceLoading()
+	public double[][] assetSpaceLoadingMatrix()
 	{
-		return _aadblAssetSpaceLoading;
+		return _assetSpaceLoadingMatrix;
 	}
 }

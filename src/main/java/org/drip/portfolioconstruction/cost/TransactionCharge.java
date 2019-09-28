@@ -84,23 +84,23 @@ public abstract class TransactionCharge extends org.drip.portfolioconstruction.c
 {
 
 	protected TransactionCharge (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription
+			name,
+			id,
+			description
 		);
 	}
 
 	/**
 	 * Estimate the Transaction Charge for a Single Holdings Change
 	 * 
-	 * @param dblInitial Initial Holdings
-	 * @param dblFinal Final Holdings
+	 * @param initialSize Initial Size
+	 * @param finalSize Final Size
 	 * 
 	 * @return The Transaction Charge Estimate
 	 * 
@@ -108,7 +108,7 @@ public abstract class TransactionCharge extends org.drip.portfolioconstruction.c
 	 */
 
 	public abstract double estimate (
-		final double dblInitial,
-		final double dblFinal)
+		final double initialSize,
+		final double finalSize)
 		throws java.lang.Exception;
 }

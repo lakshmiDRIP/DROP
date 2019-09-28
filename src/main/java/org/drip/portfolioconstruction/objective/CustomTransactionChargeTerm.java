@@ -81,32 +81,32 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CustomTransactionChargeTerm extends
-	org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+public abstract class CustomTransactionChargeTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
 
 	/**
 	 * CustomTransactionChargeTerm Constructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTransactionCharge Array of Asset Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param transactionChargeArray Array of Asset Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CustomTransactionChargeTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_TRANSACTION_CHARGE",
 			"Optimizes for Transaction Charge for Trades",
 			"TRANSACTION_CHARGE",
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 	}
 }

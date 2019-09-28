@@ -96,7 +96,7 @@ public class UnboundedMarkovitzBulletExplicit {
 		final OptimizationOutput optPort)
 		throws Exception
 	{
-		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();
+		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assetComponentArray();
 
 		String strDump = "\t|" +
 			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "% |" +
@@ -143,8 +143,8 @@ public class UnboundedMarkovitzBulletExplicit {
 		PortfolioConstructionParameters pcp = new PortfolioConstructionParameters (
 			astrAsset,
 			CustomRiskUtilitySettings.RiskTolerant (dblRiskToleranceFactor),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 				Double.NaN
 			)
 		);
@@ -198,8 +198,8 @@ public class UnboundedMarkovitzBulletExplicit {
 			PortfolioConstructionParameters pcpReturnsConstrained = new PortfolioConstructionParameters (
 				astrAsset,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
-				new PortfolioEqualityConstraintSettings (
-					PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
 					dblGMVReturns + i * dblReturnsGrain
 				)
 			);
