@@ -98,8 +98,8 @@ public class MatchingPortfolioEvolution
 	{
 		EnvManager.InitEnv ("");
 
-		int maturity = 5;
-		double ytm = 0.0363;
+		int maturity = 9;
+		double ytm = 0.0290;
 		int pathCount = 100000;
 		int evolutionTenorInMonths = 3;
 		double forwardYieldLowerBound = -100.;
@@ -112,8 +112,8 @@ public class MatchingPortfolioEvolution
 		double initialPrice = Math.exp (-1. * maturity * ytm);
 
 		String maturityTenor = maturity + "Y";
-		double maturingAssetHoldings = 0. / initialPrice;
-		double nonMaturingAssetHoldings = 10.;
+		double maturingAssetHoldings = 10. / initialPrice;
+		double nonMaturingAssetHoldings = 0.;
 
 		SpotMarketParameters spotMarketParameters = new SpotMarketParameters (
 			initialPrice,

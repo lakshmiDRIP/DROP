@@ -95,31 +95,40 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LongOnlyMarkovitzBullet {
+public class LongOnlyMarkovitzBullet
+{
 
 	private static void DisplayPortfolioMetrics (
-		final OptimizationOutput optPort)
+		final OptimizationOutput optimizationOutput)
 		throws Exception
 	{
-		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assetComponentArray();
+		AssetComponent[] globalMinimumAssetComponentArray =
+			optimizationOutput.optimalPortfolio().assetComponentArray();
 
-		String strDump = "\t|" +
-			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "% |" +
-			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + " |";
+		String dump = "\t|" + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.
+			) + "% |" + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.
+			) + " |";
 
-		for (AssetComponent ac : aACGlobalMinimum)
-			strDump += " " + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + "% |";
+		for (AssetComponent assetComponent : globalMinimumAssetComponentArray)
+		{
+			dump += " " + FormatUtil.FormatDouble (
+				assetComponent.amount(), 3, 2, 100.
+			) + "% |";
+		}
 
-		System.out.println (strDump + "|");
+		System.out.println (dump + "|");
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] agrumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String[] astrAssetName = new String[] {
+		String[] assetNameArray = new String[]
+		{
 			"TOK",
 			"EWJ",
 			"HYG",
@@ -128,8 +137,8 @@ public class LongOnlyMarkovitzBullet {
 			"GSG",
 			"BWX"
 		};
-
-		double[] adblAssetLowerBound = new double[] {
+		double[] assetHoldingsLowerBoundArray = new double[]
+		{
 			0.00,
 			0.00,
 			0.00,
@@ -138,8 +147,8 @@ public class LongOnlyMarkovitzBullet {
 			0.00,
 			0.00
 		};
-
-		double[] adblAssetUpperBound = new double[] {
+		double[] assetHoldingsUpperBoundArray = new double[]
+		{
 			1.00,
 			1.00,
 			1.00,
@@ -148,8 +157,8 @@ public class LongOnlyMarkovitzBullet {
 			1.00,
 			1.00
 		};
-
-		double[] adblAssetExpectedReturns = new double[] {
+		double[] expectedAssetReturnsArray = new double[]
+		{
 			0.008430,
 			0.007230,
 			0.006450,
@@ -159,7 +168,8 @@ public class LongOnlyMarkovitzBullet {
 			0.001670
 		};
 
-		double[][] aadblAssetReturnsCovariance = new double[][] {
+		double[][] assetReturnsCovarianceMatrix = new double[][]
+		{
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
 			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
@@ -168,16 +178,19 @@ public class LongOnlyMarkovitzBullet {
 			{0.002312, 0.001647, 0.001110, 0.000042, 0.000825, 0.005211, 0.000749},
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
+		int frontierSampleUnits = 20;
 
 		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (
 			MultivariateMoments.Standard (
-				astrAssetName,
-				adblAssetExpectedReturns,
-				aadblAssetReturnsCovariance
+				assetNameArray,
+				expectedAssetReturnsArray,
+				assetReturnsCovarianceMatrix
 			)
 		);
 
-		double[][] aadblCovarianceMatrix = ausp.covariance (astrAssetName);
+		double[][] aadblCovarianceMatrix = ausp.covariance (
+			assetNameArray
+		);
 
 		System.out.println ("\n\n\t|------------------------------------------------------------------------------------------------||");
 
@@ -185,20 +198,33 @@ public class LongOnlyMarkovitzBullet {
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
 
-		String strHeader = "\t|     |";
+		String header = "\t|     |";
 
-		for (int i = 0; i < astrAssetName.length; ++i)
-			strHeader += "    " + astrAssetName[i] + "     |";
+		for (int assetIndex = 0;
+			assetIndex < assetNameArray.length;
+			++assetIndex)
+		{
+			header += "    " + assetNameArray[assetIndex] + "     |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
 
-		for (int i = 0; i < astrAssetName.length; ++i) {
-			String strDump = "\t| " + astrAssetName[i] + " ";
+		for (int assetIndexI = 0;
+			assetIndexI < assetNameArray.length;
+			++assetIndexI)
+		{
+			String strDump = "\t| " + assetNameArray[assetIndexI] + " ";
 
-			for (int j = 0; j < astrAssetName.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + " ";
+			for (int assetIndexJ = 0;
+				assetIndexJ < assetNameArray.length;
+				++assetIndexJ)
+			{
+				strDump += "|" + FormatUtil.FormatDouble (
+					aadblCovarianceMatrix[assetIndexI][assetIndexJ], 1, 8, 1.
+				) + " ";
+			}
 
 			System.out.println (strDump + "||");
 		}
@@ -211,16 +237,23 @@ public class LongOnlyMarkovitzBullet {
 
 		System.out.println ("\t|-------------------||");
 
-		for (int i = 0; i < astrAssetName.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < assetNameArray.length;
+			++assetIndex)
+		{
 			System.out.println (
-				"\t| " + astrAssetName[i] + " | " +
-				FormatUtil.FormatDouble (adblAssetLowerBound[i], 2, 0, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblAssetUpperBound[i], 2, 0, 100.) + "% ||"
+				"\t| " + assetNameArray[assetIndex] + " | " +
+				FormatUtil.FormatDouble (
+					assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.
+				) + "% | " + FormatUtil.FormatDouble (
+					assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|-------------------||\n\n");
 
-		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();
+		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();
 
 		System.out.println ("\t|--------------------------------------------||");
 
@@ -228,43 +261,54 @@ public class LongOnlyMarkovitzBullet {
 
 		System.out.println ("\t|--------------------------------------------||");
 
-		System.out.println ("\t|    Barrier Decay Velocity        : " + 1. / ipbc.decayVelocity());
+		System.out.println (
+			"\t|    Barrier Decay Velocity        : " + 1. / interiorPointBarrierControl.decayVelocity()
+		);
 
-		System.out.println ("\t|    Barrier Decay Steps           : " + ipbc.numDecaySteps());
+		System.out.println (
+			"\t|    Barrier Decay Steps           : " + interiorPointBarrierControl.numDecaySteps()
+		);
 
-		System.out.println ("\t|    Initial Barrier Strength      : " + ipbc.initialStrength());
+		System.out.println (
+			"\t|    Initial Barrier Strength      : " + interiorPointBarrierControl.initialStrength()
+		);
 
-		System.out.println ("\t|    Barrier Convergence Tolerance : " + ipbc.relativeTolerance());
+		System.out.println (
+			"\t|    Barrier Convergence Tolerance : " + interiorPointBarrierControl.relativeTolerance()
+		);
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (
-			ipbc,
-			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)
-		);
-
-		BoundedPortfolioConstructionParameters bpcp = new BoundedPortfolioConstructionParameters (
-			astrAssetName,
-			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new EqualityConstraintSettings (
-				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
-				Double.NaN
-			)
-		);
-
-		for (int i = 0; i < astrAssetName.length; ++i)
-			bpcp.addBound (
-				astrAssetName[i],
-				adblAssetLowerBound[i],
-				adblAssetUpperBound[i]
+		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
+			new BoundedPortfolioConstructionParameters (
+				assetNameArray,
+				CustomRiskUtilitySettings.VarianceMinimizer(),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					Double.NaN
+				)
 			);
 
-		int iFrontierSampleUnits = 20;
+		for (int assetIndex = 0;
+			assetIndex < assetNameArray.length;
+			++assetIndex)
+		{
+			boundedPortfolioConstructionParameters.addBound (
+				assetNameArray[assetIndex],
+				assetHoldingsLowerBoundArray[assetIndex],
+				assetHoldingsUpperBoundArray[assetIndex]
+			);
+		}
 
-		MarkovitzBullet mb = cmva.efficientFrontier (
-			bpcp,
+		MarkovitzBullet markovitzBullet = new ConstrainedMeanVarianceOptimizer (
+			interiorPointBarrierControl,
+			LineStepEvolutionControl.NocedalWrightStrongWolfe (
+				false
+			)
+		).efficientFrontier (
+			boundedPortfolioConstructionParameters,
 			ausp,
-			iFrontierSampleUnits
+			frontierSampleUnits
 		);
 
 		System.out.println ("\n\n\t|-----------------------------------------------------------------------------------------------||");
@@ -273,22 +317,30 @@ public class LongOnlyMarkovitzBullet {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		strHeader = "\t| RETURNS | RISK % |";
+		header = "\t| RETURNS | RISK % |";
 
-		for (int i = 0; i < astrAssetName.length; ++i)
-			strHeader += "   " + astrAssetName[i] + "    |";
+		for (int assetIndex = 0;
+			assetIndex < assetNameArray.length;
+			++assetIndex)
+		{
+			header += "   " + assetNameArray[assetIndex] + "    |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		DisplayPortfolioMetrics (mb.globalMinimumVariance());
+		DisplayPortfolioMetrics (
+			markovitzBullet.globalMinimumVariance()
+		);
 
-		DisplayPortfolioMetrics (mb.longOnlyMaximumReturns());
+		DisplayPortfolioMetrics (
+			markovitzBullet.longOnlyMaximumReturns()
+		);
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n\n");
 
-		TreeMap<Double, OptimizationOutput> mapFrontierPortfolio = mb.optimalPortfolioMap();
+		TreeMap<Double, OptimizationOutput> frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
@@ -296,12 +348,16 @@ public class LongOnlyMarkovitzBullet {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, OptimizationOutput> me : mapFrontierPortfolio.entrySet())
-			DisplayPortfolioMetrics (me.getValue());
+		for (Map.Entry<Double, OptimizationOutput> me : frontierPortfolioMap.entrySet())
+		{
+			DisplayPortfolioMetrics (
+				me.getValue()
+			);
+		}
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n");
 

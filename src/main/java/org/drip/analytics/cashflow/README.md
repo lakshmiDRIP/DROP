@@ -7,6 +7,11 @@ DROP Analytics Cash-flow Package implements the Unit/Composite Cash Flow Periods
 
 ## Class Components
 
+ * [***Bullet***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/Bullet.java)
+ <i>Bullet</i> is designed to hold the Point Realizations of the Latent States relevant to Terminal Valuation
+ of a Bullet Cash Flow. Current it contains the Period Dates, Period Latent State Identifiers, and the
+ "Extensive" Fields.
+
  * [***Composable Unit Fixed Period***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/ComposableUnitFixedPeriod.java)
  <i>ComposableUnitFixedPeriod</i> represents the Fixed Cash Flow Periods' Composable Period Details.
  Currently it holds the Accrual Start Date, the Accrual End Date, the Fixed Coupon, the Basis Spread, the 

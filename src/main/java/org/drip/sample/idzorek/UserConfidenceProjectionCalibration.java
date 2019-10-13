@@ -105,52 +105,61 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UserConfidenceProjectionCalibration {
+public class UserConfidenceProjectionCalibration
+{
 
 	private static final void IdzorekImpliedProjectionConfidence (
-		final BlackLittermanCombinationEngine blce,
-		final int iViewIndex,
-		final double[] adblImpliedTilt,
-		final double dblProjectionUserConfidence)
+		final BlackLittermanCombinationEngine blackLittermanCombinationEngine,
+		final int viewIndex,
+		final double[] impliedTiltArray,
+		final double projectionUserConfidence)
 		throws Exception
 	{
 		System.out.println ("\t|-----------------------------||");
 
 		System.out.println (
-			"\t|            VIEW #" + iViewIndex + "          ||"
+			"\t|            VIEW #" + viewIndex + "          ||"
 		);
 
 		System.out.println ("\t|-----------------------------||");
 
 		System.out.println (
 			"\t|     CONFIDENCE =>" +
-			FormatUtil.FormatDouble (dblProjectionUserConfidence, 2, 2, 100.) + "%    ||"
+			FormatUtil.FormatDouble (projectionUserConfidence, 2, 2, 100.) + "%    ||"
 		);
 
 		System.out.println ("\t|-----------------------------||");
 
-		R1ToR1 r1ToR1TiltDeparture = blce.tiltDepartureR1ToR1 (
-			adblImpliedTilt,
-			iViewIndex,
+		R1ToR1 tiltDepartureFunction = blackLittermanCombinationEngine.tiltDepartureR1ToR1 (
+			impliedTiltArray,
+			viewIndex,
 			false
 		);
 
-		R1ToR1 r1ToR1TiltDerivative = blce.tiltDepartureR1ToR1 (
-			adblImpliedTilt,
-			iViewIndex,
+		R1ToR1 tiltDepartureFunctionDerivative = blackLittermanCombinationEngine.tiltDepartureR1ToR1 (
+			impliedTiltArray,
+			viewIndex,
 			true
 		);
 
-		for (int i = 1; i <= 15; ++i)
+		for (int tiltDepartureIndex = 1;
+			tiltDepartureIndex <= 15;
+			++tiltDepartureIndex)
+		{
 			System.out.println ("\t| " +
-				FormatUtil.FormatDouble (0.01 * i, 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (r1ToR1TiltDeparture.evaluate (0.01 * i), 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (r1ToR1TiltDerivative.evaluate (0.01 * i), 2, 2, 100.) + "% ||"
+				FormatUtil.FormatDouble (0.01 * tiltDepartureIndex, 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (
+					tiltDepartureFunction.evaluate (
+						0.01 * tiltDepartureIndex
+					), 2, 2, 100.
+				) + "% | " +
+				FormatUtil.FormatDouble (
+					tiltDepartureFunctionDerivative.evaluate (
+						0.01 * tiltDepartureIndex
+					), 2, 2, 100.
+				) + "% ||"
 			);
-
-		/* FixedPointFinderOutput fpfo = new FixedPointFinderBrent (0., r1ToR1TiltDerivative, false).findRoot();
-
-		System.out.println (fpfo.getRoot()); */
+		}
 
 		System.out.println ("\t|-----------------------------||\n");
 	}
@@ -161,11 +170,11 @@ public class UserConfidenceProjectionCalibration {
 	{
 		EnvManager.InitEnv ("");
 
-		double dblTau = 0.025;
-		double dblRiskAversion = 3.07;
-		double dblRiskFreeRate = 0.00;
-
-		String[] astrAssetID = new String[] {
+		double tau = 0.025;
+		double riskAversion = 3.07;
+		double riskFreeRate = 0.00;
+		String[] assetIDArray = new String[]
+		{
 			"US BONDS                       ",
 			"INTERNATIONAL BONDS            ",
 			"US LARGE GROWTH                ",
@@ -175,8 +184,8 @@ public class UserConfidenceProjectionCalibration {
 			"INTERNATIONAL DEVELOPED EQUITY ",
 			"INTERNATIONAL EMERGING EQUITY  "
 		};
-
-		double[] adblAssetEquilibriumWeight = new double[] {
+		double[] assetEquilibriumWeightArray = new double[]
+		{
 			0.1934,
 			0.2613,
 			0.1209,
@@ -186,8 +195,8 @@ public class UserConfidenceProjectionCalibration {
 			0.2418,
 			0.0349
 		};
-
-		double[][] aadblAssetExcessReturnsCovariance = new double[][] {
+		double[][] assetExcessReturnsCovarianceMatrix = new double[][]
+		{
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -197,74 +206,78 @@ public class UserConfidenceProjectionCalibration {
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-
-		double[][] aadblAssetSpaceViewProjection = new double[][] {
+		double[][] assetSpaceViewProjectionMatrix = new double[][]
+		{
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
-
-		double[] adblProjectionExpectedExcessReturns = new double[] {
+		double[] projectionExpectedExcessReturnsArray = new double[]
+		{
 			0.0525,
 			0.0025,
 			0.0200
 		};
-
-		double[] adblUserSpecifiedProjectionConfidence = new double[] {
+		double[] userSpecifiedProjectionConfidenceArray = new double[]
+		{
 			0.25,
 			0.50,
 			0.65
 		};
 
-		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (
-			aadblAssetExcessReturnsCovariance,
-			aadblAssetSpaceViewProjection,
-			dblTau
-		);
-
-		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MultivariateMeta (
-				new String[] {
-					"PROJECTION #1",
-					"PROJECTION #2",
-					"PROJECTION #3"
-				}
-			),
-			adblProjectionExpectedExcessReturns,
-			aadblProjectionExcessReturnsCovariance
-		);
-
-		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (
-			ForwardReverseOptimizationOutput.Reverse (
-				Portfolio.Standard (
-					astrAssetID,
-					adblAssetEquilibriumWeight
+		BlackLittermanCombinationEngine blackLittermanCombinationEngine =
+			new BlackLittermanCombinationEngine (
+				ForwardReverseOptimizationOutput.Reverse (
+					Portfolio.Standard (
+						assetIDArray,
+						assetEquilibriumWeightArray
+					),
+					assetExcessReturnsCovarianceMatrix,
+					riskAversion
 				),
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
-			),
-			new PriorControlSpecification (
-				true,
-				dblRiskFreeRate,
-				dblTau
-			),
-			new ProjectionSpecification (
-				viewDistribution,
-				aadblAssetSpaceViewProjection
-			)
-		);
+				new PriorControlSpecification (
+					true,
+					riskFreeRate,
+					tau
+				),
+				new ProjectionSpecification (
+					R1MultivariateNormal.Standard (
+						new MultivariateMeta (
+							new String[]
+							{
+								"PROJECTION #1",
+								"PROJECTION #2",
+								"PROJECTION #3"
+							}
+						),
+						projectionExpectedExcessReturnsArray,
+						ProjectionDistributionLoading.ProjectionCovariance (
+							assetExcessReturnsCovarianceMatrix,
+							assetSpaceViewProjectionMatrix,
+							tau
+						)
+					),
+					assetSpaceViewProjectionMatrix
+				)
+			);
 
-		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTitMatrix (adblUserSpecifiedProjectionConfidence);
+		double[][] projectionTiltArray = blackLittermanCombinationEngine.userConfidenceProjectionTitMatrix (
+			userSpecifiedProjectionConfidenceArray
+		);
 
 		System.out.println ("\n\n");
 
-		for (int i = 0; i < adblUserSpecifiedProjectionConfidence.length; ++i)
+		for (int userSpecifiedProjectionConfidenceArrayIndex = 0;
+			userSpecifiedProjectionConfidenceArrayIndex < userSpecifiedProjectionConfidenceArray.length;
+			++userSpecifiedProjectionConfidenceArrayIndex)
+		{
 			IdzorekImpliedProjectionConfidence (
-				blce,
-				i,
-				aadblProjectionTilt[i],
-				adblUserSpecifiedProjectionConfidence[i]
+				blackLittermanCombinationEngine,
+				userSpecifiedProjectionConfidenceArrayIndex,
+				projectionTiltArray[userSpecifiedProjectionConfidenceArrayIndex],
+				userSpecifiedProjectionConfidenceArray[userSpecifiedProjectionConfidenceArrayIndex]
 			);
+		}
 
 		EnvManager.TerminateEnv();
 	}

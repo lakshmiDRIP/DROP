@@ -90,66 +90,84 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnboundedMarkovitzBulletExplicit {
+public class UnboundedMarkovitzBulletExplicit
+{
 
 	private static double DisplayPortfolioMetrics (
-		final OptimizationOutput optPort)
+		final OptimizationOutput optimizationOutput)
 		throws Exception
 	{
-		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assetComponentArray();
+		AssetComponent[] globalMinimumAssetComponentArray =
+			optimizationOutput.optimalPortfolio().assetComponentArray();
 
-		String strDump = "\t|" +
-			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "% |" +
-			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + " |";
+		String dump = "\t|" + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.
+			) + "% |" + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.
+			) + " |";
 
-		for (AssetComponent ac : aACGlobalMinimum)
-			strDump += " " + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + "% |";
+		for (AssetComponent assetComponent : globalMinimumAssetComponentArray)
+		{
+			dump += " " + FormatUtil.FormatDouble (
+				assetComponent.amount(), 3, 2, 100.
+			) + "% |";
+		}
 
-		System.out.println (strDump + "|");
+		System.out.println (dump + "|");
 
-		return optPort.optimalMetrics().excessReturnsMean();
+		return optimizationOutput.optimalMetrics().excessReturnsMean();
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] agrumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		int iRiskReturnGranularity = 40;
-		double dblRiskToleranceFactor = 0.;
-		String strSeriesLocation = "C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
+		int riskReturnGranularity = 40;
+		double riskToleranceFactor = 0.;
+		String seriesLocation =
+			"T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
 
-		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);
+		CSVGrid csvGrid = CSVParser.NamedStringGrid (
+			seriesLocation
+		);
 
-		String[] astrVariateHeader = csvGrid.headers();
+		String[] variateHeaderArray = csvGrid.headers();
 
-		String[] astrAsset = new String[astrVariateHeader.length - 1];
-		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];
+		String[] assetIDArray = new String[variateHeaderArray.length - 1];
+		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];
 
-		for (int i = 0; i < astrAsset.length; ++i) {
-			astrAsset[i] = astrVariateHeader[i + 1];
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];
 
-			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);
+			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (assetIndex + 1);
 		}
 
-		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (
-			MultivariateMoments.Standard (
-				astrAsset,
-				aadblVariateSample
-			)
-		);
+		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIDArray,
+					variateSampleGrid
+				)
+			);
 
-		PortfolioConstructionParameters pcp = new PortfolioConstructionParameters (
-			astrAsset,
-			CustomRiskUtilitySettings.RiskTolerant (dblRiskToleranceFactor),
-			new EqualityConstraintSettings (
-				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
-				Double.NaN
-			)
-		);
+		PortfolioConstructionParameters portfolioConstructionParameters =
+			new PortfolioConstructionParameters (
+				assetIDArray,
+				CustomRiskUtilitySettings.RiskTolerant (
+					riskToleranceFactor
+				),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					Double.NaN
+				)
+			);
 
-		MeanVarianceOptimizer mvo = new QuadraticMeanVarianceOptimizer();
+		MeanVarianceOptimizer meanVarianceOptimizer = new QuadraticMeanVarianceOptimizer();
 
 		System.out.println ("\n\n\t|-----------------------------------------------------------------------------------------------||");
 
@@ -157,26 +175,30 @@ public class UnboundedMarkovitzBulletExplicit {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		String strHeader = "\t| RETURNS | RISK % |";
+		String header = "\t| RETURNS | RISK % |";
 
-		for (int i = 0; i < astrAsset.length; ++i)
-			strHeader += "   " + astrAsset[i] + "    |";
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			header += "   " + assetIDArray[assetIndex] + "    |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		double dblGMVReturns = DisplayPortfolioMetrics (
-			mvo.globalMinimumVarianceAllocate (
-				pcp,
-				ausp
+		double globalMinimumVarianceReturns = DisplayPortfolioMetrics (
+			meanVarianceOptimizer.globalMinimumVarianceAllocate (
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
 			)
 		);
 
-		double dblMaximumReturns = DisplayPortfolioMetrics (
-			mvo.longOnlyMaximumReturnsAllocate (
-				pcp,
-				ausp
+		double maximumReturns = DisplayPortfolioMetrics (
+			meanVarianceOptimizer.longOnlyMaximumReturnsAllocate (
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
 			)
 		);
 
@@ -188,26 +210,28 @@ public class UnboundedMarkovitzBulletExplicit {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		double dblReturnsGrain = (dblMaximumReturns - dblGMVReturns) / iRiskReturnGranularity;
+		double returnsGrain = (maximumReturns - globalMinimumVarianceReturns) / riskReturnGranularity;
 
-		for (int i = 0; i <= iRiskReturnGranularity; ++i) {
-			PortfolioConstructionParameters pcpReturnsConstrained = new PortfolioConstructionParameters (
-				astrAsset,
-				CustomRiskUtilitySettings.VarianceMinimizer(),
-				new EqualityConstraintSettings (
-					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
-					dblGMVReturns + i * dblReturnsGrain
-				)
-			);
-
+		for (int returnOffset = 0;
+			returnOffset <= riskReturnGranularity;
+			++returnOffset)
+		{
 			DisplayPortfolioMetrics (
-				mvo.allocate (
-					pcpReturnsConstrained,
-					ausp
+				meanVarianceOptimizer.allocate (
+					new PortfolioConstructionParameters (
+						assetIDArray,
+						CustomRiskUtilitySettings.VarianceMinimizer(),
+						new EqualityConstraintSettings (
+							EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
+								EqualityConstraintSettings.RETURNS_CONSTRAINT,
+							globalMinimumVarianceReturns + returnOffset * returnsGrain
+						)
+					),
+					assetUniverseStatisticalProperties
 				)
 			);
 		}

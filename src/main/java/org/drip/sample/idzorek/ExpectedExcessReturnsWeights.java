@@ -100,28 +100,29 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedExcessReturnsWeights {
+public class ExpectedExcessReturnsWeights
+{
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseOptimizationOutput from,
-		final double[] adblWeightReconciler,
-		final int iLeft,
-		final int iRight,
-		final String strHeader)
+		final ForwardReverseOptimizationOutput forwardReverseOptimizationOutput,
+		final double[] weightReconcilerArray,
+		final int preDecimalDigits,
+		final int postDecimalDigits,
+		final String header)
 	{
-		Portfolio fromPortfolio = from.optimalPortfolio();
+		Portfolio optimalPortfolio = forwardReverseOptimizationOutput.optimalPortfolio();
 
-		String[] astrAssetID = fromPortfolio.assetIDArray();
+		String[] assetIDArray = optimalPortfolio.assetIDArray();
 
-		double[] adblWeight = fromPortfolio.weightArray();
+		double[] weightArray = optimalPortfolio.weightArray();
 
-		AssetComponent acMaxWeight = fromPortfolio.highestWeightAsset();
+		AssetComponent highestWeightAsset = optimalPortfolio.highestWeightAsset();
 
-		AssetComponent acMinWeight = fromPortfolio.lowestWeightAsset();
+		AssetComponent lowestWeightAsset = optimalPortfolio.lowestWeightAsset();
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println (strHeader);
+		System.out.println (header);
 
 		System.out.println ("\t|------------------------------------------------------||");
 
@@ -129,31 +130,47 @@ public class ExpectedExcessReturnsWeights {
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		for (int i = 0; i < adblWeight.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < weightArray.length;
+			++assetIndex)
+		{
 			System.out.println (
-				"\t| [" + astrAssetID[i] + "] => " +
-				FormatUtil.FormatDouble (adblWeight[i], iLeft, iRight, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblWeightReconciler[i], iLeft, iRight, 100.) + "% ||"
+				"\t| [" + assetIDArray[assetIndex] + "] => " +
+				FormatUtil.FormatDouble (
+					weightArray[assetIndex], preDecimalDigits, postDecimalDigits, 100.
+				) + "% | " +
+				FormatUtil.FormatDouble (
+					weightReconcilerArray[assetIndex], preDecimalDigits, postDecimalDigits, 100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println ("\t| HIGH : " + acMaxWeight.id() + " => "+ FormatUtil.FormatDouble (acMaxWeight.amount(), iLeft, iRight, 100.) + "%     ||");
+		System.out.println (
+			"\t| HIGH : " + highestWeightAsset.id() + " => "+ FormatUtil.FormatDouble (
+				highestWeightAsset.amount(), preDecimalDigits, postDecimalDigits, 100.
+			) + "%     ||"
+		);
 
-		System.out.println ("\t| LOW  : " + acMinWeight.id() + " => "+ FormatUtil.FormatDouble (acMinWeight.amount(), iLeft, iRight, 100.) + "%     ||");
+		System.out.println (
+			"\t| LOW  : " + lowestWeightAsset.id() + " => "+ FormatUtil.FormatDouble (
+				lowestWeightAsset.amount(), preDecimalDigits, postDecimalDigits, 100.
+			) + "%     ||"
+		);
 
 		System.out.println ("\t|------------------------------------------------------||\n");
 	}
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		double dblRiskAversion = 3.07;
-
-		String[] astrAssetID = new String[] {
+		double riskAversion = 3.07;
+		String[] assetIDArray = new String[]
+		{
 			"US BONDS                       ",
 			"INTERNATIONAL BONDS            ",
 			"US LARGE GROWTH                ",
@@ -163,8 +180,8 @@ public class ExpectedExcessReturnsWeights {
 			"INTERNATIONAL DEVELOPED EQUITY ",
 			"INTERNATIONAL EMERGING EQUITY  "
 		};
-
-		double[] adblAssetEquilibriumWeight = new double[] {
+		double[] assetEquilibriumWeightArray = new double[]
+		{
 			0.1934,
 			0.2613,
 			0.1209,
@@ -174,8 +191,8 @@ public class ExpectedExcessReturnsWeights {
 			0.2418,
 			0.0349
 		};
-
-		double[][] aadblAssetExcessReturnsCovariance = new double[][] {
+		double[][] assetExcessReturnsCovarianceMatrix = new double[][]
+		{
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -185,8 +202,8 @@ public class ExpectedExcessReturnsWeights {
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-
-		double[] adblAssetSpaceHistoricalReturns = new double[] {
+		double[] assetSpaceHistoricalReturnsArray = new double[]
+		{
 			 0.0315,
 			 0.0175,
 			-0.0639,
@@ -196,8 +213,8 @@ public class ExpectedExcessReturnsWeights {
 			-0.0675,
 			-0.0526
 		};
-
-		double[] adblAssetSpaceCAPMReturns = new double[] {
+		double[] assetSpaceCAPMReturnsArray = new double[]
+		{
 			0.0008,
 			0.0067,
 			0.0641,
@@ -207,8 +224,8 @@ public class ExpectedExcessReturnsWeights {
 			0.0480,
 			0.0660
 		};
-
-		double[] adblAssetSpaceGSMIReturns = new double[] {
+		double[] assetSpaceGSMIReturnsArray = new double[]
+		{
 			 0.0002,
 			 0.0018,
 			 0.0557,
@@ -218,8 +235,8 @@ public class ExpectedExcessReturnsWeights {
 			 0.0392,
 			 0.0560
 		};
-
-		double[] adblHistoricalPortfolioWeightReconciler = new double[] {
+		double[] historicalPortfolioWeightReconcilerArray = new double[]
+		{
 			 11.4432,
 			 -1.0459,
 			  0.5459,
@@ -229,8 +246,8 @@ public class ExpectedExcessReturnsWeights {
 			 -1.0436,
 			  0.1459
 		};
-
-		double[] adblCAPMGSMIPortfolioWeightReconciler = new double[] {
+		double[] capmGSMIPortfolioWeightReconcilerArray = new double[]
+		{
 			  0.2133,
 			  0.0519,
 			  0.1080,
@@ -241,16 +258,14 @@ public class ExpectedExcessReturnsWeights {
 			  0.0214
 		};
 
-		ForwardReverseOptimizationOutput fromPrior = ForwardReverseOptimizationOutput.Reverse (
+		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseOptimizationOutput.Reverse (
 			Portfolio.Standard (
-				astrAssetID,
-				adblAssetEquilibriumWeight
+				assetIDArray,
+				assetEquilibriumWeightArray
 			),
-			aadblAssetExcessReturnsCovariance,
-			dblRiskAversion
-		);
-
-		double[] adblImpliedEquilibriumExcessReturns = fromPrior.expectedAssetExcessReturnsArray();
+			assetExcessReturnsCovarianceMatrix,
+			riskAversion
+		).expectedAssetExcessReturnsArray();
 
 		System.out.println ("\n\t|---------------------------------------------------------------------||");
 
@@ -262,25 +277,31 @@ public class ExpectedExcessReturnsWeights {
 
 		System.out.println ("\t|---------------------------------------------------------------------||");
 
-		for (int i = 0; i < adblImpliedEquilibriumExcessReturns.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < impliedEquilibriumExcessReturnsArray.length;
+			++assetIndex)
+		{
 			System.out.println (
-				"\t| [" + astrAssetID[i] + "] => " +
-				FormatUtil.FormatDouble (adblAssetSpaceHistoricalReturns[i], 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblAssetSpaceGSMIReturns[i], 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblAssetSpaceCAPMReturns[i], 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblRiskAversion * adblImpliedEquilibriumExcessReturns[i], 1, 2, 100.) + "% ||"
+				"\t| [" + assetIDArray[assetIndex] + "] => " +
+				FormatUtil.FormatDouble (assetSpaceHistoricalReturnsArray[assetIndex], 1, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (assetSpaceGSMIReturnsArray[assetIndex], 1, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (assetSpaceCAPMReturnsArray[assetIndex], 1, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (
+					riskAversion * impliedEquilibriumExcessReturnsArray[assetIndex], 1, 2, 100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|---------------------------------------------------------------------||\n");
 
 		ForwardOptimizationWeights (
 			ForwardReverseOptimizationOutput.Forward (
-				astrAssetID,
-				adblAssetSpaceHistoricalReturns,
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+				assetIDArray,
+				assetSpaceHistoricalReturnsArray,
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
-			adblHistoricalPortfolioWeightReconciler,
+			historicalPortfolioWeightReconcilerArray,
 			4,
 			0,
 			"\t|             HISTORICAL WEIGHTS RECONCILER            ||"
@@ -288,12 +309,12 @@ public class ExpectedExcessReturnsWeights {
 
 		ForwardOptimizationWeights (
 			ForwardReverseOptimizationOutput.Forward (
-				astrAssetID,
-				adblAssetSpaceGSMIReturns,
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+				assetIDArray,
+				assetSpaceGSMIReturnsArray,
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
-			adblCAPMGSMIPortfolioWeightReconciler,
+			capmGSMIPortfolioWeightReconcilerArray,
 			2,
 			1,
 			"\t|              CAPM GSMI WEIGHTS RECONCILER            ||"
@@ -301,12 +322,12 @@ public class ExpectedExcessReturnsWeights {
 
 		ForwardOptimizationWeights (
 			ForwardReverseOptimizationOutput.Forward (
-				astrAssetID,
-				adblAssetSpaceCAPMReturns,
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+				assetIDArray,
+				assetSpaceCAPMReturnsArray,
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
-			adblAssetEquilibriumWeight,
+			assetEquilibriumWeightArray,
 			2,
 			1,
 			"\t|             EQUILIBRIUM WEIGHTS RECONCILER           ||"

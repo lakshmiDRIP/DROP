@@ -104,19 +104,20 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProjectionImpliedConfidenceLevel {
+public class ProjectionImpliedConfidenceLevel
+{
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		double dblTau = 0.025;
-		double dblRiskAversion = 3.07;
-		double dblRiskFreeRate = 0.00;
-
-		double[] adblCustomConfidenceWeightReconciler = new double[] {
+		double tau = 0.025;
+		double riskAversion = 3.07;
+		double riskFreeRate = 0.00;
+		double[] customConfidenceWeightReconcilerArray = new double[]
+		{
 			0.2988,
 			0.1559,
 			0.0935,
@@ -126,8 +127,8 @@ public class ProjectionImpliedConfidenceLevel {
 			0.2781,
 			0.0349
 		};
-
-		double[] adblFullConfidenceWeightReconciler = new double[] {
+		double[] fullConfidenceWeightReconcilerArray = new double[]
+		{
 			0.4382,
 			0.0165,
 			0.0381,
@@ -137,8 +138,8 @@ public class ProjectionImpliedConfidenceLevel {
 			0.3521,
 			0.0349
 		};
-
-		double[] adblCustomWeightDeviationReconciler = new double[] {
+		double[] customWeightDeviationReconcilerArray = new double[]
+		{
 			 0.1054,
 			-0.1054,
 			-0.0273,
@@ -147,8 +148,8 @@ public class ProjectionImpliedConfidenceLevel {
 			 0.0030,
 			 0.0363
 		};
-
-		double[] adblFullWeightDeviationReconciler = new double[] {
+		double[] fullWeightDeviationReconcilerArray = new double[]
+		{
 			 0.2448,
 			-0.2448,
 			-0.0828,
@@ -157,8 +158,8 @@ public class ProjectionImpliedConfidenceLevel {
 			 0.0092,
 			 0.1103
 		};
-
-		double[] adblImpliedConfidenceLevelReconciler = new double[] {
+		double[] impliedConfidenceLevelReconcilerArray = new double[]
+		{
 			 0.4306,
 			 0.4306,
 			 0.3302,
@@ -167,8 +168,8 @@ public class ProjectionImpliedConfidenceLevel {
 			 0.3302,
 			 0.3294
 		};
-
-		String[] astrAssetID = new String[] {
+		String[] assetIDArray = new String[]
+		{
 			"US BONDS                       ",
 			"INTERNATIONAL BONDS            ",
 			"US LARGE GROWTH                ",
@@ -178,8 +179,8 @@ public class ProjectionImpliedConfidenceLevel {
 			"INTERNATIONAL DEVELOPED EQUITY ",
 			"INTERNATIONAL EMERGING EQUITY  "
 		};
-
-		double[] adblAssetEquilibriumWeight = new double[] {
+		double[] assetEquilibriumWeightArray = new double[]
+		{
 			0.1934,
 			0.2613,
 			0.1209,
@@ -189,8 +190,8 @@ public class ProjectionImpliedConfidenceLevel {
 			0.2418,
 			0.0349
 		};
-
-		double[][] aadblAssetExcessReturnsCovariance = new double[][] {
+		double[][] assetExcessReturnsCovarianceMatrix = new double[][]
+		{
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -200,24 +201,18 @@ public class ProjectionImpliedConfidenceLevel {
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-
-		double[][] aadblAssetSpaceViewProjection = new double[][] {
+		double[][] aAssetSpaceViewProjectionMatrix = new double[][]
+		{
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
-
-		double[] adblProjectionExpectedExcessReturns = new double[] {
+		double[] projectionExpectedExcessReturnsArray = new double[]
+		{
 			0.0525,
 			0.0025,
 			0.0200
 		};
-
-		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (
-			aadblAssetExcessReturnsCovariance,
-			aadblAssetSpaceViewProjection,
-			dblTau
-		);
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
 			new MultivariateMeta (
@@ -227,49 +222,55 @@ public class ProjectionImpliedConfidenceLevel {
 					"PROJECTION #3"
 				}
 			),
-			adblProjectionExpectedExcessReturns,
-			aadblProjectionExcessReturnsCovariance
-		);
-
-		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (
-			ForwardReverseOptimizationOutput.Reverse (
-				Portfolio.Standard (
-					astrAssetID,
-					adblAssetEquilibriumWeight
-				),
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
-			),
-			new PriorControlSpecification (
-				true,
-				dblRiskFreeRate,
-				dblTau
-			),
-			new ProjectionSpecification (
-				viewDistribution,
-				aadblAssetSpaceViewProjection
+			projectionExpectedExcessReturnsArray,
+			ProjectionDistributionLoading.ProjectionCovariance (
+				assetExcessReturnsCovarianceMatrix,
+				aAssetSpaceViewProjectionMatrix,
+				tau
 			)
 		);
 
-		ProjectionImpliedConfidenceOutput pico = blce.impliedConfidenceRun();
+		ProjectionImpliedConfidenceOutput projectionImpliedConfidenceOutput =
+			new BlackLittermanCombinationEngine (
+				ForwardReverseOptimizationOutput.Reverse (
+					Portfolio.Standard (
+						assetIDArray,
+						assetEquilibriumWeightArray
+					),
+					assetExcessReturnsCovarianceMatrix,
+					riskAversion
+				),
+				new PriorControlSpecification (
+					true,
+					riskFreeRate,
+					tau
+				),
+				new ProjectionSpecification (
+					viewDistribution,
+					aAssetSpaceViewProjectionMatrix
+				)
+			).impliedConfidenceRun();
 
-		ForwardReverseOptimizationOutput frooCustomProjectionConfidence = pico.customConfidenceOutput().adjustedOptimizationOutput();
+		double[] customConfidenceReturnsArray =
+			projectionImpliedConfidenceOutput.customConfidenceOutput().adjustedOptimizationOutput().expectedAssetExcessReturnsArray();
 
-		double[] adblCustomConfidenceReturns = frooCustomProjectionConfidence.expectedAssetExcessReturnsArray();
+		double[] fullConfidenceReturnsArray =
+			projectionImpliedConfidenceOutput.fullConfidenceOutput().adjustedOptimizationOutput().expectedAssetExcessReturnsArray();
 
-		ForwardReverseOptimizationOutput frooFullProjectionConfidence = pico.fullConfidenceOutput().adjustedOptimizationOutput();
+		double[] fullConfidenceWeightArray =
+			projectionImpliedConfidenceOutput.fullProjectionConfidenceWeight();
 
-		double[] adblFullConfidenceReturns = frooFullProjectionConfidence.expectedAssetExcessReturnsArray();
+		double[] customConfidenceWeightArray =
+			projectionImpliedConfidenceOutput.customProjectionConfidenceWeight();
 
-		double[] adblFullConfidenceWeight = pico.fullProjectionConfidenceWeight();
+		double[] fullWeightDeviationArray =
+			projectionImpliedConfidenceOutput.fullProjectionConfidenceDeviation();
 
-		double[] adblCustomConfidenceWeight = pico.customProjectionConfidenceWeight();
+		double[] customWeightDeviationArray =
+			projectionImpliedConfidenceOutput.customProjectionConfidenceDeviation();
 
-		double[] adblFullWeightDeviation = pico.fullProjectionConfidenceDeviation();
-
-		double[] adblCustomWeightDeviation = pico.customProjectionConfidenceDeviation();
-
-		double[] adblImpliedConfidenceLevel = pico.impliedConfidenceLevelArray();
+		double[] impliedConfidenceLevelArray =
+			projectionImpliedConfidenceOutput.impliedConfidenceLevelArray();
 
 		System.out.println ("\n\n\t|----------------------------------------------------||");
 
@@ -281,12 +282,16 @@ public class ProjectionImpliedConfidenceLevel {
 
 		System.out.println ("\t|----------------------------------------------------||");
 
-		for (int i = 0; i < adblFullConfidenceWeight.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < fullConfidenceWeightArray.length;
+			++assetIndex)
+		{
 			System.out.println ("\t| " +
-				astrAssetID[i] + " => " +
-				FormatUtil.FormatDouble (adblFullConfidenceReturns[i], 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblCustomConfidenceReturns[i], 1, 2, 100.) + "% || "
+				assetIDArray[assetIndex] + " => " +
+				FormatUtil.FormatDouble (fullConfidenceReturnsArray[assetIndex], 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (customConfidenceReturnsArray[assetIndex], 1, 2, 100.) + "% || "
 			);
+		}
 
 		System.out.println ("\t|----------------------------------------------------||\n");
 
@@ -300,19 +305,23 @@ public class ProjectionImpliedConfidenceLevel {
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFullConfidenceWeight.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < fullConfidenceWeightArray.length;
+			++assetIndex)
+		{
 			System.out.println ("\t| " +
-				astrAssetID[i] + " => " +
-				FormatUtil.FormatDouble (adblFullConfidenceWeightReconciler[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblCustomConfidenceWeightReconciler[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 2, 100.) + "% ||"
+				assetIDArray[assetIndex] + " => " +
+				FormatUtil.FormatDouble (fullConfidenceWeightReconcilerArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (customConfidenceWeightReconcilerArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (assetEquilibriumWeightArray[assetIndex], 2, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|----------------------------------------------------------------||\n");
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
-		System.out.println ("\t| {DRIP} EQUILIBRIUM WEIGHTS COMPARISON ACROSS CONFIDENCE LEVELS ||");
+		System.out.println ("\t| {DROP} EQUILIBRIUM WEIGHTS COMPARISON ACROSS CONFIDENCE LEVELS ||");
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
@@ -320,13 +329,17 @@ public class ProjectionImpliedConfidenceLevel {
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFullConfidenceWeight.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < fullConfidenceWeightArray.length;
+			++assetIndex)
+		{
 			System.out.println ("\t| " +
-				astrAssetID[i] + " => " +
-				FormatUtil.FormatDouble (adblFullConfidenceWeight[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblCustomConfidenceWeight[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 2, 100.) + "% ||"
+				assetIDArray[assetIndex] + " => " +
+				FormatUtil.FormatDouble (fullConfidenceWeightArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (customConfidenceWeightArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (assetEquilibriumWeightArray[assetIndex], 2, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|----------------------------------------------------------------||\n");
 
@@ -340,19 +353,23 @@ public class ProjectionImpliedConfidenceLevel {
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFullConfidenceWeight.length - 1; ++i)
+		for (int assetIndex = 0;
+			assetIndex < fullConfidenceWeightArray.length - 1;
+			++assetIndex)
+		{
 			System.out.println ("\t| " +
-				astrAssetID[i] + " => " +
-				FormatUtil.FormatDouble (adblFullWeightDeviationReconciler[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblCustomWeightDeviationReconciler[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblImpliedConfidenceLevelReconciler[i], 2, 2, 100.) + "% ||"
+				assetIDArray[assetIndex] + " => " +
+				FormatUtil.FormatDouble (fullWeightDeviationReconcilerArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (customWeightDeviationReconcilerArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (impliedConfidenceLevelReconcilerArray[assetIndex], 2, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|----------------------------------------------------------------||\n");
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
-		System.out.println ("\t|  {DRIP} WEIGHTS DEVIATION COMPARISON ACROSS CONFIDENCE LEVELS  ||");
+		System.out.println ("\t|  {DROP} WEIGHTS DEVIATION COMPARISON ACROSS CONFIDENCE LEVELS  ||");
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
@@ -360,13 +377,17 @@ public class ProjectionImpliedConfidenceLevel {
 
 		System.out.println ("\t|----------------------------------------------------------------||");
 
-		for (int i = 0; i < adblFullConfidenceWeight.length - 1; ++i)
+		for (int assetIndex = 0;
+			assetIndex < fullConfidenceWeightArray.length - 1;
+			++assetIndex)
+		{
 			System.out.println ("\t| " +
-				astrAssetID[i] + " => " +
-				FormatUtil.FormatDouble (adblFullWeightDeviation[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblCustomWeightDeviation[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblImpliedConfidenceLevel[i], 2, 2, 100.) + "% ||"
+				assetIDArray[assetIndex] + " => " +
+				FormatUtil.FormatDouble (fullWeightDeviationArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (customWeightDeviationArray[assetIndex], 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (impliedConfidenceLevelArray[assetIndex], 2, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|----------------------------------------------------------------||\n");
 

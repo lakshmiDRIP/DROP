@@ -6,35 +6,46 @@ package org.drip.alm.dynamics;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -65,13 +76,22 @@ package org.drip.alm.dynamics;
  */
 
 /**
- * <i>NonMaturingAsset</i> implements the Non-Maturing Asset and its Evolution. The References are:
+ * <i>NonMaturingAsset</i> implements the Dynamics of the Non-Maturing Asset. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Judd, K., L., F. Kubler, and K. Schmedders (2011): Bond Ladders and Optimal Portfolios
+ * 				https://pdfs.semanticscholar.org/7c4e/3704ad9af6fbeca27c915b5f69eb0f717396.pdf <b>Schematic
+ * 				Scholar</b>
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md">Asset Liability Management Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/alm/dynamics/README.md">ALM Dynamics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/alm/README.md">Asset Liability Management Analytics Functionality</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/alm/dynamics/README.md">ALM Portfolio Allocation and Evolution</a></li>
  *  </ul>
  * 
@@ -111,14 +131,14 @@ public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 			return null;
 		}
 
-		double annualPeriodScaler = evolutionTenorInMonths / 12.;
+		double timeIncrement = evolutionTenorInMonths / 12.;
 
 		double periodPriceVolatility = spotMarketParameters.nonMaturingAssetAnnualVolatility() *
-			java.lang.Math.sqrt (annualPeriodScaler);
+			java.lang.Math.sqrt (timeIncrement);
 
 		double initialLogPrice = java.lang.Math.log (spotMarketParameters.nonMaturingAssetPrice());
 
-		double forwardReturn = spotMarketParameters.nonMaturingAssetAnnualReturn() * annualPeriodScaler;
+		double periodReturn = spotMarketParameters.nonMaturingAssetAnnualReturn() * timeIncrement;
 
 		double holdings = amount();
 
@@ -128,8 +148,17 @@ public class NonMaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 
 		for (int periodIndex = 1; periodIndex <= horizonPeriod; ++periodIndex)
 		{
-			priceTrajectory[periodIndex] = priceTrajectory[periodIndex - 1] + forwardReturn +
-				periodPriceVolatility * (java.lang.Math.random() - 0.5);
+			try
+			{
+				priceTrajectory[periodIndex] = priceTrajectory[periodIndex - 1] + periodReturn +
+					periodPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.Random();
+			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
 		}
 
 		for (int periodIndex = 0; periodIndex <= horizonPeriod; ++periodIndex)
