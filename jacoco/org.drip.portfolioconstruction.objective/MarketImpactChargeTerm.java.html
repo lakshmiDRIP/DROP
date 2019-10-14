@@ -82,71 +82,80 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class MarketImpactChargeTerm
+	extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
 	 * MarketImpactChargeTerm Conastructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCMI Array of Asset Market Impact Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Initial Holdings
+	 * @param marketImpactTransactionChargeArray Array of Asset Market Impact Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketImpactChargeTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTCMI)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[]
+			marketImpactTransactionChargeArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L104">		super (</span>
-			strName,
+<span class="nc" id="L106">		super (</span>
+			name,
 			&quot;OT_MARKET_IMPACT_TRANSACTION_CHARGE&quot;,
 			&quot;Market Impact Transaction Charge Objective Function&quot;,
-			adblInitialHoldings,
-			aTCMI
+			initialHoldingsArray,
+			marketImpactTransactionChargeArray
 		);
-<span class="nc" id="L111">	}</span>
+<span class="nc" id="L113">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L115">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L116">		{</span>
+<span class="nc" id="L117">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L118">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L119">				return initialHoldings().length;</span>
+<span class="nc" id="L121">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L126" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L127">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L130">					throw new java.lang.Exception</span>
 						(&quot;MarketImpactChargeTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);
+				}
 
-<span class="nc" id="L130">				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[] aTCMI =</span>
-					(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
-<span class="nc" id="L132">						transactionCharge();</span>
+				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[]
+<span class="nc" id="L135">					marketImpactTransactionChargeArray =</span>
+						(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
+<span class="nc" id="L137">							transactionChargeArray();</span>
 
-<span class="nc" id="L134">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L139">				double[] initialHoldingsArray = initialHoldingsArray();</span>
 
-<span class="nc" id="L136">				int iNumAsset = aTCMI.length;</span>
-<span class="nc" id="L137">				double dblMarketImpactChargeTerm = 0.;</span>
+<span class="nc" id="L141">				int assetCount = marketImpactTransactionChargeArray.length;</span>
+<span class="nc" id="L142">				double marketImpactChargeTerm = 0.;</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L140">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">				if (variateArray.length != assetCount)</span>
+				{
+<span class="nc" id="L146">					throw new java.lang.Exception</span>
 						(&quot;MarketImpactChargeTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L144">					dblMarketImpactChargeTerm += aTCMI[i].estimate (</span>
-						adblInitialHoldings[i],
-						adblVariate[i]
+<span class="nc bnc" id="L150" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc" id="L152">					marketImpactChargeTerm += marketImpactTransactionChargeArray[assetIndex].estimate (</span>
+						initialHoldingsArray[assetIndex],
+						variateArray[assetIndex]
 					);
+				}
 
-<span class="nc" id="L149">				return dblMarketImpactChargeTerm;</span>
+<span class="nc" id="L158">				return marketImpactChargeTerm;</span>
 			}
 		};
 	}

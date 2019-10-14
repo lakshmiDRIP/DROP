@@ -81,34 +81,39 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm {
-<span class="nc" id="L85">	private double[] _adblPrice = null;</span>
+public abstract class LimitExposureTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+{
+<span class="nc" id="L87">	private double[] _priceArray = null;</span>
 
 	protected LimitExposureTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L100">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_EXPOSURE&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == (_adblPrice = adblPrice) || !org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))</span>
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;LimitExposureTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L111">	}</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (null == (_priceArray = priceArray) ||</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray))</span>
+		{
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;LimitExposureTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Array of the Prices
@@ -116,9 +121,9 @@ public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.o
 	 * @return Array of the Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-<span class="nc" id="L121">		return _adblPrice;</span>
+<span class="nc" id="L126">		return _priceArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -79,69 +79,79 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L83">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapAttribute = new</span>
-		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L84">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _attributeMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
 	/**
 	 * BlockAttribute Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlockAttribute (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (strName, strID, strDescription);</span>
-<span class="nc" id="L103">	}</span>
+<span class="nc" id="L103">		super (</span>
+			name,
+			id,
+			description
+		);
+<span class="nc" id="L108">	}</span>
 
 	/**
 	 * Add an Asset's Attribute
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblAttribute The Attribute
+	 * @param assetID The Asset ID
+	 * @param attribute The Attribute
 	 * 
 	 * @return TRUE - The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final double dblAttribute)
+		final java.lang.String assetID,
+		final double attribute)
 	{
-<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			(dblAttribute))</span>
-<span class="nc" id="L120">			return false;</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == assetID || assetID.isEmpty() ||</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (attribute))</span>
+		{
+<span class="nc" id="L126">			return false;</span>
+		}
 
-<span class="nc" id="L122">		_mapAttribute.put (strAssetID, dblAttribute);</span>
+<span class="nc" id="L129">		_attributeMap.put (</span>
+			assetID,
+<span class="nc" id="L131">			attribute</span>
+		);
 
-<span class="nc" id="L124">		return true;</span>
+<span class="nc" id="L134">		return true;</span>
 	}
 
 	/**
 	 * Indicates if an Asset exists in the Holdings
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-<span class="nc bnc" id="L138" title="All 4 branches missed.">		return null != strAssetID &amp;&amp; !_mapAttribute.containsKey (strAssetID);</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		return null != assetID &amp;&amp; !_attributeMap.containsKey (assetID);</span>
 	}
 
 	/**
 	 * Retrieve the Asset's Attribute Value
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset's Attribute Value
 	 * 
@@ -149,13 +159,15 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	 */
 
 	public double value (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L155" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !_mapAttribute.containsKey (strAssetID))</span>
-<span class="nc" id="L156">			throw new java.lang.Exception (&quot;BlockAttribute::attribute =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L165" title="All 6 branches missed.">		if (null == assetID || assetID.isEmpty() || !_attributeMap.containsKey (assetID))</span>
+		{
+<span class="nc" id="L167">			throw new java.lang.Exception (&quot;BlockAttribute::attribute =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc" id="L158">		return _mapAttribute.get (strAssetID);</span>
+<span class="nc" id="L170">		return _attributeMap.get (assetID);</span>
 	}
 
 	/**
@@ -166,7 +178,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; attribute()
 	{
-<span class="nc" id="L169">		return _mapAttribute;</span>
+<span class="nc" id="L181">		return _attributeMap;</span>
 	}
 
 	/**
@@ -180,33 +192,49 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block {
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == holdings) return null;</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null == holdings)</span>
+		{
+<span class="nc" id="L197">			return null;</span>
+		}
 
-<span class="nc" id="L185">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
+<span class="nc" id="L200">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdings.assetIDSet();</span>
 
-<span class="nc" id="L187">		java.util.List&lt;java.lang.Double&gt; lsValue = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L202">		java.util.List&lt;java.lang.Double&gt; attributeValueList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc bnc" id="L189" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset) {</span>
-			try {
-<span class="nc" id="L191">				lsValue.add (value (strAssetID));</span>
-<span class="nc" id="L192">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L193">				e.printStackTrace();</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		for (java.lang.String assetID : assetIDSet)</span>
+		{
+			try
+			{
+<span class="nc" id="L208">				attributeValueList.add (</span>
+<span class="nc" id="L209">					value (</span>
+						assetID
+					)
+				);
+			}
+<span class="nc" id="L214">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L216">				e.printStackTrace();</span>
 
-<span class="nc" id="L195">				return null;</span>
-<span class="nc" id="L196">			}</span>
-<span class="nc" id="L197">		}</span>
+<span class="nc" id="L218">				return null;</span>
+<span class="nc" id="L219">			}</span>
+<span class="nc" id="L220">		}</span>
 
-<span class="nc" id="L199">		int iNumAsset = setAsset.size();</span>
+<span class="nc" id="L222">		int assetCount = assetIDSet.size();</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (lsValue.size() != iNumAsset) return null;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (attributeValueList.size() != assetCount)</span>
+		{
+<span class="nc" id="L226">			return null;</span>
+		}
 
-<span class="nc" id="L203">		int iAssetCount = 0;</span>
-<span class="nc" id="L204">		double[] adblAssetAttributeValue = new double[iNumAsset];</span>
+<span class="nc" id="L229">		int assetIndex = 0;</span>
+<span class="nc" id="L230">		double[] assetAttributeValueArray = new double[assetCount];</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (double dblAssetValue : lsValue)</span>
-<span class="nc" id="L207">			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (double assetAttributeValue : attributeValueList)</span>
+		{
+<span class="nc" id="L234">			assetAttributeValueArray[assetIndex++] = assetAttributeValue;</span>
+<span class="nc" id="L235">		}</span>
 
-<span class="nc" id="L209">		return adblAssetAttributeValue;</span>
+<span class="nc" id="L237">		return assetAttributeValueArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

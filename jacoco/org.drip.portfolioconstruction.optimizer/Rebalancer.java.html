@@ -80,17 +80,18 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Rebalancer extends org.drip.portfolioconstruction.core.Block
+public class Rebalancer
+	extends org.drip.portfolioconstruction.core.Block
 {
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.core.Account _account = null;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.optimizer.Strategy _strategy = null;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.core.Account _account = null;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.optimizer.Strategy _strategy = null;</span>
 
 	/**
 	 * Rebalancer Constructor
 	 * 
-	 * @param strName The Rebalancer Name
-	 * @param strID The Rebalancer ID
-	 * @param strDescription The Rebalancer Description
+	 * @param name The Rebalancer Name
+	 * @param id The Rebalancer ID
+	 * @param description The Rebalancer Description
 	 * @param account The Account to Rebalance
 	 * @param strategy The Strategy to use for the Rebalancing
 	 * 
@@ -98,18 +99,25 @@ public class Rebalancer extends org.drip.portfolioconstruction.core.Block
 	 */
 
 	public Rebalancer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.core.Account account,
 		final org.drip.portfolioconstruction.optimizer.Strategy strategy)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L108">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L109">		super (</span>
+			name,
+			id,
+			description
+		);
 
-<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (null == (_account = account) || null == (_strategy = strategy))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;Rebalancer Construtor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		if (null == (_account = account) ||</span>
+			null == (_strategy = strategy))
+		{
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;Rebalancer Construtor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L120">	}</span>
 
 	/**
 	 * Retrieve the Account Instance
@@ -119,7 +127,7 @@ public class Rebalancer extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.core.Account account()
 	{
-<span class="nc" id="L122">		return _account;</span>
+<span class="nc" id="L130">		return _account;</span>
 	}
 
 	/**
@@ -130,7 +138,7 @@ public class Rebalancer extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.optimizer.Strategy strategy()
 	{
-<span class="nc" id="L133">		return _strategy;</span>
+<span class="nc" id="L141">		return _strategy;</span>
 	}
 
 	/**
@@ -141,7 +149,7 @@ public class Rebalancer extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.optimizer.RebalancerAnalytics optimize()
 	{
-<span class="nc" id="L144">		return null;</span>
+<span class="nc" id="L152">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -80,44 +80,44 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitTradesTermIssuerSell extends
-	org.drip.portfolioconstruction.constraint.LimitTradesTermIssuer
+public class LimitTradesTermIssuerSell
+	extends org.drip.portfolioconstruction.constraint.LimitTradesTermIssuer
 {
 
 	/**
 	 * LimitTradesTermIssuerSell Constructor
 	 * 
-	 * @param strName Name of the LimitTradesTermIssuerNet Constraint
+	 * @param name Name of the LimitTradesTermIssuerNet Constraint
 	 * @param scope Scope of the LimitTradesTermIssuerNet Constraint
 	 * @param unit Unit of the LimitTradesTermIssuerNet Constraint
-	 * @param dblMinimum Minimum Value for the Constraint
-	 * @param dblMaximum Maximum Value for the Constraint
-	 * @param adblIssuerSelection Issuer Selection Flag Array
-	 * @param adblInitialHoldings Initial Holdings Array
+	 * @param minimum Minimum Value for the Constraint
+	 * @param maximum Maximum Value for the Constraint
+	 * @param issuerSelectionArray Issuer Selection Flag Array
+	 * @param initialHoldingsArray Initial Holdings Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Inconsistent/Invalid
 	 */
 
 	public LimitTradesTermIssuerSell (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection,
-		final double[] adblInitialHoldings)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L111">		super (</span>
-			strName,
+			name,
 			&quot;CT_LIMIT_NUMBER_OF_SELL_TRADES&quot;,
 			&quot;Constrains the Total Count of Sell Trades&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection,
-			adblInitialHoldings
+			minimum,
+			maximum,
+			issuerSelectionArray,
+			initialHoldingsArray
 		);
 <span class="nc" id="L122">	}</span>
 
@@ -127,32 +127,37 @@ public class LimitTradesTermIssuerSell extends
 <span class="nc" id="L127">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L130">				return issuerSelection().length;</span>
+<span class="nc" id="L130">				return issuerSelectionArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L137">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L137">				double[] initialHoldingsArray = initialHoldingsArray();</span>
 
-<span class="nc" id="L139">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L139">				double[] issuerSelectionArray = issuerSelectionArray();</span>
 
-<span class="nc" id="L141">				int iNumAsset = adblIssuerSelection.length;</span>
-<span class="nc" id="L142">				double dblTradeCount = 0;</span>
+<span class="nc" id="L141">				int assetCount = issuerSelectionArray.length;</span>
+<span class="nc" id="L142">				double tradeCount = 0;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L145" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L146">					throw new java.lang.Exception</span>
-						(&quot;LimitTradesTermIssuerSell::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L149" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
 				{
-<span class="nc bnc" id="L151" title="All 2 branches missed.">					if (adblInitialHoldings[i] &gt; adblFinalHoldings[i])</span>
-<span class="nc" id="L152">						dblTradeCount += adblIssuerSelection[i];</span>
+<span class="nc" id="L148">					throw new java.lang.Exception</span>
+						(&quot;LimitTradesTermIssuerSell::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 				}
 
-<span class="nc" id="L155">				return dblTradeCount;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc bnc" id="L154" title="All 2 branches missed.">					if (initialHoldingsArray[assetIndex] &gt; finalHoldingsArray[assetIndex])</span>
+					{
+<span class="nc" id="L156">						tradeCount += issuerSelectionArray[assetIndex];</span>
+					}
+				}
+
+<span class="nc" id="L160">				return tradeCount;</span>
 			}
 		};
 	}

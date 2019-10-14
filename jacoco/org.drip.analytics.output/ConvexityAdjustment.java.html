@@ -6,6 +6,7 @@ package org.drip.analytics.output;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,33 +14,43 @@ package org.drip.analytics.output;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -74,34 +85,34 @@ package org.drip.analytics.output;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output/README.md&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output/README.md&quot;&gt;Period Product Targeted Valuation Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConvexityAdjustment {
-<span class="fc" id="L87">	private double _dblCollateralCredit = 1.;</span>
-<span class="fc" id="L88">	private double _dblCollateralForward = 1.;</span>
-<span class="fc" id="L89">	private double _dblCollateralFunding = 1.;</span>
-<span class="fc" id="L90">	private double _dblCollateralFX = 1.;</span>
-<span class="fc" id="L91">	private double _dblCreditForward = 1.;</span>
-<span class="fc" id="L92">	private double _dblCreditFunding = 1.;</span>
-<span class="fc" id="L93">	private double _dblCreditFX = 1.;</span>
-<span class="fc" id="L94">	private double _dblForwardFunding = 1.;</span>
-<span class="fc" id="L95">	private double _dblForwardFX = 1.;</span>
-<span class="fc" id="L96">	private double _dblFundingFX = 1.;</span>
+<span class="fc" id="L98">	private double _dblCollateralCredit = 1.;</span>
+<span class="fc" id="L99">	private double _dblCollateralForward = 1.;</span>
+<span class="fc" id="L100">	private double _dblCollateralFunding = 1.;</span>
+<span class="fc" id="L101">	private double _dblCollateralFX = 1.;</span>
+<span class="fc" id="L102">	private double _dblCreditForward = 1.;</span>
+<span class="fc" id="L103">	private double _dblCreditFunding = 1.;</span>
+<span class="fc" id="L104">	private double _dblCreditFX = 1.;</span>
+<span class="fc" id="L105">	private double _dblForwardFunding = 1.;</span>
+<span class="fc" id="L106">	private double _dblForwardFX = 1.;</span>
+<span class="fc" id="L107">	private double _dblFundingFX = 1.;</span>
 
 	/**
 	 * Empty ConvexityAdjustment Constructor
 	 */
 
 	public ConvexityAdjustment()
-<span class="fc" id="L103">	{</span>
-<span class="fc" id="L104">	}</span>
+<span class="fc" id="L114">	{</span>
+<span class="fc" id="L115">	}</span>
 
 	/**
 	 * Set the Collateral/Credit Convexity Adjustment
@@ -114,10 +125,10 @@ public class ConvexityAdjustment {
 	public boolean setCollateralCredit (
 		final double dblCollateralCredit)
 	{
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralCredit)) return false;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralCredit)) return false;</span>
 
-<span class="nc" id="L119">		_dblCollateralCredit = dblCollateralCredit;</span>
-<span class="nc" id="L120">		return true;</span>
+<span class="nc" id="L130">		_dblCollateralCredit = dblCollateralCredit;</span>
+<span class="nc" id="L131">		return true;</span>
 	}
 
 	/**
@@ -128,7 +139,7 @@ public class ConvexityAdjustment {
 
 	public double collateralCredit()
 	{
-<span class="fc" id="L131">		return _dblCollateralCredit;</span>
+<span class="fc" id="L142">		return _dblCollateralCredit;</span>
 	}
 
 	/**
@@ -142,10 +153,10 @@ public class ConvexityAdjustment {
 	public boolean setCollateralForward (
 		final double dblCollateralForward)
 	{
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralForward)) return false;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralForward)) return false;</span>
 
-<span class="nc" id="L147">		_dblCollateralForward = dblCollateralForward;</span>
-<span class="nc" id="L148">		return true;</span>
+<span class="nc" id="L158">		_dblCollateralForward = dblCollateralForward;</span>
+<span class="nc" id="L159">		return true;</span>
 	}
 
 	/**
@@ -156,7 +167,7 @@ public class ConvexityAdjustment {
 
 	public double collateralForward()
 	{
-<span class="fc" id="L159">		return _dblCollateralForward;</span>
+<span class="fc" id="L170">		return _dblCollateralForward;</span>
 	}
 
 	/**
@@ -170,10 +181,10 @@ public class ConvexityAdjustment {
 	public boolean setCollateralFunding (
 		final double dblCollateralFunding)
 	{
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralFunding)) return false;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralFunding)) return false;</span>
 
-<span class="nc" id="L175">		_dblCollateralFunding = dblCollateralFunding;</span>
-<span class="nc" id="L176">		return true;</span>
+<span class="nc" id="L186">		_dblCollateralFunding = dblCollateralFunding;</span>
+<span class="nc" id="L187">		return true;</span>
 	}
 
 	/**
@@ -184,7 +195,7 @@ public class ConvexityAdjustment {
 
 	public double collateralFunding()
 	{
-<span class="fc" id="L187">		return _dblCollateralFunding;</span>
+<span class="fc" id="L198">		return _dblCollateralFunding;</span>
 	}
 
 	/**
@@ -198,10 +209,10 @@ public class ConvexityAdjustment {
 	public boolean setCollateralFX (
 		final double dblCollateralFX)
 	{
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralFX)) return false;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCollateralFX)) return false;</span>
 
-<span class="nc" id="L203">		_dblCollateralFX = dblCollateralFX;</span>
-<span class="nc" id="L204">		return true;</span>
+<span class="nc" id="L214">		_dblCollateralFX = dblCollateralFX;</span>
+<span class="nc" id="L215">		return true;</span>
 	}
 
 	/**
@@ -212,7 +223,7 @@ public class ConvexityAdjustment {
 
 	public double collateralFX()
 	{
-<span class="fc" id="L215">		return _dblCollateralFX;</span>
+<span class="fc" id="L226">		return _dblCollateralFX;</span>
 	}
 
 	/**
@@ -226,10 +237,10 @@ public class ConvexityAdjustment {
 	public boolean setCreditForward (
 		final double dblCreditForward)
 	{
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditForward)) return false;</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditForward)) return false;</span>
 
-<span class="fc" id="L231">		_dblCreditForward = dblCreditForward;</span>
-<span class="fc" id="L232">		return true;</span>
+<span class="fc" id="L242">		_dblCreditForward = dblCreditForward;</span>
+<span class="fc" id="L243">		return true;</span>
 	}
 
 	/**
@@ -240,7 +251,7 @@ public class ConvexityAdjustment {
 
 	public double creditForward()
 	{
-<span class="fc" id="L243">		return _dblCreditForward;</span>
+<span class="fc" id="L254">		return _dblCreditForward;</span>
 	}
 
 	/**
@@ -254,10 +265,10 @@ public class ConvexityAdjustment {
 	public boolean setCreditFunding (
 		final double dblCreditFunding)
 	{
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditFunding)) return false;</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditFunding)) return false;</span>
 
-<span class="fc" id="L259">		_dblCreditFunding = dblCreditFunding;</span>
-<span class="fc" id="L260">		return true;</span>
+<span class="fc" id="L270">		_dblCreditFunding = dblCreditFunding;</span>
+<span class="fc" id="L271">		return true;</span>
 	}
 
 	/**
@@ -268,7 +279,7 @@ public class ConvexityAdjustment {
 
 	public double creditFunding()
 	{
-<span class="fc" id="L271">		return _dblCreditFunding;</span>
+<span class="fc" id="L282">		return _dblCreditFunding;</span>
 	}
 
 	/**
@@ -282,10 +293,10 @@ public class ConvexityAdjustment {
 	public boolean setCreditFX (
 		final double dblCreditFX)
 	{
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditFX)) return false;</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCreditFX)) return false;</span>
 
-<span class="fc" id="L287">		_dblCreditFX = dblCreditFX;</span>
-<span class="fc" id="L288">		return true;</span>
+<span class="fc" id="L298">		_dblCreditFX = dblCreditFX;</span>
+<span class="fc" id="L299">		return true;</span>
 	}
 
 	/**
@@ -296,7 +307,7 @@ public class ConvexityAdjustment {
 
 	public double creditFX()
 	{
-<span class="fc" id="L299">		return _dblCreditFX;</span>
+<span class="fc" id="L310">		return _dblCreditFX;</span>
 	}
 
 	/**
@@ -310,10 +321,10 @@ public class ConvexityAdjustment {
 	public boolean setForwardFunding (
 		final double dblForwardFunding)
 	{
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForwardFunding)) return false;</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForwardFunding)) return false;</span>
 
-<span class="fc" id="L315">		_dblForwardFunding = dblForwardFunding;</span>
-<span class="fc" id="L316">		return true;</span>
+<span class="fc" id="L326">		_dblForwardFunding = dblForwardFunding;</span>
+<span class="fc" id="L327">		return true;</span>
 	}
 
 	/**
@@ -324,7 +335,7 @@ public class ConvexityAdjustment {
 
 	public double forwardFunding()
 	{
-<span class="fc" id="L327">		return _dblForwardFunding;</span>
+<span class="fc" id="L338">		return _dblForwardFunding;</span>
 	}
 
 	/**
@@ -338,10 +349,10 @@ public class ConvexityAdjustment {
 	public boolean setForwardFX (
 		final double dblForwardFX)
 	{
-<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForwardFX)) return false;</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForwardFX)) return false;</span>
 
-<span class="fc" id="L343">		_dblForwardFX = dblForwardFX;</span>
-<span class="fc" id="L344">		return true;</span>
+<span class="fc" id="L354">		_dblForwardFX = dblForwardFX;</span>
+<span class="fc" id="L355">		return true;</span>
 	}
 
 	/**
@@ -352,7 +363,7 @@ public class ConvexityAdjustment {
 
 	public double forwardFX()
 	{
-<span class="fc" id="L355">		return _dblForwardFX;</span>
+<span class="fc" id="L366">		return _dblForwardFX;</span>
 	}
 
 	/**
@@ -366,10 +377,10 @@ public class ConvexityAdjustment {
 	public boolean setFundingFX (
 		final double dblFundingFX)
 	{
-<span class="pc bpc" id="L369" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFundingFX)) return false;</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblFundingFX)) return false;</span>
 
-<span class="fc" id="L371">		_dblFundingFX = dblFundingFX;</span>
-<span class="fc" id="L372">		return true;</span>
+<span class="fc" id="L382">		_dblFundingFX = dblFundingFX;</span>
+<span class="fc" id="L383">		return true;</span>
 	}
 
 	/**
@@ -380,7 +391,7 @@ public class ConvexityAdjustment {
 
 	public double fundingFX()
 	{
-<span class="fc" id="L383">		return _dblFundingFX;</span>
+<span class="fc" id="L394">		return _dblFundingFX;</span>
 	}
 
 	/**
@@ -391,7 +402,7 @@ public class ConvexityAdjustment {
 
 	public double cumulative()
 	{
-<span class="fc" id="L394">		return _dblCollateralCredit * _dblCollateralForward * _dblCollateralFunding * _dblCollateralFX *</span>
+<span class="fc" id="L405">		return _dblCollateralCredit * _dblCollateralForward * _dblCollateralFunding * _dblCollateralFX *</span>
 			_dblCreditForward * _dblCreditFunding * _dblCreditFX * _dblForwardFunding * _dblForwardFX *
 				_dblFundingFX;
 	}

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>R1UnivariateCLTProxy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.measure.chisquare</a> &gt; <span class="el_source">R1UnivariateCLTProxy.java</span></div><h1>R1UnivariateCLTProxy.java</h1><pre class="source lang-java linenums">
+package org.drip.measure.chisquare;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;R1UnivariateCLTProxy&lt;/i&gt; implements the N (0, 1) CLT Proxy Version for the Chi-Square Distribution. The
+ * References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Chi-Squared Distribution (2019): Chi-Squared Function
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class R1UnivariateCLTProxy extends org.drip.measure.continuous.R1Univariate
+{
+<span class="nc" id="L91">	private int _degreesOfFreedom = -1;</span>
+
+<span class="nc" id="L93">	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal =</span>
+<span class="nc" id="L94">		org.drip.measure.gaussian.R1UnivariateNormal.Standard();</span>
+
+	/**
+	 * R1UnivariateCLTProxy Constructor
+	 * 
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public R1UnivariateCLTProxy (
+		final int degreesOfFreedom)
+		throws java.lang.Exception
+<span class="nc" id="L107">	{</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (0 &gt;= (_degreesOfFreedom = degreesOfFreedom))</span>
+		{
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;R1UnivariateCLTProxy Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L112">	}</span>
+
+	/**
+	 * Retrieve the Degrees of Freedom
+	 * 
+	 * @return The Degrees of Freedom
+	 */
+
+	public int degreesOfFreedom()
+	{
+<span class="nc" id="L122">		return _degreesOfFreedom;</span>
+	}
+
+	@Override public double[] support()
+	{
+<span class="nc" id="L127">		return new double[]</span>
+		{
+<span class="nc" id="L129">			-1. * java.lang.Math.sqrt (0.5 * _degreesOfFreedom),</span>
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
+	@Override public double density (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L138">		return _r1UnivariateNormal.density (t);</span>
+	}
+
+	@Override public double cumulative (
+		final double t)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L145">		return _r1UnivariateNormal.cumulative (t);</span>
+	}
+
+	@Override public double mean()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L151">		return 0.;</span>
+	}
+
+	@Override public double median()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L157">		return 0.;</span>
+	}
+
+	@Override public double mode()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L163">		return 0.;</span>
+	}
+
+	@Override public double variance()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L169">		return 1.;</span>
+	}
+
+	@Override public double skewness()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L175">		return java.lang.Math.sqrt (8. / _degreesOfFreedom);</span>
+	}
+
+	@Override public double excessKurtosis()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L181">		return 12. / _degreesOfFreedom;</span>
+	}
+
+	@Override public double differentialEntropy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L187">		return _r1UnivariateNormal.differentialEntropy();</span>
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+<span class="nc" id="L192">		return _r1UnivariateNormal.momentGeneratingFunction();</span>
+	}
+
+	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	{
+<span class="nc" id="L197">		return _r1UnivariateNormal.probabilityGeneratingFunction();</span>
+	}
+
+	@Override public double random()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L203">		double sumOfStandardNormalSquares = 0.;</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; _degreesOfFreedom; ++drawIndex)</span>
+		{
+			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
+<span class="nc" id="L208">				(java.lang.Math.random());</span>
+
+<span class="nc" id="L210">			sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
+				randomStandardNormal * randomStandardNormal;
+		}
+
+<span class="nc" id="L214">		return (sumOfStandardNormalSquares - _degreesOfFreedom) /</span>
+<span class="nc" id="L215">			java.lang.Math.sqrt (2. * _degreesOfFreedom);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -115,24 +115,33 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 <span class="nc" id="L115">		return _dblLambda;</span>
 	}
 
+	@Override public double[] support()
+	{
+<span class="nc" id="L120">		return new double[]</span>
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;PoissonDistribution::cumulative =&gt; Invalid inputs&quot;);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;PoissonDistribution::cumulative =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L125">		int iEnd = (int) dblX;</span>
-<span class="nc" id="L126">		double dblYLocal = 1.;</span>
-<span class="nc" id="L127">		double dblYCumulative = 0.;</span>
+<span class="nc" id="L134">		int iEnd = (int) dblX;</span>
+<span class="nc" id="L135">		double dblYLocal = 1.;</span>
+<span class="nc" id="L136">		double dblYCumulative = 0.;</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 1; i &lt; iEnd; ++i) {</span>
-<span class="nc" id="L130">			i = i + 1;</span>
-<span class="nc" id="L131">			dblYLocal *= _dblLambda / i;</span>
-<span class="nc" id="L132">			dblYCumulative += _dblExponentialLambda * dblYLocal;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (int i = 1; i &lt; iEnd; ++i) {</span>
+<span class="nc" id="L139">			i = i + 1;</span>
+<span class="nc" id="L140">			dblYLocal *= _dblLambda / i;</span>
+<span class="nc" id="L141">			dblYCumulative += _dblExponentialLambda * dblYLocal;</span>
 		}
 
-<span class="nc" id="L135">		return dblYCumulative;</span>
+<span class="nc" id="L144">		return dblYCumulative;</span>
 	}
 
 	@Override public double incremental (
@@ -140,50 +149,50 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Univariat
 		final double dblXRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L143">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+<span class="nc" id="L152">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
 	}
 
 	@Override public double invCumulative (
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))</span>
-<span class="nc" id="L151">			throw new java.lang.Exception (&quot;PoissonDistribution::invCumulative =&gt; Invalid inputs&quot;);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))</span>
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;PoissonDistribution::invCumulative =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L153">		int i = 0;</span>
-<span class="nc" id="L154">		double dblYLocal = 1.;</span>
-<span class="nc" id="L155">		double dblYCumulative = 0.;</span>
+<span class="nc" id="L162">		int i = 0;</span>
+<span class="nc" id="L163">		double dblYLocal = 1.;</span>
+<span class="nc" id="L164">		double dblYCumulative = 0.;</span>
 
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		while (dblYCumulative &lt; dblY) {</span>
-<span class="nc" id="L158">			i = i + 1;</span>
-<span class="nc" id="L159">			dblYLocal *= _dblLambda / i;</span>
-<span class="nc" id="L160">			dblYCumulative += _dblExponentialLambda * dblYLocal;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">		while (dblYCumulative &lt; dblY) {</span>
+<span class="nc" id="L167">			i = i + 1;</span>
+<span class="nc" id="L168">			dblYLocal *= _dblLambda / i;</span>
+<span class="nc" id="L169">			dblYCumulative += _dblExponentialLambda * dblYLocal;</span>
 		}
 
-<span class="nc" id="L163">		return i - 1;</span>
+<span class="nc" id="L172">		return i - 1;</span>
 	}
 
 	@Override public double density (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L170">		throw new java.lang.Exception</span>
+<span class="nc" id="L179">		throw new java.lang.Exception</span>
 			(&quot;PoissonDistribution::density =&gt; Not available for discrete distributions&quot;);
 	}
 
 	@Override public double mean()
 	{
-<span class="fc" id="L176">	    return _dblLambda;</span>
+<span class="fc" id="L185">	    return _dblLambda;</span>
 	}
 
 	@Override public double variance()
 	{
-<span class="nc" id="L181">	    return _dblLambda;</span>
+<span class="nc" id="L190">	    return _dblLambda;</span>
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L186">		return null;</span>
+<span class="nc" id="L195">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

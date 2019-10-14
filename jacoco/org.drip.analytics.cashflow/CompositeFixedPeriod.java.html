@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,33 +14,43 @@ package org.drip.analytics.cashflow;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -75,10 +86,10 @@ package org.drip.analytics.cashflow;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Unit and Composite Cash Flow Periods&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -100,54 +111,54 @@ public class CompositeFixedPeriod extends org.drip.analytics.cashflow.CompositeP
 		final java.util.List&lt;org.drip.analytics.cashflow.ComposableUnitPeriod&gt; lsCUP)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L103">		super (</span>
+<span class="fc" id="L114">		super (</span>
 			cps,
 			lsCUP
 		);
-<span class="fc" id="L107">	}</span>
+<span class="fc" id="L118">	}</span>
 
 	@Override public org.drip.product.calib.CompositePeriodQuoteSet periodQuoteSet (
 		final org.drip.product.calib.ProductQuoteSet pqs,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (null == pqs || !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)) return null;</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == pqs || !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)) return null;</span>
 
-<span class="fc" id="L115">		org.drip.product.calib.FixedStreamQuoteSet fsqs = (org.drip.product.calib.FixedStreamQuoteSet) pqs;</span>
+<span class="fc" id="L126">		org.drip.product.calib.FixedStreamQuoteSet fsqs = (org.drip.product.calib.FixedStreamQuoteSet) pqs;</span>
 
-<span class="fc" id="L117">		org.drip.analytics.cashflow.ComposableUnitPeriod cup = periods().get (0);</span>
+<span class="fc" id="L128">		org.drip.analytics.cashflow.ComposableUnitPeriod cup = periods().get (0);</span>
 
 		try {
-<span class="fc" id="L120">			org.drip.product.calib.CompositePeriodQuoteSet cpqs = new</span>
-<span class="fc" id="L121">				org.drip.product.calib.CompositePeriodQuoteSet (pqs.lss());</span>
+<span class="fc" id="L131">			org.drip.product.calib.CompositePeriodQuoteSet cpqs = new</span>
+<span class="fc" id="L132">				org.drip.product.calib.CompositePeriodQuoteSet (pqs.lss());</span>
 
-<span class="pc bpc" id="L123" title="1 of 4 branches missed.">			if (!cpqs.setBaseRate (fsqs.containsCoupon() ? fsqs.coupon() : cup.baseRate (csqs))) return null;</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">			if (!cpqs.setBaseRate (fsqs.containsCoupon() ? fsqs.coupon() : cup.baseRate (csqs))) return null;</span>
 
-<span class="pc bpc" id="L125" title="1 of 4 branches missed.">			if (!cpqs.setBasis (fsqs.containsCouponBasis() ? fsqs.couponBasis() : basis())) return null;</span>
+<span class="pc bpc" id="L136" title="1 of 4 branches missed.">			if (!cpqs.setBasis (fsqs.containsCouponBasis() ? fsqs.couponBasis() : basis())) return null;</span>
 
-<span class="fc" id="L127">			return cpqs;</span>
-<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L129">			e.printStackTrace();</span>
+<span class="fc" id="L138">			return cpqs;</span>
+<span class="nc" id="L139">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L140">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L132">		return null;</span>
+<span class="nc" id="L143">		return null;</span>
 	}
 
 	@Override public double basisQuote (
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L138">		double dblBasis = basis();</span>
+<span class="nc" id="L149">		double dblBasis = basis();</span>
 
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == pqs || !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)) return dblBasis;</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">		if (null == pqs || !(pqs instanceof org.drip.product.calib.FixedStreamQuoteSet)) return dblBasis;</span>
 
-<span class="nc" id="L142">		org.drip.product.calib.FixedStreamQuoteSet fsqs = (org.drip.product.calib.FixedStreamQuoteSet) pqs;</span>
+<span class="nc" id="L153">		org.drip.product.calib.FixedStreamQuoteSet fsqs = (org.drip.product.calib.FixedStreamQuoteSet) pqs;</span>
 
 		try {
-<span class="nc bnc" id="L145" title="All 2 branches missed.">			if (fsqs.containsCouponBasis()) return fsqs.couponBasis();</span>
-<span class="nc" id="L146">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L147">			e.printStackTrace();</span>
-<span class="nc" id="L148">		}</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			if (fsqs.containsCouponBasis()) return fsqs.couponBasis();</span>
+<span class="nc" id="L157">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L158">			e.printStackTrace();</span>
+<span class="nc" id="L159">		}</span>
 
-<span class="nc" id="L150">		return dblBasis;</span>
+<span class="nc" id="L161">		return dblBasis;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

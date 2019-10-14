@@ -80,52 +80,55 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
+public class LimitRiskTermVariance
+	extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
 {
-<span class="nc" id="L85">	private double[] _adblBenchmarkHoldings = null;</span>
+<span class="nc" id="L86">	private double[] _benchmarkHoldingsArray = null;</span>
 
 	/**
 	 * LimitRiskTermVariance Constructor
 	 * 
-	 * @param strName Name of the LimitRiskTermVariance Constraint
+	 * @param name Name of the LimitRiskTermVariance Constraint
 	 * @param scope Scope of the LimitRiskTermVariance Constraint
 	 * @param unit Unit of the LimitRiskTermVariance Constraint
-	 * @param dblMinimum Minimum Limit Value of the LimitRiskTermVariance Constraint
-	 * @param dblMaximum Maximum Limit Value of the LimitRiskTermVariance Constraint
-	 * @param aadblAssetCovariance Asset Co-variance
-	 * @param adblBenchmarkHoldings Array of the Benchmark Holdings
+	 * @param minimum Minimum Limit Value of the LimitRiskTermVariance Constraint
+	 * @param maximum Maximum Limit Value of the LimitRiskTermVariance Constraint
+	 * @param assetCovarianceMatrix Asset Co-variance Matrix
+	 * @param benchmarkHoldingsArray Array of the Benchmark Holdings Array
 	 * 
 	 * @throws java.lang.Exception Throw if the Inputs are Invalid
 	 */
 
 	public LimitRiskTermVariance (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkHoldings)
+		final double minimum,
+		final double maximum,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (</span>
-			strName,
+<span class="nc" id="L112">		super (</span>
+			name,
 			&quot;CT_LIMIT_TOTAL_RISK&quot;,
 			&quot;Limits the Variance Based Total Risk&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			aadblAssetCovariance
+			minimum,
+			maximum,
+			assetCovarianceMatrix
 		);
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		int iNumBenchmarkHoldings = null == (_adblBenchmarkHoldings = adblBenchmarkHoldings) ? 0 :</span>
-			_adblBenchmarkHoldings.length;
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		int benchmarkHoldingsCount = null == (_benchmarkHoldingsArray = benchmarkHoldingsArray) ?</span>
+			0 : _benchmarkHoldingsArray.length;
 
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (0 != iNumBenchmarkHoldings &amp;&amp; (aadblAssetCovariance[0].length != iNumBenchmarkHoldings ||</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblBenchmarkHoldings)))</span>
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;LimitRiskTermVariance Constructor =&gt; Invalid Benchmark&quot;);</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (0 != benchmarkHoldingsCount &amp;&amp; (assetCovarianceMatrix[0].length != benchmarkHoldingsCount ||</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_benchmarkHoldingsArray)))</span>
+		{
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;LimitRiskTermVariance Constructor =&gt; Invalid Benchmark&quot;);</span>
+		}
+<span class="nc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Constricted Benchmark Holdings
@@ -133,51 +136,61 @@ public class LimitRiskTermVariance extends org.drip.portfolioconstruction.constr
 	 * @return The Constricted Benchmark Holdings
 	 */
 
-	public double[] benchmarkHoldings()
+	public double[] benchmarkHoldingsArray()
 	{
-<span class="nc" id="L138">		return _adblBenchmarkHoldings;</span>
+<span class="nc" id="L141">		return _benchmarkHoldingsArray;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L143">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L144">		{</span>
+<span class="nc" id="L146">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L147">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L147">				return assetCovariance().length;</span>
+<span class="nc" id="L150">				return assetCovarianceMatrix().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L154">				double[][] aadblAssetCovariance = assetCovariance();</span>
+<span class="nc" id="L157">				double[][] assetCovarianceMatrix = assetCovarianceMatrix();</span>
 
-<span class="nc" id="L156">				int iNumAsset = aadblAssetCovariance.length;</span>
-<span class="nc" id="L157">				double dblVariance = 0;</span>
+<span class="nc" id="L159">				int assetCount = assetCovarianceMatrix.length;</span>
+<span class="nc" id="L160">				double variance = 0;</span>
 
-<span class="nc bnc" id="L159" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L160" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L161">					throw new java.lang.Exception</span>
-						(&quot;LimitRiskTermVariance::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L164" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
 				{
-<span class="nc" id="L166">					double dblHoldingsOffsetI = adblFinalHoldings[i];</span>
+<span class="nc" id="L166">					throw new java.lang.Exception</span>
+					(&quot;LimitRiskTermVariance::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">					if (null != _adblBenchmarkHoldings) dblHoldingsOffsetI -= _adblBenchmarkHoldings[i];</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">				for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
+				{
+<span class="nc" id="L172">					double dblHoldingsOffsetI = finalHoldingsArray[assetIndexI];</span>
 
-<span class="nc bnc" id="L170" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumAsset; ++j)</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">					if (null != _benchmarkHoldingsArray)</span>
 					{
-<span class="nc" id="L172">						double dblHoldingsOffsetJ = adblFinalHoldings[j];</span>
+<span class="nc" id="L176">						dblHoldingsOffsetI -= _benchmarkHoldingsArray[assetIndexI];</span>
+					}
 
-<span class="nc bnc" id="L174" title="All 2 branches missed.">						if (null != _adblBenchmarkHoldings) dblHoldingsOffsetJ -= _adblBenchmarkHoldings[j];</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">					for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
+					{
+<span class="nc" id="L181">						double dblHoldingsOffsetJ = finalHoldingsArray[assetIndexJ];</span>
 
-<span class="nc" id="L176">						dblVariance += dblHoldingsOffsetI * aadblAssetCovariance[i][j] * dblHoldingsOffsetJ;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">						if (null != _benchmarkHoldingsArray)</span>
+						{
+<span class="nc" id="L185">							dblHoldingsOffsetJ -= _benchmarkHoldingsArray[assetIndexJ];</span>
+						}
+
+<span class="nc" id="L188">						variance += dblHoldingsOffsetI * assetCovarianceMatrix[assetIndexI][assetIndexJ] *</span>
+							dblHoldingsOffsetJ;
 					}
 				}
 
-<span class="nc" id="L180">				return dblVariance;</span>
+<span class="nc" id="L193">				return variance;</span>
 			}
 		};
 	}

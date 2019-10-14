@@ -81,37 +81,43 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionChargeTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+public abstract class TransactionChargeTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;</span>
 
 	protected TransactionChargeTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L96">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L97">		super (</span>
+			name,
+			id,
+			description,
 			&quot;TRANSACTION_COST&quot;,
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-<span class="nc" id="L104">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L105">		int assetCount = initialHoldingsArray.length;</span>
 
-<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length)</span>
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == (_transactionChargeArray = transactionChargeArray) ||</span>
+			assetCount != _transactionChargeArray.length)
 		{
-<span class="nc bnc" id="L111" title="All 2 branches missed.">			if (null == _aTransactionCharge[i])</span>
-<span class="nc" id="L112">				throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L110">			throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L114">	}</span>
+
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="nc bnc" id="L115" title="All 2 branches missed.">			if (null == _transactionChargeArray[assetIndex])</span>
+			{
+<span class="nc" id="L117">				throw new java.lang.Exception (&quot;TransactionChargeTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="nc" id="L120">	}</span>
 
 	/**
 	 * Retrieve the Array of Transaction Charges
@@ -119,47 +125,50 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray()
 	{
-<span class="nc" id="L124">		return _aTransactionCharge;</span>
+<span class="nc" id="L130">		return _transactionChargeArray;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L129">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L130">		{</span>
+<span class="nc" id="L135">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L136">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L133">				return initialHoldings().length;</span>
+<span class="nc" id="L139">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L140" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L141">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L148">					throw new java.lang.Exception</span>
 						(&quot;TransactionChargeTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);
+				}
 
-<span class="nc" id="L144">				org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge =</span>
-<span class="nc" id="L145">					transactionCharge();</span>
+<span class="nc" id="L152">				double[] initialHoldingsArray = initialHoldingsArray();</span>
 
-<span class="nc" id="L147">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L154">				int assetCount = _transactionChargeArray.length;</span>
+<span class="nc" id="L155">				double fixedChargeTerm = 0.;</span>
 
-<span class="nc" id="L149">				int iNumAsset = aTransactionCharge.length;</span>
-<span class="nc" id="L150">				double dblFixedChargeTerm = 0.;</span>
-
-<span class="nc bnc" id="L152" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L153">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">				if (variateArray.length != assetCount)</span>
+				{
+<span class="nc" id="L159">					throw new java.lang.Exception</span>
 						(&quot;TransactionChargeTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L157">					dblFixedChargeTerm += aTransactionCharge[i].estimate (</span>
-						adblInitialHoldings[i],
-						adblVariate[i]
+<span class="nc bnc" id="L163" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc" id="L165">					fixedChargeTerm += _transactionChargeArray[assetIndex].estimate (</span>
+						initialHoldingsArray[assetIndex],
+						variateArray[assetIndex]
 					);
+				}
 
-<span class="nc" id="L162">				return dblFixedChargeTerm;</span>
+<span class="nc" id="L171">				return fixedChargeTerm;</span>
 			}
 		};
 	}

@@ -111,37 +111,43 @@ public class IntegerSequenceAgnosticMetrics extends
 	 * Retrieve the Upper Bound on Probability of X gt 0
 	 * 
 	 * @return The Upper Bound on Probability of X gt 0
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double probGreaterThanZeroUpperBound()
+		throws java.lang.Exception
 	{
-<span class="fc" id="L118">		double dblPopulationMean = populationMean();</span>
+<span class="fc" id="L121">		double dblPopulationMean = populationMean();</span>
 
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		double dblProb = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :</span>
-<span class="fc" id="L121">			empiricalExpectation();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		double dblProb = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :</span>
+<span class="fc" id="L124">			empiricalExpectation();</span>
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		return dblProb &gt; 1. ? 1 : dblProb;</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		return dblProb &gt; 1. ? 1 : dblProb;</span>
 	}
 
 	/**
 	 * Retrieve the Upper Bound on Probability of X = 0
 	 * 
 	 * @return The Upper Bound on Probability of X = 0
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double probEqualToZeroUpperBound()
+		throws java.lang.Exception
 	{
-<span class="fc" id="L134">		double dblPopulationMean = populationMean();</span>
+<span class="fc" id="L140">		double dblPopulationMean = populationMean();</span>
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		double dblMean = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :</span>
-<span class="fc" id="L137">			empiricalExpectation();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		double dblMean = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ? dblPopulationMean :</span>
+<span class="fc" id="L143">			empiricalExpectation();</span>
 
-<span class="fc" id="L139">		double dblPopulationVariance = populationVariance();</span>
+<span class="fc" id="L145">		double dblPopulationVariance = populationVariance();</span>
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		double dblVariance = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
-<span class="fc" id="L142">			dblPopulationVariance : empiricalVariance();</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		double dblVariance = org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="fc" id="L148">			dblPopulationVariance : empiricalVariance();</span>
 
-<span class="fc" id="L144">		return dblVariance / (dblMean * dblMean + dblVariance);</span>
+<span class="fc" id="L150">		return dblVariance / (dblMean * dblMean + dblVariance);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

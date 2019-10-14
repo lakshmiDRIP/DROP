@@ -81,64 +81,81 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm {
-<span class="nc" id="L85">	private double[][] _aadblAssetCovariance = null;</span>
-<span class="nc" id="L86">	private double[][] _aadblAlphaUncertainty = null;</span>
-<span class="nc" id="L87">	private double _dblConfidenceLevel = java.lang.Double.NaN;</span>
+public abstract class RobustErrorTerm
+	extends org.drip.portfolioconstruction.objective.ReturnsTerm
+{
+<span class="nc" id="L87">	private double[][] _assetCovarianceMatrix = null;</span>
+<span class="nc" id="L88">	private double[][] _alphaUncertaintyMatrix = null;</span>
+<span class="nc" id="L89">	private double _confidenceLevel = java.lang.Double.NaN;</span>
 
 	/**
 	 * RobustErrorTerm Constructor
 	 * 
-	 * @param strName Name of the Expected Returns Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param adblAlpha Asset Alpha
-	 * @param aadblAlphaUncertainty Alpha Uncertainty Matrix
-	 * @param aadblAssetCovariance Asset Co-variance Matrix
-	 * @param adblBenchmarkConstrictedHoldings Benchmark Constricted Holdings
+	 * @param name Name of the Expected Returns Objective Term
+	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param alphaArray Asset Alpha Array
+	 * @param alphaUncertaintyMatrix Alpha Uncertainty Matrix
+	 * @param assetCovarianceMatrix Asset Co-variance Matrix
+	 * @param benchmarkConstrictedHoldingsArray Benchmark Constricted Holdings Array
+	 * @param confidenceLevel Confidence Level (i.e., Eta)
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RobustErrorTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[] adblAlpha,
-		final double[][] aadblAlphaUncertainty,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[] alphaArray,
+		final double[][] alphaUncertaintyMatrix,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkConstrictedHoldingsArray,
+		final double confidenceLevel)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L111">		super (</span>
-			strName,
+<span class="nc" id="L115">		super (</span>
+			name,
 			&quot;OT_ROBUST&quot;,
 			&quot;Robust Error Portfolio Returns Objective Term&quot;,
-			adblInitialHoldings,
-			adblAlpha,
-			adblBenchmarkConstrictedHoldings
+			initialHoldingsArray,
+			alphaArray,
+			benchmarkConstrictedHoldingsArray
 		);
 
-<span class="nc" id="L120">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L124">		int assetCount = initialHoldingsArray.length;</span>
 
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == (_aadblAlphaUncertainty = aadblAlphaUncertainty) || iNumAsset !=</span>
-			_aadblAlphaUncertainty.length)
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			if (null == _aadblAlphaUncertainty[i] || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">				(_aadblAlphaUncertainty[i]) || iNumAsset != _aadblAlphaUncertainty[i].length)</span>
-<span class="nc" id="L129">				throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L126" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_confidenceLevel = confidenceLevel) ||</span>
+			null == (_alphaUncertaintyMatrix = alphaUncertaintyMatrix) ||
+			assetCount != _alphaUncertaintyMatrix.length)
+		{
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=</span>
-			_aadblAssetCovariance.length)
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">			if (null == _aadblAssetCovariance[i] || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L138" title="All 4 branches missed.">				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (null == _alphaUncertaintyMatrix[assetIndex] ||</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_alphaUncertaintyMatrix[assetIndex]) ||</span>
+				assetCount != _alphaUncertaintyMatrix[assetIndex].length)
+			{
 <span class="nc" id="L139">				throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
 		}
-<span class="nc" id="L141">	}</span>
+
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (null == (_assetCovarianceMatrix = assetCovarianceMatrix) ||</span>
+			assetCount != _assetCovarianceMatrix.length)
+		{
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			if (null == _assetCovarianceMatrix[assetIndex] ||</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_assetCovarianceMatrix[assetIndex]) ||</span>
+				assetCount != _assetCovarianceMatrix[assetIndex].length)
+			{
+<span class="nc" id="L155">				throw new java.lang.Exception (&quot;RobustErrorTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="nc" id="L158">	}</span>
 
 	/**
 	 * Retrieve the Confidence Level (i.e., Eta)
@@ -148,7 +165,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 
 	public double confidenceLevel()
 	{
-<span class="nc" id="L151">		return _dblConfidenceLevel;</span>
+<span class="nc" id="L168">		return _confidenceLevel;</span>
 	}
 
 	/**
@@ -159,7 +176,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 
 	public double[][] assetCovariance()
 	{
-<span class="nc" id="L162">		return _aadblAssetCovariance;</span>
+<span class="nc" id="L179">		return _assetCovarianceMatrix;</span>
 	}
 
 	/**
@@ -170,7 +187,7 @@ public abstract class RobustErrorTerm extends org.drip.portfolioconstruction.obj
 
 	public double[][] alphaUncertainty()
 	{
-<span class="nc" id="L173">		return _aadblAlphaUncertainty;</span>
+<span class="nc" id="L190">		return _alphaUncertaintyMatrix;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

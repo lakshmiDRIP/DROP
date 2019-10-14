@@ -6,6 +6,7 @@ package org.drip.analytics.eventday;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,33 +17,43 @@ package org.drip.analytics.eventday;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -78,21 +89,21 @@ package org.drip.analytics.eventday;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/README.md&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/README.md&quot;&gt;Fixed, Variable, and Custom Holiday Creation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Variable extends Base {
-<span class="nc" id="L91">	private int _iMonth = 0;</span>
-<span class="nc" id="L92">	private int _iWeekDay = 0;</span>
-<span class="nc" id="L93">	private int _iWeekInMonth = 0;</span>
-<span class="nc" id="L94">	private boolean _bFromFront = true;</span>
-<span class="nc" id="L95">	private org.drip.analytics.eventday.Weekend _wkend = null;</span>
+<span class="nc" id="L102">	private int _iMonth = 0;</span>
+<span class="nc" id="L103">	private int _iWeekDay = 0;</span>
+<span class="nc" id="L104">	private int _iWeekInMonth = 0;</span>
+<span class="nc" id="L105">	private boolean _bFromFront = true;</span>
+<span class="nc" id="L106">	private org.drip.analytics.eventday.Weekend _wkend = null;</span>
 
 	/**
 	 * Construct the object from the week, day, month, from front/back, week end, and description
@@ -113,39 +124,39 @@ public class Variable extends Base {
 		final Weekend wkend,
 		final java.lang.String strDescription)
 	{
-<span class="nc" id="L116">		super (strDescription);</span>
+<span class="nc" id="L127">		super (strDescription);</span>
 
-<span class="nc" id="L118">		_wkend = wkend;</span>
-<span class="nc" id="L119">		_iMonth = iMonth;</span>
-<span class="nc" id="L120">		_iWeekDay = iWeekDay;</span>
-<span class="nc" id="L121">		_bFromFront = bFromFront;</span>
-<span class="nc" id="L122">		_iWeekInMonth = iWeekInMonth;</span>
-<span class="nc" id="L123">	}</span>
+<span class="nc" id="L129">		_wkend = wkend;</span>
+<span class="nc" id="L130">		_iMonth = iMonth;</span>
+<span class="nc" id="L131">		_iWeekDay = iWeekDay;</span>
+<span class="nc" id="L132">		_bFromFront = bFromFront;</span>
+<span class="nc" id="L133">		_iWeekInMonth = iWeekInMonth;</span>
+<span class="nc" id="L134">	}</span>
 
 	@Override public int dateInYear (
 		final int iYear,
 		final boolean bAdjustForWeekend)
 	{
-<span class="nc" id="L129">		int iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L140">		int iDate = java.lang.Integer.MIN_VALUE;</span>
 
 		try {
-<span class="nc bnc" id="L132" title="All 2 branches missed.">			if (_bFromFront)</span>
-<span class="nc" id="L133">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
-<span class="nc" id="L134">					_iWeekDay)).julian() + (7 * (_iWeekInMonth - 1));</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			if (_bFromFront)</span>
+<span class="nc" id="L144">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
+<span class="nc" id="L145">					_iWeekDay)).julian() + (7 * (_iWeekInMonth - 1));</span>
 			else {
-<span class="nc" id="L136">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
-<span class="nc" id="L137">					org.drip.analytics.date.DateUtil.DaysInMonth (_iMonth, iYear))).julian() - (7 *</span>
+<span class="nc" id="L147">				iDate = (org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, _iMonth,</span>
+<span class="nc" id="L148">					org.drip.analytics.date.DateUtil.DaysInMonth (_iMonth, iYear))).julian() - (7 *</span>
 						(_iWeekInMonth - 1));
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">				while (_iWeekDay != (iDate % 7)) --iDate;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">				while (_iWeekDay != (iDate % 7)) --iDate;</span>
 			}
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">			if (bAdjustForWeekend) return Base.rollHoliday (iDate, true, _wkend);</span>
-<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L145">			e.printStackTrace();</span>
-<span class="nc" id="L146">		}</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			if (bAdjustForWeekend) return Base.rollHoliday (iDate, true, _wkend);</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="nc" id="L157">		}</span>
 
-<span class="nc" id="L148">		return iDate;</span>
+<span class="nc" id="L159">		return iDate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

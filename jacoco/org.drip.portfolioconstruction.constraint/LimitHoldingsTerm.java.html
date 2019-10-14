@@ -81,35 +81,38 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitHoldingsTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitHoldingsTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L86">	private int _iSize = -1;</span>
+<span class="nc" id="L87">	private int _size = -1;</span>
 
 	protected LimitHoldingsTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final int iSize)
+		final double minimum,
+		final double maximum,
+		final int size)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L99">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L100">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_HOLDINGS&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (0 &gt;= (_iSize = iSize))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LimitHoldingsTerm Constructor =&gt; Invalid Section&quot;);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (0 &gt;= (_size = size))</span>
+		{
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;LimitHoldingsTerm Constructor =&gt; Invalid Section&quot;);</span>
+		}
+<span class="nc" id="L115">	}</span>
 
 	/**
 	 * Retrieve the Size of the Holdings
@@ -119,7 +122,7 @@ public abstract class LimitHoldingsTerm extends org.drip.portfolioconstruction.o
 
 	public int size()
 	{
-<span class="nc" id="L122">		return _iSize;</span>
+<span class="nc" id="L125">		return _size;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

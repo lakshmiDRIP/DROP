@@ -80,37 +80,45 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-<span class="nc" id="L84">	private double[] _adblMagnitude = null;</span>
-<span class="nc" id="L85">	private double[] _adblMembership = null;</span>
+public abstract class TiltTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+{
+<span class="nc" id="L86">	private double[] _magnitudeArray = null;</span>
+<span class="nc" id="L87">	private double[] _membershipArray = null;</span>
 
 	protected TiltTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final double[] adblMagnitude,
-		final double[] adblMembership)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final double[] magnitudeArray,
+		final double[] membershipArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L96">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L98">		super (</span>
+			name,
+			id,
+			description,
 			&quot;TILT&quot;,
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-<span class="nc" id="L104">		int iNumInitialHoldings = adblInitialHoldings.length;</span>
+<span class="nc" id="L106">		int assetCount = initialHoldingsArray.length;</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (null == (_adblMagnitude = adblMagnitude) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L107" title="All 4 branches missed.">			(_adblMagnitude) || iNumInitialHoldings != _adblMagnitude.length)</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;TiltTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (null == (_adblMembership = adblMembership) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L111" title="All 4 branches missed.">			(_adblMembership) || iNumInitialHoldings != _adblMembership.length)</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == (_magnitudeArray = magnitudeArray) ||</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_magnitudeArray) ||</span>
+			assetCount != _magnitudeArray.length)
+		{
 <span class="nc" id="L112">			throw new java.lang.Exception (&quot;TiltTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L113">	}</span>
+		}
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (null == (_membershipArray = membershipArray) ||</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_membershipArray) ||</span>
+			assetCount != _membershipArray.length)
+		{
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;TiltTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L121">	}</span>
 
 	/**
 	 * Retrieve the Array of Tilt Magnitudes
@@ -118,9 +126,9 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 	 * @return The Array of Tilt Magnitudes
 	 */
 
-	public double[] magnitude()
+	public double[] magnitudeArray()
 	{
-<span class="nc" id="L123">		return _adblMagnitude;</span>
+<span class="nc" id="L131">		return _magnitudeArray;</span>
 	}
 
 	/**
@@ -129,9 +137,9 @@ public abstract class TiltTerm extends org.drip.portfolioconstruction.optimizer.
 	 * @return The Array of Tilt Memberships
 	 */
 
-	public double[] membership()
+	public double[] membershipArray()
 	{
-<span class="nc" id="L134">		return _adblMembership;</span>
+<span class="nc" id="L142">		return _membershipArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

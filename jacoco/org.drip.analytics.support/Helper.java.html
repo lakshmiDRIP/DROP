@@ -6,6 +6,7 @@ package org.drip.analytics.support;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,33 +17,43 @@ package org.drip.analytics.support;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -106,39 +117,39 @@ package org.drip.analytics.support;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/README.md&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/README.md&quot;&gt;Assorted Support and Helper Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L118">public class Helper {</span>
+<span class="nc" id="L129">public class Helper {</span>
 
 	/**
 	 * Tenor Comparator - Left Tenor Greater than Right
 	 */
 
-<span class="fc" id="L124">	public static int LEFT_TENOR_GREATER = 1;</span>
+<span class="fc" id="L135">	public static int LEFT_TENOR_GREATER = 1;</span>
 
 	/**
 	 * Tenor Comparator - Left Tenor Lesser than Right
 	 */
 
-<span class="fc" id="L130">	public static int LEFT_TENOR_LESSER = 2;</span>
+<span class="fc" id="L141">	public static int LEFT_TENOR_LESSER = 2;</span>
 
 	/**
 	 * Tenor Comparator - Left Tenor Matches Right
 	 */
 
-<span class="fc" id="L136">	public static int LEFT_TENOR_EQUALS = 4;</span>
+<span class="fc" id="L147">	public static int LEFT_TENOR_EQUALS = 4;</span>
 
-<span class="fc" id="L138">	private static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; s_mapIRSwitch =</span>
+<span class="fc" id="L149">	private static final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; s_mapIRSwitch =</span>
 		new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt;();
 
-<span class="fc" id="L141">	private static final java.util.Map&lt;java.lang.Integer, java.lang.String&gt; s_mapDCBBGCode = new</span>
+<span class="fc" id="L152">	private static final java.util.Map&lt;java.lang.Integer, java.lang.String&gt; s_mapDCBBGCode = new</span>
 		java.util.HashMap&lt;java.lang.Integer, java.lang.String&gt;();
 
 	/**
@@ -147,140 +158,140 @@ package org.drip.analytics.support;
 
 	public static final void Init()
 	{
-<span class="nc" id="L150">		s_mapDCBBGCode.put (1, &quot;ACT/ACT&quot;);</span>
+<span class="nc" id="L161">		s_mapDCBBGCode.put (1, &quot;ACT/ACT&quot;);</span>
 
-<span class="nc" id="L152">		s_mapDCBBGCode.put (2, &quot;ACT/360&quot;);</span>
+<span class="nc" id="L163">		s_mapDCBBGCode.put (2, &quot;ACT/360&quot;);</span>
 
-<span class="nc" id="L154">		s_mapDCBBGCode.put (3, &quot;ACT/365&quot;);</span>
+<span class="nc" id="L165">		s_mapDCBBGCode.put (3, &quot;ACT/365&quot;);</span>
 
-<span class="nc" id="L156">		s_mapDCBBGCode.put (4, &quot;30/ACT&quot;);</span>
+<span class="nc" id="L167">		s_mapDCBBGCode.put (4, &quot;30/ACT&quot;);</span>
 
-<span class="nc" id="L158">		s_mapDCBBGCode.put (5, &quot;30/360&quot;);</span>
+<span class="nc" id="L169">		s_mapDCBBGCode.put (5, &quot;30/360&quot;);</span>
 
-<span class="nc" id="L160">		s_mapDCBBGCode.put (6, &quot;30/365&quot;);</span>
+<span class="nc" id="L171">		s_mapDCBBGCode.put (6, &quot;30/365&quot;);</span>
 
-<span class="nc" id="L162">		s_mapDCBBGCode.put (7, &quot;NL/ACT&quot;);</span>
+<span class="nc" id="L173">		s_mapDCBBGCode.put (7, &quot;NL/ACT&quot;);</span>
 
-<span class="nc" id="L164">		s_mapDCBBGCode.put (8, &quot;NL/360&quot;);</span>
+<span class="nc" id="L175">		s_mapDCBBGCode.put (8, &quot;NL/360&quot;);</span>
 
-<span class="nc" id="L166">		s_mapDCBBGCode.put (9, &quot;NL/365&quot;);</span>
+<span class="nc" id="L177">		s_mapDCBBGCode.put (9, &quot;NL/365&quot;);</span>
 
-<span class="nc" id="L168">		s_mapDCBBGCode.put (10, &quot;ACT/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L179">		s_mapDCBBGCode.put (10, &quot;ACT/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L170">		s_mapDCBBGCode.put (11, &quot;ACT/360 NON-EOM&quot;);</span>
+<span class="nc" id="L181">		s_mapDCBBGCode.put (11, &quot;ACT/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L172">		s_mapDCBBGCode.put (12, &quot;ACT/365 NON-EOM&quot;);</span>
+<span class="nc" id="L183">		s_mapDCBBGCode.put (12, &quot;ACT/365 NON-EOM&quot;);</span>
 
-<span class="nc" id="L174">		s_mapDCBBGCode.put (13, &quot;30/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L185">		s_mapDCBBGCode.put (13, &quot;30/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L176">		s_mapDCBBGCode.put (14, &quot;30/360 NON-EOM&quot;);</span>
+<span class="nc" id="L187">		s_mapDCBBGCode.put (14, &quot;30/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L178">		s_mapDCBBGCode.put (15, &quot;30/365 NON-EOM&quot;);</span>
+<span class="nc" id="L189">		s_mapDCBBGCode.put (15, &quot;30/365 NON-EOM&quot;);</span>
 
-<span class="nc" id="L180">		s_mapDCBBGCode.put (16, &quot;NL/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L191">		s_mapDCBBGCode.put (16, &quot;NL/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L182">		s_mapDCBBGCode.put (17, &quot;NL/360 NON-EOM&quot;);</span>
+<span class="nc" id="L193">		s_mapDCBBGCode.put (17, &quot;NL/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L184">		s_mapDCBBGCode.put (18, &quot;NL/365 NON-EOM&quot;);</span>
+<span class="nc" id="L195">		s_mapDCBBGCode.put (18, &quot;NL/365 NON-EOM&quot;);</span>
 
-<span class="nc" id="L186">		s_mapDCBBGCode.put (19, &quot;ISMA 30/ACT&quot;);</span>
+<span class="nc" id="L197">		s_mapDCBBGCode.put (19, &quot;ISMA 30/ACT&quot;);</span>
 
-<span class="nc" id="L188">		s_mapDCBBGCode.put (20, &quot;ISMA 30/360&quot;);</span>
+<span class="nc" id="L199">		s_mapDCBBGCode.put (20, &quot;ISMA 30/360&quot;);</span>
 
-<span class="nc" id="L190">		s_mapDCBBGCode.put (21, &quot;ISMA 30/365&quot;);</span>
+<span class="nc" id="L201">		s_mapDCBBGCode.put (21, &quot;ISMA 30/365&quot;);</span>
 
-<span class="nc" id="L192">		s_mapDCBBGCode.put (22, &quot;ISMA 30/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L203">		s_mapDCBBGCode.put (22, &quot;ISMA 30/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L194">		s_mapDCBBGCode.put (23, &quot;ISMA 30/360 NON-EOM&quot;);</span>
+<span class="nc" id="L205">		s_mapDCBBGCode.put (23, &quot;ISMA 30/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L196">		s_mapDCBBGCode.put (24, &quot;ISMA 30/365 NON-EOM&quot;);</span>
+<span class="nc" id="L207">		s_mapDCBBGCode.put (24, &quot;ISMA 30/365 NON-EOM&quot;);</span>
 
-<span class="nc" id="L198">		s_mapDCBBGCode.put (27, &quot;ACT/364&quot;);</span>
+<span class="nc" id="L209">		s_mapDCBBGCode.put (27, &quot;ACT/364&quot;);</span>
 
-<span class="nc" id="L200">		s_mapDCBBGCode.put (29, &quot;US MUNI: 30/360&quot;);</span>
+<span class="nc" id="L211">		s_mapDCBBGCode.put (29, &quot;US MUNI: 30/360&quot;);</span>
 
-<span class="nc" id="L202">		s_mapDCBBGCode.put (30, &quot;ACT/364 NON-EOM&quot;);</span>
+<span class="nc" id="L213">		s_mapDCBBGCode.put (30, &quot;ACT/364 NON-EOM&quot;);</span>
 
-<span class="nc" id="L204">		s_mapDCBBGCode.put (32, &quot;MUNI30/360 NON-EOM&quot;);</span>
+<span class="nc" id="L215">		s_mapDCBBGCode.put (32, &quot;MUNI30/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L206">		s_mapDCBBGCode.put (33, &quot;BUS DAYS/252&quot;);</span>
+<span class="nc" id="L217">		s_mapDCBBGCode.put (33, &quot;BUS DAYS/252&quot;);</span>
 
-<span class="nc" id="L208">		s_mapDCBBGCode.put (35, &quot;GERMAN:30/360&quot;);</span>
+<span class="nc" id="L219">		s_mapDCBBGCode.put (35, &quot;GERMAN:30/360&quot;);</span>
 
-<span class="nc" id="L210">		s_mapDCBBGCode.put (36, &quot;BUS DAY/252 NON-EOM&quot;);</span>
+<span class="nc" id="L221">		s_mapDCBBGCode.put (36, &quot;BUS DAY/252 NON-EOM&quot;);</span>
 
-<span class="nc" id="L212">		s_mapDCBBGCode.put (38, &quot;GER:30/360 NON-EOM&quot;);</span>
+<span class="nc" id="L223">		s_mapDCBBGCode.put (38, &quot;GER:30/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L214">		s_mapDCBBGCode.put (40, &quot;US:WIT ACT/ACT&quot;);</span>
+<span class="nc" id="L225">		s_mapDCBBGCode.put (40, &quot;US:WIT ACT/ACT&quot;);</span>
 
-<span class="nc" id="L216">		s_mapDCBBGCode.put (41, &quot;US:WIB ACT/360&quot;);</span>
+<span class="nc" id="L227">		s_mapDCBBGCode.put (41, &quot;US:WIB ACT/360&quot;);</span>
 
-<span class="nc" id="L218">		s_mapDCBBGCode.put (44, &quot;ISDA SWAPS:30/360&quot;);</span>
+<span class="nc" id="L229">		s_mapDCBBGCode.put (44, &quot;ISDA SWAPS:30/360&quot;);</span>
 
-<span class="nc" id="L220">		s_mapDCBBGCode.put (45, &quot;ISDA SWAPS:30/365&quot;);</span>
+<span class="nc" id="L231">		s_mapDCBBGCode.put (45, &quot;ISDA SWAPS:30/365&quot;);</span>
 
-<span class="nc" id="L222">		s_mapDCBBGCode.put (46, &quot;ISDA SWAPS:30/ACT&quot;);</span>
+<span class="nc" id="L233">		s_mapDCBBGCode.put (46, &quot;ISDA SWAPS:30/ACT&quot;);</span>
 
-<span class="nc" id="L224">		s_mapDCBBGCode.put (47, &quot;ISDA30/360 NON-EOM&quot;);</span>
+<span class="nc" id="L235">		s_mapDCBBGCode.put (47, &quot;ISDA30/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L226">		s_mapDCBBGCode.put (48, &quot;ISDA30/365 NON-EOM&quot;);</span>
+<span class="nc" id="L237">		s_mapDCBBGCode.put (48, &quot;ISDA30/365 NON-EOM&quot;);</span>
 
-<span class="nc" id="L228">		s_mapDCBBGCode.put (49, &quot;ISDA30/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L239">		s_mapDCBBGCode.put (49, &quot;ISDA30/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L230">		s_mapDCBBGCode.put (50, &quot;ISDA 30E/360&quot;);</span>
+<span class="nc" id="L241">		s_mapDCBBGCode.put (50, &quot;ISDA 30E/360&quot;);</span>
 
-<span class="nc" id="L232">		s_mapDCBBGCode.put (51, &quot;ISDA 30E/365&quot;);</span>
+<span class="nc" id="L243">		s_mapDCBBGCode.put (51, &quot;ISDA 30E/365&quot;);</span>
 
-<span class="nc" id="L234">		s_mapDCBBGCode.put (52, &quot;ISDA 30E/ACT&quot;);</span>
+<span class="nc" id="L245">		s_mapDCBBGCode.put (52, &quot;ISDA 30E/ACT&quot;);</span>
 
-<span class="nc" id="L236">		s_mapDCBBGCode.put (53, &quot;ISDA 30E/360 N-EOM&quot;);</span>
+<span class="nc" id="L247">		s_mapDCBBGCode.put (53, &quot;ISDA 30E/360 N-EOM&quot;);</span>
 
-<span class="nc" id="L238">		s_mapDCBBGCode.put (54, &quot;ISDA 30E/365 N-EOM&quot;);</span>
+<span class="nc" id="L249">		s_mapDCBBGCode.put (54, &quot;ISDA 30E/365 N-EOM&quot;);</span>
 
-<span class="nc" id="L240">		s_mapDCBBGCode.put (55, &quot;ISDA 30E/ACT N-EOM&quot;);</span>
+<span class="nc" id="L251">		s_mapDCBBGCode.put (55, &quot;ISDA 30E/ACT N-EOM&quot;);</span>
 
-<span class="nc" id="L242">		s_mapDCBBGCode.put (101, &quot;ACT/ACT&quot;);</span>
+<span class="nc" id="L253">		s_mapDCBBGCode.put (101, &quot;ACT/ACT&quot;);</span>
 
-<span class="nc" id="L244">		s_mapDCBBGCode.put (102, &quot;ACT/360&quot;);</span>
+<span class="nc" id="L255">		s_mapDCBBGCode.put (102, &quot;ACT/360&quot;);</span>
 
-<span class="nc" id="L246">		s_mapDCBBGCode.put (103, &quot;ACT/365&quot;);</span>
+<span class="nc" id="L257">		s_mapDCBBGCode.put (103, &quot;ACT/365&quot;);</span>
 
-<span class="nc" id="L248">		s_mapDCBBGCode.put (104, &quot;30/360&quot;);</span>
+<span class="nc" id="L259">		s_mapDCBBGCode.put (104, &quot;30/360&quot;);</span>
 
-<span class="nc" id="L250">		s_mapDCBBGCode.put (105, &quot;ACT/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L261">		s_mapDCBBGCode.put (105, &quot;ACT/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L252">		s_mapDCBBGCode.put (106, &quot;ACT/360 NON-EOM&quot;);</span>
+<span class="nc" id="L263">		s_mapDCBBGCode.put (106, &quot;ACT/360 NON-EOM&quot;);</span>
 
-<span class="nc" id="L254">		s_mapDCBBGCode.put (107, &quot;ACT/365 NON-EOM&quot;);</span>
+<span class="nc" id="L265">		s_mapDCBBGCode.put (107, &quot;ACT/365 NON-EOM&quot;);</span>
 
-<span class="nc" id="L256">		s_mapDCBBGCode.put (108, &quot;ACT/360&quot;);</span>
+<span class="nc" id="L267">		s_mapDCBBGCode.put (108, &quot;ACT/360&quot;);</span>
 
-<span class="nc" id="L258">		s_mapDCBBGCode.put (131, &quot;ISMA 30/360&quot;);</span>
+<span class="nc" id="L269">		s_mapDCBBGCode.put (131, &quot;ISMA 30/360&quot;);</span>
 
-<span class="nc" id="L260">		s_mapDCBBGCode.put (201, &quot;ISDA ACT/ACT&quot;);</span>
+<span class="nc" id="L271">		s_mapDCBBGCode.put (201, &quot;ISDA ACT/ACT&quot;);</span>
 
-<span class="nc" id="L262">		s_mapDCBBGCode.put (202, &quot;AFB ACT/ACT&quot;);</span>
+<span class="nc" id="L273">		s_mapDCBBGCode.put (202, &quot;AFB ACT/ACT&quot;);</span>
 
-<span class="nc" id="L264">		s_mapDCBBGCode.put (203, &quot;ISDA ACT/ACT NOM&quot;);</span>
+<span class="nc" id="L275">		s_mapDCBBGCode.put (203, &quot;ISDA ACT/ACT NOM&quot;);</span>
 
-<span class="nc" id="L266">		s_mapDCBBGCode.put (204, &quot;AFB ACT/ACT NOM&quot;);</span>
+<span class="nc" id="L277">		s_mapDCBBGCode.put (204, &quot;AFB ACT/ACT NOM&quot;);</span>
 
-<span class="nc" id="L268">		s_mapDCBBGCode.put (206, &quot;ISMA ACT/ACT&quot;);</span>
+<span class="nc" id="L279">		s_mapDCBBGCode.put (206, &quot;ISMA ACT/ACT&quot;);</span>
 
-<span class="nc" id="L270">		s_mapDCBBGCode.put (207, &quot;ISMA ACT/ACT NON-EOM&quot;);</span>
+<span class="nc" id="L281">		s_mapDCBBGCode.put (207, &quot;ISMA ACT/ACT NON-EOM&quot;);</span>
 
-<span class="nc" id="L272">		s_mapIRSwitch.put (&quot;ITL&quot;, &quot;EUR&quot;);</span>
+<span class="nc" id="L283">		s_mapIRSwitch.put (&quot;ITL&quot;, &quot;EUR&quot;);</span>
 
-<span class="nc" id="L274">		s_mapIRSwitch.put (&quot;FRF&quot;, &quot;EUR&quot;);</span>
+<span class="nc" id="L285">		s_mapIRSwitch.put (&quot;FRF&quot;, &quot;EUR&quot;);</span>
 
-<span class="nc" id="L276">		s_mapIRSwitch.put (&quot;CZK&quot;, &quot;EUR&quot;);</span>
+<span class="nc" id="L287">		s_mapIRSwitch.put (&quot;CZK&quot;, &quot;EUR&quot;);</span>
 
-<span class="nc" id="L278">		s_mapIRSwitch.put (&quot;BEF&quot;, &quot;EUR&quot;);</span>
+<span class="nc" id="L289">		s_mapIRSwitch.put (&quot;BEF&quot;, &quot;EUR&quot;);</span>
 
-<span class="nc" id="L280">		s_mapIRSwitch.put (&quot;ATS&quot;, &quot;EUR&quot;);</span>
+<span class="nc" id="L291">		s_mapIRSwitch.put (&quot;ATS&quot;, &quot;EUR&quot;);</span>
 
-<span class="nc" id="L282">		s_mapIRSwitch.put (&quot;SKK&quot;, &quot;EUR&quot;);</span>
-<span class="nc" id="L283">	}</span>
+<span class="nc" id="L293">		s_mapIRSwitch.put (&quot;SKK&quot;, &quot;EUR&quot;);</span>
+<span class="nc" id="L294">	}</span>
 
 	/**
 	 * Calculate the discount factor from the specified frequency, yield, and accrual year fraction
@@ -300,13 +311,13 @@ package org.drip.analytics.support;
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYield) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L304" title="1 of 2 branches missed.">			(dblTime))</span>
-<span class="nc" id="L305">			throw new java.lang.Exception (&quot;Helper::YieldDF =&gt; Bad yield/time&quot;);</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYield) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">			(dblTime))</span>
+<span class="nc" id="L316">			throw new java.lang.Exception (&quot;Helper::YieldDF =&gt; Bad yield/time&quot;);</span>
 
-<span class="pc bpc" id="L307" title="1 of 2 branches missed.">		int iFreq = (0 == iFreqIn) ? 2 : iFreqIn;</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		int iFreq = (0 == iFreqIn) ? 2 : iFreqIn;</span>
 
-<span class="fc" id="L309">		return java.lang.Math.pow (1. + (dblYield / iFreq), -1. * dblTime * iFreq);</span>
+<span class="fc" id="L320">		return java.lang.Math.pow (1. + (dblYield / iFreq), -1. * dblTime * iFreq);</span>
 	}
 
 	/**
@@ -327,13 +338,13 @@ package org.drip.analytics.support;
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L330" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDF) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L331" title="1 of 2 branches missed.">			(dblTime))</span>
-<span class="nc" id="L332">			throw new java.lang.Exception (&quot;CurveProductHelper.DFYield: Bad yield/time&quot;);</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDF) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">			(dblTime))</span>
+<span class="nc" id="L343">			throw new java.lang.Exception (&quot;CurveProductHelper.DFYield: Bad yield/time&quot;);</span>
 
-<span class="pc bpc" id="L334" title="1 of 2 branches missed.">		int iFreq = (0 == iFreqIn) ? 2 : iFreqIn;</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		int iFreq = (0 == iFreqIn) ? 2 : iFreqIn;</span>
 
-<span class="fc" id="L336">		return iFreq * (java.lang.Math.pow (dblDF, -1. / (iFreq * dblTime)) - 1.);</span>
+<span class="fc" id="L347">		return iFreq * (java.lang.Math.pow (dblDF, -1. / (iFreq * dblTime)) - 1.);</span>
 	}
 
 	/**
@@ -356,14 +367,14 @@ package org.drip.analytics.support;
 		final double dblFedFundLIBORSwapBasis)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLIBORSwapRate) ||</span>
-<span class="pc bpc" id="L360" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblFedFundLIBORSwapBasis))</span>
-<span class="nc" id="L361">			throw new java.lang.Exception (&quot;Helper::OISFromLIBORSwapFedFundBasis =&gt; Invalid Inputs!&quot;);</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLIBORSwapRate) ||</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblFedFundLIBORSwapBasis))</span>
+<span class="nc" id="L372">			throw new java.lang.Exception (&quot;Helper::OISFromLIBORSwapFedFundBasis =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L363">		double dblOISAnnuity = 1. + 0.25 * (4. * (java.lang.Math.sqrt (1. + (dblLIBORSwapRate * 180. / 365.))</span>
+<span class="fc" id="L374">		double dblOISAnnuity = 1. + 0.25 * (4. * (java.lang.Math.sqrt (1. + (dblLIBORSwapRate * 180. / 365.))</span>
 			- 1.) - dblFedFundLIBORSwapBasis);
 
-<span class="fc" id="L366">		return dblOISAnnuity * dblOISAnnuity * dblOISAnnuity * dblOISAnnuity - 1.;</span>
+<span class="fc" id="L377">		return dblOISAnnuity * dblOISAnnuity * dblOISAnnuity * dblOISAnnuity - 1.;</span>
 	}
 
 	/**
@@ -386,7 +397,7 @@ package org.drip.analytics.support;
 		final double dblFedFundLIBORSwapBasis)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L389">		return 4. * (java.lang.Math.pow (1. + (OISFromLIBORSwapFedFundBasis (dblLIBORSwapRate,</span>
+<span class="fc" id="L400">		return 4. * (java.lang.Math.pow (1. + (OISFromLIBORSwapFedFundBasis (dblLIBORSwapRate,</span>
 			dblFedFundLIBORSwapBasis) / 360.), 90.) - 1.);
 	}
 
@@ -410,11 +421,11 @@ package org.drip.analytics.support;
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L413" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDIRate) || iStartDate &gt;= iEndDate)</span>
-<span class="nc" id="L414">			throw new java.lang.Exception (&quot;Helper::DIStylePriceFromRate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L424" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDIRate) || iStartDate &gt;= iEndDate)</span>
+<span class="nc" id="L425">			throw new java.lang.Exception (&quot;Helper::DIStylePriceFromRate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L416">		return java.lang.Math.pow (1. + dblDIRate, -1. * org.drip.analytics.daycount.Convention.BusinessDays</span>
-<span class="nc" id="L417">			(iStartDate, iEndDate, strCalendar) / 252.);</span>
+<span class="nc" id="L427">		return java.lang.Math.pow (1. + dblDIRate, -1. * org.drip.analytics.daycount.Convention.BusinessDays</span>
+<span class="nc" id="L428">			(iStartDate, iEndDate, strCalendar) / 252.);</span>
 	}
 
 	/**
@@ -437,11 +448,11 @@ package org.drip.analytics.support;
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L440" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDIPrice) || iStartDate &gt;= iEndDate)</span>
-<span class="nc" id="L441">			throw new java.lang.Exception (&quot;Helper::DIStyleRateFromPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L451" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDIPrice) || iStartDate &gt;= iEndDate)</span>
+<span class="nc" id="L452">			throw new java.lang.Exception (&quot;Helper::DIStyleRateFromPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L443">		return java.lang.Math.pow (dblDIPrice, -252. / org.drip.analytics.daycount.Convention.BusinessDays</span>
-<span class="nc" id="L444">			(iStartDate, iEndDate, strCalendar)) - 1.;</span>
+<span class="nc" id="L454">		return java.lang.Math.pow (dblDIPrice, -252. / org.drip.analytics.daycount.Convention.BusinessDays</span>
+<span class="nc" id="L455">			(iStartDate, iEndDate, strCalendar)) - 1.;</span>
 	}
 
 	/**
@@ -460,11 +471,11 @@ package org.drip.analytics.support;
 		final double dblTaxRate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L463" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNominalYield) ||</span>
-<span class="nc bnc" id="L464" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTaxRate))</span>
-<span class="nc" id="L465">			throw new java.lang.Exception (&quot;Helper::NominalYieldToPostTaxEquivalent =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNominalYield) ||</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTaxRate))</span>
+<span class="nc" id="L476">			throw new java.lang.Exception (&quot;Helper::NominalYieldToPostTaxEquivalent =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L467">		return dblNominalYield * (1. - dblTaxRate);</span>
+<span class="nc" id="L478">		return dblNominalYield * (1. - dblTaxRate);</span>
 	}
 
 	/**
@@ -483,11 +494,11 @@ package org.drip.analytics.support;
 		final double dblTaxRate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L486" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPostTaxEquivalentYield) ||</span>
-<span class="nc bnc" id="L487" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTaxRate))</span>
-<span class="nc" id="L488">			throw new java.lang.Exception (&quot;Helper::PostTaxEquivalentYieldToNominal =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPostTaxEquivalentYield) ||</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTaxRate))</span>
+<span class="nc" id="L499">			throw new java.lang.Exception (&quot;Helper::PostTaxEquivalentYieldToNominal =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L490">		return dblPostTaxEquivalentYield / (1. - dblTaxRate);</span>
+<span class="nc" id="L501">		return dblPostTaxEquivalentYield / (1. - dblTaxRate);</span>
 	}
 
 	/**
@@ -503,21 +514,21 @@ package org.drip.analytics.support;
 		final int iValueDate,
 		final int iMaturityDate)
 	{
-<span class="fc" id="L506">		double dblMatYears = 1. * (iMaturityDate - iValueDate) / 365.25;</span>
+<span class="fc" id="L517">		double dblMatYears = 1. * (iMaturityDate - iValueDate) / 365.25;</span>
 
-<span class="fc bfc" id="L508" title="All 4 branches covered.">		if (1.0 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 2.5) return &quot;02YON&quot;;</span>
+<span class="fc bfc" id="L519" title="All 4 branches covered.">		if (1.0 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 2.5) return &quot;02YON&quot;;</span>
 
-<span class="fc bfc" id="L510" title="All 4 branches covered.">		if (2.5 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 4.0) return &quot;03YON&quot;;</span>
+<span class="fc bfc" id="L521" title="All 4 branches covered.">		if (2.5 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 4.0) return &quot;03YON&quot;;</span>
 
-<span class="fc bfc" id="L512" title="All 4 branches covered.">		if (4.0 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 6.0) return &quot;05YON&quot;;</span>
+<span class="fc bfc" id="L523" title="All 4 branches covered.">		if (4.0 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 6.0) return &quot;05YON&quot;;</span>
 
-<span class="fc bfc" id="L514" title="All 4 branches covered.">		if (6.0 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 8.5) return &quot;07YON&quot;;</span>
+<span class="fc bfc" id="L525" title="All 4 branches covered.">		if (6.0 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 8.5) return &quot;07YON&quot;;</span>
 
-<span class="fc bfc" id="L516" title="All 4 branches covered.">		if (8.5 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 15.) return &quot;10YON&quot;;</span>
+<span class="fc bfc" id="L527" title="All 4 branches covered.">		if (8.5 &lt; dblMatYears &amp;&amp; dblMatYears &lt;= 15.) return &quot;10YON&quot;;</span>
 
-<span class="fc bfc" id="L518" title="All 2 branches covered.">		if (dblMatYears &gt; 15.) return &quot;30YON&quot;;</span>
+<span class="fc bfc" id="L529" title="All 2 branches covered.">		if (dblMatYears &gt; 15.) return &quot;30YON&quot;;</span>
 
-<span class="fc" id="L520">		return null;</span>
+<span class="fc" id="L531">		return null;</span>
 	}
 
 	/**
@@ -531,13 +542,13 @@ package org.drip.analytics.support;
 	public static final java.lang.String WorkoutTypeToString (
 		final int iWOType)
 	{
-<span class="nc bnc" id="L534" title="All 2 branches missed.">		if (org.drip.param.valuation.WorkoutInfo.WO_TYPE_PUT == iWOType) return &quot;Put&quot;;</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">		if (org.drip.param.valuation.WorkoutInfo.WO_TYPE_PUT == iWOType) return &quot;Put&quot;;</span>
 
-<span class="nc bnc" id="L536" title="All 2 branches missed.">		if (org.drip.param.valuation.WorkoutInfo.WO_TYPE_CALL == iWOType) return &quot;Call&quot;;</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">		if (org.drip.param.valuation.WorkoutInfo.WO_TYPE_CALL == iWOType) return &quot;Call&quot;;</span>
 
-<span class="nc bnc" id="L538" title="All 2 branches missed.">		if (org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY == iWOType) return &quot;Maturity&quot;;</span>
+<span class="nc bnc" id="L549" title="All 2 branches missed.">		if (org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY == iWOType) return &quot;Maturity&quot;;</span>
 
-<span class="nc" id="L540">		return &quot;Unknown work out type&quot;;</span>
+<span class="nc" id="L551">		return &quot;Unknown work out type&quot;;</span>
 	}
 
 	/**
@@ -551,14 +562,14 @@ package org.drip.analytics.support;
 	public static final java.lang.String ParseFromBBGDCCode (
 		final java.lang.String strBBGDCCode)
 	{
-<span class="nc bnc" id="L554" title="All 2 branches missed.">		if (null == strBBGDCCode) return &quot;Unknown BBG DC&quot;;</span>
+<span class="nc bnc" id="L565" title="All 2 branches missed.">		if (null == strBBGDCCode) return &quot;Unknown BBG DC&quot;;</span>
 
 		try {
-<span class="nc" id="L557">			return s_mapDCBBGCode.get ((int) java.lang.Double.parseDouble (strBBGDCCode.trim()));</span>
-<span class="nc" id="L558">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L568">			return s_mapDCBBGCode.get ((int) java.lang.Double.parseDouble (strBBGDCCode.trim()));</span>
+<span class="nc" id="L569">		} catch (java.lang.Exception e) {</span>
 		}
 
-<span class="nc" id="L561">		return &quot;Unknown BBG DC&quot;;</span>
+<span class="nc" id="L572">		return &quot;Unknown BBG DC&quot;;</span>
 	}
 
 	/**
@@ -572,19 +583,19 @@ package org.drip.analytics.support;
 	public static final java.lang.String GetTenorFromFreq (
 		final int iFreq)
 	{
-<span class="nc bnc" id="L575" title="All 2 branches missed.">		if (1 == iFreq) return &quot;1Y&quot;;</span>
+<span class="nc bnc" id="L586" title="All 2 branches missed.">		if (1 == iFreq) return &quot;1Y&quot;;</span>
 
-<span class="nc bnc" id="L577" title="All 2 branches missed.">		if (2 == iFreq) return &quot;6M&quot;;</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">		if (2 == iFreq) return &quot;6M&quot;;</span>
 
-<span class="nc bnc" id="L579" title="All 2 branches missed.">		if (3 == iFreq) return &quot;4M&quot;;</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">		if (3 == iFreq) return &quot;4M&quot;;</span>
 
-<span class="nc bnc" id="L581" title="All 2 branches missed.">		if (4 == iFreq) return &quot;3M&quot;;</span>
+<span class="nc bnc" id="L592" title="All 2 branches missed.">		if (4 == iFreq) return &quot;3M&quot;;</span>
 
-<span class="nc bnc" id="L583" title="All 2 branches missed.">		if (6 == iFreq) return &quot;2M&quot;;</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">		if (6 == iFreq) return &quot;2M&quot;;</span>
 
-<span class="nc bnc" id="L585" title="All 2 branches missed.">		if (12 == iFreq) return &quot;1M&quot;;</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">		if (12 == iFreq) return &quot;1M&quot;;</span>
 
-<span class="nc" id="L587">		return null;</span>
+<span class="nc" id="L598">		return null;</span>
 	}
 
 	/**
@@ -601,17 +612,17 @@ package org.drip.analytics.support;
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L604" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L605">			throw new java.lang.Exception (&quot;Helper::TenorToYears =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L615" title="All 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L616">			throw new java.lang.Exception (&quot;Helper::TenorToYears =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L607">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
+<span class="nc" id="L618">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="nc" id="L609">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+<span class="nc" id="L620">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
 			1));
 
-<span class="nc bnc" id="L612" title="All 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit * 12;</span>
+<span class="nc bnc" id="L623" title="All 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit * 12;</span>
 
-<span class="nc" id="L614">		throw new java.lang.Exception (&quot;AnalyticsHelper::TenorToYears =&gt; Invalid tenor format &quot; + strTenor);</span>
+<span class="nc" id="L625">		throw new java.lang.Exception (&quot;AnalyticsHelper::TenorToYears =&gt; Invalid tenor format &quot; + strTenor);</span>
 	}
 
 	/**
@@ -628,25 +639,25 @@ package org.drip.analytics.support;
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L631" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L632">			throw new java.lang.Exception (&quot;Helper::TenorToMonths =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L642" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L643">			throw new java.lang.Exception (&quot;Helper::TenorToMonths =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L634">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
+<span class="fc" id="L645">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L636">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+<span class="fc" id="L647">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
 			1));
 
-<span class="pc bpc" id="L639" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit * (iTimeUnit / 30);</span>
+<span class="pc bpc" id="L650" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit * (iTimeUnit / 30);</span>
 
-<span class="pc bpc" id="L641" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return iTimeUnit * (iTimeUnit / 7);</span>
+<span class="pc bpc" id="L652" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return iTimeUnit * (iTimeUnit / 7);</span>
 
-<span class="pc bpc" id="L643" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return iTimeUnit;</span>
+<span class="pc bpc" id="L654" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return iTimeUnit;</span>
 
-<span class="pc bpc" id="L645" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return iTimeUnit;</span>
+<span class="pc bpc" id="L656" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return iTimeUnit;</span>
 
-<span class="pc bpc" id="L647" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit * 12;</span>
+<span class="pc bpc" id="L658" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit * 12;</span>
 
-<span class="nc" id="L649">		throw new java.lang.Exception (&quot;Helper::TenorToMonths =&gt; Invalid Tenor Format &quot; + strTenor);</span>
+<span class="nc" id="L660">		throw new java.lang.Exception (&quot;Helper::TenorToMonths =&gt; Invalid Tenor Format &quot; + strTenor);</span>
 	}
 
 	/**
@@ -663,25 +674,25 @@ package org.drip.analytics.support;
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L666" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L667">			throw new java.lang.Exception (&quot;Helper::TenorToDays =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L677" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L678">			throw new java.lang.Exception (&quot;Helper::TenorToDays =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L669">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
+<span class="fc" id="L680">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L671">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+<span class="fc" id="L682">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
 			1));
 
-<span class="pc bpc" id="L674" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit;</span>
+<span class="pc bpc" id="L685" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return iTimeUnit;</span>
 
-<span class="pc bpc" id="L676" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return iTimeUnit * 7;</span>
+<span class="pc bpc" id="L687" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return iTimeUnit * 7;</span>
 
-<span class="pc bpc" id="L678" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return iTimeUnit * 28;</span>
+<span class="pc bpc" id="L689" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return iTimeUnit * 28;</span>
 
-<span class="pc bpc" id="L680" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return iTimeUnit * 30;</span>
+<span class="pc bpc" id="L691" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return iTimeUnit * 30;</span>
 
-<span class="pc bpc" id="L682" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return (int) (365.25 * iTimeUnit);</span>
+<span class="pc bpc" id="L693" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return (int) (365.25 * iTimeUnit);</span>
 
-<span class="nc" id="L684">		throw new java.lang.Exception (&quot;Helper::TenorToDays =&gt; Unknown tenor format &quot; + strTenor);</span>
+<span class="nc" id="L695">		throw new java.lang.Exception (&quot;Helper::TenorToDays =&gt; Unknown tenor format &quot; + strTenor);</span>
 	}
 
 	/**
@@ -698,29 +709,29 @@ package org.drip.analytics.support;
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L701" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L702">			throw new java.lang.Exception (&quot;Helper::TenorToYearFraction =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L712" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L713">			throw new java.lang.Exception (&quot;Helper::TenorToYearFraction =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L704">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
+<span class="fc" id="L715">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L706">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+<span class="fc" id="L717">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
 			1));
 
-<span class="pc bpc" id="L709" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return ((double) iTimeUnit) / 365.25;</span>
+<span class="pc bpc" id="L720" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return ((double) iTimeUnit) / 365.25;</span>
 
-<span class="pc bpc" id="L711" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return ((double) (7. * iTimeUnit)) / 365.25;</span>
+<span class="pc bpc" id="L722" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return ((double) (7. * iTimeUnit)) / 365.25;</span>
 
-<span class="pc bpc" id="L713" title="2 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return ((double) (iTimeUnit)) / 52.;</span>
+<span class="pc bpc" id="L724" title="2 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return ((double) (iTimeUnit)) / 52.;</span>
 
-<span class="pc bpc" id="L715" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return ((double) (28. * iTimeUnit)) / 365.25;</span>
+<span class="pc bpc" id="L726" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return ((double) (28. * iTimeUnit)) / 365.25;</span>
 
-<span class="pc bpc" id="L717" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return ((double) (iTimeUnit)) / 13.;</span>
+<span class="pc bpc" id="L728" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return ((double) (iTimeUnit)) / 13.;</span>
 
-<span class="pc bpc" id="L719" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return ((double) (iTimeUnit)) / 12.;</span>
+<span class="pc bpc" id="L730" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return ((double) (iTimeUnit)) / 12.;</span>
 
-<span class="pc bpc" id="L721" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit;</span>
+<span class="pc bpc" id="L732" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit;</span>
 
-<span class="nc" id="L723">		throw new java.lang.Exception (&quot;Helper::TenorToYearFraction =&gt; Unknown tenor format &quot; + strTenor);</span>
+<span class="nc" id="L734">		throw new java.lang.Exception (&quot;Helper::TenorToYearFraction =&gt; Unknown tenor format &quot; + strTenor);</span>
 	}
 
 	/**
@@ -739,28 +750,28 @@ package org.drip.analytics.support;
 		final boolean bForward)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L742" title="All 2 branches missed.">		if (null == astrTenor)</span>
-<span class="nc" id="L743">			throw new java.lang.Exception (&quot;Helper::TenorToYearFraction =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L753" title="All 2 branches missed.">		if (null == astrTenor)</span>
+<span class="nc" id="L754">			throw new java.lang.Exception (&quot;Helper::TenorToYearFraction =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L745">		int iNumTenor = astrTenor.length;</span>
-<span class="nc bnc" id="L746" title="All 2 branches missed.">		double[] adblYearFraction = 0 == iNumTenor ? null : new double[iNumTenor];</span>
+<span class="nc" id="L756">		int iNumTenor = astrTenor.length;</span>
+<span class="nc bnc" id="L757" title="All 2 branches missed.">		double[] adblYearFraction = 0 == iNumTenor ? null : new double[iNumTenor];</span>
 
-<span class="nc bnc" id="L748" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
+<span class="nc bnc" id="L759" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
 			try {
-<span class="nc" id="L750">				adblYearFraction[i] = TenorToYearFraction (astrTenor[i]);</span>
-<span class="nc" id="L751">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L752">				e.printStackTrace();</span>
+<span class="nc" id="L761">				adblYearFraction[i] = TenorToYearFraction (astrTenor[i]);</span>
+<span class="nc" id="L762">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L763">				e.printStackTrace();</span>
 
-<span class="nc" id="L754">				return null;</span>
-<span class="nc" id="L755">			}</span>
+<span class="nc" id="L765">				return null;</span>
+<span class="nc" id="L766">			}</span>
 		}
 
-<span class="nc bnc" id="L758" title="All 2 branches missed.">		if (!bForward) return adblYearFraction;</span>
+<span class="nc bnc" id="L769" title="All 2 branches missed.">		if (!bForward) return adblYearFraction;</span>
 
-<span class="nc bnc" id="L760" title="All 2 branches missed.">		for (int i = iNumTenor - 1; i &gt; 1; --i)</span>
-<span class="nc" id="L761">			adblYearFraction[i] = adblYearFraction[i] - adblYearFraction[i - 1];</span>
+<span class="nc bnc" id="L771" title="All 2 branches missed.">		for (int i = iNumTenor - 1; i &gt; 1; --i)</span>
+<span class="nc" id="L772">			adblYearFraction[i] = adblYearFraction[i] - adblYearFraction[i - 1];</span>
 
-<span class="nc" id="L763">		return adblYearFraction;</span>
+<span class="nc" id="L774">		return adblYearFraction;</span>
 	}
 
 	/**
@@ -777,27 +788,27 @@ package org.drip.analytics.support;
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L780" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L781">			throw new java.lang.Exception (&quot;Helper::TenorToFreq =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L791" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L792">			throw new java.lang.Exception (&quot;Helper::TenorToFreq =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L783" title="All 2 branches covered.">		if (&quot;ON&quot;.equalsIgnoreCase (strTenor)) return 365;</span>
+<span class="fc bfc" id="L794" title="All 2 branches covered.">		if (&quot;ON&quot;.equalsIgnoreCase (strTenor)) return 365;</span>
 
-<span class="fc" id="L785">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
+<span class="fc" id="L796">		char chTenor = strTenor.charAt (strTenor.length() - 1);</span>
 
-<span class="fc" id="L787">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
+<span class="fc" id="L798">		int iTimeUnit = (int) java.lang.Double.parseDouble (strTenor.substring (0, strTenor.length() -</span>
 			1));
 
-<span class="pc bpc" id="L790" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return (int) (365. / iTimeUnit);</span>
+<span class="pc bpc" id="L801" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return (int) (365. / iTimeUnit);</span>
 
-<span class="pc bpc" id="L792" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return (int) (52. / iTimeUnit);</span>
+<span class="pc bpc" id="L803" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return (int) (52. / iTimeUnit);</span>
 
-<span class="pc bpc" id="L794" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return (int) (13. / iTimeUnit);</span>
+<span class="pc bpc" id="L805" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return (int) (13. / iTimeUnit);</span>
 
-<span class="pc bpc" id="L796" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return (int) (12. / iTimeUnit);</span>
+<span class="pc bpc" id="L807" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return (int) (12. / iTimeUnit);</span>
 
-<span class="pc bpc" id="L798" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit;</span>
+<span class="pc bpc" id="L809" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return iTimeUnit;</span>
 
-<span class="nc" id="L800">		throw new java.lang.Exception (&quot;Helper::TenorToFreq =&gt; Unknown tenor format &quot; + strTenor);</span>
+<span class="nc" id="L811">		throw new java.lang.Exception (&quot;Helper::TenorToFreq =&gt; Unknown tenor format &quot; + strTenor);</span>
 	}
 
 	/**
@@ -813,20 +824,20 @@ package org.drip.analytics.support;
 		final org.drip.analytics.date.JulianDate dtSpot,
 		final java.lang.String[] astrTenor)
 	{
-<span class="pc bpc" id="L816" title="2 of 4 branches missed.">		if (null == dtSpot || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L827" title="2 of 4 branches missed.">		if (null == dtSpot || null == astrTenor) return null;</span>
 
-<span class="fc" id="L818">		int iNumTenor = astrTenor.length;</span>
-<span class="fc" id="L819">		int[] aiTenorDate = new int[iNumTenor];</span>
+<span class="fc" id="L829">		int iNumTenor = astrTenor.length;</span>
+<span class="fc" id="L830">		int[] aiTenorDate = new int[iNumTenor];</span>
 
-<span class="fc bfc" id="L821" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
-<span class="fc" id="L822">			org.drip.analytics.date.JulianDate dtTenor = dtSpot.addTenor (astrTenor[i]);</span>
+<span class="fc bfc" id="L832" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
+<span class="fc" id="L833">			org.drip.analytics.date.JulianDate dtTenor = dtSpot.addTenor (astrTenor[i]);</span>
 
-<span class="pc bpc" id="L824" title="1 of 2 branches missed.">			if (null == dtTenor) return null;</span>
+<span class="pc bpc" id="L835" title="1 of 2 branches missed.">			if (null == dtTenor) return null;</span>
 
-<span class="fc" id="L826">			aiTenorDate[i] = dtTenor.julian();</span>
+<span class="fc" id="L837">			aiTenorDate[i] = dtTenor.julian();</span>
 		}
 
-<span class="fc" id="L829">		return aiTenorDate;</span>
+<span class="fc" id="L840">		return aiTenorDate;</span>
 	}
 
 	/**
@@ -845,13 +856,13 @@ package org.drip.analytics.support;
 		final java.lang.String strTenorRight)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L848">		int iLeftTenorDays = TenorToDays (strTenorLeft);</span>
+<span class="fc" id="L859">		int iLeftTenorDays = TenorToDays (strTenorLeft);</span>
 
-<span class="fc" id="L850">		int iRightTenorDays = TenorToDays (strTenorRight);</span>
+<span class="fc" id="L861">		int iRightTenorDays = TenorToDays (strTenorRight);</span>
 
-<span class="fc bfc" id="L852" title="All 2 branches covered.">		if (iLeftTenorDays == iRightTenorDays) return LEFT_TENOR_EQUALS;</span>
+<span class="fc bfc" id="L863" title="All 2 branches covered.">		if (iLeftTenorDays == iRightTenorDays) return LEFT_TENOR_EQUALS;</span>
 
-<span class="fc bfc" id="L854" title="All 2 branches covered.">		return iLeftTenorDays &gt; iRightTenorDays ? LEFT_TENOR_GREATER : LEFT_TENOR_LESSER;</span>
+<span class="fc bfc" id="L865" title="All 2 branches covered.">		return iLeftTenorDays &gt; iRightTenorDays ? LEFT_TENOR_GREATER : LEFT_TENOR_LESSER;</span>
 	}
 
 	/**
@@ -865,19 +876,19 @@ package org.drip.analytics.support;
 	public static final java.lang.String GetMonthCodeFromFreq (
 		final int iFreq)
 	{
-<span class="nc bnc" id="L868" title="All 2 branches missed.">		if (1 == iFreq) return &quot;0012M&quot;;</span>
+<span class="nc bnc" id="L879" title="All 2 branches missed.">		if (1 == iFreq) return &quot;0012M&quot;;</span>
 
-<span class="nc bnc" id="L870" title="All 2 branches missed.">		if (2 == iFreq) return &quot;0006M&quot;;</span>
+<span class="nc bnc" id="L881" title="All 2 branches missed.">		if (2 == iFreq) return &quot;0006M&quot;;</span>
 
-<span class="nc bnc" id="L872" title="All 2 branches missed.">		if (3 == iFreq) return &quot;0004M&quot;;</span>
+<span class="nc bnc" id="L883" title="All 2 branches missed.">		if (3 == iFreq) return &quot;0004M&quot;;</span>
 
-<span class="nc bnc" id="L874" title="All 2 branches missed.">		if (4 == iFreq) return &quot;0003M&quot;;</span>
+<span class="nc bnc" id="L885" title="All 2 branches missed.">		if (4 == iFreq) return &quot;0003M&quot;;</span>
 
-<span class="nc bnc" id="L876" title="All 2 branches missed.">		if (6 == iFreq) return &quot;0002M&quot;;</span>
+<span class="nc bnc" id="L887" title="All 2 branches missed.">		if (6 == iFreq) return &quot;0002M&quot;;</span>
 
-<span class="nc bnc" id="L878" title="All 2 branches missed.">		if (12 == iFreq) return &quot;0001M&quot;;</span>
+<span class="nc bnc" id="L889" title="All 2 branches missed.">		if (12 == iFreq) return &quot;0001M&quot;;</span>
 
-<span class="nc" id="L880">		return null;</span>
+<span class="nc" id="L891">		return null;</span>
 	}
 
 	/**
@@ -893,13 +904,13 @@ package org.drip.analytics.support;
 		final java.lang.String strCouponCurrency,
 		final int iCouponFreq)
 	{
-<span class="nc bnc" id="L896" title="All 4 branches missed.">		if (null == strCouponCurrency || strCouponCurrency.isEmpty()) return null;</span>
+<span class="nc bnc" id="L907" title="All 4 branches missed.">		if (null == strCouponCurrency || strCouponCurrency.isEmpty()) return null;</span>
 
-<span class="nc" id="L898">		java.lang.String strFreqMonthCode = GetMonthCodeFromFreq (iCouponFreq);</span>
+<span class="nc" id="L909">		java.lang.String strFreqMonthCode = GetMonthCodeFromFreq (iCouponFreq);</span>
 
-<span class="nc bnc" id="L900" title="All 2 branches missed.">		if (null == strFreqMonthCode) return null;</span>
+<span class="nc bnc" id="L911" title="All 2 branches missed.">		if (null == strFreqMonthCode) return null;</span>
 
-<span class="nc" id="L902">		return strCouponCurrency.substring (0, 2) + strFreqMonthCode;</span>
+<span class="nc" id="L913">		return strCouponCurrency.substring (0, 2) + strFreqMonthCode;</span>
 	}
 
 	/**
@@ -913,9 +924,9 @@ package org.drip.analytics.support;
 	public static final java.lang.String GetDayCountFromBBGCode (
 		final java.lang.String strBBGDC)
 	{
-<span class="nc bnc" id="L916" title="All 4 branches missed.">		if (null == strBBGDC || strBBGDC.isEmpty()) return &quot;30/360&quot;;</span>
+<span class="nc bnc" id="L927" title="All 4 branches missed.">		if (null == strBBGDC || strBBGDC.isEmpty()) return &quot;30/360&quot;;</span>
 
-<span class="nc" id="L918">		return &quot;30/360&quot;;</span>
+<span class="nc" id="L929">		return &quot;30/360&quot;;</span>
 	}
 
 	/**
@@ -931,23 +942,23 @@ package org.drip.analytics.support;
 		final java.lang.String strCcy,
 		final int iCouponFreq)
 	{
-<span class="nc bnc" id="L934" title="All 6 branches missed.">		if (null == strCcy || strCcy.isEmpty() || 0 &gt;= iCouponFreq) return &quot;&quot;;</span>
+<span class="nc bnc" id="L945" title="All 6 branches missed.">		if (null == strCcy || strCcy.isEmpty() || 0 &gt;= iCouponFreq) return &quot;&quot;;</span>
 
-<span class="nc" id="L936">		java.lang.String strCcyPrefix = strCcy.substring (0, 2);</span>
+<span class="nc" id="L947">		java.lang.String strCcyPrefix = strCcy.substring (0, 2);</span>
 
-<span class="nc bnc" id="L938" title="All 2 branches missed.">		if (1 == iCouponFreq)  return strCcyPrefix + &quot;0012M&quot;;</span>
+<span class="nc bnc" id="L949" title="All 2 branches missed.">		if (1 == iCouponFreq)  return strCcyPrefix + &quot;0012M&quot;;</span>
 
-<span class="nc bnc" id="L940" title="All 2 branches missed.">		if (2 == iCouponFreq)  return strCcyPrefix + &quot;0006M&quot;;</span>
+<span class="nc bnc" id="L951" title="All 2 branches missed.">		if (2 == iCouponFreq)  return strCcyPrefix + &quot;0006M&quot;;</span>
 
-<span class="nc bnc" id="L942" title="All 2 branches missed.">		if (3 == iCouponFreq)  return strCcyPrefix + &quot;0004M&quot;;</span>
+<span class="nc bnc" id="L953" title="All 2 branches missed.">		if (3 == iCouponFreq)  return strCcyPrefix + &quot;0004M&quot;;</span>
 
-<span class="nc bnc" id="L944" title="All 2 branches missed.">		if (4 == iCouponFreq)  return strCcyPrefix + &quot;0003M&quot;;</span>
+<span class="nc bnc" id="L955" title="All 2 branches missed.">		if (4 == iCouponFreq)  return strCcyPrefix + &quot;0003M&quot;;</span>
 
-<span class="nc bnc" id="L946" title="All 2 branches missed.">		if (6 == iCouponFreq)  return strCcyPrefix + &quot;0002M&quot;;</span>
+<span class="nc bnc" id="L957" title="All 2 branches missed.">		if (6 == iCouponFreq)  return strCcyPrefix + &quot;0002M&quot;;</span>
 
-<span class="nc bnc" id="L948" title="All 2 branches missed.">		if (12 == iCouponFreq)  return strCcyPrefix + &quot;0001M&quot;;</span>
+<span class="nc bnc" id="L959" title="All 2 branches missed.">		if (12 == iCouponFreq)  return strCcyPrefix + &quot;0001M&quot;;</span>
 
-<span class="nc" id="L950">		return &quot;&quot;;</span>
+<span class="nc" id="L961">		return &quot;&quot;;</span>
 	}
 
 	/**
@@ -961,11 +972,11 @@ package org.drip.analytics.support;
 	public static final java.lang.String SwitchIRCurve (
 		final java.lang.String strCurveIn)
 	{
-<span class="nc bnc" id="L964" title="All 2 branches missed.">		if (null == strCurveIn) return null;</span>
+<span class="nc bnc" id="L975" title="All 2 branches missed.">		if (null == strCurveIn) return null;</span>
 
-<span class="nc bnc" id="L966" title="All 2 branches missed.">		if (!s_mapIRSwitch.containsKey (strCurveIn)) return strCurveIn;</span>
+<span class="nc bnc" id="L977" title="All 2 branches missed.">		if (!s_mapIRSwitch.containsKey (strCurveIn)) return strCurveIn;</span>
 
-<span class="nc" id="L968">		return s_mapIRSwitch.get (strCurveIn);</span>
+<span class="nc" id="L979">		return s_mapIRSwitch.get (strCurveIn);</span>
 	}
 
 	/**
@@ -983,12 +994,12 @@ package org.drip.analytics.support;
 		final org.drip.analytics.date.JulianDate dtFixing,
 		final double dblFixing)
 	{
-<span class="fc bfc" id="L986" title="All 2 branches covered.">		if (!bond.isFloater()) return null;</span>
+<span class="fc bfc" id="L997" title="All 2 branches covered.">		if (!bond.isFloater()) return null;</span>
 
-<span class="fc" id="L988">		org.drip.param.market.LatentStateFixingsContainer lsfc = new</span>
+<span class="fc" id="L999">		org.drip.param.market.LatentStateFixingsContainer lsfc = new</span>
 			org.drip.param.market.LatentStateFixingsContainer();
 
-<span class="pc bpc" id="L991" title="1 of 2 branches missed.">		return lsfc.add (dtFixing, bond.forwardLabel().get (&quot;BASE&quot;), dblFixing) ? lsfc : null;</span>
+<span class="pc bpc" id="L1002" title="1 of 2 branches missed.">		return lsfc.add (dtFixing, bond.forwardLabel().get (&quot;BASE&quot;), dblFixing) ? lsfc : null;</span>
 	}
 
 	/**
@@ -1006,22 +1017,22 @@ package org.drip.analytics.support;
 		final double dblBump,
 		final boolean bIsProportional)
 	{
-<span class="nc bnc" id="L1009" title="All 4 branches missed.">		if (null == adblQuotesIn || 0 == adblQuotesIn.length || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L1010" title="All 2 branches missed.">			(dblBump))</span>
-<span class="nc" id="L1011">			return null;</span>
+<span class="nc bnc" id="L1020" title="All 4 branches missed.">		if (null == adblQuotesIn || 0 == adblQuotesIn.length || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L1021" title="All 2 branches missed.">			(dblBump))</span>
+<span class="nc" id="L1022">			return null;</span>
 
-<span class="nc" id="L1013">		double[] adblQuotesOut = new double[adblQuotesIn.length];</span>
+<span class="nc" id="L1024">		double[] adblQuotesOut = new double[adblQuotesIn.length];</span>
 
-<span class="nc bnc" id="L1015" title="All 2 branches missed.">		for (int i = 0; i &lt; adblQuotesIn.length; ++i) {</span>
-<span class="nc bnc" id="L1016" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;</span>
+<span class="nc bnc" id="L1026" title="All 2 branches missed.">		for (int i = 0; i &lt; adblQuotesIn.length; ++i) {</span>
+<span class="nc bnc" id="L1027" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;</span>
 
-<span class="nc bnc" id="L1018" title="All 2 branches missed.">			if (!bIsProportional)</span>
-<span class="nc" id="L1019">				adblQuotesOut[i] = adblQuotesIn[i] + dblBump;</span>
+<span class="nc bnc" id="L1029" title="All 2 branches missed.">			if (!bIsProportional)</span>
+<span class="nc" id="L1030">				adblQuotesOut[i] = adblQuotesIn[i] + dblBump;</span>
 			else
-<span class="nc" id="L1021">				adblQuotesOut[i] = adblQuotesIn[i] * (1. + dblBump);</span>
+<span class="nc" id="L1032">				adblQuotesOut[i] = adblQuotesIn[i] * (1. + dblBump);</span>
 		}
 
-<span class="nc" id="L1024">		return adblQuotesOut;</span>
+<span class="nc" id="L1035">		return adblQuotesOut;</span>
 	}
 
 	/**
@@ -1038,36 +1049,36 @@ package org.drip.analytics.support;
 		final double[] adblQuotesIn,
 		final org.drip.param.definition.ManifestMeasureTweak ntp)
 	{
-<span class="pc bpc" id="L1041" title="2 of 6 branches missed.">		if (null == adblQuotesIn || 0 == adblQuotesIn.length || null == ntp) return adblQuotesIn;</span>
+<span class="pc bpc" id="L1052" title="2 of 6 branches missed.">		if (null == adblQuotesIn || 0 == adblQuotesIn.length || null == ntp) return adblQuotesIn;</span>
 
-<span class="fc" id="L1043">		double[] adblQuotesOut = new double[adblQuotesIn.length];</span>
+<span class="fc" id="L1054">		double[] adblQuotesOut = new double[adblQuotesIn.length];</span>
 
-<span class="fc bfc" id="L1045" title="All 2 branches covered.">		if (org.drip.param.definition.ManifestMeasureTweak.FLAT == ntp.node()) {</span>
-<span class="fc bfc" id="L1046" title="All 2 branches covered.">			for (int i = 0; i &lt; adblQuotesIn.length; ++i) {</span>
-<span class="pc bpc" id="L1047" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;</span>
-
-<span class="pc bpc" id="L1049" title="1 of 2 branches missed.">				if (!ntp.isProportional())</span>
-<span class="fc" id="L1050">					adblQuotesOut[i] = adblQuotesIn[i] + ntp.amount();</span>
-				else
-<span class="nc" id="L1052">					adblQuotesOut[i] = adblQuotesIn[i] * (1. + ntp.amount());</span>
-			}
-		} else {
-<span class="pc bpc" id="L1055" title="2 of 4 branches missed.">			if (ntp.node() &lt; 0 || ntp.node() &gt;= adblQuotesIn.length) return null;</span>
-
+<span class="fc bfc" id="L1056" title="All 2 branches covered.">		if (org.drip.param.definition.ManifestMeasureTweak.FLAT == ntp.node()) {</span>
 <span class="fc bfc" id="L1057" title="All 2 branches covered.">			for (int i = 0; i &lt; adblQuotesIn.length; ++i) {</span>
 <span class="pc bpc" id="L1058" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;</span>
 
-<span class="fc bfc" id="L1060" title="All 2 branches covered.">				if (i == ntp.node()) {</span>
-<span class="fc bfc" id="L1061" title="All 2 branches covered.">					if (!ntp.isProportional())</span>
-<span class="fc" id="L1062">						adblQuotesOut[i] = adblQuotesIn[i] + ntp.amount();</span>
+<span class="pc bpc" id="L1060" title="1 of 2 branches missed.">				if (!ntp.isProportional())</span>
+<span class="fc" id="L1061">					adblQuotesOut[i] = adblQuotesIn[i] + ntp.amount();</span>
+				else
+<span class="nc" id="L1063">					adblQuotesOut[i] = adblQuotesIn[i] * (1. + ntp.amount());</span>
+			}
+		} else {
+<span class="pc bpc" id="L1066" title="2 of 4 branches missed.">			if (ntp.node() &lt; 0 || ntp.node() &gt;= adblQuotesIn.length) return null;</span>
+
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">			for (int i = 0; i &lt; adblQuotesIn.length; ++i) {</span>
+<span class="pc bpc" id="L1069" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (adblQuotesIn[i])) return null;</span>
+
+<span class="fc bfc" id="L1071" title="All 2 branches covered.">				if (i == ntp.node()) {</span>
+<span class="fc bfc" id="L1072" title="All 2 branches covered.">					if (!ntp.isProportional())</span>
+<span class="fc" id="L1073">						adblQuotesOut[i] = adblQuotesIn[i] + ntp.amount();</span>
 					else
-<span class="fc" id="L1064">						adblQuotesOut[i] = adblQuotesIn[i] * (1. + ntp.amount());</span>
+<span class="fc" id="L1075">						adblQuotesOut[i] = adblQuotesIn[i] * (1. + ntp.amount());</span>
 				} else
-<span class="fc" id="L1066">					adblQuotesOut[i] = adblQuotesIn[i];</span>
+<span class="fc" id="L1077">					adblQuotesOut[i] = adblQuotesIn[i];</span>
 			}
 		}
 
-<span class="fc" id="L1070">		return adblQuotesOut;</span>
+<span class="fc" id="L1081">		return adblQuotesOut;</span>
 	}
 
 	/**
@@ -1083,56 +1094,56 @@ package org.drip.analytics.support;
 		final java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsPeriod1,
 		final java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsPeriod2)
 	{
-<span class="nc bnc" id="L1086" title="All 8 branches missed.">		if ((null == lsPeriod1 || 0 == lsPeriod1.size()) &amp;&amp; (null == lsPeriod2 || 0 == lsPeriod2.size()))</span>
-<span class="nc" id="L1087">			return null;</span>
+<span class="nc bnc" id="L1097" title="All 8 branches missed.">		if ((null == lsPeriod1 || 0 == lsPeriod1.size()) &amp;&amp; (null == lsPeriod2 || 0 == lsPeriod2.size()))</span>
+<span class="nc" id="L1098">			return null;</span>
 
-<span class="nc" id="L1089">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsPeriodMerged = new</span>
+<span class="nc" id="L1100">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsPeriodMerged = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="nc bnc" id="L1092" title="All 4 branches missed.">		if (null == lsPeriod1 || 0 == lsPeriod1.size()) {</span>
-<span class="nc bnc" id="L1093" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : lsPeriod2) {</span>
-<span class="nc bnc" id="L1094" title="All 2 branches missed.">				if (null != p) lsPeriodMerged.add (p);</span>
-<span class="nc" id="L1095">			}</span>
+<span class="nc bnc" id="L1103" title="All 4 branches missed.">		if (null == lsPeriod1 || 0 == lsPeriod1.size()) {</span>
+<span class="nc bnc" id="L1104" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : lsPeriod2) {</span>
+<span class="nc bnc" id="L1105" title="All 2 branches missed.">				if (null != p) lsPeriodMerged.add (p);</span>
+<span class="nc" id="L1106">			}</span>
 
-<span class="nc" id="L1097">			return lsPeriodMerged;</span>
+<span class="nc" id="L1108">			return lsPeriodMerged;</span>
 		}
 
-<span class="nc bnc" id="L1100" title="All 4 branches missed.">		if (null == lsPeriod2 || 0 == lsPeriod2.size()) {</span>
-<span class="nc bnc" id="L1101" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : lsPeriod1) {</span>
-<span class="nc bnc" id="L1102" title="All 2 branches missed.">				if (null != p) lsPeriodMerged.add (p);</span>
-<span class="nc" id="L1103">			}</span>
+<span class="nc bnc" id="L1111" title="All 4 branches missed.">		if (null == lsPeriod2 || 0 == lsPeriod2.size()) {</span>
+<span class="nc bnc" id="L1112" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : lsPeriod1) {</span>
+<span class="nc bnc" id="L1113" title="All 2 branches missed.">				if (null != p) lsPeriodMerged.add (p);</span>
+<span class="nc" id="L1114">			}</span>
 
-<span class="nc" id="L1105">			return lsPeriodMerged;</span>
+<span class="nc" id="L1116">			return lsPeriodMerged;</span>
 		}
 
-<span class="nc" id="L1108">		int iPeriod1Index = 0;</span>
-<span class="nc" id="L1109">		int iPeriod2Index = 0;</span>
+<span class="nc" id="L1119">		int iPeriod1Index = 0;</span>
+<span class="nc" id="L1120">		int iPeriod2Index = 0;</span>
 
-<span class="nc bnc" id="L1111" title="All 4 branches missed.">		while (iPeriod1Index &lt; lsPeriod1.size() &amp;&amp; iPeriod2Index &lt; lsPeriod2.size()) {</span>
-<span class="nc" id="L1112">			org.drip.analytics.cashflow.CompositePeriod p1 = lsPeriod1.get (iPeriod1Index);</span>
+<span class="nc bnc" id="L1122" title="All 4 branches missed.">		while (iPeriod1Index &lt; lsPeriod1.size() &amp;&amp; iPeriod2Index &lt; lsPeriod2.size()) {</span>
+<span class="nc" id="L1123">			org.drip.analytics.cashflow.CompositePeriod p1 = lsPeriod1.get (iPeriod1Index);</span>
 
-<span class="nc" id="L1114">			org.drip.analytics.cashflow.CompositePeriod p2 = lsPeriod2.get (iPeriod2Index);</span>
+<span class="nc" id="L1125">			org.drip.analytics.cashflow.CompositePeriod p2 = lsPeriod2.get (iPeriod2Index);</span>
 
-<span class="nc bnc" id="L1116" title="All 2 branches missed.">			if (p1.payDate() &lt; p2.payDate()) {</span>
-<span class="nc" id="L1117">				lsPeriodMerged.add (p1);</span>
+<span class="nc bnc" id="L1127" title="All 2 branches missed.">			if (p1.payDate() &lt; p2.payDate()) {</span>
+<span class="nc" id="L1128">				lsPeriodMerged.add (p1);</span>
 
-<span class="nc" id="L1119">				++iPeriod1Index;</span>
+<span class="nc" id="L1130">				++iPeriod1Index;</span>
 			} else {
-<span class="nc" id="L1121">				lsPeriodMerged.add (p2);</span>
+<span class="nc" id="L1132">				lsPeriodMerged.add (p2);</span>
 
-<span class="nc" id="L1123">				++iPeriod2Index;</span>
+<span class="nc" id="L1134">				++iPeriod2Index;</span>
 			}
-<span class="nc" id="L1125">		}</span>
+<span class="nc" id="L1136">		}</span>
 
-<span class="nc bnc" id="L1127" title="All 2 branches missed.">		if (iPeriod1Index &lt; lsPeriod1.size() - 1) {</span>
-<span class="nc bnc" id="L1128" title="All 2 branches missed.">			for (int i = iPeriod1Index; i &lt; lsPeriod1.size(); ++i)</span>
-<span class="nc" id="L1129">				lsPeriodMerged.add (lsPeriod1.get (i));</span>
-<span class="nc bnc" id="L1130" title="All 2 branches missed.">		} else if (iPeriod2Index &lt; lsPeriod2.size() - 1) {</span>
-<span class="nc bnc" id="L1131" title="All 2 branches missed.">			for (int i = iPeriod2Index; i &lt; lsPeriod2.size(); ++i)</span>
-<span class="nc" id="L1132">				lsPeriodMerged.add (lsPeriod2.get (i));</span>
+<span class="nc bnc" id="L1138" title="All 2 branches missed.">		if (iPeriod1Index &lt; lsPeriod1.size() - 1) {</span>
+<span class="nc bnc" id="L1139" title="All 2 branches missed.">			for (int i = iPeriod1Index; i &lt; lsPeriod1.size(); ++i)</span>
+<span class="nc" id="L1140">				lsPeriodMerged.add (lsPeriod1.get (i));</span>
+<span class="nc bnc" id="L1141" title="All 2 branches missed.">		} else if (iPeriod2Index &lt; lsPeriod2.size() - 1) {</span>
+<span class="nc bnc" id="L1142" title="All 2 branches missed.">			for (int i = iPeriod2Index; i &lt; lsPeriod2.size(); ++i)</span>
+<span class="nc" id="L1143">				lsPeriodMerged.add (lsPeriod2.get (i));</span>
 		}
 
-<span class="nc" id="L1135">		return lsPeriodMerged;</span>
+<span class="nc" id="L1146">		return lsPeriodMerged;</span>
 	}
 
 	/**
@@ -1146,37 +1157,37 @@ package org.drip.analytics.support;
 	public static final java.util.Set&lt;org.drip.analytics.cashflow.CompositePeriod&gt; AggregateComponentPeriods
 		(final org.drip.product.definition.Component[] aComp)
 	{
-<span class="nc bnc" id="L1149" title="All 2 branches missed.">		if (null == aComp) return null;</span>
+<span class="nc bnc" id="L1160" title="All 2 branches missed.">		if (null == aComp) return null;</span>
 
-<span class="nc" id="L1151">		int iStartIndex = 0;</span>
-<span class="nc" id="L1152">		int iNumComp = aComp.length;</span>
+<span class="nc" id="L1162">		int iStartIndex = 0;</span>
+<span class="nc" id="L1163">		int iNumComp = aComp.length;</span>
 
-<span class="nc bnc" id="L1154" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
+<span class="nc bnc" id="L1165" title="All 2 branches missed.">		if (0 == iNumComp) return null;</span>
 
-<span class="nc bnc" id="L1156" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
-<span class="nc bnc" id="L1157" title="All 2 branches missed.">			if (null != aComp[i]) {</span>
-<span class="nc" id="L1158">				iStartIndex = i;</span>
-<span class="nc" id="L1159">				break;</span>
+<span class="nc bnc" id="L1167" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L1168" title="All 2 branches missed.">			if (null != aComp[i]) {</span>
+<span class="nc" id="L1169">				iStartIndex = i;</span>
+<span class="nc" id="L1170">				break;</span>
 			}
 		}
 
-<span class="nc" id="L1163">		java.util.Set&lt;org.drip.analytics.cashflow.CompositePeriod&gt; setAggregatedPeriod = new</span>
+<span class="nc" id="L1174">		java.util.Set&lt;org.drip.analytics.cashflow.CompositePeriod&gt; setAggregatedPeriod = new</span>
 			java.util.TreeSet&lt;org.drip.analytics.cashflow.CompositePeriod&gt;();
 
-<span class="nc bnc" id="L1166" title="All 2 branches missed.">		for (int i = iStartIndex; i &lt; iNumComp; ++i) {</span>
-<span class="nc bnc" id="L1167" title="All 2 branches missed.">			if (null == aComp[i]) continue;</span>
+<span class="nc bnc" id="L1177" title="All 2 branches missed.">		for (int i = iStartIndex; i &lt; iNumComp; ++i) {</span>
+<span class="nc bnc" id="L1178" title="All 2 branches missed.">			if (null == aComp[i]) continue;</span>
 
-<span class="nc" id="L1169">			java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCompPeriod =</span>
-<span class="nc" id="L1170">				aComp[i].couponPeriods();</span>
+<span class="nc" id="L1180">			java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsCompPeriod =</span>
+<span class="nc" id="L1181">				aComp[i].couponPeriods();</span>
 
-<span class="nc bnc" id="L1172" title="All 4 branches missed.">			if (null == lsCompPeriod || 0 == lsCompPeriod.size()) continue;</span>
+<span class="nc bnc" id="L1183" title="All 4 branches missed.">			if (null == lsCompPeriod || 0 == lsCompPeriod.size()) continue;</span>
 
-<span class="nc bnc" id="L1174" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : lsCompPeriod) {</span>
-<span class="nc bnc" id="L1175" title="All 2 branches missed.">				if (null != p) setAggregatedPeriod.add (p);</span>
-<span class="nc" id="L1176">			}</span>
+<span class="nc bnc" id="L1185" title="All 2 branches missed.">			for (org.drip.analytics.cashflow.CompositePeriod p : lsCompPeriod) {</span>
+<span class="nc bnc" id="L1186" title="All 2 branches missed.">				if (null != p) setAggregatedPeriod.add (p);</span>
+<span class="nc" id="L1187">			}</span>
 		}
 
-<span class="nc" id="L1179">		return setAggregatedPeriod;</span>
+<span class="nc" id="L1190">		return setAggregatedPeriod;</span>
 	}
 
 	/**
@@ -1194,24 +1205,24 @@ package org.drip.analytics.support;
 		final java.lang.String strPrefix,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapInput)
 	{
-<span class="pc bpc" id="L1197" title="4 of 8 branches missed.">		if (null == mapOutput || null == strPrefix || strPrefix.isEmpty() || null == mapInput) return false;</span>
+<span class="pc bpc" id="L1208" title="4 of 8 branches missed.">		if (null == mapOutput || null == strPrefix || strPrefix.isEmpty() || null == mapInput) return false;</span>
 
-<span class="fc" id="L1199">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapInputESSingle =</span>
-<span class="fc" id="L1200">			mapInput.entrySet();</span>
+<span class="fc" id="L1210">		java.util.Set&lt;java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;&gt; mapInputESSingle =</span>
+<span class="fc" id="L1211">			mapInput.entrySet();</span>
 
-<span class="pc bpc" id="L1202" title="1 of 2 branches missed.">		if (null == mapInputESSingle) return false;</span>
+<span class="pc bpc" id="L1213" title="1 of 2 branches missed.">		if (null == mapInputESSingle) return false;</span>
 
-<span class="fc bfc" id="L1204" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapInputESSingle) {</span>
-<span class="pc bpc" id="L1205" title="1 of 2 branches missed.">			if (null == me) continue;</span>
+<span class="fc bfc" id="L1215" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapInputESSingle) {</span>
+<span class="pc bpc" id="L1216" title="1 of 2 branches missed.">			if (null == me) continue;</span>
 
-<span class="fc" id="L1207">			java.lang.String strKey = me.getKey();</span>
+<span class="fc" id="L1218">			java.lang.String strKey = me.getKey();</span>
 
-<span class="pc bpc" id="L1209" title="2 of 4 branches missed.">			if (null == strKey || strKey.isEmpty()) continue;</span>
+<span class="pc bpc" id="L1220" title="2 of 4 branches missed.">			if (null == strKey || strKey.isEmpty()) continue;</span>
 
-<span class="fc" id="L1211">			mapOutput.put (strPrefix + &quot;@&quot; + strKey, me.getValue());</span>
-<span class="fc" id="L1212">		}</span>
+<span class="fc" id="L1222">			mapOutput.put (strPrefix + &quot;@&quot; + strKey, me.getValue());</span>
+<span class="fc" id="L1223">		}</span>
 
-<span class="fc" id="L1214">		return true;</span>
+<span class="fc" id="L1225">		return true;</span>
 	}
 
 	/**
@@ -1227,11 +1238,11 @@ package org.drip.analytics.support;
 		final org.drip.state.identifier.LatentStateLabel lslLeft,
 		final org.drip.state.identifier.LatentStateLabel lslRight)
 	{
-<span class="nc bnc" id="L1230" title="All 4 branches missed.">		if (null == lslLeft &amp;&amp; null == lslRight) return true;</span>
+<span class="nc bnc" id="L1241" title="All 4 branches missed.">		if (null == lslLeft &amp;&amp; null == lslRight) return true;</span>
 
-<span class="nc bnc" id="L1232" title="All 8 branches missed.">		if ((null == lslLeft &amp;&amp; null != lslRight) || (null != lslLeft &amp;&amp; null == lslRight)) return false;</span>
+<span class="nc bnc" id="L1243" title="All 8 branches missed.">		if ((null == lslLeft &amp;&amp; null != lslRight) || (null != lslLeft &amp;&amp; null == lslRight)) return false;</span>
 
-<span class="nc" id="L1234">		return lslLeft.match (lslRight);</span>
+<span class="nc" id="L1245">		return lslLeft.match (lslRight);</span>
 	}
 
 	/**
@@ -1252,13 +1263,13 @@ package org.drip.analytics.support;
 		final double dblReferenceIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L1255" title="All 6 branches missed.">		if (null == dtValue || null == bond || !org.drip.numerical.common.NumberUtil.IsValid (dblReferenceIndex))</span>
-<span class="nc" id="L1256">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L1266" title="All 6 branches missed.">		if (null == dtValue || null == bond || !org.drip.numerical.common.NumberUtil.IsValid (dblReferenceIndex))</span>
+<span class="nc" id="L1267">			throw new java.lang.Exception</span>
 				(&quot;AnalyticsHelper::BondFuturesPriceAUDBillStyle =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L1259">		return 1. / (1. + (1. - dblReferenceIndex) * org.drip.analytics.daycount.Convention.YearFraction</span>
-<span class="nc" id="L1260">			(dtValue.julian(), bond.maturityDate().julian(), bond.accrualDC(), false, null,</span>
-<span class="nc" id="L1261">				bond.currency()));</span>
+<span class="nc" id="L1270">		return 1. / (1. + (1. - dblReferenceIndex) * org.drip.analytics.daycount.Convention.YearFraction</span>
+<span class="nc" id="L1271">			(dtValue.julian(), bond.maturityDate().julian(), bond.accrualDC(), false, null,</span>
+<span class="nc" id="L1272">				bond.currency()));</span>
 	}
 
 	/**
@@ -1272,15 +1283,15 @@ package org.drip.analytics.support;
 	public static final double[] NormalizedEqualWeightedArray (
 		final int iNumElement)
 	{
-<span class="pc bpc" id="L1275" title="1 of 2 branches missed.">		if (0 &gt;= iNumElement) return null;</span>
+<span class="pc bpc" id="L1286" title="1 of 2 branches missed.">		if (0 &gt;= iNumElement) return null;</span>
 
-<span class="fc" id="L1277">		double dblWeight = 1. / iNumElement;</span>
-<span class="fc" id="L1278">		double[] adblEqualWeighted = new double[iNumElement];</span>
+<span class="fc" id="L1288">		double dblWeight = 1. / iNumElement;</span>
+<span class="fc" id="L1289">		double[] adblEqualWeighted = new double[iNumElement];</span>
 
-<span class="fc bfc" id="L1280" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumElement; ++i)</span>
-<span class="fc" id="L1281">			adblEqualWeighted[i] = dblWeight;</span>
+<span class="fc bfc" id="L1291" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumElement; ++i)</span>
+<span class="fc" id="L1292">			adblEqualWeighted[i] = dblWeight;</span>
 
-<span class="fc" id="L1283">		return adblEqualWeighted;</span>
+<span class="fc" id="L1294">		return adblEqualWeighted;</span>
 	}
 
 	/**
@@ -1296,21 +1307,21 @@ package org.drip.analytics.support;
 		final java.lang.String strBaseTenor,
 		final java.lang.String strRollTenor)
 	{
-<span class="pc bpc" id="L1299" title="1 of 4 branches missed.">		if (null == strBaseTenor || strBaseTenor.isEmpty()) return strRollTenor;</span>
+<span class="pc bpc" id="L1310" title="1 of 4 branches missed.">		if (null == strBaseTenor || strBaseTenor.isEmpty()) return strRollTenor;</span>
 
-<span class="fc" id="L1301">		char chBaseTenor = strBaseTenor.charAt (strBaseTenor.length() - 1);</span>
+<span class="fc" id="L1312">		char chBaseTenor = strBaseTenor.charAt (strBaseTenor.length() - 1);</span>
 
-<span class="fc" id="L1303">		char chRollTenor = strRollTenor.charAt (strRollTenor.length() - 1);</span>
+<span class="fc" id="L1314">		char chRollTenor = strRollTenor.charAt (strRollTenor.length() - 1);</span>
 
-<span class="pc bpc" id="L1305" title="1 of 2 branches missed.">		if (chRollTenor != chBaseTenor) return null;</span>
+<span class="pc bpc" id="L1316" title="1 of 2 branches missed.">		if (chRollTenor != chBaseTenor) return null;</span>
 
-<span class="fc" id="L1307">		int iBaseTimeUnit = (int) java.lang.Double.parseDouble (strBaseTenor.substring (0, strBaseTenor.length() -</span>
+<span class="fc" id="L1318">		int iBaseTimeUnit = (int) java.lang.Double.parseDouble (strBaseTenor.substring (0, strBaseTenor.length() -</span>
 			1));
 
-<span class="fc" id="L1310">		int iRollTimeUnit = (int) java.lang.Double.parseDouble (strRollTenor.substring (0, strRollTenor.length() -</span>
+<span class="fc" id="L1321">		int iRollTimeUnit = (int) java.lang.Double.parseDouble (strRollTenor.substring (0, strRollTenor.length() -</span>
 			1));
 
-<span class="fc" id="L1313">		return &quot;&quot; + (iBaseTimeUnit + iRollTimeUnit) + chBaseTenor;</span>
+<span class="fc" id="L1324">		return &quot;&quot; + (iBaseTimeUnit + iRollTimeUnit) + chBaseTenor;</span>
 	}
 
 	/**
@@ -1326,19 +1337,19 @@ package org.drip.analytics.support;
 		final org.drip.analytics.date.JulianDate dtSpot,
 		final java.lang.String[] astrTenor)
 	{
-<span class="pc bpc" id="L1329" title="2 of 4 branches missed.">		if (null == dtSpot || null == astrTenor) return null;</span>
+<span class="pc bpc" id="L1340" title="2 of 4 branches missed.">		if (null == dtSpot || null == astrTenor) return null;</span>
 
-<span class="fc" id="L1331">		int iNumTenor = astrTenor.length;</span>
-<span class="pc bpc" id="L1332" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adt = 0 == iNumTenor ? null : new</span>
+<span class="fc" id="L1342">		int iNumTenor = astrTenor.length;</span>
+<span class="pc bpc" id="L1343" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adt = 0 == iNumTenor ? null : new</span>
 			org.drip.analytics.date.JulianDate[iNumTenor];
 
-<span class="pc bpc" id="L1335" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="pc bpc" id="L1346" title="1 of 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="fc bfc" id="L1337" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
-<span class="pc bpc" id="L1338" title="1 of 2 branches missed.">			if (null == (adt[i] = dtSpot.addTenor (astrTenor[i]))) return null;</span>
+<span class="fc bfc" id="L1348" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTenor; ++i) {</span>
+<span class="pc bpc" id="L1349" title="1 of 2 branches missed.">			if (null == (adt[i] = dtSpot.addTenor (astrTenor[i]))) return null;</span>
 		}
 
-<span class="fc" id="L1341">		return adt;</span>
+<span class="fc" id="L1352">		return adt;</span>
 	}
 
 	/**
@@ -1354,14 +1365,14 @@ package org.drip.analytics.support;
 		final org.drip.analytics.date.JulianDate dtSpot,
 		final int iCount)
 	{
-<span class="pc bpc" id="L1357" title="2 of 4 branches missed.">		if (null == dtSpot || 0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L1368" title="2 of 4 branches missed.">		if (null == dtSpot || 0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L1359">		org.drip.analytics.date.JulianDate[] adtSpot = new org.drip.analytics.date.JulianDate[iCount];</span>
+<span class="fc" id="L1370">		org.drip.analytics.date.JulianDate[] adtSpot = new org.drip.analytics.date.JulianDate[iCount];</span>
 
-<span class="fc bfc" id="L1361" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i)</span>
-<span class="fc" id="L1362">			adtSpot[i] = dtSpot;</span>
+<span class="fc bfc" id="L1372" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i)</span>
+<span class="fc" id="L1373">			adtSpot[i] = dtSpot;</span>
 
-<span class="fc" id="L1364">		return adtSpot;</span>
+<span class="fc" id="L1375">		return adtSpot;</span>
 	}
 
 	/**
@@ -1377,17 +1388,17 @@ package org.drip.analytics.support;
 		final double[] adblNode,
 		final double dblBump)
 	{
-<span class="pc bpc" id="L1380" title="1 of 2 branches missed.">		if (null == adblNode) return null;</span>
+<span class="pc bpc" id="L1391" title="1 of 2 branches missed.">		if (null == adblNode) return null;</span>
 
-<span class="fc" id="L1382">		int iNumNode = adblNode.length;</span>
-<span class="pc bpc" id="L1383" title="1 of 2 branches missed.">		double[] adblBumpedNode = 0 == iNumNode ? null : new double[iNumNode];</span>
+<span class="fc" id="L1393">		int iNumNode = adblNode.length;</span>
+<span class="pc bpc" id="L1394" title="1 of 2 branches missed.">		double[] adblBumpedNode = 0 == iNumNode ? null : new double[iNumNode];</span>
 
-<span class="fc bfc" id="L1385" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
-<span class="pc bpc" id="L1386" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblBumpedNode[i] = adblNode[i] + dblBump))</span>
-<span class="nc" id="L1387">				return null;</span>
+<span class="fc bfc" id="L1396" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumNode; ++i) {</span>
+<span class="pc bpc" id="L1397" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblBumpedNode[i] = adblNode[i] + dblBump))</span>
+<span class="nc" id="L1398">				return null;</span>
 		}
 
-<span class="fc" id="L1390">		return adblBumpedNode;</span>
+<span class="fc" id="L1401">		return adblBumpedNode;</span>
 	}
 
 	/**
@@ -1401,30 +1412,30 @@ package org.drip.analytics.support;
 	public static final java.lang.String IntervalHMSMS (
 		final long lElapsedNanos)
 	{
-<span class="pc bpc" id="L1404" title="1 of 2 branches missed.">		if (0 &gt;= lElapsedNanos) return &quot;&quot;;</span>
+<span class="pc bpc" id="L1415" title="1 of 2 branches missed.">		if (0 &gt;= lElapsedNanos) return &quot;&quot;;</span>
 
-<span class="fc" id="L1406">		java.lang.String strHMS = &quot;&quot;;</span>
-<span class="fc" id="L1407">		long lElapsedSeconds = (long) ((0.5 + lElapsedNanos) * 1.e-09);</span>
-<span class="fc" id="L1408">		long lElapsedMillis = (lElapsedNanos - lElapsedSeconds * 1000000000) / 1000000;</span>
+<span class="fc" id="L1417">		java.lang.String strHMS = &quot;&quot;;</span>
+<span class="fc" id="L1418">		long lElapsedSeconds = (long) ((0.5 + lElapsedNanos) * 1.e-09);</span>
+<span class="fc" id="L1419">		long lElapsedMillis = (lElapsedNanos - lElapsedSeconds * 1000000000) / 1000000;</span>
 
-<span class="pc bpc" id="L1410" title="1 of 2 branches missed.">		if (lElapsedSeconds &gt;= 3600)</span>
+<span class="pc bpc" id="L1421" title="1 of 2 branches missed.">		if (lElapsedSeconds &gt;= 3600)</span>
 		{
-<span class="nc" id="L1412">			strHMS = strHMS + (lElapsedSeconds / 3600) + &quot; h &quot;;</span>
-<span class="nc" id="L1413">			lElapsedSeconds = lElapsedSeconds % 3600;</span>
+<span class="nc" id="L1423">			strHMS = strHMS + (lElapsedSeconds / 3600) + &quot; h &quot;;</span>
+<span class="nc" id="L1424">			lElapsedSeconds = lElapsedSeconds % 3600;</span>
 		}
 
-<span class="fc bfc" id="L1416" title="All 2 branches covered.">		if (lElapsedSeconds &gt;= 60)</span>
+<span class="fc bfc" id="L1427" title="All 2 branches covered.">		if (lElapsedSeconds &gt;= 60)</span>
 		{
-<span class="fc" id="L1418">			strHMS = strHMS + (lElapsedSeconds / 60) + &quot; m &quot;;</span>
-<span class="fc" id="L1419">			lElapsedSeconds = lElapsedSeconds % 60;</span>
+<span class="fc" id="L1429">			strHMS = strHMS + (lElapsedSeconds / 60) + &quot; m &quot;;</span>
+<span class="fc" id="L1430">			lElapsedSeconds = lElapsedSeconds % 60;</span>
 		}
 
-<span class="fc bfc" id="L1422" title="All 2 branches covered.">		if (lElapsedSeconds &gt; 0)</span>
+<span class="fc bfc" id="L1433" title="All 2 branches covered.">		if (lElapsedSeconds &gt; 0)</span>
 		{
-<span class="fc" id="L1424">			strHMS = strHMS + lElapsedSeconds + &quot; s &quot;;</span>
+<span class="fc" id="L1435">			strHMS = strHMS + lElapsedSeconds + &quot; s &quot;;</span>
 		}
 
-<span class="fc" id="L1427">		return strHMS + lElapsedMillis + &quot; ms&quot;;</span>
+<span class="fc" id="L1438">		return strHMS + lElapsedMillis + &quot; ms&quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

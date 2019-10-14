@@ -6,6 +6,7 @@ package org.drip.analytics.support;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,33 +17,43 @@ package org.drip.analytics.support;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -77,16 +88,16 @@ package org.drip.analytics.support;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/README.md&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/support/README.md&quot;&gt;Assorted Support and Helper Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L89">public class LossQuadratureGenerator {</span>
+<span class="nc" id="L100">public class LossQuadratureGenerator {</span>
 
 	/**
 	 * Generate the Set of Loss Quadrature Metrics from the Day Step Loss Periods
@@ -110,62 +121,62 @@ package org.drip.analytics.support;
 			final int iPeriodUnit,
 			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="pc bpc" id="L113" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+<span class="pc bpc" id="L124" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
 
-<span class="fc" id="L115">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
-<span class="fc" id="L116">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+<span class="fc" id="L126">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="fc" id="L127">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
 
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
 
-<span class="fc" id="L120">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+<span class="fc" id="L131">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
 
-<span class="fc" id="L124">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+<span class="fc" id="L135">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
 
-<span class="fc" id="L126">		int iSubPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L137">		int iSubPeriodStartDate = period.startDate();</span>
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (iSubPeriodStartDate &gt; iWorkoutDate) return null;</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (iSubPeriodStartDate &gt; iWorkoutDate) return null;</span>
 
-<span class="fc" id="L130">		int iPeriodEndDate = period.endDate();</span>
+<span class="fc" id="L141">		int iPeriodEndDate = period.endDate();</span>
 
-<span class="fc" id="L132">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L143">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L134">		boolean bPeriodDone = false;</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		iSubPeriodStartDate = iSubPeriodStartDate &lt; iValueDate ? iValueDate : iSubPeriodStartDate;</span>
+<span class="fc" id="L145">		boolean bPeriodDone = false;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		iSubPeriodStartDate = iSubPeriodStartDate &lt; iValueDate ? iValueDate : iSubPeriodStartDate;</span>
 
-<span class="fc" id="L138">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+<span class="fc" id="L149">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">		while (!bPeriodDone) {</span>
-<span class="fc" id="L142">			int iSubPeriodEndDate = iSubPeriodStartDate + iPeriodUnit;</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">		while (!bPeriodDone) {</span>
+<span class="fc" id="L153">			int iSubPeriodEndDate = iSubPeriodStartDate + iPeriodUnit;</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			if (iSubPeriodEndDate &lt; iValueDate) return null;</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">			if (iSubPeriodEndDate &lt; iValueDate) return null;</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">			if (iSubPeriodEndDate &gt;= iPeriodEndDate) {</span>
-<span class="fc" id="L147">				bPeriodDone = true;</span>
-<span class="fc" id="L148">				iSubPeriodEndDate = iPeriodEndDate;</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">			if (iSubPeriodEndDate &gt;= iPeriodEndDate) {</span>
+<span class="fc" id="L158">				bPeriodDone = true;</span>
+<span class="fc" id="L159">				iSubPeriodEndDate = iPeriodEndDate;</span>
 			}
 
 			try {
-<span class="fc" id="L152">				org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
-<span class="fc" id="L153">					org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iSubPeriodStartDate,</span>
-<span class="fc" id="L154">						iSubPeriodEndDate, period.accrualDCF ((iSubPeriodStartDate + iSubPeriodEndDate) / 2),</span>
-<span class="fc" id="L155">							comp.notional (iSubPeriodStartDate, iSubPeriodEndDate), comp.recovery</span>
-<span class="fc" id="L156">								(iSubPeriodStartDate, iSubPeriodEndDate, cc), dc, cc, iLossPayLag);</span>
+<span class="fc" id="L163">				org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="fc" id="L164">					org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iSubPeriodStartDate,</span>
+<span class="fc" id="L165">						iSubPeriodEndDate, period.accrualDCF ((iSubPeriodStartDate + iSubPeriodEndDate) / 2),</span>
+<span class="fc" id="L166">							comp.notional (iSubPeriodStartDate, iSubPeriodEndDate), comp.recovery</span>
+<span class="fc" id="L167">								(iSubPeriodStartDate, iSubPeriodEndDate, cc), dc, cc, iLossPayLag);</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				if (null != lp) sLP.add (lp);</span>
-<span class="nc" id="L159">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L160">				e.printStackTrace();</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">				if (null != lp) sLP.add (lp);</span>
+<span class="nc" id="L170">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L171">				e.printStackTrace();</span>
 
-<span class="nc" id="L162">				return null;</span>
-<span class="fc" id="L163">			}</span>
+<span class="nc" id="L173">				return null;</span>
+<span class="fc" id="L174">			}</span>
 
-<span class="fc" id="L165">			iSubPeriodStartDate = iSubPeriodEndDate;</span>
-<span class="fc" id="L166">		}</span>
+<span class="fc" id="L176">			iSubPeriodStartDate = iSubPeriodEndDate;</span>
+<span class="fc" id="L177">		}</span>
 
-<span class="fc" id="L168">		return sLP;</span>
+<span class="fc" id="L179">		return sLP;</span>
 	}
 
 	/**
@@ -190,66 +201,66 @@ package org.drip.analytics.support;
 			final int iPeriodUnit,
 			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="nc bnc" id="L193" title="All 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+<span class="nc bnc" id="L204" title="All 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
 
-<span class="nc" id="L195">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
-<span class="nc" id="L196">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+<span class="nc" id="L206">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="nc" id="L207">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
 
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (null == dc) return null;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (null == dc) return null;</span>
 
-<span class="nc" id="L200">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+<span class="nc" id="L211">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == cc) return null;</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (null == cc) return null;</span>
 
-<span class="nc" id="L204">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L215">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L206">		int iPeriodEndDate = period.endDate();</span>
+<span class="nc" id="L217">		int iPeriodEndDate = period.endDate();</span>
 
-<span class="nc" id="L208">		int iSubPeriodStartDate = period.startDate();</span>
+<span class="nc" id="L219">		int iSubPeriodStartDate = period.startDate();</span>
 
-<span class="nc" id="L210">		boolean bPeriodDone = false;</span>
-<span class="nc bnc" id="L211" title="All 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		iSubPeriodStartDate = iSubPeriodStartDate &lt; iValueDate ? iValueDate : iSubPeriodStartDate;</span>
-<span class="nc" id="L213">		int iDayStep = (iPeriodEndDate - iSubPeriodStartDate) / iPeriodUnit;</span>
+<span class="nc" id="L221">		boolean bPeriodDone = false;</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		iSubPeriodStartDate = iSubPeriodStartDate &lt; iValueDate ? iValueDate : iSubPeriodStartDate;</span>
+<span class="nc" id="L224">		int iDayStep = (iPeriodEndDate - iSubPeriodStartDate) / iPeriodUnit;</span>
 
-<span class="nc bnc" id="L215" title="All 4 branches missed.">		if (iSubPeriodStartDate &gt; iWorkoutDate || iPeriodEndDate &lt; iValueDate) return null;</span>
+<span class="nc bnc" id="L226" title="All 4 branches missed.">		if (iSubPeriodStartDate &gt; iWorkoutDate || iPeriodEndDate &lt; iValueDate) return null;</span>
 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (iDayStep &lt; org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM)</span>
-<span class="nc" id="L218">			iDayStep = org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (iDayStep &lt; org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM)</span>
+<span class="nc" id="L229">			iDayStep = org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM;</span>
 
-<span class="nc" id="L220">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+<span class="nc" id="L231">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
 
-<span class="nc" id="L222">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+<span class="nc" id="L233">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		while (!bPeriodDone) {</span>
-<span class="nc" id="L226">			int iSubPeriodEndDate = iSubPeriodStartDate + iDayStep;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		while (!bPeriodDone) {</span>
+<span class="nc" id="L237">			int iSubPeriodEndDate = iSubPeriodStartDate + iDayStep;</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (iSubPeriodEndDate &lt; iValueDate) return null;</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (iSubPeriodEndDate &lt; iValueDate) return null;</span>
 
 			try {
-<span class="nc bnc" id="L231" title="All 2 branches missed.">				if (iSubPeriodEndDate &gt;= iPeriodEndDate) {</span>
-<span class="nc" id="L232">					bPeriodDone = true;</span>
-<span class="nc" id="L233">					iSubPeriodEndDate = iPeriodEndDate;</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">				if (iSubPeriodEndDate &gt;= iPeriodEndDate) {</span>
+<span class="nc" id="L243">					bPeriodDone = true;</span>
+<span class="nc" id="L244">					iSubPeriodEndDate = iPeriodEndDate;</span>
 				}
 
-<span class="nc" id="L236">				org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
-<span class="nc" id="L237">					org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iSubPeriodStartDate,</span>
-<span class="nc" id="L238">						iSubPeriodEndDate, period.accrualDCF ((iSubPeriodStartDate + iSubPeriodEndDate) / 2),</span>
-<span class="nc" id="L239">							comp.notional (iSubPeriodStartDate, iSubPeriodEndDate), comp.recovery</span>
-<span class="nc" id="L240">								(iSubPeriodStartDate, iSubPeriodEndDate, cc),  dc, cc, iLossPayLag);</span>
+<span class="nc" id="L247">				org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="nc" id="L248">					org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iSubPeriodStartDate,</span>
+<span class="nc" id="L249">						iSubPeriodEndDate, period.accrualDCF ((iSubPeriodStartDate + iSubPeriodEndDate) / 2),</span>
+<span class="nc" id="L250">							comp.notional (iSubPeriodStartDate, iSubPeriodEndDate), comp.recovery</span>
+<span class="nc" id="L251">								(iSubPeriodStartDate, iSubPeriodEndDate, cc),  dc, cc, iLossPayLag);</span>
 
-<span class="nc bnc" id="L242" title="All 2 branches missed.">				if (null != lp) sLP.add (lp);</span>
-<span class="nc" id="L243">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L244">				e.printStackTrace();</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">				if (null != lp) sLP.add (lp);</span>
+<span class="nc" id="L254">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L255">				e.printStackTrace();</span>
 
-<span class="nc" id="L246">				return null;</span>
-<span class="nc" id="L247">			}</span>
+<span class="nc" id="L257">				return null;</span>
+<span class="nc" id="L258">			}</span>
 
-<span class="nc" id="L249">			iSubPeriodStartDate = iSubPeriodEndDate;</span>
-<span class="nc" id="L250">		}</span>
+<span class="nc" id="L260">			iSubPeriodStartDate = iSubPeriodEndDate;</span>
+<span class="nc" id="L261">		}</span>
 
-<span class="nc" id="L252">		return sLP;</span>
+<span class="nc" id="L263">		return sLP;</span>
 	}
 
 
@@ -273,48 +284,48 @@ package org.drip.analytics.support;
 			final int iWorkoutDate,
 			final org.drip.param.market.CurveSurfaceQuoteContainer csqs)
 	{
-<span class="pc bpc" id="L276" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
+<span class="pc bpc" id="L287" title="4 of 8 branches missed.">		if (null == comp || null == valParams || null == period || null == csqs) return null;</span>
 
-<span class="fc" id="L278">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
-<span class="fc" id="L279">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
+<span class="fc" id="L289">		org.drip.state.discount.MergedDiscountForwardCurve dc = csqs.fundingState</span>
+<span class="fc" id="L290">			(org.drip.state.identifier.FundingLabel.Standard (comp.payCurrency()));</span>
 
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (null == dc) return null;</span>
 
-<span class="fc" id="L283">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
+<span class="fc" id="L294">		org.drip.state.credit.CreditCurve cc = csqs.creditState (comp.creditLabel());</span>
 
-<span class="pc bpc" id="L285" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">		if (null == cc) return null;</span>
 
-<span class="fc" id="L287">		int iPeriodStartDate = period.startDate();</span>
+<span class="fc" id="L298">		int iPeriodStartDate = period.startDate();</span>
 
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">		if (iPeriodStartDate &gt; iWorkoutDate) return null;</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		if (iPeriodStartDate &gt; iWorkoutDate) return null;</span>
 
-<span class="fc" id="L291">		int iPeriodEndDate = period.endDate();</span>
+<span class="fc" id="L302">		int iPeriodEndDate = period.endDate();</span>
 
-<span class="fc" id="L293">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L304">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">		iPeriodStartDate = iPeriodStartDate &lt; iValueDate ? iValueDate : iPeriodStartDate;</span>
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">		iPeriodStartDate = iPeriodStartDate &lt; iValueDate ? iValueDate : iPeriodStartDate;</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">		iPeriodEndDate = iPeriodEndDate &lt; iWorkoutDate ? iPeriodEndDate : iWorkoutDate;</span>
 
-<span class="fc" id="L298">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
+<span class="fc" id="L309">		int iLossPayLag = comp.creditValuationParams().lossPayLag();</span>
 
-<span class="fc" id="L300">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
+<span class="fc" id="L311">		java.util.List&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt; sLP = new</span>
 			java.util.ArrayList&lt;org.drip.analytics.cashflow.LossQuadratureMetrics&gt;();
 
 		try {
-<span class="fc" id="L304">			org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
-<span class="fc" id="L305">				org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iPeriodStartDate,</span>
-<span class="fc" id="L306">					iPeriodEndDate, period.accrualDCF ((iPeriodStartDate + iPeriodEndDate) / 2),</span>
-<span class="fc" id="L307">						comp.notional (iPeriodStartDate, iPeriodEndDate), comp.recovery (iPeriodStartDate,</span>
+<span class="fc" id="L315">			org.drip.analytics.cashflow.LossQuadratureMetrics lp =</span>
+<span class="fc" id="L316">				org.drip.analytics.cashflow.LossQuadratureMetrics.MakeDefaultPeriod (iPeriodStartDate,</span>
+<span class="fc" id="L317">					iPeriodEndDate, period.accrualDCF ((iPeriodStartDate + iPeriodEndDate) / 2),</span>
+<span class="fc" id="L318">						comp.notional (iPeriodStartDate, iPeriodEndDate), comp.recovery (iPeriodStartDate,</span>
 							iPeriodEndDate, cc), dc, cc, iLossPayLag);
 
-<span class="pc bpc" id="L310" title="1 of 2 branches missed.">			if (null != lp) sLP.add (lp);</span>
-<span class="nc" id="L311">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L312">			e.printStackTrace();</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">			if (null != lp) sLP.add (lp);</span>
+<span class="nc" id="L322">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L323">			e.printStackTrace();</span>
 
-<span class="nc" id="L314">			return null;</span>
-<span class="fc" id="L315">		}</span>
+<span class="nc" id="L325">			return null;</span>
+<span class="fc" id="L326">		}</span>
 
-<span class="fc" id="L317">		return sLP;</span>
+<span class="fc" id="L328">		return sLP;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

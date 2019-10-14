@@ -93,32 +93,38 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProjectionImpliedConfidenceOutput {
-<span class="fc" id="L97">	private double[] _adblUnadjustedWeight = null;</span>
-<span class="fc" id="L98">	private org.drip.portfolioconstruction.bayesian.BlackLittermanOutput _bloFullConfidence = null;</span>
-<span class="fc" id="L99">	private org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput _blcco = null;</span>
+public class ProjectionImpliedConfidenceOutput
+{
+<span class="fc" id="L98">	private double[] _unadjustedWeightArray = null;</span>
+<span class="fc" id="L99">	private org.drip.portfolioconstruction.bayesian.BlackLittermanOutput _fullConfidenceOutput = null;</span>
+<span class="fc" id="L100">	private org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput</span>
+		_customConfidenceOutput = null;
 
 	/**
 	 * ProjectionImpliedConfidenceOutput Constructor
 	 * 
-	 * @param adblUnadjustedWeight Array of the Unadjusted Weights
-	 * @param blcco The Custom Confidence Black Litterman Run Output
-	 * @param bloFullConfidence The Full Confidence Black Litterman Run Output
+	 * @param unadjustedWeightArray Array of the Unadjusted Weights
+	 * @param customConfidenceOutput The Custom Confidence Black Litterman Run Output
+	 * @param fullConfidenceOutput The Full Confidence Black Litterman Run Output
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProjectionImpliedConfidenceOutput (
-		final double[] adblUnadjustedWeight,
-		final org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blcco,
-		final org.drip.portfolioconstruction.bayesian.BlackLittermanOutput bloFullConfidence)
+		final double[] unadjustedWeightArray,
+		final org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput
+			customConfidenceOutput,
+		final org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput)
 		throws java.lang.Exception
-<span class="fc" id="L116">	{</span>
-<span class="pc bpc" id="L117" title="4 of 8 branches missed.">		if (null == (_adblUnadjustedWeight = adblUnadjustedWeight) || 0 == _adblUnadjustedWeight.length ||</span>
-			null == (_blcco = blcco) || null == (_bloFullConfidence = bloFullConfidence))
-<span class="nc" id="L119">			throw new java.lang.Exception</span>
+<span class="fc" id="L119">	{</span>
+<span class="pc bpc" id="L120" title="4 of 8 branches missed.">		if (null == (_unadjustedWeightArray = unadjustedWeightArray) || 0 == _unadjustedWeightArray.length ||</span>
+			null == (_customConfidenceOutput = customConfidenceOutput) ||
+			null == (_fullConfidenceOutput = fullConfidenceOutput))
+		{
+<span class="nc" id="L124">			throw new java.lang.Exception</span>
 				(&quot;ProjectionImpliedConfidenceOutput Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L121">	}</span>
+		}
+<span class="fc" id="L127">	}</span>
 
 	/**
 	 * Retrieve the Array of the Unadjusted Equilibrium Weights
@@ -126,9 +132,9 @@ public class ProjectionImpliedConfidenceOutput {
 	 * @return The Array of the Unadjusted Equilibrium Weights
 	 */
 
-	public double[] unadjustedWeights()
+	public double[] unadjustedWeightArray()
 	{
-<span class="nc" id="L131">		return _adblUnadjustedWeight;</span>
+<span class="nc" id="L137">		return _unadjustedWeightArray;</span>
 	}
 
 	/**
@@ -140,7 +146,7 @@ public class ProjectionImpliedConfidenceOutput {
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput
 		customConfidenceOutput()
 	{
-<span class="fc" id="L143">		return _blcco;</span>
+<span class="fc" id="L149">		return _customConfidenceOutput;</span>
 	}
 
 	/**
@@ -151,7 +157,7 @@ public class ProjectionImpliedConfidenceOutput {
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput()
 	{
-<span class="fc" id="L154">		return _bloFullConfidence;</span>
+<span class="fc" id="L160">		return _fullConfidenceOutput;</span>
 	}
 
 	/**
@@ -162,7 +168,7 @@ public class ProjectionImpliedConfidenceOutput {
 
 	public double[] customProjectionConfidenceDeviation()
 	{
-<span class="fc" id="L165">		return _blcco.allocationAdjustmentTilt();</span>
+<span class="fc" id="L171">		return _customConfidenceOutput.allocationAdjustmentTiltArray();</span>
 	}
 
 	/**
@@ -173,7 +179,7 @@ public class ProjectionImpliedConfidenceOutput {
 
 	public double[] customProjectionConfidenceWeight()
 	{
-<span class="fc" id="L176">		return _blcco.adjustedMetrics().optimalPortfolio().weights();</span>
+<span class="fc" id="L182">		return _customConfidenceOutput.adjustedOptimizationOutput().optimalPortfolio().weightArray();</span>
 	}
 
 	/**
@@ -184,7 +190,7 @@ public class ProjectionImpliedConfidenceOutput {
 
 	public double[] fullProjectionConfidenceDeviation()
 	{
-<span class="fc" id="L187">		return _bloFullConfidence.allocationAdjustmentTilt();</span>
+<span class="fc" id="L193">		return _fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
 	}
 
 	/**
@@ -195,7 +201,7 @@ public class ProjectionImpliedConfidenceOutput {
 
 	public double[] fullProjectionConfidenceWeight()
 	{
-<span class="fc" id="L198">		return _bloFullConfidence.adjustedMetrics().optimalPortfolio().weights();</span>
+<span class="fc" id="L204">		return _fullConfidenceOutput.adjustedOptimizationOutput().optimalPortfolio().weightArray();</span>
 	}
 
 	/**
@@ -204,20 +210,24 @@ public class ProjectionImpliedConfidenceOutput {
 	 * @return The Array of the Custom Projection Induced Confidence Level
 	 */
 
-	public double[] level()
+	public double[] impliedConfidenceLevelArray()
 	{
-<span class="fc" id="L209">		int iNumAsset = _adblUnadjustedWeight.length;</span>
-<span class="fc" id="L210">		double[] adblImpliedConfidenceLevel = new double[iNumAsset];</span>
+<span class="fc" id="L215">		int assetCount = _unadjustedWeightArray.length;</span>
+<span class="fc" id="L216">		double[] impliedConfidenceLevelArray = new double[assetCount];</span>
 
-<span class="fc" id="L212">		double[] adblCustomProjectionConfidenceDeviation = _blcco.allocationAdjustmentTilt();</span>
+<span class="fc" id="L218">		double[] fullProjectionConfidenceDeviationArray =</span>
+<span class="fc" id="L219">			_fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
 
-<span class="fc" id="L214">		double[] adblFullProjectionConfidenceDeviation = _bloFullConfidence.allocationAdjustmentTilt();</span>
+<span class="fc" id="L221">		double[] customProjectionConfidenceDeviationArray =</span>
+<span class="fc" id="L222">			_customConfidenceOutput.allocationAdjustmentTiltArray();</span>
 
-<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L217">			adblImpliedConfidenceLevel[i] = adblCustomProjectionConfidenceDeviation[i] /</span>
-				adblFullProjectionConfidenceDeviation[i];
+<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L226">			impliedConfidenceLevelArray[assetIndex] = customProjectionConfidenceDeviationArray[assetIndex] /</span>
+				fullProjectionConfidenceDeviationArray[assetIndex];
+		}
 
-<span class="fc" id="L220">		return adblImpliedConfidenceLevel;</span>
+<span class="fc" id="L230">		return impliedConfidenceLevelArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

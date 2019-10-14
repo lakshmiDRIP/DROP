@@ -93,46 +93,52 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProjectionSpecification {
-<span class="fc" id="L97">	private double[][] _aadblAssetSpaceLoading = null;</span>
-<span class="fc" id="L98">	private org.drip.measure.gaussian.R1MultivariateNormal _r1mnExcessReturnsDistribution = null;</span>
+public class ProjectionSpecification
+{
+<span class="fc" id="L98">	private double[][] _assetSpaceLoadingMatrix = null;</span>
+<span class="fc" id="L99">	private org.drip.measure.gaussian.R1MultivariateNormal _excessReturnsDistribution = null;</span>
 
 	/**
 	 * ProjectionSpecification Constructor
 	 * 
-	 * @param r1mnExcessReturnsDistribution The R^1 Projection Space Excess Returns Normal Distribution
-	 * @param aadblAssetSpaceLoading Double Array of Asset To-From Projection Portfolio Pick Weights
+	 * @param excessReturnsDistribution The R&lt;sup&gt;1&lt;/sup&gt; Projection Space Excess Returns Normal Distribution
+	 * @param assetSpaceLoadingMatrix Double Array of Asset To-From Projection Portfolio Pick Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProjectionSpecification (
-		final org.drip.measure.gaussian.R1MultivariateNormal r1mnExcessReturnsDistribution,
-		final double[][] aadblAssetSpaceLoading)
+		final org.drip.measure.gaussian.R1MultivariateNormal excessReturnsDistribution,
+		final double[][] assetSpaceLoadingMatrix)
 		throws java.lang.Exception
-<span class="fc" id="L113">	{</span>
-<span class="pc bpc" id="L114" title="2 of 4 branches missed.">		if (null == (_r1mnExcessReturnsDistribution = r1mnExcessReturnsDistribution) || null ==</span>
-			(_aadblAssetSpaceLoading = aadblAssetSpaceLoading))
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;ProjectionSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc" id="L118">		int iNumProjection = _aadblAssetSpaceLoading.length;</span>
-
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumProjection; ++i) {</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			if (null == _aadblAssetSpaceLoading[i] || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">				(_aadblAssetSpaceLoading[i]))</span>
-<span class="nc" id="L123">				throw new java.lang.Exception (&quot;ProjectionSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L114">	{</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		if (null == (_excessReturnsDistribution = excessReturnsDistribution) ||</span>
+			null == (_assetSpaceLoadingMatrix = assetSpaceLoadingMatrix))
+		{
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;ProjectionSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L125">	}</span>
+
+<span class="fc" id="L121">		int projectionCount = _assetSpaceLoadingMatrix.length;</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int projectionIndex = 0; projectionIndex &lt; projectionCount; ++projectionIndex)</span>
+		{
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">			if (null == _assetSpaceLoadingMatrix[projectionIndex] ||</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_assetSpaceLoadingMatrix[projectionIndex]))</span>
+			{
+<span class="nc" id="L128">				throw new java.lang.Exception (&quot;ProjectionSpecification Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="fc" id="L131">	}</span>
 
 	/**
-	 * Retrieve the R^1 Projection Space Excess Returns Normal Distribution
+	 * Retrieve the R&lt;sup&gt;1&lt;/sup&gt; Projection Space Excess Returns Normal Distribution
 	 * 
-	 * @return The R^1 Projection Space Excess Returns Normal Distribution
+	 * @return The R&lt;sup&gt;1&lt;/sup&gt; Projection Space Excess Returns Normal Distribution
 	 */
 
 	public org.drip.measure.gaussian.R1MultivariateNormal excessReturnsDistribution()
 	{
-<span class="fc" id="L135">		return _r1mnExcessReturnsDistribution;</span>
+<span class="fc" id="L141">		return _excessReturnsDistribution;</span>
 	}
 
 	/**
@@ -141,9 +147,9 @@ public class ProjectionSpecification {
 	 * @return The Matrix of Asset To-From Projection Portfolio Pick Weights
 	 */
 
-	public double[][] assetSpaceLoading()
+	public double[][] assetSpaceLoadingMatrix()
 	{
-<span class="fc" id="L146">		return _aadblAssetSpaceLoading;</span>
+<span class="fc" id="L152">		return _assetSpaceLoadingMatrix;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

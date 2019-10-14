@@ -89,111 +89,124 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProjectionExposure {
-<span class="fc" id="L93">	private double[] _adblIntraViewComponent = null;</span>
-<span class="fc" id="L94">	private double[] _adblInterViewComponent = null;</span>
-<span class="fc" id="L95">	private double[] _adblPriorViewComponent = null;</span>
-<span class="fc" id="L96">	private double[][] _aadblCompositeConfidenceCovariance = null;</span>
+public class ProjectionExposure
+{
+<span class="fc" id="L94">	private double[] _interViewComponentArray = null;</span>
+<span class="fc" id="L95">	private double[] _intraViewComponentArray = null;</span>
+<span class="fc" id="L96">	private double[] _priorViewComponentArray = null;</span>
+<span class="fc" id="L97">	private double[][] _compositeConfidenceCovarianceMatrix = null;</span>
 
 	/**
 	 * ProjectionExposure Constructor
 	 * 
-	 * @param adblIntraViewComponent Array of Per-View View-Specific Exposure Component
-	 * @param adblInterViewComponent Array of Per-View Exposure Contribution from other Views
-	 * @param adblPriorViewComponent Array of View-Specific Per-View Components
-	 * @param aadblCompositeConfidenceCovariance Composite Confidence Co-variance Matrix
+	 * @param intraViewComponentArray Array of Per-View View-Specific Exposure Component Array
+	 * @param interViewComponentArray Array of Per-View Exposure Contribution Array from other Views
+	 * @param priorViewComponentArray Array of View-Specific Per-View Components Array
+	 * @param compositeConfidenceCovarianceMatrix Composite Confidence Co-variance Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProjectionExposure (
-		final double[] adblIntraViewComponent,
-		final double[] adblInterViewComponent,
-		final double[] adblPriorViewComponent,
-		final double[][] aadblCompositeConfidenceCovariance)
+		final double[] intraViewComponentArray,
+		final double[] interViewComponentArray,
+		final double[] priorViewComponentArray,
+		final double[][] compositeConfidenceCovarianceMatrix)
 		throws java.lang.Exception
-<span class="fc" id="L115">	{</span>
-<span class="pc bpc" id="L116" title="4 of 8 branches missed.">		if (null == (_adblIntraViewComponent = adblIntraViewComponent) || null == (_adblInterViewComponent =</span>
-			adblInterViewComponent) || null == (_adblPriorViewComponent = adblPriorViewComponent) || null ==
-				(_aadblCompositeConfidenceCovariance = aadblCompositeConfidenceCovariance))
-<span class="nc" id="L119">			throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc" id="L121">		int iNumView = _adblIntraViewComponent.length;</span>
-
-<span class="pc bpc" id="L123" title="4 of 8 branches missed.">		if (0 == iNumView || iNumView != _adblInterViewComponent.length || iNumView !=</span>
-			_adblPriorViewComponent.length || iNumView != _aadblCompositeConfidenceCovariance.length)
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i) {</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblIntraViewComponent[i]) ||</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_adblInterViewComponent[i]) ||</span>
-<span class="pc bpc" id="L130" title="3 of 6 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_adblPriorViewComponent[i]) || null ==</span>
-						_aadblCompositeConfidenceCovariance[i] || iNumView !=
-							_aadblCompositeConfidenceCovariance[i].length)
-<span class="nc" id="L133">				throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L116">	{</span>
+<span class="pc bpc" id="L117" title="4 of 8 branches missed.">		if (null == (_intraViewComponentArray = intraViewComponentArray) ||</span>
+			null == (_interViewComponentArray = interViewComponentArray) ||
+			null == (_priorViewComponentArray = priorViewComponentArray) ||
+			null == (_compositeConfidenceCovarianceMatrix = compositeConfidenceCovarianceMatrix))
+		{
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L135">	}</span>
+
+<span class="fc" id="L125">		int viewCount = _intraViewComponentArray.length;</span>
+
+<span class="pc bpc" id="L127" title="4 of 8 branches missed.">		if (0 == viewCount ||</span>
+			viewCount != _interViewComponentArray.length ||
+			viewCount != _priorViewComponentArray.length ||
+			viewCount != _compositeConfidenceCovarianceMatrix.length)
+		{
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int viewIndex = 0; viewIndex &lt; viewCount; ++viewIndex)</span>
+		{
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_intraViewComponentArray[viewIndex]) ||</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_interViewComponentArray[viewIndex]) ||</span>
+<span class="pc bpc" id="L139" title="3 of 6 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_priorViewComponentArray[viewIndex]) ||</span>
+				null == _compositeConfidenceCovarianceMatrix[viewIndex] ||
+				viewCount != _compositeConfidenceCovarianceMatrix[viewIndex].length)
+			{
+<span class="nc" id="L143">				throw new java.lang.Exception (&quot;ProjectionExposure Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="fc" id="L146">	}</span>
 
 	/**
-	 * Retrieve the Single View Joint Contribution Component
+	 * Retrieve the Single View Joint Contribution Component Array
 	 * 
-	 * @return The Single View Joint Contribution Component
+	 * @return The Single View Joint Contribution Component Array
 	 */
 
-	public double[] intraViewComponent()
+	public double[] intraViewComponentArray()
 	{
-<span class="fc" id="L145">		return _adblIntraViewComponent;</span>
+<span class="fc" id="L156">		return _intraViewComponentArray;</span>
 	}
 
 	/**
-	 * Retrieve the View/View Joint Contribution Component
+	 * Retrieve the View/View Joint Contribution Component Array
 	 * 
-	 * @return The View/View Joint Contribution Component
+	 * @return The View/View Joint Contribution Component Array
 	 */
 
-	public double[] interViewComponent()
+	public double[] interViewComponentArray()
 	{
-<span class="fc" id="L156">		return _adblInterViewComponent;</span>
+<span class="fc" id="L167">		return _interViewComponentArray;</span>
 	}
 
 	/**
-	 * Retrieve the Prior/View Joint Contribution Component
+	 * Retrieve the Prior/View Joint Contribution Component Array
 	 * 
-	 * @return The Prior/View Joint Contribution Component
+	 * @return The Prior/View Joint Contribution Component Array
 	 */
 
-	public double[] priorViewComponent()
+	public double[] priorViewComponentArray()
 	{
-<span class="fc" id="L167">		return _adblPriorViewComponent;</span>
+<span class="fc" id="L178">		return _priorViewComponentArray;</span>
 	}
 
 	/**
-	 * Retrieve the Composite Confidence Co-variance
+	 * Retrieve the Composite Confidence Co-variance Matrix
 	 * 
-	 * @return The Composite Confidence Co-variance
+	 * @return The Composite Confidence Co-variance Matrix
 	 */
 
-	public double[][] compositeConfidenceCovariance()
+	public double[][] compositeConfidenceCovarianceMatrix()
 	{
-<span class="nc" id="L178">		return _aadblCompositeConfidenceCovariance;</span>
+<span class="nc" id="L189">		return _compositeConfidenceCovarianceMatrix;</span>
 	}
 
 	/**
-	 * Compute the Array of Cumulative View Loading Components
+	 * Compute the Array of Cumulative View Loading Component Array
 	 * 
-	 * @return The Array of Cumulative View Loading Components
+	 * @return The Array of Cumulative View Loading Component Array
 	 */
 
-	public double[] cumulativeViewComponent()
+	public double[] cumulativeViewComponentLoadingArray()
 	{
-<span class="fc" id="L189">		int iNumView = _adblIntraViewComponent.length;</span>
-<span class="fc" id="L190">		double[] adblViewLoading = new double[iNumView];</span>
+<span class="fc" id="L200">		int viewCount = _intraViewComponentArray.length;</span>
+<span class="fc" id="L201">		double[] cumulativeViewComponentLoadingArray = new double[viewCount];</span>
 
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumView; ++i)</span>
-<span class="fc" id="L193">			adblViewLoading[i] = _adblIntraViewComponent[i] + _adblInterViewComponent[i] +</span>
-				_adblPriorViewComponent[i];
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int viewIndex = 0; viewIndex &lt; viewCount; ++viewIndex)</span>
+		{
+<span class="fc" id="L205">			cumulativeViewComponentLoadingArray[viewIndex] = _intraViewComponentArray[viewIndex] +</span>
+				_interViewComponentArray[viewIndex] + _priorViewComponentArray[viewIndex];
+		}
 
-<span class="fc" id="L196">		return adblViewLoading;</span>
+<span class="fc" id="L209">		return cumulativeViewComponentLoadingArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -80,11 +80,13 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
-<span class="nc" id="L84">	private int _iDimension = -1;</span>
+public class ObjectiveFunction
+	extends org.drip.function.definition.RdToR1
+{
+<span class="nc" id="L86">	private int _dimension = -1;</span>
 
-<span class="nc" id="L86">	private java.util.List&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt; _lsOTU = new</span>
-		java.util.ArrayList&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt;();
+<span class="nc" id="L88">	private java.util.List&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt; _objectiveTermUnitList</span>
+		= new java.util.ArrayList&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt;();
 
 	/**
 	 * Empty Objective Function Constructor
@@ -92,25 +94,28 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 
 	public ObjectiveFunction()
 	{
-<span class="nc" id="L95">		super (null);</span>
-<span class="nc" id="L96">	}</span>
+<span class="nc" id="L97">		super (null);</span>
+<span class="nc" id="L98">	}</span>
 
 	/**
 	 * Add the Objective Term Unit Instance
 	 * 
-	 * @param otu The Objective Term Unit Instance
+	 * @param objectiveTermUnit The Objective Term Unit Instance
 	 * 
 	 * @return TRUE - The Objective Term Unit Instance successfully added
 	 */
 
 	public boolean addObjectiveTermUnit (
-		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu)
+		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit)
 	{
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == otu || _lsOTU.contains (otu)) return false;</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == objectiveTermUnit || _objectiveTermUnitList.contains (objectiveTermUnit))</span>
+		{
+<span class="nc" id="L113">			return false;</span>
+		}
 
-<span class="nc" id="L111">		_lsOTU.add (otu);</span>
+<span class="nc" id="L116">		_objectiveTermUnitList.add (objectiveTermUnit);</span>
 
-<span class="nc" id="L113">		return true;</span>
+<span class="nc" id="L118">		return true;</span>
 	}
 
 	/**
@@ -121,25 +126,32 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 
 	public java.util.List&lt;org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit&gt; list()
 	{
-<span class="nc" id="L124">		return _lsOTU;</span>
+<span class="nc" id="L129">		return _objectiveTermUnitList;</span>
 	}
 
 	@Override public int dimension()
 	{
-<span class="nc" id="L129">		return _iDimension;</span>
+<span class="nc" id="L134">		return _dimension;</span>
 	}
 
 	@Override public double evaluate (
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L136">		double dblValue = 0.;</span>
+<span class="nc" id="L141">		double value = 0.;</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			if (otu.isActive()) dblValue += otu.weight() * otu.term().rdtoR1().evaluate (adblVariate);</span>
-<span class="nc" id="L140">		}</span>
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit :
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			_objectiveTermUnitList)</span>
+		{
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (objectiveTermUnit.isActive())</span>
+			{
+<span class="nc" id="L148">				value += objectiveTermUnit.weight() * objectiveTermUnit.objectiveTerm().rdtoR1().evaluate (</span>
+					adblVariate
+				);
+			}
+<span class="nc" id="L152">		}</span>
 
-<span class="nc" id="L142">		return dblValue;</span>
+<span class="nc" id="L154">		return value;</span>
 	}
 
 	@Override public double derivative (
@@ -148,18 +160,23 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L151">		double dblValue = 0.;</span>
+<span class="nc" id="L163">		double derivative = 0.;</span>
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">			if (otu.isActive())</span>
-<span class="nc" id="L155">				dblValue += otu.weight() * otu.term().rdtoR1().derivative (</span>
-					adblVariate,
-					iVariateIndex,
-					iOrder
-				);
-<span class="nc" id="L160">		}</span>
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit :
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			_objectiveTermUnitList)</span>
+		{
+<span class="nc bnc" id="L168" title="All 2 branches missed.">			if (objectiveTermUnit.isActive())</span>
+			{
+<span class="nc" id="L170">				derivative += objectiveTermUnit.weight() *</span>
+<span class="nc" id="L171">					objectiveTermUnit.objectiveTerm().rdtoR1().derivative (</span>
+						adblVariate,
+						iVariateIndex,
+						iOrder
+					);
+			}
+<span class="nc" id="L177">		}</span>
 
-<span class="nc" id="L162">		return dblValue;</span>
+<span class="nc" id="L179">		return derivative;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

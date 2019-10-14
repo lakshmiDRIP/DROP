@@ -81,7 +81,8 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InvestorCliffSettings {
+public class InvestorCliffSettings
+{
 
 	/**
 	 * Date Phase - Before Retirement
@@ -101,28 +102,30 @@ public class InvestorCliffSettings {
 
 	public static final int DATE_PHASE_AFTER_MORTALITY = 2;
 
-<span class="fc" id="L104">	private double _dblMaximumAge = java.lang.Double.NaN;</span>
-<span class="fc" id="L105">	private double _dblRetirementAge = java.lang.Double.NaN;</span>
+<span class="fc" id="L105">	private double _maximumAge = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private double _retirementAge = java.lang.Double.NaN;</span>
 
 	/**
 	 * InvestorCliffSettings Constructor
 	 * 
-	 * @param dblRetirementAge The Investor Retirement Age
-	 * @param dblMaximumAge The Investor Maximum Age
+	 * @param retirementAge The Investor Retirement Age
+	 * @param maximumAge The Investor Maximum Age
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public InvestorCliffSettings (
-		final double dblRetirementAge,
-		final double dblMaximumAge)
+		final double retirementAge,
+		final double maximumAge)
 		throws java.lang.Exception
-<span class="fc" id="L120">	{</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRetirementAge = dblRetirementAge) ||</span>
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaximumAge = dblMaximumAge) || _dblRetirementAge</span>
-				&gt;= _dblMaximumAge)
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;InvestorCliffSettings Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L125">	}</span>
+<span class="fc" id="L121">	{</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_retirementAge = retirementAge) ||</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_maximumAge = maximumAge) ||</span>
+			_retirementAge &gt;= _maximumAge)
+		{
+<span class="nc" id="L126">			throw new java.lang.Exception (&quot;InvestorCliffSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L128">	}</span>
 
 	/**
 	 * Retrieve the Investor Retirement Age
@@ -132,7 +135,7 @@ public class InvestorCliffSettings {
 
 	public double retirementAge()
 	{
-<span class="nc" id="L135">		return _dblRetirementAge;</span>
+<span class="nc" id="L138">		return _retirementAge;</span>
 	}
 
 	/**
@@ -143,13 +146,13 @@ public class InvestorCliffSettings {
 
 	public double maximumAge()
 	{
-<span class="nc" id="L146">		return _dblMaximumAge;</span>
+<span class="nc" id="L149">		return _maximumAge;</span>
 	}
 
 	/**
 	 * Retrieve the Investment Phase corresponding to the specified Age
 	 * 
-	 * @param dblAge The Age whose Investment Phase is needed
+	 * @param age The Age whose Investment Phase is needed
 	 * 
 	 * @return The Investment Phase
 	 * 
@@ -157,23 +160,31 @@ public class InvestorCliffSettings {
 	 */
 
 	public int phase (
-		final double dblAge)
+		final double age)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAge))</span>
-<span class="nc" id="L164">			throw new java.lang.Exception (&quot;InvestorHorizon::phase =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (age))</span>
+		{
+<span class="nc" id="L168">			throw new java.lang.Exception (&quot;InvestorHorizon::phase =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (dblAge &lt;= _dblRetirementAge) return DATE_PHASE_BEFORE_RETIREMENT;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (age &lt;= _retirementAge)</span>
+		{
+<span class="fc" id="L173">			return DATE_PHASE_BEFORE_RETIREMENT;</span>
+		}
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		if (dblAge &lt;= _dblMaximumAge) return DATE_PHASE_AFTER_RETIREMENT;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">		if (age &lt;= _maximumAge)</span>
+		{
+<span class="fc" id="L178">			return DATE_PHASE_AFTER_RETIREMENT;</span>
+		}
 
-<span class="fc" id="L170">		return DATE_PHASE_AFTER_MORTALITY;</span>
+<span class="fc" id="L181">		return DATE_PHASE_AFTER_MORTALITY;</span>
 	}
 
 	/**
 	 * Retrieve the Investor Retirement Indicator Flag corresponding to the specified Age
 	 * 
-	 * @param dblAge The Age whose Retirement Indicator is needed
+	 * @param age The Age whose Retirement Indicator is needed
 	 * 
 	 * @return TRUE - The Age indicates that the Investor has retired
 	 * 
@@ -181,16 +192,16 @@ public class InvestorCliffSettings {
 	 */
 
 	public boolean retirementIndicator (
-		final double dblAge)
+		final double age)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L187" title="All 2 branches covered.">		return DATE_PHASE_BEFORE_RETIREMENT != phase (dblAge);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		return DATE_PHASE_BEFORE_RETIREMENT != phase (age);</span>
 	}
 
 	/**
 	 * Retrieve the Investor &quot;Is Alive&quot; Indicator Flag corresponding to the specified Age
 	 * 
-	 * @param dblAge The Age whose &quot;Is Alive&quot; Indicator is needed
+	 * @param age The Age whose &quot;Is Alive&quot; Indicator is needed
 	 * 
 	 * @return TRUE - The Age indicates that the Investor &quot;Is Alive&quot;
 	 * 
@@ -198,10 +209,10 @@ public class InvestorCliffSettings {
 	 */
 
 	public boolean isAlive (
-		final double dblAge)
+		final double age)
 		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L204" title="All 2 branches covered.">		return DATE_PHASE_AFTER_MORTALITY != phase (dblAge);</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		return DATE_PHASE_AFTER_MORTALITY != phase (age);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -81,38 +81,49 @@ package org.drip.portfolioconstruction.mpt;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarkovitzBullet {
-<span class="fc" id="L85">	private org.drip.portfolioconstruction.allocator.OptimizationOutput _opGlobalMinimumVariance = null;</span>
-<span class="fc" id="L86">	private org.drip.portfolioconstruction.allocator.OptimizationOutput _opLongOnlyMaximumReturns = null;</span>
+public class MarkovitzBullet
+{
+<span class="fc" id="L86">	private org.drip.portfolioconstruction.allocator.OptimizationOutput</span>
+		_globalMinimumVarianceOptimizationOutput = null;
+<span class="fc" id="L88">	private org.drip.portfolioconstruction.allocator.OptimizationOutput</span>
+		_longOnlyMaximumReturnsOptimizationOutput = null;
 
-<span class="fc" id="L88">	private java.util.TreeMap&lt;java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput&gt;</span>
-		_mapOptimalPortfolio = new java.util.TreeMap&lt;java.lang.Double,
+<span class="fc" id="L91">	private java.util.TreeMap&lt;java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput&gt;</span>
+		_optimalPortfolioMap = new java.util.TreeMap&lt;java.lang.Double,
 			org.drip.portfolioconstruction.allocator.OptimizationOutput&gt;();
 
 	/**
 	 * MarkovitzBullet Constructor
 	 * 
-	 * @param opGlobalMinimumVariance The Global Minimum Variance Optimal Portfolio
-	 * @param opLongOnlyMaximumReturns The Long Only Maximum Returns Optimal Portfolio
+	 * @param globalMinimumVarianceOptimizationOutput The Global Minimum Variance Optimal Portfolio
+	 * @param longOnlyMaximumReturnsOptimizationOutput The Long Only Maximum Returns Optimal Portfolio
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarkovitzBullet (
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput opGlobalMinimumVariance,
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput opLongOnlyMaximumReturns)
+		final org.drip.portfolioconstruction.allocator.OptimizationOutput
+			globalMinimumVarianceOptimizationOutput,
+		final org.drip.portfolioconstruction.allocator.OptimizationOutput
+			longOnlyMaximumReturnsOptimizationOutput)
 		throws java.lang.Exception
-<span class="fc" id="L105">	{</span>
-<span class="pc bpc" id="L106" title="2 of 4 branches missed.">		if (null == (_opGlobalMinimumVariance = opGlobalMinimumVariance) || null ==</span>
-			(_opLongOnlyMaximumReturns = opLongOnlyMaximumReturns))
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;MarkovitzBullet Constructor =&gt; Invalid inputs&quot;);</span>
+<span class="fc" id="L110">	{</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">		if (null == (_globalMinimumVarianceOptimizationOutput = globalMinimumVarianceOptimizationOutput) ||</span>
+			null == (_longOnlyMaximumReturnsOptimizationOutput = longOnlyMaximumReturnsOptimizationOutput))
+		{
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;MarkovitzBullet Constructor =&gt; Invalid inputs&quot;);</span>
+		}
 
-<span class="fc" id="L110">		_mapOptimalPortfolio.put (_opGlobalMinimumVariance.optimalMetrics().excessReturnsMean(),</span>
-			_opGlobalMinimumVariance);
+<span class="fc" id="L117">		_optimalPortfolioMap.put (</span>
+<span class="fc" id="L118">			_globalMinimumVarianceOptimizationOutput.optimalMetrics().excessReturnsMean(),</span>
+			_globalMinimumVarianceOptimizationOutput
+		);
 
-<span class="fc" id="L113">		_mapOptimalPortfolio.put (_opLongOnlyMaximumReturns.optimalMetrics().excessReturnsMean(),</span>
-			_opLongOnlyMaximumReturns);
-<span class="fc" id="L115">	}</span>
+<span class="fc" id="L122">		_optimalPortfolioMap.put (</span>
+<span class="fc" id="L123">			_longOnlyMaximumReturnsOptimizationOutput.optimalMetrics().excessReturnsMean(),</span>
+			_longOnlyMaximumReturnsOptimizationOutput
+		);
+<span class="fc" id="L126">	}</span>
 
 	/**
 	 * Retrieve the Global Minimum Variance Portfolio Metrics
@@ -122,7 +133,7 @@ public class MarkovitzBullet {
 
 	public org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVariance()
 	{
-<span class="fc" id="L125">		return _opGlobalMinimumVariance;</span>
+<span class="fc" id="L136">		return _globalMinimumVarianceOptimizationOutput;</span>
 	}
 
 	/**
@@ -133,25 +144,31 @@ public class MarkovitzBullet {
 
 	public org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturns()
 	{
-<span class="fc" id="L136">		return _opLongOnlyMaximumReturns;</span>
+<span class="fc" id="L147">		return _longOnlyMaximumReturnsOptimizationOutput;</span>
 	}
 
 	/**
 	 * Add a Returns Constrained Optimal Portfolio
 	 * 
-	 * @param op The Returns Constrained Optimal Portfolio
+	 * @param optimizationOutput The Returns Constrained Optimal Portfolio
 	 * 
 	 * @return TRUE - The Returns Constrained Optimal Portfolio Successfully Added
 	 */
 
 	public boolean addOptimalPortfolio (
-		final org.drip.portfolioconstruction.allocator.OptimizationOutput op)
+		final org.drip.portfolioconstruction.allocator.OptimizationOutput optimizationOutput)
 	{
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (null == op) return false;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (null == optimizationOutput)</span>
+		{
+<span class="fc" id="L163">			return false;</span>
+		}
 
-<span class="fc" id="L152">		_mapOptimalPortfolio.put (op.optimalMetrics().excessReturnsMean(), op);</span>
+<span class="fc" id="L166">		_optimalPortfolioMap.put (</span>
+<span class="fc" id="L167">			optimizationOutput.optimalMetrics().excessReturnsMean(),</span>
+			optimizationOutput
+		);
 
-<span class="fc" id="L154">		return true;</span>
+<span class="fc" id="L171">		return true;</span>
 	}
 
 	/**
@@ -161,9 +178,9 @@ public class MarkovitzBullet {
 	 */
 
 	public java.util.TreeMap&lt;java.lang.Double, org.drip.portfolioconstruction.allocator.OptimizationOutput&gt;
-		optimalPortfolios()
+		optimalPortfolioMap()
 	{
-<span class="fc" id="L166">		return _mapOptimalPortfolio;</span>
+<span class="fc" id="L183">		return _optimalPortfolioMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

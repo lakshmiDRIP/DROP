@@ -80,89 +80,107 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NetTiltTerm extends org.drip.portfolioconstruction.objective.TiltTerm {
+public class NetTiltTerm
+	extends org.drip.portfolioconstruction.objective.TiltTerm
+{
 
 	/**
 	 * NetTiltTerm Constructor
 	 * 
-	 * @param strName The Objective Term Name
-	 * @param adblInitialHoldings The Initial Holdings
-	 * @param adblMagnitude The Tilt Magnitude Block Attribute
-	 * @param adblMembership The Tilt Membership Block Classification
+	 * @param name The Objective Term Name
+	 * @param initialHoldingsArray The Array of Initial Holdings
+	 * @param magnitudeArray The Tilt Magnitude Block Attribute Array
+	 * @param membershipArray The Tilt Membership Block Classification Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NetTiltTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[] adblMagnitude,
-		final double[] adblMembership)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[] magnitudeArray,
+		final double[] membershipArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L103">		super (</span>
-			strName,
+<span class="nc" id="L105">		super (</span>
+			name,
 			&quot;OBJECTIVE_TERM_NET_TILT&quot;,
 			&quot;Net Tilt Objective Term&quot;,
-			adblInitialHoldings,
-			adblMagnitude,
-			adblMembership
+			initialHoldingsArray,
+			magnitudeArray,
+			membershipArray
 		);
-<span class="nc" id="L111">	}</span>
+<span class="nc" id="L113">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L115">		return new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L117">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L118">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L118">				return initialHoldings().length;</span>
+<span class="nc" id="L121">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L126">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L130">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+				}
 
-<span class="nc" id="L128">				double dblValue = 0.;</span>
-<span class="nc" id="L129">				int iDimension = adblVariate.length;</span>
+<span class="nc" id="L133">				double tiltValue = 0.;</span>
+<span class="nc" id="L134">				int dimension = variateArray.length;</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">				if (iDimension != dimension())</span>
-<span class="nc" id="L132">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (dimension != dimension())</span>
+				{
+<span class="nc" id="L138">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+				}
 
-<span class="nc" id="L134">				double[] adblWeight = magnitude();</span>
+<span class="nc" id="L141">				double[] magnitudeArray = magnitudeArray();</span>
 
-<span class="nc" id="L136">				double[] adblMembership = membership();</span>
+<span class="nc" id="L143">				double[] membershipArray = membershipArray();</span>
 
-<span class="nc" id="L138">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L145">				double[] initialHoldingsArray = initialHoldingsArray();</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">				for (int i = 0; i &lt; iDimension; ++i)</span>
-<span class="nc" id="L141">					dblValue += adblWeight[i] * adblMembership[i] * java.lang.Math.abs (adblVariate[i] -</span>
-						adblInitialHoldings[i]);
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int dimensionIndex = 0; dimensionIndex &lt; dimension; ++dimensionIndex)</span>
+				{
+<span class="nc" id="L149">					tiltValue += magnitudeArray[dimensionIndex] * membershipArray[dimensionIndex] *</span>
+<span class="nc" id="L150">						java.lang.Math.abs (</span>
+							variateArray[dimensionIndex] - initialHoldingsArray[dimensionIndex]
+						);
+				}
 
-<span class="nc" id="L144">				return dblValue;</span>
+<span class="nc" id="L155">				return tiltValue;</span>
 			}
 
 			@Override public double derivative (
-				final double[] adblVariate,
-				final int iVariateIndex,
-				final int iOrder)
+				final double[] variateArray,
+				final int variateIndex,
+				final int derivativeOrder)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L153" title="All 4 branches missed.">				if (0 == iOrder || null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">					(adblVariate))</span>
-<span class="nc" id="L155">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">				if (0 == derivativeOrder ||</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">					null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L167">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+				}
 
-<span class="nc" id="L157">				int iDimension = adblVariate.length;</span>
+<span class="nc" id="L170">				int dimension = variateArray.length;</span>
 
-<span class="nc bnc" id="L159" title="All 4 branches missed.">				if (iDimension != dimension() || iVariateIndex &gt;= iDimension)</span>
-<span class="nc" id="L160">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">				if (dimension != dimension() || variateIndex &gt;= dimension)</span>
+				{
+<span class="nc" id="L174">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+				}
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">				if (2 &lt;= iOrder) return 0.;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">				if (2 &lt;= derivativeOrder)</span>
+				{
+<span class="nc" id="L179">					return 0.;</span>
+				}
 
-<span class="nc bnc" id="L164" title="All 2 branches missed.">				return (adblVariate[iVariateIndex] &gt; initialHoldings()[iVariateIndex] ? 1. : -1.) *</span>
-<span class="nc" id="L165">					magnitude()[iVariateIndex] * membership()[iVariateIndex];</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">				return (variateArray[variateIndex] &gt; initialHoldingsArray()[variateIndex] ? 1. : -1.) *</span>
+<span class="nc" id="L183">					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];</span>
 			}
 		};
 	}

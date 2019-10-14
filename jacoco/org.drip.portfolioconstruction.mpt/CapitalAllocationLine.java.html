@@ -82,28 +82,31 @@ package org.drip.portfolioconstruction.mpt;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalAllocationLine {
-<span class="nc" id="L86">	private double _dblRiskFreeRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmTangency = null;</span>
+public class CapitalAllocationLine
+{
+<span class="nc" id="L87">	private double _riskFreeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L88">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _tangencyPortfolioMetrics = null;</span>
 
 	/**
 	 * CapitalAllocationLine Constructor
 	 * 
-	 * @param dblRiskFreeRate The Risk Free Rate
-	 * @param pmTangency The Tangency Portfolio Metrics
+	 * @param riskFreeRate The Risk Free Rate
+	 * @param tangencyPortfolioMetrics The Tangency Portfolio Metrics
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CapitalAllocationLine (
-		final double dblRiskFreeRate,
-		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmTangency)
+		final double riskFreeRate,
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics tangencyPortfolioMetrics)
 		throws java.lang.Exception
-<span class="nc" id="L102">	{</span>
-<span class="nc bnc" id="L103" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) || null ==</span>
-			(_pmTangency = pmTangency))
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;CapitalAllocationLine Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L106">	}</span>
+<span class="nc" id="L103">	{</span>
+<span class="nc bnc" id="L104" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskFreeRate = riskFreeRate) ||</span>
+			null == (_tangencyPortfolioMetrics = tangencyPortfolioMetrics))
+		{
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;CapitalAllocationLine Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L109">	}</span>
 
 	/**
 	 * Retrieve the Risk-Free Rate
@@ -113,7 +116,7 @@ public class CapitalAllocationLine {
 
 	public double riskFreeRate()
 	{
-<span class="nc" id="L116">		return _dblRiskFreeRate;</span>
+<span class="nc" id="L119">		return _riskFreeRate;</span>
 	}
 
 	/**
@@ -124,13 +127,13 @@ public class CapitalAllocationLine {
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics tangencyPortfolioMetrics()
 	{
-<span class="nc" id="L127">		return _pmTangency;</span>
+<span class="nc" id="L130">		return _tangencyPortfolioMetrics;</span>
 	}
 
 	/**
 	 * Calculate the Combination Portfolio's Expected Returns from the corresponding Standard Deviation
 	 * 
-	 * @param dblCombinationPortfolioStandardDeviation The Combination Portfolio's Standard Deviation
+	 * @param combinationPortfolioStandardDeviation The Combination Portfolio's Standard Deviation
 	 * 
 	 * @return The Combination Portfolio's Expected Returns
 	 * 
@@ -138,21 +141,24 @@ public class CapitalAllocationLine {
 	 */
 
 	public double combinationPortfolioExpectedReturn (
-		final double dblCombinationPortfolioStandardDeviation)
+		final double combinationPortfolioStandardDeviation)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCombinationPortfolioStandardDeviation))</span>
-<span class="nc" id="L145">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (combinationPortfolioStandardDeviation))</span>
+		{
+<span class="nc" id="L149">			throw new java.lang.Exception</span>
 				(&quot;CapitalAllocationLine::combinationPortfolioExpectedReturn =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="nc" id="L148">		return _dblRiskFreeRate + dblCombinationPortfolioStandardDeviation * (_pmTangency.excessReturnsMean()</span>
-<span class="nc" id="L149">			- _dblRiskFreeRate) / _pmTangency.excessReturnsStandardDeviation();</span>
+<span class="nc" id="L153">		return _riskFreeRate + combinationPortfolioStandardDeviation * (</span>
+<span class="nc" id="L154">			_tangencyPortfolioMetrics.excessReturnsMean() - _riskFreeRate</span>
+<span class="nc" id="L155">		) / _tangencyPortfolioMetrics.excessReturnsStandardDeviation();</span>
 	}
 
 	/**
 	 * Compute the Combination Portfolio's Standard Deviation
 	 * 
-	 * @param dblCombinationPortfolioExpectedReturn The Expected Returns of the Combination Portfolio
+	 * @param combinationPortfolioExpectedReturn The Expected Returns of the Combination Portfolio
 	 * 
 	 * @return The Combination Portfolio's Standard Deviation
 	 * 
@@ -160,15 +166,18 @@ public class CapitalAllocationLine {
 	 */
 
 	public double combinationPortfolioStandardDeviation (
-		final double dblCombinationPortfolioExpectedReturn)
+		final double combinationPortfolioExpectedReturn)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L166" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCombinationPortfolioExpectedReturn))</span>
-<span class="nc" id="L167">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (combinationPortfolioExpectedReturn))</span>
+		{
+<span class="nc" id="L174">			throw new java.lang.Exception</span>
 				(&quot;CapitalAllocationLine::combinationPortfolioStandardDeviation =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="nc" id="L170">		return (dblCombinationPortfolioExpectedReturn - _dblRiskFreeRate) / (_pmTangency.excessReturnsMean()</span>
-<span class="nc" id="L171">			- _dblRiskFreeRate) * _pmTangency.excessReturnsStandardDeviation();</span>
+<span class="nc" id="L178">		return (combinationPortfolioExpectedReturn - _riskFreeRate) / (</span>
+<span class="nc" id="L179">			_tangencyPortfolioMetrics.excessReturnsMean() - _riskFreeRate</span>
+<span class="nc" id="L180">		) * _tangencyPortfolioMetrics.excessReturnsStandardDeviation();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

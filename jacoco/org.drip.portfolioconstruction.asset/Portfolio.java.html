@@ -80,65 +80,89 @@ package org.drip.portfolioconstruction.asset;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Portfolio {
-<span class="fc" id="L84">	private org.drip.portfolioconstruction.asset.AssetComponent[] _aAC = null;</span>
+public class Portfolio
+{
+<span class="fc" id="L85">	private org.drip.portfolioconstruction.asset.AssetComponent[] _assetComponentArray = null;</span>
 
 	/**
 	 * Construct a Portfolio Instance from the Array of Asset ID's and their Amounts
 	 * 
-	 * @param astrAssetID Array of Asset IDs
-	 * @param adblAmount Array of Amounts
+	 * @param assetIDArray Array of Asset IDs
+	 * @param amountArray Array of Amounts
 	 * 
 	 * @return The Portfolio Instance
 	 */
 
 	public static final Portfolio Standard (
-		final java.lang.String[] astrAssetID,
-		final double[] adblAmount)
+		final java.lang.String[] assetIDArray,
+		final double[] amountArray)
 	{
-<span class="pc bpc" id="L99" title="2 of 4 branches missed.">		if (null == astrAssetID || null == adblAmount) return null;</span>
-
-<span class="fc" id="L101">		int iNumAsset = astrAssetID.length;</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = 0 == iNumAsset ? null : new</span>
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (0 == iNumAsset || iNumAsset != adblAmount.length) return null;</span>
-
-		try {
-<span class="fc bfc" id="L108" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L109">				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],</span>
-					adblAmount[i]);
-
-<span class="fc" id="L112">			return new Portfolio (aAC);</span>
-<span class="nc" id="L113">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L114">			e.printStackTrace();</span>
+<span class="pc bpc" id="L100" title="2 of 4 branches missed.">		if (null == assetIDArray || null == amountArray)</span>
+		{
+<span class="nc" id="L102">			return null;</span>
 		}
 
-<span class="nc" id="L117">		return null;</span>
+<span class="fc" id="L105">		int assetCount = assetIDArray.length;</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = 0 == assetCount ?</span>
+			null : new org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+
+<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (0 == assetCount || assetCount != amountArray.length)</span>
+		{
+<span class="nc" id="L111">			return null;</span>
+		}
+
+		try
+		{
+<span class="fc bfc" id="L116" title="All 2 branches covered.">			for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+			{
+<span class="fc" id="L118">				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (</span>
+					assetIDArray[assetIndex],
+					amountArray[assetIndex]
+				);
+			}
+
+<span class="fc" id="L124">			return new Portfolio (assetComponentArray);</span>
+		}
+<span class="nc" id="L126">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L128">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L131">		return null;</span>
 	}
 
 	/**
 	 * Portfolio Constructor
 	 * 
-	 * @param aAC Array of the Asset Components
+	 * @param assetComponentArray Array of the Asset Components
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Portfolio (
-		final org.drip.portfolioconstruction.asset.AssetComponent[] aAC)
+		final org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray)
 		throws java.lang.Exception
-<span class="fc" id="L131">	{</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == (_aAC = aAC)) throw new java.lang.Exception (&quot;Portfolio Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc" id="L134">		int iNumAsset = _aAC.length;</span>
-
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (0 == iNumAsset) throw new java.lang.Exception (&quot;Portfolio Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">			if (null == _aAC[i]) throw new java.lang.Exception (&quot;Portfolio Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L145">	{</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (null == (_assetComponentArray = assetComponentArray))</span>
+		{
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;Portfolio Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L141">	}</span>
+
+<span class="fc" id="L151">		int assetCount = _assetComponentArray.length;</span>
+
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">		if (0 == assetCount)</span>
+		{
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;Portfolio Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">			if (null == _assetComponentArray[assetIndex])</span>
+			{
+<span class="nc" id="L162">				throw new java.lang.Exception (&quot;Portfolio Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="fc" id="L165">	}</span>
 
 	/**
 	 * Retrieve the Array of the Asset Components
@@ -146,9 +170,9 @@ public class Portfolio {
 	 * @return Array of the Asset Components
 	 */
 
-	public org.drip.portfolioconstruction.asset.AssetComponent[] assets()
+	public org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray()
 	{
-<span class="fc" id="L151">		return _aAC;</span>
+<span class="fc" id="L175">		return _assetComponentArray;</span>
 	}
 
 	/**
@@ -159,13 +183,15 @@ public class Portfolio {
 
 	public double notional()
 	{
-<span class="fc" id="L162">		double dblTotalWeight = 0.;</span>
-<span class="fc" id="L163">		int iNumAsset = _aAC.length;</span>
+<span class="fc" id="L186">		double notional = 0.;</span>
+<span class="fc" id="L187">		int assetCount = _assetComponentArray.length;</span>
 
-<span class="fc bfc" id="L165" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L166">			dblTotalWeight += _aAC[i].amount();</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L191">			notional += _assetComponentArray[assetIndex].amount();</span>
+		}
 
-<span class="fc" id="L168">		return dblTotalWeight;</span>
+<span class="fc" id="L194">		return notional;</span>
 	}
 
 	/**
@@ -174,15 +200,17 @@ public class Portfolio {
 	 * @return The Array of Asset IDs
 	 */
 
-	public java.lang.String[] id()
+	public java.lang.String[] assetIDArray()
 	{
-<span class="fc" id="L179">		int iNumAsset = _aAC.length;</span>
-<span class="fc" id="L180">		java.lang.String[] astrAssetID = new java.lang.String[iNumAsset];</span>
+<span class="fc" id="L205">		int assetCount = _assetComponentArray.length;</span>
+<span class="fc" id="L206">		java.lang.String[] assetIDArray = new java.lang.String[assetCount];</span>
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L183">			astrAssetID[i] = _aAC[i].id();</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L210">			assetIDArray[assetIndex] = _assetComponentArray[assetIndex].id();</span>
+		}
 
-<span class="fc" id="L185">		return astrAssetID;</span>
+<span class="fc" id="L213">		return assetIDArray;</span>
 	}
 
 	/**
@@ -193,13 +221,16 @@ public class Portfolio {
 
 	public org.drip.measure.continuous.MultivariateMeta meta()
 	{
-		try {
-<span class="fc" id="L197">			return new org.drip.measure.continuous.MultivariateMeta (id());</span>
-<span class="nc" id="L198">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L199">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L226">			return new org.drip.measure.continuous.MultivariateMeta (assetIDArray());</span>
+		}
+<span class="nc" id="L228">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L230">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L202">		return null;</span>
+<span class="nc" id="L233">		return null;</span>
 	}
 
 	/**
@@ -208,71 +239,77 @@ public class Portfolio {
 	 * @return The Array of Asset Weights
 	 */
 
-	public double[] weights()
+	public double[] weightArray()
 	{
-<span class="fc" id="L213">		int iNumAsset = _aAC.length;</span>
-<span class="fc" id="L214">		double[] adblWeight = new double[iNumAsset];</span>
+<span class="fc" id="L244">		int assetCount = _assetComponentArray.length;</span>
+<span class="fc" id="L245">		double[] weightArray = new double[assetCount];</span>
 
-<span class="fc bfc" id="L216" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L217">			adblWeight[i] = _aAC[i].amount();</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L249">			weightArray[assetIndex] = _assetComponentArray[assetIndex].amount();</span>
+		}
 
-<span class="fc" id="L219">		return adblWeight;</span>
+<span class="fc" id="L252">		return weightArray;</span>
 	}
 
 	/**
-	 * Retrieve the Asset Component with the Minimal Weight
+	 * Retrieve the Asset Component with the Lowest Weight
 	 * 
-	 * @return The Asset Component with the Minimal Weight
+	 * @return The Asset Component with the Lowest Weight
 	 */
 
-	public org.drip.portfolioconstruction.asset.AssetComponent minWeight()
+	public org.drip.portfolioconstruction.asset.AssetComponent lowestWeightAsset()
 	{
-<span class="fc" id="L230">		int iNumAsset = _aAC.length;</span>
-<span class="fc" id="L231">		org.drip.portfolioconstruction.asset.AssetComponent acMinWeight = _aAC[0];</span>
+<span class="fc" id="L263">		int assetCount = _assetComponentArray.length;</span>
+<span class="fc" id="L264">		org.drip.portfolioconstruction.asset.AssetComponent lowestWeightAsset = _assetComponentArray[0];</span>
 
-<span class="fc" id="L233">		double dblMinWeight = _aAC[0].amount();</span>
+<span class="fc" id="L266">		double lowestWeight = _assetComponentArray[0].amount();</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L236">			double dblAmount = _aAC[i].amount();</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L270">			double amount = _assetComponentArray[assetIndex].amount();</span>
 
-<span class="fc bfc" id="L238" title="All 2 branches covered.">			if (dblAmount &lt; dblMinWeight) {</span>
-<span class="fc" id="L239">				acMinWeight = _aAC[i];</span>
-<span class="fc" id="L240">				dblMinWeight = dblAmount;</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">			if (amount &lt; lowestWeight)</span>
+			{
+<span class="fc" id="L274">				lowestWeightAsset = _assetComponentArray[assetIndex];</span>
+<span class="fc" id="L275">				lowestWeight = amount;</span>
 			}
 		}
 
-<span class="fc" id="L244">		return acMinWeight;</span>
+<span class="fc" id="L279">		return lowestWeightAsset;</span>
 	}
 
 	/**
-	 * Retrieve the Asset Component with the Maximal Weight
+	 * Retrieve the Asset Component with the Highest Weight
 	 * 
-	 * @return The Asset Component with the Maximal Weight
+	 * @return The Asset Component with the Highest Weight
 	 */
 
-	public org.drip.portfolioconstruction.asset.AssetComponent maxWeight()
+	public org.drip.portfolioconstruction.asset.AssetComponent highestWeightAsset()
 	{
-<span class="fc" id="L255">		int iNumAsset = _aAC.length;</span>
-<span class="fc" id="L256">		org.drip.portfolioconstruction.asset.AssetComponent acMaxWeight = _aAC[0];</span>
+<span class="fc" id="L290">		int assetCount = _assetComponentArray.length;</span>
+<span class="fc" id="L291">		org.drip.portfolioconstruction.asset.AssetComponent highestWeightAsset = _assetComponentArray[0];</span>
 
-<span class="fc" id="L258">		double dblMaxWeight = _aAC[0].amount();</span>
+<span class="fc" id="L293">		double highestWeight = _assetComponentArray[0].amount();</span>
 
-<span class="fc bfc" id="L260" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L261">			double dblAmount = _aAC[i].amount();</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L297">			double amount = _assetComponentArray[assetIndex].amount();</span>
 
-<span class="fc bfc" id="L263" title="All 2 branches covered.">			if (dblAmount &gt; dblMaxWeight) {</span>
-<span class="fc" id="L264">				acMaxWeight = _aAC[i];</span>
-<span class="fc" id="L265">				dblMaxWeight = dblAmount;</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">			if (amount &gt; highestWeight)</span>
+			{
+<span class="fc" id="L301">				highestWeightAsset = _assetComponentArray[assetIndex];</span>
+<span class="fc" id="L302">				highestWeight = amount;</span>
 			}
 		}
 
-<span class="fc" id="L269">		return acMaxWeight;</span>
+<span class="fc" id="L306">		return highestWeightAsset;</span>
 	}
 
 	/**
 	 * Retrieve the Expected Returns of the Portfolio
 	 * 
-	 * @param apsp The Asset Pool Statistical Properties Instance
+	 * @param assetUniverseStatisticalProperties The Asset Pool Statistical Properties Instance
 	 * 
 	 * @return Expected Returns of the Portfolio
 	 * 
@@ -280,27 +317,35 @@ public class Portfolio {
 	 */
 
 	public double expectedReturn (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties apsp)
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L286">		int iNumAsset = _aAC.length;</span>
-<span class="fc" id="L287">		double dblExpectedReturn = 0.;</span>
+<span class="fc" id="L324">		int assetCount = _assetComponentArray.length;</span>
+<span class="fc" id="L325">		double expectedReturn = 0.;</span>
 
-<span class="fc bfc" id="L289" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L290">			org.drip.portfolioconstruction.params.AssetStatisticalProperties asp = apsp.asp (_aAC[i].id());</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L329">			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =</span>
+				assetUniverseStatisticalProperties.assetStatisticalProperties
+<span class="fc" id="L331">					(_assetComponentArray[assetIndex].id());</span>
 
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">			if (null == asp) throw new java.lang.Exception (&quot;Portfolio::expectedReturn =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">			if (null == assetStatisticalProperties)</span>
+			{
+<span class="nc" id="L335">				throw new java.lang.Exception (&quot;Portfolio::expectedReturn =&gt; Invalid Inputs&quot;);</span>
+			}
 
-<span class="fc" id="L294">			dblExpectedReturn += _aAC[i].amount() * asp.expectedReturn();</span>
+<span class="fc" id="L338">			expectedReturn += _assetComponentArray[assetIndex].amount() *</span>
+<span class="fc" id="L339">				assetStatisticalProperties.expectedReturn();</span>
 		}
 
-<span class="fc" id="L297">		return dblExpectedReturn;</span>
+<span class="fc" id="L342">		return expectedReturn;</span>
 	}
 
 	/**
 	 * Retrieve the Variance of the Portfolio
 	 * 
-	 * @param apsp The Asset Pool Statistical Properties Instance
+	 * @param assetUniverseStatisticalProperties The Asset Pool Statistical Properties Instance
 	 * 
 	 * @return Variance of the Portfolio
 	 * 
@@ -308,36 +353,53 @@ public class Portfolio {
 	 */
 
 	public double variance (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties apsp)
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L314">		double dblVariance = 0.;</span>
-<span class="fc" id="L315">		int iNumAsset = _aAC.length;</span>
+<span class="fc" id="L360">		double variance = 0.;</span>
+<span class="fc" id="L361">		int assetCount = _assetComponentArray.length;</span>
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L318">			double dblAmountI = _aAC[i].amount();</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">		for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
+		{
+<span class="fc" id="L365">			double amountI = _assetComponentArray[assetIndexI].amount();</span>
 
-<span class="fc" id="L320">			java.lang.String strIDI = _aAC[i].id();</span>
+<span class="fc" id="L367">			java.lang.String idI = _assetComponentArray[assetIndexI].id();</span>
 
-<span class="fc" id="L322">			org.drip.portfolioconstruction.params.AssetStatisticalProperties aspI = apsp.asp (strIDI);</span>
+<span class="fc" id="L369">			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesI =</span>
+<span class="fc" id="L370">				assetUniverseStatisticalProperties.assetStatisticalProperties (idI);</span>
 
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">			if (null == aspI) throw new java.lang.Exception (&quot;Portfolio::variance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L372" title="1 of 2 branches missed.">			if (null == assetStatisticalPropertiesI)</span>
+			{
+<span class="nc" id="L374">				throw new java.lang.Exception (&quot;Portfolio::variance =&gt; Invalid Inputs&quot;);</span>
+			}
 
-<span class="fc" id="L326">			double dblVarianceI = aspI.variance();</span>
+<span class="fc" id="L377">			double varianceI = assetStatisticalPropertiesI.variance();</span>
 
-<span class="fc bfc" id="L328" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumAsset; ++j) {</span>
-<span class="fc" id="L329">				java.lang.String strIDJ = _aAC[j].id();</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">			for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
+			{
+<span class="fc" id="L381">				java.lang.String idJ = _assetComponentArray[assetIndexJ].id();</span>
 
-<span class="fc" id="L331">				org.drip.portfolioconstruction.params.AssetStatisticalProperties aspJ = apsp.asp (strIDJ);</span>
+<span class="fc" id="L383">				org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesJ</span>
+<span class="fc" id="L384">					= assetUniverseStatisticalProperties.assetStatisticalProperties (idJ);</span>
 
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">				if (null == aspJ) throw new java.lang.Exception (&quot;Portfolio::variance =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L386" title="1 of 2 branches missed.">				if (null == assetStatisticalPropertiesJ)</span>
+				{
+<span class="nc" id="L388">					throw new java.lang.Exception (&quot;Portfolio::variance =&gt; Invalid Inputs&quot;);</span>
+				}
 
-<span class="fc bfc" id="L335" title="All 2 branches covered.">				dblVariance += dblAmountI * _aAC[j].amount() * java.lang.Math.sqrt (dblVarianceI *</span>
-<span class="fc" id="L336">					aspJ.variance()) * (i == j ? 1. : apsp.correlation (strIDI, strIDJ));</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">				variance += amountI * _assetComponentArray[assetIndexJ].amount() * java.lang.Math.sqrt (</span>
+<span class="fc" id="L392">					varianceI * assetStatisticalPropertiesJ.variance()</span>
+				) * (
+<span class="fc" id="L394">					assetIndexI == assetIndexJ ? 1. : assetUniverseStatisticalProperties.correlation (</span>
+						idI,
+						idJ
+					)
+				);
 			}
 		}
 
-<span class="fc" id="L340">		return dblVariance;</span>
+<span class="fc" id="L402">		return variance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

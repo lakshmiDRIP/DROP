@@ -81,41 +81,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitThresholdTermIssuerNet extends
-	org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
+public class LimitThresholdTermIssuerNet
+	extends org.drip.portfolioconstruction.constraint.LimitThresholdTermIssuer
 {
 
 	/**
 	 * LimitThresholdTermIssuerNet Constructor
 	 * 
-	 * @param strName Name of the LimitThresholdTermIssuerNet Constraint
+	 * @param name Name of the LimitThresholdTermIssuerNet Constraint
 	 * @param scope Scope of the LimitThresholdTermIssuerNet Constraint
 	 * @param unit Unit of the LimitThresholdTermIssuerNet Constraint
-	 * @param dblMinimum Minimum Limit Value of the Constraint
-	 * @param dblMaximum Maximum Limit Value of the Constraint
-	 * @param adblIssuerSelection Array of the Issuer Selections
+	 * @param minimum Minimum Limit Value of the Constraint
+	 * @param maximum Maximum Limit Value of the Constraint
+	 * @param issuerSelectionArray Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitThresholdTermIssuerNet (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L110">		super (</span>
-			strName,
+			name,
 			&quot;CT_LIMIT_THRESHOLD_NET_HOLDINGS&quot;,
 			&quot;Issuer Threshold Limit Net Issuer Holdings&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
 <span class="nc" id="L120">	}</span>
 
@@ -125,27 +125,32 @@ public class LimitThresholdTermIssuerNet extends
 <span class="nc" id="L125">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L128">				return issuerSelection().length;</span>
+<span class="nc" id="L128">				return issuerSelectionArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L135">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L135">				double[] issuerSelectionArray = issuerSelectionArray();</span>
 
-<span class="nc" id="L137">				int iNumAsset = adblIssuerSelection.length;</span>
-<span class="nc" id="L138">				double dblConstraintValue = 0.;</span>
+<span class="nc" id="L137">				int assetCount = issuerSelectionArray.length;</span>
+<span class="nc" id="L138">				double constraintValue = 0.;</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L141" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L142">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
+				{
+<span class="nc" id="L144">					throw new java.lang.Exception</span>
 						(&quot;LimitThresholdTermIssuerNet::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L146">					dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc" id="L150">					constraintValue += issuerSelectionArray[assetIndex] * finalHoldingsArray[assetIndex];</span>
+				}
 
-<span class="nc" id="L148">				return dblConstraintValue;</span>
+<span class="nc" id="L153">				return constraintValue;</span>
 			}
 		};
 	}

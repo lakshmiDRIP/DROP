@@ -80,60 +80,75 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AttributeJointDense extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L84">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapAttribute = new</span>
-		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+public class AttributeJointDense
+	extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L86">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _attributeMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
 	/**
 	 * AttributeJointDense Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AttributeJointDense (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L103">		super (strName, strID, strDescription);</span>
-<span class="nc" id="L104">	}</span>
+<span class="nc" id="L105">		super (</span>
+			name,
+			id,
+			description
+		);
+<span class="nc" id="L110">	}</span>
 
 	/**
 	 * Add the Attribute for an Asset Pair
 	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
-	 * @param dblAttribute The Attribute
+	 * @param assetID1 The Asset ID #1
+	 * @param assetID2 The Asset ID #2
+	 * @param attribute The Attribute
 	 * 
 	 * @return TRUE - The Asset Pair's Attribute successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2,
-		final double dblAttribute)
+		final java.lang.String assetID1,
+		final java.lang.String assetID2,
+		final double attribute)
 	{
-<span class="nc bnc" id="L121" title="All 8 branches missed.">		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty() ||</span>
-<span class="nc bnc" id="L122" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblAttribute))</span>
-<span class="nc" id="L123">			return false;</span>
+<span class="nc bnc" id="L127" title="All 6 branches missed.">		if (null == assetID1 || assetID1.isEmpty() ||</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			null == assetID2 || assetID2.isEmpty() ||</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (attribute))</span>
+		{
+<span class="nc" id="L131">			return false;</span>
+		}
 
-<span class="nc" id="L125">		_mapAttribute.put (strAssetID1 + &quot;::&quot; + strAssetID2, dblAttribute);</span>
+<span class="nc" id="L134">		_attributeMap.put (</span>
+			assetID1 + &quot;::&quot; + assetID2,
+<span class="nc" id="L136">			attribute</span>
+		);
 
-<span class="nc" id="L127">		_mapAttribute.put (strAssetID2 + &quot;::&quot; + strAssetID1, dblAttribute);</span>
+<span class="nc" id="L139">		_attributeMap.put (</span>
+			assetID2 + &quot;::&quot; + assetID1,
+<span class="nc" id="L141">			attribute</span>
+		);
 
-<span class="nc" id="L129">		return true;</span>
+<span class="nc" id="L144">		return true;</span>
 	}
 
 	/**
 	 * Retrieve the Pair Attribute
 	 * 
-	 * @param strAssetID1 The Asset ID #1
-	 * @param strAssetID2 The Asset ID #2
+	 * @param assetID1 The Asset ID #1
+	 * @param assetID2 The Asset ID #2
 	 * 
 	 * @return The Pair Attribute
 	 * 
@@ -141,19 +156,26 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 */
 
 	public double attribute (
-		final java.lang.String strAssetID1,
-		final java.lang.String strAssetID2)
+		final java.lang.String assetID1,
+		final java.lang.String assetID2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L148" title="All 8 branches missed.">		if (null == strAssetID1 || strAssetID1.isEmpty() || null == strAssetID2 || strAssetID2.isEmpty())</span>
-<span class="nc" id="L149">			throw new java.lang.Exception (&quot;AttributeJointDense::attribute =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L163" title="All 6 branches missed.">		if (null == assetID1 || assetID1.isEmpty() ||</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">			null == assetID2 || assetID2.isEmpty())</span>
+		{
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;AttributeJointDense::attribute =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc" id="L151">		java.lang.String strJointAtributeKey = strAssetID1 + &quot;::&quot; + strAssetID2;</span>
+<span class="nc" id="L169">		java.lang.String jointAtributeKey = assetID1 + &quot;::&quot; + assetID2;</span>
 
-<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (!_mapAttribute.containsKey (strAssetID1 + &quot;::&quot; + strAssetID2))</span>
-<span class="nc" id="L154">			throw new java.lang.Exception (&quot;AttributeJointDense::attribute =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!_attributeMap.containsKey (</span>
+			jointAtributeKey
+		))
+		{
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;AttributeJointDense::attribute =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc" id="L156">		return _mapAttribute.get (strJointAtributeKey);</span>
+<span class="nc" id="L178">		return _attributeMap.get (jointAtributeKey);</span>
 	}
 
 	/**
@@ -162,9 +184,9 @@ public class AttributeJointDense extends org.drip.portfolioconstruction.core.Blo
 	 * @return Map of the Asset Attributes
 	 */
 
-	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; attribute()
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; attributeMap()
 	{
-<span class="nc" id="L167">		return _mapAttribute;</span>
+<span class="nc" id="L189">		return _attributeMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -80,62 +80,63 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitTaxTermNetLoss extends org.drip.portfolioconstruction.constraint.LimitTaxTerm
+public class LimitTaxTermNetLoss
+	extends org.drip.portfolioconstruction.constraint.LimitTaxTerm
 {
 
 	/**
 	 * LimitTaxTermNetLoss Constructor
 	 * 
-	 * @param strName Name of the LimitTaxTermNetLoss Constraint
+	 * @param name Name of the LimitTaxTermNetLoss Constraint
 	 * @param scope Scope of the LimitTaxTermNetLoss Constraint
 	 * @param unit Unit of the LimitTaxTermNetLoss Constraint
-	 * @param dblMinimum Minimum Value of the LimitTaxTermNetLoss Constraint
-	 * @param dblMaximum Maximum Value of the LimitTaxTermNetLoss Constraint
+	 * @param minimum Minimum Value of the LimitTaxTermNetLoss Constraint
+	 * @param maximum Maximum Value of the LimitTaxTermNetLoss Constraint
 	 * @param taxationScheme Taxation Scheme
-	 * @param adblInitialHoldings Array of the Initial Holdings
+	 * @param initialHoldingsArray Array of the Initial Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitTaxTermNetLoss (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
+		final double minimum,
+		final double maximum,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme,
-		final double[] adblInitialHoldings)
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L110">		super (</span>
-			strName,
+<span class="nc" id="L111">		super (</span>
+			name,
 			&quot;CT_LIMIT_NET_TAX_LOSS&quot;,
 			&quot;Constrains the Net Tax Loss&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
+			minimum,
+			maximum,
 			taxationScheme,
-			adblInitialHoldings
+			initialHoldingsArray
 		);
-<span class="nc" id="L121">	}</span>
+<span class="nc" id="L122">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L125">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L126">		{</span>
+<span class="nc" id="L126">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L127">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L129">				return initialHoldings().length;</span>
+<span class="nc" id="L130">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L136">				return taxationScheme().customNetTaxLoss (</span>
-<span class="nc" id="L137">					initialHoldings(),</span>
-					adblFinalHoldings
+<span class="nc" id="L137">				return taxationScheme().customNetTaxLoss (</span>
+<span class="nc" id="L138">					initialHoldingsArray(),</span>
+					finalHoldingsArray
 				);
 			}
 		};

@@ -162,22 +162,22 @@ public class BoundedSequenceAgnosticMetrics extends
 	{
 <span class="pc bpc" id="L163" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
-<span class="fc" id="L165">		double dblPopulationVariance = populationVariance();</span>
-
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
-<span class="fc" id="L168">			dblPopulationVariance : empiricalVariance());</span>
-
-<span class="fc" id="L170">		double dblBennettFactor = _dblSupport * dblLevel / dblVariance;</span>
-
-<span class="fc" id="L172">		dblBennettFactor = (1. + dblBennettFactor) * java.lang.Math.log (1. + dblBennettFactor) -</span>
-			dblBennettFactor;
-
-<span class="fc" id="L175">		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblVariance * dblBennettFactor /</span>
-			(_dblSupport * _dblSupport));
-
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
-
 		try {
+<span class="fc" id="L166">			double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="fc" id="L169">				dblPopulationVariance : empiricalVariance());</span>
+
+<span class="fc" id="L171">			double dblBennettFactor = _dblSupport * dblLevel / dblVariance;</span>
+
+<span class="fc" id="L173">			dblBennettFactor = (1. + dblBennettFactor) * java.lang.Math.log (1. + dblBennettFactor) -</span>
+				dblBennettFactor;
+
+<span class="fc" id="L176">			double dblBound = java.lang.Math.exp (-1. * sequence().length * dblVariance * dblBennettFactor /</span>
+				(_dblSupport * _dblSupport));
+
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+
 <span class="fc" id="L181">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
 					java.lang.Double.NaN, dblBound, dblBound);
@@ -201,17 +201,17 @@ public class BoundedSequenceAgnosticMetrics extends
 	{
 <span class="pc bpc" id="L202" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
-<span class="fc" id="L204">		double dblPopulationVariance = populationVariance();</span>
-
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
-<span class="fc" id="L207">			dblPopulationVariance : empiricalVariance());</span>
-
-<span class="fc" id="L209">		double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *</span>
-			dblVariance + (2. * _dblSupport * dblLevel / 3.)));
-
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
-
 		try {
+<span class="fc" id="L205">			double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+<span class="fc" id="L208">				dblPopulationVariance : empiricalVariance());</span>
+
+<span class="fc" id="L210">			double dblBound = java.lang.Math.exp (-1. * sequence().length * dblLevel * dblLevel / (2. *</span>
+				dblVariance + (2. * _dblSupport * dblLevel / 3.)));
+
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">			dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+
 <span class="fc" id="L215">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
 					java.lang.Double.NaN, dblBound, dblBound);

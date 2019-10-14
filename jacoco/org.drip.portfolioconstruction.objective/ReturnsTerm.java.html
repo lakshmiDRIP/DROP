@@ -81,39 +81,46 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+public abstract class ReturnsTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-<span class="nc" id="L86">	private double[] _adblAlpha = null;</span>
-<span class="nc" id="L87">	private double[] _adblBenchmarkConstrictedHoldings = null;</span>
+<span class="nc" id="L87">	private double[] _alphaArray = null;</span>
+<span class="nc" id="L88">	private double[] _benchmarkConstrictedHoldingsArray = null;</span>
 
 	protected ReturnsTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final double[] adblAlpha,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final double[] alphaArray,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L99">		super (</span>
+			name,
+			id,
+			description,
 			&quot;RETURNS&quot;,
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-<span class="nc" id="L106">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L107">		int assetCount = initialHoldingsArray.length;</span>
 
-<span class="nc bnc" id="L108" title="All 6 branches missed.">		if (null == (_adblAlpha = adblAlpha) || !org.drip.numerical.common.NumberUtil.IsValid (_adblAlpha) ||</span>
-			iNumAsset != _adblAlpha.length)
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;ReturnsTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L109" title="All 6 branches missed.">		if (null == (_alphaArray = alphaArray) || !org.drip.numerical.common.NumberUtil.IsValid (_alphaArray)</span>
+			|| assetCount != _alphaArray.length)
+		{
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;ReturnsTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc bnc" id="L112" title="All 4 branches missed.">		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) &amp;&amp; (iNumAsset !=</span>
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="nc bnc" id="L114" title="All 2 branches missed.">				(_adblBenchmarkConstrictedHoldings)))</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L116">	}</span>
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		if (null != (_benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldingsArray) &amp;&amp; </span>
+			(
+				assetCount != _benchmarkConstrictedHoldingsArray.length ||
+<span class="nc bnc" id="L118" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_benchmarkConstrictedHoldingsArray))</span>
+			)
+		{
+<span class="nc" id="L121">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Array of Alphas
@@ -121,20 +128,20 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 	 * @return The Array of Alphas
 	 */
 
-	public double[] alpha()
+	public double[] alphaArray()
 	{
-<span class="nc" id="L126">		return _adblAlpha;</span>
+<span class="nc" id="L133">		return _alphaArray;</span>
 	}
 
 	/**
-	 * Retrieve the Benchmark Constricted Holdings
+	 * Retrieve the Benchmark Constricted Holdings Array
 	 * 
-	 * @return The Benchmark Constricted Holdings
+	 * @return The Benchmark Constricted Holdings Array
 	 */
 
-	public double[] benchmarkConstrictedHoldings()
+	public double[] benchmarkConstrictedHoldingsArray()
 	{
-<span class="nc" id="L137">		return _adblBenchmarkConstrictedHoldings;</span>
+<span class="nc" id="L144">		return _benchmarkConstrictedHoldingsArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

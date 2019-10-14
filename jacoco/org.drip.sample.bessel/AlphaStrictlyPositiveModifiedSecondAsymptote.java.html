@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlphaStrictlyPositiveModifiedSecondAsymptote.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bessel</a> &gt; <span class="el_source">AlphaStrictlyPositiveModifiedSecondAsymptote.java</span></div><h1>AlphaStrictlyPositiveModifiedSecondAsymptote.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bessel;
+
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.bessel.ModifiedSecondIntegralEstimator;
+import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;AlphaStrictlyPositiveModifiedSecondAsymptote&lt;/i&gt; illustrates the Integer Alpha Strictly Positive
+ * Estimation for the Modified Bessel Function of the Second Kind. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Arfken, G. B., and H. J. Weber (2005): &lt;i&gt;Mathematical Methods for Physicists 6&lt;sup&gt;th&lt;/sup&gt;
+ * 				Edition&lt;/i&gt; &lt;b&gt;Harcourt&lt;/b&gt; San Diego
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Temme N. M. (1996): &lt;i&gt;Special Functions: An Introduction to the Classical Functions of
+ * 				Mathematical Physics 2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Watson, G. N. (1995): &lt;i&gt;A Treatise on the Theory of Bessel Functions&lt;/i&gt; &lt;b&gt;Cambridge University
+ * 				Press&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L110">public class AlphaStrictlyPositiveModifiedSecondAsymptote</span>
+{
+
+	private static final void BesselK (
+		final ModifiedBesselSecondKindEstimator modifiedBesselSecondKindEstimatorAsymptote,
+		final ModifiedBesselSecondKindEstimator modifiedBesselSecondKindEstimator,
+		final double[] alphaArray,
+		final int zCount)
+		throws Exception
+	{
+<span class="nc" id="L120">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L122">		System.out.println (&quot;\t|  MODIFIED BESSEL SECOND KIND ASYMPTOTE COMPARISON  ||&quot;);</span>
+
+<span class="nc" id="L124">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L126">		System.out.println (&quot;\t|        L -&gt; R:                                     ||&quot;);</span>
+
+<span class="nc" id="L128">		System.out.println (&quot;\t|                - Alpha                             ||&quot;);</span>
+
+<span class="nc" id="L130">		System.out.println (&quot;\t|                - z                                 ||&quot;);</span>
+
+<span class="nc" id="L132">		System.out.println (&quot;\t|                - Modified Bessel Asymptote         ||&quot;);</span>
+
+<span class="nc" id="L134">		System.out.println (&quot;\t|                - Modified Bessel Integral          ||&quot;);</span>
+
+<span class="nc" id="L136">		System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (double alpha : alphaArray)</span>
+		{
+<span class="nc" id="L140">			double zWidth = Math.sqrt (1. + alpha) / zCount;</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			for (int zIndex = 0; zIndex &lt;= zCount; ++zIndex)</span>
+			{
+<span class="nc" id="L144">				double z = zWidth * (1 + zIndex);</span>
+
+<span class="nc" id="L146">				String display = &quot;\t| [&quot; +</span>
+<span class="nc" id="L147">					FormatUtil.FormatDouble (alpha, 1, 1, 1., false) + &quot;, &quot; +</span>
+<span class="nc" id="L148">					FormatUtil.FormatDouble (z, 1, 8, 1., false) + &quot;] =&gt; &quot; +</span>
+<span class="nc" id="L149">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L150">						modifiedBesselSecondKindEstimatorAsymptote.bigK (</span>
+							alpha,
+							z
+						), 1, 10, 1.
+					) + &quot; | &quot; +
+<span class="nc" id="L155">					FormatUtil.FormatDouble (</span>
+<span class="nc" id="L156">						modifiedBesselSecondKindEstimator.bigK (</span>
+							alpha,
+							z
+						), 1, 10, 1.
+					) + &quot; |&quot;;
+
+<span class="nc" id="L162">				System.out.println (display + &quot;|&quot;);</span>
+			}
+
+<span class="nc" id="L165">			System.out.println (&quot;\t|----------------------------------------------------||&quot;);</span>
+		}
+
+<span class="nc" id="L168">		System.out.println();</span>
+<span class="nc" id="L169">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L175">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L177">		int zCount = 20;</span>
+<span class="nc" id="L178">		int quadratureCount = 80;</span>
+<span class="nc" id="L179">		double[] alphaArray =</span>
+		{
+			 1.0,
+			 2.0,
+			 3.0,
+			 4.0,
+			 5.0,
+			 6.0,
+			 7.0,
+			 8.0,
+		};
+
+<span class="nc" id="L191">		BesselK (</span>
+<span class="nc" id="L192">			ModifiedBesselSecondKindEstimator.AlphaStrictlyPositiveAsymptote (</span>
+				new EulerIntegralSecondKind (null)
+			),
+<span class="nc" id="L195">			ModifiedSecondIntegralEstimator.Standard (quadratureCount),</span>
+			alphaArray,
+			zCount
+		);
+
+<span class="nc" id="L200">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L201">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

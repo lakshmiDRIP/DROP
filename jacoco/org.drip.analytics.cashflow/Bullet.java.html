@@ -6,6 +6,7 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,33 +14,43 @@ package org.drip.analytics.cashflow;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -76,10 +87,10 @@ package org.drip.analytics.cashflow;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Unit and Composite Cash Flow Periods&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -91,46 +102,46 @@ public class Bullet {
 	 * Date Fields
 	 */
 
-<span class="nc" id="L94">	private int _iPayDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L95">	private int _iFXFixingDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L96">	private int _iTerminalDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L105">	private int _iPayDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L106">	private int _iFXFixingDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L107">	private int _iTerminalDate = java.lang.Integer.MIN_VALUE;</span>
 
 	/*
 	 * Period Latent State Identification Support Fields
 	 */
 
-<span class="nc" id="L102">	private java.lang.String _strPayCurrency = &quot;&quot;;</span>
-<span class="nc" id="L103">	private java.lang.String _strCouponCurrency = &quot;&quot;;</span>
-<span class="nc" id="L104">	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;</span>
+<span class="nc" id="L113">	private java.lang.String _strPayCurrency = &quot;&quot;;</span>
+<span class="nc" id="L114">	private java.lang.String _strCouponCurrency = &quot;&quot;;</span>
+<span class="nc" id="L115">	private org.drip.state.identifier.EntityCDSLabel _creditLabel = null;</span>
 
 	/*
 	 * Period Cash Extensive Fields
 	 */
 
-<span class="nc" id="L110">	private double _dblBaseNotional = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private org.drip.numerical.common.Array2D _a2DNotionalSchedule = null;</span>
+<span class="nc" id="L121">	private double _dblBaseNotional = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private org.drip.numerical.common.Array2D _a2DNotionalSchedule = null;</span>
 
 	private org.drip.analytics.output.ConvexityAdjustment convexityAdjustment (
 		final int iValueDate,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 	{
-<span class="nc" id="L117">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+<span class="nc" id="L128">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
 
-<span class="nc" id="L119">		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();</span>
+<span class="nc" id="L130">		org.drip.state.identifier.EntityCDSLabel creditLabel = creditLabel();</span>
 
-<span class="nc" id="L121">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
+<span class="nc" id="L132">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
 
-<span class="nc" id="L123">		org.drip.analytics.output.ConvexityAdjustment convAdj = new</span>
+<span class="nc" id="L134">		org.drip.analytics.output.ConvexityAdjustment convAdj = new</span>
 			org.drip.analytics.output.ConvexityAdjustment();
 
 		try {
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			if (</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">				!convAdj.setCreditFunding (</span>
-<span class="nc" id="L129">					null != csqc ? java.lang.Math.exp (</span>
-<span class="nc" id="L130">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
-<span class="nc" id="L131">							csqc.creditVolatility (creditLabel),</span>
-<span class="nc" id="L132">							csqc.fundingVolatility (fundingLabel),</span>
-<span class="nc" id="L133">							csqc.creditFundingCorrelation (</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				!convAdj.setCreditFunding (</span>
+<span class="nc" id="L140">					null != csqc ? java.lang.Math.exp (</span>
+<span class="nc" id="L141">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+<span class="nc" id="L142">							csqc.creditVolatility (creditLabel),</span>
+<span class="nc" id="L143">							csqc.fundingVolatility (fundingLabel),</span>
+<span class="nc" id="L144">							csqc.creditFundingCorrelation (</span>
 								creditLabel,
 								fundingLabel
 							),
@@ -139,15 +150,15 @@ public class Bullet {
 						)
 					) : 1.
 				))
-<span class="nc" id="L142">				return null;</span>
+<span class="nc" id="L153">				return null;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">				!convAdj.setCreditFX (</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">					null != csqc &amp;&amp; isFXMTM() ? java.lang.Math.exp (</span>
-<span class="nc" id="L147">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
-<span class="nc" id="L148">							csqc.creditVolatility (creditLabel),</span>
-<span class="nc" id="L149">							csqc.fxVolatility (fxLabel),</span>
-<span class="nc" id="L150">							csqc.creditFXCorrelation (</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">				!convAdj.setCreditFX (</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">					null != csqc &amp;&amp; isFXMTM() ? java.lang.Math.exp (</span>
+<span class="nc" id="L158">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+<span class="nc" id="L159">							csqc.creditVolatility (creditLabel),</span>
+<span class="nc" id="L160">							csqc.fxVolatility (fxLabel),</span>
+<span class="nc" id="L161">							csqc.creditFXCorrelation (</span>
 								creditLabel,
 								fxLabel
 							),
@@ -156,15 +167,15 @@ public class Bullet {
 						)
 					) : 1.
 				))
-<span class="nc" id="L159">				return null;</span>
+<span class="nc" id="L170">				return null;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">			if (</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">				!convAdj.setFundingFX (</span>
-<span class="nc bnc" id="L163" title="All 2 branches missed.">					null != csqc &amp;&amp; isFXMTM() ? java.lang.Math.exp (</span>
-<span class="nc" id="L164">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
-<span class="nc" id="L165">							csqc.fundingVolatility (fundingLabel),</span>
-<span class="nc" id="L166">							csqc.fxVolatility (fxLabel),</span>
-<span class="nc" id="L167">							csqc.fundingFXCorrelation (</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			if (</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">				!convAdj.setFundingFX (</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">					null != csqc &amp;&amp; isFXMTM() ? java.lang.Math.exp (</span>
+<span class="nc" id="L175">						org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (</span>
+<span class="nc" id="L176">							csqc.fundingVolatility (fundingLabel),</span>
+<span class="nc" id="L177">							csqc.fxVolatility (fxLabel),</span>
+<span class="nc" id="L178">							csqc.fundingFXCorrelation (</span>
 								fundingLabel,
 								fxLabel
 							),
@@ -173,14 +184,14 @@ public class Bullet {
 						)
 					) : 1.
 				))
-<span class="nc" id="L176">				return null;</span>
+<span class="nc" id="L187">				return null;</span>
 
-<span class="nc" id="L178">			return convAdj;</span>
-<span class="nc" id="L179">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L180">			e.printStackTrace();</span>
+<span class="nc" id="L189">			return convAdj;</span>
+<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L191">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L183">		return null;</span>
+<span class="nc" id="L194">		return null;</span>
 	}
 
 	/**
@@ -208,20 +219,20 @@ public class Bullet {
 		final java.lang.String strCouponCurrency,
 		final org.drip.state.identifier.EntityCDSLabel creditLabel)
 		throws java.lang.Exception
-<span class="nc" id="L211">	{</span>
-<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) ||</span>
-<span class="nc bnc" id="L213" title="All 4 branches missed.">			null == (_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() ||</span>
-<span class="nc bnc" id="L214" title="All 2 branches missed.">			null == (_strCouponCurrency = strCouponCurrency) || _strCouponCurrency.isEmpty())</span>
-<span class="nc" id="L215">		throw new java.lang.Exception (&quot;Bullet Constructor =&gt; Invalid inputs&quot;);</span>
+<span class="nc" id="L222">	{</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBaseNotional = dblBaseNotional) ||</span>
+<span class="nc bnc" id="L224" title="All 4 branches missed.">			null == (_strPayCurrency = strPayCurrency) || _strPayCurrency.isEmpty() ||</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			null == (_strCouponCurrency = strCouponCurrency) || _strCouponCurrency.isEmpty())</span>
+<span class="nc" id="L226">		throw new java.lang.Exception (&quot;Bullet Constructor =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L217">		_iPayDate = iPayDate;</span>
-<span class="nc" id="L218">		_creditLabel = creditLabel;</span>
-<span class="nc" id="L219">		_iFXFixingDate = iFXFixingDate;</span>
-<span class="nc" id="L220">		_iTerminalDate = iTerminalDate;</span>
+<span class="nc" id="L228">		_iPayDate = iPayDate;</span>
+<span class="nc" id="L229">		_creditLabel = creditLabel;</span>
+<span class="nc" id="L230">		_iFXFixingDate = iFXFixingDate;</span>
+<span class="nc" id="L231">		_iTerminalDate = iTerminalDate;</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (null == (_a2DNotionalSchedule = a2DNotionalSchedule))</span>
-<span class="nc" id="L223">			_a2DNotionalSchedule = org.drip.numerical.common.Array2D.BulletSchedule();</span>
-<span class="nc" id="L224">	}</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (null == (_a2DNotionalSchedule = a2DNotionalSchedule))</span>
+<span class="nc" id="L234">			_a2DNotionalSchedule = org.drip.numerical.common.Array2D.BulletSchedule();</span>
+<span class="nc" id="L235">	}</span>
 
 	/**
 	 * Retrieve the Terminal Date
@@ -231,7 +242,7 @@ public class Bullet {
 
 	public int terminalDate()
 	{
-<span class="nc" id="L234">		return _iTerminalDate;</span>
+<span class="nc" id="L245">		return _iTerminalDate;</span>
 	}
 
 	/**
@@ -242,7 +253,7 @@ public class Bullet {
 
 	public int payDate()
 	{
-<span class="nc" id="L245">		return _iPayDate;</span>
+<span class="nc" id="L256">		return _iPayDate;</span>
 	}
 
 	/**
@@ -253,7 +264,7 @@ public class Bullet {
 
 	public int fxFixingDate()
 	{
-<span class="nc" id="L256">		return _iFXFixingDate;</span>
+<span class="nc" id="L267">		return _iFXFixingDate;</span>
 	}
 
 	/**
@@ -270,20 +281,20 @@ public class Bullet {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L273">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+<span class="nc" id="L284">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
 
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (null == fxLabel) return 1.;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (null == fxLabel) return 1.;</span>
 
-<span class="nc bnc" id="L277" title="All 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;Bullet::fx =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (null == csqc) throw new java.lang.Exception (&quot;Bullet::fx =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (!isFXMTM()) return csqc.fixing (_iFXFixingDate, fxLabel);</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (!isFXMTM()) return csqc.fixing (_iFXFixingDate, fxLabel);</span>
 
-<span class="nc" id="L281">		org.drip.state.fx.FXCurve fxfc = csqc.fxState (fxLabel);</span>
+<span class="nc" id="L292">		org.drip.state.fx.FXCurve fxfc = csqc.fxState (fxLabel);</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		if (null == fxfc)</span>
-<span class="nc" id="L284">			throw new java.lang.Exception (&quot;Bullet::fx =&gt; No Curve for &quot; + fxLabel.fullyQualifiedName());</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (null == fxfc)</span>
+<span class="nc" id="L295">			throw new java.lang.Exception (&quot;Bullet::fx =&gt; No Curve for &quot; + fxLabel.fullyQualifiedName());</span>
 
-<span class="nc" id="L286">		return fxfc.fx (_iPayDate);</span>
+<span class="nc" id="L297">		return fxfc.fx (_iPayDate);</span>
 	}
 
 	/**
@@ -294,7 +305,7 @@ public class Bullet {
 
 	public boolean isFXMTM()
 	{
-<span class="nc bnc" id="L297" title="All 2 branches missed.">		return java.lang.Integer.MIN_VALUE != _iFXFixingDate;</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		return java.lang.Integer.MIN_VALUE != _iFXFixingDate;</span>
 	}
 
 	/**
@@ -305,7 +316,7 @@ public class Bullet {
 
 	public java.lang.String payCurrency()
 	{
-<span class="nc" id="L308">		return _strPayCurrency;</span>
+<span class="nc" id="L319">		return _strPayCurrency;</span>
 	}
 
 	/**
@@ -316,7 +327,7 @@ public class Bullet {
 
 	public java.lang.String couponCurrency()
 	{
-<span class="nc" id="L319">		return _strCouponCurrency;</span>
+<span class="nc" id="L330">		return _strCouponCurrency;</span>
 	}
 
 	/**
@@ -327,7 +338,7 @@ public class Bullet {
 
 	public double baseNotional()
 	{
-<span class="nc" id="L330">		return _dblBaseNotional;</span>
+<span class="nc" id="L341">		return _dblBaseNotional;</span>
 	}
 
 	/**
@@ -338,7 +349,7 @@ public class Bullet {
 
 	public org.drip.numerical.common.Array2D notionalSchedule()
 	{
-<span class="nc" id="L341">		return _a2DNotionalSchedule;</span>
+<span class="nc" id="L352">		return _a2DNotionalSchedule;</span>
 	}
 
 	/**
@@ -355,7 +366,7 @@ public class Bullet {
 		final int iDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L358" title="All 2 branches missed.">		return _dblBaseNotional * (null == _a2DNotionalSchedule ? 1. : _a2DNotionalSchedule.y (iDate));</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">		return _dblBaseNotional * (null == _a2DNotionalSchedule ? 1. : _a2DNotionalSchedule.y (iDate));</span>
 	}
 
 	/**
@@ -374,8 +385,8 @@ public class Bullet {
 		final int iDate2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L377" title="All 2 branches missed.">		return _dblBaseNotional * (</span>
-<span class="nc" id="L378">			null == _a2DNotionalSchedule ? 1. : _a2DNotionalSchedule.y (</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">		return _dblBaseNotional * (</span>
+<span class="nc" id="L389">			null == _a2DNotionalSchedule ? 1. : _a2DNotionalSchedule.y (</span>
 				iDate1,
 				iDate2
 			)
@@ -390,7 +401,7 @@ public class Bullet {
 
 	public org.drip.state.identifier.CollateralLabel collateralLabel()
 	{
-<span class="nc" id="L393">		return org.drip.state.identifier.CollateralLabel.Standard (_strPayCurrency);</span>
+<span class="nc" id="L404">		return org.drip.state.identifier.CollateralLabel.Standard (_strPayCurrency);</span>
 	}
 
 	/**
@@ -401,7 +412,7 @@ public class Bullet {
 
 	public org.drip.state.identifier.EntityCDSLabel creditLabel()
 	{
-<span class="nc" id="L404">		return _creditLabel;</span>
+<span class="nc" id="L415">		return _creditLabel;</span>
 	}
 
 	/**
@@ -412,7 +423,7 @@ public class Bullet {
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L415">		return org.drip.state.identifier.FundingLabel.Standard (_strPayCurrency);</span>
+<span class="nc" id="L426">		return org.drip.state.identifier.FundingLabel.Standard (_strPayCurrency);</span>
 	}
 
 	/**
@@ -423,8 +434,8 @@ public class Bullet {
 
 	public org.drip.state.identifier.FXLabel fxLabel()
 	{
-<span class="nc bnc" id="L426" title="All 2 branches missed.">		return _strPayCurrency.equalsIgnoreCase (_strCouponCurrency) ? null :</span>
-<span class="nc" id="L427">			org.drip.state.identifier.FXLabel.Standard (_strPayCurrency + &quot;/&quot; + _strCouponCurrency);</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">		return _strPayCurrency.equalsIgnoreCase (_strCouponCurrency) ? null :</span>
+<span class="nc" id="L438">			org.drip.state.identifier.FXLabel.Standard (_strPayCurrency + &quot;/&quot; + _strCouponCurrency);</span>
 	}
 
 	/**
@@ -440,34 +451,34 @@ public class Bullet {
 		final int iValueDate,
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
 	{
-<span class="nc" id="L443">		double dblDF = 1.;</span>
-<span class="nc" id="L444">		double dblSurvival = 1.;</span>
+<span class="nc" id="L454">		double dblDF = 1.;</span>
+<span class="nc" id="L455">		double dblSurvival = 1.;</span>
 
-<span class="nc" id="L446">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
+<span class="nc" id="L457">		org.drip.state.identifier.FXLabel fxLabel = fxLabel();</span>
 
-<span class="nc" id="L448">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
+<span class="nc" id="L459">		org.drip.state.identifier.FundingLabel fundingLabel = fundingLabel();</span>
 
-<span class="nc bnc" id="L450" title="All 2 branches missed.">		org.drip.state.credit.CreditCurve cc = null == csqc ? null :</span>
-<span class="nc" id="L451">			csqc.creditState (_creditLabel);</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">		org.drip.state.credit.CreditCurve cc = null == csqc ? null :</span>
+<span class="nc" id="L462">			csqc.creditState (_creditLabel);</span>
 
-<span class="nc bnc" id="L453" title="All 2 branches missed.">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = null == csqc ? null :</span>
-<span class="nc" id="L454">			csqc.fundingState (fundingLabel);</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = null == csqc ? null :</span>
+<span class="nc" id="L465">			csqc.fundingState (fundingLabel);</span>
 
 		try {
-<span class="nc" id="L457">			double dblFX = fx (csqc);</span>
+<span class="nc" id="L468">			double dblFX = fx (csqc);</span>
 
-<span class="nc bnc" id="L459" title="All 2 branches missed.">			if (null != dcFunding) dblDF = dcFunding.df (_iPayDate);</span>
+<span class="nc bnc" id="L470" title="All 2 branches missed.">			if (null != dcFunding) dblDF = dcFunding.df (_iPayDate);</span>
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">			if (null != cc) dblSurvival = cc.survival (_iPayDate);</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">			if (null != cc) dblSurvival = cc.survival (_iPayDate);</span>
 
-<span class="nc" id="L463">			return new org.drip.analytics.output.BulletMetrics (</span>
+<span class="nc" id="L474">			return new org.drip.analytics.output.BulletMetrics (</span>
 				_iTerminalDate,
 				_iPayDate,
-<span class="nc" id="L466">				notional (_iTerminalDate),</span>
+<span class="nc" id="L477">				notional (_iTerminalDate),</span>
 				dblSurvival,
 				dblDF,
 				dblFX,
-<span class="nc" id="L470">				convexityAdjustment (</span>
+<span class="nc" id="L481">				convexityAdjustment (</span>
 					iValueDate,
 					csqc
 				),
@@ -475,11 +486,11 @@ public class Bullet {
 				fundingLabel,
 				fxLabel
 			);
-<span class="nc" id="L478">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L479">			e.printStackTrace();</span>
+<span class="nc" id="L489">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L490">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L482">		return null;</span>
+<span class="nc" id="L493">		return null;</span>
 	}
 
 	/**
@@ -497,61 +508,61 @@ public class Bullet {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc bnc" id="L500" title="All 2 branches missed.">		if (null == pqs) return null;</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">		if (null == pqs) return null;</span>
 
-<span class="nc" id="L502">		double dblPV = 0.;</span>
+<span class="nc" id="L513">		double dblPV = 0.;</span>
 
-<span class="nc" id="L504">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="nc" id="L515">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="nc" id="L507">		org.drip.analytics.output.BulletMetrics bm = metrics (</span>
+<span class="nc" id="L518">		org.drip.analytics.output.BulletMetrics bm = metrics (</span>
 			iValueDate,
 			csqc
 		);
 
-<span class="nc bnc" id="L512" title="All 2 branches missed.">		if (null == bm) return null;</span>
+<span class="nc bnc" id="L523" title="All 2 branches missed.">		if (null == bm) return null;</span>
 
-<span class="nc" id="L514">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDiscountFactorLoading =</span>
-<span class="nc" id="L515">			bm.discountFactorFundingLoading (pqs.fundingLabel());</span>
+<span class="nc" id="L525">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapDiscountFactorLoading =</span>
+<span class="nc" id="L526">			bm.discountFactorFundingLoading (pqs.fundingLabel());</span>
 
-<span class="nc bnc" id="L517" title="All 4 branches missed.">		if (null != mapDiscountFactorLoading &amp;&amp; 0 != mapDiscountFactorLoading.size()) {</span>
+<span class="nc bnc" id="L528" title="All 4 branches missed.">		if (null != mapDiscountFactorLoading &amp;&amp; 0 != mapDiscountFactorLoading.size()) {</span>
 			for (java.util.Map.Entry&lt;java.lang.Integer, java.lang.Double&gt; meDiscountFactorLoading :
-<span class="nc bnc" id="L519" title="All 2 branches missed.">				mapDiscountFactorLoading.entrySet()) {</span>
-<span class="nc" id="L520">				int iDateAnchor = meDiscountFactorLoading.getKey();</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">				mapDiscountFactorLoading.entrySet()) {</span>
+<span class="nc" id="L531">				int iDateAnchor = meDiscountFactorLoading.getKey();</span>
 
-<span class="nc" id="L522">				double dblDiscountFactorFundingLoading = meDiscountFactorLoading.getValue();</span>
+<span class="nc" id="L533">				double dblDiscountFactorFundingLoading = meDiscountFactorLoading.getValue();</span>
 
-<span class="nc" id="L524">				if (</span>
-<span class="nc bnc" id="L525" title="All 2 branches missed.">					!prwc.addPredictorResponseWeight (</span>
+<span class="nc" id="L535">				if (</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">					!prwc.addPredictorResponseWeight (</span>
 						iDateAnchor,
 						dblDiscountFactorFundingLoading
 					)
 				)
-<span class="nc" id="L530">					return null;</span>
+<span class="nc" id="L541">					return null;</span>
 
-<span class="nc" id="L532">				if (</span>
-<span class="nc bnc" id="L533" title="All 2 branches missed.">					!prwc.addDResponseWeightDManifestMeasure (</span>
+<span class="nc" id="L543">				if (</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">					!prwc.addDResponseWeightDManifestMeasure (</span>
 						&quot;PV&quot;,
 						iDateAnchor,
 						dblDiscountFactorFundingLoading
 					)
 				)
-<span class="nc" id="L539">					return null;</span>
-<span class="nc" id="L540">			}</span>
+<span class="nc" id="L550">					return null;</span>
+<span class="nc" id="L551">			}</span>
 		} else
-<span class="nc" id="L542">			dblPV -= bm.annuity();</span>
+<span class="nc" id="L553">			dblPV -= bm.annuity();</span>
 
-<span class="nc bnc" id="L544" title="All 2 branches missed.">		if (!prwc.updateValue (dblPV)) return null;</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">		if (!prwc.updateValue (dblPV)) return null;</span>
 
-<span class="nc" id="L546">		if (</span>
-<span class="nc bnc" id="L547" title="All 2 branches missed.">			!prwc.updateDValueDManifestMeasure (</span>
+<span class="nc" id="L557">		if (</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">			!prwc.updateDValueDManifestMeasure (</span>
 				&quot;PV&quot;,
 				1.
 			)
 		)
-<span class="nc" id="L552">			return null;</span>
+<span class="nc" id="L563">			return null;</span>
 
-<span class="nc" id="L554">		return prwc;</span>
+<span class="nc" id="L565">		return prwc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

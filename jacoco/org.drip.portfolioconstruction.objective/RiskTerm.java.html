@@ -81,44 +81,54 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
-<span class="nc" id="L85">	private double[][] _aadblAssetCovariance = null;</span>
-<span class="nc" id="L86">	private double[] _adblBenchmarkConstrictedHoldings = null;</span>
+public abstract class RiskTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+{
+<span class="nc" id="L87">	private double[][] _assetCovarianceMatrix = null;</span>
+<span class="nc" id="L88">	private double[] _benchmarkConstrictedHoldingsArray = null;</span>
 
 	protected RiskTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L97">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L99">		super (</span>
+			name,
+			id,
+			description,
 			&quot;RISK&quot;,
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-<span class="nc" id="L105">		int iNumAsset = adblInitialHoldings.length;</span>
+<span class="nc" id="L107">		int assetCount = initialHoldingsArray.length;</span>
 
-<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance) || iNumAsset !=</span>
-			_aadblAssetCovariance.length)
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">			if (null == _aadblAssetCovariance[i] || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L113" title="All 4 branches missed.">				(_aadblAssetCovariance[i]) || iNumAsset != _aadblAssetCovariance[i].length)</span>
-<span class="nc" id="L114">				throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == (_assetCovarianceMatrix = assetCovarianceMatrix) ||</span>
+			assetCount != _assetCovarianceMatrix.length)
+		{
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) &amp;&amp; (iNumAsset !=</span>
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="nc bnc" id="L119" title="All 2 branches missed.">				(_adblBenchmarkConstrictedHoldings)))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L121">	}</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			if (null == _assetCovarianceMatrix[assetIndex] ||</span>
+<span class="nc bnc" id="L118" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_assetCovarianceMatrix[assetIndex]) ||</span>
+				assetCount != _assetCovarianceMatrix[assetIndex].length)
+			{
+<span class="nc" id="L121">				throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+
+<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null != (_benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldingsArray) &amp;&amp;</span>
+			(assetCount != _benchmarkConstrictedHoldingsArray.length ||
+<span class="nc bnc" id="L127" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_benchmarkConstrictedHoldingsArray)))</span>
+		{
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;RiskTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Asset Co-variance Matrix
@@ -128,7 +138,7 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 
 	public double[][] assetCovariance()
 	{
-<span class="nc" id="L131">		return _aadblAssetCovariance;</span>
+<span class="nc" id="L141">		return _assetCovarianceMatrix;</span>
 	}
 
 	/**
@@ -139,7 +149,7 @@ public abstract class RiskTerm extends org.drip.portfolioconstruction.optimizer.
 
 	public double[] benchmarkConstrictedHoldings()
 	{
-<span class="nc" id="L142">		return _adblBenchmarkConstrictedHoldings;</span>
+<span class="nc" id="L152">		return _benchmarkConstrictedHoldingsArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

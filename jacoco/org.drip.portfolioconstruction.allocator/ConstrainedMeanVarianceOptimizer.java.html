@@ -82,211 +82,345 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 public class ConstrainedMeanVarianceOptimizer extends
-	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer {
-<span class="fc" id="L86">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
-<span class="fc" id="L87">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _ipbc = null;</span>
+	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer
+{
+<span class="fc" id="L87">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;</span>
+<span class="fc" id="L88">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;</span>
 
 	protected org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters constrainedPCP (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcpDesign,
-		final double dblReturnsConstraint)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			designPortfolioConstructionParameters,
+		final double returnsConstraint)
 	{
-<span class="fc" id="L93">		java.lang.String[] astrAssetID = pcpDesign.assets();</span>
+<span class="fc" id="L95">		java.lang.String[] assetIDArray = designPortfolioConstructionParameters.assetIDArray();</span>
 
-<span class="fc" id="L95">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =</span>
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcpDesign;
+<span class="fc" id="L97">		int assetCount = assetIDArray.length;</span>
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+<span class="fc" id="L99">			boundedPortfolioConstructionParametersIn =</span>
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					designPortfolioConstructionParameters;
 
-		try {
-<span class="fc" id="L99">			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcpMB = new</span>
-				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters (astrAssetID,
-<span class="fc" id="L101">					pcpDesign.optimizerSettings(),  new</span>
-						org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
-<span class="fc" id="L103">							(pcpDesign.constraintSettings().constraintType() |</span>
-								org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
-								dblReturnsConstraint));
+		try
+		{
+			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+<span class="fc" id="L106">				boundedPortfolioConstructionParametersOut =</span>
+					new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters (
+						assetIDArray,
+<span class="fc" id="L109">						designPortfolioConstructionParameters.customRiskUtilitySettings(),</span>
+						new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings (
+<span class="fc" id="L111">							designPortfolioConstructionParameters.equalityConstraintSettings().constraintType() |</span>
+								org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT,
+							returnsConstraint
+						)
+					);
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">			for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">				if (!bpcpMB.addBound (astrAssetID[i], bpcp.lowerBound (astrAssetID[i]), bpcp.upperBound</span>
-<span class="fc" id="L109">					(astrAssetID[i])))</span>
-<span class="nc" id="L110">					return null;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">			for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+			{
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">				if (!boundedPortfolioConstructionParametersOut.addBound (</span>
+					assetIDArray[assetIndex],
+<span class="fc" id="L121">					boundedPortfolioConstructionParametersIn.lowerBound (assetIDArray[assetIndex]),</span>
+<span class="fc" id="L122">					boundedPortfolioConstructionParametersIn.upperBound (assetIDArray[assetIndex])</span>
+				))
+				{
+<span class="nc" id="L125">					return null;</span>
+				}
 			}
 
-<span class="fc" id="L113">			return bpcpMB;</span>
-<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L115">			e.printStackTrace();</span>
+<span class="fc" id="L129">			return boundedPortfolioConstructionParametersOut;</span>
+		}
+<span class="nc" id="L131">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L133">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L118">		return null;</span>
+<span class="nc" id="L136">		return null;</span>
 	}
 
 	/**
 	 * ConstrainedMeanVarianceOptimizer Constructor
 	 * 
-	 * @param ipbc Interior Fixed Point Barrier Control Parameters
-	 * @param lsec Line Step Evolution Control Parameters
+	 * @param interiorPointBarrierControl Interior Fixed Point Barrier Control Parameters
+	 * @param lineStepEvolutionControl Line Step Evolution Control Parameters
 	 */
 
 	public ConstrainedMeanVarianceOptimizer (
-		final org.drip.function.rdtor1solver.InteriorPointBarrierControl ipbc,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec)
-<span class="fc" id="L131">	{</span>
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (null == (_ipbc = ipbc))</span>
-<span class="fc" id="L133">			_ipbc = org.drip.function.rdtor1solver.InteriorPointBarrierControl.Standard();</span>
-
-<span class="fc" id="L135">		_lsec = lsec;</span>
-<span class="fc" id="L136">	}</span>
-
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
-	{
-<span class="pc bpc" id="L142" title="3 of 6 branches missed.">		if (null == pcp || !(pcp instanceof</span>
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) || null == ausp)
-<span class="nc" id="L144">			return null;</span>
-
-<span class="fc" id="L146">		java.lang.String[] astrAssetID = pcp.assets();</span>
-
-<span class="fc" id="L148">		int iPortfolioAssetIndex = 0;</span>
-<span class="fc" id="L149">		double dblCumulativeWeight = 0.;</span>
-<span class="fc" id="L150">		int iNumAsset = astrAssetID.length;</span>
-<span class="fc" id="L151">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new</span>
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-<span class="fc" id="L153">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =</span>
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcp;
-
-<span class="fc" id="L156">		double[] adblExpectedAssetReturns = ausp.expectedReturns (astrAssetID);</span>
-
-<span class="pc bpc" id="L158" title="2 of 4 branches missed.">		if (null == adblExpectedAssetReturns || iNumAsset != adblExpectedAssetReturns.length) return null;</span>
-
-<span class="fc" id="L160">		java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt; mapAssetReturns = new</span>
-			java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt;();
-
-<span class="fc bfc" id="L163" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L164">			mapAssetReturns.put (adblExpectedAssetReturns[i], astrAssetID[i]);</span>
-
-<span class="fc" id="L166">		java.util.Set&lt;java.lang.Double&gt; setAssetReturns = mapAssetReturns.descendingKeySet();</span>
-
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (double dblAssetReturns : setAssetReturns) {</span>
-<span class="fc" id="L169">			double dblAssetWeight = 0.;</span>
-
-<span class="fc" id="L171">			java.lang.String strAssetID = mapAssetReturns.get (dblAssetReturns);</span>
-
-			try {
-<span class="fc bfc" id="L174" title="All 2 branches covered.">				if (1. &gt; dblCumulativeWeight) {</span>
-<span class="fc" id="L175">					double dblMaxAssetWeight = bpcp.upperBound (strAssetID);</span>
-
-<span class="fc" id="L177">					double dblMaxAllowedAssetWeight = 1. - dblCumulativeWeight;</span>
-
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (dblMaxAssetWeight))</span>
-<span class="nc" id="L180">						dblMaxAssetWeight = dblMaxAllowedAssetWeight;</span>
-
-<span class="fc bfc" id="L182" title="All 2 branches covered.">					dblAssetWeight = dblMaxAssetWeight &lt; dblMaxAllowedAssetWeight ? dblMaxAssetWeight :</span>
-						dblMaxAllowedAssetWeight;
-<span class="fc" id="L184">					dblCumulativeWeight += dblAssetWeight;</span>
-				}
-
-<span class="fc" id="L187">				aAC[iPortfolioAssetIndex++] = new org.drip.portfolioconstruction.asset.AssetComponent</span>
-					(strAssetID, dblAssetWeight);
-<span class="nc" id="L189">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L190">				e.printStackTrace();</span>
-
-<span class="nc" id="L192">				return null;</span>
-<span class="fc" id="L193">			}</span>
-<span class="fc" id="L194">		}</span>
-
-<span class="fc" id="L196">		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);</span>
-	}
-
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
-	{
-<span class="pc bpc" id="L203" title="3 of 6 branches missed.">		if (null == pcp || !(pcp instanceof</span>
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) || null == ausp)
-<span class="nc" id="L205">			return null;</span>
-
-<span class="fc" id="L207">		java.lang.String[] astrAssetID = pcp.assets();</span>
-
-<span class="fc" id="L209">		double[][] aadblCovariance = ausp.covariance (astrAssetID);</span>
-
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (null == aadblCovariance) return null;</span>
-
-<span class="fc" id="L213">		int iNumAsset = astrAssetID.length;</span>
-<span class="fc" id="L214">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new</span>
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-<span class="fc" id="L216">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =</span>
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcp;
-
-		try {
-<span class="fc" id="L220">			org.drip.function.rdtor1.LagrangianMultivariate lm = new</span>
-<span class="fc" id="L221">				org.drip.function.rdtor1.LagrangianMultivariate (pcp.optimizerSettings().riskObjectiveUtility</span>
-<span class="fc" id="L222">					(astrAssetID, ausp), new org.drip.function.definition.RdToR1[]</span>
-<span class="fc" id="L223">						{bpcp.fullyInvestedConstraint()});</span>
-
-<span class="fc" id="L225">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmt = new</span>
-				org.drip.function.rdtor1solver.BarrierFixedPointFinder (lm, bpcp.boundingConstraints
-<span class="fc" id="L227">					(lm.constraintFunctionDimension()), _ipbc, _lsec).solve</span>
-<span class="fc" id="L228">						(bpcp.weightConstrainedFeasibleStart());</span>
-
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">			if (null == vcmt) return null;</span>
-
-<span class="fc" id="L232">			double[] adblOptimalWeight = vcmt.variates();</span>
-
-<span class="fc bfc" id="L234" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L235">				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],</span>
-					adblOptimalWeight[i]);
-
-<span class="fc" id="L238">			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);</span>
-<span class="nc" id="L239">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L240">			e.printStackTrace();</span>
+		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
+<span class="fc" id="L149">	{</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (null == (_interiorPointBarrierControl = interiorPointBarrierControl))</span>
+		{
+<span class="fc" id="L152">			_interiorPointBarrierControl =</span>
+<span class="fc" id="L153">				org.drip.function.rdtor1solver.InteriorPointBarrierControl.Standard();</span>
 		}
 
-<span class="nc" id="L243">		return null;</span>
+<span class="fc" id="L156">		_lineStepEvolutionControl = lineStepEvolutionControl;</span>
+<span class="fc" id="L157">	}</span>
+
+	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+		longOnlyMaximumReturnsAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties)
+	{
+<span class="pc bpc" id="L166" title="3 of 6 branches missed.">		if (null == portfolioConstructionParameters ||</span>
+			!(portfolioConstructionParameters instanceof
+				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+			null == assetUniverseStatisticalProperties)
+		{
+<span class="nc" id="L171">			return null;</span>
+		}
+
+<span class="fc" id="L174">		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();</span>
+
+<span class="fc" id="L176">		int portfolioAssetIndex = 0;</span>
+<span class="fc" id="L177">		double cumulativeWeight = 0.;</span>
+<span class="fc" id="L178">		int assetCount = assetIDArray.length;</span>
+<span class="fc" id="L179">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new</span>
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+<span class="fc" id="L182">			boundedPortfolioConstructionParameters =</span>
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					portfolioConstructionParameters;
+
+<span class="fc" id="L186">		double[] expectedAssetReturnsArray = assetUniverseStatisticalProperties.expectedReturns (</span>
+			assetIDArray
+		);
+
+<span class="pc bpc" id="L190" title="2 of 4 branches missed.">		if (null == expectedAssetReturnsArray || assetCount != expectedAssetReturnsArray.length)</span>
+		{
+<span class="nc" id="L192">			return null;</span>
+		}
+
+<span class="fc" id="L195">		java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt; assetReturnsMap =</span>
+			new java.util.TreeMap&lt;java.lang.Double, java.lang.String&gt;();
+
+<span class="fc bfc" id="L198" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L200">			assetReturnsMap.put (</span>
+<span class="fc" id="L201">				expectedAssetReturnsArray[assetIndex],</span>
+				assetIDArray[assetIndex]
+			);
+		}
+
+<span class="fc" id="L206">		java.util.Set&lt;java.lang.Double&gt; descendingAssetReturnsSet = assetReturnsMap.descendingKeySet();</span>
+
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (double assetReturns : descendingAssetReturnsSet)</span>
+		{
+<span class="fc" id="L210">			double assetWeight = 0.;</span>
+
+<span class="fc" id="L212">			java.lang.String assetID = assetReturnsMap.get (assetReturns);</span>
+
+			try
+			{
+<span class="fc bfc" id="L216" title="All 2 branches covered.">				if (1. &gt; cumulativeWeight)</span>
+				{
+<span class="fc" id="L218">					double assetWeightUpperBound = boundedPortfolioConstructionParameters.upperBound (</span>
+						assetID
+					);
+
+<span class="fc" id="L222">					double maximumAllowedAssetWeight = 1. - cumulativeWeight;</span>
+
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (assetWeightUpperBound))</span>
+					{
+<span class="nc" id="L226">						assetWeightUpperBound = maximumAllowedAssetWeight;</span>
+					}
+
+<span class="fc bfc" id="L229" title="All 2 branches covered.">					assetWeight = assetWeightUpperBound &lt; maximumAllowedAssetWeight ? assetWeightUpperBound :</span>
+						maximumAllowedAssetWeight;
+<span class="fc" id="L231">					cumulativeWeight += assetWeight;</span>
+				}
+
+<span class="fc" id="L234">				assetComponentArray[portfolioAssetIndex++] =</span>
+					new org.drip.portfolioconstruction.asset.AssetComponent (
+						assetID,
+						assetWeight
+					);
+			}
+<span class="nc" id="L240">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L242">				e.printStackTrace();</span>
+
+<span class="nc" id="L244">				return null;</span>
+<span class="fc" id="L245">			}</span>
+<span class="fc" id="L246">		}</span>
+
+<span class="fc" id="L248">		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (</span>
+			assetComponentArray,
+			assetUniverseStatisticalProperties
+		);
+	}
+
+	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+		globalMinimumVarianceAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties)
+	{
+<span class="pc bpc" id="L261" title="3 of 6 branches missed.">		if (null == portfolioConstructionParameters ||</span>
+			!(portfolioConstructionParameters instanceof
+				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+			null == assetUniverseStatisticalProperties)
+		{
+<span class="nc" id="L266">			return null;</span>
+		}
+
+<span class="fc" id="L269">		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();</span>
+
+<span class="fc" id="L271">		double[][] assetCovarianceMatrix = assetUniverseStatisticalProperties.covariance (assetIDArray);</span>
+
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		if (null == assetCovarianceMatrix)</span>
+		{
+<span class="nc" id="L275">			return null;</span>
+		}
+
+<span class="fc" id="L278">		int assetCount = assetIDArray.length;</span>
+<span class="fc" id="L279">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new</span>
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+<span class="fc" id="L282">			boundedPortfolioConstructionParameters =</span>
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					portfolioConstructionParameters;
+
+		try
+		{
+<span class="fc" id="L288">			org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate =</span>
+				new org.drip.function.rdtor1.LagrangianMultivariate (
+<span class="fc" id="L290">					portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (</span>
+						assetIDArray,
+						assetUniverseStatisticalProperties
+					),
+					new org.drip.function.definition.RdToR1[]
+					{
+<span class="fc" id="L296">						boundedPortfolioConstructionParameters.fullyInvestedConstraint()</span>
+					}
+				);
+
+			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+<span class="fc" id="L301">				variateInequalityConstraintMultiplier =</span>
+					new org.drip.function.rdtor1solver.BarrierFixedPointFinder (
+						lagrangianMultivariate,
+<span class="fc" id="L304">						boundedPortfolioConstructionParameters.boundingConstraintsArray (</span>
+<span class="fc" id="L305">							lagrangianMultivariate.constraintFunctionDimension()</span>
+						),
+						_interiorPointBarrierControl,
+						_lineStepEvolutionControl
+<span class="fc" id="L309">					).solve (</span>
+<span class="fc" id="L310">						boundedPortfolioConstructionParameters.weightConstrainedFeasibleStart()</span>
+					);
+
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">			if (null == variateInequalityConstraintMultiplier)</span>
+			{
+<span class="nc" id="L315">				return null;</span>
+			}
+
+<span class="fc" id="L318">			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variates();</span>
+
+<span class="fc bfc" id="L320" title="All 2 branches covered.">			for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+			{
+<span class="fc" id="L322">				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (</span>
+					assetIDArray[assetIndex],
+					optimalWeightArray[assetIndex]
+				);
+			}
+
+<span class="fc" id="L328">			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (</span>
+				assetComponentArray,
+				assetUniverseStatisticalProperties
+			);
+		}
+<span class="nc" id="L333">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L335">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L338">		return null;</span>
 	}
 
 	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			portfolioConstructionParameters,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 	{
-<span class="pc bpc" id="L250" title="3 of 6 branches missed.">		if (null == pcp || !(pcp instanceof</span>
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) || null == ausp)
-<span class="nc" id="L252">			return null;</span>
-
-<span class="fc" id="L254">		java.lang.String[] astrAssetID = pcp.assets();</span>
-
-<span class="fc" id="L256">		double[][] aadblCovariance = ausp.covariance (astrAssetID);</span>
-
-<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		if (null == aadblCovariance) return null;</span>
-
-<span class="fc" id="L260">		int iNumAsset = astrAssetID.length;</span>
-<span class="fc" id="L261">		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new</span>
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-<span class="fc" id="L263">		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =</span>
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcp;
-
-		try {
-<span class="fc" id="L267">			org.drip.function.rdtor1.LagrangianMultivariate lm = new</span>
-<span class="fc" id="L268">				org.drip.function.rdtor1.LagrangianMultivariate (pcp.optimizerSettings().riskObjectiveUtility</span>
-<span class="fc" id="L269">					(astrAssetID, ausp), bpcp.equalityConstraintRdToR1 (ausp));</span>
-
-<span class="fc" id="L271">			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmt = new</span>
-				org.drip.function.rdtor1solver.BarrierFixedPointFinder (lm, bpcp.boundingConstraints
-<span class="fc" id="L273">					(lm.constraintFunctionDimension()), _ipbc, _lsec).solve</span>
-<span class="fc" id="L274">						(bpcp.weightConstrainedFeasibleStart());</span>
-
-<span class="fc bfc" id="L276" title="All 2 branches covered.">			if (null == vcmt) return null;</span>
-
-<span class="fc" id="L278">			double[] adblOptimalWeight = vcmt.variates();</span>
-
-<span class="fc bfc" id="L280" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L281">				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],</span>
-					adblOptimalWeight[i]);
-
-<span class="fc" id="L284">			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);</span>
-<span class="nc" id="L285">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L286">			e.printStackTrace();</span>
+<span class="pc bpc" id="L347" title="3 of 6 branches missed.">		if (null == portfolioConstructionParameters ||</span>
+			!(portfolioConstructionParameters instanceof
+				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+			null == assetUniverseStatisticalProperties)
+		{
+<span class="nc" id="L352">			return null;</span>
 		}
 
-<span class="nc" id="L289">		return null;</span>
+<span class="fc" id="L355">		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();</span>
+
+<span class="fc" id="L357">		double[][] aadblCovariance = assetUniverseStatisticalProperties.covariance (assetIDArray);</span>
+
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		if (null == aadblCovariance)</span>
+		{
+<span class="nc" id="L361">			return null;</span>
+		}
+
+<span class="fc" id="L364">		int assetCount = assetIDArray.length;</span>
+<span class="fc" id="L365">		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new</span>
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+<span class="fc" id="L368">			boundedPortfolioConstructionParameters =</span>
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					portfolioConstructionParameters;
+
+		try
+		{
+<span class="fc" id="L374">			org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate =</span>
+				new org.drip.function.rdtor1.LagrangianMultivariate (
+<span class="fc" id="L376">					portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (</span>
+						assetIDArray,
+						assetUniverseStatisticalProperties
+					),
+<span class="fc" id="L380">					boundedPortfolioConstructionParameters.equalityConstraintArray (</span>
+						assetUniverseStatisticalProperties
+					)
+				);
+
+			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+<span class="fc" id="L386">				variateInequalityConstraintMultiplier =</span>
+					new org.drip.function.rdtor1solver.BarrierFixedPointFinder (
+						lagrangianMultivariate,
+<span class="fc" id="L389">						boundedPortfolioConstructionParameters.boundingConstraintsArray (</span>
+<span class="fc" id="L390">							lagrangianMultivariate.constraintFunctionDimension()</span>
+						),
+						_interiorPointBarrierControl,
+						_lineStepEvolutionControl
+<span class="fc" id="L394">					).solve (</span>
+<span class="fc" id="L395">						boundedPortfolioConstructionParameters.weightConstrainedFeasibleStart()</span>
+					);
+
+<span class="fc bfc" id="L398" title="All 2 branches covered.">			if (null == variateInequalityConstraintMultiplier)</span>
+			{
+<span class="fc" id="L400">				return null;</span>
+			}
+
+<span class="fc" id="L403">			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variates();</span>
+
+<span class="fc bfc" id="L405" title="All 2 branches covered.">			for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+			{
+<span class="fc" id="L407">				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (</span>
+					assetIDArray[assetIndex],
+					optimalWeightArray[assetIndex]
+				);
+			}
+
+<span class="fc" id="L413">			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (</span>
+				assetComponentArray,
+				assetUniverseStatisticalProperties
+			);
+		}
+<span class="nc" id="L418">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L420">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L423">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

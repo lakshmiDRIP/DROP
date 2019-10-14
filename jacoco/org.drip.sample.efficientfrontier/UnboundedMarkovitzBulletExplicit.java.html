@@ -90,131 +90,155 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L93">public class UnboundedMarkovitzBulletExplicit {</span>
+<span class="nc" id="L93">public class UnboundedMarkovitzBulletExplicit</span>
+{
 
 	private static double DisplayPortfolioMetrics (
-		final OptimizationOutput optPort)
+		final OptimizationOutput optimizationOutput)
 		throws Exception
 	{
-<span class="nc" id="L99">		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();</span>
+<span class="nc" id="L100">		AssetComponent[] globalMinimumAssetComponentArray =</span>
+<span class="nc" id="L101">			optimizationOutput.optimalPortfolio().assetComponentArray();</span>
 
-<span class="nc" id="L101">		String strDump = &quot;\t|&quot; +</span>
-<span class="nc" id="L102">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + &quot;% |&quot; +</span>
-<span class="nc" id="L103">			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + &quot; |&quot;;</span>
+<span class="nc" id="L103">		String dump = &quot;\t|&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L104">				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.</span>
+<span class="nc" id="L105">			) + &quot;% |&quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L106">				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.</span>
+			) + &quot; |&quot;;
 
-<span class="nc bnc" id="L105" title="All 2 branches missed.">		for (AssetComponent ac : aACGlobalMinimum)</span>
-<span class="nc" id="L106">			strDump += &quot; &quot; + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + &quot;% |&quot;;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		for (AssetComponent assetComponent : globalMinimumAssetComponentArray)</span>
+		{
+<span class="nc" id="L111">			dump += &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L112">				assetComponent.amount(), 3, 2, 100.</span>
+			) + &quot;% |&quot;;
+		}
 
-<span class="nc" id="L108">		System.out.println (strDump + &quot;|&quot;);</span>
+<span class="nc" id="L116">		System.out.println (dump + &quot;|&quot;);</span>
 
-<span class="nc" id="L110">		return optPort.optimalMetrics().excessReturnsMean();</span>
+<span class="nc" id="L118">		return optimizationOutput.optimalMetrics().excessReturnsMean();</span>
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] agrumentArray)
 		throws Exception
 	{
-<span class="nc" id="L117">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L125">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L119">		int iRiskReturnGranularity = 40;</span>
-<span class="nc" id="L120">		double dblRiskToleranceFactor = 0.;</span>
-<span class="nc" id="L121">		String strSeriesLocation = &quot;C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
+<span class="nc" id="L127">		int riskReturnGranularity = 40;</span>
+<span class="nc" id="L128">		double riskToleranceFactor = 0.;</span>
+<span class="nc" id="L129">		String seriesLocation =</span>
+			&quot;T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;
 
-<span class="nc" id="L123">		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);</span>
+<span class="nc" id="L132">		CSVGrid csvGrid = CSVParser.NamedStringGrid (</span>
+			seriesLocation
+		);
 
-<span class="nc" id="L125">		String[] astrVariateHeader = csvGrid.headers();</span>
+<span class="nc" id="L136">		String[] variateHeaderArray = csvGrid.headers();</span>
 
-<span class="nc" id="L127">		String[] astrAsset = new String[astrVariateHeader.length - 1];</span>
-<span class="nc" id="L128">		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];</span>
+<span class="nc" id="L138">		String[] assetIDArray = new String[variateHeaderArray.length - 1];</span>
+<span class="nc" id="L139">		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i) {</span>
-<span class="nc" id="L131">			astrAsset[i] = astrVariateHeader[i + 1];</span>
+<span class="nc" id="L141">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L143">			++assetIndex)</span>
+		{
+<span class="nc" id="L145">			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];</span>
 
-<span class="nc" id="L133">			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);</span>
+<span class="nc" id="L147">			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (assetIndex + 1);</span>
 		}
 
-<span class="nc" id="L136">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="nc" id="L137">			MultivariateMoments.Standard (</span>
-				astrAsset,
-				aadblVariateSample
-			)
-		);
+<span class="nc" id="L150">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
+<span class="nc" id="L151">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L152">				MultivariateMoments.Standard (</span>
+					assetIDArray,
+					variateSampleGrid
+				)
+			);
 
-<span class="nc" id="L143">		PortfolioConstructionParameters pcp = new PortfolioConstructionParameters (</span>
-			astrAsset,
-<span class="nc" id="L145">			CustomRiskUtilitySettings.RiskTolerant (dblRiskToleranceFactor),</span>
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
-				Double.NaN
-			)
-		);
+<span class="nc" id="L158">		PortfolioConstructionParameters portfolioConstructionParameters =</span>
+			new PortfolioConstructionParameters (
+				assetIDArray,
+<span class="nc" id="L161">				CustomRiskUtilitySettings.RiskTolerant (</span>
+					riskToleranceFactor
+				),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					Double.NaN
+				)
+			);
 
-<span class="nc" id="L152">		MeanVarianceOptimizer mvo = new QuadraticMeanVarianceOptimizer();</span>
+<span class="nc" id="L170">		MeanVarianceOptimizer meanVarianceOptimizer = new QuadraticMeanVarianceOptimizer();</span>
 
-<span class="nc" id="L154">		System.out.println (&quot;\n\n\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L172">		System.out.println (&quot;\n\n\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L156">		System.out.println (&quot;\t|                     GLOBAL MINIMUM VARIANCE AND MAXIMUM RETURNS PORTFOLIOS                    ||&quot;);</span>
+<span class="nc" id="L174">		System.out.println (&quot;\t|                     GLOBAL MINIMUM VARIANCE AND MAXIMUM RETURNS PORTFOLIOS                    ||&quot;);</span>
 
-<span class="nc" id="L158">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L176">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L160">		String strHeader = &quot;\t| RETURNS | RISK % |&quot;;</span>
+<span class="nc" id="L178">		String header = &quot;\t| RETURNS | RISK % |&quot;;</span>
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i)</span>
-<span class="nc" id="L163">			strHeader += &quot;   &quot; + astrAsset[i] + &quot;    |&quot;;</span>
+<span class="nc" id="L180">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L182">			++assetIndex)</span>
+		{
+<span class="nc" id="L184">			header += &quot;   &quot; + assetIDArray[assetIndex] + &quot;    |&quot;;</span>
+		}
 
-<span class="nc" id="L165">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="nc" id="L167">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L169">		double dblGMVReturns = DisplayPortfolioMetrics (</span>
-<span class="nc" id="L170">			mvo.globalMinimumVarianceAllocate (</span>
-				pcp,
-				ausp
-			)
-		);
-
-<span class="nc" id="L176">		double dblMaximumReturns = DisplayPortfolioMetrics (</span>
-<span class="nc" id="L177">			mvo.longOnlyMaximumReturnsAllocate (</span>
-				pcp,
-				ausp
-			)
-		);
-
-<span class="nc" id="L183">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
-
-<span class="nc" id="L185">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="nc" id="L187">		System.out.println (&quot;\t|         EFFICIENT FRONTIER: PORTFOLIO RISK &amp; RETURNS + CORRESPONDING ASSET ALLOCATION         ||&quot;);</span>
+<span class="nc" id="L187">		System.out.println (header + &quot;|&quot;);</span>
 
 <span class="nc" id="L189">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L191">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="nc" id="L191">		double globalMinimumVarianceReturns = DisplayPortfolioMetrics (</span>
+<span class="nc" id="L192">			meanVarianceOptimizer.globalMinimumVarianceAllocate (</span>
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
+			)
+		);
 
-<span class="nc" id="L193">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="nc" id="L198">		double maximumReturns = DisplayPortfolioMetrics (</span>
+<span class="nc" id="L199">			meanVarianceOptimizer.longOnlyMaximumReturnsAllocate (</span>
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
+			)
+		);
 
-<span class="nc" id="L195">		double dblReturnsGrain = (dblMaximumReturns - dblGMVReturns) / iRiskReturnGranularity;</span>
+<span class="nc" id="L205">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n\n&quot;);</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		for (int i = 0; i &lt;= iRiskReturnGranularity; ++i) {</span>
-<span class="nc" id="L198">			PortfolioConstructionParameters pcpReturnsConstrained = new PortfolioConstructionParameters (</span>
-				astrAsset,
-<span class="nc" id="L200">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
-				new PortfolioEqualityConstraintSettings (
-					PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
-					dblGMVReturns + i * dblReturnsGrain
-				)
-			);
+<span class="nc" id="L207">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="nc" id="L207">			DisplayPortfolioMetrics (</span>
-<span class="nc" id="L208">				mvo.allocate (</span>
-					pcpReturnsConstrained,
-					ausp
+<span class="nc" id="L209">		System.out.println (&quot;\t|         EFFICIENT FRONTIER: PORTFOLIO RISK &amp; RETURNS + CORRESPONDING ASSET ALLOCATION         ||&quot;);</span>
+
+<span class="nc" id="L211">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L213">		System.out.println (header + &quot;|&quot;);</span>
+
+<span class="nc" id="L215">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L217">		double returnsGrain = (maximumReturns - globalMinimumVarianceReturns) / riskReturnGranularity;</span>
+
+<span class="nc" id="L219">		for (int returnOffset = 0;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			returnOffset &lt;= riskReturnGranularity;</span>
+<span class="nc" id="L221">			++returnOffset)</span>
+		{
+<span class="nc" id="L223">			DisplayPortfolioMetrics (</span>
+<span class="nc" id="L224">				meanVarianceOptimizer.allocate (</span>
+					new PortfolioConstructionParameters (
+						assetIDArray,
+<span class="nc" id="L227">						CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+						new EqualityConstraintSettings (
+							EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
+								EqualityConstraintSettings.RETURNS_CONSTRAINT,
+							globalMinimumVarianceReturns + returnOffset * returnsGrain
+						)
+					),
+					assetUniverseStatisticalProperties
 				)
 			);
 		}
 
-<span class="nc" id="L215">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+<span class="nc" id="L239">		System.out.println (&quot;\t|-----------------------------------------------------------------------------------------------||\n\n&quot;);</span>
 
-<span class="nc" id="L217">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L218">	}</span>
+<span class="nc" id="L241">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L242">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

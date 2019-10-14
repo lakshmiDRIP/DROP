@@ -80,67 +80,67 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NetLiabilityCashFlow {
-<span class="fc" id="L84">	private boolean _bIsAlive = false;</span>
-<span class="fc" id="L85">	private boolean _bIsRetired = false;</span>
-<span class="fc" id="L86">	private double _dblAge = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblHorizon = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private double _dblAfterTaxIncome = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblPensionBenefits = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblBasicConsumption = java.lang.Double.NaN;</span>
-<span class="fc" id="L91">	private double _dblWorkingAgeIncome = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">	private double _dblPensionBenefitsDF = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private double _dblBasicConsumptionDF = java.lang.Double.NaN;</span>
-<span class="fc" id="L94">	private double _dblWorkingAgeIncomeDF = java.lang.Double.NaN;</span>
+public class NetLiabilityCashFlow
+{
+<span class="fc" id="L85">	private boolean _isAlive = false;</span>
+<span class="fc" id="L86">	private boolean _isRetired = false;</span>
+<span class="fc" id="L87">	private double _age = java.lang.Double.NaN;</span>
+<span class="fc" id="L88">	private double _horizon = java.lang.Double.NaN;</span>
+<span class="fc" id="L89">	private double _afterTaxIncome = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _pensionBenefits = java.lang.Double.NaN;</span>
+<span class="fc" id="L91">	private double _basicConsumption = java.lang.Double.NaN;</span>
+<span class="fc" id="L92">	private double _workingAgeIncome = java.lang.Double.NaN;</span>
+<span class="fc" id="L93">	private double _pensionBenefitsDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L94">	private double _basicConsumptionDF = java.lang.Double.NaN;</span>
+<span class="fc" id="L95">	private double _workingAgeIncomeDF = java.lang.Double.NaN;</span>
 
 	/**
 	 * NetLiabilityCashFlow Constructor
 	 * 
-	 * @param dblAge The Investor Age
-	 * @param bIsRetired The Retirement Indicator Flag
-	 * @param bIsAlive The &quot;Is Alive&quot; Indicator Flag
-	 * @param dblHorizon The Snapshot's Investment Horizon
-	 * @param dblAfterTaxIncome The Basic After-Tax Income
-	 * @param dblWorkingAgeIncome The Investor Working Age Income
-	 * @param dblPensionBenefits The Investor Pension Benefits
-	 * @param dblBasicConsumption The Investor Basic Consumption
-	 * @param dblWorkingAgeIncomeDF The Investor Working Age Income Discount Factor
-	 * @param dblPensionBenefitsDF The Investor Pension Benefits Discount Factor
-	 * @param dblBasicConsumptionDF The Investor Basic Consumption Discount Factor
+	 * @param age The Investor Age
+	 * @param isRetired The Retirement Indicator Flag
+	 * @param isAlive The &quot;Is Alive&quot; Indicator Flag
+	 * @param horizon The Snapshot's Investment Horizon
+	 * @param afterTaxIncome The Basic After-Tax Income
+	 * @param workingAgeIncome The Investor Working Age Income
+	 * @param pensionBenefits The Investor Pension Benefits
+	 * @param basicConsumption The Investor Basic Consumption
+	 * @param workingAgeIncomeDF The Investor Working Age Income Discount Factor
+	 * @param pensionBenefitsDF The Investor Pension Benefits Discount Factor
+	 * @param basicConsumptionDF The Investor Basic Consumption Discount Factor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public NetLiabilityCashFlow (
-		final double dblAge,
-		final boolean bIsRetired,
-		final boolean bIsAlive,
-		final double dblHorizon,
-		final double dblAfterTaxIncome,
-		final double dblWorkingAgeIncome,
-		final double dblPensionBenefits,
-		final double dblBasicConsumption,
-		final double dblWorkingAgeIncomeDF,
-		final double dblPensionBenefitsDF,
-		final double dblBasicConsumptionDF)
+		final double age,
+		final boolean isRetired,
+		final boolean isAlive,
+		final double horizon,
+		final double afterTaxIncome,
+		final double workingAgeIncome,
+		final double pensionBenefits,
+		final double basicConsumption,
+		final double workingAgeIncomeDF,
+		final double pensionBenefitsDF,
+		final double basicConsumptionDF)
 		throws java.lang.Exception
-<span class="fc" id="L127">	{</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAge = dblAge) ||</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblHorizon = dblHorizon) ||</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblAfterTaxIncome = dblAfterTaxIncome) ||</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncome = dblWorkingAgeIncome) ||</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefits = dblPensionBenefits)</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">							|| !org.drip.numerical.common.NumberUtil.IsValid (_dblBasicConsumption =</span>
-								dblBasicConsumption) || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">									(_dblWorkingAgeIncomeDF = dblWorkingAgeIncomeDF) ||</span>
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">										!org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsDF =</span>
-											dblPensionBenefitsDF) ||
-												!org.drip.numerical.common.NumberUtil.IsValid
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">													(_dblBasicConsumptionDF = dblBasicConsumptionDF))</span>
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;NetLiabilityCashFlow Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L128">	{</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_age = age) ||</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_horizon = horizon) ||</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_afterTaxIncome = afterTaxIncome) ||</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncome = workingAgeIncome) ||</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefits = pensionBenefits) ||</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumption = basicConsumption) ||</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncomeDF = workingAgeIncomeDF) ||</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefitsDF = pensionBenefitsDF) ||</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumptionDF = basicConsumptionDF))</span>
+		{
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;NetLiabilityCashFlow Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L142">		_bIsAlive = bIsAlive;</span>
-<span class="fc" id="L143">		_bIsRetired = bIsRetired;</span>
+<span class="fc" id="L142">		_isAlive = isAlive;</span>
+<span class="fc" id="L143">		_isRetired = isRetired;</span>
 <span class="fc" id="L144">	}</span>
 
 	/**
@@ -151,7 +151,7 @@ public class NetLiabilityCashFlow {
 
 	public double age()
 	{
-<span class="fc" id="L154">		return _dblAge;</span>
+<span class="fc" id="L154">		return _age;</span>
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class NetLiabilityCashFlow {
 
 	public boolean isRetired()
 	{
-<span class="fc" id="L165">		return _bIsRetired;</span>
+<span class="fc" id="L165">		return _isRetired;</span>
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class NetLiabilityCashFlow {
 
 	public boolean isAlive()
 	{
-<span class="fc" id="L176">		return _bIsAlive;</span>
+<span class="fc" id="L176">		return _isAlive;</span>
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class NetLiabilityCashFlow {
 
 	public double horizon()
 	{
-<span class="fc" id="L187">		return _dblHorizon;</span>
+<span class="fc" id="L187">		return _horizon;</span>
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class NetLiabilityCashFlow {
 
 	public double afterTaxIncome()
 	{
-<span class="nc" id="L198">		return _dblAfterTaxIncome;</span>
+<span class="nc" id="L198">		return _afterTaxIncome;</span>
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class NetLiabilityCashFlow {
 
 	public double workingAgeIncome()
 	{
-<span class="fc" id="L209">		return _dblWorkingAgeIncome;</span>
+<span class="fc" id="L209">		return _workingAgeIncome;</span>
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class NetLiabilityCashFlow {
 
 	public double pensionBenefits()
 	{
-<span class="fc" id="L220">		return _dblPensionBenefits;</span>
+<span class="fc" id="L220">		return _pensionBenefits;</span>
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class NetLiabilityCashFlow {
 
 	public double basicConsumption()
 	{
-<span class="fc" id="L231">		return _dblBasicConsumption;</span>
+<span class="fc" id="L231">		return _basicConsumption;</span>
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class NetLiabilityCashFlow {
 
 	public double workingAgeIncomeDF()
 	{
-<span class="fc" id="L242">		return _dblWorkingAgeIncomeDF;</span>
+<span class="fc" id="L242">		return _workingAgeIncomeDF;</span>
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class NetLiabilityCashFlow {
 
 	public double pensionBenefitsDF()
 	{
-<span class="fc" id="L253">		return _dblPensionBenefitsDF;</span>
+<span class="fc" id="L253">		return _pensionBenefitsDF;</span>
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class NetLiabilityCashFlow {
 
 	public double basicConsumptionDF()
 	{
-<span class="fc" id="L264">		return _dblBasicConsumptionDF;</span>
+<span class="fc" id="L264">		return _basicConsumptionDF;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -80,27 +80,31 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-<span class="nc" id="L84">	private double[] _adblInitialHoldings = null;</span>
+public abstract class ObjectiveTerm
+	extends org.drip.portfolioconstruction.optimizer.FormulationTerm
+{
+<span class="nc" id="L86">	private double[] _initialHoldingsArray = null;</span>
 
 	protected ObjectiveTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCategory,
-		final double[] adblInitialHoldings)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String category,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L94">		super (</span>
-			strName,
-			strID,
-			strDescription,
-			strCategory
+<span class="nc" id="L96">		super (</span>
+			name,
+			id,
+			description,
+			category
 		);
 
-<span class="nc bnc" id="L101" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length)</span>
-<span class="nc" id="L102">			throw new java.lang.Exception (&quot;ObjectiveTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L103">	}</span>
+<span class="nc bnc" id="L103" title="All 4 branches missed.">		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length)</span>
+		{
+<span class="nc" id="L105">			throw new java.lang.Exception (&quot;ObjectiveTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L107">	}</span>
 
 	/**
 	 * Retrieve the Array of Initial Holdings
@@ -108,9 +112,9 @@ public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.optim
 	 * @return Array of Initial Holdings
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-<span class="nc" id="L113">		return _adblInitialHoldings;</span>
+<span class="nc" id="L117">		return _initialHoldingsArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

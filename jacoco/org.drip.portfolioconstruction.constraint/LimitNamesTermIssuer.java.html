@@ -80,36 +80,39 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitNamesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitNamesTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L85">	private double[] _adblIssuerSelection = null;</span>
+<span class="nc" id="L86">	private double[] _issuerSelectionArray = null;</span>
 
 	protected LimitNamesTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L99">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_NAMES&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 == _adblIssuerSelection.length ||</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LimitNamesTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
-<span class="nc" id="L112">	}</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (null == (_issuerSelectionArray = issuerSelectionArray) || 0 == _issuerSelectionArray.length ||</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray))</span>
+		{
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;LimitNamesTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+		}
+<span class="nc" id="L115">	}</span>
 
 	/**
 	 * Retrieve the Issuer Selection Array
@@ -117,9 +120,9 @@ public abstract class LimitNamesTermIssuer extends org.drip.portfolioconstructio
 	 * @return Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-<span class="nc" id="L122">		return _adblIssuerSelection;</span>
+<span class="nc" id="L125">		return _issuerSelectionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

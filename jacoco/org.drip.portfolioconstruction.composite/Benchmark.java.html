@@ -79,65 +79,84 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Benchmark extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L83">	private java.lang.String _strType = &quot;&quot;;</span>
-<span class="nc" id="L84">	private java.lang.String _strCategory = &quot;&quot;;</span>
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;</span>
+public class Benchmark
+	extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L85">	private java.lang.String _type = &quot;&quot;;</span>
+<span class="nc" id="L86">	private java.lang.String _category = &quot;&quot;;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;</span>
 
 	/**
 	 * Construct a Standard Benchmark Instance Without Cash
 	 * 
-	 * @param strName The Benchmark Name
-	 * @param strType The Benchmark Type
-	 * @param strCategory The Benchmark Category
+	 * @param name The Benchmark Name
+	 * @param type The Benchmark Type
+	 * @param category The Benchmark Category
 	 * @param holdings The Benchmark Holdings
 	 * 
 	 * @return The Standard Benchmark Instance Without Cash
 	 */
 
 	public static final Benchmark Standard (
-		final java.lang.String strName,
-		final java.lang.String strType,
-		final java.lang.String strCategory,
+		final java.lang.String name,
+		final java.lang.String type,
+		final java.lang.String category,
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		try {
-<span class="nc" id="L105">			return new Benchmark (strName, strName, strName, strType, strCategory, holdings);</span>
-<span class="nc" id="L106">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L107">			e.printStackTrace();</span>
+		try
+		{
+<span class="nc" id="L108">			return new Benchmark (</span>
+				name,
+				name,
+				name,
+				type,
+				category,
+				holdings
+			);
+		}
+<span class="nc" id="L117">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L119">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L110">		return null;</span>
+<span class="nc" id="L122">		return null;</span>
 	}
 
 	/**
 	 * Benchmark Constructor
 	 * 
-	 * @param strName The Benchmark Name
-	 * @param strID The Benchmark ID
-	 * @param strDescription The Benchmark Description
-	 * @param strType The Benchmark Type
-	 * @param strCategory The Benchmark Category
+	 * @param name The Benchmark Name
+	 * @param id The Benchmark ID
+	 * @param description The Benchmark Description
+	 * @param type The Benchmark Type
+	 * @param category The Benchmark Category
 	 * @param holdings The Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Benchmark (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strType,
-		final java.lang.String strCategory,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String type,
+		final java.lang.String category,
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L135">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L147">		super (</span>
+			name,
+			id,
+			description
+		);
 
-<span class="nc bnc" id="L137" title="All 6 branches missed.">		if (null == (_strType = strType) || _strType.isEmpty() || null == (_strCategory = strCategory) ||</span>
-<span class="nc bnc" id="L138" title="All 4 branches missed.">			_strCategory.isEmpty() || null == (_holdings = holdings))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;Benchmark Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L140">	}</span>
+<span class="nc bnc" id="L153" title="All 6 branches missed.">		if (null == (_type = type) || _type.isEmpty() ||</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">			null == (_category = category) || _category.isEmpty() ||</span>
+			null == (_holdings = holdings))
+		{
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;Benchmark Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Benchmark Type
@@ -147,7 +166,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String type()
 	{
-<span class="nc" id="L150">		return _strType;</span>
+<span class="nc" id="L169">		return _type;</span>
 	}
 
 	/**
@@ -158,7 +177,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String category()
 	{
-<span class="nc" id="L161">		return _strCategory;</span>
+<span class="nc" id="L180">		return _category;</span>
 	}
 
 	/**
@@ -169,7 +188,7 @@ public class Benchmark extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Holdings holdings()
 	{
-<span class="nc" id="L172">		return _holdings;</span>
+<span class="nc" id="L191">		return _holdings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

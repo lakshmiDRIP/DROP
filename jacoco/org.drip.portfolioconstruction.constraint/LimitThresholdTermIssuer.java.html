@@ -81,37 +81,40 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitThresholdTermIssuer extends
-	org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitThresholdTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L87">	private double[] _adblIssuerSelection = null;</span>
+<span class="nc" id="L87">	private double[] _issuerSelectionArray = null;</span>
 
 	protected LimitThresholdTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L100">		super (</span>
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			&quot;LIMIT_THRESHOLD&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 == _adblIssuerSelection.length ||</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))</span>
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;LimitThresholdTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
-<span class="nc" id="L114">	}</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_issuerSelectionArray = issuerSelectionArray) ||</span>
+			0 == _issuerSelectionArray.length ||
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray))</span>
+		{
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;LimitThresholdTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+		}
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Retrieve the Issuer Selection Array
@@ -119,9 +122,9 @@ public abstract class LimitThresholdTermIssuer extends
 	 * @return The Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-<span class="nc" id="L124">		return _adblIssuerSelection;</span>
+<span class="nc" id="L127">		return _issuerSelectionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

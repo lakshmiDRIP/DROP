@@ -252,8 +252,8 @@ import org.drip.service.env.EnvManager;
 <span class="nc" id="L252">		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (</span>
 			astrAssetName,
 <span class="nc" id="L254">			CustomRiskUtilitySettings.VarianceMinimizer(),</span>
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
 				dblPortfolioDesignReturn
 			)
 		);
@@ -270,7 +270,7 @@ import org.drip.service.env.EnvManager;
 			ausp
 		);
 
-<span class="nc" id="L273">		AssetComponent[] aACOptimal = pfOptimal.optimalPortfolio().assets();</span>
+<span class="nc" id="L273">		AssetComponent[] aACOptimal = pfOptimal.optimalPortfolio().assetComponentArray();</span>
 
 <span class="nc" id="L275">		System.out.println (&quot;\t|--------------------------||&quot;);</span>
 

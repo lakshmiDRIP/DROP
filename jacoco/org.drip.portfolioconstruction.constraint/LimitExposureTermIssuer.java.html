@@ -80,38 +80,40 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitExposureTermIssuer extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTerm
+public abstract class LimitExposureTermIssuer
+	extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
 {
-<span class="nc" id="L86">	private double[] _adblIssuerSelection = null;</span>
+<span class="nc" id="L86">	private double[] _issuerSelectionArray = null;</span>
 
 	protected LimitExposureTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L100">		super (</span>
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice
+			minimum,
+			maximum,
+			priceArray
 		);
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_adblIssuerSelection = adblIssuerSelection) || adblPrice.length !=</span>
-			_adblIssuerSelection.length)
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;LimitExposureTermIssuer Constructor =&gt; Invalid Index&quot;);</span>
-<span class="nc" id="L114">	}</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_issuerSelectionArray = issuerSelectionArray) ||</span>
+			priceArray.length != _issuerSelectionArray.length)
+		{
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;LimitExposureTermIssuer Constructor =&gt; Invalid Index&quot;);</span>
+		}
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Issuer Selection Array
@@ -119,9 +121,9 @@ public abstract class LimitExposureTermIssuer extends
 	 * @return The Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-<span class="nc" id="L124">		return _adblIssuerSelection;</span>
+<span class="nc" id="L126">		return _issuerSelectionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

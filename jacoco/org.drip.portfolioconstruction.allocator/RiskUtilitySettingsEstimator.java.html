@@ -81,15 +81,16 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class RiskUtilitySettingsEstimator {</span>
+<span class="nc" id="L84">public class RiskUtilitySettingsEstimator</span>
+{
 
 	/**
 	 * Compute the Equilibrium Risk Aversion from the Portfolio Equilibrium Returns/Variance and the Risk
 	 *  Free Rate
 	 * 
-	 * @param dblEquilibriumReturns The Portfolio Equilibrium Returns
-	 * @param dblRiskFreeRate The Risk Free Rate
-	 * @param dblEquilibriumVariance The Portfolio Equilibrium Variance
+	 * @param equilibriumReturns The Portfolio Equilibrium Returns
+	 * @param riskFreeRate The Risk Free Rate
+	 * @param equilibriumVariance The Portfolio Equilibrium Variance
 	 * 
 	 * @return The Estimated Equilibrium Risk Aversion Value
 	 * 
@@ -97,25 +98,27 @@ package org.drip.portfolioconstruction.allocator;
 	 */
 
 	public static final double EquilibriumRiskAversion (
-		final double dblEquilibriumReturns,
-		final double dblRiskFreeRate,
-		final double dblEquilibriumVariance)
+		final double equilibriumReturns,
+		final double riskFreeRate,
+		final double equilibriumVariance)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumReturns) ||</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate) ||</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumVariance))</span>
-<span class="nc" id="L108">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (equilibriumReturns) ||</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (riskFreeRate) ||</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (equilibriumVariance))</span>
+		{
+<span class="nc" id="L110">			throw new java.lang.Exception</span>
 				(&quot;RiskUtilitySettingsEstimator::EquilibriumRiskAversion =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="fc" id="L111">		return (dblEquilibriumReturns - dblRiskFreeRate) / dblEquilibriumVariance;</span>
+<span class="fc" id="L114">		return (equilibriumReturns - riskFreeRate) / equilibriumVariance;</span>
 	}
 
 	/**
 	 * Compute the Equilibrium Risk Aversion from the Portfolio Equilibrium Returns/Variance
 	 * 
-	 * @param dblEquilibriumReturns The Portfolio Equilibrium Returns
-	 * @param dblEquilibriumVariance The Portfolio Equilibrium Variance
+	 * @param equilibriumReturns The Portfolio Equilibrium Returns
+	 * @param equilibriumVariance The Portfolio Equilibrium Variance
 	 * 
 	 * @return The Estimated Equilibrium Risk Aversion Value
 	 * 
@@ -123,16 +126,18 @@ package org.drip.portfolioconstruction.allocator;
 	 */
 
 	public static final double EquilibriumRiskAversion (
-		final double dblEquilibriumReturns,
-		final double dblEquilibriumVariance)
+		final double equilibriumReturns,
+		final double equilibriumVariance)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumReturns) ||</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblEquilibriumVariance))</span>
-<span class="nc" id="L132">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (equilibriumReturns) ||</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (equilibriumVariance))</span>
+		{
+<span class="nc" id="L136">			throw new java.lang.Exception</span>
 				(&quot;RiskUtilitySettingsEstimator::EquilibriumRiskAversion =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="nc" id="L135">		return dblEquilibriumReturns / dblEquilibriumVariance;</span>
+<span class="nc" id="L140">		return equilibriumReturns / equilibriumVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

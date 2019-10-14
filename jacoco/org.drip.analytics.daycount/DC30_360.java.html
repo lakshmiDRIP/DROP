@@ -6,6 +6,7 @@ package org.drip.analytics.daycount;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.analytics.daycount;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -76,10 +87,10 @@ package org.drip.analytics.daycount;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/README.md&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/README.md&quot;&gt;Day Count Year Fraction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -92,17 +103,17 @@ public class DC30_360 implements org.drip.analytics.daycount.DCFCalculator {
 	 */
 
 	public DC30_360()
-<span class="fc" id="L95">	{</span>
-<span class="fc" id="L96">	}</span>
+<span class="fc" id="L106">	{</span>
+<span class="fc" id="L107">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L100">		return &quot;DC30_360&quot;;</span>
+<span class="nc" id="L111">		return &quot;DC30_360&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L105">		return new java.lang.String[] {&quot;30/360&quot;, &quot;30U/360&quot;, &quot;Bond basis&quot;, &quot;30/360 US&quot;, &quot;US MUNI: 30/360&quot;,</span>
+<span class="fc" id="L116">		return new java.lang.String[] {&quot;30/360&quot;, &quot;30U/360&quot;, &quot;Bond basis&quot;, &quot;30/360 US&quot;, &quot;US MUNI: 30/360&quot;,</span>
 			&quot;MUNI30/360&quot;, &quot;ISDA30/360&quot;, &quot;DC30_360&quot;};
 	}
 
@@ -114,16 +125,16 @@ public class DC30_360 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L117">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L128">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;DC30_360::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;DC30_360::yearFraction =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L122">		return (360.* (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
-<span class="fc" id="L123">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 30. *</span>
-<span class="fc" id="L124">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
-<span class="fc" id="L125">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
-<span class="fc" id="L126">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior()))</span>
+<span class="fc" id="L133">		return (360.* (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
+<span class="fc" id="L134">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 30. *</span>
+<span class="fc" id="L135">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
+<span class="fc" id="L136">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
+<span class="fc" id="L137">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior()))</span>
 							/ 360.;
 	}
 
@@ -135,16 +146,16 @@ public class DC30_360 implements org.drip.analytics.daycount.DCFCalculator {
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L138">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
+<span class="fc" id="L149">		DateEOMAdjustment dm = DateEOMAdjustment.MakeDEOMA30_360 (iStartDate, iEndDate, bApplyEOMAdj);</span>
 
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (null == dm)</span>
-<span class="nc" id="L141">			throw new java.lang.Exception (&quot;DC30_360::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (null == dm)</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;DC30_360::daysAccrued =&gt; Cannot create DateEOMAdjustment!&quot;);</span>
 
-<span class="fc" id="L143">		return 360 * (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
-<span class="fc" id="L144">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 30 *</span>
-<span class="fc" id="L145">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
-<span class="fc" id="L146">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
-<span class="fc" id="L147">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior());</span>
+<span class="fc" id="L154">		return 360 * (org.drip.analytics.date.DateUtil.Year (iEndDate) -</span>
+<span class="fc" id="L155">			org.drip.analytics.date.DateUtil.Year (iStartDate)) + 30 *</span>
+<span class="fc" id="L156">				(org.drip.analytics.date.DateUtil.Month (iEndDate) - org.drip.analytics.date.DateUtil.Month</span>
+<span class="fc" id="L157">					(iStartDate)) + (org.drip.analytics.date.DateUtil.Date (iEndDate) -</span>
+<span class="fc" id="L158">						org.drip.analytics.date.DateUtil.Date (iStartDate) + dm.posterior() - dm.anterior());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

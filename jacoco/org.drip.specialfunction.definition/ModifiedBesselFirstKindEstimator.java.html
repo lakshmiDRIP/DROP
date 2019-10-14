@@ -105,6 +105,39 @@ package org.drip.specialfunction.definition;
 {
 
 	/**
+	 * Construct the Alpha Positive Asymptotic Version of ModifiedBesselFirstKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Positive Asymptotic Version of ModifiedBesselFirstKindEstimator
+	 */
+
+	public static final ModifiedBesselFirstKindEstimator AlphaPositiveAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		return null == gammaEstimator ? null : new ModifiedBesselFirstKindEstimator()</span>
+<span class="nc" id="L119">		{</span>
+			@Override public double bigI (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L125" title="All 2 branches missed.">				if (0. &gt; alpha ||</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L128">					throw new java.lang.Exception</span>
+						(&quot;ModifiedBesselFirstKindEstimator::AlphaPositiveAsymptote =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L132">				return java.lang.Math.pow (</span>
+					0.5 * z,
+					alpha
+<span class="nc" id="L135">				) / gammaEstimator.evaluate (alpha + 1.);</span>
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Modified Bessel Function First Kind I given Alpha and z
 	 * 
 	 * @param alpha Alpha
@@ -125,7 +158,7 @@ package org.drip.specialfunction.definition;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L128">		return bigI (</span>
+<span class="nc" id="L161">		return bigI (</span>
 			alpha,
 			z
 		);

@@ -80,43 +80,51 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L84">	private int _iWashDays = -1;</span>
-<span class="nc" id="L85">	private int _iShortTermDays = -1;</span>
-<span class="nc" id="L86">	private double _dblLongTermTaxRate = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private double _dblShortTermTaxRate = java.lang.Double.NaN;</span>
+public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L85">	private int _washDays = -1;</span>
+<span class="nc" id="L86">	private int _shortTermDays = -1;</span>
+<span class="nc" id="L87">	private double _longTermTaxRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L88">	private double _shortTermTaxRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * TaxAccountingScheme Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
-	 * @param dblShortTermTaxRate Short Term Tax Rate
-	 * @param dblLongTermTaxRate Long Term Tax Rate
-	 * @param iShortTermDays Short Term Days
-	 * @param iWashDays Wash Days
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
+	 * @param shortTermTaxRate Short Term Tax Rate
+	 * @param longTermTaxRate Long Term Tax Rate
+	 * @param shortTermDays Short Term Days
+	 * @param washDays Wash Days
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TaxAccountingScheme (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblShortTermTaxRate,
-		final double dblLongTermTaxRate,
-		final int iShortTermDays,
-		final int iWashDays)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double shortTermTaxRate,
+		final double longTermTaxRate,
+		final int shortTermDays,
+		final int washDays)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L113">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L114">		super (</span>
+			name,
+			id,
+			description
+		);
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblShortTermTaxRate = dblShortTermTaxRate) ||</span>
-<span class="nc bnc" id="L116" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblLongTermTaxRate = dblLongTermTaxRate) || -1 &gt;=</span>
-				(_iShortTermDays = iShortTermDays) || -1 &gt;= (_iWashDays = iWashDays))
-<span class="nc" id="L118">			throw new java.lang.Exception (&quot;TaxAccountingScheme Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L119">	}</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_shortTermTaxRate = shortTermTaxRate) ||</span>
+<span class="nc bnc" id="L121" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_longTermTaxRate = longTermTaxRate) ||</span>
+			-1 &gt;= (_shortTermDays = shortTermDays) ||
+			-1 &gt;= (_washDays = washDays))
+		{
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;TaxAccountingScheme Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L127">	}</span>
 
 	/**
 	 * Retrieve the Short Term Tax Rate
@@ -126,7 +134,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public double shortTermTaxRate()
 	{
-<span class="nc" id="L129">		return _dblShortTermTaxRate;</span>
+<span class="nc" id="L137">		return _shortTermTaxRate;</span>
 	}
 
 	/**
@@ -137,7 +145,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public double longTermTaxRate()
 	{
-<span class="nc" id="L140">		return _dblLongTermTaxRate;</span>
+<span class="nc" id="L148">		return _longTermTaxRate;</span>
 	}
 
 	/**
@@ -148,7 +156,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public int shortTermDays()
 	{
-<span class="nc" id="L151">		return _iShortTermDays;</span>
+<span class="nc" id="L159">		return _shortTermDays;</span>
 	}
 
 	/**
@@ -159,7 +167,7 @@ public class TaxAccountingScheme extends org.drip.portfolioconstruction.core.Blo
 
 	public int washDays()
 	{
-<span class="nc" id="L162">		return _iWashDays;</span>
+<span class="nc" id="L170">		return _washDays;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

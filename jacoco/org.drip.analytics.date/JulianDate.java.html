@@ -6,6 +6,7 @@ package org.drip.analytics.date;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,33 +17,43 @@ package org.drip.analytics.date;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -107,20 +118,34 @@ package org.drip.analytics.date;
  *  		Serialization/De-serialization to and from Byte Arrays
  *  	&lt;/li&gt;
  *  &lt;/ul&gt;
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * The References are:
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Fliegel, H. F., and T. C. van Flandern (1968): A Machine Algorithm for Processing Calendar Dates
+ * 				&lt;i&gt;Communications of the ACM&lt;/i&gt; &lt;b&gt;11&lt;/b&gt; 657
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Fenton, D. (2001): Julian to Calendar Date Conversion
+ * 				http://mathforum.org/library/drmath/view/51907.html
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date/README.md&quot;&gt;Date&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/date/README.md&quot;&gt;Date and Time Creation, Manipulation, and Usage&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
-<span class="fc" id="L123">	private int _iJulian = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L148">	private int _iJulian = java.lang.Integer.MIN_VALUE;</span>
 
 	/**
 	 * Create JulianDate from an Integer Julian Date Instance
@@ -130,9 +155,9 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 
 	public JulianDate (
 		final int iJulian)
-<span class="fc" id="L133">	{</span>
-<span class="fc" id="L134">		_iJulian = iJulian;</span>
-<span class="fc" id="L135">	}</span>
+<span class="fc" id="L158">	{</span>
+<span class="fc" id="L159">		_iJulian = iJulian;</span>
+<span class="fc" id="L160">	}</span>
 
 	/**
 	 * Return the Integer Julian Date
@@ -142,7 +167,7 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 
 	public int julian()
 	{
-<span class="fc" id="L145">		return _iJulian;</span>
+<span class="fc" id="L170">		return _iJulian;</span>
 	}
 
 	/**
@@ -157,12 +182,12 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iDays)
 	{
 		try {
-<span class="fc" id="L160">			return new JulianDate (_iJulian + iDays);</span>
-<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="fc" id="L185">			return new JulianDate (_iJulian + iDays);</span>
+<span class="nc" id="L186">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L187">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L190">		return null;</span>
 	}
 
 	/**
@@ -177,12 +202,12 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iDays)
 	{
 		try {
-<span class="fc" id="L180">			return new JulianDate (_iJulian - iDays);</span>
-<span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L182">			e.printStackTrace();</span>
+<span class="fc" id="L205">			return new JulianDate (_iJulian - iDays);</span>
+<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L207">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L185">		return null;</span>
+<span class="nc" id="L210">		return null;</span>
 	}
 
 	/**
@@ -199,25 +224,25 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iDays,
 		final java.lang.String strCalendarSet)
 	{
-<span class="fc" id="L202">		int iNumDaysToAdd = iDays;</span>
-<span class="fc" id="L203">		int iAdjusted = _iJulian;</span>
+<span class="fc" id="L227">		int iNumDaysToAdd = iDays;</span>
+<span class="fc" id="L228">		int iAdjusted = _iJulian;</span>
 
 		try {
-<span class="fc bfc" id="L206" title="All 2 branches covered.">			while (0 &lt; iNumDaysToAdd--) {</span>
-<span class="fc" id="L207">				++iAdjusted;</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">			while (0 &lt; iNumDaysToAdd--) {</span>
+<span class="fc" id="L232">				++iAdjusted;</span>
 
-<span class="fc bfc" id="L209" title="All 2 branches covered.">				while (org.drip.analytics.daycount.Convention.IsHoliday (iAdjusted, strCalendarSet))</span>
-<span class="fc" id="L210">					++iAdjusted;</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">				while (org.drip.analytics.daycount.Convention.IsHoliday (iAdjusted, strCalendarSet))</span>
+<span class="fc" id="L235">					++iAdjusted;</span>
 			}
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">			while (org.drip.analytics.daycount.Convention.IsHoliday (iAdjusted, strCalendarSet)) ++iAdjusted;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">			while (org.drip.analytics.daycount.Convention.IsHoliday (iAdjusted, strCalendarSet)) ++iAdjusted;</span>
 
-<span class="fc" id="L215">			return new JulianDate (iAdjusted);</span>
-<span class="nc" id="L216">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L217">			e.printStackTrace();</span>
+<span class="fc" id="L240">			return new JulianDate (iAdjusted);</span>
+<span class="nc" id="L241">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L242">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L220">		return null;</span>
+<span class="nc" id="L245">		return null;</span>
 	}
 
 	/**
@@ -234,26 +259,26 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iDays,
 		final java.lang.String strCalendarSet)
 	{
-<span class="fc" id="L237">		int iNumDaysToAdd = iDays;</span>
-<span class="fc" id="L238">		int iDateAdjusted = _iJulian;</span>
+<span class="fc" id="L262">		int iNumDaysToAdd = iDays;</span>
+<span class="fc" id="L263">		int iDateAdjusted = _iJulian;</span>
 
 		try {
-<span class="fc bfc" id="L241" title="All 2 branches covered.">			while (0 &lt; iNumDaysToAdd--) {</span>
-<span class="fc" id="L242">				--iDateAdjusted;</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">			while (0 &lt; iNumDaysToAdd--) {</span>
+<span class="fc" id="L267">				--iDateAdjusted;</span>
 
-<span class="fc bfc" id="L244" title="All 2 branches covered.">				while (org.drip.analytics.daycount.Convention.IsHoliday (iDateAdjusted, strCalendarSet))</span>
-<span class="fc" id="L245">					--iDateAdjusted;</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">				while (org.drip.analytics.daycount.Convention.IsHoliday (iDateAdjusted, strCalendarSet))</span>
+<span class="fc" id="L270">					--iDateAdjusted;</span>
 			}
 
-<span class="fc bfc" id="L248" title="All 2 branches covered.">			while (org.drip.analytics.daycount.Convention.IsHoliday (iDateAdjusted, strCalendarSet))</span>
-<span class="fc" id="L249">				--iDateAdjusted;</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">			while (org.drip.analytics.daycount.Convention.IsHoliday (iDateAdjusted, strCalendarSet))</span>
+<span class="nc" id="L274">				--iDateAdjusted;</span>
 
-<span class="fc" id="L251">			return new JulianDate (iDateAdjusted);</span>
-<span class="nc" id="L252">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L253">			e.printStackTrace();</span>
+<span class="fc" id="L276">			return new JulianDate (iDateAdjusted);</span>
+<span class="nc" id="L277">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L278">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L256">		return null;</span>
+<span class="nc" id="L281">		return null;</span>
 	}
 
 	/**
@@ -267,24 +292,24 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public JulianDate addYears (
 		final int iNumYears)
 	{
-<span class="fc" id="L270">		int iP = _iJulian + 68569;</span>
-<span class="fc" id="L271">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L272">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L273">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L274">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L275">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L276">		int iV = iU / 11;</span>
-<span class="fc" id="L277">		int iY = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L278">		int iM = iU + 2 - 12 * iV;</span>
-<span class="fc" id="L279">		int iD = iT - (2447 * iU / 80);</span>
+<span class="fc" id="L295">		int iP = _iJulian + 68569;</span>
+<span class="fc" id="L296">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L297">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L298">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L299">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L300">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L301">		int iV = iU / 11;</span>
+<span class="fc" id="L302">		int iY = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L303">		int iM = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L304">		int iD = iT - (2447 * iU / 80);</span>
 
 		try {
-<span class="fc" id="L282">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iY + iNumYears, iM, iD);</span>
-<span class="nc" id="L283">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L284">			e.printStackTrace();</span>
+<span class="fc" id="L307">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iY + iNumYears, iM, iD);</span>
+<span class="nc" id="L308">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L309">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L287">		return null;</span>
+<span class="nc" id="L312">		return null;</span>
 	}
 
 	/**
@@ -298,39 +323,39 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public JulianDate addMonths (
 		final int iNumMonths)
 	{
-<span class="fc" id="L301">		int iP = _iJulian + 68569;</span>
-<span class="fc" id="L302">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L303">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L304">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L305">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L306">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L307">		int iV = iU / 11;</span>
-<span class="fc" id="L308">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L309">		int iMonth = iU + 2 - 12 * iV + iNumMonths;</span>
-<span class="fc" id="L310">		int iDate = iT - (2447 * iU / 80);</span>
+<span class="fc" id="L326">		int iP = _iJulian + 68569;</span>
+<span class="fc" id="L327">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L328">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L329">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L330">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L331">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L332">		int iV = iU / 11;</span>
+<span class="fc" id="L333">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L334">		int iMonth = iU + 2 - 12 * iV + iNumMonths;</span>
+<span class="fc" id="L335">		int iDate = iT - (2447 * iU / 80);</span>
 
-<span class="fc bfc" id="L312" title="All 2 branches covered.">		while (12 &lt; iMonth) {</span>
-<span class="fc" id="L313">			++iYear;</span>
-<span class="fc" id="L314">			iMonth -= 12;</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		while (12 &lt; iMonth) {</span>
+<span class="fc" id="L338">			++iYear;</span>
+<span class="fc" id="L339">			iMonth -= 12;</span>
 		}
 
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		while (0 &gt;= iMonth) {</span>
-<span class="fc" id="L318">			--iYear;</span>
-<span class="fc" id="L319">			iMonth += 12;</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">		while (0 &gt;= iMonth) {</span>
+<span class="fc" id="L343">			--iYear;</span>
+<span class="fc" id="L344">			iMonth += 12;</span>
 		}
 
 		try {
-<span class="fc" id="L323">			int iDaysInMonth = org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear);</span>
+<span class="fc" id="L348">			int iDaysInMonth = org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear);</span>
 
-<span class="fc bfc" id="L325" title="All 2 branches covered.">			while (iDate &gt; iDaysInMonth)</span>
-<span class="fc" id="L326">				--iDate;</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">			while (iDate &gt; iDaysInMonth)</span>
+<span class="fc" id="L351">				--iDate;</span>
 
-<span class="fc" id="L328">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth, iDate);</span>
-<span class="nc" id="L329">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L330">			e.printStackTrace();</span>
+<span class="fc" id="L353">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth, iDate);</span>
+<span class="nc" id="L354">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L355">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L333">		return null;</span>
+<span class="nc" id="L358">		return null;</span>
 	}
 
 	/**
@@ -344,33 +369,33 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public JulianDate nextRatesFuturesIMM (
 		final int iNumRollMonths)
 	{
-<span class="fc" id="L347">		int iP = _iJulian + 68569;</span>
-<span class="fc" id="L348">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L349">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L350">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L351">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L352">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L353">		int iV = iU / 11;</span>
-<span class="fc" id="L354">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L355">		int iMonth = iU + 2 - 12 * iV;</span>
-<span class="fc" id="L356">		int iDate = iT - (2447 * iU / 80);</span>
+<span class="fc" id="L372">		int iP = _iJulian + 68569;</span>
+<span class="fc" id="L373">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L374">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L375">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L376">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L377">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L378">		int iV = iU / 11;</span>
+<span class="fc" id="L379">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L380">		int iMonth = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L381">		int iDate = iT - (2447 * iU / 80);</span>
 
-<span class="fc bfc" id="L358" title="All 2 branches covered.">		if (15 &lt;= iDate) {</span>
-<span class="fc bfc" id="L359" title="All 2 branches covered.">			if (12 &lt; ++iMonth) {</span>
-<span class="fc" id="L360">				++iYear;</span>
-<span class="fc" id="L361">				iMonth -= 12;</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">		if (15 &lt;= iDate) {</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">			if (12 &lt; ++iMonth) {</span>
+<span class="fc" id="L385">				++iYear;</span>
+<span class="fc" id="L386">				iMonth -= 12;</span>
 			}
 		}
 
-<span class="fc bfc" id="L365" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
 
 		try {
-<span class="fc" id="L368">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth, 15);</span>
-<span class="nc" id="L369">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L370">			e.printStackTrace();</span>
+<span class="fc" id="L393">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth, 15);</span>
+<span class="nc" id="L394">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L395">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L373">		return null;</span>
+<span class="nc" id="L398">		return null;</span>
 	}
 
 	/**
@@ -386,30 +411,30 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final int iNumRollMonths,
 		final java.lang.String strCalendar)
 	{
-<span class="fc" id="L389">		int iP = _iJulian + 68569;</span>
-<span class="fc" id="L390">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L391">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L392">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L393">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L394">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L395">		int iV = iU / 11;</span>
-<span class="fc" id="L396">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L397">		int iMonth = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L414">		int iP = _iJulian + 68569;</span>
+<span class="fc" id="L415">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L416">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L417">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L418">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L419">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L420">		int iV = iU / 11;</span>
+<span class="fc" id="L421">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L422">		int iMonth = iU + 2 - 12 * iV;</span>
 
-<span class="fc bfc" id="L399" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
 
 		try {
-<span class="fc" id="L402">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
-<span class="fc" id="L403">				org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
+<span class="fc" id="L427">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
+<span class="fc" id="L428">				org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
 
 			/* return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,
 				org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear)).subtractBusDays (8,
 					strCalendar); */
-<span class="nc" id="L408">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L409">			e.printStackTrace();</span>
+<span class="nc" id="L433">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L434">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L412">		return null;</span>
+<span class="nc" id="L437">		return null;</span>
 	}
 
 	/**
@@ -423,33 +448,33 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public JulianDate nextCreditIMM (
 		final int iNumRollMonths)
 	{
-<span class="fc" id="L426">		int iP = _iJulian + 68569;</span>
-<span class="fc" id="L427">		int iQ = 4 * iP / 146097;</span>
-<span class="fc" id="L428">		int iR = iP - (146097 * iQ + 3) / 4;</span>
-<span class="fc" id="L429">		int iS = 4000 * (iR + 1) / 1461001;</span>
-<span class="fc" id="L430">		int iT = iR - (1461 * iS / 4) + 31;</span>
-<span class="fc" id="L431">		int iU = 80 * iT / 2447;</span>
-<span class="fc" id="L432">		int iV = iU / 11;</span>
-<span class="fc" id="L433">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
-<span class="fc" id="L434">		int iMonth = iU + 2 - 12 * iV;</span>
-<span class="fc" id="L435">		int iDate = iT - (2447 * iU / 80);</span>
+<span class="fc" id="L451">		int iP = _iJulian + 68569;</span>
+<span class="fc" id="L452">		int iQ = 4 * iP / 146097;</span>
+<span class="fc" id="L453">		int iR = iP - (146097 * iQ + 3) / 4;</span>
+<span class="fc" id="L454">		int iS = 4000 * (iR + 1) / 1461001;</span>
+<span class="fc" id="L455">		int iT = iR - (1461 * iS / 4) + 31;</span>
+<span class="fc" id="L456">		int iU = 80 * iT / 2447;</span>
+<span class="fc" id="L457">		int iV = iU / 11;</span>
+<span class="fc" id="L458">		int iYear = 100 * (iQ - 49) + iS + iV;</span>
+<span class="fc" id="L459">		int iMonth = iU + 2 - 12 * iV;</span>
+<span class="fc" id="L460">		int iDate = iT - (2447 * iU / 80);</span>
 
-<span class="fc bfc" id="L437" title="All 2 branches covered.">		if (20 &lt;= iDate) {</span>
-<span class="fc bfc" id="L438" title="All 2 branches covered.">			if (12 &lt; ++iMonth) {</span>
-<span class="fc" id="L439">				++iYear;</span>
-<span class="fc" id="L440">				iMonth -= 12;</span>
+<span class="fc bfc" id="L462" title="All 2 branches covered.">		if (20 &lt;= iDate) {</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">			if (12 &lt; ++iMonth) {</span>
+<span class="fc" id="L464">				++iYear;</span>
+<span class="fc" id="L465">				iMonth -= 12;</span>
 			}
 		}
 
-<span class="fc bfc" id="L444" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">		while (0 != iMonth % iNumRollMonths) ++iMonth;</span>
 
 		try {
-<span class="fc" id="L447">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth, 20);</span>
-<span class="nc" id="L448">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L449">			e.printStackTrace();</span>
+<span class="fc" id="L472">			return org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth, 20);</span>
+<span class="nc" id="L473">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L474">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L452">		return null;</span>
+<span class="nc" id="L477">		return null;</span>
 	}
 
 	/**
@@ -463,37 +488,37 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public JulianDate addTenor (
 		final java.lang.String strTenorIn)
 	{
-<span class="pc bpc" id="L466" title="2 of 4 branches missed.">		if (null == strTenorIn || strTenorIn.isEmpty()) return null;</span>
+<span class="pc bpc" id="L491" title="2 of 4 branches missed.">		if (null == strTenorIn || strTenorIn.isEmpty()) return null;</span>
 
-<span class="pc bpc" id="L468" title="1 of 2 branches missed.">		java.lang.String strTenor = &quot;ON&quot;.equalsIgnoreCase (strTenorIn) ? &quot;1D&quot; : strTenorIn;</span>
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">		java.lang.String strTenor = &quot;ON&quot;.equalsIgnoreCase (strTenorIn) ? &quot;1D&quot; : strTenorIn;</span>
 
-<span class="fc" id="L470">		int iNumChar = strTenor.length();</span>
+<span class="fc" id="L495">		int iNumChar = strTenor.length();</span>
 
-<span class="fc" id="L472">		char chTenor = strTenor.charAt (iNumChar - 1);</span>
+<span class="fc" id="L497">		char chTenor = strTenor.charAt (iNumChar - 1);</span>
 
-<span class="fc" id="L474">		int iTimeUnit = -1;</span>
+<span class="fc" id="L499">		int iTimeUnit = -1;</span>
 
 		try {
-<span class="fc" id="L477">			iTimeUnit = java.lang.Integer.parseInt (strTenor.substring (0, iNumChar - 1));</span>
-<span class="nc" id="L478">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L479">			System.out.println (&quot;Bad time unit &quot; + iTimeUnit + &quot; in tenor &quot; + strTenor);</span>
+<span class="fc" id="L502">			iTimeUnit = java.lang.Integer.parseInt (strTenor.substring (0, iNumChar - 1));</span>
+<span class="nc" id="L503">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L504">			System.out.println (&quot;Bad time unit &quot; + iTimeUnit + &quot; in tenor &quot; + strTenor);</span>
 
-<span class="nc" id="L481">			return null;</span>
-<span class="fc" id="L482">		}</span>
+<span class="nc" id="L506">			return null;</span>
+<span class="fc" id="L507">		}</span>
 
-<span class="pc bpc" id="L484" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return addDays (iTimeUnit);</span>
+<span class="pc bpc" id="L509" title="1 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return addDays (iTimeUnit);</span>
 
-<span class="pc bpc" id="L486" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return addDays (iTimeUnit * 7);</span>
+<span class="pc bpc" id="L511" title="1 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return addDays (iTimeUnit * 7);</span>
 
-<span class="pc bpc" id="L488" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return addDays (iTimeUnit * 28);</span>
+<span class="pc bpc" id="L513" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return addDays (iTimeUnit * 28);</span>
 
-<span class="pc bpc" id="L490" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return addMonths (iTimeUnit);</span>
+<span class="pc bpc" id="L515" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return addMonths (iTimeUnit);</span>
 
-<span class="pc bpc" id="L492" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return addYears (iTimeUnit);</span>
+<span class="pc bpc" id="L517" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return addYears (iTimeUnit);</span>
 
-<span class="nc" id="L494">		System.out.println (&quot;Unknown tenor format &quot; + strTenor);</span>
+<span class="nc" id="L519">		System.out.println (&quot;Unknown tenor format &quot; + strTenor);</span>
 
-<span class="nc" id="L496">		return null;</span>
+<span class="nc" id="L521">		return null;</span>
 	}
 
 	/**
@@ -509,18 +534,18 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final java.lang.String strTenor,
 		final java.lang.String strCalendarSet)
 	{
-<span class="fc" id="L512">		JulianDate dtNew = addTenor (strTenor);</span>
+<span class="fc" id="L537">		JulianDate dtNew = addTenor (strTenor);</span>
 
-<span class="pc bpc" id="L514" title="1 of 2 branches missed.">		if (null == dtNew) return null;</span>
+<span class="pc bpc" id="L539" title="1 of 2 branches missed.">		if (null == dtNew) return null;</span>
 
 		try {
-<span class="fc" id="L517">			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.julian(),</span>
+<span class="fc" id="L542">			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.julian(),</span>
 				org.drip.analytics.daycount.Convention.DATE_ROLL_FOLLOWING, strCalendarSet, 1));
-<span class="nc" id="L519">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L520">			e.printStackTrace();</span>
+<span class="nc" id="L544">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L545">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L523">		return null;</span>
+<span class="nc" id="L548">		return null;</span>
 	}
 
 	/**
@@ -534,35 +559,35 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public JulianDate subtractTenor (
 		final java.lang.String strTenorIn)
 	{
-<span class="pc bpc" id="L537" title="2 of 4 branches missed.">		if (null == strTenorIn || strTenorIn.isEmpty()) return null;</span>
+<span class="pc bpc" id="L562" title="2 of 4 branches missed.">		if (null == strTenorIn || strTenorIn.isEmpty()) return null;</span>
 
-<span class="pc bpc" id="L539" title="1 of 2 branches missed.">		java.lang.String strTenor = &quot;ON&quot;.equalsIgnoreCase (strTenorIn) ? &quot;1D&quot; : strTenorIn;</span>
+<span class="pc bpc" id="L564" title="1 of 2 branches missed.">		java.lang.String strTenor = &quot;ON&quot;.equalsIgnoreCase (strTenorIn) ? &quot;1D&quot; : strTenorIn;</span>
 
-<span class="fc" id="L541">		int iNumChar = strTenor.length();</span>
+<span class="fc" id="L566">		int iNumChar = strTenor.length();</span>
 
-<span class="fc" id="L543">		char chTenor = strTenor.charAt (iNumChar - 1);</span>
+<span class="fc" id="L568">		char chTenor = strTenor.charAt (iNumChar - 1);</span>
 
-<span class="fc" id="L545">		int iTimeUnit = -1;</span>
+<span class="fc" id="L570">		int iTimeUnit = -1;</span>
 
 		try {
-<span class="fc" id="L548">			iTimeUnit = java.lang.Integer.parseInt (strTenor.substring (0, iNumChar - 1));</span>
-<span class="nc" id="L549">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L550">			System.out.println (&quot;Bad time unit &quot; + iTimeUnit + &quot; in tenor &quot; + strTenor);</span>
+<span class="fc" id="L573">			iTimeUnit = java.lang.Integer.parseInt (strTenor.substring (0, iNumChar - 1));</span>
+<span class="nc" id="L574">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L575">			System.out.println (&quot;Bad time unit &quot; + iTimeUnit + &quot; in tenor &quot; + strTenor);</span>
 
-<span class="nc" id="L552">			return null;</span>
-<span class="fc" id="L553">		}</span>
+<span class="nc" id="L577">			return null;</span>
+<span class="fc" id="L578">		}</span>
 
-<span class="pc bpc" id="L555" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return addDays (-iTimeUnit);</span>
+<span class="pc bpc" id="L580" title="2 of 4 branches missed.">		if ('d' == chTenor || 'D' == chTenor) return addDays (-iTimeUnit);</span>
 
-<span class="pc bpc" id="L557" title="2 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return addDays (-iTimeUnit * 7);</span>
+<span class="pc bpc" id="L582" title="2 of 4 branches missed.">		if ('w' == chTenor || 'W' == chTenor) return addDays (-iTimeUnit * 7);</span>
 
-<span class="pc bpc" id="L559" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return addDays (-iTimeUnit * 28);</span>
+<span class="pc bpc" id="L584" title="2 of 4 branches missed.">		if ('l' == chTenor || 'L' == chTenor) return addDays (-iTimeUnit * 28);</span>
 
-<span class="pc bpc" id="L561" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return addMonths (-iTimeUnit);</span>
+<span class="pc bpc" id="L586" title="1 of 4 branches missed.">		if ('m' == chTenor || 'M' == chTenor) return addMonths (-iTimeUnit);</span>
 
-<span class="pc bpc" id="L563" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return addYears (-iTimeUnit);</span>
+<span class="pc bpc" id="L588" title="2 of 4 branches missed.">		if ('y' == chTenor || 'Y' == chTenor) return addYears (-iTimeUnit);</span>
 
-<span class="nc" id="L565">		return null;</span>
+<span class="nc" id="L590">		return null;</span>
 	}
 
 	/**
@@ -578,18 +603,18 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final java.lang.String strTenor,
 		final java.lang.String strCalendarSet)
 	{
-<span class="fc" id="L581">		JulianDate dtNew = subtractTenor (strTenor);</span>
+<span class="fc" id="L606">		JulianDate dtNew = subtractTenor (strTenor);</span>
 
-<span class="pc bpc" id="L583" title="1 of 2 branches missed.">		if (null == dtNew) return null;</span>
+<span class="pc bpc" id="L608" title="1 of 2 branches missed.">		if (null == dtNew) return null;</span>
 
 		try {
-<span class="fc" id="L586">			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.julian(),</span>
+<span class="fc" id="L611">			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.julian(),</span>
 				org.drip.analytics.daycount.Convention.DATE_ROLL_FOLLOWING, strCalendarSet, 1));
-<span class="nc" id="L588">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L589">			e.printStackTrace();</span>
+<span class="nc" id="L613">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L614">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L592">		return null;</span>
+<span class="nc" id="L617">		return null;</span>
 	}
 
 	/**
@@ -606,9 +631,9 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 		final JulianDate dt)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L609" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;JulianDate::daysDiff =&gt; Invalid Input!&quot;);</span>
+<span class="nc bnc" id="L634" title="All 2 branches missed.">		if (null == dt) throw new java.lang.Exception (&quot;JulianDate::daysDiff =&gt; Invalid Input!&quot;);</span>
 
-<span class="nc" id="L611">		return _iJulian - dt.julian();</span>
+<span class="nc" id="L636">		return _iJulian - dt.julian();</span>
 	}
 
 	/**
@@ -620,14 +645,14 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public java.lang.String toOracleDate()
 	{
 		try {
-<span class="fc" id="L623">			return DateUtil.Date (_iJulian) + &quot;-&quot; + org.drip.analytics.date.DateUtil.MonthTrigram</span>
-<span class="fc" id="L624">				(org.drip.analytics.date.DateUtil.Month (_iJulian)) + &quot;-&quot; +</span>
-<span class="fc" id="L625">					org.drip.analytics.date.DateUtil.Year (_iJulian);</span>
-<span class="nc" id="L626">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L627">			e.printStackTrace();</span>
+<span class="fc" id="L648">			return DateUtil.Date (_iJulian) + &quot;-&quot; + org.drip.analytics.date.DateUtil.MonthTrigram</span>
+<span class="fc" id="L649">				(org.drip.analytics.date.DateUtil.Month (_iJulian)) + &quot;-&quot; +</span>
+<span class="fc" id="L650">					org.drip.analytics.date.DateUtil.Year (_iJulian);</span>
+<span class="nc" id="L651">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L652">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L630">		return null;</span>
+<span class="nc" id="L655">		return null;</span>
 	}
 
 	/**
@@ -641,48 +666,48 @@ public class JulianDate implements java.lang.Comparable&lt;JulianDate&gt; {
 	public java.lang.String toYYYYMMDD (
 		final java.lang.String strDelimIn)
 	{
-<span class="nc bnc" id="L644" title="All 2 branches missed.">		java.lang.String strDelim = null == strDelimIn ? &quot;&quot; : strDelimIn;</span>
+<span class="nc bnc" id="L669" title="All 2 branches missed.">		java.lang.String strDelim = null == strDelimIn ? &quot;&quot; : strDelimIn;</span>
 
 		try {
-<span class="nc" id="L647">			return org.drip.numerical.common.FormatUtil.FormatDouble (DateUtil.Year (_iJulian), 4, 0, 1.) +</span>
+<span class="nc" id="L672">			return org.drip.numerical.common.FormatUtil.FormatDouble (DateUtil.Year (_iJulian), 4, 0, 1.) +</span>
 				strDelim + org.drip.numerical.common.FormatUtil.FormatDouble
-<span class="nc" id="L649">					(org.drip.analytics.date.DateUtil.Month (_iJulian), 2, 0, 1.) + strDelim +</span>
-<span class="nc" id="L650">						org.drip.numerical.common.FormatUtil.FormatDouble (DateUtil.Date (_iJulian), 2, 0, 1.);</span>
-<span class="nc" id="L651">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L652">			e.printStackTrace();</span>
+<span class="nc" id="L674">					(org.drip.analytics.date.DateUtil.Month (_iJulian), 2, 0, 1.) + strDelim +</span>
+<span class="nc" id="L675">						org.drip.numerical.common.FormatUtil.FormatDouble (DateUtil.Date (_iJulian), 2, 0, 1.);</span>
+<span class="nc" id="L676">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L677">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L655">		return null;</span>
+<span class="nc" id="L680">		return null;</span>
 	}
 
 	@Override public boolean equals (
 		final java.lang.Object o)
 	{
-<span class="nc bnc" id="L661" title="All 2 branches missed.">		if (!(o instanceof JulianDate)) return false;</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">		if (!(o instanceof JulianDate)) return false;</span>
 
-<span class="nc bnc" id="L663" title="All 2 branches missed.">		return _iJulian == ((JulianDate) o)._iJulian;</span>
+<span class="nc bnc" id="L688" title="All 2 branches missed.">		return _iJulian == ((JulianDate) o)._iJulian;</span>
 	}
 
 	@Override public int hashCode()
 	{
-<span class="fc" id="L668">		long lBits = java.lang.Double.doubleToLongBits (_iJulian);</span>
+<span class="fc" id="L693">		long lBits = java.lang.Double.doubleToLongBits (_iJulian);</span>
 
-<span class="fc" id="L670">		return (int) (lBits ^ (lBits &gt;&gt;&gt; 32));</span>
+<span class="fc" id="L695">		return (int) (lBits ^ (lBits &gt;&gt;&gt; 32));</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L675">		return org.drip.analytics.date.DateUtil.DDMMMYYYY (_iJulian);</span>
+<span class="fc" id="L700">		return org.drip.analytics.date.DateUtil.DDMMMYYYY (_iJulian);</span>
 	}
 
 	@Override public int compareTo (
 		final JulianDate dtOther)
 	{
-<span class="fc bfc" id="L681" title="All 2 branches covered.">		if (_iJulian &gt; dtOther._iJulian) return 1;</span>
+<span class="fc bfc" id="L706" title="All 2 branches covered.">		if (_iJulian &gt; dtOther._iJulian) return 1;</span>
 
-<span class="fc bfc" id="L683" title="All 2 branches covered.">		if (_iJulian &lt; dtOther._iJulian) return -1;</span>
+<span class="fc bfc" id="L708" title="All 2 branches covered.">		if (_iJulian &lt; dtOther._iJulian) return -1;</span>
 
-<span class="fc" id="L685">		return 0;</span>
+<span class="fc" id="L710">		return 0;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

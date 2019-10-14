@@ -135,16 +135,25 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 <span class="nc" id="L135">	    return _dblSigma;</span>
 	}
 
+	@Override public double[] support()
+	{
+<span class="nc" id="L140">		return new double[]</span>
+		{
+			java.lang.Double.NEGATIVE_INFINITY,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;R1UnivariateNormal::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;R1UnivariateNormal::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX &gt;= _dblMean ? 1. : 0.;</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX &gt;= _dblMean ? 1. : 0.;</span>
 
-<span class="nc" id="L147">		return org.drip.measure.gaussian.NormalQuadrature.CDF ((dblX - _dblMean) / _dblSigma);</span>
+<span class="nc" id="L156">		return org.drip.measure.gaussian.NormalQuadrature.CDF ((dblX - _dblMean) / _dblSigma);</span>
 	}
 
 	@Override public double incremental (
@@ -152,60 +161,70 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblXRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L155">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+<span class="nc" id="L164">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
 	}
 
 	@Override public double invCumulative (
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L162" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)</span>
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;R1UnivariateNormal::invCumulative =&gt; Cannot calculate&quot;);</span>
+<span class="pc bpc" id="L171" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;R1UnivariateNormal::invCumulative =&gt; Cannot calculate&quot;);</span>
 
-<span class="fc" id="L165">	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;</span>
+<span class="fc" id="L174">	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;</span>
 	}
 
 	@Override public double density (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L173">			throw new java.lang.Exception (&quot;R1UnivariateNormal::density =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L182">			throw new java.lang.Exception (&quot;R1UnivariateNormal::density =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX == _dblMean ? 1. : 0.;</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX == _dblMean ? 1. : 0.;</span>
 
-<span class="nc" id="L177">		double dblMeanShift = (dblX - _dblMean) / _dblSigma;</span>
+<span class="nc" id="L186">		double dblMeanShift = (dblX - _dblMean) / _dblSigma;</span>
 
-<span class="nc" id="L179">		return java.lang.Math.exp (-0.5 * dblMeanShift * dblMeanShift);</span>
+<span class="nc" id="L188">		return java.lang.Math.exp (-0.5 * dblMeanShift * dblMeanShift);</span>
 	}
 
 	@Override public double mean()
 	{
-<span class="fc" id="L184">	    return _dblMean;</span>
+<span class="fc" id="L193">	    return _dblMean;</span>
+	}
+
+	@Override public double median()
+	{
+<span class="nc" id="L198">	    return _dblMean;</span>
+	}
+
+	@Override public double mode()
+	{
+<span class="nc" id="L203">	    return _dblMean;</span>
 	}
 
 	@Override public double variance()
 	{
-<span class="fc" id="L189">	    return _dblSigma * _dblSigma;</span>
+<span class="fc" id="L208">	    return _dblSigma * _dblSigma;</span>
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L194">		return null;</span>
+<span class="nc" id="L213">		return null;</span>
 	}
 
 	@Override public double random()
 	{
 		try
 		{
-<span class="nc" id="L201">			return invCumulative (java.lang.Math.random());</span>
+<span class="nc" id="L220">			return invCumulative (java.lang.Math.random());</span>
 		}
-<span class="nc" id="L203">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L222">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L205">			e.printStackTrace();</span>
+<span class="nc" id="L224">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L208">		return java.lang.Double.NaN;</span>
+<span class="nc" id="L227">		return java.lang.Double.NaN;</span>
 	}
 
 	/**
@@ -222,12 +241,12 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L226">			throw new java.lang.Exception (&quot;R1UnivariateNormal::errorFunction =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L245">			throw new java.lang.Exception (&quot;R1UnivariateNormal::errorFunction =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L228">		double dblWidth = java.lang.Math.abs (dblX);</span>
+<span class="nc" id="L247">		double dblWidth = java.lang.Math.abs (dblX);</span>
 
-<span class="nc" id="L230">		return cumulative (_dblMean + dblWidth) - cumulative (_dblMean - dblWidth);</span>
+<span class="nc" id="L249">		return cumulative (_dblMean + dblWidth) - cumulative (_dblMean - dblWidth);</span>
 	}
 
 	/**
@@ -244,7 +263,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblWidth)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L247">		return errorFunction (dblWidth);</span>
+<span class="nc" id="L266">		return errorFunction (dblWidth);</span>
 	}
 
 	/**
@@ -261,11 +280,11 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblConfidence)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L264" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblConfidence) || 0. &gt;= dblConfidence || 1. &lt;=</span>
+<span class="pc bpc" id="L283" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblConfidence) || 0. &gt;= dblConfidence || 1. &lt;=</span>
 			dblConfidence)
-<span class="nc" id="L266">			throw new java.lang.Exception (&quot;R1UnivariateNormal::confidenceInterval =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L285">			throw new java.lang.Exception (&quot;R1UnivariateNormal::confidenceInterval =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L268">		return invCumulative (0.5 * (1. + dblConfidence));</span>
+<span class="fc" id="L287">		return invCumulative (0.5 * (1. + dblConfidence));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

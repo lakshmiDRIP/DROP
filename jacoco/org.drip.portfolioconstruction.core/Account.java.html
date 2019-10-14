@@ -80,41 +80,46 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Account extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L84">	private org.drip.portfolioconstruction.composite.Holdings _ah = null;</span>
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.composite.AlphaGroup _ag = null;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.core.TaxAccountingScheme _tas = null;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.composite.Benchmark _bmTracking = null;</span>
-<span class="nc" id="L88">	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _aug = null;</span>
-<span class="nc" id="L89">	private org.drip.portfolioconstruction.composite.Benchmark _bmObjective = null;</span>
-<span class="nc" id="L90">	private org.drip.portfolioconstruction.risk.AssetCovariance _acRiskModel = null;</span>
-<span class="nc" id="L91">	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _tcg = null;</span>
+public class Account extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L85">	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.composite.AlphaGroup _alphaGroup = null;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.composite.Benchmark _trackingBenchmark = null;</span>
+<span class="nc" id="L88">	private org.drip.portfolioconstruction.composite.Benchmark _objectiveBenchmark = null;</span>
+<span class="nc" id="L89">	private org.drip.portfolioconstruction.core.TaxAccountingScheme _taxAccountingScheme = null;</span>
+<span class="nc" id="L90">	private org.drip.portfolioconstruction.risk.AssetCovariance _assetCovarianceRiskModel = null;</span>
+<span class="nc" id="L91">	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _alphaUncertaintyGroup = null;</span>
+<span class="nc" id="L92">	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _transactionChargeGroup = null;</span>
 
 	/**
 	 * Account Constructor
 	 * 
-	 * @param strName The Account Name
-	 * @param strID The Account ID
-	 * @param strDescription The Account Description
-	 * @param ah The Account Holdings
-	 * @param tas The Tax Accounting Scheme
+	 * @param name The Account Name
+	 * @param id The Account ID
+	 * @param description The Account Description
+	 * @param holdings The Account Holdings
+	 * @param taxAccountingScheme The Tax Accounting Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Account (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.composite.Holdings ah,
-		final org.drip.portfolioconstruction.core.TaxAccountingScheme tas)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final org.drip.portfolioconstruction.composite.Holdings holdings,
+		final org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L113">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L114">		super (</span>
+			name,
+			id,
+			description
+		);
 
-<span class="nc" id="L115">		_ah = ah;</span>
-<span class="nc" id="L116">		_tas = tas;</span>
-<span class="nc" id="L117">	}</span>
+<span class="nc" id="L120">		_holdings = holdings;</span>
+<span class="nc" id="L121">		_taxAccountingScheme = taxAccountingScheme;</span>
+<span class="nc" id="L122">	}</span>
 
 	/**
 	 * Retrieve the Holdings
@@ -124,7 +129,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Holdings holdings()
 	{
-<span class="nc" id="L127">		return _ah;</span>
+<span class="nc" id="L132">		return _holdings;</span>
 	}
 
 	/**
@@ -135,7 +140,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L138">		return _ah.currency();</span>
+<span class="nc" id="L143">		return _holdings.currency();</span>
 	}
 
 	/**
@@ -146,7 +151,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Benchmark trackingBenchmark()
 	{
-<span class="nc" id="L149">		return _bmTracking;</span>
+<span class="nc" id="L154">		return _trackingBenchmark;</span>
 	}
 
 	/**
@@ -157,7 +162,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.Benchmark objectiveBenchmark()
 	{
-<span class="nc" id="L160">		return _bmObjective;</span>
+<span class="nc" id="L165">		return _objectiveBenchmark;</span>
 	}
 
 	/**
@@ -168,7 +173,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.composite.AlphaGroup alphaGroup()
 	{
-<span class="nc" id="L171">		return _ag;</span>
+<span class="nc" id="L176">		return _alphaGroup;</span>
 	}
 
 	/**
@@ -179,18 +184,18 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup alphaUncertaintyGroup()
 	{
-<span class="nc" id="L182">		return _aug;</span>
+<span class="nc" id="L187">		return _alphaUncertaintyGroup;</span>
 	}
 
 	/**
-	 * Retrieve the Risk Model
+	 * Retrieve the Asset Co-variance Risk Model
 	 * 
-	 * @return The Risk Model
+	 * @return The Asset Co-variance Risk Model
 	 */
 
-	public org.drip.portfolioconstruction.risk.AssetCovariance riskModel()
+	public org.drip.portfolioconstruction.risk.AssetCovariance assetCovariance()
 	{
-<span class="nc" id="L193">		return _acRiskModel;</span>
+<span class="nc" id="L198">		return _assetCovarianceRiskModel;</span>
 	}
 
 	/**
@@ -199,9 +204,9 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 	 * @return The Transaction Cost Group Instance
 	 */
 
-	public org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionCostGroup()
+	public org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionChargeGroup()
 	{
-<span class="nc" id="L204">		return _tcg;</span>
+<span class="nc" id="L209">		return _transactionChargeGroup;</span>
 	}
 
 	/**
@@ -212,109 +217,127 @@ public class Account extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme()
 	{
-<span class="nc" id="L215">		return _tas;</span>
+<span class="nc" id="L220">		return _taxAccountingScheme;</span>
 	}
 
 	/**
 	 * Set the Tracking Benchmark Instance
 	 * 
-	 * @param bmTracking The Tracking Benchmark
+	 * @param trackingBenchmark The Tracking Benchmark
 	 * 
 	 * @return The Tracking Benchmark successfully set
 	 */
 
 	public boolean setTrackingBenchmark (
-		final org.drip.portfolioconstruction.composite.Benchmark bmTracking)
+		final org.drip.portfolioconstruction.composite.Benchmark trackingBenchmark)
 	{
-<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (null == bmTracking) return false;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">		if (null == trackingBenchmark)</span>
+		{
+<span class="nc" id="L236">			return false;</span>
+		}
 
-<span class="nc" id="L231">		_bmTracking = bmTracking;</span>
-<span class="nc" id="L232">		return true;</span>
+<span class="nc" id="L239">		_trackingBenchmark = trackingBenchmark;</span>
+<span class="nc" id="L240">		return true;</span>
 	}
 
 	/**
 	 * Set the Objective Benchmark Instance
 	 * 
-	 * @param bmObjective The Objective Benchmark
+	 * @param objectiveBenchmark The Objective Benchmark
 	 * 
 	 * @return The Objective Benchmark successfully set
 	 */
 
 	public boolean setObjectiveBenchmark (
-		final org.drip.portfolioconstruction.composite.Benchmark bmObjective)
+		final org.drip.portfolioconstruction.composite.Benchmark objectiveBenchmark)
 	{
-<span class="nc bnc" id="L246" title="All 2 branches missed.">		if (null == bmObjective) return false;</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (null == objectiveBenchmark)</span>
+		{
+<span class="nc" id="L256">			return false;</span>
+		}
 
-<span class="nc" id="L248">		_bmObjective = bmObjective;</span>
-<span class="nc" id="L249">		return true;</span>
+<span class="nc" id="L259">		_objectiveBenchmark = objectiveBenchmark;</span>
+<span class="nc" id="L260">		return true;</span>
 	}
 
 	/**
 	 * Set the Alpha Group
 	 * 
-	 * @param ag The Alpha Group Instance
+	 * @param alphaGroup The Alpha Group Instance
 	 * 
 	 * @return The Alpha Group successfully set
 	 */
 
 	public boolean setAlphaGroup (
-		final org.drip.portfolioconstruction.composite.AlphaGroup ag)
+		final org.drip.portfolioconstruction.composite.AlphaGroup alphaGroup)
 	{
-<span class="nc bnc" id="L263" title="All 2 branches missed.">		if (null == ag) return false;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (null == alphaGroup)</span>
+		{
+<span class="nc" id="L276">			return false;</span>
+		}
 
-<span class="nc" id="L265">		_ag = ag;</span>
-<span class="nc" id="L266">		return true;</span>
+<span class="nc" id="L279">		_alphaGroup = alphaGroup;</span>
+<span class="nc" id="L280">		return true;</span>
 	}
 
 	/**
 	 * Set the Alpha Uncertainty Group
 	 * 
-	 * @param aug The Alpha Uncertainty Group Instance
+	 * @param alphaUncertaintyGroup The Alpha Uncertainty Group Instance
 	 * 
 	 * @return The Alpha Uncertainty Group successfully set
 	 */
 
 	public boolean setAlphaUncertaintyGroup (
-		final org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup aug)
+		final org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup alphaUncertaintyGroup)
 	{
-<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (null == aug) return false;</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (null == alphaUncertaintyGroup)</span>
+		{
+<span class="nc" id="L296">			return false;</span>
+		}
 
-<span class="nc" id="L282">		_aug = aug;</span>
-<span class="nc" id="L283">		return true;</span>
+<span class="nc" id="L299">		_alphaUncertaintyGroup = alphaUncertaintyGroup;</span>
+<span class="nc" id="L300">		return true;</span>
 	}
 
 	/**
-	 * Set the Risk Model
+	 * Set the Asset Co-variance Risk Model
 	 * 
-	 * @param acRiskModel The Risk Model
+	 * @param assetCovarianceRiskModel The Asset Co-variance Risk Model
 	 * 
-	 * @return The Risk Model
+	 * @return The Asset Co-variance Risk Model
 	 */
 
-	public boolean setRiskModel (
-		final org.drip.portfolioconstruction.risk.AssetCovariance acRiskModel)
+	public boolean setAssetCovariance (
+		final org.drip.portfolioconstruction.risk.AssetCovariance assetCovarianceRiskModel)
 	{
-<span class="nc bnc" id="L297" title="All 2 branches missed.">		if (null == acRiskModel) return false;</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (null == assetCovarianceRiskModel)</span>
+		{
+<span class="nc" id="L316">			return false;</span>
+		}
 
-<span class="nc" id="L299">		_acRiskModel = acRiskModel;</span>
-<span class="nc" id="L300">		return true;</span>
+<span class="nc" id="L319">		_assetCovarianceRiskModel = assetCovarianceRiskModel;</span>
+<span class="nc" id="L320">		return true;</span>
 	}
 
 	/**
 	 * Set the Transaction Cost Group
 	 * 
-	 * @param tcg The Transaction Cost Group Instance
+	 * @param transactionChargeGroup The Transaction Cost Group Instance
 	 * 
 	 * @return The Transaction Cost Group successfully set
 	 */
 
 	public boolean setTransactionCostGroup (
-		final org.drip.portfolioconstruction.composite.TransactionChargeGroup tcg)
+		final org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionChargeGroup)
 	{
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (null == tcg) return false;</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">		if (null == transactionChargeGroup)</span>
+		{
+<span class="nc" id="L336">			return false;</span>
+		}
 
-<span class="nc" id="L316">		_tcg = tcg;</span>
-<span class="nc" id="L317">		return true;</span>
+<span class="nc" id="L339">		_transactionChargeGroup = transactionChargeGroup;</span>
+<span class="nc" id="L340">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

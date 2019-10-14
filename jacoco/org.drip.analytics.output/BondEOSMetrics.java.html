@@ -6,37 +6,48 @@ package org.drip.analytics.output;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -71,25 +82,25 @@ package org.drip.analytics.output;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output/README.md&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output/README.md&quot;&gt;Period Product Targeted Valuation Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BondEOSMetrics {
-<span class="fc" id="L84">	private double[][] _aadblForwardPrice = null;</span>
-<span class="fc" id="L85">	private double _dblOASTM = java.lang.Double.NaN;</span>
-<span class="fc" id="L86">	private boolean[][] _aabExerciseIndicator = null;</span>
-<span class="fc" id="L87">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseOAS = null;</span>
-<span class="fc" id="L88">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExercisePrice = null;</span>
-<span class="fc" id="L89">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseValue = null;</span>
-<span class="fc" id="L90">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseOASGap = null;</span>
-<span class="fc" id="L91">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseDuration = null;</span>
-<span class="fc" id="L92">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseConvexity = null;</span>
+<span class="fc" id="L95">	private double[][] _aadblForwardPrice = null;</span>
+<span class="fc" id="L96">	private double _dblOASTM = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private boolean[][] _aabExerciseIndicator = null;</span>
+<span class="fc" id="L98">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseOAS = null;</span>
+<span class="fc" id="L99">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExercisePrice = null;</span>
+<span class="fc" id="L100">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseValue = null;</span>
+<span class="fc" id="L101">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseOASGap = null;</span>
+<span class="fc" id="L102">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseDuration = null;</span>
+<span class="fc" id="L103">	private org.drip.measure.statistics.UnivariateDiscreteThin _udtOptimalExerciseConvexity = null;</span>
 
 	/**
 	 * BondEOSMetrics Constructor
@@ -118,31 +129,31 @@ public class BondEOSMetrics {
 		final double[][] aadblForwardPrice,
 		final boolean[][] aabExerciseIndicator)
 		throws java.lang.Exception
-<span class="fc" id="L121">	{</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOASTM = dblOASTM))</span>
-<span class="nc" id="L123">			throw new java.lang.Exception (&quot;BondEOSMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L132">	{</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOASTM = dblOASTM))</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;BondEOSMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L125">		_udtOptimalExercisePrice = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
+<span class="fc" id="L136">		_udtOptimalExercisePrice = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
 			(adblOptimalExercisePrice);
 
-<span class="fc" id="L128">		_udtOptimalExerciseValue = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
+<span class="fc" id="L139">		_udtOptimalExerciseValue = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
 			(adblOptimalExerciseValue);
 
-<span class="fc" id="L131">		_udtOptimalExerciseOAS = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
+<span class="fc" id="L142">		_udtOptimalExerciseOAS = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
 			(adblOptimalExerciseOAS);
 
-<span class="fc" id="L134">		_udtOptimalExerciseOASGap = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
+<span class="fc" id="L145">		_udtOptimalExerciseOASGap = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
 			(adblOptimalExerciseOASGap);
 
-<span class="fc" id="L137">		_udtOptimalExerciseDuration = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
+<span class="fc" id="L148">		_udtOptimalExerciseDuration = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
 			(adblOptimalExerciseDuration);
 
-<span class="fc" id="L140">		_udtOptimalExerciseConvexity = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
+<span class="fc" id="L151">		_udtOptimalExerciseConvexity = new org.drip.measure.statistics.UnivariateDiscreteThin</span>
 			(adblOptimalExerciseConvexity);
 
-<span class="fc" id="L143">		_aadblForwardPrice = aadblForwardPrice;</span>
-<span class="fc" id="L144">		_aabExerciseIndicator = aabExerciseIndicator;</span>
-<span class="fc" id="L145">	}</span>
+<span class="fc" id="L154">		_aadblForwardPrice = aadblForwardPrice;</span>
+<span class="fc" id="L155">		_aabExerciseIndicator = aabExerciseIndicator;</span>
+<span class="fc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Optimal Exercise Price UDT
@@ -152,7 +163,7 @@ public class BondEOSMetrics {
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin optimalExercisePrice()
 	{
-<span class="fc" id="L155">		return _udtOptimalExercisePrice;</span>
+<span class="fc" id="L166">		return _udtOptimalExercisePrice;</span>
 	}
 
 	/**
@@ -163,7 +174,7 @@ public class BondEOSMetrics {
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin optimalExerciseValue()
 	{
-<span class="fc" id="L166">		return _udtOptimalExerciseValue;</span>
+<span class="fc" id="L177">		return _udtOptimalExerciseValue;</span>
 	}
 
 	/**
@@ -174,7 +185,7 @@ public class BondEOSMetrics {
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin optimalExerciseOAS()
 	{
-<span class="fc" id="L177">		return _udtOptimalExerciseOAS;</span>
+<span class="fc" id="L188">		return _udtOptimalExerciseOAS;</span>
 	}
 
 	/**
@@ -185,7 +196,7 @@ public class BondEOSMetrics {
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin optimalExerciseOASGap()
 	{
-<span class="fc" id="L188">		return _udtOptimalExerciseOASGap;</span>
+<span class="fc" id="L199">		return _udtOptimalExerciseOASGap;</span>
 	}
 
 	/**
@@ -196,7 +207,7 @@ public class BondEOSMetrics {
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin optimalExerciseDuration()
 	{
-<span class="fc" id="L199">		return _udtOptimalExerciseDuration;</span>
+<span class="fc" id="L210">		return _udtOptimalExerciseDuration;</span>
 	}
 
 	/**
@@ -207,7 +218,7 @@ public class BondEOSMetrics {
 
 	public org.drip.measure.statistics.UnivariateDiscreteThin optimalExerciseConvexity()
 	{
-<span class="fc" id="L210">		return _udtOptimalExerciseConvexity;</span>
+<span class="fc" id="L221">		return _udtOptimalExerciseConvexity;</span>
 	}
 
 	/**
@@ -218,7 +229,7 @@ public class BondEOSMetrics {
 
 	public double oas()
 	{
-<span class="fc" id="L221">		return _udtOptimalExerciseOAS.average();</span>
+<span class="fc" id="L232">		return _udtOptimalExerciseOAS.average();</span>
 	}
 
 	/**
@@ -229,7 +240,7 @@ public class BondEOSMetrics {
 
 	public double oasTM()
 	{
-<span class="fc" id="L232">		return _dblOASTM;</span>
+<span class="fc" id="L243">		return _dblOASTM;</span>
 	}
 
 	/**
@@ -240,7 +251,7 @@ public class BondEOSMetrics {
 
 	public double oasDuration()
 	{
-<span class="fc" id="L243">		return _udtOptimalExerciseDuration.average();</span>
+<span class="fc" id="L254">		return _udtOptimalExerciseDuration.average();</span>
 	}
 
 	/**
@@ -251,7 +262,7 @@ public class BondEOSMetrics {
 
 	public double oasConvexity()
 	{
-<span class="fc" id="L254">		return _udtOptimalExerciseConvexity.average();</span>
+<span class="fc" id="L265">		return _udtOptimalExerciseConvexity.average();</span>
 	}
 
 	/**
@@ -262,7 +273,7 @@ public class BondEOSMetrics {
 
 	public double[][] forwardPrice()
 	{
-<span class="fc" id="L265">		return _aadblForwardPrice;</span>
+<span class="fc" id="L276">		return _aadblForwardPrice;</span>
 	}
 
 	/**
@@ -273,7 +284,7 @@ public class BondEOSMetrics {
 
 	public boolean[][] exerciseIndicator()
 	{
-<span class="fc" id="L276">		return _aabExerciseIndicator;</span>
+<span class="fc" id="L287">		return _aabExerciseIndicator;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

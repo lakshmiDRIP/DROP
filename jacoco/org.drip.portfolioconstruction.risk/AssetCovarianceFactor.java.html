@@ -80,57 +80,74 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCovarianceFactor extends org.drip.portfolioconstruction.risk.AttributeJointFactor
-	implements org.drip.portfolioconstruction.risk.AssetCovariance {
+public class AssetCovarianceFactor
+	extends org.drip.portfolioconstruction.risk.AttributeJointFactor
+	implements org.drip.portfolioconstruction.risk.AssetCovariance
+{
 
 	/**
 	 * AssetCovarianceFactor Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetCovarianceFactor (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (strName, strID, strDescription);</span>
-<span class="nc" id="L103">	}</span>
+<span class="nc" id="L104">		super (</span>
+			name,
+			id,
+			description
+		);
+<span class="nc" id="L109">	}</span>
 
 	@Override public double[][] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == holdings) return null;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (null == holdings)</span>
+		{
+<span class="nc" id="L116">			return null;</span>
+		}
 
-<span class="nc" id="L110">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
+<span class="nc" id="L119">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdings.assetIDSet();</span>
 
-<span class="nc" id="L112">		int iSize = setAsset.size();</span>
+<span class="nc" id="L121">		int assetCount = assetIDSet.size();</span>
 
-<span class="nc" id="L114">		int i = 0;</span>
-<span class="nc" id="L115">		double[][] aadblAssetCovariance = new double[iSize][iSize];</span>
+<span class="nc" id="L123">		int assetIndexI = 0;</span>
+<span class="nc" id="L124">		double[][] assetCovarianceMatrix = new double[assetCount][assetCount];</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (java.lang.String strAsset1 : setAsset) {</span>
-<span class="nc" id="L118">			int j = 0;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		for (java.lang.String assetID1 : assetIDSet)</span>
+		{
+<span class="nc" id="L128">			int assetIndexJ = 0;</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">			for (java.lang.String strAsset2 : setAsset) {</span>
-				try {
-<span class="nc" id="L122">					aadblAssetCovariance[i][j++] = crossAssetAttribute (strAsset1, strAsset2);</span>
-<span class="nc" id="L123">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L124">					e.printStackTrace();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">			for (java.lang.String assetID2 : assetIDSet)</span>
+			{
+				try
+				{
+<span class="nc" id="L134">					assetCovarianceMatrix[assetIndexI][assetIndexJ++] = crossAssetAttribute (</span>
+						assetID1,
+						assetID2
+					);
+				}
+<span class="nc" id="L139">				catch (java.lang.Exception e)</span>
+				{
+<span class="nc" id="L141">					e.printStackTrace();</span>
 
-<span class="nc" id="L126">					return null;</span>
-<span class="nc" id="L127">				}</span>
-<span class="nc" id="L128">			}</span>
+<span class="nc" id="L143">					return null;</span>
+<span class="nc" id="L144">				}</span>
+<span class="nc" id="L145">			}</span>
 
-<span class="nc" id="L130">			++i;</span>
-<span class="nc" id="L131">		}</span>
+<span class="nc" id="L147">			++assetIndexI;</span>
+<span class="nc" id="L148">		}</span>
 
-<span class="nc" id="L133">		return aadblAssetCovariance;</span>
+<span class="nc" id="L150">		return assetCovarianceMatrix;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

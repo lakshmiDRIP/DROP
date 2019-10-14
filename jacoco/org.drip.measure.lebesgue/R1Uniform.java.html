@@ -131,18 +131,27 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 <span class="fc" id="L131">		return _dblRightPredictorOrdinateEdge;</span>
 	}
 
+	@Override public double[] support()
+	{
+<span class="nc" id="L136">		return new double[]</span>
+		{
+			_dblLeftPredictorOrdinateEdge,
+			_dblRightPredictorOrdinateEdge
+		};
+	}
+
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;R1Uniform::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;R1Uniform::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (dblX &lt;= _dblLeftPredictorOrdinateEdge) return 0.;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (dblX &lt;= _dblLeftPredictorOrdinateEdge) return 0.;</span>
 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (dblX &gt;= _dblRightPredictorOrdinateEdge) return 1.;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (dblX &gt;= _dblRightPredictorOrdinateEdge) return 1.;</span>
 
-<span class="nc" id="L145">		return (dblX - _dblLeftPredictorOrdinateEdge) / (_dblRightPredictorOrdinateEdge -</span>
+<span class="nc" id="L154">		return (dblX - _dblLeftPredictorOrdinateEdge) / (_dblRightPredictorOrdinateEdge -</span>
 			_dblLeftPredictorOrdinateEdge);
 	}
 
@@ -151,17 +160,17 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 		final double dblXRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L154">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+<span class="nc" id="L163">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
 	}
 
 	@Override public double invCumulative (
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L161" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
-<span class="nc" id="L162">			throw new java.lang.Exception (&quot;R1Uniform::invCumulative =&gt; Invalid inputs&quot;);</span>
+<span class="nc bnc" id="L170" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;R1Uniform::invCumulative =&gt; Invalid inputs&quot;);</span>
 
-<span class="nc" id="L164">	    return dblY * (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) +</span>
+<span class="nc" id="L173">	    return dblY * (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) +</span>
 	    	_dblLeftPredictorOrdinateEdge;
 	}
 
@@ -169,33 +178,33 @@ public class R1Uniform extends org.drip.measure.continuous.R1Univariate {
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L172" title="All 4 branches missed.">		return dblX &lt;= _dblLeftPredictorOrdinateEdge || dblX &gt;= _dblRightPredictorOrdinateEdge ? 0. : 1. /</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">		return dblX &lt;= _dblLeftPredictorOrdinateEdge || dblX &gt;= _dblRightPredictorOrdinateEdge ? 0. : 1. /</span>
 			(_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge);
 	}
 
 	@Override public double mean()
 	{
-<span class="fc" id="L178">	    return 0.5 * (_dblRightPredictorOrdinateEdge + _dblLeftPredictorOrdinateEdge);</span>
+<span class="fc" id="L187">	    return 0.5 * (_dblRightPredictorOrdinateEdge + _dblLeftPredictorOrdinateEdge);</span>
 	}
 
 	@Override public double variance()
 	{
-<span class="nc" id="L183">	    return (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) *</span>
+<span class="nc" id="L192">	    return (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) *</span>
 	    	(_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) / 12.;
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L189">		double[] adblX = new double[GRID_WIDTH];</span>
-<span class="nc" id="L190">		double[] adblY = new double[GRID_WIDTH];</span>
-<span class="nc" id="L191">		double dblWidth = (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) / GRID_WIDTH;</span>
+<span class="nc" id="L198">		double[] adblX = new double[GRID_WIDTH];</span>
+<span class="nc" id="L199">		double[] adblY = new double[GRID_WIDTH];</span>
+<span class="nc" id="L200">		double dblWidth = (_dblRightPredictorOrdinateEdge - _dblLeftPredictorOrdinateEdge) / GRID_WIDTH;</span>
 
-<span class="nc bnc" id="L193" title="All 2 branches missed.">		for (int i = 0; i &lt; GRID_WIDTH; ++i) {</span>
-<span class="nc" id="L194">			adblY[i] = 1. / GRID_WIDTH;</span>
-<span class="nc" id="L195">			adblX[i] = _dblLeftPredictorOrdinateEdge + (i + 1) * dblWidth;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		for (int i = 0; i &lt; GRID_WIDTH; ++i) {</span>
+<span class="nc" id="L203">			adblY[i] = 1. / GRID_WIDTH;</span>
+<span class="nc" id="L204">			adblX[i] = _dblLeftPredictorOrdinateEdge + (i + 1) * dblWidth;</span>
 		}
 
-<span class="nc" id="L198">		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);</span>
+<span class="nc" id="L207">		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

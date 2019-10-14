@@ -100,60 +100,77 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L103">public class ExpectedExcessReturnsWeights {</span>
+<span class="nc" id="L103">public class ExpectedExcessReturnsWeights</span>
+{
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseOptimizationOutput from,
-		final double[] adblWeightReconciler,
-		final int iLeft,
-		final int iRight,
-		final String strHeader)
+		final ForwardReverseOptimizationOutput forwardReverseOptimizationOutput,
+		final double[] weightReconcilerArray,
+		final int preDecimalDigits,
+		final int postDecimalDigits,
+		final String header)
 	{
-<span class="fc" id="L112">		Portfolio fromPortfolio = from.optimalPortfolio();</span>
+<span class="fc" id="L113">		Portfolio optimalPortfolio = forwardReverseOptimizationOutput.optimalPortfolio();</span>
 
-<span class="fc" id="L114">		String[] astrAssetID = fromPortfolio.id();</span>
+<span class="fc" id="L115">		String[] assetIDArray = optimalPortfolio.assetIDArray();</span>
 
-<span class="fc" id="L116">		double[] adblWeight = fromPortfolio.weights();</span>
+<span class="fc" id="L117">		double[] weightArray = optimalPortfolio.weightArray();</span>
 
-<span class="fc" id="L118">		AssetComponent acMaxWeight = fromPortfolio.maxWeight();</span>
+<span class="fc" id="L119">		AssetComponent highestWeightAsset = optimalPortfolio.highestWeightAsset();</span>
 
-<span class="fc" id="L120">		AssetComponent acMinWeight = fromPortfolio.minWeight();</span>
+<span class="fc" id="L121">		AssetComponent lowestWeightAsset = optimalPortfolio.lowestWeightAsset();</span>
 
-<span class="fc" id="L122">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L123">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L124">		System.out.println (strHeader);</span>
+<span class="fc" id="L125">		System.out.println (header);</span>
 
-<span class="fc" id="L126">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L127">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L128">		System.out.println (&quot;\t|                  ID               =&gt;  CALC  | VERIFY ||&quot;);</span>
+<span class="fc" id="L129">		System.out.println (&quot;\t|                  ID               =&gt;  CALC  | VERIFY ||&quot;);</span>
 
-<span class="fc" id="L130">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L131">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; adblWeight.length; ++i)</span>
-<span class="fc" id="L133">			System.out.println (</span>
-				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L135">				FormatUtil.FormatDouble (adblWeight[i], iLeft, iRight, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L136">				FormatUtil.FormatDouble (adblWeightReconciler[i], iLeft, iRight, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L133">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">			assetIndex &lt; weightArray.length;</span>
+<span class="fc" id="L135">			++assetIndex)</span>
+		{
+<span class="fc" id="L137">			System.out.println (</span>
+				&quot;\t| [&quot; + assetIDArray[assetIndex] + &quot;] =&gt; &quot; +
+<span class="fc" id="L139">				FormatUtil.FormatDouble (</span>
+					weightArray[assetIndex], preDecimalDigits, postDecimalDigits, 100.
+				) + &quot;% | &quot; +
+<span class="fc" id="L142">				FormatUtil.FormatDouble (</span>
+					weightReconcilerArray[assetIndex], preDecimalDigits, postDecimalDigits, 100.
+				) + &quot;% ||&quot;
 			);
+		}
 
-<span class="fc" id="L139">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L148">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L141">		System.out.println (&quot;\t| HIGH : &quot; + acMaxWeight.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (acMaxWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+<span class="fc" id="L150">		System.out.println (</span>
+<span class="fc" id="L151">			&quot;\t| HIGH : &quot; + highestWeightAsset.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (</span>
+<span class="fc" id="L152">				highestWeightAsset.amount(), preDecimalDigits, postDecimalDigits, 100.</span>
+			) + &quot;%     ||&quot;
+		);
 
-<span class="fc" id="L143">		System.out.println (&quot;\t| LOW  : &quot; + acMinWeight.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (acMinWeight.amount(), iLeft, iRight, 100.) + &quot;%     ||&quot;);</span>
+<span class="fc" id="L156">		System.out.println (</span>
+<span class="fc" id="L157">			&quot;\t| LOW  : &quot; + lowestWeightAsset.id() + &quot; =&gt; &quot;+ FormatUtil.FormatDouble (</span>
+<span class="fc" id="L158">				lowestWeightAsset.amount(), preDecimalDigits, postDecimalDigits, 100.</span>
+			) + &quot;%     ||&quot;
+		);
 
-<span class="fc" id="L145">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L146">	}</span>
+<span class="fc" id="L162">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L163">	}</span>
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L152">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L169">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L154">		double dblRiskAversion = 3.07;</span>
-
-<span class="fc" id="L156">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L171">		double riskAversion = 3.07;</span>
+<span class="fc" id="L172">		String[] assetIDArray = new String[]</span>
+		{
 			&quot;US BONDS                       &quot;,
 			&quot;INTERNATIONAL BONDS            &quot;,
 			&quot;US LARGE GROWTH                &quot;,
@@ -163,8 +180,8 @@ import org.drip.service.env.EnvManager;
 			&quot;INTERNATIONAL DEVELOPED EQUITY &quot;,
 			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
 		};
-
-<span class="fc" id="L167">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L183">		double[] assetEquilibriumWeightArray = new double[]</span>
+		{
 			0.1934,
 			0.2613,
 			0.1209,
@@ -174,8 +191,8 @@ import org.drip.service.env.EnvManager;
 			0.2418,
 			0.0349
 		};
-
-<span class="fc" id="L178">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L194">		double[][] assetExcessReturnsCovarianceMatrix = new double[][]</span>
+		{
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -185,8 +202,8 @@ import org.drip.service.env.EnvManager;
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-
-<span class="fc" id="L189">		double[] adblAssetSpaceHistoricalReturns = new double[] {</span>
+<span class="fc" id="L205">		double[] assetSpaceHistoricalReturnsArray = new double[]</span>
+		{
 			 0.0315,
 			 0.0175,
 			-0.0639,
@@ -196,8 +213,8 @@ import org.drip.service.env.EnvManager;
 			-0.0675,
 			-0.0526
 		};
-
-<span class="fc" id="L200">		double[] adblAssetSpaceCAPMReturns = new double[] {</span>
+<span class="fc" id="L216">		double[] assetSpaceCAPMReturnsArray = new double[]</span>
+		{
 			0.0008,
 			0.0067,
 			0.0641,
@@ -207,8 +224,8 @@ import org.drip.service.env.EnvManager;
 			0.0480,
 			0.0660
 		};
-
-<span class="fc" id="L211">		double[] adblAssetSpaceGSMIReturns = new double[] {</span>
+<span class="fc" id="L227">		double[] assetSpaceGSMIReturnsArray = new double[]</span>
+		{
 			 0.0002,
 			 0.0018,
 			 0.0557,
@@ -218,8 +235,8 @@ import org.drip.service.env.EnvManager;
 			 0.0392,
 			 0.0560
 		};
-
-<span class="fc" id="L222">		double[] adblHistoricalPortfolioWeightReconciler = new double[] {</span>
+<span class="fc" id="L238">		double[] historicalPortfolioWeightReconcilerArray = new double[]</span>
+		{
 			 11.4432,
 			 -1.0459,
 			  0.5459,
@@ -229,8 +246,8 @@ import org.drip.service.env.EnvManager;
 			 -1.0436,
 			  0.1459
 		};
-
-<span class="fc" id="L233">		double[] adblCAPMGSMIPortfolioWeightReconciler = new double[] {</span>
+<span class="fc" id="L249">		double[] capmGSMIPortfolioWeightReconcilerArray = new double[]</span>
+		{
 			  0.2133,
 			  0.0519,
 			  0.1080,
@@ -241,78 +258,82 @@ import org.drip.service.env.EnvManager;
 			  0.0214
 		};
 
-<span class="fc" id="L244">		ForwardReverseOptimizationOutput fromPrior = ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L245">			Portfolio.Standard (</span>
-				astrAssetID,
-				adblAssetEquilibriumWeight
+<span class="fc" id="L261">		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L262">			Portfolio.Standard (</span>
+				assetIDArray,
+				assetEquilibriumWeightArray
 			),
-			aadblAssetExcessReturnsCovariance,
-			dblRiskAversion
-		);
+			assetExcessReturnsCovarianceMatrix,
+			riskAversion
+<span class="fc" id="L268">		).expectedAssetExcessReturnsArray();</span>
 
-<span class="fc" id="L253">		double[] adblImpliedEquilibriumExcessReturns = fromPrior.expectedAssetExcessReturns();</span>
+<span class="fc" id="L270">		System.out.println (&quot;\n\t|---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L255">		System.out.println (&quot;\n\t|---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L272">		System.out.println (&quot;\t|               STARTING RETURNS SOURCES RECONCILIATION               ||&quot;);</span>
 
-<span class="fc" id="L257">		System.out.println (&quot;\t|               STARTING RETURNS SOURCES RECONCILIATION               ||&quot;);</span>
+<span class="fc" id="L274">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L259">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L276">		System.out.println (&quot;\t|                ID                 =&gt;  HIST  | GSMI  | CAPM  | IMPL  ||&quot;);</span>
 
-<span class="fc" id="L261">		System.out.println (&quot;\t|                ID                 =&gt;  HIST  | GSMI  | CAPM  | IMPL  ||&quot;);</span>
+<span class="fc" id="L278">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L263">		System.out.println (&quot;\t|---------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L265" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedEquilibriumExcessReturns.length; ++i)</span>
-<span class="fc" id="L266">			System.out.println (</span>
-				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt; &quot; +
-<span class="fc" id="L268">				FormatUtil.FormatDouble (adblAssetSpaceHistoricalReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L269">				FormatUtil.FormatDouble (adblAssetSpaceGSMIReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L270">				FormatUtil.FormatDouble (adblAssetSpaceCAPMReturns[i], 1, 2, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L271">				FormatUtil.FormatDouble (dblRiskAversion * adblImpliedEquilibriumExcessReturns[i], 1, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L280">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">			assetIndex &lt; impliedEquilibriumExcessReturnsArray.length;</span>
+<span class="fc" id="L282">			++assetIndex)</span>
+		{
+<span class="fc" id="L284">			System.out.println (</span>
+				&quot;\t| [&quot; + assetIDArray[assetIndex] + &quot;] =&gt; &quot; +
+<span class="fc" id="L286">				FormatUtil.FormatDouble (assetSpaceHistoricalReturnsArray[assetIndex], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L287">				FormatUtil.FormatDouble (assetSpaceGSMIReturnsArray[assetIndex], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L288">				FormatUtil.FormatDouble (assetSpaceCAPMReturnsArray[assetIndex], 1, 2, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L289">				FormatUtil.FormatDouble (</span>
+					riskAversion * impliedEquilibriumExcessReturnsArray[assetIndex], 1, 2, 100.
+				) + &quot;% ||&quot;
 			);
+		}
 
-<span class="fc" id="L274">		System.out.println (&quot;\t|---------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L295">		System.out.println (&quot;\t|---------------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L276">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L277">			ForwardReverseOptimizationOutput.Forward (</span>
-				astrAssetID,
-				adblAssetSpaceHistoricalReturns,
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+<span class="fc" id="L297">		ForwardOptimizationWeights (</span>
+<span class="fc" id="L298">			ForwardReverseOptimizationOutput.Forward (</span>
+				assetIDArray,
+				assetSpaceHistoricalReturnsArray,
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
-			adblHistoricalPortfolioWeightReconciler,
+			historicalPortfolioWeightReconcilerArray,
 			4,
 			0,
 			&quot;\t|             HISTORICAL WEIGHTS RECONCILER            ||&quot;
 		);
 
-<span class="fc" id="L289">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L290">			ForwardReverseOptimizationOutput.Forward (</span>
-				astrAssetID,
-				adblAssetSpaceGSMIReturns,
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+<span class="fc" id="L310">		ForwardOptimizationWeights (</span>
+<span class="fc" id="L311">			ForwardReverseOptimizationOutput.Forward (</span>
+				assetIDArray,
+				assetSpaceGSMIReturnsArray,
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
-			adblCAPMGSMIPortfolioWeightReconciler,
+			capmGSMIPortfolioWeightReconcilerArray,
 			2,
 			1,
 			&quot;\t|              CAPM GSMI WEIGHTS RECONCILER            ||&quot;
 		);
 
-<span class="fc" id="L302">		ForwardOptimizationWeights (</span>
-<span class="fc" id="L303">			ForwardReverseOptimizationOutput.Forward (</span>
-				astrAssetID,
-				adblAssetSpaceCAPMReturns,
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+<span class="fc" id="L323">		ForwardOptimizationWeights (</span>
+<span class="fc" id="L324">			ForwardReverseOptimizationOutput.Forward (</span>
+				assetIDArray,
+				assetSpaceCAPMReturnsArray,
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
-			adblAssetEquilibriumWeight,
+			assetEquilibriumWeightArray,
 			2,
 			1,
 			&quot;\t|             EQUILIBRIUM WEIGHTS RECONCILER           ||&quot;
 		);
 
-<span class="fc" id="L315">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L316">	}</span>
+<span class="fc" id="L336">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L337">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

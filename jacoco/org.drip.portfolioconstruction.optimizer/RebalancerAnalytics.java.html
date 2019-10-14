@@ -82,23 +82,23 @@ package org.drip.portfolioconstruction.optimizer;
 
 public class RebalancerAnalytics
 {
-<span class="nc" id="L85">	private double _dblObjectiveValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.composite.Holdings _holdingsFinal = null;</span>
+<span class="nc" id="L85">	private double _objectiveValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private org.drip.portfolioconstruction.composite.Holdings _finalHoldings = null;</span>
 <span class="nc" id="L87">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _portfolioMetrics = null;</span>
 <span class="nc" id="L88">	private org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics _portfolioBenchmarkMetrics = null;</span>
-<span class="nc" id="L89">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapObjectiveTermRealization</span>
+<span class="nc" id="L89">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _objectiveTermRealizationMap</span>
 		= null;
 <span class="nc" id="L91">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.optimizer.ConstraintRealization&gt;
-			_mapConstraintRealization = null;
+			_constraintRealizationMap = null;
 
 	/**
 	 * RebalancerAnalytics Constructor
 	 * 
-	 * @param dblObjectiveValue The Objective Value
-	 * @param holdingsFinal The Final Holdings
-	 * @param mapObjectiveTermRealization Map of the Realized Objective Terms
-	 * @param mapConstraintRealization Map of the Constraint Terms
+	 * @param objectiveValue The Objective Value
+	 * @param finalHoldings The Final Holdings
+	 * @param objectiveTermRealizationMap Map of the Realized Objective Terms
+	 * @param constraintRealizationMap Map of the Constraint Terms
 	 * @param portfolioMetrics Portfolio Metrics
 	 * @param portfolioBenchmarkMetrics Portfolio Benchmark Metrics
 	 * 
@@ -106,36 +106,38 @@ public class RebalancerAnalytics
 	 */
 
 	public RebalancerAnalytics (
-		final double dblObjectiveValue,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsFinal,
+		final double objectiveValue,
+		final org.drip.portfolioconstruction.composite.Holdings finalHoldings,
 		final org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;
-			mapObjectiveTermRealization,
+			objectiveTermRealizationMap,
 		final
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.optimizer.ConstraintRealization&gt;
-				mapConstraintRealization,
+				constraintRealizationMap,
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics portfolioMetrics,
 		final org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics portfolioBenchmarkMetrics)
 		throws java.lang.Exception
 <span class="nc" id="L119">	{</span>
-<span class="nc bnc" id="L120" title="All 8 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblObjectiveValue = dblObjectiveValue) ||</span>
-			null == (_holdingsFinal = holdingsFinal) ||
-			null == (_mapObjectiveTermRealization = mapObjectiveTermRealization) ||
-			null == (_mapConstraintRealization = mapConstraintRealization))
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;RebalancerAnalytics Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc bnc" id="L120" title="All 8 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_objectiveValue = objectiveValue) ||</span>
+			null == (_finalHoldings = finalHoldings) ||
+			null == (_objectiveTermRealizationMap = objectiveTermRealizationMap) ||
+			null == (_constraintRealizationMap = constraintRealizationMap))
+		{
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;RebalancerAnalytics Constructor =&gt; Invalid Inputs!&quot;);</span>
+		}
 
-<span class="nc" id="L126">		_portfolioMetrics = portfolioMetrics;</span>
-<span class="nc" id="L127">		_portfolioBenchmarkMetrics = portfolioBenchmarkMetrics;</span>
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L128">		_portfolioMetrics = portfolioMetrics;</span>
+<span class="nc" id="L129">		_portfolioBenchmarkMetrics = portfolioBenchmarkMetrics;</span>
+<span class="nc" id="L130">	}</span>
 
 	/**
-	 * Retrieve the Objective Term
+	 * Retrieve the Objective Function Value
 	 * 
-	 * @return Objective Term
+	 * @return Objective Function Value
 	 */
 
 	public double objectiveValue()
 	{
-<span class="nc" id="L138">		return _dblObjectiveValue;</span>
+<span class="nc" id="L140">		return _objectiveValue;</span>
 	}
 
 	/**
@@ -146,7 +148,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics portfolioMetrics()
 	{
-<span class="nc" id="L149">		return _portfolioMetrics;</span>
+<span class="nc" id="L151">		return _portfolioMetrics;</span>
 	}
 
 	/**
@@ -157,7 +159,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics portfolioBenchmarkMetrics()
 	{
-<span class="nc" id="L160">		return _portfolioBenchmarkMetrics;</span>
+<span class="nc" id="L162">		return _portfolioBenchmarkMetrics;</span>
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.composite.Holdings finalHoldings()
 	{
-<span class="nc" id="L171">		return _holdingsFinal;</span>
+<span class="nc" id="L173">		return _finalHoldings;</span>
 	}
 
 	/**
@@ -178,9 +180,9 @@ public class RebalancerAnalytics
 	 */
 
 	public java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.optimizer.ConstraintRealization&gt;
-		constraintRealizaton()
+		constraintRealizationMap()
 	{
-<span class="nc" id="L183">		return _mapConstraintRealization;</span>
+<span class="nc" id="L185">		return _constraintRealizationMap;</span>
 	}
 
 	/**
@@ -189,9 +191,9 @@ public class RebalancerAnalytics
 	 * @return Map of Objective Term Realizations
 	 */
 
-	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; objectiveTermRealizaton()
+	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; objectiveTermRealizationMap()
 	{
-<span class="nc" id="L194">		return _mapObjectiveTermRealization;</span>
+<span class="nc" id="L196">		return _objectiveTermRealizationMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

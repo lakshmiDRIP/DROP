@@ -70,6 +70,30 @@ package org.drip.measure.discrete;
 /**
  * &lt;i&gt;SequenceGenerator&lt;/i&gt; generates the specified Univariate Sequence of the Given Distribution Type.
  *
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Backstrom, T., and J. Fischer (2018): Fast Randomization for Distributed Low Bit-rate Coding of
+ * 				Speech and Audio &lt;i&gt;IEEE/ACM Transactions on Audio, Speech, and Language Processing&lt;/i&gt; &lt;b&gt;26
+ * 				(1)&lt;/b&gt; 19-30
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Chi-Squared Distribution (2019): Chi-Squared Function
+ * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Johnson, N. L., S. Klotz, and N. Balakrishnan (1994): &lt;i&gt;Continuous Univariate Distributions
+ * 				&lt;b&gt;1&lt;/b&gt; 2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Lancaster, H, O. (1969): &lt;i&gt;The Chi-Squared Distribution&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Pillai, N. S. (1026): An Unexpected Encounter with Cauchy and Levy &lt;i&gt;Annals of Statistics&lt;/i&gt;
+ * 				&lt;b&gt;44 (5)&lt;/b&gt; 2089-2097
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ * 
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
@@ -81,7 +105,8 @@ package org.drip.measure.discrete;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class SequenceGenerator {</span>
+<span class="nc" id="L108">public class SequenceGenerator</span>
+{
 
 	/**
 	 * Generate a Sequence of Uniform Random Numbers
@@ -94,14 +119,14 @@ package org.drip.measure.discrete;
 	public static final double[] Uniform (
 		final int iCount)
 	{
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L99">		double[] adblRandom = new double[iCount];</span>
+<span class="fc" id="L124">		double[] adblRandom = new double[iCount];</span>
 
-<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i)</span>
-<span class="fc" id="L102">			adblRandom[i] = java.lang.Math.random();</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i)</span>
+<span class="fc" id="L127">			adblRandom[i] = java.lang.Math.random();</span>
 
-<span class="fc" id="L104">		return adblRandom;</span>
+<span class="fc" id="L129">		return adblRandom;</span>
 	}
 
 	/**
@@ -115,21 +140,21 @@ package org.drip.measure.discrete;
 	public static final double[] Gaussian (
 		final int iCount)
 	{
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L120">		double[] adblRandom = new double[iCount];</span>
+<span class="fc" id="L145">		double[] adblRandom = new double[iCount];</span>
 
-<span class="fc bfc" id="L122" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i) {</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i) {</span>
 			try {
-<span class="fc" id="L124">				adblRandom[i] = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
-<span class="nc" id="L125">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L126">				e.printStackTrace();</span>
+<span class="fc" id="L149">				adblRandom[i] = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+<span class="nc" id="L150">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L151">				e.printStackTrace();</span>
 
-<span class="nc" id="L128">				return null;</span>
-<span class="fc" id="L129">			}</span>
+<span class="nc" id="L153">				return null;</span>
+<span class="fc" id="L154">			}</span>
 		}
 
-<span class="fc" id="L132">		return adblRandom;</span>
+<span class="fc" id="L157">		return adblRandom;</span>
 	}
 
 	/**
@@ -143,24 +168,24 @@ package org.drip.measure.discrete;
 	public static final double[] LogNormal (
 		final int iCount)
 	{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="nc" id="L148">		double[] adblRandom = new double[iCount];</span>
+<span class="nc" id="L173">		double[] adblRandom = new double[iCount];</span>
 
-<span class="nc" id="L150">		double dblNormalizer = 1. / java.lang.Math.sqrt (java.lang.Math.E);</span>
+<span class="nc" id="L175">		double dblNormalizer = 1. / java.lang.Math.sqrt (java.lang.Math.E);</span>
 
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int i = 0; i &lt; iCount; ++i) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iCount; ++i) {</span>
 			try {
-<span class="nc" id="L154">				adblRandom[i] = java.lang.Math.exp (org.drip.measure.gaussian.NormalQuadrature.Random()) *</span>
+<span class="nc" id="L179">				adblRandom[i] = java.lang.Math.exp (org.drip.measure.gaussian.NormalQuadrature.Random()) *</span>
 					dblNormalizer;
-<span class="nc" id="L156">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L157">				e.printStackTrace();</span>
+<span class="nc" id="L181">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L182">				e.printStackTrace();</span>
 
-<span class="nc" id="L159">				return null;</span>
-<span class="nc" id="L160">			}</span>
+<span class="nc" id="L184">				return null;</span>
+<span class="nc" id="L185">			}</span>
 		}
 
-<span class="nc" id="L163">		return adblRandom;</span>
+<span class="nc" id="L188">		return adblRandom;</span>
 	}
 
 	/**
@@ -176,34 +201,475 @@ package org.drip.measure.discrete;
 		final int iCount,
 		final double[][] aadblCorrelation)
 	{
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L181">		double[][] aadblCholesky = org.drip.numerical.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
-<span class="fc" id="L182">			(aadblCorrelation);</span>
+<span class="fc" id="L206">		double[][] aadblCholesky = org.drip.numerical.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
+<span class="fc" id="L207">			(aadblCorrelation);</span>
 
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		if (null == aadblCholesky) return null;</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">		if (null == aadblCholesky) return null;</span>
 
-<span class="fc" id="L186">		int iDimension = aadblCholesky.length;</span>
-<span class="fc" id="L187">		double[][] aadblRandom = new double[iCount][];</span>
+<span class="fc" id="L211">		int iDimension = aadblCholesky.length;</span>
+<span class="fc" id="L212">		double[][] aadblRandom = new double[iCount][];</span>
 
-<span class="fc bfc" id="L189" title="All 2 branches covered.">		for (int k = 0; k &lt; iCount; ++k) {</span>
-<span class="fc" id="L190">			double[] adblUncorrelatedRandom = Gaussian (iDimension);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int k = 0; k &lt; iCount; ++k) {</span>
+<span class="fc" id="L215">			double[] adblUncorrelatedRandom = Gaussian (iDimension);</span>
 
-<span class="pc bpc" id="L192" title="2 of 4 branches missed.">			if (null == adblUncorrelatedRandom || iDimension != adblUncorrelatedRandom.length) return null;</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">			if (null == adblUncorrelatedRandom || iDimension != adblUncorrelatedRandom.length) return null;</span>
 
-<span class="fc" id="L194">			double[] adblCorrelatedRandom = new double[iDimension];</span>
+<span class="fc" id="L219">			double[] adblCorrelatedRandom = new double[iDimension];</span>
 
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="fc" id="L197">				adblCorrelatedRandom[i] = 0.;</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">			for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc" id="L222">				adblCorrelatedRandom[i] = 0.;</span>
 
-<span class="fc bfc" id="L199" title="All 2 branches covered.">				for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="fc" id="L200">					adblCorrelatedRandom[i] += aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">				for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L225">					adblCorrelatedRandom[i] += aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
 			}
 
-<span class="fc" id="L203">			aadblRandom[k] = adblCorrelatedRandom;</span>
+<span class="fc" id="L228">			aadblRandom[k] = adblCorrelatedRandom;</span>
 		}
 
-<span class="fc" id="L206">		return aadblRandom;</span>
+<span class="fc" id="L231">		return aadblRandom;</span>
+	}
+
+	/**
+	 * Generate an Array of Chi-Squared Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * 
+	 * @return Array of Chi-Squared Distributed Random Numbers
+	 */
+
+	public static final double[] ChiSquared (
+		final int count,
+		final int degreesOfFreedom)
+	{
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (0 &gt;= degreesOfFreedom)</span>
+		{
+<span class="nc" id="L249">			return null;</span>
+		}
+
+<span class="nc" id="L252">		double[] chiSquaredArray = new double[count];</span>
+
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L256">			double sumOfStandardNormalSquares = 0.;</span>
+
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			for (int drawIndex = 0; drawIndex &lt; degreesOfFreedom; ++drawIndex)</span>
+			{
+				try
+				{
+					double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
+<span class="nc" id="L263">						(java.lang.Math.random());</span>
+
+<span class="nc" id="L265">					sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
+						randomStandardNormal * randomStandardNormal;
+				}
+<span class="nc" id="L268">				catch (java.lang.Exception e)</span>
+				{
+<span class="nc" id="L270">					e.printStackTrace();</span>
+
+<span class="nc" id="L272">					return null;</span>
+<span class="nc" id="L273">				}</span>
+			}
+
+<span class="nc" id="L276">			chiSquaredArray[index] = sumOfStandardNormalSquares;</span>
+		}
+
+<span class="nc" id="L279">		return chiSquaredArray;</span>
+	}
+
+	/**
+	 * Generate an Array of Scaled Gamma Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * @param scale Scale Parameter
+	 * 
+	 * @return Array of Scaled Gamma Distributed Random Numbers
+	 */
+
+	public static final double[] ScaledGamma (
+		final int count,
+		final int degreesOfFreedom,
+		final double scale)
+	{
+<span class="nc bnc" id="L297" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (scale) || 0. &gt;= scale)</span>
+		{
+<span class="nc" id="L299">			return null;</span>
+		}
+
+<span class="nc" id="L302">		double[] chiSquaredArray =  ChiSquared (</span>
+			count,
+			degreesOfFreedom
+		);
+
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+		{
+<span class="nc" id="L309">			return null;</span>
+		}
+
+<span class="nc" id="L312">		double[] scaledGammaArray = new double[count];</span>
+
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L316">			scaledGammaArray[index] = scale * chiSquaredArray[index];</span>
+		}
+
+<span class="nc" id="L319">		return scaledGammaArray;</span>
+	}
+
+	/**
+	 * Generate an Array of Chi Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * 
+	 * @return Array of Chi Distributed Random Numbers
+	 */
+
+	public static final double[] Chi (
+		final int count,
+		final int degreesOfFreedom)
+	{
+<span class="nc" id="L335">		double[] chiSquaredArray =  ChiSquared (</span>
+			count,
+			degreesOfFreedom
+		);
+
+<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+		{
+<span class="nc" id="L342">			return null;</span>
+		}
+
+<span class="nc" id="L345">		double[] chiArray = new double[count];</span>
+
+<span class="nc bnc" id="L347" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L349">			chiArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
+		}
+
+<span class="nc" id="L352">		return chiArray;</span>
+	}
+
+	/**
+	 * Generate an Array of Unit Scale Rayleigh Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * 
+	 * @return Array of Unit Scale Rayleigh Distributed Random Numbers
+	 */
+
+	public static final double[] UnitScaleRayleigh (
+		final int count)
+	{
+<span class="nc" id="L366">		double[] chiSquaredArray =  ChiSquared (</span>
+			count,
+			2
+		);
+
+<span class="nc bnc" id="L371" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+		{
+<span class="nc" id="L373">			return null;</span>
+		}
+
+<span class="nc" id="L376">		double[] unitScaleRayleighArray = new double[count];</span>
+
+<span class="nc bnc" id="L378" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L380">			unitScaleRayleighArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
+		}
+
+<span class="nc" id="L383">		return unitScaleRayleighArray;</span>
+	}
+
+	/**
+	 * Generate an Array of Unit Scale Maxwell Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * 
+	 * @return Array of Unit Scale Maxwell Distributed Random Numbers
+	 */
+
+	public static final double[] UnitScaleMaxwell (
+		final int count)
+	{
+<span class="nc" id="L397">		double[] chiSquaredArray =  ChiSquared (</span>
+			count,
+			3
+		);
+
+<span class="nc bnc" id="L402" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+		{
+<span class="nc" id="L404">			return null;</span>
+		}
+
+<span class="nc" id="L407">		double[] unitScaleMaxwellArray = new double[count];</span>
+
+<span class="nc bnc" id="L409" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L411">			unitScaleMaxwellArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
+		}
+
+<span class="nc" id="L414">		return unitScaleMaxwellArray;</span>
+	}
+
+	/**
+	 * Generate an Array of Inverse Chi-Squared Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * @param degreesOfFreedom Degrees of Freedom
+	 * 
+	 * @return Array of Inverse Chi-Squared Distributed Random Numbers
+	 */
+
+	public static final double[] InverseChiSquared (
+		final int count,
+		final int degreesOfFreedom)
+	{
+<span class="nc" id="L430">		double[] chiSquaredArray =  ChiSquared (</span>
+			count,
+			degreesOfFreedom
+		);
+
+<span class="nc bnc" id="L435" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+		{
+<span class="nc" id="L437">			return null;</span>
+		}
+
+<span class="nc" id="L440">		double[] inverseChiSquaredArray = new double[count];</span>
+
+<span class="nc bnc" id="L442" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L444">			inverseChiSquaredArray[index] = 1. / chiSquaredArray[index];</span>
+		}
+
+<span class="nc" id="L447">		return inverseChiSquaredArray;</span>
+	}
+
+	/**
+	 * Generate an Array of Beta Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * @param degreesOfFreedom1 Degrees of Freedom #1
+	 * @param degreesOfFreedom2 Degrees of Freedom #2
+	 * 
+	 * @return Array of Beta Distributed Random Numbers
+	 */
+
+	public static final double[] Beta (
+		final int count,
+		final int degreesOfFreedom1,
+		final int degreesOfFreedom2)
+	{
+<span class="nc" id="L465">		double[] chiSquaredArray1 = ChiSquared (</span>
+			count,
+			degreesOfFreedom1
+		);
+
+<span class="nc" id="L470">		double[] chiSquaredArray2 = ChiSquared (</span>
+			count,
+			degreesOfFreedom2
+		);
+
+<span class="nc bnc" id="L475" title="All 4 branches missed.">		if (null == chiSquaredArray1 || null == chiSquaredArray2)</span>
+		{
+<span class="nc" id="L477">			return null;</span>
+		}
+
+<span class="nc" id="L480">		double[] betaArray = new double[count];</span>
+
+<span class="nc bnc" id="L482" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L484">			betaArray[index] = chiSquaredArray1[index] / (chiSquaredArray1[index] + chiSquaredArray2[index]);</span>
+		}
+
+<span class="nc" id="L487">		return betaArray;</span>
+	}
+
+	/**
+	 * Generate an Array of F Distributed Random Numbers
+	 * 
+	 * @param count Array Count
+	 * @param degreesOfFreedom1 Degrees of Freedom #1
+	 * @param degreesOfFreedom2 Degrees of Freedom #2
+	 * 
+	 * @return Array of F Distributed Random Numbers
+	 */
+
+	public static final double[] F (
+		final int count,
+		final int degreesOfFreedom1,
+		final int degreesOfFreedom2)
+	{
+<span class="nc" id="L505">		double[] chiSquaredArray1 = ChiSquared (</span>
+			count,
+			degreesOfFreedom1
+		);
+
+<span class="nc" id="L510">		double[] chiSquaredArray2 = ChiSquared (</span>
+			count,
+			degreesOfFreedom2
+		);
+
+<span class="nc bnc" id="L515" title="All 4 branches missed.">		if (null == chiSquaredArray1 || null == chiSquaredArray2)</span>
+		{
+<span class="nc" id="L517">			return null;</span>
+		}
+
+<span class="nc" id="L520">		double[] fArray = new double[count];</span>
+
+<span class="nc bnc" id="L522" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L524">			fArray[index] = (chiSquaredArray1[index] * degreesOfFreedom2) /</span>
+				(chiSquaredArray2[index] * degreesOfFreedom1);
+		}
+
+<span class="nc" id="L528">		return fArray;</span>
+	}
+
+	/**
+	 * Generate a Rank-reduced Chi-Squared Distributed Array
+	 * 
+	 * @param count Array Count
+	 * @param covarianceMatrix The Covariance Matrix
+	 * 
+	 * @return Rank-reduced Chi-Squared Distributed Array
+	 */
+
+	public static final double[] RankReducedChiSquare (
+		final int count,
+		final double[][] covarianceMatrix)
+	{
+<span class="nc" id="L544">		double[] rankReducedChiSquare = new double[count];</span>
+<span class="nc" id="L545">		org.drip.measure.gaussian.Covariance covariance = null;</span>
+
+		try
+		{
+<span class="nc" id="L549">			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
+		}
+<span class="nc" id="L551">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L553">			e.printStackTrace();</span>
+
+<span class="nc" id="L555">			return null;</span>
+<span class="nc" id="L556">		}</span>
+
+<span class="nc" id="L558">		double[][] gaussianJointArray = GaussianJoint (</span>
+			count,
+<span class="nc" id="L560">			covariance.correlationMatrix()</span>
+		);
+
+<span class="nc bnc" id="L563" title="All 2 branches missed.">		if (null == gaussianJointArray)</span>
+		{
+<span class="nc" id="L565">			return null;</span>
+		}
+
+<span class="nc" id="L568">		double[][] precisionMatrix = covariance.precisionMatrix();</span>
+
+<span class="nc bnc" id="L570" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+			try
+			{
+<span class="nc" id="L574">				rankReducedChiSquare[index] = org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+					gaussianJointArray[index],
+<span class="nc" id="L576">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
+						precisionMatrix,
+						gaussianJointArray[index]
+					)
+				);
+			}
+<span class="nc" id="L582">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L584">				e.printStackTrace();</span>
+
+<span class="nc" id="L586">				return null;</span>
+<span class="nc" id="L587">			}</span>
+		}
+
+<span class="nc" id="L590">		return rankReducedChiSquare;</span>
+	}
+
+
+	/**
+	 * Generate a Pillai (2016) Special Chi-Squared Distributed Array
+	 * 
+	 * @param count Array Count
+	 * @param covarianceMatrix The Covariance Matrix
+	 * @param weightArray Array of Weights
+	 * 
+	 * @return Pillai (2016) Special Chi-Squared Distributed Array
+	 */
+
+	public static final double[] PillaiSpecialChiSquare (
+		final int count,
+		final double[][] covarianceMatrix,
+		final double[] weightArray)
+	{
+<span class="nc bnc" id="L609" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.NormalizedPositive (weightArray))</span>
+		{
+<span class="nc" id="L611">			return null;</span>
+		}
+
+<span class="nc" id="L614">		int pillaiVectorSize = weightArray.length;</span>
+<span class="nc" id="L615">		double[] pillaiSpecialChiSquare = new double[count];</span>
+<span class="nc" id="L616">		org.drip.measure.gaussian.Covariance covariance = null;</span>
+
+		try
+		{
+<span class="nc" id="L620">			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
+		}
+<span class="nc" id="L622">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L624">			e.printStackTrace();</span>
+
+<span class="nc" id="L626">			return null;</span>
+<span class="nc" id="L627">		}</span>
+
+<span class="nc bnc" id="L629" title="All 2 branches missed.">		if (pillaiVectorSize != covarianceMatrix.length)</span>
+		{
+<span class="nc" id="L631">			return null;</span>
+		}
+
+<span class="nc" id="L634">		double[][] gaussianJointArray = GaussianJoint (</span>
+			count,
+<span class="nc" id="L636">			covariance.correlationMatrix()</span>
+		);
+
+<span class="nc bnc" id="L639" title="All 2 branches missed.">		if (null == gaussianJointArray)</span>
+		{
+<span class="nc" id="L641">			return null;</span>
+		}
+
+<span class="nc bnc" id="L644" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+		{
+<span class="nc" id="L646">			double[] pillaiVector = new double[pillaiVectorSize];</span>
+
+<span class="nc bnc" id="L648" title="All 2 branches missed.">			for (int pillaiVectorIndex = 0; pillaiVectorIndex &lt; pillaiVectorSize; ++pillaiVectorIndex)</span>
+			{
+<span class="nc" id="L650">				pillaiVector[pillaiVectorIndex] = weightArray[pillaiVectorIndex] /</span>
+					gaussianJointArray[index][pillaiVectorIndex];
+			}
+
+			try
+			{
+<span class="nc" id="L656">				pillaiSpecialChiSquare[index] = 1. / org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+					pillaiVector,
+<span class="nc" id="L658">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
+						covarianceMatrix,
+						pillaiVector
+					)
+				);
+			}
+<span class="nc" id="L664">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L666">				e.printStackTrace();</span>
+
+<span class="nc" id="L668">				return null;</span>
+<span class="nc" id="L669">			}</span>
+		}
+
+<span class="nc" id="L672">		return pillaiSpecialChiSquare;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

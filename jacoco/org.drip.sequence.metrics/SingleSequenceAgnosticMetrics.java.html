@@ -285,11 +285,14 @@ public class SingleSequenceAgnosticMetrics {
 	 * Retrieve the Population Mean
 	 * 
 	 * @return The Population Mean
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double populationMean()
+		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L292" title="All 2 branches covered.">		return null == _distPopulation ? java.lang.Double.NaN : _distPopulation.mean();</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		return null == _distPopulation ? java.lang.Double.NaN : _distPopulation.mean();</span>
 	}
 
 	/**
@@ -300,18 +303,21 @@ public class SingleSequenceAgnosticMetrics {
 
 	public double empiricalVariance()
 	{
-<span class="fc" id="L303">		return _dblEmpiricalVariance;</span>
+<span class="fc" id="L306">		return _dblEmpiricalVariance;</span>
 	}
 
 	/**
 	 * Retrieve the Population Variance
 	 * 
 	 * @return The Population Variance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double populationVariance()
+		throws java.lang.Exception
 	{
-<span class="fc bfc" id="L314" title="All 2 branches covered.">		return null == _distPopulation ? java.lang.Double.NaN : _distPopulation.variance();</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">		return null == _distPopulation ? java.lang.Double.NaN : _distPopulation.variance();</span>
 	}
 
 	/**
@@ -322,7 +328,7 @@ public class SingleSequenceAgnosticMetrics {
 
 	public boolean isPositive()
 	{
-<span class="fc" id="L325">		return _bIsPositive;</span>
+<span class="fc" id="L331">		return _bIsPositive;</span>
 	}
 
 	/**
@@ -333,7 +339,7 @@ public class SingleSequenceAgnosticMetrics {
 
 	public double[] sequence()
 	{
-<span class="fc" id="L336">		return _adblSequence;</span>
+<span class="fc" id="L342">		return _adblSequence;</span>
 	}
 
 	/**
@@ -353,27 +359,27 @@ public class SingleSequenceAgnosticMetrics {
 		final org.drip.function.definition.R1ToR1 auNonDecreasing)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L356" title="3 of 6 branches missed.">		if (!isPositive() || !org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.)</span>
-<span class="nc" id="L357">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L362" title="3 of 6 branches missed.">		if (!isPositive() || !org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.)</span>
+<span class="nc" id="L363">			throw new java.lang.Exception</span>
 				(&quot;SingleSequenceAgnosticMetrics::markovUpperProbabilityBound =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L360">		double dblPopulationMean = populationMean();</span>
+<span class="fc" id="L366">		double dblPopulationMean = populationMean();</span>
 
-<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		double dblUpperProbabilityBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ?</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		double dblUpperProbabilityBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationMean) ?</span>
 			dblPopulationMean : _dblEmpiricalExpectation) / dblLevel;
 
-<span class="fc bfc" id="L365" title="All 2 branches covered.">		if (null != auNonDecreasing) {</span>
-<span class="fc" id="L366">			SingleSequenceAgnosticMetrics smFunction = functionSequenceMetrics (auNonDecreasing);</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">		if (null != auNonDecreasing) {</span>
+<span class="fc" id="L372">			SingleSequenceAgnosticMetrics smFunction = functionSequenceMetrics (auNonDecreasing);</span>
 
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">			if (null == smFunction)</span>
-<span class="nc" id="L369">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">			if (null == smFunction)</span>
+<span class="nc" id="L375">				throw new java.lang.Exception</span>
 					(&quot;SingleSequenceAgnosticMetrics::markovUpperProbabilityBound =&gt; Cannot generate Function Sequence Metrics&quot;);
 
-<span class="fc" id="L372">			dblUpperProbabilityBound = smFunction.empiricalExpectation() / auNonDecreasing.evaluate</span>
-<span class="fc" id="L373">				(dblLevel);</span>
+<span class="fc" id="L378">			dblUpperProbabilityBound = smFunction.empiricalExpectation() / auNonDecreasing.evaluate</span>
+<span class="fc" id="L379">				(dblLevel);</span>
 		}
 
-<span class="fc bfc" id="L376" title="All 2 branches covered.">		return dblUpperProbabilityBound &lt; 1. ? dblUpperProbabilityBound : 1.;</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">		return dblUpperProbabilityBound &lt; 1. ? dblUpperProbabilityBound : 1.;</span>
 	}
 
 	/**
@@ -387,24 +393,24 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevBound (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L390" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
-
-<span class="fc" id="L392">		double dblPopulationVariance = populationVariance();</span>
-
-<span class="pc bpc" id="L394" title="1 of 2 branches missed.">		double dblMeanDepartureBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
-			dblPopulationVariance : _dblEmpiricalVariance) / (dblLevel * dblLevel);
-
-<span class="fc bfc" id="L397" title="All 2 branches covered.">		dblMeanDepartureBound = dblMeanDepartureBound &lt; 1. ? dblMeanDepartureBound : 1.;</span>
+<span class="pc bpc" id="L396" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 		try {
-<span class="fc" id="L400">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+<span class="fc" id="L399">			double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">			double dblMeanDepartureBound = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+				dblPopulationVariance : _dblEmpiricalVariance) / (dblLevel * dblLevel);
+
+<span class="fc bfc" id="L404" title="All 2 branches covered.">			dblMeanDepartureBound = dblMeanDepartureBound &lt; 1. ? dblMeanDepartureBound : 1.;</span>
+
+<span class="fc" id="L406">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN, java.lang.Double.NaN,
 					dblMeanDepartureBound, dblMeanDepartureBound);
-<span class="nc" id="L403">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L404">			e.printStackTrace();</span>
+<span class="nc" id="L409">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L410">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L407">		return null;</span>
+<span class="nc" id="L413">		return null;</span>
 	}
 
 	/**
@@ -420,22 +426,22 @@ public class SingleSequenceAgnosticMetrics {
 		final double dblLevel,
 		final int iMoment)
 	{
-<span class="pc bpc" id="L423" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
+<span class="pc bpc" id="L429" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 		try {
-<span class="fc" id="L426">			double dblMeanDepartureBound = empiricalCentralMoment (iMoment, true) / java.lang.Math.pow</span>
-<span class="fc" id="L427">				(dblLevel, iMoment);</span>
+<span class="fc" id="L432">			double dblMeanDepartureBound = empiricalCentralMoment (iMoment, true) / java.lang.Math.pow</span>
+<span class="fc" id="L433">				(dblLevel, iMoment);</span>
 
-<span class="fc bfc" id="L429" title="All 2 branches covered.">			dblMeanDepartureBound = dblMeanDepartureBound &lt; 1. ? dblMeanDepartureBound : 1.;</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">			dblMeanDepartureBound = dblMeanDepartureBound &lt; 1. ? dblMeanDepartureBound : 1.;</span>
 
-<span class="fc" id="L431">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+<span class="fc" id="L437">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN, java.lang.Double.NaN,
 					dblMeanDepartureBound, dblMeanDepartureBound);
-<span class="nc" id="L434">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L435">			e.printStackTrace();</span>
+<span class="nc" id="L440">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L441">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L438">		return null;</span>
+<span class="nc" id="L444">		return null;</span>
 	}
 
 	/**
@@ -449,22 +455,22 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevCantelliBound (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L452" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
-
-<span class="fc" id="L454">		double dblPopulationVariance = populationVariance();</span>
-
-<span class="pc bpc" id="L456" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
-			dblPopulationVariance : _dblEmpiricalVariance);
+<span class="pc bpc" id="L458" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 		try {
-<span class="fc" id="L460">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+<span class="fc" id="L461">			double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+				dblPopulationVariance : _dblEmpiricalVariance);
+
+<span class="fc" id="L466">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN, java.lang.Double.NaN,
 					java.lang.Double.NaN, dblVariance / (dblVariance + dblLevel * dblLevel));
-<span class="nc" id="L463">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L464">			e.printStackTrace();</span>
+<span class="nc" id="L469">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L470">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L467">		return null;</span>
+<span class="nc" id="L473">		return null;</span>
 	}
 
 	/**
@@ -484,34 +490,34 @@ public class SingleSequenceAgnosticMetrics {
 		final org.drip.function.definition.R1ToR1 au2,
 		final boolean bNonDecreasing2)
 	{
-<span class="nc bnc" id="L487" title="All 4 branches missed.">		if (null == au1 || null == au2) return null;</span>
+<span class="nc bnc" id="L493" title="All 4 branches missed.">		if (null == au1 || null == au2) return null;</span>
 
-<span class="nc" id="L489">		double dblBound = functionSequenceMetrics (au1).empiricalExpectation() * functionSequenceMetrics</span>
-<span class="nc" id="L490">			(au2).empiricalExpectation();</span>
+<span class="nc" id="L495">		double dblBound = functionSequenceMetrics (au1).empiricalExpectation() * functionSequenceMetrics</span>
+<span class="nc" id="L496">			(au2).empiricalExpectation();</span>
 
-<span class="nc bnc" id="L492" title="All 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
 
-<span class="nc bnc" id="L494" title="All 2 branches missed.">		if (bNonDecreasing1 == bNonDecreasing2) {</span>
+<span class="nc bnc" id="L500" title="All 2 branches missed.">		if (bNonDecreasing1 == bNonDecreasing2) {</span>
 			try {
-<span class="nc" id="L496">				return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+<span class="nc" id="L502">				return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 					(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_CUSTOM, 0.,
 						dblBound, java.lang.Double.NaN);
-<span class="nc" id="L499">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L500">				e.printStackTrace();</span>
+<span class="nc" id="L505">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L506">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L503">			return null;</span>
+<span class="nc" id="L509">			return null;</span>
 		}
 
 		try {
-<span class="nc" id="L507">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+<span class="nc" id="L513">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_CUSTOM, 0.,
 					java.lang.Double.NaN, dblBound);
-<span class="nc" id="L510">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L511">			e.printStackTrace();</span>
+<span class="nc" id="L516">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L517">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L514">		return null;</span>
+<span class="nc" id="L520">		return null;</span>
 	}
 
 	/**
@@ -525,25 +531,25 @@ public class SingleSequenceAgnosticMetrics {
 	public org.drip.sequence.metrics.PivotedDepartureBounds weakLawAverageBounds (
 		final double dblLevel)
 	{
-<span class="pc bpc" id="L528" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
-
-<span class="fc" id="L530">		double dblPopulationVariance = populationVariance();</span>
-
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
-			dblPopulationVariance : _dblEmpiricalVariance);
-
-<span class="fc" id="L535">		double dblBound = dblVariance / (_adblSequence.length * dblLevel * dblLevel);</span>
-<span class="fc bfc" id="L536" title="All 2 branches covered.">		dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+<span class="pc bpc" id="L534" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLevel) || dblLevel &lt;= 0.) return null;</span>
 
 		try {
-<span class="fc" id="L539">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
+<span class="fc" id="L537">			double dblPopulationVariance = populationVariance();</span>
+
+<span class="pc bpc" id="L539" title="1 of 2 branches missed.">			double dblVariance = (org.drip.numerical.common.NumberUtil.IsValid (dblPopulationVariance) ?</span>
+				dblPopulationVariance : _dblEmpiricalVariance);
+
+<span class="fc" id="L542">			double dblBound = dblVariance / (_adblSequence.length * dblLevel * dblLevel);</span>
+<span class="fc bfc" id="L543" title="All 2 branches covered.">			dblBound = dblBound &lt; 1. ? dblBound : 1.;</span>
+
+<span class="fc" id="L545">			return new org.drip.sequence.metrics.PivotedDepartureBounds</span>
 				(org.drip.sequence.metrics.PivotedDepartureBounds.PIVOT_ANCHOR_TYPE_MEAN,
 					java.lang.Double.NaN, dblBound, dblBound);
-<span class="nc" id="L542">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L543">			e.printStackTrace();</span>
+<span class="nc" id="L548">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L549">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L546">		return null;</span>
+<span class="nc" id="L552">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

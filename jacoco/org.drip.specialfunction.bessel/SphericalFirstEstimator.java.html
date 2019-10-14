@@ -107,9 +107,9 @@ public class SphericalFirstEstimator extends
 <span class="nc" id="L107">	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;</span>
 
 	/**
-	 * Retrieve the Zero Order Spherical Bessel First Kind Estimator
+	 * Retrieve the Order 0 Spherical Bessel First Kind Estimator
 	 * 
-	 * @return The Zero Order Spherical Bessel First Kind Estimator
+	 * @return The Order 0 Spherical Bessel First Kind Estimator
 	 */
 
 	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator OrderZero()
@@ -125,10 +125,221 @@ public class SphericalFirstEstimator extends
 <span class="nc bnc" id="L125" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 				{
 <span class="nc" id="L127">					throw new java.lang.Exception</span>
-						(&quot;SphericalFirstEstimator::ZeroOrder::smallJ =&gt; Invalid Inputs&quot;);
+						(&quot;SphericalFirstEstimator::OrderZero::smallJ =&gt; Invalid Inputs&quot;);
 				}
 
 <span class="nc bnc" id="L131" title="All 2 branches missed.">				return 0. == z ? 1. : java.lang.Math.sin (z) / z;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order +1 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order +1 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator OrderPlusOne()
+	{
+<span class="nc" id="L144">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L145">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">				if (1. != alpha ||</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L154">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderPlusOne::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L158">				return java.lang.Math.sin (z) / (z * z) - java.lang.Math.cos (z) / z;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order -1 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order -1 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator OrderMinusOne()
+	{
+<span class="nc" id="L171">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L172">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L178" title="All 2 branches missed.">				if (-1. != alpha ||</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L181">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderMinusOne::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L185">				return java.lang.Math.cos (z) / z;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order +2 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order +2 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator OrderPlusTwo()
+	{
+<span class="nc" id="L198">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L199">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L205" title="All 2 branches missed.">				if (2. != alpha ||</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L208">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderPlusTwo::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L212">				double oneOverZ = 1. / z;</span>
+<span class="nc" id="L213">				double oneOverZ2 = oneOverZ * oneOverZ;</span>
+
+<span class="nc" id="L215">				return (3. * oneOverZ2 - 1.) * java.lang.Math.sin (z) * oneOverZ -</span>
+<span class="nc" id="L216">					3. * java.lang.Math.cos (z) * oneOverZ2;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order -2 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order -2 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator OrderMinusTwo()
+	{
+<span class="nc" id="L229">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L230">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L236" title="All 2 branches missed.">				if (-2. != alpha ||</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L239">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderMinusTwo::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L243">				double oneOverZ = 1. / z;</span>
+
+<span class="nc" id="L245">				return -1. * java.lang.Math.cos (z) * oneOverZ * oneOverZ -</span>
+<span class="nc" id="L246">					java.lang.Math.sin (z) * oneOverZ;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order +3 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order +3 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator
+		OrderPlusThree()
+	{
+<span class="nc" id="L260">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L261">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L267" title="All 2 branches missed.">				if (3. != alpha ||</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L270">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderPlusThree::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L274">				double oneOverZ = 1. / z;</span>
+<span class="nc" id="L275">				double oneOverZ2 = oneOverZ * oneOverZ;</span>
+
+<span class="nc" id="L277">				return (15. * oneOverZ2 * oneOverZ - 6. * oneOverZ) * java.lang.Math.sin (z) * oneOverZ -</span>
+<span class="nc" id="L278">					(15. * oneOverZ2 - 1.) * java.lang.Math.cos (z) * oneOverZ;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order -3 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order -3 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator
+		OrderMinusThree()
+	{
+<span class="nc" id="L292">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L293">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L299" title="All 2 branches missed.">				if (-3. != alpha ||</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L302">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderMinusThree::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L306">				double oneOverZ = 1. / z;</span>
+<span class="nc" id="L307">				double oneOverZ2 = oneOverZ * oneOverZ;</span>
+
+<span class="nc" id="L309">				return (1. - 3. * oneOverZ2) * java.lang.Math.cos (z) * oneOverZ -</span>
+<span class="nc" id="L310">					3. * java.lang.Math.sin (z) * oneOverZ2;</span>
+			}
+		};
+	}
+
+	/**
+	 * Retrieve the Order -4 Spherical Bessel First Kind Estimator
+	 * 
+	 * @return The Order -4 Spherical Bessel First Kind Estimator
+	 */
+
+	public static final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator
+		OrderMinusFour()
+	{
+<span class="nc" id="L324">		return new org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator()</span>
+<span class="nc" id="L325">		{</span>
+			@Override public double smallJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L331" title="All 2 branches missed.">				if (-4. != alpha ||</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L334">					throw new java.lang.Exception</span>
+						(&quot;SphericalFirstEstimator::OrderOrderMinusFour::smallJ =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L338">				double oneOverZ = 1. / z;</span>
+<span class="nc" id="L339">				double oneOverZ2 = oneOverZ * oneOverZ;</span>
+
+<span class="nc" id="L341">				return (6. * oneOverZ - 15. * oneOverZ2 * oneOverZ) * java.lang.Math.cos (z) * oneOverZ -</span>
+<span class="nc" id="L342">					(15. * oneOverZ2 - 1.) * java.lang.Math.sin (z) * oneOverZ;</span>
 			}
 		};
 	}
@@ -144,19 +355,19 @@ public class SphericalFirstEstimator extends
 	public SphericalFirstEstimator (
 		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
 		throws java.lang.Exception
-<span class="nc" id="L147">	{</span>
-<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))</span>
+<span class="nc" id="L358">	{</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))</span>
 		{
-<span class="nc" id="L150">			throw new java.lang.Exception (&quot;SphericalFirstEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L361">			throw new java.lang.Exception (&quot;SphericalFirstEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L152">	}</span>
+<span class="nc" id="L363">	}</span>
 
 	@Override public double smallJ (
 		final double alpha,
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L159">		return java.lang.Math.sqrt (0.5 * java.lang.Math.PI / z) * _besselFirstKindEstimator.bigJ (</span>
+<span class="nc" id="L370">		return java.lang.Math.sqrt (0.5 * java.lang.Math.PI / z) * _besselFirstKindEstimator.bigJ (</span>
 			alpha + 0.5,
 			z
 		);
@@ -170,7 +381,7 @@ public class SphericalFirstEstimator extends
 
 	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
 	{
-<span class="nc" id="L173">		return _besselFirstKindEstimator;</span>
+<span class="nc" id="L384">		return _besselFirstKindEstimator;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

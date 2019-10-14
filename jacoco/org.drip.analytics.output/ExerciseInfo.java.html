@@ -6,6 +6,7 @@ package org.drip.analytics.output;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,33 +17,43 @@ package org.drip.analytics.output;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -79,19 +90,19 @@ package org.drip.analytics.output;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output/README.md&quot;&gt;Output&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/output/README.md&quot;&gt;Period Product Targeted Valuation Measures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ExerciseInfo {
-<span class="nc" id="L92">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L93">	private double _dblExerciseFactor = java.lang.Double.NaN;</span>
-<span class="nc" id="L94">	private int _iWOType = org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY;</span>
+<span class="nc" id="L103">	private int _iDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L104">	private double _dblExerciseFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L105">	private int _iWOType = org.drip.param.valuation.WorkoutInfo.WO_TYPE_MATURITY;</span>
 
 	/**
 	 * Constructs the ExerciseInfo from the work-out date, type, and the exercise factor
@@ -108,13 +119,13 @@ public class ExerciseInfo {
 		final double dblExerciseFactor,
 		final int iWOType)
 		throws java.lang.Exception
-<span class="nc" id="L111">	{</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))</span>
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;ExerciseInfo ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L122">	{</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExerciseFactor = dblExerciseFactor))</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;ExerciseInfo ctr: Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L115">		_iDate = iDate;</span>
-<span class="nc" id="L116">		_iWOType = iWOType;</span>
-<span class="nc" id="L117">	}</span>
+<span class="nc" id="L126">		_iDate = iDate;</span>
+<span class="nc" id="L127">		_iWOType = iWOType;</span>
+<span class="nc" id="L128">	}</span>
 
 	/**
 	 * Retrieve the Exercise Date
@@ -124,7 +135,7 @@ public class ExerciseInfo {
 
 	public int date()
 	{
-<span class="nc" id="L127">		return _iDate;</span>
+<span class="nc" id="L138">		return _iDate;</span>
 	}
 
 	/**
@@ -135,7 +146,7 @@ public class ExerciseInfo {
 
 	public double factor()
 	{
-<span class="nc" id="L138">		return _dblExerciseFactor;</span>
+<span class="nc" id="L149">		return _dblExerciseFactor;</span>
 	}
 
 	/**
@@ -146,7 +157,7 @@ public class ExerciseInfo {
 
 	public int workoutType()
 	{
-<span class="nc" id="L149">		return _iWOType;</span>
+<span class="nc" id="L160">		return _iWOType;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

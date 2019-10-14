@@ -105,6 +105,174 @@ package org.drip.specialfunction.definition;
 {
 
 	/**
+	 * Construct the Alpha Positive Integer or Zero Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Positive Integer or Zero Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator AlphaPositiveIntegerOrZeroAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		return null == gammaEstimator ? null : new BesselFirstKindEstimator()</span>
+<span class="nc" id="L119">		{</span>
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha) || 0. &gt; alpha ||</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L128">					throw new java.lang.Exception</span>
+						(&quot;BesselFirstKindEstimator::AlphaPositiveIntegerOrZeroAsymptote =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L132">				return java.lang.Math.pow (</span>
+					0.5 * z,
+					alpha
+<span class="nc" id="L135">				) / gammaEstimator.evaluate (alpha + 1.);</span>
+			}
+		};
+	}
+
+	/**
+	 * Construct the Alpha Negative Integer Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @param gammaEstimator Gamma Estimator
+	 * 
+	 * @return Alpha Negative Integer Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator AlphaNegativeIntegerAsymptote (
+		final org.drip.function.definition.R1ToR1 gammaEstimator)
+	{
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		return null == gammaEstimator ? null : new BesselFirstKindEstimator()</span>
+<span class="nc" id="L152">		{</span>
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L158" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsNegativeInteger (alpha) ||</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L161">					throw new java.lang.Exception</span>
+						(&quot;BesselFirstKindEstimator::AlphaNegativeIntegerAsymptote =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L165">				double negativeAlpha = -1. * alpha;</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">				return (0 == negativeAlpha % 2 ? 1. : -1.) * java.lang.Math.pow (</span>
+					0.5 * z,
+					negativeAlpha
+<span class="nc" id="L170">				) / gammaEstimator.evaluate (negativeAlpha);</span>
+			}
+		};
+	}
+
+	/**
+	 * Construct the High z Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @return High z Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator HighZAsymptote()
+	{
+<span class="nc" id="L183">		return new BesselFirstKindEstimator()</span>
+<span class="nc" id="L184">		{</span>
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L190" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L193">					throw new java.lang.Exception</span>
+						(&quot;BesselFirstKindEstimator::HighZAsymptote =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L197">				return java.lang.Math.sqrt (2. / java.lang.Math.PI / z) * java.lang.Math.cos (</span>
+					z - 0.5 * java.lang.Math.PI * alpha - 0.25 * java.lang.Math.PI
+				);
+			}
+		};
+	}
+
+	/**
+	 * Construct the Alpha=0 Negative z Asymptotic Version of BesselFirstKindEstimator
+	 * 
+	 * @return Alpha=0 Negative z Asymptotic Version of BesselFirstKindEstimator
+	 */
+
+	public static final BesselFirstKindEstimator AlphaZeroNegativeZAsymptote()
+	{
+<span class="nc" id="L212">		return new BesselFirstKindEstimator()</span>
+<span class="nc" id="L213">		{</span>
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L219" title="All 2 branches missed.">				if (0. != alpha ||</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. &lt; z)</span>
+				{
+<span class="nc" id="L222">					throw new java.lang.Exception</span>
+						(&quot;BesselFirstKindEstimator::AlphaZeroNegativeZAsymptote =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L226">				return java.lang.Math.sqrt (-2. / java.lang.Math.PI / z) * java.lang.Math.cos (</span>
+					z + 0.25 * java.lang.Math.PI
+				);
+			}
+		};
+	}
+
+	public static final BesselFirstKindEstimator AlphaZeroApproximate()
+	{
+<span class="nc" id="L235">		return new BesselFirstKindEstimator()</span>
+<span class="nc" id="L236">		{</span>
+			@Override public double bigJ (
+				final double alpha,
+				final double z)
+				throws java.lang.Exception
+			{
+<span class="nc bnc" id="L242" title="All 2 branches missed.">				if (0. != alpha ||</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+				{
+<span class="nc" id="L245">					throw new java.lang.Exception</span>
+						(&quot;BesselFirstKindEstimator::AlphaZeroApproximate =&gt; Invalid Inputs&quot;);
+				}
+
+<span class="nc" id="L249">				double oneOver_OnePlus__zOver7_Power20__ = 1. / (</span>
+<span class="nc" id="L250">					1 + java.lang.Math.pow (</span>
+						z / 7.,
+						20.
+					)
+				);
+
+<span class="nc" id="L256">				double zAbsolute = java.lang.Math.abs (z);</span>
+
+<span class="nc" id="L258">				double zOver2 = z / 2.;</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">				double zSign = 0 == z ? 1. : zAbsolute / z;</span>
+
+<span class="nc" id="L261">				return oneOver_OnePlus__zOver7_Power20__ * (</span>
+<span class="nc" id="L262">					(1. + java.lang.Math.cos (z)) / 6. + (</span>
+<span class="nc" id="L263">						java.lang.Math.cos (zOver2) + java.lang.Math.cos (java.lang.Math.sqrt (3.) * zOver2)</span>
+					) / 3.
+				) +
+<span class="nc" id="L266">				(1. - oneOver_OnePlus__zOver7_Power20__) * java.lang.Math.sqrt (</span>
+					2. / java.lang.Math.PI / zAbsolute
+<span class="nc" id="L268">				) * java.lang.Math.cos (</span>
+					z -  0.25 * java.lang.Math.PI * zSign
+				);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Bessel Function First Kind J given Alpha and z
 	 * 
 	 * @param alpha Alpha
@@ -125,7 +293,7 @@ package org.drip.specialfunction.definition;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L128">		return bigJ (</span>
+<span class="nc" id="L296">		return bigJ (</span>
 			alpha,
 			z
 		);

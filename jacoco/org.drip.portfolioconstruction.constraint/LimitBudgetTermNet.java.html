@@ -80,67 +80,73 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
+public class LimitBudgetTermNet
+	extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
 
 	/**
 	 * LimitBudgetTermNet Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblBudget Budget Value of the Constraint
-	 * @param adblPrice Array of Asset Prices
+	 * @param budget Budget Value of the Constraint
+	 * @param priceArray Array of Asset Prices
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitBudgetTermNet (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblBudget,
-		final double[] adblPrice)
+		final double budget,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L106">		super (</span>
-			strName,
+<span class="nc" id="L107">		super (</span>
+			name,
 			&quot;CT_BUDGET&quot;,
 			&quot;Constrains the Net Budget&quot;,
 			scope,
 			unit,
-			dblBudget,
-			adblPrice
+			budget,
+			priceArray
 		);
-<span class="nc" id="L115">	}</span>
+<span class="nc" id="L116">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L119">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L120">		{</span>
+<span class="nc" id="L120">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L121">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L123">				return price().length;</span>
+<span class="nc" id="L124">				return priceArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L130">				double[] adblPrice = price();</span>
+<span class="nc" id="L131">				double[] priceArray = priceArray();</span>
 
-<span class="nc" id="L132">				double dblConstraintValue = 0.;</span>
-<span class="nc" id="L133">				int iNumAsset = adblPrice.length;</span>
+<span class="nc" id="L133">				double limitExposureBudgetNet = 0.;</span>
+<span class="nc" id="L134">				int assetCount = priceArray.length;</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L136" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L137">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
+				{
+<span class="nc" id="L140">					throw new java.lang.Exception</span>
 						(&quot;LimitExposureBudgetNet::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc" id="L141">					dblConstraintValue += adblPrice[i] * adblFinalHoldings[i];</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc" id="L146">					limitExposureBudgetNet += priceArray[assetIndex] * finalHoldingsArray[assetIndex];</span>
+				}
 
-<span class="nc" id="L143">				return dblConstraintValue;</span>
+<span class="nc" id="L149">				return limitExposureBudgetNet;</span>
 			}
 		};
 	}

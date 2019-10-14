@@ -80,65 +80,69 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LocalUniverse {
-<span class="nc" id="L84">	private java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.core.Asset&gt; _mapAsset = new</span>
-		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.core.Asset&gt;();
+public class LocalUniverse
+{
+<span class="nc" id="L85">	private java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.core.Asset&gt; _assetMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.core.Asset&gt;();
 
 	/**
 	 * Empty LocalUniverse Constructor
 	 */
 
 	public LocalUniverse()
-<span class="nc" id="L92">	{</span>
-<span class="nc" id="L93">	}</span>
+<span class="nc" id="L93">	{</span>
+<span class="nc" id="L94">	}</span>
 
 	/**
 	 * Add an Asset to the Local Universe
 	 * 
-	 * @param a Asset to be added
+	 * @param asset Asset to be added
 	 * 
 	 * @return TRUE - The Asset has been added successfully
 	 */
 
 	public boolean add (
-		final org.drip.portfolioconstruction.core.Asset a)
+		final org.drip.portfolioconstruction.core.Asset asset)
 	{
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (null == a) return false;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == asset)</span>
+		{
+<span class="nc" id="L109">			return false;</span>
+		}
 
-<span class="nc" id="L108">		_mapAsset.put (</span>
-<span class="nc" id="L109">			a.id(),</span>
-			a
+<span class="nc" id="L112">		_assetMap.put (</span>
+<span class="nc" id="L113">			asset.id(),</span>
+			asset
 		);
 
-<span class="nc" id="L113">		return true;</span>
+<span class="nc" id="L117">		return true;</span>
 	}
 
 	/**
 	 * Indicate if the Asset is contained in the Local Universe
 	 * 
-	 * @param a The Asset Instance
+	 * @param asset The Asset Instance
 	 * 
 	 * @return TRUE - The Asset is contained in the Local Universe
 	 */
 
 	public boolean contains (
-		final org.drip.portfolioconstruction.core.Asset a)
+		final org.drip.portfolioconstruction.core.Asset asset)
 	{
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		return null != a &amp;&amp; _mapAsset.containsKey (a.id());</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">		return null != asset &amp;&amp; _assetMap.containsKey (asset.id());</span>
 	}
 
 	/**
 	 * Indicate if the Asset is contained in the Local Universe
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param id The Asset ID
 	 * 
 	 * @return TRUE - The Asset is contained in the Local Universe
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String id)
 	{
-<span class="nc bnc" id="L141" title="All 6 branches missed.">		return null != strAssetID &amp;&amp; !strAssetID.isEmpty() &amp;&amp; _mapAsset.containsKey (strAssetID);</span>
+<span class="nc bnc" id="L145" title="All 6 branches missed.">		return null != id &amp;&amp; !id.isEmpty() &amp;&amp; _assetMap.containsKey (id);</span>
 	}
 
 	/**
@@ -147,9 +151,9 @@ public class LocalUniverse {
 	 * @return The List of the Asset Identifiers
 	 */
 
-	public java.util.Set&lt;java.lang.String&gt; ids()
+	public java.util.Set&lt;java.lang.String&gt; idSet()
 	{
-<span class="nc" id="L152">		return _mapAsset.keySet();</span>
+<span class="nc" id="L156">		return _assetMap.keySet();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

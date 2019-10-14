@@ -81,72 +81,79 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitNamesTermIssuerShort extends org.drip.portfolioconstruction.constraint.LimitNamesTermIssuer
+public class LimitNamesTermIssuerShort
+	extends org.drip.portfolioconstruction.constraint.LimitNamesTermIssuer
 {
 
 	/**
 	 * LimitNamesTermIssuerShort Constructor
 	 * 
-	 * @param strName Name of the LimitNamesTermShort Constraint
+	 * @param name Name of the LimitNamesTermShort Constraint
 	 * @param scope Scope of the LimitNamesTermShort Constraint
 	 * @param unit Unit of the LimitNamesTermShort Constraint
-	 * @param dblMinimum Minimum of the Constraint
-	 * @param dblMaximum Maximum of the Constraint
-	 * @param adblIssuerSelection Array of the Issuer Selections
+	 * @param minimum Minimum of the Constraint
+	 * @param maximum Maximum of the Constraint
+	 * @param issuerSelectionArray Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitNamesTermIssuerShort (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L109">		super (</span>
-			strName,
+<span class="nc" id="L110">		super (</span>
+			name,
 			&quot;CT_LIMIT_SHORT_NAMES&quot;,
 			&quot;Limits the Total Number of Active Short Names in the Holdings&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
-<span class="nc" id="L119">	}</span>
+<span class="nc" id="L120">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L123">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L124">		{</span>
+<span class="nc" id="L124">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L125">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L127">				return issuerSelection().length;</span>
+<span class="nc" id="L128">				return issuerSelectionArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L134">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L135">				double[] issuerSelectionArray = issuerSelectionArray();</span>
 
-<span class="nc" id="L136">				int iNameCount = 0;</span>
-<span class="nc" id="L137">				int iNumAsset = adblIssuerSelection.length;</span>
+<span class="nc" id="L137">				int nameCount = 0;</span>
+<span class="nc" id="L138">				int assetCount = issuerSelectionArray.length;</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L140" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L141">					throw new java.lang.Exception</span>
-						(&quot;LimitNamesTermIssuerShort::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L144" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
 				{
-<span class="nc bnc" id="L146" title="All 4 branches missed.">					if (0. &gt; adblFinalHoldings[i] &amp;&amp; 0. != adblIssuerSelection[i]) ++iNameCount;</span>
+<span class="nc" id="L144">					throw new java.lang.Exception</span>
+						(&quot;LimitNamesTermIssuerShort::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 				}
 
-<span class="nc" id="L149">				return iNameCount;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc bnc" id="L150" title="All 4 branches missed.">					if (0. &gt; finalHoldingsArray[assetIndex] &amp;&amp; 0. != issuerSelectionArray[assetIndex])</span>
+					{
+<span class="nc" id="L152">						++nameCount;</span>
+					}
+				}
+
+<span class="nc" id="L156">				return nameCount;</span>
 			}
 		};
 	}

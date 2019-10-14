@@ -80,50 +80,51 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CustomNetTaxGainsTerm extends org.drip.portfolioconstruction.objective.TaxTerm
+public class CustomNetTaxGainsTerm
+	extends org.drip.portfolioconstruction.objective.TaxTerm
 {
 
 	/**
 	 * CustomNetTaxGainsTerm Constructor
 	 * 
-	 * @param strName Name of the Objective Function
-	 * @param adblInitialHoldings The Initial Holdings
+	 * @param name Name of the Objective Function
+	 * @param initialHoldingsArray The Initial Holdings
 	 * @param taxationScheme The Taxation Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CustomNetTaxGainsTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (</span>
-			strName,
+<span class="nc" id="L103">		super (</span>
+			name,
 			&quot;OT_CUSTOM_NET_TAX_GAINS&quot;,
 			&quot;Portfolio Custom Net Tax Gains Objective Term&quot;,
-			adblInitialHoldings,
+			initialHoldingsArray,
 			taxationScheme
 		);
-<span class="nc" id="L109">	}</span>
+<span class="nc" id="L110">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L113">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L114">		{</span>
+<span class="nc" id="L114">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L115">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L117">				return initialHoldings().length;</span>
+<span class="nc" id="L118">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L124">				return taxationScheme().customNetTaxGain (</span>
-<span class="nc" id="L125">					initialHoldings(),</span>
-					adblVariate
+<span class="nc" id="L125">				return taxationScheme().customNetTaxGain (</span>
+<span class="nc" id="L126">					initialHoldingsArray(),</span>
+					variateArray
 				);
 			}
 		};

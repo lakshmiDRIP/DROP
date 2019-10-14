@@ -102,15 +102,17 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L105">public class Table7Reconciler {</span>
+<span class="nc" id="L105">public class Table7Reconciler</span>
+{
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L111">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L112">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L113">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L114">		String[] assetIDArray = new String[]</span>
+		{
 			&quot;AUS&quot;,
 			&quot;CAD&quot;,
 			&quot;FRA&quot;,
@@ -119,8 +121,8 @@ import org.drip.service.env.EnvManager;
 			&quot;UK &quot;,
 			&quot;USA&quot;
 		};
-
-<span class="fc" id="L123">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L124">		double[] assetEquilibriumWeightArray = new double[]</span>
+		{
 			0.016,
 			0.022,
 			0.052,
@@ -129,8 +131,8 @@ import org.drip.service.env.EnvManager;
 			0.124,
 			0.615
 		};
-
-<span class="fc" id="L133">		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {</span>
+<span class="fc" id="L134">		double[][] assetExcessReturnsCorrelationMatrix = new double[][]</span>
+		{
 			{1.000, 0.488, 0.478, 0.515, 0.439, 0.512, 0.491},
 			{0.488, 1.000, 0.664, 0.655, 0.310, 0.608, 0.779},
 			{0.478, 0.664, 1.000, 0.861, 0.355, 0.783, 0.668},
@@ -139,8 +141,8 @@ import org.drip.service.env.EnvManager;
 			{0.512, 0.608, 0.783, 0.777, 0.405, 1.000, 0.652},
 			{0.491, 0.779, 0.668, 0.653, 0.306, 0.652, 1.000}
 		};
-
-<span class="fc" id="L143">		double[] adblAssetExcessReturnsVolatility = new double[] {</span>
+<span class="fc" id="L144">		double[] assetExcessReturnsVolatilityArray = new double[]</span>
+		{
 			0.160,
 			0.203,
 			0.248,
@@ -149,38 +151,21 @@ import org.drip.service.env.EnvManager;
 			0.200,
 			0.187
 		};
-
-<span class="fc" id="L153">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+<span class="fc" id="L154">		double[][] assetSpaceViewProjectionMatrix = new double[][]</span>
+		{
 			{0.000,  0.000, -0.295,  1.000,  0.000, -0.705,  0.000},
 			{0.000,  1.000,  0.000,  0.000,  0.000,  0.000, -1.000}
 		};
-
-<span class="fc" id="L158">		double dblTau = 0.05;</span>
-<span class="fc" id="L159">		double dblRiskAversion = 2.5;</span>
-<span class="fc" id="L160">		double dblRiskFreeRate = 0.0;</span>
-
-<span class="fc" id="L162">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+<span class="fc" id="L159">		double tau = 0.05;</span>
+<span class="fc" id="L160">		double dblRiskAversion = 2.5;</span>
+<span class="fc" id="L161">		double dblRiskFreeRate = 0.0;</span>
+<span class="fc" id="L162">		double[] projectionExpectedExcessReturnsArray = new double[]</span>
+		{
 			0.05,
 			0.04
 		};
-
-<span class="fc" id="L167">		double[][] aadblProjectionExcessReturnsCovariance = new double[][] {</span>
-			{0.043 * dblTau, 0.000 * dblTau},
-			{0.000 * dblTau, 0.017 * dblTau}
-		};
-
-<span class="fc" id="L172">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
-			new MultivariateMeta (
-				new String[] {
-					&quot;PROJECTION #1&quot;,
-					&quot;PROJECTION #2&quot;
-				}
-			),
-			adblProjectionExpectedExcessReturns,
-			aadblProjectionExcessReturnsCovariance
-		);
-
-<span class="fc" id="L183">		double[] adblAssetSpaceJointReturnsReconciler = new double[] {</span>
+<span class="fc" id="L167">		double[] assetSpaceJointReturnsReconcilerArray = new double[]</span>
+		{
 			0.043,
 			0.089,
 			0.093,
@@ -189,8 +174,8 @@ import org.drip.service.env.EnvManager;
 			0.069,
 			0.072
 		};
-
-<span class="fc" id="L193">		double[] adblPosteriorOptimalWeightsReconciler = new double[] {</span>
+<span class="fc" id="L177">		double[] posteriorOptimalWeightsReconcilerArray = new double[]</span>
+		{
 			 0.015,
 			 0.539,
 			-0.005,
@@ -199,8 +184,8 @@ import org.drip.service.env.EnvManager;
 			-0.011,
 			 0.068
 		};
-
-<span class="fc" id="L203">		double[] adblPosteriorOptimalDeviationReconciler = new double[] {</span>
+<span class="fc" id="L187">		double[] posteriorOptimalDeviationReconcilerArray = new double[]</span>
+		{
 			 0.000,
 			 0.518,
 			-0.054,
@@ -209,338 +194,467 @@ import org.drip.service.env.EnvManager;
 			-0.130,
 			-0.518
 		};
-
-<span class="fc" id="L213">		double[] adblPELoadingsReconciler = new double[] {</span>
+<span class="fc" id="L197">		double[] peLoadingsReconcilerArray = new double[]</span>
+		{
 			0.193,
 			0.544
 		};
 
-<span class="fc" id="L218">		double[][] aadblAssetExcessReturnsCovariance = new double[astrAssetID.length][astrAssetID.length];</span>
+<span class="fc" id="L203">		double[][] projectionExcessReturnsCovarianceMatrix = new double[][]</span>
+		{
+			{0.043 * tau, 0.000 * tau},
+			{0.000 * tau, 0.017 * tau}
+		};
 
-<span class="fc bfc" id="L220" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="fc bfc" id="L221" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
-<span class="fc" id="L222">				aadblAssetExcessReturnsCovariance[i][j] = aadblAssetExcessReturnsCorrelation[i][j] *</span>
-					adblAssetExcessReturnsVolatility[i] * adblAssetExcessReturnsVolatility[j];
+<span class="fc" id="L209">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+			new MultivariateMeta (
+				new String[]
+				{
+					&quot;PROJECTION #1&quot;,
+					&quot;PROJECTION #2&quot;
+				}
+			),
+			projectionExpectedExcessReturnsArray,
+			projectionExcessReturnsCovarianceMatrix
+		);
+
+<span class="fc" id="L221">		double[][] assetExcessReturnsCovarianceMatrix = new double[assetIDArray.length][assetIDArray.length];</span>
+
+<span class="fc" id="L223">		for (int assetIDI = 0;</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">			assetIDI &lt; assetIDArray.length;</span>
+<span class="fc" id="L225">			++assetIDI)</span>
+		{
+<span class="fc" id="L227">			for (int assetIDJ = 0;</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">				assetIDJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L229">				++assetIDJ)</span>
+			{
+<span class="fc" id="L231">				assetExcessReturnsCovarianceMatrix[assetIDI][assetIDJ] =</span>
+					assetExcessReturnsCorrelationMatrix[assetIDI][assetIDJ] *
+					assetExcessReturnsVolatilityArray[assetIDI] *
+					assetExcessReturnsVolatilityArray[assetIDJ];
+			}
 		}
 
-<span class="fc" id="L226">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L227">			ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L228">				Portfolio.Standard (</span>
-					astrAssetID,
-					adblAssetEquilibriumWeight
+<span class="fc" id="L238">		BlackLittermanCombinationEngine blackLittermanCombinationEngine =</span>
+			new BlackLittermanCombinationEngine (
+<span class="fc" id="L240">				ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L241">					Portfolio.Standard (</span>
+						assetIDArray,
+						assetEquilibriumWeightArray
+					),
+					assetExcessReturnsCovarianceMatrix,
+					dblRiskAversion
 				),
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
-			),
-			new PriorControlSpecification (
-				false,
-				dblRiskFreeRate,
-				dblTau
-			),
-			new ProjectionSpecification (
-				viewDistribution,
-				aadblAssetSpaceViewProjection
-			)
-		);
+				new PriorControlSpecification (
+					false,
+					dblRiskFreeRate,
+					tau
+				),
+				new ProjectionSpecification (
+					viewDistribution,
+					assetSpaceViewProjectionMatrix
+				)
+			);
 
-<span class="fc" id="L246">		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();</span>
+<span class="fc" id="L259">		JointPosteriorMetrics jointPosteriorMetrics =</span>
+<span class="fc" id="L260">			blackLittermanCombinationEngine.customConfidenceRun().jointPosteriorMetrics();</span>
 
-<span class="fc" id="L248">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();</span>
+<span class="fc" id="L262">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();</span>
 
-<span class="fc" id="L250">		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();</span>
+<span class="fc" id="L264">		R1MultivariateNormal posteriorDistribution =</span>
+<span class="fc" id="L265">			(R1MultivariateNormal) jointPosteriorMetrics.posterior();</span>
 
-<span class="fc" id="L252">		double[] adblAssetSpaceJointReturns = jointDistribution.mean();</span>
+<span class="fc" id="L267">		double[] assetSpaceJointReturnsArray = jointDistribution.mean();</span>
 
-<span class="fc" id="L254">		double[][] aadblAssetSpaceJointCovariance = jointDistribution.covariance().covarianceMatrix();</span>
+<span class="fc" id="L269">		double[][] assetSpaceJointCovarianceMatrix = jointDistribution.covariance().covarianceMatrix();</span>
 
-<span class="fc" id="L256">		double[][] aadblAssetSpacePosteriorCovariance = posteriorDistribution.covariance().covarianceMatrix();</span>
+<span class="fc" id="L271">		double[][] assetSpacePosteriorCovarianceMatrix =</span>
+<span class="fc" id="L272">			posteriorDistribution.covariance().covarianceMatrix();</span>
 
-<span class="fc" id="L258">		OptimizationOutput op = new QuadraticMeanVarianceOptimizer().allocate (</span>
+<span class="fc" id="L274">		AssetComponent[] assetComponentArray = new QuadraticMeanVarianceOptimizer().allocate (</span>
 			new PortfolioConstructionParameters (
-				astrAssetID,
-<span class="fc" id="L261">				CustomRiskUtilitySettings.RiskAversion (dblRiskAversion),</span>
-<span class="fc" id="L262">				PortfolioEqualityConstraintSettings.Unconstrained()</span>
+				assetIDArray,
+<span class="fc" id="L277">				CustomRiskUtilitySettings.RiskAversion (dblRiskAversion),</span>
+<span class="fc" id="L278">				EqualityConstraintSettings.Unconstrained()</span>
 			),
-<span class="fc" id="L264">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="fc" id="L265">				MultivariateMoments.Standard (</span>
-					astrAssetID,
-<span class="fc" id="L267">					posteriorDistribution.mean(),</span>
-					aadblAssetSpacePosteriorCovariance
+<span class="fc" id="L280">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="fc" id="L281">				MultivariateMoments.Standard (</span>
+					assetIDArray,
+<span class="fc" id="L283">					posteriorDistribution.mean(),</span>
+					assetSpacePosteriorCovarianceMatrix
 				)
 			)
-		);
+<span class="fc" id="L287">		).optimalPortfolio().assetComponentArray();</span>
 
-<span class="fc" id="L273">		AssetComponent[] aAC = op.optimalPortfolio().assets();</span>
+<span class="fc" id="L289">		ProjectionExposure projectionExposure =</span>
+<span class="fc" id="L290">			blackLittermanCombinationEngine.projectionExposureAttribution();</span>
 
-<span class="fc" id="L275">		ProjectionExposure pe = blce.projectionExposureAttribution();</span>
+<span class="fc" id="L292">		double[] interViewComponentArray = projectionExposure.interViewComponentArray();</span>
 
-<span class="fc" id="L277">		double[] adblInterViewComponent = pe.interViewComponent();</span>
+<span class="fc" id="L294">		double[] intraViewComponentArray = projectionExposure.intraViewComponentArray();</span>
 
-<span class="fc" id="L279">		double[] adblIntraViewComponent = pe.intraViewComponent();</span>
+<span class="fc" id="L296">		double[] priorViewComponentArray = projectionExposure.priorViewComponentArray();</span>
 
-<span class="fc" id="L281">		double[] adblPriorViewComponent = pe.priorViewComponent();</span>
+<span class="fc" id="L298">		double[] cumulativeViewComponentLoadingArray =</span>
+<span class="fc" id="L299">			projectionExposure.cumulativeViewComponentLoadingArray();</span>
 
-<span class="fc" id="L283">		double[] adblCumulativeComponent = pe.cumulativeViewComponent();</span>
+<span class="fc" id="L301">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L285">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
+<span class="fc" id="L303">		System.out.println (&quot;\t| TAU   =&gt; &quot; + FormatUtil.FormatDouble (tau, 1, 8, 1.) + &quot;   ||&quot;);</span>
 
-<span class="fc" id="L287">		System.out.println (&quot;\t| TAU   =&gt; &quot; + FormatUtil.FormatDouble (dblTau, 1, 8, 1.) + &quot;   ||&quot;);</span>
+<span class="fc" id="L305">		System.out.println (&quot;\t| DELTA =&gt; &quot; + FormatUtil.FormatDouble (dblRiskAversion, 1, 8, 1.) + &quot;   ||&quot;);</span>
 
-<span class="fc" id="L289">		System.out.println (&quot;\t| DELTA =&gt; &quot; + FormatUtil.FormatDouble (dblRiskAversion, 1, 8, 1.) + &quot;   ||&quot;);</span>
+<span class="fc" id="L307">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L291">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L309">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L293">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
+<span class="fc" id="L311">		System.out.println (&quot;\t|  ASSET EXCESS RETURNS  ||&quot;);</span>
 
-<span class="fc" id="L295">		System.out.println (&quot;\t|  ASSET EXCESS RETURNS  ||&quot;);</span>
+<span class="fc" id="L313">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L297">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L315">		System.out.println (&quot;\t|   ID  =&gt; EQ WT |  VOL  ||&quot;);</span>
 
-<span class="fc" id="L299">		System.out.println (&quot;\t|   ID  =&gt; EQ WT |  VOL  ||&quot;);</span>
+<span class="fc" id="L317">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L301">		System.out.println (&quot;\t|------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L303" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetSpaceJointReturnsReconciler.length; ++i) {</span>
-<span class="fc" id="L304">			System.out.println (</span>
-				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L306">				FormatUtil.FormatDouble (adblAssetEquilibriumWeight[i], 2, 1, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L307">				FormatUtil.FormatDouble (adblAssetExcessReturnsVolatility[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L319">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">			assetID &lt; assetSpaceJointReturnsReconcilerArray.length;</span>
+<span class="fc" id="L321">			++assetID)</span>
+		{
+<span class="fc" id="L323">			System.out.println (</span>
+				&quot;\t| [&quot; + assetIDArray[assetID] + &quot;] =&gt;&quot; +
+<span class="fc" id="L325">				FormatUtil.FormatDouble (assetEquilibriumWeightArray[assetID], 2, 1, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L326">				FormatUtil.FormatDouble (assetExcessReturnsVolatilityArray[assetID], 2, 1, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L311">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L330">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L313">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L332">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L315">		System.out.println (&quot;\t|                           PRIOR CROSS ASSET CORRELATION MATRIX                                 ||&quot;);</span>
+<span class="fc" id="L334">		System.out.println (&quot;\t|                           PRIOR CROSS ASSET CORRELATION MATRIX                                 ||&quot;);</span>
 
-<span class="fc" id="L317">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L336">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L319">		String strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L338">		String header = &quot;\t|     |&quot;;</span>
 
-<span class="fc bfc" id="L321" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L322">			strHeader += &quot;    &quot; + astrAssetID[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L324">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L326">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L328" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="fc" id="L329">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L331" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
-<span class="fc" id="L332">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L334">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L340">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">			assetID &lt; assetIDArray.length;</span>
+<span class="fc" id="L342">			++assetID)</span>
+		{
+<span class="fc" id="L344">			header += &quot;    &quot; + assetIDArray[assetID] + &quot;     |&quot;;</span>
 		}
 
-<span class="fc" id="L337">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L347">		System.out.println (header + &quot;|&quot;);</span>
 
-<span class="fc" id="L339">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L349">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L341">		System.out.println (&quot;\t|                           PRIOR CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
+<span class="fc" id="L351">		for (int assetIDI = 0;</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">			assetIDI &lt; assetIDArray.length;</span>
+<span class="fc" id="L353">			++assetIDI)</span>
+		{
+<span class="fc" id="L355">			String dump = &quot;\t| &quot; + assetIDArray[assetIDI] + &quot; &quot;;</span>
 
-<span class="fc" id="L343">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L357">			for (int assetIDJ = 0;</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">				assetIDJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L359">				++assetIDJ)</span>
+			{
+<span class="fc" id="L361">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					assetExcessReturnsCorrelationMatrix[assetIDI][assetIDJ], 1, 8, 1.
+				) + &quot; &quot;;
+			}
 
-<span class="fc" id="L345">		strHeader = &quot;\t|     |&quot;;</span>
-
-<span class="fc bfc" id="L347" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L348">			strHeader += &quot;    &quot; + astrAssetID[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L350">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L352">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="fc" id="L355">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L357" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
-<span class="fc" id="L358">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L360">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L366">			System.out.println (dump + &quot;||&quot;);</span>
 		}
-
-<span class="fc" id="L363">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L365">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L367">		System.out.println (&quot;\t|                          VIEW SCOPING ASSET PROJECTION LOADING                                 ||&quot;);</span>
 
 <span class="fc" id="L369">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L371">		strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L371">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L373" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L374">			strHeader += &quot;    &quot; + astrAssetID[i] + &quot;     |&quot;;</span>
+<span class="fc" id="L373">		System.out.println (&quot;\t|                           PRIOR CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
 
-<span class="fc" id="L376">		System.out.println (strHeader + &quot;|&quot;);</span>
+<span class="fc" id="L375">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L378">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L377">		header = &quot;\t|     |&quot;;</span>
 
-<span class="fc bfc" id="L380" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
-<span class="fc" id="L381">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L383" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
-<span class="fc" id="L384">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceViewProjection[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L386">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L379">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">			assetID &lt; assetIDArray.length;</span>
+<span class="fc" id="L381">			++assetID)</span>
+		{
+<span class="fc" id="L383">			header += &quot;    &quot; + assetIDArray[assetID] + &quot;     |&quot;;</span>
 		}
 
-<span class="fc" id="L389">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L386">		System.out.println (header + &quot;|&quot;);</span>
 
-<span class="fc" id="L391">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L388">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L393">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc bfc" id="L390" title="All 2 branches covered.">		for (int assetIDI = 0; assetIDI &lt; assetIDArray.length; ++assetIDI)</span>
+		{
+<span class="fc" id="L392">			String dump = &quot;\t| &quot; + assetIDArray[assetIDI] + &quot; &quot;;</span>
 
-<span class="fc bfc" id="L395" title="All 2 branches covered.">		for (int i = 0; i &lt; aadblAssetSpaceViewProjection.length; ++i) {</span>
-<span class="fc" id="L396">			String strDump = &quot;\t|  #&quot; + i + &quot; &quot;;</span>
+<span class="fc" id="L394">			for (int assetIDJ = 0;</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">				assetIDJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L396">				++assetIDJ)</span>
+			{
+<span class="fc" id="L398">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					assetExcessReturnsCovarianceMatrix[assetIDI][assetIDJ], 1, 8, 1.
+				) + &quot; &quot;;
+			}
 
-<span class="fc bfc" id="L398" title="All 2 branches covered.">			for (int j = 0; j &lt; aadblAssetSpaceViewProjection.length; ++j)</span>
-<span class="fc" id="L399">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblProjectionExcessReturnsCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L401">			System.out.println (strDump + &quot;|&quot; + FormatUtil.FormatDouble (adblProjectionExpectedExcessReturns[i], 1, 2, 100.) + &quot;%&quot;);</span>
+<span class="fc" id="L403">			System.out.println (dump + &quot;||&quot;);</span>
 		}
-
-<span class="fc" id="L404">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
 <span class="fc" id="L406">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
 <span class="fc" id="L408">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L410">		System.out.println (&quot;\t|                           JOINT CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
+<span class="fc" id="L410">		System.out.println (&quot;\t|                          VIEW SCOPING ASSET PROJECTION LOADING                                 ||&quot;);</span>
 
 <span class="fc" id="L412">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L414">		strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L414">		header = &quot;\t|     |&quot;;</span>
 
-<span class="fc bfc" id="L416" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L417">			strHeader += &quot;    &quot; + astrAssetID[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L419">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L421">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L423" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="fc" id="L424">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L426" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
-<span class="fc" id="L427">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpaceJointCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L429">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L416">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">			assetID &lt; assetIDArray.length;</span>
+<span class="fc" id="L418">			++assetID)</span>
+		{
+<span class="fc" id="L420">			header += &quot;    &quot; + assetIDArray[assetID] + &quot;     |&quot;;</span>
 		}
 
-<span class="fc" id="L432">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L423">		System.out.println (header + &quot;|&quot;);</span>
 
-<span class="fc" id="L434">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L425">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L436">		System.out.println (&quot;\t|                         POSTERIOR CROSS ASSET COVARIANCE MATRIX                                ||&quot;);</span>
+<span class="fc" id="L427">		for (int viewIndex = 0;</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">			viewIndex &lt; assetSpaceViewProjectionMatrix.length;</span>
+<span class="fc" id="L429">			++viewIndex)</span>
+		{
+<span class="fc" id="L431">			String dump = &quot;\t|  #&quot; + viewIndex + &quot; &quot;;</span>
 
-<span class="fc" id="L438">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L433">			for (int assetID = 0;</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">				assetID &lt; assetIDArray.length;</span>
+<span class="fc" id="L435">				++assetID)</span>
+			{
+<span class="fc" id="L437">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					assetSpaceViewProjectionMatrix[viewIndex][assetID], 1, 8, 1.
+				) + &quot; &quot;;
+			}
 
-<span class="fc" id="L440">		strHeader = &quot;\t|     |&quot;;</span>
-
-<span class="fc bfc" id="L442" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i)</span>
-<span class="fc" id="L443">			strHeader += &quot;    &quot; + astrAssetID[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L445">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L447">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L449" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetID.length; ++i) {</span>
-<span class="fc" id="L450">			String strDump = &quot;\t| &quot; + astrAssetID[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L452" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetID.length; ++j)</span>
-<span class="fc" id="L453">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblAssetSpacePosteriorCovariance[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L455">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L442">			System.out.println (dump + &quot;||&quot;);</span>
 		}
 
-<span class="fc" id="L458">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L445">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L460">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L447">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L462">		System.out.println (&quot;\t| JOINT/POSTERIOR RETURN ||&quot;);</span>
+<span class="fc" id="L449">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L464">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L451">		for (int viewIndexI = 0;</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">			viewIndexI &lt; assetSpaceViewProjectionMatrix.length;</span>
+<span class="fc" id="L453">			++viewIndexI)</span>
+		{
+<span class="fc" id="L455">			String dump = &quot;\t|  #&quot; + viewIndexI + &quot; &quot;;</span>
 
-<span class="fc" id="L466">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
+<span class="fc bfc" id="L457" title="All 2 branches covered.">			for (int viewIndexJ = 0; viewIndexJ &lt; assetSpaceViewProjectionMatrix.length; ++viewIndexJ)</span>
+			{
+<span class="fc" id="L459">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					projectionExcessReturnsCovarianceMatrix[viewIndexI][viewIndexJ], 1, 8, 1.
+				) + &quot; &quot;;
+			}
 
-<span class="fc" id="L468">		System.out.println (&quot;\t|------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L470" title="All 2 branches covered.">		for (int i = 0; i &lt; adblAssetSpaceJointReturnsReconciler.length; ++i) {</span>
-<span class="fc" id="L471">			System.out.println (</span>
-				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L473">				FormatUtil.FormatDouble (adblAssetSpaceJointReturns[i], 2, 1, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L474">				FormatUtil.FormatDouble (adblAssetSpaceJointReturnsReconciler[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L464">			System.out.println (</span>
+<span class="fc" id="L465">				dump + &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					projectionExpectedExcessReturnsArray[viewIndexI], 1, 2, 100.
+				) + &quot;%&quot;
 			);
 		}
 
-<span class="fc" id="L478">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L471">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L480">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
+<span class="fc" id="L473">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L482">		System.out.println (&quot;\t| OPTIMAL POSTERIOR WTS. ||&quot;);</span>
+<span class="fc" id="L475">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L484">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L477">		System.out.println (&quot;\t|                           JOINT CROSS ASSET COVARIANCE MATRIX                                  ||&quot;);</span>
 
-<span class="fc" id="L486">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
+<span class="fc" id="L479">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L488">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L481">		header = &quot;\t|     |&quot;;</span>
 
-<span class="fc bfc" id="L490" title="All 2 branches covered.">		for (int i = 0; i &lt; aAC.length; ++i) {</span>
-<span class="fc" id="L491">			System.out.println (</span>
-				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L493">				FormatUtil.FormatDouble (aAC[i].amount(), 2, 1, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L494">				FormatUtil.FormatDouble (adblPosteriorOptimalWeightsReconciler[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L483">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L484" title="All 2 branches covered.">			assetID &lt; assetIDArray.length;</span>
+<span class="fc" id="L485">			++assetID)</span>
+		{
+<span class="fc" id="L487">			header += &quot;    &quot; + assetIDArray[assetID] + &quot;     |&quot;;</span>
+		}
+
+<span class="fc" id="L490">		System.out.println (header + &quot;|&quot;);</span>
+
+<span class="fc" id="L492">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L494">		for (int assetIDI = 0;</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">			assetIDI &lt; assetIDArray.length;</span>
+<span class="fc" id="L496">			++assetIDI)</span>
+		{
+<span class="fc" id="L498">			String dump = &quot;\t| &quot; + assetIDArray[assetIDI] + &quot; &quot;;</span>
+
+<span class="fc" id="L500">			for (int assetIDJ = 0;</span>
+<span class="fc bfc" id="L501" title="All 2 branches covered.">				assetIDJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L502">				++assetIDJ)</span>
+			{
+<span class="fc" id="L504">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					assetSpaceJointCovarianceMatrix[assetIDI][assetIDJ], 1, 8, 1.
+				) + &quot; &quot;;
+			}
+
+<span class="fc" id="L509">			System.out.println (dump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L512">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L514">		System.out.println (&quot;\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L516">		System.out.println (&quot;\t|                         POSTERIOR CROSS ASSET COVARIANCE MATRIX                                ||&quot;);</span>
+
+<span class="fc" id="L518">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L520">		header = &quot;\t|     |&quot;;</span>
+
+<span class="fc" id="L522">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">			assetID &lt; assetIDArray.length;</span>
+<span class="fc" id="L524">			++assetID)</span>
+		{
+<span class="fc" id="L526">			header += &quot;    &quot; + assetIDArray[assetID] + &quot;     |&quot;;</span>
+		}
+
+<span class="fc" id="L529">		System.out.println (header + &quot;|&quot;);</span>
+
+<span class="fc" id="L531">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L533">		for (int assetIDI = 0;</span>
+<span class="fc bfc" id="L534" title="All 2 branches covered.">			assetIDI &lt; assetIDArray.length;</span>
+<span class="fc" id="L535">			++assetIDI)</span>
+		{
+<span class="fc" id="L537">			String dump = &quot;\t| &quot; + assetIDArray[assetIDI] + &quot; &quot;;</span>
+
+<span class="fc" id="L539">			for (int assetIDJ = 0;</span>
+<span class="fc bfc" id="L540" title="All 2 branches covered.">				assetIDJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L541">				++assetIDJ)</span>
+			{
+<span class="fc" id="L543">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					assetSpacePosteriorCovarianceMatrix[assetIDI][assetIDJ], 1, 8, 1.
+				) + &quot; &quot;;
+			}
+
+<span class="fc" id="L548">			System.out.println (dump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L551">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n&quot;);</span>
+
+<span class="fc" id="L553">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="fc" id="L555">		System.out.println (&quot;\t| JOINT/POSTERIOR RETURN ||&quot;);</span>
+
+<span class="fc" id="L557">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="fc" id="L559">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
+
+<span class="fc" id="L561">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+
+<span class="fc" id="L563">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L564" title="All 2 branches covered.">			assetID &lt; assetSpaceJointReturnsReconcilerArray.length;</span>
+<span class="fc" id="L565">			++assetID)</span>
+		{
+<span class="fc" id="L567">			System.out.println (</span>
+				&quot;\t| [&quot; + assetIDArray[assetID] + &quot;] =&gt;&quot; +
+<span class="fc" id="L569">				FormatUtil.FormatDouble (assetSpaceJointReturnsArray[assetID], 2, 1, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L570">				FormatUtil.FormatDouble (assetSpaceJointReturnsReconcilerArray[assetID], 2, 1, 100.) + &quot;% ||&quot;</span>
 			);
 		}
 
-<span class="fc" id="L498">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L574">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L500">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
+<span class="fc" id="L576">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L502">		System.out.println (&quot;\t|   POSTERIOR DEVIATION  ||&quot;);</span>
+<span class="fc" id="L578">		System.out.println (&quot;\t| OPTIMAL POSTERIOR WTS. ||&quot;);</span>
 
-<span class="fc" id="L504">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L580">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L506">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
+<span class="fc" id="L582">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
 
-<span class="fc" id="L508">		System.out.println (&quot;\t|------------------------||&quot;);</span>
+<span class="fc" id="L584">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L510" title="All 2 branches covered.">		for (int i = 0; i &lt; aAC.length; ++i) {</span>
-<span class="fc" id="L511">			System.out.println (</span>
-				&quot;\t| [&quot; + astrAssetID[i] + &quot;] =&gt;&quot; +
-<span class="fc" id="L513">				FormatUtil.FormatDouble (aAC[i].amount() - (adblAssetEquilibriumWeight[i]) / (1. + dblTau), 2, 1, 100.) + &quot;% |&quot; +</span>
-<span class="fc" id="L514">				FormatUtil.FormatDouble (adblPosteriorOptimalDeviationReconciler[i], 2, 1, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L586">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L587" title="All 2 branches covered.">			assetID &lt; assetComponentArray.length;</span>
+<span class="fc" id="L588">			++assetID)</span>
+		{
+<span class="fc" id="L590">			System.out.println (</span>
+				&quot;\t| [&quot; + assetIDArray[assetID] + &quot;] =&gt;&quot; +
+<span class="fc" id="L592">				FormatUtil.FormatDouble (assetComponentArray[assetID].amount(), 2, 1, 100.) + &quot;% |&quot; +</span>
+<span class="fc" id="L593">				FormatUtil.FormatDouble (posteriorOptimalWeightsReconcilerArray[assetID], 2, 1, 100.) +</span>
+					&quot;% ||&quot;
 			);
 		}
 
-<span class="fc" id="L518">		System.out.println (&quot;\t|------------------------||\n&quot;);</span>
+<span class="fc" id="L598">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L520">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L600">		System.out.println (&quot;\n\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L522">		System.out.println (&quot;\t|              POSTERIOR DEVIATION WEIGHTS ATTRIBUTION            ||&quot;);</span>
+<span class="fc" id="L602">		System.out.println (&quot;\t|   POSTERIOR DEVIATION  ||&quot;);</span>
 
-<span class="fc" id="L524">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L604">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc" id="L526">		System.out.println (&quot;\t| VIEW NUM =&gt;  INTRA |  INTER |  PRIOR |  CUMUL |  RECON |  BAYES ||&quot;);</span>
+<span class="fc" id="L606">		System.out.println (&quot;\t|   ID  =&gt; RIOC  | HL99  ||&quot;);</span>
 
-<span class="fc" id="L528">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L608">		System.out.println (&quot;\t|------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L530" title="All 2 branches covered.">		for (int i = 0; i &lt; adblInterViewComponent.length; ++i)</span>
-<span class="fc" id="L531">			System.out.println (</span>
-				&quot;\t| VIEW  #&quot; + (i + 1) + &quot; =&gt; &quot; +
-<span class="fc" id="L533">				FormatUtil.FormatDouble (adblInterViewComponent[i], 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L534">				FormatUtil.FormatDouble (adblIntraViewComponent[i], 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L535">				FormatUtil.FormatDouble (adblPriorViewComponent[i], 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L536">				FormatUtil.FormatDouble (adblCumulativeComponent[i], 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L537">				FormatUtil.FormatDouble (adblPELoadingsReconciler[i], 1, 3, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L538">				FormatUtil.FormatDouble (adblCumulativeComponent[i] / (1. + dblTau), 1, 3, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L610">		for (int assetID = 0;</span>
+<span class="fc bfc" id="L611" title="All 2 branches covered.">			assetID &lt; assetComponentArray.length;</span>
+<span class="fc" id="L612">			++assetID)</span>
+		{
+<span class="fc" id="L614">			System.out.println (</span>
+				&quot;\t| [&quot; + assetIDArray[assetID] + &quot;] =&gt;&quot; +
+<span class="fc" id="L616">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L617">					assetComponentArray[assetID].amount() - (assetEquilibriumWeightArray[assetID]) /</span>
+						(1. + tau),
+					2, 1, 100.
+				) + &quot;% |&quot; +
+<span class="fc" id="L621">				FormatUtil.FormatDouble (posteriorOptimalDeviationReconcilerArray[assetID], 2, 1, 100.) + </span>
+					&quot;% ||&quot;
 			);
+		}
 
-<span class="fc" id="L541">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L626">		System.out.println (&quot;\t|------------------------||\n&quot;);</span>
 
-<span class="fc" id="L543">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L544">	}</span>
+<span class="fc" id="L628">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L630">		System.out.println (&quot;\t|              POSTERIOR DEVIATION WEIGHTS ATTRIBUTION            ||&quot;);</span>
+
+<span class="fc" id="L632">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L634">		System.out.println (&quot;\t| VIEW NUM =&gt;  INTRA |  INTER |  PRIOR |  CUMUL |  RECON |  BAYES ||&quot;);</span>
+
+<span class="fc" id="L636">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L638">		for (int viewIndex = 0;</span>
+<span class="fc bfc" id="L639" title="All 2 branches covered.">			viewIndex &lt; interViewComponentArray.length;</span>
+<span class="fc" id="L640">			++viewIndex)</span>
+		{
+<span class="fc" id="L642">			System.out.println (</span>
+				&quot;\t| VIEW  #&quot; + (viewIndex + 1) + &quot; =&gt; &quot; +
+<span class="fc" id="L644">				FormatUtil.FormatDouble (interViewComponentArray[viewIndex], 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L645">				FormatUtil.FormatDouble (intraViewComponentArray[viewIndex], 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L646">				FormatUtil.FormatDouble (priorViewComponentArray[viewIndex], 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L647">				FormatUtil.FormatDouble (cumulativeViewComponentLoadingArray[viewIndex], 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L648">				FormatUtil.FormatDouble (peLoadingsReconcilerArray[viewIndex], 1, 3, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L649">				FormatUtil.FormatDouble (</span>
+					cumulativeViewComponentLoadingArray[viewIndex] / (1. + tau), 1, 3, 1.
+				) + &quot; ||&quot;
+			);
+		}
+
+<span class="fc" id="L655">		System.out.println (&quot;\t|-----------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L657">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L658">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

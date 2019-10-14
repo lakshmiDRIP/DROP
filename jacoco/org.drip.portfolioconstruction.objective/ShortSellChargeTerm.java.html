@@ -81,70 +81,79 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShortSellChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class ShortSellChargeTerm
+	extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
 	 * ShortSellChargeTerm Conastructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTC Array of Asset Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Initial Holdings
+	 * @param transactionChargeArray Array of Asset Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ShortSellChargeTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTC)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L103">		super (</span>
-			strName,
+<span class="nc" id="L104">		super (</span>
+			name,
 			&quot;OT_SHORT_SELL_CHARGE&quot;,
 			&quot;Short Sell Transaction Charge Objective Function&quot;,
-			adblInitialHoldings,
-			aTC
+			initialHoldingsArray,
+			transactionChargeArray
 		);
-<span class="nc" id="L110">	}</span>
+<span class="nc" id="L111">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L114">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L115">		{</span>
+<span class="nc" id="L115">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L116">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L118">				return initialHoldings().length;</span>
+<span class="nc" id="L119">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L125" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L126">					throw new java.lang.Exception (&quot;ShortSellChargeTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
-
-<span class="nc" id="L128">				org.drip.portfolioconstruction.cost.TransactionCharge[] aTCF = transactionCharge();</span>
-
-<span class="nc" id="L130">				double[] adblInitialHoldings = initialHoldings();</span>
-
-<span class="nc" id="L132">				int iNumAsset = aTCF.length;</span>
-<span class="nc" id="L133">				double dblShortSellChargeTerm = 0.;</span>
-
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L136">					throw new java.lang.Exception</span>
-						(&quot;ShortSellChargeTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">					if (adblVariate[i] &lt; adblInitialHoldings[i])</span>
-<span class="nc" id="L141">						dblShortSellChargeTerm += aTCF[i].estimate (</span>
-							adblInitialHoldings[i],
-							adblVariate[i]
-						);
+<span class="nc bnc" id="L126" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L128">					throw new java.lang.Exception (&quot;ShortSellChargeTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
 				}
 
-<span class="nc" id="L147">				return dblShortSellChargeTerm;</span>
+<span class="nc" id="L131">				org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray =</span>
+<span class="nc" id="L132">					transactionChargeArray();</span>
+
+<span class="nc" id="L134">				double[] initialHoldingsArray = initialHoldingsArray();</span>
+
+<span class="nc" id="L136">				int assetCount = transactionChargeArray.length;</span>
+<span class="nc" id="L137">				double shortSellChargeTerm = 0.;</span>
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (variateArray.length != assetCount)</span>
+				{
+<span class="nc" id="L141">					throw new java.lang.Exception</span>
+						(&quot;ShortSellChargeTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc bnc" id="L147" title="All 2 branches missed.">					if (variateArray[assetIndex] &lt; initialHoldingsArray[assetIndex])</span>
+					{
+<span class="nc" id="L149">						shortSellChargeTerm += transactionChargeArray[assetIndex].estimate (</span>
+							initialHoldingsArray[assetIndex],
+							variateArray[assetIndex]
+						);
+					}
+				}
+
+<span class="nc" id="L156">				return shortSellChargeTerm;</span>
 			}
 		};
 	}

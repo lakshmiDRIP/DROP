@@ -79,35 +79,42 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Holdings extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L83">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+public class Holdings extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L84">	private java.lang.String _currency = &quot;&quot;;</span>
 
-<span class="nc" id="L85">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _mapQuantity = new</span>
-		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
+<span class="nc" id="L86">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _quantityMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
 	/**
 	 * Holdings Constructor
 	 * 
-	 * @param strName The Asset Name
-	 * @param strID The Asset ID
-	 * @param strDescription The Asset Description
-	 * @param strCurrency The Account Currency
+	 * @param name The Asset Name
+	 * @param id The Asset ID
+	 * @param description The Asset Description
+	 * @param currency The Account Currency
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Holdings (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCurrency)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String currency)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L106">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L107">		super (</span>
+			name,
+			id,
+			description
+		);
 
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (null == (_strCurrency = strCurrency))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;Holdings Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L110">	}</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == (_currency = currency))</span>
+		{
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;Holdings Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L117">	}</span>
 
 	/**
 	 * Retrieve the Set of Asset IDs
@@ -115,9 +122,9 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 * @return The Set of Asset IDs
 	 */
 
-	public java.util.Set&lt;java.lang.String&gt; assets()
+	public java.util.Set&lt;java.lang.String&gt; assetIDSet()
 	{
-<span class="nc" id="L120">		return _mapQuantity.keySet();</span>
+<span class="nc" id="L127">		return _quantityMap.keySet();</span>
 	}
 
 	/**
@@ -128,49 +135,54 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; quantityMap()
 	{
-<span class="nc" id="L131">		return _mapQuantity;</span>
+<span class="nc" id="L138">		return _quantityMap;</span>
 	}
 
 	/**
 	 * Add an Asset/Amount Pair
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param dblQuantity The Amount in the Portfolio
+	 * @param assetID The Asset ID
+	 * @param quantity The Amount in the Portfolio
 	 * 
 	 * @return TRUE - The Asset/Amount has been successfully added
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final double dblQuantity)
+		final java.lang.String assetID,
+		final double quantity)
 	{
-<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L148" title="All 2 branches missed.">			(dblQuantity))</span>
-<span class="nc" id="L149">			return false;</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (null == assetID || assetID.isEmpty() ||</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (quantity))</span>
+		{
+<span class="nc" id="L157">			return false;</span>
+		}
 
-<span class="nc" id="L151">		_mapQuantity.put (strAssetID, dblQuantity);</span>
+<span class="nc" id="L160">		_quantityMap.put (</span>
+			assetID,
+<span class="nc" id="L162">			quantity</span>
+		);
 
-<span class="nc" id="L153">		return true;</span>
+<span class="nc" id="L165">		return true;</span>
 	}
 
 	/**
 	 * Indicates if an Asset exists in the Holdings
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset is Part of the Holdings (may have Zero Value though)
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-<span class="nc bnc" id="L167" title="All 4 branches missed.">		return null != strAssetID &amp;&amp; !_mapQuantity.containsKey (strAssetID);</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">		return null != assetID &amp;&amp; !_quantityMap.containsKey (assetID);</span>
 	}
 
 	/**
 	 * Retrieves the Holdings Quantity for the Asset (if it exists)
 	 * 
-	 * @param strID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Holdings Quantity for the Asset (if it exists)
 	 * 
@@ -178,12 +190,15 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	 */
 
 	public double quantity (
-		final java.lang.String strID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (!contains (strID)) throw new java.lang.Exception (&quot;Holdings::quantity =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (!contains (assetID))</span>
+		{
+<span class="nc" id="L198">			throw new java.lang.Exception (&quot;Holdings::quantity =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc" id="L186">		return _mapQuantity.get (strID);</span>
+<span class="nc" id="L201">		return _quantityMap.get (assetID);</span>
 	}
 
 	/**
@@ -194,7 +209,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L197">		return _strCurrency;</span>
+<span class="nc" id="L212">		return _currency;</span>
 	}
 
 	/**
@@ -205,12 +220,15 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public double cash()
 	{
-		try {
-<span class="nc" id="L209">			return quantity (&quot;CASH::&quot; + _strCurrency);</span>
-<span class="nc" id="L210">		} catch (java.lang.Exception e) {</span>
+		try
+		{
+<span class="nc" id="L225">			return quantity (&quot;CASH::&quot; + _currency);</span>
+		}
+<span class="nc" id="L227">		catch (java.lang.Exception e)</span>
+		{
 		}
 
-<span class="nc" id="L213">		return 0.;</span>
+<span class="nc" id="L231">		return 0.;</span>
 	}
 
 	/**
@@ -221,17 +239,23 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 
 	public double[] toArray()
 	{
-<span class="nc" id="L224">		int iSize = _mapQuantity.size();</span>
+<span class="nc" id="L242">		int size = _quantityMap.size();</span>
 
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (0 == iSize) return null;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (0 == size)</span>
+		{
+<span class="nc" id="L246">			return null;</span>
+		}
 
-<span class="nc" id="L228">		int i = 0;</span>
-<span class="nc" id="L229">		double[] adblQuantity = new double[iSize];</span>
+<span class="nc" id="L249">		int assetIndex = 0;</span>
+<span class="nc" id="L250">		double[] quantityArray = new double[size];</span>
 
-<span class="nc bnc" id="L231" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meQuantity : _mapQuantity.entrySet())</span>
-<span class="nc" id="L232">			adblQuantity[i++] = meQuantity.getValue();</span>
+		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; quantityMapEntry :
+<span class="nc bnc" id="L253" title="All 2 branches missed.">			_quantityMap.entrySet())</span>
+		{
+<span class="nc" id="L255">			quantityArray[assetIndex++] = quantityMapEntry.getValue();</span>
+<span class="nc" id="L256">		}</span>
 
-<span class="nc" id="L234">		return adblQuantity;</span>
+<span class="nc" id="L258">		return quantityArray;</span>
 	}
 
 	/**
@@ -245,33 +269,51 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block {
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdingsOther)
 	{
-<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (null == holdingsOther) return null;</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		if (null == holdingsOther)</span>
+		{
+<span class="nc" id="L274">			return null;</span>
+		}
 
-<span class="nc" id="L250">		java.util.Set&lt;java.lang.String&gt; setAsset = holdingsOther.assets();</span>
+<span class="nc" id="L277">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdingsOther.assetIDSet();</span>
 
-<span class="nc" id="L252">		java.util.List&lt;java.lang.Double&gt; lsValue = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L279">		java.util.List&lt;java.lang.Double&gt; quantityList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset) {</span>
-			try {
-<span class="nc bnc" id="L256" title="All 2 branches missed.">				lsValue.add (contains (strAssetID) ? quantity (strAssetID) : 0.);</span>
-<span class="nc" id="L257">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L258">				e.printStackTrace();</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		for (java.lang.String assetID : assetIDSet)</span>
+		{
+			try
+			{
+<span class="nc" id="L285">				quantityList.add (</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">					contains (</span>
+						assetID
+<span class="nc" id="L288">					) ? quantity (</span>
+						assetID
+					) : 0.
+				);
+			}
+<span class="nc" id="L293">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L295">				e.printStackTrace();</span>
 
-<span class="nc" id="L260">				return null;</span>
-<span class="nc" id="L261">			}</span>
-<span class="nc" id="L262">		}</span>
+<span class="nc" id="L297">				return null;</span>
+<span class="nc" id="L298">			}</span>
+<span class="nc" id="L299">		}</span>
 
-<span class="nc" id="L264">		int iNumAsset = setAsset.size();</span>
+<span class="nc" id="L301">		int assetCount = assetIDSet.size();</span>
 
-<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (lsValue.size() != iNumAsset) return null;</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (quantityList.size() != assetCount)</span>
+		{
+<span class="nc" id="L305">			return null;</span>
+		}
 
-<span class="nc" id="L268">		int iAssetCount = 0;</span>
-<span class="nc" id="L269">		double[] adblAssetAttributeValue = new double[iNumAsset];</span>
+<span class="nc" id="L308">		int assetIndex = 0;</span>
+<span class="nc" id="L309">		double[] assetQuantityArray = new double[assetCount];</span>
 
-<span class="nc bnc" id="L271" title="All 2 branches missed.">		for (double dblAssetValue : lsValue)</span>
-<span class="nc" id="L272">			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		for (double quantity : quantityList)</span>
+		{
+<span class="nc" id="L313">			assetQuantityArray[assetIndex++] = quantity;</span>
+<span class="nc" id="L314">		}</span>
 
-<span class="nc" id="L274">		return adblAssetAttributeValue;</span>
+<span class="nc" id="L316">		return assetQuantityArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

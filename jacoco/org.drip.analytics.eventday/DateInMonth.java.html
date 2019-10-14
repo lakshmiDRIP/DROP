@@ -6,39 +6,50 @@ package org.drip.analytics.eventday;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -74,10 +85,10 @@ package org.drip.analytics.eventday;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/README.md&quot;&gt;Event Day&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/eventday/README.md&quot;&gt;Fixed, Variable, and Custom Holiday Creation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -103,12 +114,12 @@ public class DateInMonth {
 
 	public static final int INSTANCE_GENERATOR_RULE_SPECIFIC_DAY_OF_MONTH = 3;
 
-<span class="fc" id="L106">	private int _iLag = -1;</span>
-<span class="fc" id="L107">	private int _iDayOfWeek = -1;</span>
-<span class="fc" id="L108">	private int _iWeekInMonth = -1;</span>
-<span class="fc" id="L109">	private boolean _bFromBack = false;</span>
-<span class="fc" id="L110">	private int _iSpecificDayInMonth = -1;</span>
-<span class="fc" id="L111">	private int _iInstanceGeneratorRule = -1;</span>
+<span class="fc" id="L117">	private int _iLag = -1;</span>
+<span class="fc" id="L118">	private int _iDayOfWeek = -1;</span>
+<span class="fc" id="L119">	private int _iWeekInMonth = -1;</span>
+<span class="fc" id="L120">	private boolean _bFromBack = false;</span>
+<span class="fc" id="L121">	private int _iSpecificDayInMonth = -1;</span>
+<span class="fc" id="L122">	private int _iInstanceGeneratorRule = -1;</span>
 
 	/**
 	 * DateInMonth Constructor
@@ -131,17 +142,17 @@ public class DateInMonth {
 		final int iWeekInMonth,
 		final int iSpecificDayInMonth)
 		throws java.lang.Exception
-<span class="fc" id="L134">	{</span>
-<span class="fc" id="L135">		_bFromBack = bFromBack;</span>
+<span class="fc" id="L145">	{</span>
+<span class="fc" id="L146">		_bFromBack = bFromBack;</span>
 
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		if (INSTANCE_GENERATOR_RULE_EDGE_LAG == (_iInstanceGeneratorRule = iInstanceGeneratorRule)) {</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			if (0 &gt; (_iLag = iLag)) throw new java.lang.Exception (&quot;DateInMonth ctr: Invalid Inputs&quot;);</span>
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		} else if (INSTANCE_GENERATOR_RULE_WEEK_DAY == _iInstanceGeneratorRule) {</span>
-<span class="fc" id="L140">			_iDayOfWeek = iDayOfWeek;</span>
-<span class="fc" id="L141">			_iWeekInMonth = iWeekInMonth;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (INSTANCE_GENERATOR_RULE_EDGE_LAG == (_iInstanceGeneratorRule = iInstanceGeneratorRule)) {</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			if (0 &gt; (_iLag = iLag)) throw new java.lang.Exception (&quot;DateInMonth ctr: Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		} else if (INSTANCE_GENERATOR_RULE_WEEK_DAY == _iInstanceGeneratorRule) {</span>
+<span class="fc" id="L151">			_iDayOfWeek = iDayOfWeek;</span>
+<span class="fc" id="L152">			_iWeekInMonth = iWeekInMonth;</span>
 		} else
-<span class="fc" id="L143">			_iSpecificDayInMonth = iSpecificDayInMonth;</span>
-<span class="fc" id="L144">	}</span>
+<span class="fc" id="L154">			_iSpecificDayInMonth = iSpecificDayInMonth;</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Retrieve the Instance Generation Rule
@@ -151,7 +162,7 @@ public class DateInMonth {
 
 	public int instanceGenerator()
 	{
-<span class="nc" id="L154">		return _iInstanceGeneratorRule;</span>
+<span class="nc" id="L165">		return _iInstanceGeneratorRule;</span>
 	}
 
 	/**
@@ -162,7 +173,7 @@ public class DateInMonth {
 
 	public boolean fromBack()
 	{
-<span class="nc" id="L165">		return _bFromBack;</span>
+<span class="nc" id="L176">		return _bFromBack;</span>
 	}
 
 	/**
@@ -173,7 +184,7 @@ public class DateInMonth {
 
 	public int lag()
 	{
-<span class="nc" id="L176">		return _iLag;</span>
+<span class="nc" id="L187">		return _iLag;</span>
 	}
 
 	/**
@@ -184,7 +195,7 @@ public class DateInMonth {
 
 	public int weekInMonth()
 	{
-<span class="nc" id="L187">		return _iWeekInMonth;</span>
+<span class="nc" id="L198">		return _iWeekInMonth;</span>
 	}
 
 	/**
@@ -195,7 +206,7 @@ public class DateInMonth {
 
 	public int dayOfWeek()
 	{
-<span class="nc" id="L198">		return _iDayOfWeek;</span>
+<span class="nc" id="L209">		return _iDayOfWeek;</span>
 	}
 
 	/**
@@ -206,7 +217,7 @@ public class DateInMonth {
 
 	public int specificDayInMonth()
 	{
-<span class="nc" id="L209">		return _iSpecificDayInMonth;</span>
+<span class="nc" id="L220">		return _iSpecificDayInMonth;</span>
 	}
 
 	/**
@@ -225,67 +236,67 @@ public class DateInMonth {
 		final java.lang.String strCalendar)
 	{
 		try {
-<span class="fc bfc" id="L228" title="All 2 branches covered.">			if (INSTANCE_GENERATOR_RULE_EDGE_LAG == _iInstanceGeneratorRule) {</span>
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">				if (_bFromBack) {</span>
-<span class="fc" id="L230">					org.drip.analytics.date.JulianDate dtBase =</span>
-<span class="fc" id="L231">						org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
-<span class="fc" id="L232">							org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">			if (INSTANCE_GENERATOR_RULE_EDGE_LAG == _iInstanceGeneratorRule) {</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">				if (_bFromBack) {</span>
+<span class="fc" id="L241">					org.drip.analytics.date.JulianDate dtBase =</span>
+<span class="fc" id="L242">						org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
+<span class="fc" id="L243">							org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
 
-<span class="pc bpc" id="L234" title="1 of 2 branches missed.">					return null == dtBase ? null : dtBase.subtractBusDays (_iLag, strCalendar);</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">					return null == dtBase ? null : dtBase.subtractBusDays (_iLag, strCalendar);</span>
 				}
 
-<span class="nc" id="L237">				org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
-<span class="nc" id="L238">					(iYear, iMonth, 1);</span>
+<span class="nc" id="L248">				org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
+<span class="nc" id="L249">					(iYear, iMonth, 1);</span>
 
-<span class="nc bnc" id="L240" title="All 2 branches missed.">				return null == dtBase ? null : dtBase.addBusDays (_iLag, strCalendar);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">				return null == dtBase ? null : dtBase.addBusDays (_iLag, strCalendar);</span>
 			}
 
-<span class="fc bfc" id="L243" title="All 2 branches covered.">			if (INSTANCE_GENERATOR_RULE_WEEK_DAY == _iInstanceGeneratorRule) {</span>
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">				if (_bFromBack) {</span>
-<span class="nc" id="L245">					org.drip.analytics.date.JulianDate dtEOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
-<span class="nc" id="L246">						(iYear, iMonth, org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">			if (INSTANCE_GENERATOR_RULE_WEEK_DAY == _iInstanceGeneratorRule) {</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">				if (_bFromBack) {</span>
+<span class="nc" id="L256">					org.drip.analytics.date.JulianDate dtEOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
+<span class="nc" id="L257">						(iYear, iMonth, org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear));</span>
 
-<span class="nc bnc" id="L248" title="All 2 branches missed.">					if (null == dtEOM) return null;</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">					if (null == dtEOM) return null;</span>
 
-<span class="nc" id="L250">					while (_iDayOfWeek != org.drip.analytics.date.DateUtil.Day</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">						(org.drip.analytics.date.DateUtil.JavaDateFromJulianDate (dtEOM)))</span>
-<span class="nc" id="L252">						dtEOM = dtEOM.subtractDays (1);</span>
+<span class="nc" id="L261">					while (_iDayOfWeek != org.drip.analytics.date.DateUtil.Day</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">						(org.drip.analytics.date.DateUtil.JavaDateFromJulianDate (dtEOM)))</span>
+<span class="nc" id="L263">						dtEOM = dtEOM.subtractDays (1);</span>
 
-<span class="nc" id="L254">					org.drip.analytics.date.JulianDate dtUnadjusted = dtEOM.subtractDays (_iWeekInMonth * 7);</span>
+<span class="nc" id="L265">					org.drip.analytics.date.JulianDate dtUnadjusted = dtEOM.subtractDays (_iWeekInMonth * 7);</span>
 
-<span class="nc bnc" id="L256" title="All 2 branches missed.">					return null == dtUnadjusted ? null : dtUnadjusted.subtractBusDays (0, strCalendar);</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">					return null == dtUnadjusted ? null : dtUnadjusted.subtractBusDays (0, strCalendar);</span>
 				}
 
-<span class="fc" id="L259">				org.drip.analytics.date.JulianDate dtSOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
-<span class="fc" id="L260">					(iYear, iMonth, 1);</span>
+<span class="fc" id="L270">				org.drip.analytics.date.JulianDate dtSOM = org.drip.analytics.date.DateUtil.CreateFromYMD</span>
+<span class="fc" id="L271">					(iYear, iMonth, 1);</span>
 
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">				if (null == dtSOM) return null;</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">				if (null == dtSOM) return null;</span>
 
-<span class="fc" id="L264">				while (_iDayOfWeek != org.drip.analytics.date.DateUtil.Day</span>
-<span class="fc bfc" id="L265" title="All 2 branches covered.">					(org.drip.analytics.date.DateUtil.JavaDateFromJulianDate (dtSOM)))</span>
-<span class="fc" id="L266">					dtSOM = dtSOM.addDays (1);</span>
+<span class="fc" id="L275">				while (_iDayOfWeek != org.drip.analytics.date.DateUtil.Day</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">					(org.drip.analytics.date.DateUtil.JavaDateFromJulianDate (dtSOM)))</span>
+<span class="fc" id="L277">					dtSOM = dtSOM.addDays (1);</span>
 
-<span class="fc" id="L268">				org.drip.analytics.date.JulianDate dtUnadjusted = dtSOM.addDays (_iWeekInMonth * 7);</span>
+<span class="fc" id="L279">				org.drip.analytics.date.JulianDate dtUnadjusted = dtSOM.addDays (_iWeekInMonth * 7);</span>
 
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">				return null == dtUnadjusted ? null : dtUnadjusted.addBusDays (0, strCalendar);</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">				return null == dtUnadjusted ? null : dtUnadjusted.addBusDays (0, strCalendar);</span>
 			}
-<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L273">			e.printStackTrace();</span>
+<span class="nc" id="L283">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L284">			e.printStackTrace();</span>
 
-<span class="nc" id="L275">			return null;</span>
-<span class="fc" id="L276">		}</span>
+<span class="nc" id="L286">			return null;</span>
+<span class="fc" id="L287">		}</span>
 
-<span class="fc" id="L278">		org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD (iYear,</span>
+<span class="fc" id="L289">		org.drip.analytics.date.JulianDate dtBase = org.drip.analytics.date.DateUtil.CreateFromYMD (iYear,</span>
 			iMonth, _iSpecificDayInMonth);
 
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (null == dtBase) return null;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (null == dtBase) return null;</span>
 
-<span class="fc bfc" id="L283" title="All 2 branches covered.">		return _bFromBack ? dtBase.subtractBusDays (0, strCalendar) : dtBase.addBusDays (0, strCalendar);</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">		return _bFromBack ? dtBase.subtractBusDays (0, strCalendar) : dtBase.addBusDays (0, strCalendar);</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L288">		return &quot;[DateInMonth =&gt; Instance Generator Rule: &quot; + _iInstanceGeneratorRule + &quot; | From Back Flag: &quot;</span>
+<span class="fc" id="L299">		return &quot;[DateInMonth =&gt; Instance Generator Rule: &quot; + _iInstanceGeneratorRule + &quot; | From Back Flag: &quot;</span>
 			+ _bFromBack + &quot; | Day Of Week: &quot; + _iDayOfWeek + &quot; | Week In Month: &quot; + _iWeekInMonth +
 				&quot; | Specific Day In Month: &quot; + _iSpecificDayInMonth + &quot; | Lag: &quot; + _iLag + &quot;]&quot;;
 	}

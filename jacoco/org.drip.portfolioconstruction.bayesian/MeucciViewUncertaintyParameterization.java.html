@@ -88,48 +88,70 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class MeucciViewUncertaintyParameterization {</span>
+<span class="nc" id="L91">public class MeucciViewUncertaintyParameterization</span>
+{
 
 	/**
 	 * Generate the Projection Co-variance from the Scoping Co-variance and the Meucci Alpha Parameter
 	 * 
-	 * @param aadblScopingCovariance The Scoping Co-variance
-	 * @param dblAlpha Meucci Alpha Parameter
+	 * @param scopingCovarianceMatrix The Scoping Co-variance
+	 * @param alphaArray Meucci Alpha Parameter
 	 * 
 	 * @return The Projection Co-variance Instance
 	 */
 
 	public static final org.drip.measure.gaussian.Covariance ProjectionCovariance (
-		final double[][] aadblScopingCovariance,
-		final double dblAlpha)
+		final double[][] scopingCovarianceMatrix,
+		final double alphaArray)
 	{
-<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (null == aadblScopingCovariance || !org.drip.numerical.common.NumberUtil.IsValid (dblAlpha))</span>
-<span class="nc" id="L107">			return null;</span>
+<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == scopingCovarianceMatrix || !org.drip.numerical.common.NumberUtil.IsValid (alphaArray))</span>
+		{
+<span class="nc" id="L109">			return null;</span>
+		}
 
-<span class="nc" id="L109">		int iNumScopingEntity = aadblScopingCovariance.length;</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		double[][] aadblProjectionCovariance = 0 == iNumScopingEntity ? null : new</span>
-			double[iNumScopingEntity][iNumScopingEntity];
+<span class="nc" id="L112">		int scopingEntityCount = scopingCovarianceMatrix.length;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		double[][] projectionCovarianceMatrix = 0 == scopingEntityCount ?</span>
+			null : new double[scopingEntityCount][scopingEntityCount];
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (0 == iNumScopingEntity) return null;</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (0 == scopingEntityCount)</span>
+		{
+<span class="nc" id="L118">			return null;</span>
+		}
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumScopingEntity; ++i) {</span>
-<span class="nc bnc" id="L116" title="All 4 branches missed.">			if (null == aadblScopingCovariance[i] || iNumScopingEntity != aadblScopingCovariance[i].length)</span>
-<span class="nc" id="L117">				return null;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int scopingEntityIndexI = 0; scopingEntityIndexI &lt; scopingEntityCount; ++scopingEntityIndexI)</span>
+		{
+<span class="nc bnc" id="L123" title="All 4 branches missed.">			if (null == scopingCovarianceMatrix[scopingEntityIndexI] ||</span>
+				scopingEntityCount != scopingCovarianceMatrix[scopingEntityIndexI].length)
+			{
+<span class="nc" id="L126">				return null;</span>
+			}
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumScopingEntity; ++j) {</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblScopingCovariance[i][j])) return null;</span>
+<span class="nc" id="L129">			for (int scopingEntityIndexJ = 0;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">				scopingEntityIndexJ &lt; scopingEntityCount;</span>
+<span class="nc" id="L131">				++scopingEntityIndexJ)</span>
+			{
+<span class="nc bnc" id="L133" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+					scopingCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ]
+				))
+				{
+<span class="nc" id="L137">					return null;</span>
+				}
 
-<span class="nc" id="L122">				aadblProjectionCovariance[i][j] = dblAlpha * aadblScopingCovariance[i][j];</span>
+<span class="nc" id="L140">				projectionCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ] = alphaArray *</span>
+					scopingCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ];
 			}
 		}
 
-		try {
-<span class="nc" id="L127">			return new org.drip.measure.gaussian.Covariance (aadblProjectionCovariance);</span>
-<span class="nc" id="L128">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L129">			e.printStackTrace();</span>
+		try
+		{
+<span class="nc" id="L147">			return new org.drip.measure.gaussian.Covariance (projectionCovarianceMatrix);</span>
+		}
+<span class="nc" id="L149">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L151">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L132">		return null;</span>
+<span class="nc" id="L154">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

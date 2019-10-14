@@ -164,14 +164,23 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 <span class="nc bnc" id="L164" title="All 6 branches missed.">		return org.drip.numerical.common.NumberUtil.IsValid (x) &amp;&amp; x &gt;= _leftSupport || x &lt;= _rightSupport;			</span>
 	}
 
+	@Override public double[] support()
+	{
+<span class="nc" id="L169">		return new double[]</span>
+		{
+			_leftSupport,
+			_rightSupport
+		};
+	}
+
 	@Override public double cumulative (
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!supported (x))</span>
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;R1UnivariateUniform::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (!supported (x))</span>
+<span class="nc" id="L181">			throw new java.lang.Exception (&quot;R1UnivariateUniform::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L174">		return  (x - _leftSupport) / (_rightSupport - _leftSupport);</span>
+<span class="nc" id="L183">		return  (x - _leftSupport) / (_rightSupport - _leftSupport);</span>
 	}
 
 	@Override public double incremental (
@@ -179,47 +188,47 @@ public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariat
 		final double xRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L182">		return cumulative (xLeft) - cumulative (xRight);</span>
+<span class="nc" id="L191">		return cumulative (xLeft) - cumulative (xRight);</span>
 	}
 
 	@Override public double invCumulative (
 		final double y)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L189" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. &lt; y || 0. &gt; y)</span>
-<span class="nc" id="L190">			throw new java.lang.Exception (&quot;R1UnivariateUniform::invCumulative =&gt; Cannot calculate&quot;);</span>
+<span class="nc bnc" id="L198" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. &lt; y || 0. &gt; y)</span>
+<span class="nc" id="L199">			throw new java.lang.Exception (&quot;R1UnivariateUniform::invCumulative =&gt; Cannot calculate&quot;);</span>
 
-<span class="nc" id="L192">	    return y * (_rightSupport - _leftSupport) + _leftSupport;</span>
+<span class="nc" id="L201">	    return y * (_rightSupport - _leftSupport) + _leftSupport;</span>
 	}
 
 	@Override public double density (
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (!supported (x)) throw new java.lang.Exception (&quot;R1UnivariateUniform::density =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (!supported (x)) throw new java.lang.Exception (&quot;R1UnivariateUniform::density =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L201">		return 1. / (_rightSupport - _leftSupport);</span>
+<span class="nc" id="L210">		return 1. / (_rightSupport - _leftSupport);</span>
 	}
 
 	@Override public double mean()
 	{
-<span class="nc" id="L206">	    return 0.5 * (_rightSupport + _leftSupport);</span>
+<span class="nc" id="L215">	    return 0.5 * (_rightSupport + _leftSupport);</span>
 	}
 
 	@Override public double variance()
 	{
-<span class="nc" id="L211">		double support = _rightSupport - _leftSupport;</span>
-<span class="nc" id="L212">		return support * support / 12.;</span>
+<span class="nc" id="L220">		double support = _rightSupport - _leftSupport;</span>
+<span class="nc" id="L221">		return support * support / 12.;</span>
 	}
 
 	@Override public double random()
 	{
-<span class="nc" id="L217">	    return java.lang.Math.random() * (_rightSupport - _leftSupport) + _leftSupport;</span>
+<span class="nc" id="L226">	    return java.lang.Math.random() * (_rightSupport - _leftSupport) + _leftSupport;</span>
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L222">		return null;</span>
+<span class="nc" id="L231">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

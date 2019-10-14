@@ -87,6 +87,49 @@ package org.drip.measure.continuous;
 <span class="fc" id="L87">public abstract class R1Univariate {</span>
 
 	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
+	public abstract double[] support();
+
+	/**
+	 * Indicate if x is inside the Supported Range
+	 * 
+	 * @param x X
+	 * 
+	 * @return TRUE - x is inside of the Supported Range
+	 */
+
+	public boolean supported (
+		final double x)
+	{
+<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (java.lang.Double.isNaN (x))</span>
+		{
+<span class="nc" id="L110">			return false;</span>
+		}
+
+<span class="nc" id="L113">		double[] range = support();</span>
+
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		return range[0] &lt;= x &amp;&amp; x &lt;= range[1];</span>
+	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param dblX Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws java.lang.Exception Thrown if the input is invalid
+	 */
+
+	public abstract double density (
+		final double dblX)
+		throws java.lang.Exception;
+
+	/**
 	 * Compute the cumulative under the distribution to the given value
 	 * 
 	 * @param dblX Variate to which the cumulative is to be computed
@@ -116,71 +159,261 @@ package org.drip.measure.continuous;
 		final double dblXRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L119">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+<span class="nc" id="L162">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
 	}
 
 	/**
 	 * Compute the inverse cumulative under the distribution corresponding to the given value
 	 * 
-	 * @param dblX Value corresponding to which the inverse cumulative is to be computed
+	 * @param p Value corresponding to which the inverse cumulative is to be computed
 	 * 
 	 * @return The inverse cumulative
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws java.lang.Exception Thrown if the Input is invalid
 	 */
 
-	public abstract double invCumulative (
-		final double dblX)
-		throws java.lang.Exception;
+	public double invCumulative (
+		final double p)
+		throws java.lang.Exception
+	{
+<span class="nc bnc" id="L179" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt; p || 1. &lt; p)</span>
+		{
+<span class="nc" id="L181">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Invalid Inputs&quot;);</span>
+		}
 
-	/**
-	 * Compute the Density under the Distribution at the given Variate
-	 * 
-	 * @param dblX Variate at which the Density needs to be computed
-	 * 
-	 * @return The Density
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
-	 */
+<span class="nc" id="L184">		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =</span>
+			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
+				0.,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L188">				{</span>
+					@Override public double evaluate (
+						final double u)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L193">						return cumulative (u) - p;</span>
+					}
+				},
+				true
+<span class="nc" id="L197">			).findRoot();</span>
 
-	public abstract double density (
-		final double dblX)
-		throws java.lang.Exception;
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (null == fixedPointFinderOutput)</span>
+		{
+<span class="nc" id="L201">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Cannot find Root&quot;);</span>
+		}
+
+<span class="nc" id="L204">		return fixedPointFinderOutput.getRoot();</span>
+	}
 
 	/**
 	 * Retrieve the Mean of the Distribution
 	 * 
 	 * @return The Mean of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Mean cannot be estimated
 	 */
 
-	public abstract double mean();
+	public abstract double mean()
+		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Median cannot be estimated
+	 */
+
+	public double median()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L229">		return invCumulative (0.50);</span>
+	}
+
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Mode cannot be estimated
+	 */
+
+	public double mode()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L243">		final org.drip.function.definition.R1ToR1 densityFunction =</span>
+			new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L245">		{</span>
+			@Override public double evaluate (
+				final double u)
+				throws java.lang.Exception
+			{
+<span class="nc" id="L250">				return density (u);</span>
+			}
+		};
+
+<span class="nc" id="L254">		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =</span>
+			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
+				0.,
+				new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L258">				{</span>
+					@Override public double evaluate (
+						final double u)
+						throws java.lang.Exception
+					{
+<span class="nc" id="L263">						return densityFunction.derivative (</span>
+							u,
+							1
+						);
+					}
+				},
+				true
+<span class="nc" id="L270">			).findRoot();</span>
+
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		if (null == fixedPointFinderOutput)</span>
+		{
+<span class="nc" id="L274">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Cannot find Root&quot;);</span>
+		}
+
+<span class="nc" id="L277">		return fixedPointFinderOutput.getRoot();</span>
+	}
 
 	/**
 	 * Retrieve the Variance of the Distribution
 	 * 
 	 * @return The Variance of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Variance cannot be estimated
 	 */
 
-	public abstract double variance();
+	public abstract double variance()
+		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Skewness cannot be estimated
+	 */
+
+	public double skewness()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L302">		throw new java.lang.Exception (&quot;R1Univariate::skewness =&gt; Not implemented&quot;);</span>
+	}
+
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Skewness cannot be estimated
+	 */
+
+	public double excessKurtosis()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L316">		throw new java.lang.Exception (&quot;R1Univariate::excessKurtosis =&gt; Not implemented&quot;);</span>
+	}
+
+	/**
+	 * Retrieve the Differential Entropy of the Distribution
+	 * 
+	 * @return The Differential Entropy of the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Entropy cannot be estimated
+	 */
+
+	public double differentialEntropy()
+		throws java.lang.Exception
+	{
+<span class="nc" id="L330">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+			0.,
+			10000
+<span class="nc" id="L333">		).integrate (</span>
+			new org.drip.function.definition.R1ToR1 (null)
+<span class="nc" id="L335">			{</span>
+				@Override public double evaluate (
+					final double t)
+					throws java.lang.Exception
+				{
+<span class="nc" id="L340">					double density = density (t);</span>
+
+<span class="nc" id="L342">					return density * java.lang.Math.log (density);</span>
+				}
+			}
+		);
+	}
+
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	{
+<span class="nc" id="L356">		return null;</span>
+	}
+
+	/**
+	 * Construct the Probability Generating Function
+	 * 
+	 * @return The Probability Generating Function
+	 */
+
+	public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	{
+<span class="nc" id="L367">		return null;</span>
+	}
 
 	/**
 	 * Generate a Random Variable corresponding to the Distribution
 	 * 
 	 * @return Random Variable corresponding to the Distribution
+	 * 
+	 * @throws java.lang.Exception Thrown if the Random Instance cannot be estimated
 	 */
 
 	public double random()
+		throws java.lang.Exception
 	{
-		try
+<span class="nc" id="L381">		return invCumulative (java.lang.Math.random());</span>
+	}
+
+	/**
+	 * Retrieve the Array of Generated Random Variables
+	 * 
+	 * @param arrayCount Number of Elements
+	 * 
+	 * @return Array of Generated Random Variables
+	 */
+
+	public double[] randomArray (
+		final int arrayCount)
+	{
+<span class="nc bnc" id="L395" title="All 2 branches missed.">		if (0 &gt;= arrayCount)</span>
 		{
-<span class="nc" id="L176">			return invCumulative (java.lang.Math.random());</span>
-		}
-<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
-		{
-<span class="nc" id="L180">			e.printStackTrace();</span>
+<span class="nc" id="L397">			return null;</span>
 		}
 
-<span class="nc" id="L183">		return java.lang.Double.NaN;</span>
+<span class="nc" id="L400">		double[] randomArray = new double[arrayCount];</span>
+
+<span class="nc bnc" id="L402" title="All 2 branches missed.">		for (int index = 0; index &lt; arrayCount; ++index)</span>
+		{
+			try
+			{
+<span class="nc" id="L406">				randomArray[index] = random();</span>
+			}
+<span class="nc" id="L408">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L410">				e.printStackTrace();</span>
+
+<span class="nc" id="L412">				return null;</span>
+<span class="nc" id="L413">			}</span>
+		}
+
+<span class="nc" id="L416">		return randomArray;</span>
 	}
 
 	/**
@@ -193,17 +426,17 @@ package org.drip.measure.continuous;
 	{
 		try
 		{
-<span class="nc" id="L196">			return new org.drip.measure.statistics.PopulationCentralMeasures (</span>
-<span class="nc" id="L197">				mean(),</span>
-<span class="nc" id="L198">				variance()</span>
+<span class="nc" id="L429">			return new org.drip.measure.statistics.PopulationCentralMeasures (</span>
+<span class="nc" id="L430">				mean(),</span>
+<span class="nc" id="L431">				variance()</span>
 			);
 		}
-<span class="nc" id="L201">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L434">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L203">			e.printStackTrace();</span>
+<span class="nc" id="L436">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L206">		return null;</span>
+<span class="nc" id="L439">		return null;</span>
 	}
 
 	/**
@@ -212,6 +445,9 @@ package org.drip.measure.continuous;
 	 * @return The Univariate Weighted Histogram
 	 */
 
-	public abstract org.drip.numerical.common.Array2D histogram();
+	public org.drip.numerical.common.Array2D histogram()
+	{
+<span class="nc" id="L450">		return null;</span>
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

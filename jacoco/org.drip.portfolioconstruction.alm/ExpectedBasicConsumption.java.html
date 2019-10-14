@@ -81,29 +81,33 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedBasicConsumption {
-<span class="fc" id="L85">	private double _dblWorkingAgeConsumptionRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L86">	private double _dblRetirementAgeConsumptionRate = java.lang.Double.NaN;</span>
+public class ExpectedBasicConsumption
+{
+<span class="fc" id="L86">	private double _workingAgeConsumptionRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L87">	private double _retirementAgeConsumptionRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * ExpectedBasicConsumption Constructor
 	 * 
-	 * @param dblWorkingAgeConsumptionRate The Working Age Consumption Rate
-	 * @param dblRetirementAgeConsumptionRate The Retirement Age Consumption Rate
+	 * @param workingAgeConsumptionRate The Working Age Consumption Rate
+	 * @param retirementAgeConsumptionRate The Retirement Age Consumption Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedBasicConsumption (
-		final double dblWorkingAgeConsumptionRate,
-		final double dblRetirementAgeConsumptionRate)
+		final double workingAgeConsumptionRate,
+		final double retirementAgeConsumptionRate)
 		throws java.lang.Exception
-<span class="fc" id="L101">	{</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeConsumptionRate =</span>
-			dblWorkingAgeConsumptionRate) || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">				(_dblRetirementAgeConsumptionRate = dblRetirementAgeConsumptionRate))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;ExpectedBasicConsumption Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L106">	}</span>
+<span class="fc" id="L102">	{</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeConsumptionRate =</span>
+				workingAgeConsumptionRate) ||
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_retirementAgeConsumptionRate =</span>
+				retirementAgeConsumptionRate))
+		{
+<span class="nc" id="L108">			throw new java.lang.Exception (&quot;ExpectedBasicConsumption Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L110">	}</span>
 
 	/**
 	 * Retrieve the Working Age Consumption Rate
@@ -113,7 +117,7 @@ public class ExpectedBasicConsumption {
 
 	public double workingAgeConsumptionRate()
 	{
-<span class="nc" id="L116">		return _dblWorkingAgeConsumptionRate;</span>
+<span class="nc" id="L120">		return _workingAgeConsumptionRate;</span>
 	}
 
 	/**
@@ -124,14 +128,14 @@ public class ExpectedBasicConsumption {
 
 	public double retirementAgeConsumptionRate()
 	{
-<span class="nc" id="L127">		return _dblRetirementAgeConsumptionRate;</span>
+<span class="nc" id="L131">		return _retirementAgeConsumptionRate;</span>
 	}
 
 	/**
 	 * Compute the Expected Consumption Rate
 	 * 
-	 * @param dblAge The Age whose Investment Phase is needed
-	 * @param ics The Investor's Time Cliff Settings Instance
+	 * @param age The Age whose Investment Phase is needed
+	 * @param investorCliffSettings The Investor's Time Cliff Settings Instance
 	 * 
 	 * @return The Expected Consumption Rate
 	 * 
@@ -139,23 +143,29 @@ public class ExpectedBasicConsumption {
 	 */
 
 	public double rate (
-		final double dblAge,
-		final org.drip.portfolioconstruction.alm.InvestorCliffSettings ics)
+		final double age,
+		final org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (null == ics) throw new java.lang.Exception (&quot;ExpectedBasicConsumption::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">		if (null == investorCliffSettings)</span>
+		{
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;ExpectedBasicConsumption::rate =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L148">		int iAgePhase = ics.phase (dblAge);</span>
+<span class="fc" id="L155">		int agePhase = investorCliffSettings.phase (age);</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==</span>
-			iAgePhase)
-<span class="fc" id="L152">			return _dblWorkingAgeConsumptionRate;</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==</span>
+			agePhase)
+		{
+<span class="fc" id="L160">			return _workingAgeConsumptionRate;</span>
+		}
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT ==</span>
-			iAgePhase)
-<span class="fc" id="L156">			return _dblRetirementAgeConsumptionRate;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT == agePhase)</span>
+		{
+<span class="fc" id="L165">			return _retirementAgeConsumptionRate;</span>
+		}
 
-<span class="fc" id="L158">		return 0.;</span>
+<span class="fc" id="L168">		return 0.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

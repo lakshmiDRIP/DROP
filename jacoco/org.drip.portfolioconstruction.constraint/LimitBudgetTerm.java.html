@@ -80,34 +80,38 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitBudgetTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L85">	private double[] _adblPrice = null;</span>
+<span class="nc" id="L86">	private double[] _priceArray = null;</span>
 
 	protected LimitBudgetTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblBudget,
-		final double[] adblPrice)
+		final double budget,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L97">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L98">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_BUDGET&quot;,
 			scope,
 			unit,
-			dblBudget,
-			dblBudget
+			budget,
+			budget
 		);
 
-<span class="nc bnc" id="L108" title="All 4 branches missed.">		if (null == (_adblPrice = adblPrice) || !org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))</span>
-<span class="nc" id="L109">			throw new java.lang.Exception (&quot;LimitBudgetTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L110">	}</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (null == (_priceArray = priceArray) ||</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray))</span>
+		{
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;LimitBudgetTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L114">	}</span>
 
 	/**
 	 * Retrieve the Array of the Asset Prices
@@ -115,9 +119,9 @@ public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.opt
 	 * @return Array of the Asset Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-<span class="nc" id="L120">		return _adblPrice;</span>
+<span class="nc" id="L124">		return _priceArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

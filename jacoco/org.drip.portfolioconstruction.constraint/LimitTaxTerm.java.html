@@ -80,39 +80,43 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTaxTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitTaxTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L85">	private double[] _adblInitialHoldings = null;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.objective.TaxationScheme _taxationScheme = null;</span>
+<span class="nc" id="L86">	private double[] _initialHoldingsArray = null;</span>
+<span class="nc" id="L87">	private org.drip.portfolioconstruction.objective.TaxationScheme _taxationScheme = null;</span>
 
 	protected LimitTaxTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
+		final double minimum,
+		final double maximum,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme,
-		final double[] adblInitialHoldings)
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L100">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L101">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_TAX&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||</span>
-<span class="nc bnc" id="L112" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings) ||</span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">		if (null == (_initialHoldingsArray = initialHoldingsArray) ||</span>
+			0 == _initialHoldingsArray.length ||
+<span class="nc bnc" id="L114" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray) ||</span>
 			null == (_taxationScheme = taxationScheme))
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;LimitTaxTerm Constructor =&gt; Invalid Taxation Scheme&quot;);</span>
-<span class="nc" id="L115">	}</span>
+		{
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;LimitTaxTerm Constructor =&gt; Invalid Taxation Scheme&quot;);</span>
+		}
+<span class="nc" id="L119">	}</span>
 
 	/**
 	 * Retrieve the Initial Holdings Array
@@ -120,9 +124,9 @@ public abstract class LimitTaxTerm extends org.drip.portfolioconstruction.optimi
 	 * @return The Initial Holdings Array
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-<span class="nc" id="L125">		return _adblInitialHoldings;</span>
+<span class="nc" id="L129">		return _initialHoldingsArray;</span>
 	}
 
 	/**
@@ -133,7 +137,7 @@ public abstract class LimitTaxTerm extends org.drip.portfolioconstruction.optimi
 
 	public org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme()
 	{
-<span class="nc" id="L136">		return _taxationScheme;</span>
+<span class="nc" id="L140">		return _taxationScheme;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

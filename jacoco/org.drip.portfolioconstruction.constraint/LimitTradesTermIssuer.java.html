@@ -80,27 +80,28 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitTradesTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L85">	private double[] _adblInitialHoldings = null;</span>
-<span class="nc" id="L86">	private double[] _adblIssuerSelection = null;</span>
+<span class="nc" id="L86">	private double[] _initialHoldingsArray = null;</span>
+<span class="nc" id="L87">	private double[] _issuerSelectionArray = null;</span>
 
 	protected LimitTradesTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblIssuerSelection,
-		final double[] adblInitialHoldings)
+		final double[] issuerSelectionArray,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L100">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L101">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_TRADES&quot;,
 			scope,
 			unit,
@@ -108,17 +109,21 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 			dblMaximum
 		);
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_adblIssuerSelection = adblIssuerSelection) ||</span>
-			null == (_adblInitialHoldings = adblInitialHoldings))
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;LimitTradesTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">		if (null == (_issuerSelectionArray = issuerSelectionArray) ||</span>
+			null == (_initialHoldingsArray = initialHoldingsArray))
+		{
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;LimitTradesTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+		}
 
-<span class="nc" id="L115">		int iNumAsset = _adblIssuerSelection.length;</span>
+<span class="nc" id="L118">		int assetCount = _issuerSelectionArray.length;</span>
 
-<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection)||</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;LimitTradesTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
-<span class="nc" id="L121">	}</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">		if (0 == assetCount || _initialHoldingsArray.length == assetCount ||</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray) ||</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))</span>
+		{
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;LimitTradesTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+		}
+<span class="nc" id="L126">	}</span>
 
 	/**
 	 * Retrieve the Initial Holdings Array
@@ -126,9 +131,9 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 	 * @return Initial Holdings Array
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-<span class="nc" id="L131">		return _adblInitialHoldings;</span>
+<span class="nc" id="L136">		return _initialHoldingsArray;</span>
 	}
 
 	/**
@@ -137,9 +142,9 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 	 * @return Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-<span class="nc" id="L142">		return _adblIssuerSelection;</span>
+<span class="nc" id="L147">		return _issuerSelectionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

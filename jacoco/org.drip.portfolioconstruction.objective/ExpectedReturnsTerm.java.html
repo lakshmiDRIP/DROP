@@ -81,69 +81,80 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm
+public class ExpectedReturnsTerm
+	extends org.drip.portfolioconstruction.objective.ReturnsTerm
 {
 
 	/**
 	 * ExpectedReturnsTerm Constructor
 	 * 
-	 * @param strName Name of the Expected Returns Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param adblAlpha Asset Alpha
-	 * @param adblBenchmarkConstrictedHoldings Benchmark Constricted Holdings
+	 * @param name Name of the Expected Returns Objective Term
+	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param alphaArray Asset Alpha Aray
+	 * @param benchmarkConstrictedHoldingsArray Benchmark Constricted Holdings Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedReturnsTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[] adblAlpha,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[] alphaArray,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L105">		super (</span>
-			strName,
+<span class="nc" id="L106">		super (</span>
+			name,
 			&quot;OT_EXPECTED_RETURN&quot;,
 			&quot;Expected Portfolio Returns Objective Term&quot;,
-			adblInitialHoldings,
-			adblAlpha,
-			adblBenchmarkConstrictedHoldings
+			initialHoldingsArray,
+			alphaArray,
+			benchmarkConstrictedHoldingsArray
 		);
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L114">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L117">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L118">		{</span>
+<span class="nc" id="L118">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L119">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L121">				return initialHoldings().length;</span>
+<span class="nc" id="L122">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L128" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L129">					throw new java.lang.Exception (&quot;ExpectedReturnsTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L131">					throw new java.lang.Exception (&quot;ExpectedReturnsTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
+				}
 
-<span class="nc" id="L131">				double[] adblAlpha = alpha();</span>
+<span class="nc" id="L134">				double[] alphaArray = alphaArray();</span>
 
-<span class="nc" id="L133">				double dblExpectedReturn = 0.;</span>
-<span class="nc" id="L134">				int iNumAsset = adblAlpha.length;</span>
+<span class="nc" id="L136">				double expectedReturn = 0.;</span>
+<span class="nc" id="L137">				int assetCount = alphaArray.length;</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L137">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (variateArray.length != assetCount)</span>
+				{
+<span class="nc" id="L141">					throw new java.lang.Exception</span>
 						(&quot;ExpectedReturnsTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc" id="L140">				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();</span>
+<span class="nc" id="L145">				double[] benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldingsArray();</span>
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">					dblExpectedReturn += adblAlpha[i] * (adblVariate[i] - (null == adblBenchmarkHoldings ? 0.</span>
-						: adblBenchmarkHoldings[i]));
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">					expectedReturn += alphaArray[assetIndex] * (</span>
+						variateArray[assetIndex] - (
+							null == benchmarkConstrictedHoldingsArray ?
+								0. : benchmarkConstrictedHoldingsArray[assetIndex]
+						)
+					);
+				}
 
-<span class="nc" id="L146">				return dblExpectedReturn;</span>
+<span class="nc" id="L157">				return expectedReturn;</span>
 			}
 		};
 	}

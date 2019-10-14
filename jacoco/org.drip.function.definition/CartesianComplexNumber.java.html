@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartesianComplexNumber.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.function.definition</a> &gt; <span class="el_source">CartesianComplexNumber.java</span></div><h1>CartesianComplexNumber.java</h1><pre class="source lang-java linenums">
+package org.drip.function.definition;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;CartesianComplexNumber&lt;/i&gt; implements the functionality for dealing with the Cartesian Form of Complex
+ * Numbers.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier&quot;&gt;Specific Fourier Transform Functionality - Rotation Counter, Phase Adjuster&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * &lt;br&gt;&lt;br&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class CartesianComplexNumber
+{
+<span class="fc" id="L89">	private double _real = java.lang.Double.NaN;</span>
+<span class="fc" id="L90">	private double _imaginary = java.lang.Double.NaN;</span>
+
+	/**
+	 * Add the 2 Complex Numbers
+	 * 
+	 * @param complexNumber1 The First Complex Number
+	 * @param complexNumber2 The Second Complex Number
+	 * 
+	 * @return The Complex Number instance that is a sum of the two
+	 */
+
+	public static final CartesianComplexNumber Add (
+		final CartesianComplexNumber complexNumber1,
+		final CartesianComplexNumber complexNumber2)
+	{
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
+		{
+<span class="nc" id="L107">			return null;</span>
+		}
+
+		try
+		{
+<span class="fc" id="L112">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L113">				complexNumber1.real() + complexNumber2.real(),</span>
+<span class="fc" id="L114">				complexNumber1.imaginary() + complexNumber2.imaginary()</span>
+			);
+		}
+<span class="nc" id="L117">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L119">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L122">		return null;</span>
+	}
+
+	/**
+	 * Scale the Complex Number with the factor
+	 * 
+	 * @param complexNumber The Complex Number
+	 * @param scale The Scaling Factor
+	 * 
+	 * @return The Scaled Complex Number
+	 */
+
+	public static final CartesianComplexNumber Scale (
+		final CartesianComplexNumber complexNumber,
+		final double scale)
+	{
+<span class="pc bpc" id="L138" title="2 of 4 branches missed.">		if (null == complexNumber || !org.drip.numerical.common.NumberUtil.IsValid (scale))</span>
+		{
+<span class="nc" id="L140">			return null;</span>
+		}
+
+		try
+		{
+<span class="fc" id="L145">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L146">				scale * complexNumber.real(),</span>
+<span class="fc" id="L147">				scale * complexNumber.imaginary()</span>
+			);
+		}
+<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L152">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L155">		return null;</span>
+	}
+
+	/**
+	 * Subtract the Second Complex Number from the First
+	 * 
+	 * @param complexNumber1 The First Complex Number
+	 * @param complexNumber2 The Second Complex Number
+	 * 
+	 * @return The &quot;Difference&quot; Complex Number
+	 */
+
+	public static final CartesianComplexNumber Subtract (
+		final CartesianComplexNumber complexNumber1,
+		final CartesianComplexNumber complexNumber2)
+	{
+<span class="pc bpc" id="L171" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
+		{
+<span class="nc" id="L173">			return null;</span>
+		}
+
+		try {
+<span class="fc" id="L177">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L178">				complexNumber1.real() - complexNumber2.real(),</span>
+<span class="fc" id="L179">				complexNumber1.imaginary() - complexNumber2.imaginary()</span>
+			);
+		}
+<span class="nc" id="L182">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L184">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L187">		return null;</span>
+	}
+
+	/**
+	 * Multiply the 2 Complex Numbers
+	 * 
+	 * @param complexNumber1 The First Complex Number
+	 * @param complexNumber2 The Second Complex Number
+	 * 
+	 * @return The Complex Number instance that is a product of the two
+	 */
+
+	public static final CartesianComplexNumber Multiply (
+		final CartesianComplexNumber complexNumber1,
+		final CartesianComplexNumber complexNumber2)
+	{
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
+		{
+<span class="nc" id="L205">			return null;</span>
+		}
+
+<span class="fc" id="L208">		double real1 = complexNumber1.real();</span>
+
+<span class="fc" id="L210">		double real2 = complexNumber2.real();</span>
+
+<span class="fc" id="L212">		double imaginary1 = complexNumber1.imaginary();</span>
+
+<span class="fc" id="L214">		double imaginary2 = complexNumber2.imaginary();</span>
+
+		try
+		{
+<span class="fc" id="L218">			return new CartesianComplexNumber (</span>
+				real1 * real2 - imaginary1 * imaginary2,
+				real1 * imaginary2 + real2 * imaginary1
+			);
+		}
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L225">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L228">		return null;</span>
+	}
+
+	/**
+	 * Divide the Numerator Complex Number by the Denominator Complex Number
+	 * 
+	 * @param numerator The Numerator Complex Number
+	 * @param denominator The Denominator Complex Number
+	 * 
+	 * @return The &quot;Divided&quot; Complex Number
+	 */
+
+	public static final CartesianComplexNumber Divide (
+		final CartesianComplexNumber numerator,
+		final CartesianComplexNumber denominator)
+	{
+<span class="pc bpc" id="L244" title="2 of 4 branches missed.">		if (null == numerator || null == denominator)</span>
+		{
+<span class="nc" id="L246">			return null;</span>
+		}
+
+<span class="fc" id="L249">		double numeratorReal = numerator.real();</span>
+
+<span class="fc" id="L251">		double denominatorReal = denominator.real();</span>
+
+<span class="fc" id="L253">		double numeratorImaginary = numerator.imaginary();</span>
+
+<span class="fc" id="L255">		double denominatorImaginary = denominator.imaginary();</span>
+
+<span class="pc bpc" id="L257" title="1 of 4 branches missed.">		if (0. == denominatorReal &amp;&amp; 0. == denominatorImaginary)</span>
+		{
+<span class="nc" id="L259">			return null;</span>
+		}
+
+<span class="fc" id="L262">		double inverseDenominatorModulus = 1. / denominator.modulus();</span>
+
+		try
+		{
+<span class="fc" id="L266">			return new CartesianComplexNumber (</span>
+				(numeratorReal * denominatorReal + numeratorImaginary * denominatorImaginary) *
+					inverseDenominatorModulus,
+				(denominatorReal * numeratorImaginary - numeratorReal * denominatorImaginary) *
+					inverseDenominatorModulus
+			);
+		}
+<span class="nc" id="L273">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L275">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L278">		return null;</span>
+	}
+
+	/**
+	 * Square the Complex Number
+	 * 
+	 * @param complexNumber The Complex Number
+	 * 
+	 * @return The Squared Complex Number Instance
+	 */
+
+	public static final CartesianComplexNumber Square (
+		final CartesianComplexNumber complexNumber)
+	{
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+		{
+<span class="nc" id="L294">			return null;</span>
+		}
+
+<span class="fc" id="L297">		double modulus = complexNumber.modulus();</span>
+
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		if (0. == modulus)</span>
+		{
+			try
+			{
+<span class="nc" id="L303">				return new CartesianComplexNumber (</span>
+					0.,
+					0.
+				);
+			}
+<span class="nc" id="L308">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L310">				e.printStackTrace();</span>
+			}
+
+<span class="nc" id="L313">			return null;</span>
+		}
+
+<span class="fc" id="L316">		double argument = 2. * complexNumber.argument();</span>
+
+		try
+		{
+<span class="fc" id="L320">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L321">				modulus * java.lang.Math.cos (argument),</span>
+<span class="fc" id="L322">				modulus * java.lang.Math.sin (argument)</span>
+			);
+		}
+<span class="nc" id="L325">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L327">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L330">		return null;</span>
+	}
+
+	/**
+	 * Compute the Square Root of the Complex Number
+	 * 
+	 * @param complexNumber The Complex Number
+	 * 
+	 * @return The Square Root Complex Number Instance
+	 */
+
+	public static final CartesianComplexNumber SquareRoot (
+		final CartesianComplexNumber complexNumber)
+	{
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+		{
+<span class="nc" id="L346">			return null;</span>
+		}
+
+<span class="fc" id="L349">		double modulus = java.lang.Math.sqrt (complexNumber.modulus());</span>
+
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">		if (0. == modulus)</span>
+		{
+			try
+			{
+<span class="nc" id="L355">				return new CartesianComplexNumber (</span>
+					0.,
+					0.
+				);
+			}
+<span class="nc" id="L360">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L362">				e.printStackTrace();</span>
+			}
+
+<span class="nc" id="L365">			return null;</span>
+		}
+
+<span class="fc" id="L368">		double argument = 0.5 * complexNumber.argument();</span>
+
+		try
+		{
+<span class="fc" id="L372">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L373">				modulus * java.lang.Math.cos (argument),</span>
+<span class="fc" id="L374">				modulus * java.lang.Math.sin (argument)</span>
+			);
+		}
+<span class="nc" id="L377">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L379">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L382">		return null;</span>
+	}
+
+	/**
+	 * Exponentiate the Complex Number
+	 * 
+	 * @param complexNumber The Complex Number
+	 * 
+	 * @return The Exponentiated Complex Number Instance
+	 */
+
+	public static final CartesianComplexNumber Exponentiate (
+		final CartesianComplexNumber complexNumber)
+	{
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+		{
+<span class="nc" id="L398">			return null;</span>
+		}
+
+<span class="fc" id="L401">		double argument = complexNumber.imaginary();</span>
+
+<span class="fc" id="L403">		double modulus = java.lang.Math.exp (complexNumber.real());</span>
+
+		try
+		{
+<span class="fc" id="L407">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L408">				modulus * java.lang.Math.cos (argument),</span>
+<span class="fc" id="L409">				modulus * java.lang.Math.sin (argument)</span>
+			);
+		}
+<span class="nc" id="L412">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L414">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L417">		return null;</span>
+	}
+
+	/**
+	 * Compute Logarithm of the Complex Number
+	 * 
+	 * @param complexNumber The Complex Number
+	 * 
+	 * @return The Complex Number Logarithm Instance
+	 */
+
+	public static final CartesianComplexNumber Logarithm (
+		final CartesianComplexNumber complexNumber)
+	{
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+		{
+<span class="nc" id="L433">			return null;</span>
+		}
+
+<span class="fc" id="L436">		double modulus = complexNumber.modulus();</span>
+
+<span class="pc bpc" id="L438" title="1 of 2 branches missed.">		if (0. == modulus)</span>
+		{
+<span class="nc" id="L440">			return null;</span>
+		}
+
+		try
+		{
+<span class="fc" id="L445">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L446">				0.5 * java.lang.Math.log (modulus),</span>
+<span class="fc" id="L447">				complexNumber.argument()</span>
+			);
+		}
+<span class="nc" id="L450">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L452">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L455">		return null;</span>
+	}
+
+	/**
+	 * Construct the Complex Number from its Polar Representation
+	 * 
+	 * @param r r
+	 * @param theta theta
+	 * 
+	 * @return Complex Number from its Polar Representation
+	 */
+
+	public static final CartesianComplexNumber FromPolar (
+		final double r,
+		final double theta)
+	{
+		try
+		{
+<span class="nc bnc" id="L473" title="All 2 branches missed.">			return !org.drip.numerical.common.NumberUtil.IsValid (r) ||</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (theta) ? null :</span>
+				new CartesianComplexNumber (
+<span class="nc" id="L476">					r * java.lang.Math.cos (theta),</span>
+<span class="nc" id="L477">					r * java.lang.Math.sin (theta)</span>
+				);
+		}
+<span class="nc" id="L480">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L482">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L485">		return null;</span>
+	}
+
+	/**
+	 * CartesianComplexNumber constructor
+	 * 
+	 * @param real Real Part
+	 * @param imaginary Imaginary Part
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public CartesianComplexNumber (
+		final double real,
+		final double imaginary)
+		throws java.lang.Exception
+<span class="fc" id="L501">	{</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_real = real) ||</span>
+<span class="pc bpc" id="L503" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_imaginary = imaginary))</span>
+		{
+<span class="nc" id="L505">			throw new java.lang.Exception (&quot;CartesianComplexNumber Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L507">	}</span>
+
+	/**
+	 * Retrieve the Real Part
+	 * 
+	 * @return The Real Part
+	 */
+
+	public double real()
+	{
+<span class="fc" id="L517">		return _real;</span>
+	}
+
+	/**
+	 * Retrieve the Imaginary Part
+	 * 
+	 * @return The Imaginary Part
+	 */
+
+	public double imaginary()
+	{
+<span class="fc" id="L528">		return _imaginary;</span>
+	}
+
+	/**
+	 * Retrieve the Modulus
+	 * 
+	 * @return The Modulus
+	 */
+
+	public double modulus()
+	{
+<span class="fc" id="L539">		return _real * _real + _imaginary * _imaginary;</span>
+	}
+
+	/**
+	 * Retrieve the Absolute Value
+	 * 
+	 * @return The Absolute Value
+	 */
+
+	public double abs()
+	{
+<span class="fc" id="L550">		return java.lang.Math.sqrt (modulus());</span>
+	}
+
+	/**
+	 * Retrieve the Argument
+	 * 
+	 * @return The Argument
+	 */
+
+	public double argument()
+	{
+<span class="pc bpc" id="L561" title="3 of 4 branches missed.">		return 0. == _real &amp;&amp; 0. == _imaginary ? 0. : java.lang.Math.atan (_imaginary / _real);</span>
+	}
+
+	/**
+	 * Display the Real/Imaginary Contents
+	 * 
+	 * @return The Real/Imaginary Contents
+	 */
+
+	public java.lang.String display()
+	{
+<span class="nc" id="L572">		return &quot;\t[&quot; + _real + &quot;, &quot; + _imaginary + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

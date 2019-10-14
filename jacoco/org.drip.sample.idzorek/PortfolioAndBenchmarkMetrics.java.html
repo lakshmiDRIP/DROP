@@ -104,19 +104,20 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L107">public class PortfolioAndBenchmarkMetrics {</span>
+<span class="nc" id="L107">public class PortfolioAndBenchmarkMetrics</span>
+{
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L113">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L114">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L115">		double dblTau = 0.025;</span>
-<span class="fc" id="L116">		double dblRiskAversion = 3.07;</span>
-<span class="fc" id="L117">		double dblRiskFreeRate = 0.00;</span>
-
-<span class="fc" id="L119">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L116">		double tau = 0.025;</span>
+<span class="fc" id="L117">		double riskAversion = 3.07;</span>
+<span class="fc" id="L118">		double riskFreeRate = 0.00;</span>
+<span class="fc" id="L119">		String[] assetIDArray = new String[]</span>
+		{
 			&quot;US BONDS                       &quot;,
 			&quot;INTERNATIONAL BONDS            &quot;,
 			&quot;US LARGE GROWTH                &quot;,
@@ -126,8 +127,8 @@ import org.drip.service.env.EnvManager;
 			&quot;INTERNATIONAL DEVELOPED EQUITY &quot;,
 			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
 		};
-
-<span class="fc" id="L130">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L130">		double[] assetEquilibriumWeightArray = new double[]</span>
+		{
 			0.1934,
 			0.2613,
 			0.1209,
@@ -137,8 +138,8 @@ import org.drip.service.env.EnvManager;
 			0.2418,
 			0.0349
 		};
-
-<span class="fc" id="L141">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L141">		double[][] assetExcessReturnsCovarianceMatrix = new double[][]</span>
+		{
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -148,140 +149,162 @@ import org.drip.service.env.EnvManager;
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-
-<span class="fc" id="L152">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+<span class="fc" id="L152">		double[][] assetSpaceViewProjectionMatrix = new double[][]</span>
+		{
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
-
-<span class="fc" id="L158">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+<span class="fc" id="L158">		double[] projectionExpectedExcessReturnsArray = new double[]</span>
+		{
 			0.0525,
 			0.0025,
 			0.0200
 		};
 
-<span class="fc" id="L164">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
-			aadblAssetExcessReturnsCovariance,
-			aadblAssetSpaceViewProjection,
-			dblTau
-		);
+<span class="fc" id="L165">		double[][] projectionExcessReturnsCovarianceMatrix =</span>
+<span class="fc" id="L166">			ProjectionDistributionLoading.ProjectionCovariance (</span>
+				assetExcessReturnsCovarianceMatrix,
+				assetSpaceViewProjectionMatrix,
+				tau
+			);
 
-<span class="fc" id="L170">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L172">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
 			new MultivariateMeta (
-				new String[] {
+				new String[]
+				{
 					&quot;PROJECTION #1&quot;,
 					&quot;PROJECTION #2&quot;,
 					&quot;PROJECTION #3&quot;
 				}
 			),
-			adblProjectionExpectedExcessReturns,
-			aadblProjectionExcessReturnsCovariance
+			projectionExpectedExcessReturnsArray,
+			projectionExcessReturnsCovarianceMatrix
 		);
 
-<span class="fc" id="L182">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L183">			ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L184">				Portfolio.Standard (</span>
-					astrAssetID,
-					adblAssetEquilibriumWeight
+<span class="fc" id="L185">		JointPosteriorMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L186">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L187">				Portfolio.Standard (</span>
+					assetIDArray,
+					assetEquilibriumWeightArray
 				),
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
 			new PriorControlSpecification (
 				false,
-				dblRiskFreeRate,
-				dblTau
+				riskFreeRate,
+				tau
 			),
 			new ProjectionSpecification (
 				viewDistribution,
-				aadblAssetSpaceViewProjection
+				assetSpaceViewProjectionMatrix
 			)
+<span class="fc" id="L203">		).customConfidenceRun().jointPosteriorMetrics();</span>
+
+<span class="fc" id="L205">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();</span>
+
+<span class="fc" id="L207">		ForwardReverseOptimizationOutput priorForwardReverseOptimizationOutput =</span>
+<span class="fc" id="L208">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L209">				Portfolio.Standard (</span>
+					assetIDArray,
+					assetEquilibriumWeightArray
+				),
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
+			);
+
+<span class="fc" id="L217">		PortfolioMetrics optimalPriorPortfolioMetrics =</span>
+<span class="fc" id="L218">			priorForwardReverseOptimizationOutput.optimalMetrics();</span>
+
+<span class="fc" id="L220">		ForwardReverseOptimizationOutput posteriorForwardReverseOptimizationOutput =</span>
+<span class="fc" id="L221">			ForwardReverseOptimizationOutput.Forward (</span>
+				assetIDArray,
+<span class="fc" id="L223">				jointDistribution.mean(),</span>
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
+			);
+
+<span class="fc" id="L228">		PortfolioMetrics optimalPosteriorPortfolioMetrics =</span>
+<span class="fc" id="L229">			posteriorForwardReverseOptimizationOutput.optimalMetrics();</span>
+
+<span class="fc" id="L231">		PortfolioBenchmarkMetrics posteriorPortfolioBenchmarkMetrics =</span>
+<span class="fc" id="L232">			posteriorForwardReverseOptimizationOutput.benchmarkMetrics (</span>
+				optimalPriorPortfolioMetrics
+			);
+
+<span class="fc" id="L236">		System.out.println (&quot;\n\t|---------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L238">		System.out.println (&quot;\t| EXCESS RETURN MEAN               =&gt; &quot; +</span>
+<span class="fc" id="L239">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L240">				optimalPriorPortfolioMetrics.excessReturnsMean(), 1, 3, 100.</span>
+			) + &quot;%  | &quot; +
+<span class="fc" id="L242">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L243">				optimalPosteriorPortfolioMetrics.excessReturnsMean(), 1, 3, 100.</span>
+			) + &quot;%  ||&quot;
 		);
 
-<span class="fc" id="L202">		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();</span>
-
-<span class="fc" id="L204">		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();</span>
-
-<span class="fc" id="L206">		double[] adblAssetSpaceJointReturns = jointDistribution.mean();</span>
-
-<span class="fc" id="L208">		ForwardReverseOptimizationOutput fromPrior = ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L209">			Portfolio.Standard (</span>
-				astrAssetID,
-				adblAssetEquilibriumWeight
-			),
-			aadblAssetExcessReturnsCovariance,
-			dblRiskAversion
+<span class="fc" id="L247">		System.out.println (&quot;\t| EXCESS RETURN VARIANCE           =&gt; &quot; +</span>
+<span class="fc" id="L248">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L249">				optimalPriorPortfolioMetrics.excessReturnsVariance(), 1, 5, 1.</span>
+			) + &quot; | &quot; +
+<span class="fc" id="L251">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L252">				optimalPosteriorPortfolioMetrics.excessReturnsVariance(), 1, 5, 1.</span>
+			) + &quot; ||&quot;
 		);
 
-<span class="fc" id="L217">		PortfolioMetrics pmPrior = fromPrior.optimalMetrics();</span>
-
-<span class="fc" id="L219">		ForwardReverseOptimizationOutput fromPosterior = ForwardReverseOptimizationOutput.Forward (</span>
-			astrAssetID,
-			adblAssetSpaceJointReturns,
-			aadblAssetExcessReturnsCovariance,
-			dblRiskAversion
+<span class="fc" id="L256">		System.out.println (&quot;\t| EXCESS RETURN STANDARD DEVIATION =&gt; &quot; +</span>
+<span class="fc" id="L257">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L258">				optimalPriorPortfolioMetrics.excessReturnsStandardDeviation(), 1, 3, 100.</span>
+			) + &quot;%  |&quot; +
+<span class="fc" id="L260">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L261">				optimalPosteriorPortfolioMetrics.excessReturnsStandardDeviation(), 2, 3, 100.</span>
+			) + &quot;%  ||&quot;
 		);
 
-<span class="fc" id="L226">		PortfolioMetrics pmPosterior = fromPosterior.optimalMetrics();</span>
-
-<span class="fc" id="L228">		PortfolioBenchmarkMetrics pbm = fromPosterior.benchmarkMetrics (pmPrior);</span>
-
-<span class="fc" id="L230">		System.out.println (&quot;\n\t|---------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L232">		System.out.println (&quot;\t| EXCESS RETURN MEAN               =&gt; &quot; +</span>
-<span class="fc" id="L233">			FormatUtil.FormatDouble (pmPrior.excessReturnsMean(), 1, 3, 100.) + &quot;%  | &quot; +</span>
-<span class="fc" id="L234">			FormatUtil.FormatDouble (pmPosterior.excessReturnsMean(), 1, 3, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L265">		System.out.println (&quot;\t| BETA                             =&gt; &quot; +</span>
+<span class="fc" id="L266">			FormatUtil.FormatDouble (</span>
+<span class="fc" id="L267">				priorForwardReverseOptimizationOutput.benchmarkMetrics (</span>
+					optimalPriorPortfolioMetrics
+<span class="fc" id="L269">				).beta(), 1, 5, 1.</span>
+			) + &quot; | &quot; +
+<span class="fc" id="L271">			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.beta(), 1, 5, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L237">		System.out.println (&quot;\t| EXCESS RETURN VARIANCE           =&gt; &quot; +</span>
-<span class="fc" id="L238">			FormatUtil.FormatDouble (pmPrior.excessReturnsVariance(), 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L239">			FormatUtil.FormatDouble (pmPosterior.excessReturnsVariance(), 1, 5, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L274">		System.out.println (&quot;\t| ACTIVE BETA                      =&gt; &quot; +</span>
+<span class="fc" id="L275">			FormatUtil.FormatDouble (0., 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L276">			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.activeBeta(), 1, 5, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L242">		System.out.println (&quot;\t| EXCESS RETURN STANDARD DEVIATION =&gt; &quot; +</span>
-<span class="fc" id="L243">			FormatUtil.FormatDouble (pmPrior.excessReturnsStandardDeviation(), 1, 3, 100.) + &quot;%  |&quot; +</span>
-<span class="fc" id="L244">			FormatUtil.FormatDouble (pmPosterior.excessReturnsStandardDeviation(), 2, 3, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L279">		System.out.println (&quot;\t| RESIDUAL RETURN                  =&gt; &quot; +</span>
+<span class="fc" id="L280">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
+<span class="fc" id="L281">			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.residualReturn(), 1, 3, 100.)</span>
+				+ &quot;%  ||&quot;
 		);
 
-<span class="fc" id="L247">		System.out.println (&quot;\t| BETA                             =&gt; &quot; +</span>
-<span class="fc" id="L248">			FormatUtil.FormatDouble (fromPrior.benchmarkMetrics (pmPrior).beta(), 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L249">			FormatUtil.FormatDouble (pbm.beta(), 1, 5, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L285">		System.out.println (&quot;\t| RESIDUAL RISK                    =&gt; &quot; +</span>
+<span class="fc" id="L286">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
+<span class="fc" id="L287">			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.residualRisk(), 1, 3, 100.) + &quot;%  ||&quot;</span>
 		);
 
-<span class="fc" id="L252">		System.out.println (&quot;\t| ACTIVE BETA                      =&gt; &quot; +</span>
-<span class="fc" id="L253">			FormatUtil.FormatDouble (0., 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L254">			FormatUtil.FormatDouble (pbm.activeBeta(), 1, 5, 1.) + &quot; ||&quot;</span>
+<span class="fc" id="L290">		System.out.println (&quot;\t| ACTIVE RETURN                    =&gt; &quot; +</span>
+<span class="fc" id="L291">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
+<span class="fc" id="L292">			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.activeReturn(), 1, 3, 100.) + &quot;%  ||&quot;</span>
 		);
 
-<span class="fc" id="L257">		System.out.println (&quot;\t| RESIDUAL RETURN                  =&gt; &quot; +</span>
-<span class="fc" id="L258">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
-<span class="fc" id="L259">			FormatUtil.FormatDouble (pbm.residualReturn(), 1, 3, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L295">		System.out.println (&quot;\t| ACTIVE RISK                      =&gt; &quot; +</span>
+<span class="fc" id="L296">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
+<span class="fc" id="L297">			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.activeRisk(), 1, 3, 100.) + &quot;%  ||&quot;</span>
 		);
 
-<span class="fc" id="L262">		System.out.println (&quot;\t| RESIDUAL RISK                    =&gt; &quot; +</span>
-<span class="fc" id="L263">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
-<span class="fc" id="L264">			FormatUtil.FormatDouble (pbm.residualRisk(), 1, 3, 100.) + &quot;%  ||&quot;</span>
+<span class="fc" id="L300">		System.out.println (&quot;\t| SHARPE RATIO                     =&gt; &quot; +</span>
+<span class="fc" id="L301">			FormatUtil.FormatDouble (optimalPriorPortfolioMetrics.sharpeRatio(), 1, 5, 1.) + &quot; | &quot; +</span>
+<span class="fc" id="L302">			FormatUtil.FormatDouble (optimalPosteriorPortfolioMetrics.sharpeRatio(), 1, 5, 1.) + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L267">		System.out.println (&quot;\t| ACTIVE RETURN                    =&gt; &quot; +</span>
-<span class="fc" id="L268">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
-<span class="fc" id="L269">			FormatUtil.FormatDouble (pbm.activeReturn(), 1, 3, 100.) + &quot;%  ||&quot;</span>
-		);
+<span class="fc" id="L305">		System.out.println (&quot;\t|---------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc" id="L272">		System.out.println (&quot;\t| ACTIVE RISK                      =&gt; &quot; +</span>
-<span class="fc" id="L273">			FormatUtil.FormatDouble (0., 1, 3, 100.) + &quot;%  | &quot; +</span>
-<span class="fc" id="L274">			FormatUtil.FormatDouble (pbm.activeRisk(), 1, 3, 100.) + &quot;%  ||&quot;</span>
-		);
-
-<span class="fc" id="L277">		System.out.println (&quot;\t| SHARPE RATIO                     =&gt; &quot; +</span>
-<span class="fc" id="L278">			FormatUtil.FormatDouble (pmPrior.sharpeRatio(), 1, 5, 1.) + &quot; | &quot; +</span>
-<span class="fc" id="L279">			FormatUtil.FormatDouble (pmPosterior.sharpeRatio(), 1, 5, 1.) + &quot; ||&quot;</span>
-		);
-
-<span class="fc" id="L282">		System.out.println (&quot;\t|---------------------------------------------------------||\n&quot;);</span>
-
-<span class="fc" id="L284">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L285">	}</span>
+<span class="fc" id="L307">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L308">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

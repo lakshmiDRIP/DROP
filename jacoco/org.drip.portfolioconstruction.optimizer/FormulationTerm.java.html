@@ -81,25 +81,29 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FormulationTerm extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L85">	private java.lang.String _strCategory = &quot;&quot;;</span>
+public abstract class FormulationTerm
+	extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L87">	private java.lang.String _category = &quot;&quot;;</span>
 
 	protected FormulationTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCategory)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String category)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L94">		super (</span>
-			strName,
-			strID,
-			strDescription
+<span class="nc" id="L96">		super (</span>
+			name,
+			id,
+			description
 		);
 
-<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (null == (_strCategory = strCategory) || _strCategory.isEmpty())</span>
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;FormulationTerm Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L102">	}</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">		if (null == (_category = category) || _category.isEmpty())</span>
+		{
+<span class="nc" id="L104">			throw new java.lang.Exception (&quot;FormulationTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Objective Term Category
@@ -109,13 +113,13 @@ public abstract class FormulationTerm extends org.drip.portfolioconstruction.cor
 
 	public java.lang.String category()
 	{
-<span class="nc" id="L112">		return _strCategory;</span>
+<span class="nc" id="L116">		return _category;</span>
 	}
 
 	/**
-	 * The R^d To R^1 Objective Term
+	 * The R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Formulation Term
 	 * 
-	 * @return The R^d To R^1 Objective Term
+	 * @return The R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Formulation Term
 	 */
 
 	public abstract org.drip.function.definition.RdToR1 rdtoR1();

@@ -80,58 +80,65 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitRiskTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L85">	private double[][] _aadblAssetCovariance = null;</span>
+<span class="nc" id="L86">	private double[][] _assetCovarianceMatrix = null;</span>
 
 	protected LimitRiskTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[][] aadblAssetCovariance)
+		final double minimum,
+		final double maximum,
+		final double[][] assetCovarianceMatrix)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L98">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L99">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_RISK&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (null == (_aadblAssetCovariance = aadblAssetCovariance))</span>
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
-
-<span class="nc" id="L112">		int iNumAsset = _aadblAssetCovariance.length;</span>
-
-<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (0 == iNumAsset)</span>
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
-
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (null == (_assetCovarianceMatrix = assetCovarianceMatrix))</span>
 		{
-<span class="nc bnc" id="L119" title="All 4 branches missed.">			if (null == _aadblAssetCovariance[i] ||</span>
-				iNumAsset != _aadblAssetCovariance[i].length ||
-<span class="nc bnc" id="L121" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))</span>
-<span class="nc" id="L122">				throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
+<span class="nc" id="L112">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
 		}
-<span class="nc" id="L124">	}</span>
+
+<span class="nc" id="L115">		int assetCount = _assetCovarianceMatrix.length;</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (0 == assetCount)</span>
+		{
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
+		}
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="nc bnc" id="L124" title="All 4 branches missed.">			if (null == _assetCovarianceMatrix[assetIndex] ||</span>
+				assetCount != _assetCovarianceMatrix[assetIndex].length ||
+<span class="nc bnc" id="L126" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_assetCovarianceMatrix[assetIndex]))</span>
+			{
+<span class="nc" id="L128">				throw new java.lang.Exception (&quot;LimitRiskTerm Constructor =&gt; Invalid Covariance&quot;);</span>
+			}
+		}
+<span class="nc" id="L131">	}</span>
 
 	/**
-	 * Retrieve the Asset Co-variance
+	 * Retrieve the Asset Co-variance Matrix
 	 * 
-	 * @return The Asset Co-variance
+	 * @return The Asset Co-variance Matrix
 	 */
 
-	public double[][] assetCovariance()
+	public double[][] assetCovarianceMatrix()
 	{
-<span class="nc" id="L134">		return _aadblAssetCovariance;</span>
+<span class="nc" id="L141">		return _assetCovarianceMatrix;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

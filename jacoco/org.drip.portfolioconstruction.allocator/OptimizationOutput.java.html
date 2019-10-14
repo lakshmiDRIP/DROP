@@ -81,78 +81,103 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OptimizationOutput {
-<span class="fc" id="L85">	private org.drip.portfolioconstruction.asset.Portfolio _pfOptimal = null;</span>
-<span class="fc" id="L86">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmOptimal = null;</span>
+public class OptimizationOutput
+{
+<span class="fc" id="L86">	private org.drip.portfolioconstruction.asset.Portfolio _optimalPortfolio = null;</span>
+<span class="fc" id="L87">	private org.drip.portfolioconstruction.asset.PortfolioMetrics _optimalPortfolioMetrics = null;</span>
 
 	/**
 	 * Create an Instance of the Optimal Portfolio
 	 * 
-	 * @param aACOptimal The Array of the Optimal Asset Components
-	 * @param ausp The AUSP Instance
+	 * @param optimalAssetComponentArray The Array of the Optimal Asset Components
+	 * @param assetUniverseStatisticalProperties The AssetUniverseStatisticalProperties Instance
 	 * 
 	 * @return The Instance of the Optimal Portfolio
 	 */
 
 	public static final OptimizationOutput Create (
-		final org.drip.portfolioconstruction.asset.AssetComponent[] aACOptimal,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final org.drip.portfolioconstruction.asset.AssetComponent[] optimalAssetComponentArray,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties assetUniverseStatisticalProperties)
 	{
-<span class="pc bpc" id="L101" title="2 of 4 branches missed.">		if (null == aACOptimal || null == ausp) return null;</span>
-
-<span class="fc" id="L103">		int iNumAsset = aACOptimal.length;</span>
-
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		if (0 == iNumAsset) return null;</span>
-
-		try {
-<span class="fc" id="L108">			org.drip.portfolioconstruction.asset.Portfolio pfOptimal = new</span>
-				org.drip.portfolioconstruction.asset.Portfolio (aACOptimal);
-
-<span class="fc" id="L111">			double dblPortfolioExcessReturnsMean = pfOptimal.expectedReturn (ausp);</span>
-
-<span class="fc" id="L113">			double dblPortfolioExcessReturnsVariance = pfOptimal.variance (ausp);</span>
-
-<span class="fc" id="L115">			double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt</span>
-<span class="fc" id="L116">				(dblPortfolioExcessReturnsVariance);</span>
-
-<span class="fc" id="L118">			double[] adblImpliedBeta = org.drip.numerical.linearalgebra.Matrix.Product (ausp.covariance</span>
-<span class="fc" id="L119">				(pfOptimal.id()), pfOptimal.weights());</span>
-
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">			if (null == adblImpliedBeta) return null;</span>
-
-<span class="fc bfc" id="L123" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
-<span class="fc" id="L124">				adblImpliedBeta[i] = adblImpliedBeta[i] / dblPortfolioExcessReturnsVariance;</span>
-
-<span class="fc" id="L126">			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (new</span>
-				org.drip.portfolioconstruction.asset.Portfolio (aACOptimal), new
-					org.drip.portfolioconstruction.asset.PortfolioMetrics (dblPortfolioExcessReturnsMean,
-						dblPortfolioExcessReturnsVariance, dblPortfolioExcessReturnsSigma,
-							dblPortfolioExcessReturnsMean / dblPortfolioExcessReturnsSigma,
-								adblImpliedBeta));
-<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L133">			e.printStackTrace();</span>
+<span class="pc bpc" id="L102" title="2 of 4 branches missed.">		if (null == optimalAssetComponentArray || null == assetUniverseStatisticalProperties)</span>
+		{
+<span class="nc" id="L104">			return null;</span>
 		}
 
-<span class="nc" id="L136">		return null;</span>
+<span class="fc" id="L107">		int iNumAsset = optimalAssetComponentArray.length;</span>
+
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (0 == iNumAsset)</span>
+		{
+<span class="nc" id="L111">			return null;</span>
+		}
+
+		try
+		{
+<span class="fc" id="L116">			org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio = new</span>
+				org.drip.portfolioconstruction.asset.Portfolio (optimalAssetComponentArray);
+
+<span class="fc" id="L119">			double portfolioExcessReturnsMean = optimalPortfolio.expectedReturn</span>
+<span class="fc" id="L120">				(assetUniverseStatisticalProperties);</span>
+
+<span class="fc" id="L122">			double portfolioExcessReturnsVariance = optimalPortfolio.variance</span>
+<span class="fc" id="L123">				(assetUniverseStatisticalProperties);</span>
+
+<span class="fc" id="L125">			double portfolioExcessReturnsSigma = java.lang.Math.sqrt (portfolioExcessReturnsVariance);</span>
+
+<span class="fc" id="L127">			double[] impliedBetaArray = org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L128">				assetUniverseStatisticalProperties.covariance (optimalPortfolio.assetIDArray()),</span>
+<span class="fc" id="L129">				optimalPortfolio.weightArray()</span>
+			);
+
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			if (null == impliedBetaArray)</span>
+			{
+<span class="nc" id="L134">				return null;</span>
+			}
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumAsset; ++i)</span>
+			{
+<span class="fc" id="L139">				impliedBetaArray[i] = impliedBetaArray[i] / portfolioExcessReturnsVariance;</span>
+			}
+
+<span class="fc" id="L142">			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (</span>
+				new org.drip.portfolioconstruction.asset.Portfolio (optimalAssetComponentArray),
+				new org.drip.portfolioconstruction.asset.PortfolioMetrics (
+					portfolioExcessReturnsMean,
+					portfolioExcessReturnsVariance,
+					portfolioExcessReturnsSigma,
+					portfolioExcessReturnsMean / portfolioExcessReturnsSigma,
+					impliedBetaArray
+				)
+			);
+		}
+<span class="nc" id="L153">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L155">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L158">		return null;</span>
 	}
 
 	/**
 	 * OptimizationOutput Constructor
 	 * 
-	 * @param pfOptimal The Optimal Portfolio
-	 * @param pmOptimal The Optimal Portfolio Metrics
+	 * @param optimalPortfolio The Optimal Portfolio
+	 * @param optimalPortfolioMetrics The Optimal Portfolio Metrics
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public OptimizationOutput (
-		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
-		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmOptimal)
+		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics optimalPortfolioMetrics)
 		throws java.lang.Exception
-<span class="fc" id="L152">	{</span>
-<span class="pc bpc" id="L153" title="2 of 4 branches missed.">		if (null == (_pfOptimal = pfOptimal) || null == (_pmOptimal = pmOptimal))</span>
-<span class="nc" id="L154">			throw new java.lang.Exception (&quot;OptimizationOutput Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L155">	}</span>
+<span class="fc" id="L174">	{</span>
+<span class="pc bpc" id="L175" title="2 of 4 branches missed.">		if (null == (_optimalPortfolio = optimalPortfolio) ||</span>
+			null == (_optimalPortfolioMetrics = optimalPortfolioMetrics))
+		{
+<span class="nc" id="L178">			throw new java.lang.Exception (&quot;OptimizationOutput Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L180">	}</span>
 
 	/**
 	 * Retrieve the Optimal Portfolio Metrics
@@ -162,7 +187,7 @@ public class OptimizationOutput {
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics optimalMetrics()
 	{
-<span class="fc" id="L165">		return _pmOptimal;</span>
+<span class="fc" id="L190">		return _optimalPortfolioMetrics;</span>
 	}
 
 	/**
@@ -173,7 +198,7 @@ public class OptimizationOutput {
 
 	public org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio()
 	{
-<span class="fc" id="L176">		return _pfOptimal;</span>
+<span class="fc" id="L201">		return _optimalPortfolio;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

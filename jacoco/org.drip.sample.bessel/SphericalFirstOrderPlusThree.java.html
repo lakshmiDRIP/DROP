@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SphericalFirstOrderPlusThree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.bessel</a> &gt; <span class="el_source">SphericalFirstOrderPlusThree.java</span></div><h1>SphericalFirstOrderPlusThree.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.bessel;
+
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+import org.drip.specialfunction.bessel.SphericalFirstEstimator;
+import org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
+ *  	FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three main modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning Library
+ * 	- Numerical Optimizer Library
+ * 	- Machine Learning Library
+ * 	- Spline Builder Library
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;SphericalFirstOrderPlusThree&lt;/i&gt; implements the Estimator for the +3 Order Spherical Bessel Function of
+ * the First Kind. The References are:
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Arfken, G. B., and H. J. Weber (2005): &lt;i&gt;Mathematical Methods for Physicists 6&lt;sup&gt;th&lt;/sup&gt;
+ * 				Edition&lt;/i&gt; &lt;b&gt;Harcourt&lt;/b&gt; San Diego
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Temme N. M. (1996): &lt;i&gt;Special Functions: An Introduction to the Classical Functions of
+ * 				Mathematical Physics 2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;Wiley&lt;/b&gt; New York
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Watson, G. N. (1995): &lt;i&gt;A Treatise on the Theory of Bessel Functions&lt;/i&gt; &lt;b&gt;Cambridge University
+ * 				Press&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ *
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L109">public class SphericalFirstOrderPlusThree</span>
+{
+
+	private static final void Besselj (
+		final SphericalBesselFirstKindEstimator sphericalBesselFirstKindEstimator,
+		final double[] zArray)
+		throws Exception
+	{
+<span class="nc" id="L117">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L119">		System.out.println (&quot;\t|          +3 ORDER SPHERICAL BESSEL FIRST KIND INTEGRAL ESTIMATE          ||&quot;);</span>
+
+<span class="nc" id="L121">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L123">		System.out.println (&quot;\t|        L -&gt; R:                                                           ||&quot;);</span>
+
+<span class="nc" id="L125">		System.out.println (&quot;\t|                - z                                                       ||&quot;);</span>
+
+<span class="nc" id="L127">		System.out.println (&quot;\t|                - Alpha Bessel Estimate Row                               ||&quot;);</span>
+
+<span class="nc" id="L129">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L131">		double alpha = 3.;</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (double z : zArray)</span>
+		{
+<span class="nc" id="L135">			String display = &quot;\t| [&quot; + FormatUtil.FormatDouble (z, 1, 2, 1., false) + &quot;] =&gt;&quot;;</span>
+
+<span class="nc" id="L137">			display = display + &quot; &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L138">				sphericalBesselFirstKindEstimator.smallJ (</span>
+					alpha,
+					z
+				), 1, 9, 1.
+			) + &quot; |&quot;;
+
+<span class="nc" id="L144">			System.out.println (display + &quot;|&quot;);</span>
+		}
+
+<span class="nc" id="L147">		System.out.println (&quot;\t|--------------------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L149">		System.out.println();</span>
+<span class="nc" id="L150">	}</span>
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L156">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L158">		double[] zArray =</span>
+		{
+			 0.00,
+			 0.25,
+			 0.50,
+			 0.75,
+			 1.00,
+			 1.25,
+			 1.50,
+			 1.75,
+			 2.00,
+			 2.25,
+			 2.50,
+			 2.75,
+			 3.00,
+			 3.25,
+			 3.50,
+			 3.75,
+			 4.00,
+			 4.25,
+			 4.50,
+			 4.75,
+			 5.00,
+			 5.25,
+			 5.50,
+			 5.75,
+			 6.00,
+			 6.25,
+			 6.50,
+			 6.75,
+			 7.00,
+			 7.25,
+			 7.50,
+			 7.75,
+			 8.00,
+			 8.25,
+			 8.50,
+			 8.75,
+			 9.00,
+			 9.25,
+			 9.50,
+			 9.75,
+		};
+
+<span class="nc" id="L202">		Besselj (</span>
+<span class="nc" id="L203">			SphericalFirstEstimator.OrderPlusThree(),</span>
+			zArray
+		);
+
+<span class="nc" id="L207">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L208">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

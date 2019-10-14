@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MatchingPortfolioEvolution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.sample.alm</a> &gt; <span class="el_source">MatchingPortfolioEvolution.java</span></div><h1>MatchingPortfolioEvolution.java</h1><pre class="source lang-java linenums">
+package org.drip.sample.alm;
+
+import org.drip.alm.dynamics.AssetEvolver;
+import org.drip.alm.dynamics.EvolutionDigest;
+import org.drip.alm.dynamics.MatchingPortfolio;
+import org.drip.alm.dynamics.MaturingAsset;
+import org.drip.alm.dynamics.NonMaturingAsset;
+import org.drip.alm.dynamics.SpotMarketParameters;
+import org.drip.measure.statistics.UnivariateDiscreteThin;
+import org.drip.numerical.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
+ *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
+ *  	credit, commodity, equity, FX, and structured products.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ * 
+ * 	DROP Analytics Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Asset Backed Analytics
+ * 	- XVA Analytics
+ * 	- Exposure and Margin Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Numerical Core implements libraries for the following:
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;MatchingPortfolioEvolution&lt;/i&gt; illustrates the Market Value Evolution of a Matching Portfolio. The
+ * References are:
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/alm/dynamics/README.md&quot;&gt;ALM Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/alm/dynamics/README.md&quot;&gt;ALM Portfolio Allocation and Evolution&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+<span class="nc" id="L92">public class MatchingPortfolioEvolution</span>
+{
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+<span class="nc" id="L99">		EnvManager.InitEnv (&quot;&quot;);</span>
+
+<span class="nc" id="L101">		int maturity = 9;</span>
+<span class="nc" id="L102">		double ytm = 0.0290;</span>
+<span class="nc" id="L103">		int pathCount = 100000;</span>
+<span class="nc" id="L104">		int evolutionTenorInMonths = 3;</span>
+<span class="nc" id="L105">		double forwardYieldLowerBound = -100.;</span>
+<span class="nc" id="L106">		double nonMaturingAssetInitialPrice = 1.;</span>
+<span class="nc" id="L107">		double nonMaturingAssetAnnualReturn = 0.07;</span>
+<span class="nc" id="L108">		double nonMaturingAssetAnnualVolatility = 0.10;</span>
+
+<span class="nc" id="L110">		double initialPriceVolatility = 0.04 / Math.sqrt (maturity);</span>
+
+<span class="nc" id="L112">		double initialPrice = Math.exp (-1. * maturity * ytm);</span>
+
+<span class="nc" id="L114">		String maturityTenor = maturity + &quot;Y&quot;;</span>
+<span class="nc" id="L115">		double maturingAssetHoldings = 10. / initialPrice;</span>
+<span class="nc" id="L116">		double nonMaturingAssetHoldings = 0.;</span>
+
+<span class="nc" id="L118">		SpotMarketParameters spotMarketParameters = new SpotMarketParameters (</span>
+			initialPrice,
+			initialPriceVolatility,
+			forwardYieldLowerBound,
+			nonMaturingAssetInitialPrice,
+			nonMaturingAssetAnnualReturn,
+			nonMaturingAssetAnnualVolatility
+		);
+
+<span class="nc" id="L127">		MatchingPortfolio matchingPortfolio = new MatchingPortfolio (</span>
+			&quot;MATCHING PORTFOLIO&quot;,
+			new MaturingAsset (
+				&quot;MATURING ASSET&quot;,
+				maturingAssetHoldings,
+				maturityTenor
+			),
+			new NonMaturingAsset (
+				&quot;NON MATURING ASSET&quot;,
+				nonMaturingAssetHoldings
+			)
+		);
+
+<span class="nc" id="L140">		AssetEvolver assetEvolver = new AssetEvolver (</span>
+			pathCount,
+			evolutionTenorInMonths + &quot;M&quot;,
+			maturityTenor
+		);
+
+<span class="nc" id="L146">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L148">		System.out.println (&quot;\t|               Simulation Set-up                ||&quot;);</span>
+
+<span class="nc" id="L150">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L152">		System.out.println (&quot;\t| Portfolio Maturity Tenor                 =&gt; &quot; + maturityTenor);</span>
+
+<span class="nc" id="L154">		System.out.println (&quot;\t| Maturing Asset Starting Yield            =&gt; &quot; + (100. * ytm) + &quot;%&quot;);</span>
+
+<span class="nc" id="L156">		System.out.println (&quot;\t| Maturing Asset Starting Price            =&gt; &quot; + (100. * initialPrice));</span>
+
+<span class="nc" id="L158">		System.out.println (&quot;\t| Maturing Asset Starting Price Volatility =&gt; &quot; + (100. * initialPriceVolatility * Math.sqrt (maturity)) + &quot;%&quot;);</span>
+
+<span class="nc" id="L160">		System.out.println (&quot;\t| Maturing Asset Initial Holdings          =&gt; &quot; + (maturingAssetHoldings * initialPrice));</span>
+
+<span class="nc" id="L162">		System.out.println (&quot;\t| Non-Maturing Asset Returns               =&gt; &quot; + (100. * nonMaturingAssetAnnualReturn) + &quot;%&quot;);</span>
+
+<span class="nc" id="L164">		System.out.println (&quot;\t| Non-Maturing Asset Volatility            =&gt; &quot; + (100. * nonMaturingAssetAnnualVolatility) + &quot;%&quot;);</span>
+
+<span class="nc" id="L166">		System.out.println (&quot;\t| Non-Maturing Asset Initial Holdings      =&gt; &quot; + nonMaturingAssetHoldings);</span>
+
+<span class="nc" id="L168">		System.out.println (&quot;\t| Number of Simulated Paths                =&gt; &quot; + pathCount);</span>
+
+<span class="nc" id="L170">		System.out.println (&quot;\t| Evolution Tenor                          =&gt; &quot; + evolutionTenorInMonths + &quot;M&quot;);</span>
+
+<span class="nc" id="L172">		System.out.println (&quot;\t|------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L174">		System.out.println();</span>
+
+<span class="nc" id="L176">		EvolutionDigest evolutionDigest = assetEvolver.simulate (</span>
+			matchingPortfolio,
+			spotMarketParameters
+		);
+
+<span class="nc" id="L181">		String[] evolutionTenorArray = evolutionDigest.pathForwardTenorArray();</span>
+
+<span class="nc" id="L183">		String trajectoryTenor = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L185" title="All 2 branches missed.">		for (String trajectoryEvolutionTenor : evolutionTenorArray)</span>
+		{
+<span class="nc" id="L187">			trajectoryTenor = trajectoryTenor + trajectoryEvolutionTenor + &quot;,&quot;;</span>
+		}
+
+<span class="nc" id="L190">		System.out.println (trajectoryTenor);</span>
+
+<span class="nc" id="L192">		double[][] pathForwardPriceGrid = evolutionDigest.pathForwardPriceGrid();</span>
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int pathIndex = 0; pathIndex &lt; assetEvolver.pathCount(); ++pathIndex)</span>
+		{
+<span class="nc" id="L196">			String trajectory = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			for (int forwardTenorIndex = 0; forwardTenorIndex &lt; evolutionTenorArray.length; ++forwardTenorIndex)</span>
+			{
+<span class="nc" id="L200">				trajectory = trajectory + FormatUtil.FormatDouble (</span>
+					pathForwardPriceGrid[forwardTenorIndex][pathIndex], 3, 8, 1., false
+				) + &quot;,&quot;;
+			}
+
+<span class="nc" id="L205">			System.out.println (trajectory);</span>
+		}
+
+<span class="nc" id="L208">		System.out.println();</span>
+
+<span class="nc" id="L210">		UnivariateDiscreteThin[] univariateDiscreteThinArray = evolutionDigest.thinStatisticsArray();</span>
+
+<span class="nc" id="L212">		System.out.println (&quot;\t|---------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L214">		System.out.println (&quot;\t|            STATISTICS AT THE EVOLUTION TENOR NODES            ||&quot;);</span>
+
+<span class="nc" id="L216">		System.out.println (&quot;\t|---------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L218">		System.out.println (&quot;\t|        L -&gt; R:                                                ||&quot;);</span>
+
+<span class="nc" id="L220">		System.out.println (&quot;\t|                - Minimum                                      ||&quot;);</span>
+
+<span class="nc" id="L222">		System.out.println (&quot;\t|                - Maximum                                      ||&quot;);</span>
+
+<span class="nc" id="L224">		System.out.println (&quot;\t|                - Mean                                         ||&quot;);</span>
+
+<span class="nc" id="L226">		System.out.println (&quot;\t|                - Error                                        ||&quot;);</span>
+
+<span class="nc" id="L228">		System.out.println (&quot;\t|---------------------------------------------------------------||&quot;);</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		for (int forwardPriceIndex = 0; forwardPriceIndex &lt; evolutionTenorArray.length; ++forwardPriceIndex)</span>
+		{
+<span class="nc" id="L232">			String tenorStatisticsDump = &quot;\t| &quot; +</span>
+				evolutionTenorArray[forwardPriceIndex] + &quot; =&gt; &quot; +
+<span class="nc" id="L234">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L235">					univariateDiscreteThinArray[forwardPriceIndex].minimum(), 3, 8, 1., false</span>
+				) + &quot; | &quot; +
+<span class="nc" id="L237">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L238">					univariateDiscreteThinArray[forwardPriceIndex].maximum(), 3, 8, 1., false</span>
+				) + &quot; | &quot; +
+<span class="nc" id="L240">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L241">					univariateDiscreteThinArray[forwardPriceIndex].average(), 3, 8, 1., false</span>
+				) + &quot; | &quot; +
+<span class="nc" id="L243">				FormatUtil.FormatDouble (</span>
+<span class="nc" id="L244">					univariateDiscreteThinArray[forwardPriceIndex].error(), 1, 8, 1., false</span>
+				) + &quot; ||&quot;;
+
+<span class="nc" id="L247">			System.out.println (tenorStatisticsDump);</span>
+		}
+
+<span class="nc" id="L250">		System.out.println (&quot;\t|----------------------------------------------------------------||&quot;);</span>
+
+<span class="nc" id="L252">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L253">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

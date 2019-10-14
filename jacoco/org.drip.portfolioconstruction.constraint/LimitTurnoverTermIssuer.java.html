@@ -80,51 +80,56 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitTurnoverTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-<span class="nc" id="L85">	private double[] _adblPrice = null;</span>
-<span class="nc" id="L86">	private double[] _adblInitialHoldings = null;</span>
-<span class="nc" id="L87">	private double[] _adblIssuerSelection = null;</span>
+<span class="nc" id="L86">	private double[] _priceArray = null;</span>
+<span class="nc" id="L87">	private double[] _initialHoldingsArray = null;</span>
+<span class="nc" id="L88">	private double[] _issuerSelectionArray = null;</span>
 
 	protected LimitTurnoverTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblInitialHoldings,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] initialHoldingsArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (</span>
-			strName,
-			strID,
-			strDescription,
+<span class="nc" id="L103">		super (</span>
+			name,
+			id,
+			description,
 			&quot;LIMIT_TRADES&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-<span class="nc bnc" id="L113" title="All 6 branches missed.">		if (null == (_adblPrice = adblPrice) ||</span>
-			null == (_adblInitialHoldings = adblInitialHoldings) ||
-			null == (_adblIssuerSelection = adblIssuerSelection))
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;LimitTurnoverTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+<span class="nc bnc" id="L114" title="All 6 branches missed.">		if (null == (_priceArray = priceArray) ||</span>
+			null == (_initialHoldingsArray = initialHoldingsArray) ||
+			null == (_issuerSelectionArray = issuerSelectionArray))
+		{
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;LimitTurnoverTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+		}
 
-<span class="nc" id="L118">		int iNumAsset = _adblPrice.length;</span>
+<span class="nc" id="L121">		int assetCount = _priceArray.length;</span>
 
-<span class="nc bnc" id="L120" title="All 6 branches missed.">		if (0 == iNumAsset ||</span>
-			_adblInitialHoldings.length == iNumAsset ||
-			_adblIssuerSelection.length == iNumAsset ||
-<span class="nc bnc" id="L123" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblPrice) ||</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings) ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;LimitTurnoverTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
-<span class="nc" id="L127">	}</span>
+<span class="nc bnc" id="L123" title="All 6 branches missed.">		if (0 == assetCount ||</span>
+			_initialHoldingsArray.length == assetCount ||
+			_issuerSelectionArray.length == assetCount ||
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray) ||</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray) ||</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray))</span>
+		{
+<span class="nc" id="L130">			throw new java.lang.Exception (&quot;LimitTurnoverTermIssuer Constructor =&gt; Invalid Section&quot;);</span>
+		}
+<span class="nc" id="L132">	}</span>
 
 	/**
 	 * Retrieve the Array of Asset Prices
@@ -132,9 +137,9 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 	 * @return Array of Asset Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-<span class="nc" id="L137">		return _adblPrice;</span>
+<span class="nc" id="L142">		return _priceArray;</span>
 	}
 
 	/**
@@ -143,9 +148,9 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 	 * @return Array of Initial Holdings
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-<span class="nc" id="L148">		return _adblInitialHoldings;</span>
+<span class="nc" id="L153">		return _initialHoldingsArray;</span>
 	}
 
 	/**
@@ -154,9 +159,9 @@ public abstract class LimitTurnoverTermIssuer extends org.drip.portfolioconstruc
 	 * @return Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-<span class="nc" id="L159">		return _adblIssuerSelection;</span>
+<span class="nc" id="L164">		return _issuerSelectionArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

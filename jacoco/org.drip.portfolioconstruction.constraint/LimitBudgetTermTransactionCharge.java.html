@@ -81,63 +81,70 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitBudgetTermTransactionCharge extends
-	org.drip.portfolioconstruction.constraint.LimitBudgetTerm
+public class LimitBudgetTermTransactionCharge
+	extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
-<span class="nc" id="L87">	private double[] _adblInitialHoldings = null;</span>
-<span class="nc" id="L88">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;</span>
+<span class="nc" id="L87">	private double[] _initialHoldingsArray = null;</span>
+<span class="nc" id="L88">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;</span>
 
 	/**
 	 * LimitBudgetTermTransactionCharge Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblBudget Budget Value of the Constraint
-	 * @param adblPrice Array of Asset Prices
-	 * @param adblInitialHoldings Array of Initial Holdings
-	 * @param aTransactionCharge Array of Transaction Charge Instances
+	 * @param budget Budget Value of the Constraint
+	 * @param priceArray Array of Asset Prices
+	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param transactionChargeArray Array of Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitBudgetTermTransactionCharge (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblBudget,
-		final double[] adblPrice,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final double budget,
+		final double[] priceArray,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L114">		super (</span>
-			strName,
+			name,
 			&quot;CT_AFTER_TRANSACTION_CHARGE_BUDGET&quot;,
 			&quot;Constrains the After Transaction Charge Allocation Budget&quot;,
 			scope,
 			unit,
-			dblBudget,
-			adblPrice
+			budget,
+			priceArray
 		);
 
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc" id="L128">		int iNumAsset = _adblInitialHoldings.length;</span>
-
-<span class="nc bnc" id="L130" title="All 6 branches missed.">		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length ||</span>
-			iNumAsset != adblPrice.length)
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="nc bnc" id="L134" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length ||</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))</span>
 		{
-<span class="nc bnc" id="L136" title="All 2 branches missed.">			if (null == _aTransactionCharge[i])</span>
-<span class="nc" id="L137">				throw new java.lang.Exception</span>
-					(&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L140">	}</span>
+
+<span class="nc" id="L130">		int assetCount = _initialHoldingsArray.length;</span>
+
+<span class="nc bnc" id="L132" title="All 6 branches missed.">		if (null == (_transactionChargeArray = transactionChargeArray) ||</span>
+			assetCount != _transactionChargeArray.length ||
+			assetCount != priceArray.length)
+		{
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (null == _transactionChargeArray[assetIndex])</span>
+			{
+<span class="nc" id="L143">				throw new java.lang.Exception</span>
+					(&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);
+			}
+		}
+<span class="nc" id="L147">	}</span>
 
 	/**
 	 * Retrieve the Array of Transaction Charges
@@ -145,44 +152,50 @@ public class LimitBudgetTermTransactionCharge extends
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray()
 	{
-<span class="nc" id="L150">		return _aTransactionCharge;</span>
+<span class="nc" id="L157">		return _transactionChargeArray;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L155">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L156">		{</span>
+<span class="nc" id="L162">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L163">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L159">				return price().length;</span>
+<span class="nc" id="L166">				return priceArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L166">				double[] adblPrice = price();</span>
+<span class="nc" id="L173">				double[] priceArray = priceArray();</span>
 
-<span class="nc" id="L168">				double dblConstraintValue = 0.;</span>
-<span class="nc" id="L169">				int iNumAsset = adblPrice.length;</span>
+<span class="nc" id="L175">				double limitBudgetTransactionCharge = 0.;</span>
+<span class="nc" id="L176">				int assetCount = priceArray.length;</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L172" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L173">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
+				{
+<span class="nc" id="L182">					throw new java.lang.Exception</span>
 						(&quot;LimitBudgetTermTransactionCharge::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
 
-<span class="nc bnc" id="L176" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc" id="L177">					dblConstraintValue += (adblPrice[i] * (adblFinalHoldings[i] - _adblInitialHoldings[i]) -</span>
-<span class="nc" id="L178">						_aTransactionCharge[i].estimate (</span>
-<span class="nc" id="L179">							_adblInitialHoldings[i],</span>
-							adblFinalHoldings[i]
+<span class="nc bnc" id="L186" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc" id="L188">					limitBudgetTransactionCharge += (</span>
+						priceArray[assetIndex] * (
+<span class="nc" id="L190">							finalHoldingsArray[assetIndex] - _initialHoldingsArray[assetIndex]</span>
+<span class="nc" id="L191">						) - _transactionChargeArray[assetIndex].estimate (</span>
+<span class="nc" id="L192">							_initialHoldingsArray[assetIndex],</span>
+							finalHoldingsArray[assetIndex]
 						)
 					);
 				}
 
-<span class="nc" id="L185">				return dblConstraintValue;</span>
+<span class="nc" id="L198">				return limitBudgetTransactionCharge;</span>
 			}
 		};
 	}

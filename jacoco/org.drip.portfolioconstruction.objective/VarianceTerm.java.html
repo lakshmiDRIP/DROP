@@ -81,75 +81,88 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VarianceTerm extends org.drip.portfolioconstruction.objective.RiskTerm
+public class VarianceTerm
+	extends org.drip.portfolioconstruction.objective.RiskTerm
 {
 
 	/**
 	 * VarianceTerm Constructor
 	 * 
-	 * @param strName Name of the Objective Function
-	 * @param adblInitialHoldings The Initial Holdings
-	 * @param aadblAssetCovariance The Asset Covariance
-	 * @param adblBenchmarkConstrictedHoldings The Constricted Benchmark Holdings
+	 * @param name Name of the Objective Function
+	 * @param initialHoldingsArray The Initial Holdings
+	 * @param assetCovarianceMatrix The Asset Covariance
+	 * @param benchmarkConstrictedHoldingsArray The Constricted Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VarianceTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L105">		super (</span>
-			strName,
+<span class="nc" id="L106">		super (</span>
+			name,
 			&quot;OT_VARIANCE&quot;,
 			&quot;Variance Objective Term&quot;,
-			adblInitialHoldings,
-			aadblAssetCovariance,
-			adblBenchmarkConstrictedHoldings
+			initialHoldingsArray,
+			assetCovarianceMatrix,
+			benchmarkConstrictedHoldingsArray
 		);
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L114">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L117">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L118">		{</span>
+<span class="nc" id="L118">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L119">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L121">				return initialHoldings().length;</span>
+<span class="nc" id="L122">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L128" title="All 4 branches missed.">				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))</span>
-<span class="nc" id="L129">					throw new java.lang.Exception (&quot;VarianceTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
-
-<span class="nc" id="L131">				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();</span>
-
-<span class="nc" id="L133">				double[][] aadblCovariance = assetCovariance();</span>
-
-<span class="nc" id="L135">				int iNumAsset = aadblCovariance.length;</span>
-<span class="nc" id="L136">				double dblCovariance = 0.;</span>
-
-<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (adblVariate.length != iNumAsset)</span>
-<span class="nc" id="L139">					throw new java.lang.Exception</span>
-						(&quot;VarianceTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L142" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">					double dblOuterAdjustedVariate = null == adblBenchmarkHoldings ? adblVariate[i] :</span>
-						adblVariate[i] - adblBenchmarkHoldings[i];
-
-<span class="nc bnc" id="L146" title="All 2 branches missed.">					for (int j = 0; j &lt; iNumAsset; ++j)</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">						dblCovariance += aadblCovariance[i][j] * dblOuterAdjustedVariate * (null ==</span>
-							adblBenchmarkHoldings ? adblVariate[j] : adblVariate[j] -
-								adblBenchmarkHoldings[j]);
+<span class="nc bnc" id="L129" title="All 2 branches missed.">				if (null == variateArray ||</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+				{
+<span class="nc" id="L132">					throw new java.lang.Exception (&quot;VarianceTerm::rdToR1::evaluate =&gt; Invalid Input&quot;);</span>
 				}
 
-<span class="nc" id="L152">				return dblCovariance;</span>
+<span class="nc" id="L135">				double[] benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldings();</span>
+
+<span class="nc" id="L137">				double[][] assetCovarianceMatrix = assetCovariance();</span>
+
+<span class="nc" id="L139">				int assetCount = assetCovarianceMatrix.length;</span>
+<span class="nc" id="L140">				double covariance = 0.;</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">				if (variateArray.length != assetCount)</span>
+				{
+<span class="nc" id="L144">					throw new java.lang.Exception</span>
+						(&quot;VarianceTerm::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
+				}
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">				for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
+				{
+<span class="nc bnc" id="L150" title="All 2 branches missed.">					double outerAdjustedVariate = null == benchmarkConstrictedHoldingsArray ?</span>
+						variateArray[assetIndexI] :
+						variateArray[assetIndexI] - benchmarkConstrictedHoldingsArray[assetIndexI];
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">					for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
+					{
+<span class="nc bnc" id="L156" title="All 2 branches missed.">						covariance += assetCovarianceMatrix[assetIndexI][assetIndexJ] * outerAdjustedVariate *</span>
+						(
+							null == benchmarkConstrictedHoldingsArray ?
+								variateArray[assetIndexJ] :
+								variateArray[assetIndexJ] - benchmarkConstrictedHoldingsArray[assetIndexJ]
+						);
+					}
+				}
+
+<span class="nc" id="L165">				return covariance;</span>
 			}
 		};
 	}

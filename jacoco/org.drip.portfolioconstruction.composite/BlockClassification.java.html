@@ -79,53 +79,64 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlockClassification extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L83">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Boolean&gt; _mapMembership = new</span>
-		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Boolean&gt;();
+public class BlockClassification extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L84">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Boolean&gt; _membershipMap =</span>
+		new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Boolean&gt;();
 
 	/**
 	 * Classification Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlockClassification (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L102">		super (strName, strID, strDescription);</span>
-<span class="nc" id="L103">	}</span>
+<span class="nc" id="L103">		super (</span>
+			name,
+			id,
+			description
+		);
+<span class="nc" id="L108">	}</span>
 
 	/**
 	 * Add an Asset's Membership
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param bMembership The Membership TURUE or FALSE
+	 * @param assetID The Asset ID
+	 * @param membership The Membership TURUE or FALSE
 	 * 
 	 * @return TRUE - The Asset's Attribute successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final boolean bMembership)
+		final java.lang.String assetID,
+		final boolean membership)
 	{
-<span class="nc bnc" id="L118" title="All 4 branches missed.">		if (null == strAssetID || strAssetID.isEmpty()) return false;</span>
+<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == assetID || assetID.isEmpty())</span>
+		{
+<span class="nc" id="L125">			return false;</span>
+		}
 
-<span class="nc" id="L120">		_mapMembership.put (strAssetID, bMembership);</span>
+<span class="nc" id="L128">		_membershipMap.put (</span>
+			assetID,
+<span class="nc" id="L130">			membership</span>
+		);
 
-<span class="nc" id="L122">		return true;</span>
+<span class="nc" id="L133">		return true;</span>
 	}
 
 	/**
 	 * Retrieve the Asset's Membership
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset's Membership
 	 * 
@@ -133,13 +144,15 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	 */
 
 	public boolean membership (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L139" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !_mapMembership.containsKey (strAssetID))</span>
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;Classification::membership =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L150" title="All 6 branches missed.">		if (null == assetID || assetID.isEmpty() || !_membershipMap.containsKey (assetID))</span>
+		{
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;BlockClassification::membership =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="nc" id="L142">		return _mapMembership.get (strAssetID);</span>
+<span class="nc" id="L155">		return _membershipMap.get (assetID);</span>
 	}
 
 	/**
@@ -148,9 +161,9 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	 * @return Map of the Asset Classification
 	 */
 
-	public java.util.Map&lt;java.lang.String, java.lang.Boolean&gt; membership()
+	public java.util.Map&lt;java.lang.String, java.lang.Boolean&gt; membershipMap()
 	{
-<span class="nc" id="L153">		return _mapMembership;</span>
+<span class="nc" id="L166">		return _membershipMap;</span>
 	}
 
 	/**
@@ -164,34 +177,54 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == holdings) return null;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (null == holdings)</span>
+		{
+<span class="nc" id="L182">			return null;</span>
+		}
 
-<span class="nc" id="L169">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
+<span class="nc" id="L185">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdings.assetIDSet();</span>
 
-<span class="nc" id="L171">		java.util.List&lt;java.lang.Double&gt; lsValue = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L187">		java.util.List&lt;java.lang.Double&gt; classificationValueList =</span>
+			new java.util.ArrayList&lt;java.lang.Double&gt;();
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset) {</span>
-			try {
-<span class="nc" id="L175">				lsValue.add (java.lang.Double.parseDouble (java.lang.Boolean.toString (membership</span>
-<span class="nc" id="L176">					(strAssetID)).toString()));</span>
-<span class="nc" id="L177">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L178">				e.printStackTrace();</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (java.lang.String strAssetID : assetIDSet)</span>
+		{
+			try
+			{
+<span class="nc" id="L194">				classificationValueList.add (</span>
+<span class="nc" id="L195">					java.lang.Double.parseDouble (</span>
+<span class="nc" id="L196">						java.lang.Boolean.toString (</span>
+<span class="nc" id="L197">							membership (</span>
+								strAssetID
+							)
+<span class="nc" id="L200">						).toString()</span>
+					)
+				);
+			}
+<span class="nc" id="L204">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L206">				e.printStackTrace();</span>
 
-<span class="nc" id="L180">				return null;</span>
-<span class="nc" id="L181">			}</span>
-<span class="nc" id="L182">		}</span>
+<span class="nc" id="L208">				return null;</span>
+<span class="nc" id="L209">			}</span>
+<span class="nc" id="L210">		}</span>
 
-<span class="nc" id="L184">		int iNumAsset = setAsset.size();</span>
+<span class="nc" id="L212">		int assetCount = assetIDSet.size();</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (lsValue.size() != iNumAsset) return null;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (classificationValueList.size() != assetCount)</span>
+		{
+<span class="nc" id="L216">			return null;</span>
+		}
 
-<span class="nc" id="L188">		int iAssetCount = 0;</span>
-<span class="nc" id="L189">		double[] adblAssetAttributeValue = new double[iNumAsset];</span>
+<span class="nc" id="L219">		int assetIndex = 0;</span>
+<span class="nc" id="L220">		double[] assetClassificationValueArray = new double[assetCount];</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (double dblAssetValue : lsValue)</span>
-<span class="nc" id="L192">			adblAssetAttributeValue[iAssetCount++] = dblAssetValue;</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (double assetClassificationValue : classificationValueList)</span>
+		{
+<span class="nc" id="L224">			assetClassificationValueArray[assetIndex++] = assetClassificationValue;</span>
+<span class="nc" id="L225">		}</span>
 
-<span class="nc" id="L194">		return adblAssetAttributeValue;</span>
+<span class="nc" id="L227">		return assetClassificationValueArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

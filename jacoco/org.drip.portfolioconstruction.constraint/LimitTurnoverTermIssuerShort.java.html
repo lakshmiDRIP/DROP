@@ -80,47 +80,47 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitTurnoverTermIssuerShort extends
-	org.drip.portfolioconstruction.constraint.LimitTurnoverTermIssuer
+public class LimitTurnoverTermIssuerShort
+	extends org.drip.portfolioconstruction.constraint.LimitTurnoverTermIssuer
 {
 
 	/**
 	 * LimitTurnoverTermIssuerShort Constructor
 	 * 
-	 * @param strName Name of the LimitTurnoverTermIssuerShort Constraint
+	 * @param name Name of the LimitTurnoverTermIssuerShort Constraint
 	 * @param scope Scope of the LimitTurnoverTermIssuerShort Constraint
 	 * @param unit Unit of the LimitTurnoverTermIssuerShort Constraint
-	 * @param dblMinimum Minimum Value for the Constraint
-	 * @param dblMaximum Maximum Value for the Constraint
-	 * @param adblPrice Array of Asset Prices
-	 * @param adblIssuerSelection Issuer Selection Flag Array
-	 * @param adblInitialHoldings Initial Holdings Array
+	 * @param minimum Minimum Value for the Constraint
+	 * @param maximum Maximum Value for the Constraint
+	 * @param priceArray Array of Asset Prices
+	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param issuerSelectionArray Issuer Selection Flag Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Inconsistent/Invalid
 	 */
 
 	public LimitTurnoverTermIssuerShort (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblInitialHoldings,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] initialHoldingsArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L113">		super (</span>
-			strName,
+			name,
 			&quot;CT_LIMIT_TURNOVER_OF_SHORT_TRADES&quot;,
 			&quot;Constrains the Total Turnover of Short Trades&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice,
-			adblInitialHoldings,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			priceArray,
+			initialHoldingsArray,
+			issuerSelectionArray
 		);
 <span class="nc" id="L125">	}</span>
 
@@ -130,35 +130,41 @@ public class LimitTurnoverTermIssuerShort extends
 <span class="nc" id="L130">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L133">				return issuerSelection().length;</span>
+<span class="nc" id="L133">				return issuerSelectionArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L140">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L140">				double[] issuerSelectionArray = issuerSelectionArray();</span>
 
-<span class="nc" id="L142">				double[] adblInitialHoldings = initialHoldings();</span>
+<span class="nc" id="L142">				double[] initialHoldingsArray = initialHoldingsArray();</span>
 
-<span class="nc" id="L144">				int iNumAsset = adblIssuerSelection.length;</span>
-<span class="nc" id="L145">				double dblTurnover = 0;</span>
+<span class="nc" id="L144">				int assetCount = issuerSelectionArray.length;</span>
+<span class="nc" id="L145">				double turnover = 0;</span>
 
-<span class="nc" id="L147">				double[] adblPrice = price();</span>
+<span class="nc" id="L147">				double[] priceArray = priceArray();</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L150" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L151">					throw new java.lang.Exception</span>
-						(&quot;LimitTurnoverTermIssuerSell::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L154" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
 				{
-<span class="nc bnc" id="L156" title="All 2 branches missed.">					if (adblInitialHoldings[i] &lt; adblFinalHoldings[i])</span>
-<span class="nc" id="L157">						dblTurnover += adblIssuerSelection[i] * adblPrice[i] *(adblFinalHoldings[i] -</span>
-							adblInitialHoldings[i]);
+<span class="nc" id="L153">					throw new java.lang.Exception</span>
+						(&quot;LimitTurnoverTermIssuerShort::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 				}
 
-<span class="nc" id="L161">				return dblTurnover;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc bnc" id="L159" title="All 2 branches missed.">					if (initialHoldingsArray[assetIndex] &lt; finalHoldingsArray[assetIndex])</span>
+					{
+<span class="nc" id="L161">						turnover += issuerSelectionArray[assetIndex] * priceArray[assetIndex] * (</span>
+							finalHoldingsArray[assetIndex] - initialHoldingsArray[assetIndex]
+						);
+					}
+				}
+
+<span class="nc" id="L167">				return turnover;</span>
 			}
 		};
 	}

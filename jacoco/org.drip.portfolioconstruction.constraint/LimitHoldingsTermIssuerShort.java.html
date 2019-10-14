@@ -80,41 +80,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitHoldingsTermIssuerShort extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTermIssuer
+public class LimitHoldingsTermIssuerShort
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTermIssuer
 {
 
 	/**
 	 * LimitHoldingsTermIssuerShort Constructor
 	 * 
-	 * @param strName Name of the Limit Issuer Net Holdings
+	 * @param name Name of the Limit Issuer Net Holdings
 	 * @param scope Scope of the Limit Issuer Net Holdings
 	 * @param unit Unit of the Limit Issuer Net Holdings
-	 * @param dblMinimum Minimum Bound of the Limit Issuer Net Holdings
-	 * @param dblMaximum Maximum Bound of the Limit Issuer Net Holdings
-	 * @param adblIssuerSelection Array of Issuer Selection Entries
+	 * @param minimum Minimum Bound of the Limit Issuer Net Holdings
+	 * @param maximum Maximum Bound of the Limit Issuer Net Holdings
+	 * @param issuerSelectionArray Array of Issuer Selection Entries
 	 * 
 	 * @throws java.lang.Exception Thrwon if the Inputs are Invalid
 	 */
 
 	public LimitHoldingsTermIssuerShort (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L109">		super (</span>
-			strName,
+			name,
 			&quot;CT_ISSUER_LIMIT_SHORT_HOLDINGS&quot;,
 			&quot;Limit Issuer Short Holdings Constraint Term&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
 <span class="nc" id="L119">	}</span>
 
@@ -124,30 +124,36 @@ public class LimitHoldingsTermIssuerShort extends
 <span class="nc" id="L124">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L127">				return issuerSelection().length;</span>
+<span class="nc" id="L127">				return issuerSelectionArray().length;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L134">				double[] adblIssuerSelection = issuerSelection();</span>
+<span class="nc" id="L134">				double[] issuerSelectionArray = issuerSelectionArray();</span>
 
-<span class="nc" id="L136">				int iNumAsset = adblIssuerSelection.length;</span>
-<span class="nc" id="L137">				double dblConstraintValue = 0.;</span>
+<span class="nc" id="L136">				int assetCount = issuerSelectionArray.length;</span>
+<span class="nc" id="L137">				double limitHoldingsIssuerShort = 0.;</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L140" title="All 4 branches missed.">					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)</span>
-<span class="nc" id="L141">					throw new java.lang.Exception</span>
-						(&quot;LimitHoldingsTermIssuerShort::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
-
-<span class="nc bnc" id="L144" title="All 2 branches missed.">				for (int i = 0; i &lt; iNumAsset; ++i)</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+					finalHoldingsArray.length != assetCount)
 				{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">					if (adblFinalHoldings[i] &lt; 0.)</span>
-<span class="nc" id="L147">						dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];</span>
+<span class="nc" id="L143">					throw new java.lang.Exception</span>
+						(&quot;LimitHoldingsTermIssuerShort::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 				}
 
-<span class="nc" id="L150">				return dblConstraintValue;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+				{
+<span class="nc bnc" id="L149" title="All 2 branches missed.">					if (finalHoldingsArray[assetIndex] &lt; 0.)</span>
+					{
+<span class="nc" id="L151">						limitHoldingsIssuerShort += issuerSelectionArray[assetIndex] *</span>
+							finalHoldingsArray[assetIndex];
+					}
+				}
+
+<span class="nc" id="L156">				return limitHoldingsIssuerShort;</span>
 			}
 		};
 	}

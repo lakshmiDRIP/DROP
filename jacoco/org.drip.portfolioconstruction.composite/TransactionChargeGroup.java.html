@@ -79,61 +79,71 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L82">public class TransactionChargeGroup {</span>
-<span class="nc" id="L83">	private</span>
+<span class="nc" id="L82">public class TransactionChargeGroup</span>
+{
+<span class="nc" id="L84">	private</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;
-		_mapTransactionCharge = new
+		_transactionChargeMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;();
 
 	/**
 	 * Add an Asset's Transaction Charge
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Charge
+	 * @param assetID The Asset ID
+	 * @param transactionCharge The Asset's Transaction Charge
 	 * 
 	 * @return TRUE - The Asset's Transaction Charge successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.cost.TransactionCharge tc)
+		final java.lang.String assetID,
+		final org.drip.portfolioconstruction.cost.TransactionCharge transactionCharge)
 	{
-<span class="nc bnc" id="L101" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;</span>
+<span class="nc bnc" id="L102" title="All 6 branches missed.">		if (null == assetID || assetID.isEmpty() ||</span>
+			null == transactionCharge)
+		{
+<span class="nc" id="L105">			return false;</span>
+		}
 
-<span class="nc" id="L103">		_mapTransactionCharge.put (strAssetID, tc);</span>
+<span class="nc" id="L108">		_transactionChargeMap.put (</span>
+			assetID,
+			transactionCharge
+		);
 
-<span class="nc" id="L105">		return true;</span>
+<span class="nc" id="L113">		return true;</span>
 	}
 
 	/**
 	 * Indicate if the Asset's Transaction Charge is Available
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset's Transaction Charge is Available
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-<span class="nc bnc" id="L119" title="All 6 branches missed.">		return null != strAssetID &amp;&amp; !strAssetID.isEmpty() &amp;&amp; _mapTransactionCharge.containsKey (strAssetID);</span>
+<span class="nc bnc" id="L127" title="All 6 branches missed.">		return null != assetID &amp;&amp; !assetID.isEmpty() &amp;&amp; _transactionChargeMap.containsKey (assetID);</span>
 	}
 
 	/**
 	 * Retrieve the Asset's Transaction Charge
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset's Transaction Charge
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge get (
-		final java.lang.String strAssetID)
+	public org.drip.portfolioconstruction.cost.TransactionCharge transactionCharge (
+		final java.lang.String assetID)
 	{
-<span class="nc bnc" id="L133" title="All 6 branches missed.">		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCharge.containsKey (strAssetID))</span>
-<span class="nc" id="L134">			return null;</span>
+<span class="nc bnc" id="L141" title="All 6 branches missed.">		if (null == assetID || assetID.isEmpty() || !_transactionChargeMap.containsKey (assetID))</span>
+		{
+<span class="nc" id="L143">			return null;</span>
+		}
 
-<span class="nc" id="L136">		return _mapTransactionCharge.get (strAssetID);</span>
+<span class="nc" id="L146">		return _transactionChargeMap.get (assetID);</span>
 	}
 
 	/**
@@ -142,9 +152,10 @@ package org.drip.portfolioconstruction.composite;
 	 * @return Map of the Transaction Charge
 	 */
 
-	public java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.cost.TransactionCharge&gt; map()
+	public java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.cost.TransactionCharge&gt;
+		transactionChargeMap()
 	{
-<span class="nc" id="L147">		return _mapTransactionCharge;</span>
+<span class="nc" id="L158">		return _transactionChargeMap;</span>
 	}
 
 	/**
@@ -158,17 +169,22 @@ package org.drip.portfolioconstruction.composite;
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == holdings) return null;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		if (null == holdings)</span>
+		{
+<span class="nc" id="L174">			return null;</span>
+		}
 
-<span class="nc" id="L163">		java.util.Set&lt;java.lang.String&gt; setAsset = holdings.assets();</span>
+<span class="nc" id="L177">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdings.assetIDSet();</span>
 
-<span class="nc" id="L165">		java.util.List&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt; lsTransactionCharge = new</span>
-			java.util.ArrayList&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;();
+<span class="nc" id="L179">		java.util.List&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt; transactionChargeList =</span>
+			new java.util.ArrayList&lt;org.drip.portfolioconstruction.cost.TransactionCharge&gt;();
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (java.lang.String strAssetID : setAsset)</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">			lsTransactionCharge.add (contains (strAssetID) ? get (strAssetID) : null);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		for (java.lang.String assetID : assetIDSet)</span>
+		{
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			transactionChargeList.add (contains (assetID) ? transactionCharge (assetID) : null);</span>
+<span class="nc" id="L185">		}</span>
 
-<span class="nc" id="L171">		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) lsTransactionCharge.toArray();</span>
+<span class="nc" id="L187">		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) transactionChargeList.toArray();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

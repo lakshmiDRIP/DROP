@@ -6,40 +6,52 @@ package org.drip.analytics.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -75,75 +87,75 @@ package org.drip.analytics.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/definition/README.md&quot;&gt;Latent State Curves, Surfaces, Turns&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class MarketSurface implements org.drip.analytics.definition.Curve {
-<span class="fc" id="L88">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L89">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L90">	protected org.drip.state.identifier.CustomLabel _label = null;</span>
+<span class="fc" id="L100">	protected java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L101">	protected int _iEpochDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L102">	protected org.drip.state.identifier.CustomLabel _label = null;</span>
 
 	protected MarketSurface (
 		final int iEpochDate,
 		final org.drip.state.identifier.CustomLabel label,
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
-<span class="fc" id="L97">	{</span>
-<span class="pc bpc" id="L98" title="2 of 4 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
-<span class="nc" id="L99">			throw new java.lang.Exception (&quot;MarketSurface ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L109">	{</span>
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty())</span>
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;MarketSurface ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L101">		_iEpochDate = iEpochDate;</span>
-<span class="fc" id="L102">	}</span>
+<span class="fc" id="L113">		_iEpochDate = iEpochDate;</span>
+<span class="fc" id="L114">	}</span>
 
 	@Override public org.drip.state.identifier.LatentStateLabel label()
 	{
-<span class="fc" id="L106">		return _label;</span>
+<span class="fc" id="L118">		return _label;</span>
 	}
 
 	@Override public java.lang.String currency()
 	{
-<span class="fc" id="L111">		return _strCurrency;</span>
+<span class="fc" id="L123">		return _strCurrency;</span>
 	}
 
 	@Override public org.drip.analytics.date.JulianDate epoch()
 	{
 		try {
-<span class="fc" id="L117">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
-<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L119">			e.printStackTrace();</span>
+<span class="fc" id="L129">			return new org.drip.analytics.date.JulianDate (_iEpochDate);</span>
+<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L122">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	@Override public boolean setCCIS (
 		final org.drip.analytics.input.CurveConstructionInputSet ccis)
 	{
-<span class="nc" id="L128">		return false;</span>
+<span class="nc" id="L140">		return false;</span>
 	}
 
 	@Override public org.drip.product.definition.CalibratableComponent[] calibComp()
 	{
-<span class="nc" id="L133">		return null;</span>
+<span class="nc" id="L145">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; manifestMeasure (
 		final java.lang.String strInstr)
 	{
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L151">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L158">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState shiftManifestMeasure (
@@ -151,26 +163,26 @@ public abstract class MarketSurface implements org.drip.analytics.definition.Cur
 		final java.lang.String strManifestMeasure,
 		final double dblShift)
 	{
-<span class="nc" id="L154">		return null;</span>
+<span class="nc" id="L166">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakManifestMeasure (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L161">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState parallelShiftQuantificationMetric (
 		final double dblShift)
 	{
-<span class="nc" id="L167">		return null;</span>
+<span class="nc" id="L179">		return null;</span>
 	}
 
 	@Override public org.drip.state.representation.LatentState customTweakQuantificationMetric (
 		final org.drip.param.definition.ManifestMeasureTweak rvtp)
 	{
-<span class="nc" id="L173">		return null;</span>
+<span class="nc" id="L185">		return null;</span>
 	}
 
 	/**
@@ -205,10 +217,10 @@ public abstract class MarketSurface implements org.drip.analytics.definition.Cur
 		final java.lang.String strTenor)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L208" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
-<span class="nc" id="L209">			throw new java.lang.Exception (&quot;MarketSurface::node =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">		if (null == strTenor || strTenor.isEmpty())</span>
+<span class="nc" id="L221">			throw new java.lang.Exception (&quot;MarketSurface::node =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L211">		return node (dblStrike, epoch().addTenor (strTenor).julian());</span>
+<span class="fc" id="L223">		return node (dblStrike, epoch().addTenor (strTenor).julian());</span>
 	}
 
 	/**
@@ -244,8 +256,8 @@ public abstract class MarketSurface implements org.drip.analytics.definition.Cur
 	public org.drip.analytics.definition.NodeStructure maturityAnchorTermStructure (
 		final java.lang.String strTenorAnchor)
 	{
-<span class="pc bpc" id="L247" title="2 of 4 branches missed.">		return null == strTenorAnchor || strTenorAnchor.isEmpty() ? null : yAnchorTermStructure</span>
-<span class="fc" id="L248">			(epoch().addTenor (strTenorAnchor).julian());</span>
+<span class="pc bpc" id="L259" title="2 of 4 branches missed.">		return null == strTenorAnchor || strTenorAnchor.isEmpty() ? null : yAnchorTermStructure</span>
+<span class="fc" id="L260">			(epoch().addTenor (strTenorAnchor).julian());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -80,31 +80,37 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PortfolioConstructionParameters {
-<span class="fc" id="L84">	private java.lang.String[] _astrAssetID = null;</span>
-<span class="fc" id="L85">	private org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings _crus = null;</span>
-<span class="fc" id="L86">	private org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings _pecs = null;</span>
+public class PortfolioConstructionParameters
+{
+<span class="fc" id="L85">	private java.lang.String[] _assetIDArray = null;</span>
+<span class="fc" id="L86">	private org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings _customRiskUtilitySettings =</span>
+		null;
+<span class="fc" id="L88">	private org.drip.portfolioconstruction.allocator.EqualityConstraintSettings</span>
+		_equalityConstraintSettings = null;
 
 	/**
 	 * PortfolioConstructionParameters Constructor
 	 * 
-	 * @param astrAssetID Array of Asset IDs
-	 * @param crus The Quadratic Custom Risk Utility Settings
-	 * @param pecs The Portfolio Equality Constraint Settings
+	 * @param assetIDArray Array of Asset IDs
+	 * @param customRiskUtilitySettings The Custom Risk Utility Settings
+	 * @param equalityConstraintSettings The Portfolio Equality Constraint Settings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PortfolioConstructionParameters (
-		final java.lang.String[] astrAssetID,
-		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings crus,
-		final org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings pecs)
+		final java.lang.String[] assetIDArray,
+		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings,
+		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings)
 		throws java.lang.Exception
-<span class="fc" id="L103">	{</span>
-<span class="pc bpc" id="L104" title="4 of 8 branches missed.">		if (null == (_astrAssetID = astrAssetID) || 0 == _astrAssetID.length || null == (_crus = crus) ||</span>
-			null == (_pecs = pecs))
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;PortfolioConstructionParameters Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="fc" id="L106">	{</span>
+<span class="pc bpc" id="L107" title="4 of 8 branches missed.">		if (null == (_assetIDArray = assetIDArray) || 0 == _assetIDArray.length ||</span>
+			null == (_customRiskUtilitySettings = customRiskUtilitySettings) ||
+			null == (_equalityConstraintSettings = equalityConstraintSettings))
+		{
+<span class="nc" id="L111">			throw new java.lang.Exception (&quot;PortfolioConstructionParameters Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L113">	}</span>
 
 	/**
 	 * Retrieve the Asset ID Array
@@ -112,20 +118,20 @@ public class PortfolioConstructionParameters {
 	 * @return The Asset ID Array
 	 */
 
-	public java.lang.String[] assets()
+	public java.lang.String[] assetIDArray()
 	{
-<span class="fc" id="L117">		return _astrAssetID;</span>
+<span class="fc" id="L123">		return _assetIDArray;</span>
 	}
 
 	/**
-	 * Retrieve the Instance of the Quadratic Custom Risk Utility Settings
+	 * Retrieve the Instance of the Custom Risk Utility Settings
 	 * 
-	 * @return The Quadratic Custom Risk Utility Settings
+	 * @return The Custom Risk Utility Settings
 	 */
 
-	public org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings optimizerSettings()
+	public org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings()
 	{
-<span class="fc" id="L128">		return _crus;</span>
+<span class="fc" id="L134">		return _customRiskUtilitySettings;</span>
 	}
 
 	/**
@@ -134,9 +140,9 @@ public class PortfolioConstructionParameters {
 	 * @return The Portfolio Equality Constraint Settings
 	 */
 
-	public org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings constraintSettings()
+	public org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings()
 	{
-<span class="fc" id="L139">		return _pecs;</span>
+<span class="fc" id="L145">		return _equalityConstraintSettings;</span>
 	}
 
 	/**
@@ -147,112 +153,146 @@ public class PortfolioConstructionParameters {
 
 	public org.drip.function.definition.RdToR1 fullyInvestedConstraint()
 	{
-		try {
-<span class="fc" id="L151">			return new org.drip.function.rdtor1.AffineMultivariate</span>
-<span class="fc" id="L152">				(org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Unitary (assets().length), -1.);</span>
-<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L154">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L158">			return new org.drip.function.rdtor1.AffineMultivariate (</span>
+<span class="fc" id="L159">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Unitary (_assetIDArray.length),</span>
+				-1.
+			);
+		}
+<span class="nc" id="L163">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L165">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L157">		return null;</span>
+<span class="nc" id="L168">		return null;</span>
 	}
 
 	/**
 	 * Retrieve the Mandatory Returns Constraint
 	 * 
-	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
 	 * 
 	 * @return The Mandatory Returns Constraint
 	 */
 
 	public org.drip.function.definition.RdToR1 returnsConstraint (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 	{
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (null == ausp) return null;</span>
-
-<span class="fc" id="L173">		java.lang.String[] astrAssetID = assets();</span>
-
-<span class="fc" id="L175">		int iNumAsset = astrAssetID.length;</span>
-<span class="fc" id="L176">		double[] adblAssetReturn = new double[iNumAsset];</span>
-
-<span class="fc bfc" id="L178" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumAsset; ++i) {</span>
-<span class="fc" id="L179">			org.drip.portfolioconstruction.params.AssetStatisticalProperties aspAsset = ausp.asp</span>
-<span class="fc" id="L180">				(astrAssetID[i]);</span>
-
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			if (null == aspAsset) return null;</span>
-
-<span class="fc" id="L184">			adblAssetReturn[i] = aspAsset.expectedReturn();</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (null == assetUniverseStatisticalProperties)</span>
+		{
+<span class="nc" id="L185">			return null;</span>
 		}
 
-		try {
-<span class="fc" id="L188">			return new org.drip.function.rdtor1.AffineMultivariate (adblAssetReturn, -1. *</span>
-<span class="fc" id="L189">				_pecs.returnsConstraint());</span>
-<span class="nc" id="L190">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L191">			e.printStackTrace();</span>
+<span class="fc" id="L188">		int assetCount = _assetIDArray.length;</span>
+<span class="fc" id="L189">		double[] assetReturnsArray = new double[assetCount];</span>
+
+<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+		{
+<span class="fc" id="L193">			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =</span>
+<span class="fc" id="L194">				assetUniverseStatisticalProperties.assetStatisticalProperties (_assetIDArray[assetIndex]);</span>
+
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (null == assetStatisticalProperties)</span>
+			{
+<span class="nc" id="L198">				return null;</span>
+			}
+
+<span class="fc" id="L201">			assetReturnsArray[assetIndex] = assetStatisticalProperties.expectedReturn();</span>
 		}
 
-<span class="nc" id="L194">		return null;</span>
+		try
+		{
+<span class="fc" id="L206">			return new org.drip.function.rdtor1.AffineMultivariate (</span>
+				assetReturnsArray,
+<span class="fc" id="L208">				-1. * _equalityConstraintSettings.returnsConstraint()</span>
+			);
+		}
+<span class="nc" id="L211">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L213">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L216">		return null;</span>
 	}
 
 	/**
-	 * Retrieve the Equality Constraint R^d To R^1 Corresponding to the Specified Constraint Type
+	 * Retrieve the Equality Constraint R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Corresponding to the Specified
+	 * 	Constraint Type
 	 * 
-	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
 	 * 
-	 * @return The Equality Constraint R^d To R^1  Corresponding to the Specified Constraint Type
+	 * @return The Equality Constraint R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Corresponding to the Specified
+	 * 	Constraint Type
 	 */
 
-	public org.drip.function.definition.RdToR1[] equalityConstraintRdToR1 (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	public org.drip.function.definition.RdToR1[] equalityConstraintArray (
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 	{
-<span class="fc" id="L208">		if (org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.NO_CONSTRAINT ==</span>
-<span class="fc bfc" id="L209" title="All 2 branches covered.">			_pecs.constraintType())</span>
-<span class="fc" id="L210">			return null;</span>
+<span class="fc" id="L233">		int constraintType = _equalityConstraintSettings.constraintType();</span>
 
-<span class="fc" id="L212">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; lsRdToR1 = new</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.NO_CONSTRAINT ==</span>
+			constraintType)
+		{
+<span class="fc" id="L238">			return null;</span>
+		}
+
+<span class="fc" id="L241">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; rdToR1ConstraintList = new</span>
 			java.util.ArrayList&lt;org.drip.function.definition.RdToR1&gt;();
 
-<span class="fc" id="L215">		if (0 !=</span>
-			(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">			&amp; _pecs.constraintType()))</span>
-<span class="fc" id="L218">			lsRdToR1.add (fullyInvestedConstraint());</span>
-
-<span class="fc" id="L220">		if (0 !=</span>
-			(org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT
-<span class="fc bfc" id="L222" title="All 2 branches covered.">			&amp; _pecs.constraintType())) {</span>
-<span class="fc" id="L223">			org.drip.function.definition.RdToR1 rdToR1ReturnsConstraint = returnsConstraint (ausp);</span>
-
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">			if (null == rdToR1ReturnsConstraint) return null;</span>
-
-<span class="fc" id="L227">			lsRdToR1.add (rdToR1ReturnsConstraint);</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">		if (0 !=</span>
+			(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
+			&amp; constraintType))
+		{
+<span class="fc" id="L248">			rdToR1ConstraintList.add (fullyInvestedConstraint());</span>
 		}
 
-<span class="fc" id="L230">		int iNumConstraint = lsRdToR1.size();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">		if (0 !=</span>
+			(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT
+			&amp; constraintType))
+		{
+<span class="fc" id="L255">			org.drip.function.definition.RdToR1 rdToR1ReturnsConstraint = returnsConstraint (</span>
+				assetUniverseStatisticalProperties
+			);
 
-<span class="fc" id="L232">		org.drip.function.definition.RdToR1[] aConstraintRdToR1 = new</span>
-			org.drip.function.definition.RdToR1[iNumConstraint];
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">			if (null == rdToR1ReturnsConstraint)</span>
+			{
+<span class="nc" id="L261">				return null;</span>
+			}
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumConstraint; ++i)</span>
-<span class="fc" id="L236">			aConstraintRdToR1[i] = lsRdToR1.get (i);</span>
+<span class="fc" id="L264">			rdToR1ConstraintList.add (rdToR1ReturnsConstraint);</span>
+		}
 
-<span class="fc" id="L238">		return aConstraintRdToR1;</span>
+<span class="fc" id="L267">		int constraintCount = rdToR1ConstraintList.size();</span>
+
+<span class="fc" id="L269">		org.drip.function.definition.RdToR1[] equalityConstraintArray =</span>
+			new org.drip.function.definition.RdToR1[constraintCount];
+
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		for (int constraintIndex = 0; constraintIndex &lt; constraintCount; ++constraintIndex)</span>
+		{
+<span class="fc" id="L274">			equalityConstraintArray[constraintIndex] = rdToR1ConstraintList.get (constraintIndex);</span>
+		}
+
+<span class="fc" id="L277">		return equalityConstraintArray;</span>
 	}
 
 	/**
-	 * Retrieve the Equality Constraint Values Corresponding to the Specified Constraint Type
+	 * Retrieve the Equality Constraint RHS Corresponding to the Specified Constraint Type
 	 * 
-	 * @param ausp The Asset Universe Statistical Properties Instance
-	 * 
-	 * @return The Equality Constraint Values Corresponding to the Specified Constraint Type
+	 * @return The Equality Constraint RHS Corresponding to the Specified Constraint Type
 	 */
 
-	public double[] equalityConstraintValue (
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	public double[] equalityConstraintRHS()
 	{
-<span class="nc" id="L252">		double dblReturnsConstraint = _pecs.returnsConstraint();</span>
+<span class="nc" id="L288">		double returnsConstraint = _equalityConstraintSettings.returnsConstraint();</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		return org.drip.numerical.common.NumberUtil.IsValid (dblReturnsConstraint) ? new double[] {1.,</span>
-			dblReturnsConstraint} : new double[] {1.};
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		return org.drip.numerical.common.NumberUtil.IsValid (returnsConstraint) ? new double[] {</span>
+			1.,
+			returnsConstraint
+		} : new double[] {
+			1.
+		};
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

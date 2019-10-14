@@ -80,48 +80,57 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Strategy extends org.drip.portfolioconstruction.core.Block {
-<span class="nc" id="L84">	private boolean _bAllowCrossOver = false;</span>
-<span class="nc" id="L85">	private boolean _bIgnoreCompliance = false;</span>
-<span class="nc" id="L86">	private boolean _bAllowGrandFathering = false;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _of = null;</span>
-<span class="nc" id="L88">	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _ch = null;</span>
+public class Strategy
+	extends org.drip.portfolioconstruction.core.Block
+{
+<span class="nc" id="L86">	private boolean _allowCrossOver = false;</span>
+<span class="nc" id="L87">	private boolean _ignoreCompliance = false;</span>
+<span class="nc" id="L88">	private boolean _allowGrandFathering = false;</span>
+<span class="nc" id="L89">	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _objectiveFunction = null;</span>
+<span class="nc" id="L90">	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _constraintHierarchy = null;</span>
 
 	/**
 	 * Strategy Constructor
 	 * 
-	 * @param strName The Constraint Name
-	 * @param strID The Constraint ID
-	 * @param strDescription The Constraint Description
-	 * @param of The Objective Function
-	 * @param ch Constraint Hierarchy
-	 * @param bAllowGrandFathering TRUE - Grand-fathering of the &quot;Previous&quot; is to be performed
-	 * @param bAllowCrossOver TRUE - Cross-Over is allowed
-	 * @param bIgnoreCompliance TRUE - Ignore Compliance
+	 * @param name The Constraint Name
+	 * @param id The Constraint ID
+	 * @param description The Constraint Description
+	 * @param objectiveFunction The Objective Function
+	 * @param constraintHierarchy Constraint Hierarchy
+	 * @param allowGrandFathering TRUE - Grand-fathering of the &quot;Previous&quot; is to be performed
+	 * @param allowCrossOver TRUE - Cross-Over is allowed
+	 * @param ignoreCompliance TRUE - Ignore Compliance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Strategy (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final org.drip.portfolioconstruction.optimizer.ObjectiveFunction of,
-		final org.drip.portfolioconstruction.optimizer.ConstraintHierarchy ch,
-		final boolean bAllowGrandFathering,
-		final boolean bAllowCrossOver,
-		final boolean bIgnoreCompliance)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction,
+		final org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy,
+		final boolean allowGrandFathering,
+		final boolean allowCrossOver,
+		final boolean ignoreCompliance)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L116">		super (strName, strID, strDescription);</span>
+<span class="nc" id="L118">		super (</span>
+			name,
+			id,
+			description
+		);
 
-<span class="nc" id="L118">		_ch = ch;</span>
-<span class="nc" id="L119">		_bAllowCrossOver = bAllowCrossOver;</span>
-<span class="nc" id="L120">		_bIgnoreCompliance = bIgnoreCompliance;</span>
-<span class="nc" id="L121">		_bAllowGrandFathering = bAllowGrandFathering;</span>
+<span class="nc" id="L124">		_constraintHierarchy = constraintHierarchy;</span>
+<span class="nc" id="L125">		_allowCrossOver = allowCrossOver;</span>
+<span class="nc" id="L126">		_ignoreCompliance = ignoreCompliance;</span>
+<span class="nc" id="L127">		_allowGrandFathering = allowGrandFathering;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == (_of = of)) throw new java.lang.Exception (&quot;Strategy Construtor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L124">	}</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (null == (_objectiveFunction = objectiveFunction))</span>
+		{
+<span class="nc" id="L131">			throw new java.lang.Exception (&quot;Strategy Construtor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L133">	}</span>
 
 	/**
 	 * Indicate if Grand-fathering of the &quot;Previous&quot; is to be performed
@@ -131,7 +140,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean allowGrandFathering()
 	{
-<span class="nc" id="L134">		return _bAllowGrandFathering;</span>
+<span class="nc" id="L143">		return _allowGrandFathering;</span>
 	}
 
 	/**
@@ -142,7 +151,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean allowCrossOver()
 	{
-<span class="nc" id="L145">		return _bAllowCrossOver;</span>
+<span class="nc" id="L154">		return _allowCrossOver;</span>
 	}
 
 	/**
@@ -153,7 +162,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public boolean ignoreCompliance()
 	{
-<span class="nc" id="L156">		return _bIgnoreCompliance;</span>
+<span class="nc" id="L165">		return _ignoreCompliance;</span>
 	}
 
 	/**
@@ -164,7 +173,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction()
 	{
-<span class="nc" id="L167">		return _of;</span>
+<span class="nc" id="L176">		return _objectiveFunction;</span>
 	}
 
 	/**
@@ -175,7 +184,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy()
 	{
-<span class="nc" id="L178">		return _ch;</span>
+<span class="nc" id="L187">		return _constraintHierarchy;</span>
 	}
 
 	/**
@@ -186,7 +195,7 @@ public class Strategy extends org.drip.portfolioconstruction.core.Block {
 
 	public double[] constraintAttributes()
 	{
-<span class="nc" id="L189">		return null;</span>
+<span class="nc" id="L198">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

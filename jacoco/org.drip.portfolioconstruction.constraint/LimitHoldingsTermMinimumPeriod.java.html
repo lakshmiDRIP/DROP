@@ -80,34 +80,34 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitHoldingsTermMinimumPeriod extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
+public abstract class LimitHoldingsTermMinimumPeriod
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTerm
 {
-<span class="nc" id="L86">	private double _dblMinimumHoldingsPeriod = java.lang.Double.NaN;</span>
+<span class="nc" id="L86">	private double _minimumHoldingsPeriod = java.lang.Double.NaN;</span>
 
 	protected LimitHoldingsTermMinimumPeriod (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final int iSize,
-		final double dblMinimumHoldingsPeriod)
+		final double minimum,
+		final double maximum,
+		final int size,
+		final double minimumHoldingsPeriod)
 		throws java.lang.Exception
 	{
 <span class="nc" id="L98">		super (</span>
-			strName,
+			name,
 			&quot;CT_LIMIT_MINIMUM_HOLDING_PERIOD&quot;,
 			&quot;Constrains the Minimum Holdings Period&quot;,
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			iSize
+			minimum,
+			maximum,
+			size
 		);
 
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMinimumHoldingsPeriod = dblMinimumHoldingsPeriod)</span>
-			|| 0. &gt;= _dblMinimumHoldingsPeriod)
+<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_minimumHoldingsPeriod = minimumHoldingsPeriod) ||</span>
+			0. &gt;= _minimumHoldingsPeriod)
 <span class="nc" id="L111">			throw new java.lang.Exception (&quot;LimitHoldingsTermMinimumPeriod Constructor =&gt; Invalid Inputs&quot;);</span>
 <span class="nc" id="L112">	}</span>
 
@@ -119,7 +119,7 @@ public abstract class LimitHoldingsTermMinimumPeriod extends
 
 	public double minimumHoldingsPeriod()
 	{
-<span class="nc" id="L122">		return _dblMinimumHoldingsPeriod;</span>
+<span class="nc" id="L122">		return _minimumHoldingsPeriod;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -131,14 +131,23 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 <span class="nc" id="L131">		return _lambda;</span>
 	}
 
+	@Override public double[] support()
+	{
+<span class="nc" id="L136">		return new double[]</span>
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
+
 	@Override public double cumulative (
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &lt; 0.)</span>
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;R1UnivariateExponential::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &lt; 0.)</span>
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;R1UnivariateExponential::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L141">		return 1. - java.lang.Math.exp (-1. * _lambda * x);</span>
+<span class="nc" id="L150">		return 1. - java.lang.Math.exp (-1. * _lambda * x);</span>
 	}
 
 	@Override public double incremental (
@@ -146,42 +155,42 @@ public class R1UnivariateExponential extends org.drip.measure.continuous.R1Univa
 		final double xRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L149">		return cumulative (xLeft) - cumulative (xRight);</span>
+<span class="nc" id="L158">		return cumulative (xLeft) - cumulative (xRight);</span>
 	}
 
 	@Override public double invCumulative (
 		final double y)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L156" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. &lt; y || 0. &gt; y)</span>
-<span class="nc" id="L157">			throw new java.lang.Exception (&quot;R1UnivariateExponential::invCumulative =&gt; Cannot calculate&quot;);</span>
+<span class="nc bnc" id="L165" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. &lt; y || 0. &gt; y)</span>
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;R1UnivariateExponential::invCumulative =&gt; Cannot calculate&quot;);</span>
 
-<span class="nc" id="L159">	    return -1. / _lambda * java.lang.Math.log (1. - y);</span>
+<span class="nc" id="L168">	    return -1. / _lambda * java.lang.Math.log (1. - y);</span>
 	}
 
 	@Override public double density (
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &lt; 0.)</span>
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;R1UnivariateExponential::density =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x &lt; 0.)</span>
+<span class="nc" id="L176">			throw new java.lang.Exception (&quot;R1UnivariateExponential::density =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L169">		return _lambda * java.lang.Math.exp (-1. * _lambda * x);</span>
+<span class="nc" id="L178">		return _lambda * java.lang.Math.exp (-1. * _lambda * x);</span>
 	}
 
 	@Override public double mean()
 	{
-<span class="nc" id="L174">	    return 1. / _lambda;</span>
+<span class="nc" id="L183">	    return 1. / _lambda;</span>
 	}
 
 	@Override public double variance()
 	{
-<span class="nc" id="L179">	    return 1. / (_lambda * _lambda);</span>
+<span class="nc" id="L188">	    return 1. / (_lambda * _lambda);</span>
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L184">		return null;</span>
+<span class="nc" id="L193">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

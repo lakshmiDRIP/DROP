@@ -6,37 +6,48 @@ package org.drip.analytics.cashflow;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -72,10 +83,10 @@ package org.drip.analytics.cashflow;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Cash Flow&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/cashflow/README.md&quot;&gt;Unit and Composite Cash Flow Periods&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -83,11 +94,11 @@ package org.drip.analytics.cashflow;
 
 public class ReferenceIndexPeriod
 {
-<span class="fc" id="L86">	private double _dblDCF = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L88">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L89">	private int _iFixingDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L90">	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;</span>
+<span class="fc" id="L97">	private double _dblDCF = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private int _iEndDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L99">	private int _iStartDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L100">	private int _iFixingDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L101">	private org.drip.state.identifier.FloaterLabel _floaterLabel = null;</span>
 
 	/**
 	 * Standard Instance of ReferenceIndexPeriod
@@ -104,34 +115,34 @@ public class ReferenceIndexPeriod
 		final int iEndDate,
 		final org.drip.state.identifier.FloaterLabel floaterLabel)
 	{
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (null == floaterLabel) return null;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == floaterLabel) return null;</span>
 
-<span class="fc" id="L109">		org.drip.analytics.daycount.DateAdjustParams dapFixing =</span>
-<span class="fc" id="L110">			floaterLabel.floaterIndex().spotLagDAPBackward();</span>
+<span class="fc" id="L120">		org.drip.analytics.daycount.DateAdjustParams dapFixing =</span>
+<span class="fc" id="L121">			floaterLabel.floaterIndex().spotLagDAPBackward();</span>
 
-<span class="fc" id="L112">		org.drip.param.period.UnitCouponAccrualSetting ucas = floaterLabel.ucas();</span>
+<span class="fc" id="L123">		org.drip.param.period.UnitCouponAccrualSetting ucas = floaterLabel.ucas();</span>
 
 		try {
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">			return new ReferenceIndexPeriod (</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			return new ReferenceIndexPeriod (</span>
 				iStartDate,
 				iEndDate,
-<span class="fc" id="L118">				null == dapFixing ? iStartDate : dapFixing.roll (iStartDate),</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">				ucas.couponDCFOffOfFreq() ? 1. / ucas.freq() :</span>
-<span class="fc" id="L120">					org.drip.analytics.daycount.Convention.YearFraction (</span>
+<span class="fc" id="L129">				null == dapFixing ? iStartDate : dapFixing.roll (iStartDate),</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">				ucas.couponDCFOffOfFreq() ? 1. / ucas.freq() :</span>
+<span class="fc" id="L131">					org.drip.analytics.daycount.Convention.YearFraction (</span>
 						iStartDate,
 						iEndDate,
-<span class="fc" id="L123">						ucas.couponDC(),</span>
-<span class="fc" id="L124">						ucas.couponEOMAdjustment(),</span>
+<span class="fc" id="L134">						ucas.couponDC(),</span>
+<span class="fc" id="L135">						ucas.couponEOMAdjustment(),</span>
 						null,
-<span class="fc" id="L126">						ucas.calendar()</span>
+<span class="fc" id="L137">						ucas.calendar()</span>
 					),
 				floaterLabel
 			);
-<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L131">			e.printStackTrace();</span>
+<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L142">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L134">		return null;</span>
+<span class="nc" id="L145">		return null;</span>
 	}
 
 	/**
@@ -153,13 +164,13 @@ public class ReferenceIndexPeriod
 		final double dblDCF,
 		final org.drip.state.identifier.FloaterLabel floaterLabel)
 		throws java.lang.Exception
-<span class="fc" id="L156">	{</span>
-<span class="pc bpc" id="L157" title="2 of 4 branches missed.">		if ((_iEndDate = iEndDate) &lt;= (_iStartDate = iStartDate) ||</span>
+<span class="fc" id="L167">	{</span>
+<span class="pc bpc" id="L168" title="2 of 4 branches missed.">		if ((_iEndDate = iEndDate) &lt;= (_iStartDate = iStartDate) ||</span>
 			(_iFixingDate = iFixingDate) &gt; _iStartDate ||
-<span class="pc bpc" id="L159" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||</span>
+<span class="pc bpc" id="L170" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblDCF = dblDCF) ||</span>
 			null == (_floaterLabel = floaterLabel))
-<span class="nc" id="L161">			throw new java.lang.Exception (&quot;ReferenceIndexPeriod ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L162">	}</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;ReferenceIndexPeriod ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L173">	}</span>
 
 	/**
 	 * Reference Period Start Date
@@ -169,7 +180,7 @@ public class ReferenceIndexPeriod
 
 	public int startDate()
 	{
-<span class="fc" id="L172">		return _iStartDate;</span>
+<span class="fc" id="L183">		return _iStartDate;</span>
 	}
 
 	/**
@@ -180,7 +191,7 @@ public class ReferenceIndexPeriod
 
 	public int endDate()
 	{
-<span class="fc" id="L183">		return _iEndDate;</span>
+<span class="fc" id="L194">		return _iEndDate;</span>
 	}
 
 	/**
@@ -191,7 +202,7 @@ public class ReferenceIndexPeriod
 
 	public int fixingDate()
 	{
-<span class="fc" id="L194">		return _iFixingDate;</span>
+<span class="fc" id="L205">		return _iFixingDate;</span>
 	}
 
 	/**
@@ -202,7 +213,7 @@ public class ReferenceIndexPeriod
 
 	public org.drip.state.identifier.FloaterLabel floaterLabel()
 	{
-<span class="fc" id="L205">		return _floaterLabel;</span>
+<span class="fc" id="L216">		return _floaterLabel;</span>
 	}
 
 	/**
@@ -213,7 +224,7 @@ public class ReferenceIndexPeriod
 
 	public double dcf()
 	{
-<span class="nc" id="L216">		return _dblDCF;</span>
+<span class="nc" id="L227">		return _dblDCF;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

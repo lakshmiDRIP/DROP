@@ -82,28 +82,31 @@ package org.drip.portfolioconstruction.mpt;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetSecurityCharacteristicLine {
-<span class="nc" id="L86">	private double _dblBeta = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private double _dblAlpha = java.lang.Double.NaN;</span>
+public class AssetSecurityCharacteristicLine
+{
+<span class="nc" id="L87">	private double _beta = java.lang.Double.NaN;</span>
+<span class="nc" id="L88">	private double _alpha = java.lang.Double.NaN;</span>
 
 	/**
 	 * AssetSecurityCharacteristicLine Constructor
 	 * 
-	 * @param dblAlpha The Asset's Alpha
-	 * @param dblBeta The Asset's Beta
+	 * @param alpha The Asset's Alpha
+	 * @param beta The Asset's Beta
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetSecurityCharacteristicLine (
-		final double dblAlpha,
-		final double dblBeta)
+		final double alpha,
+		final double beta)
 		throws java.lang.Exception
-<span class="nc" id="L102">	{</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAlpha = dblAlpha) ||</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblBeta = dblBeta))</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;AssetSecurityCharacteristicLine Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L106">	}</span>
+<span class="nc" id="L103">	{</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha) ||</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta))</span>
+		{
+<span class="nc" id="L107">			throw new java.lang.Exception (&quot;AssetSecurityCharacteristicLine Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L109">	}</span>
 
 	/**
 	 * Retrieve the Asset's Alpha
@@ -113,7 +116,7 @@ public class AssetSecurityCharacteristicLine {
 
 	public double alpha()
 	{
-<span class="nc" id="L116">		return _dblAlpha;</span>
+<span class="nc" id="L119">		return _alpha;</span>
 	}
 
 	/**
@@ -124,14 +127,13 @@ public class AssetSecurityCharacteristicLine {
 
 	public double beta()
 	{
-<span class="nc" id="L127">		return _dblBeta;</span>
+<span class="nc" id="L130">		return _beta;</span>
 	}
 
 	/**
 	 * Retrieve the Excess Returns over the Market for the Asset
 	 * 
-	 * @param dblMarketExcessReturns The Market Premium, i.e., the Excess Market Returns over the Risk Free
-	 * 	Rate
+	 * @param marketExcessReturns The Market Premium, i.e., the Excess Market Returns over the Risk Free Rate
 	 * 
 	 * @return The Excess Returns over the Market for the Asset
 	 * 
@@ -139,14 +141,16 @@ public class AssetSecurityCharacteristicLine {
 	 */
 
 	public double excessReturns (
-		final double dblMarketExcessReturns)
+		final double marketExcessReturns)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketExcessReturns))</span>
-<span class="nc" id="L146">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (marketExcessReturns))</span>
+		{
+<span class="nc" id="L149">			throw new java.lang.Exception</span>
 				(&quot;AssetSecurityCharacteristicLine::excessReturns =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="nc" id="L149">		return _dblAlpha + _dblBeta * dblMarketExcessReturns;</span>
+<span class="nc" id="L153">		return _alpha + _beta * marketExcessReturns;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

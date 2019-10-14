@@ -6,6 +6,7 @@ package org.drip.analytics.daycount;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,33 +16,43 @@ package org.drip.analytics.daycount;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -87,18 +98,18 @@ package org.drip.analytics.daycount;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/README.md&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/README.md&quot;&gt;Day Count Year Fraction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L99">public class DateEOMAdjustment {</span>
-<span class="fc" id="L100">	private int _iD1Adj = 0;</span>
-<span class="fc" id="L101">	private int _iD2Adj = 0;</span>
+<span class="fc" id="L110">public class DateEOMAdjustment {</span>
+<span class="fc" id="L111">	private int _iD1Adj = 0;</span>
+<span class="fc" id="L112">	private int _iD2Adj = 0;</span>
 
 	/**
 	 * Construct a DateEOMAdjustment Instance for the 30/365 Day Count
@@ -115,40 +126,40 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="fc" id="L118">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L129">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (iEndDate &gt; iStartDate) return null;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (iEndDate &gt; iStartDate) return null;</span>
 
 		try {
-<span class="nc" id="L125">			if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
-<span class="nc bnc" id="L126" title="All 4 branches missed.">				(iStartDate) &amp;&amp; org.drip.analytics.date.DateUtil.IsEOM (iStartDate) &amp;&amp;</span>
+<span class="nc" id="L136">			if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">				(iStartDate) &amp;&amp; org.drip.analytics.date.DateUtil.IsEOM (iStartDate) &amp;&amp;</span>
 					org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month
-<span class="nc bnc" id="L128" title="All 4 branches missed.">						(iEndDate) &amp;&amp; org.drip.analytics.date.DateUtil.IsEOM (iEndDate))</span>
-<span class="nc" id="L129">				dm._iD2Adj = (28 == org.drip.analytics.date.DateUtil.DaysInMonth</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">					(org.drip.analytics.date.DateUtil.Month (iEndDate),</span>
-<span class="nc" id="L131">						org.drip.analytics.date.DateUtil.Year (iEndDate)) ? 2 : 1);</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">						(iEndDate) &amp;&amp; org.drip.analytics.date.DateUtil.IsEOM (iEndDate))</span>
+<span class="nc" id="L140">				dm._iD2Adj = (28 == org.drip.analytics.date.DateUtil.DaysInMonth</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">					(org.drip.analytics.date.DateUtil.Month (iEndDate),</span>
+<span class="nc" id="L142">						org.drip.analytics.date.DateUtil.Year (iEndDate)) ? 2 : 1);</span>
 
-<span class="nc" id="L133">			if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
-<span class="nc bnc" id="L134" title="All 4 branches missed.">				(iStartDate) &amp;&amp; org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
-<span class="nc" id="L135">				dm._iD1Adj = (28 == org.drip.analytics.date.DateUtil.DaysInMonth</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">					(org.drip.analytics.date.DateUtil.Month (iStartDate),</span>
-<span class="nc" id="L137">						org.drip.analytics.date.DateUtil.Year (iStartDate)) ? 2 : 1);</span>
+<span class="nc" id="L144">			if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">				(iStartDate) &amp;&amp; org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
+<span class="nc" id="L146">				dm._iD1Adj = (28 == org.drip.analytics.date.DateUtil.DaysInMonth</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">					(org.drip.analytics.date.DateUtil.Month (iStartDate),</span>
+<span class="nc" id="L148">						org.drip.analytics.date.DateUtil.Year (iStartDate)) ? 2 : 1);</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">			if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate) + dm._iD2Adj &amp;&amp; (30 ==</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">				org.drip.analytics.date.DateUtil.Date (iStartDate) + dm._iD1Adj || 31 ==</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">					org.drip.analytics.date.DateUtil.Date (iStartDate) + dm._iD1Adj))</span>
-<span class="nc" id="L142">				dm._iD2Adj -= 1;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate) + dm._iD2Adj &amp;&amp; (30 ==</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">				org.drip.analytics.date.DateUtil.Date (iStartDate) + dm._iD1Adj || 31 ==</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">					org.drip.analytics.date.DateUtil.Date (iStartDate) + dm._iD1Adj))</span>
+<span class="nc" id="L153">				dm._iD2Adj -= 1;</span>
 
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate) + dm._iD1Adj) dm._iD1Adj -= 1;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate) + dm._iD1Adj) dm._iD1Adj -= 1;</span>
 
-<span class="nc" id="L146">			return dm;</span>
-<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="nc" id="L157">			return dm;</span>
+<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L159">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L151">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	/**
@@ -166,34 +177,34 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="fc" id="L169">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L180">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="fc bfc" id="L174" title="All 2 branches covered.">			if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj -= 1;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj -= 1;</span>
 
-<span class="fc bfc" id="L176" title="All 2 branches covered.">			if (!org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate)) {</span>
-<span class="fc" id="L177">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
-<span class="pc bpc" id="L178" title="1 of 4 branches missed.">					(iStartDate) &amp;&amp; 28 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
-<span class="nc" id="L179">					dm._iD1Adj += 2;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">			if (!org.drip.analytics.date.DateUtil.IsLeapYear (iStartDate)) {</span>
+<span class="fc" id="L188">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">					(iStartDate) &amp;&amp; 28 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
+<span class="nc" id="L190">					dm._iD1Adj += 2;</span>
 			} else {
-<span class="fc" id="L181">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
-<span class="pc bpc" id="L182" title="3 of 4 branches missed.">					(iStartDate) &amp;&amp; 29 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
-<span class="nc" id="L183">					dm._iD1Adj += 1;</span>
+<span class="fc" id="L192">				if (org.drip.analytics.date.DateUtil.FEBRUARY == org.drip.analytics.date.DateUtil.Month</span>
+<span class="pc bpc" id="L193" title="3 of 4 branches missed.">					(iStartDate) &amp;&amp; 29 == org.drip.analytics.date.DateUtil.Date (iStartDate))</span>
+<span class="nc" id="L194">					dm._iD1Adj += 1;</span>
 			}
 
-<span class="fc bfc" id="L186" title="All 2 branches covered.">			if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate) &amp;&amp; (30 ==</span>
-<span class="pc bpc" id="L187" title="1 of 2 branches missed.">				org.drip.analytics.date.DateUtil.Date (iStartDate) || 31 ==</span>
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">					org.drip.analytics.date.DateUtil.Date (iStartDate)))</span>
-<span class="nc" id="L189">				dm._iD2Adj -= 1;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate) &amp;&amp; (30 ==</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">				org.drip.analytics.date.DateUtil.Date (iStartDate) || 31 ==</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">					org.drip.analytics.date.DateUtil.Date (iStartDate)))</span>
+<span class="nc" id="L200">				dm._iD2Adj -= 1;</span>
 
-<span class="fc" id="L191">			return dm;</span>
-<span class="nc" id="L192">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L193">			e.printStackTrace();</span>
+<span class="fc" id="L202">			return dm;</span>
+<span class="nc" id="L203">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L204">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L196">		return null;</span>
+<span class="nc" id="L207">		return null;</span>
 	}
 
 	/**
@@ -211,27 +222,27 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="fc" id="L214">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L225">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="nc bnc" id="L219" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
-<span class="nc" id="L221">					dm._iD1Adj = 30 - org.drip.analytics.date.DateUtil.Date (iStartDate);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
+<span class="nc" id="L232">					dm._iD1Adj = 30 - org.drip.analytics.date.DateUtil.Date (iStartDate);</span>
 
-<span class="nc bnc" id="L223" title="All 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iEndDate) &amp;&amp;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iEndDate) &amp;&amp;</span>
 					(org.drip.analytics.date.DateUtil.FEBRUARY != org.drip.analytics.date.DateUtil.Month
-<span class="nc bnc" id="L225" title="All 2 branches missed.">						(iEndDate)))</span>
-<span class="nc" id="L226">					dm._iD2Adj = 30 - org.drip.analytics.date.DateUtil.Date (iEndDate);</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">						(iEndDate)))</span>
+<span class="nc" id="L237">					dm._iD2Adj = 30 - org.drip.analytics.date.DateUtil.Date (iEndDate);</span>
 			}
 
-<span class="nc" id="L229">			return dm;</span>
-<span class="nc" id="L230">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L231">			e.printStackTrace();</span>
+<span class="nc" id="L240">			return dm;</span>
+<span class="nc" id="L241">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L242">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L234">		return null;</span>
+<span class="nc" id="L245">		return null;</span>
 	}
 
 	/**
@@ -249,23 +260,23 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="fc" id="L252">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L263">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="fc bfc" id="L254" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">			if (bApplyEOMAdj) {</span>
-<span class="pc bpc" id="L258" title="1 of 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj = -1;</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">			if (bApplyEOMAdj) {</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj = -1;</span>
 
-<span class="pc bpc" id="L260" title="1 of 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate)) dm._iD2Adj = -1;</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iEndDate)) dm._iD2Adj = -1;</span>
 			}
 
-<span class="fc" id="L263">			return dm;</span>
-<span class="nc" id="L264">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L265">			e.printStackTrace();</span>
+<span class="fc" id="L274">			return dm;</span>
+<span class="nc" id="L275">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L276">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L268">		return null;</span>
+<span class="nc" id="L279">		return null;</span>
 	}
 
 	/**
@@ -283,25 +294,25 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="fc" id="L286">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L297">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="fc bfc" id="L288" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="pc bpc" id="L291" title="1 of 2 branches missed.">			if (bApplyEOMAdj) {</span>
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
-<span class="nc" id="L293">					dm._iD1Adj = 30 - org.drip.analytics.date.DateUtil.Date (iStartDate);</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">			if (bApplyEOMAdj) {</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">				if (org.drip.analytics.date.DateUtil.IsEOM (iStartDate))</span>
+<span class="nc" id="L304">					dm._iD1Adj = 30 - org.drip.analytics.date.DateUtil.Date (iStartDate);</span>
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">				if (org.drip.analytics.date.DateUtil.IsEOM (iEndDate))</span>
-<span class="fc" id="L296">					dm._iD2Adj = 30 - org.drip.analytics.date.DateUtil.Date (iEndDate);</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">				if (org.drip.analytics.date.DateUtil.IsEOM (iEndDate))</span>
+<span class="fc" id="L307">					dm._iD2Adj = 30 - org.drip.analytics.date.DateUtil.Date (iEndDate);</span>
 			}
 
-<span class="fc" id="L299">			return dm;</span>
-<span class="nc" id="L300">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L301">			e.printStackTrace();</span>
+<span class="fc" id="L310">			return dm;</span>
+<span class="nc" id="L311">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L312">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L304">		return null;</span>
+<span class="nc" id="L315">		return null;</span>
 	}
 
 	/**
@@ -319,23 +330,23 @@ package org.drip.analytics.daycount;
 		final int iEndDate,
 		final boolean bApplyEOMAdj)
 	{
-<span class="fc" id="L322">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
+<span class="fc" id="L333">		DateEOMAdjustment dm = new DateEOMAdjustment();</span>
 
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		if (!bApplyEOMAdj) return dm;</span>
 
 		try {
-<span class="nc bnc" id="L327" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>
-<span class="nc bnc" id="L328" title="All 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj = -1;</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">			if (bApplyEOMAdj) {</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD1Adj = -1;</span>
 
-<span class="nc bnc" id="L330" title="All 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD2Adj = +1;</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">				if (31 == org.drip.analytics.date.DateUtil.Date (iStartDate)) dm._iD2Adj = +1;</span>
 			}
 
-<span class="nc" id="L333">			return dm;</span>
-<span class="nc" id="L334">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L335">			e.printStackTrace();</span>
+<span class="nc" id="L344">			return dm;</span>
+<span class="nc" id="L345">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L346">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L338">		return null;</span>
+<span class="nc" id="L349">		return null;</span>
 	}
 
 	/**
@@ -346,7 +357,7 @@ package org.drip.analytics.daycount;
 
 	public int anterior()
 	{
-<span class="fc" id="L349">		return _iD1Adj;</span>
+<span class="fc" id="L360">		return _iD1Adj;</span>
 	}
 
 	/**
@@ -357,7 +368,7 @@ package org.drip.analytics.daycount;
 
 	public int posterior()
 	{
-<span class="fc" id="L360">		return _iD2Adj;</span>
+<span class="fc" id="L371">		return _iD2Adj;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

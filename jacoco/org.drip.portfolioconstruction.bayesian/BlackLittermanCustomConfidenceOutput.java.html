@@ -67,7 +67,7 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /**
- * &lt;i&gt;BlackLittermanCustomConfidenceOutput&lt;/i&gt; holds the Outputs generated from a Custom COnfidence Black
+ * &lt;i&gt;BlackLittermanCustomConfidenceOutput&lt;/i&gt; holds the Outputs generated from a Custom Confidence Black
  * Litterman Bayesian Combination Run. The References are:
  *  
  *  &lt;br&gt;&lt;br&gt;
@@ -93,32 +93,39 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlackLittermanCustomConfidenceOutput extends
-	org.drip.portfolioconstruction.bayesian.BlackLittermanOutput {
-<span class="fc" id="L98">	private org.drip.measure.bayesian.JointPosteriorMetrics _jpm = null;</span>
+public class BlackLittermanCustomConfidenceOutput
+	extends org.drip.portfolioconstruction.bayesian.BlackLittermanOutput
+{
+<span class="fc" id="L99">	private org.drip.measure.bayesian.JointPosteriorMetrics _jointPosteriorMetrics = null;</span>
 
 	/**
 	 * BlackLittermanCustomConfidenceOutput Constructor
 	 * 
-	 * @param frooAdjusted The Adjusted Forward Reverse Equilibrium Optimization Output
-	 * @param adblAllocationAdjustmentTilt Array of the Allocation Adjustment Tilts
-	 * @param jpm The Bayesian Joint/Posterior Metrics Instance
+	 * @param forwardReverseOptimizationOutput The Adjusted Forward Reverse Equilibrium Optimization Output
+	 * @param allocationAdjustmentTiltArray Array of the Allocation Adjustment Tilts
+	 * @param jointPosteriorMetrics The Bayesian Joint/Posterior Metrics Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlackLittermanCustomConfidenceOutput (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted,
-		final double[] adblAllocationAdjustmentTilt,
-		final org.drip.measure.bayesian.JointPosteriorMetrics jpm)
+		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			forwardReverseOptimizationOutput,
+		final double[] allocationAdjustmentTiltArray,
+		final org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L116">		super (frooAdjusted, adblAllocationAdjustmentTilt);</span>
+<span class="fc" id="L118">		super (</span>
+			forwardReverseOptimizationOutput,
+			allocationAdjustmentTiltArray
+		);
 
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == (_jpm = jpm))</span>
-<span class="nc" id="L119">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == (_jointPosteriorMetrics = jointPosteriorMetrics))</span>
+		{
+<span class="nc" id="L125">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCustomConfidenceOutput Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L121">	}</span>
+		}
+<span class="fc" id="L128">	}</span>
 
 	/**
 	 * Retrieve the Bayesian Joint/Posterior Metrics
@@ -126,9 +133,9 @@ public class BlackLittermanCustomConfidenceOutput extends
 	 * @return The Bayesian Joint/Posterior Metrics
 	 */
 
-	public org.drip.measure.bayesian.JointPosteriorMetrics combinationMetrics()
+	public org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics()
 	{
-<span class="fc" id="L131">		return _jpm;</span>
+<span class="fc" id="L138">		return _jointPosteriorMetrics;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

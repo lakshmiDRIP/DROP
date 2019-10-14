@@ -105,6 +105,30 @@ package org.drip.specialfunction.definition;
 {
 
 	/**
+	 * Construct the Large z Asymptotic Form of Hankel Second Kind Estimator
+	 * 
+	 * @return Large z Asymptotic Form of Hankel Second Kind Estimator
+	 */
+
+	public static final HankelSecondKindEstimator LargeZAsymptote()
+	{
+<span class="nc" id="L115">		return new HankelSecondKindEstimator()</span>
+<span class="nc" id="L116">		{</span>
+			@Override public org.drip.function.definition.CartesianComplexNumber bigH2 (
+				final double alpha,
+				final double z)
+			{
+<span class="nc bnc" id="L121" title="All 2 branches missed.">				return !org.drip.numerical.common.NumberUtil.IsValid (alpha) ||</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (z) ? null :</span>
+<span class="nc" id="L123">					org.drip.function.definition.CartesianComplexNumber.FromPolar (</span>
+<span class="nc" id="L124">						java.lang.Math.sqrt (2. / java.lang.Math.PI / z),</span>
+						0.5 * java.lang.Math.PI * alpha + 0.25 * java.lang.Math.PI - z
+					);
+			}
+		};
+	}
+
+	/**
 	 * Evaluate Hankel Function Second Kind H2 given Alpha and z
 	 * 
 	 * @param alpha Alpha
@@ -113,15 +137,15 @@ package org.drip.specialfunction.definition;
 	 * @return Hankel Function Second Kind H2 Value
 	 */
 
-	public abstract org.drip.numerical.fourier.ComplexNumber bigH2 (
+	public abstract org.drip.function.definition.CartesianComplexNumber bigH2 (
 		final double alpha,
 		final double z);
 
-	@Override public org.drip.numerical.fourier.ComplexNumber evaluate (
+	@Override public org.drip.function.definition.CartesianComplexNumber evaluate (
 		final double alpha,
 		final double z)
 	{
-<span class="nc" id="L124">		return bigH2 (</span>
+<span class="nc" id="L148">		return bigH2 (</span>
 			alpha,
 			z
 		);

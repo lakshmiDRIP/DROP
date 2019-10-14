@@ -81,24 +81,27 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedNonFinancialIncome {
-<span class="fc" id="L85">	private double _dblIncomeReplacementRate = java.lang.Double.NaN;</span>
+public class ExpectedNonFinancialIncome
+{
+<span class="fc" id="L86">	private double _incomeReplacementRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * ExpectedNonFinancialIncome Constructor
 	 * 
-	 * @param dblIncomeReplacementRate The Pension Based Income Replacement Rate
+	 * @param incomeReplacementRate The Pension Based Income Replacement Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedNonFinancialIncome (
-		final double dblIncomeReplacementRate)
+		final double incomeReplacementRate)
 		throws java.lang.Exception
-<span class="fc" id="L98">	{</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblIncomeReplacementRate = dblIncomeReplacementRate))</span>
-<span class="nc" id="L100">			throw new java.lang.Exception (&quot;ExpectedNonFinancialIncome Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L101">	}</span>
+<span class="fc" id="L99">	{</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_incomeReplacementRate = incomeReplacementRate))</span>
+		{
+<span class="nc" id="L102">			throw new java.lang.Exception (&quot;ExpectedNonFinancialIncome Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L104">	}</span>
 
 	/**
 	 * Retrieve the Retirement Age Income Replacement Rate
@@ -108,14 +111,14 @@ public class ExpectedNonFinancialIncome {
 
 	public double incomeReplacementRate()
 	{
-<span class="nc" id="L111">		return _dblIncomeReplacementRate;</span>
+<span class="nc" id="L114">		return _incomeReplacementRate;</span>
 	}
 
 	/**
 	 * Compute the Retirement Age Income Replacement Rate
 	 * 
-	 * @param dblAge The Age whose Investment Phase is needed
-	 * @param ics The Investor's Time Cliff Settings Instance
+	 * @param age The Age whose Investment Phase is needed
+	 * @param investorCliffSettings The Investor's Time Cliff Settings Instance
 	 * 
 	 * @return The Retirement Age Income Replacement Rate
 	 * 
@@ -123,24 +126,29 @@ public class ExpectedNonFinancialIncome {
 	 */
 
 	public double rate (
-		final double dblAge,
-		final org.drip.portfolioconstruction.alm.InvestorCliffSettings ics)
+		final double age,
+		final org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (null == ics)</span>
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;ExpectedNonFinancialIncome::rate =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (null == investorCliffSettings)</span>
+		{
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;ExpectedNonFinancialIncome::rate =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L133">		int iAgePhase = ics.phase (dblAge);</span>
+<span class="fc" id="L138">		int agePhase = investorCliffSettings.phase (age);</span>
 
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==</span>
-			iAgePhase)
-<span class="fc" id="L137">			return 1.;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==</span>
+			agePhase)
+		{
+<span class="fc" id="L143">			return 1.;</span>
+		}
 
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT ==</span>
-			iAgePhase)
-<span class="fc" id="L141">			return _dblIncomeReplacementRate;</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT == agePhase)</span>
+		{
+<span class="fc" id="L148">			return _incomeReplacementRate;</span>
+		}
 
-<span class="nc" id="L143">		return 0.;</span>
+<span class="nc" id="L151">		return 0.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

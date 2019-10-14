@@ -6,39 +6,50 @@ package org.drip.analytics.daycount;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -73,10 +84,10 @@ package org.drip.analytics.daycount;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/README.md&quot;&gt;Day Count&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/README.md&quot;&gt;Date, Cash Flow, and Cash Flow Period Measure Generation Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/analytics/daycount/README.md&quot;&gt;Day Count Year Fraction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -89,17 +100,17 @@ public class DCAct_Act_UST implements org.drip.analytics.daycount.DCFCalculator 
 	 */
 
 	public DCAct_Act_UST()
-<span class="fc" id="L92">	{</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L103">	{</span>
+<span class="fc" id="L104">	}</span>
 
 	@Override public java.lang.String baseCalculationType()
 	{
-<span class="nc" id="L97">		return &quot;DCAct_Act_UST&quot;;</span>
+<span class="nc" id="L108">		return &quot;DCAct_Act_UST&quot;;</span>
 	}
 
 	@Override public java.lang.String[] alternateNames()
 	{
-<span class="fc" id="L102">		return new java.lang.String[] {&quot;Actual/Actual UST&quot;, &quot;Act/Act UST&quot;, &quot;DCAct_Act_UST&quot;};</span>
+<span class="fc" id="L113">		return new java.lang.String[] {&quot;Actual/Actual UST&quot;, &quot;Act/Act UST&quot;, &quot;DCAct_Act_UST&quot;};</span>
 	}
 
 	@Override public double yearFraction (
@@ -110,11 +121,11 @@ public class DCAct_Act_UST implements org.drip.analytics.daycount.DCFCalculator 
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">		if (null == actactParams || iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L114">			throw new java.lang.Exception (&quot;DCAct_Act_UST::daysAccrued =&gt; Invalid Inputs! &quot; + iStartDate +</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == actactParams || iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L125">			throw new java.lang.Exception (&quot;DCAct_Act_UST::daysAccrued =&gt; Invalid Inputs! &quot; + iStartDate +</span>
 				&quot; | &quot; + iEndDate);
 
-<span class="fc" id="L117">		return 1. * (iEndDate - iStartDate) / actactParams.days();</span>
+<span class="fc" id="L128">		return 1. * (iEndDate - iStartDate) / actactParams.days();</span>
 	}
 
 	@Override public int daysAccrued (
@@ -125,10 +136,10 @@ public class DCAct_Act_UST implements org.drip.analytics.daycount.DCFCalculator 
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;DCAct_Act_UST::daysAccrued =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (iEndDate &lt; iStartDate)</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;DCAct_Act_UST::daysAccrued =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L131">		return iEndDate - iStartDate;</span>
+<span class="nc" id="L142">		return iEndDate - iStartDate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

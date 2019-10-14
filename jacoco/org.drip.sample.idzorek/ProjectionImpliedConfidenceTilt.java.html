@@ -104,50 +104,57 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L107">public class ProjectionImpliedConfidenceTilt {</span>
+<span class="nc" id="L107">public class ProjectionImpliedConfidenceTilt</span>
+{
 
 	private static final void DisplayTilt (
-		final String[] astrAssetID,
-		final int iViewIndex,
-		final double[] adblImpliedTilt,
-		final double[] adblUnadjustedWeight,
-		final double dblProjectionUserConfidence)
+		final String[] assetIDArray,
+		final int viewIndex,
+		final double[] impliedTiltArray,
+		final double[] unadjustedWeightArray,
+		final double projectionUserConfidence)
 		throws Exception
 	{
-<span class="fc" id="L117">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L118">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L119">		System.out.println (</span>
-			&quot;\t| VIEW #&quot; + iViewIndex + &quot;                CONFIDENCE =&gt; &quot; +
-<span class="fc" id="L121">			FormatUtil.FormatDouble (dblProjectionUserConfidence, 2, 2, 100.) + &quot;%         ||&quot;</span>
+<span class="fc" id="L120">		System.out.println (</span>
+			&quot;\t| VIEW #&quot; + viewIndex + &quot;                CONFIDENCE =&gt; &quot; +
+<span class="fc" id="L122">			FormatUtil.FormatDouble (projectionUserConfidence, 2, 2, 100.) + &quot;%         ||&quot;</span>
 		);
 
-<span class="fc" id="L124">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L125">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L126">		System.out.println (&quot;\t|             ASSET ID            =&gt;   TILT  |  WEIGHT ||&quot;);</span>
+<span class="fc" id="L127">		System.out.println (&quot;\t|             ASSET ID            =&gt;   TILT  |  WEIGHT ||&quot;);</span>
 
-<span class="fc" id="L128">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L129">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">		for (int i = 0; i &lt; adblImpliedTilt.length; ++i)</span>
-<span class="fc" id="L131">			System.out.println (</span>
-				&quot;\t| &quot; + astrAssetID[i] + &quot; =&gt; &quot; +
-<span class="fc" id="L133">				FormatUtil.FormatDouble (adblImpliedTilt[i], 2, 2, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L134">				FormatUtil.FormatDouble (adblImpliedTilt[i] + adblUnadjustedWeight[i], 2, 2, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L131">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">			assetIndex &lt; impliedTiltArray.length;</span>
+<span class="fc" id="L133">			++assetIndex)</span>
+		{
+<span class="fc" id="L135">			System.out.println (</span>
+				&quot;\t| &quot; + assetIDArray[assetIndex] + &quot; =&gt; &quot; +
+<span class="fc" id="L137">				FormatUtil.FormatDouble (impliedTiltArray[assetIndex], 2, 2, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L138">				FormatUtil.FormatDouble (</span>
+					impliedTiltArray[assetIndex] + unadjustedWeightArray[assetIndex], 2, 2, 100.
+				) + &quot;% ||&quot;
 			);
+		}
 
-<span class="fc" id="L137">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
-<span class="fc" id="L138">	}</span>
+<span class="fc" id="L144">		System.out.println (&quot;\t|------------------------------------------------------||\n&quot;);</span>
+<span class="fc" id="L145">	}</span>
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L144">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L151">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L146">		double dblTau = 0.025;</span>
-<span class="fc" id="L147">		double dblRiskAversion = 3.07;</span>
-<span class="fc" id="L148">		double dblRiskFreeRate = 0.00;</span>
-
-<span class="fc" id="L150">		String[] astrAssetID = new String[] {</span>
+<span class="fc" id="L153">		double tau = 0.025;</span>
+<span class="fc" id="L154">		double riskAversion = 3.07;</span>
+<span class="fc" id="L155">		double riskFreeRate = 0.00;</span>
+<span class="fc" id="L156">		String[] assetIDArray = new String[]</span>
+		{
 			&quot;US BONDS                       &quot;,
 			&quot;INTERNATIONAL BONDS            &quot;,
 			&quot;US LARGE GROWTH                &quot;,
@@ -157,8 +164,8 @@ import org.drip.service.env.EnvManager;
 			&quot;INTERNATIONAL DEVELOPED EQUITY &quot;,
 			&quot;INTERNATIONAL EMERGING EQUITY  &quot;
 		};
-
-<span class="fc" id="L161">		double[] adblAssetEquilibriumWeight = new double[] {</span>
+<span class="fc" id="L167">		double[] assetEquilibriumWeightArray = new double[]</span>
+		{
 			0.1934,
 			0.2613,
 			0.1209,
@@ -168,8 +175,8 @@ import org.drip.service.env.EnvManager;
 			0.2418,
 			0.0349
 		};
-
-<span class="fc" id="L172">		double[][] aadblAssetExcessReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L178">		double[][] assetExcessReturnsCovarianceMatrix = new double[][]</span>
+		{
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -179,77 +186,78 @@ import org.drip.service.env.EnvManager;
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-
-<span class="fc" id="L183">		double[][] aadblAssetSpaceViewProjection = new double[][] {</span>
+<span class="fc" id="L189">		double[][] assetSpaceViewProjectionMatrix = new double[][]</span>
+		{
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
-
-<span class="fc" id="L189">		double[] adblProjectionExpectedExcessReturns = new double[] {</span>
+<span class="fc" id="L195">		double[] projectionExpectedExcessReturnsArray = new double[]</span>
+		{
 			0.0525,
 			0.0025,
 			0.0200
 		};
-
-<span class="fc" id="L195">		double[] adblUserSpecifiedProjectionConfidence = new double[] {</span>
+<span class="fc" id="L201">		double[] userSpecifiedProjectionConfidenceArray = new double[]</span>
+		{
 			0.25,
 			0.50,
 			0.65
 		};
 
-<span class="fc" id="L201">		double[][] aadblProjectionExcessReturnsCovariance = ProjectionDistributionLoading.ProjectionCovariance (</span>
-			aadblAssetExcessReturnsCovariance,
-			aadblAssetSpaceViewProjection,
-			dblTau
-		);
-
-<span class="fc" id="L207">		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (</span>
-			new MultivariateMeta (
-				new String[] {
-					&quot;PROJECTION #1&quot;,
-					&quot;PROJECTION #2&quot;,
-					&quot;PROJECTION #3&quot;
-				}
-			),
-			adblProjectionExpectedExcessReturns,
-			aadblProjectionExcessReturnsCovariance
-		);
-
-<span class="fc" id="L219">		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (</span>
-<span class="fc" id="L220">			ForwardReverseOptimizationOutput.Reverse (</span>
-<span class="fc" id="L221">				Portfolio.Standard (</span>
-					astrAssetID,
-					adblAssetEquilibriumWeight
+<span class="fc" id="L208">		double[][] projectionTiltArray = new BlackLittermanCombinationEngine (</span>
+<span class="fc" id="L209">			ForwardReverseOptimizationOutput.Reverse (</span>
+<span class="fc" id="L210">				Portfolio.Standard (</span>
+					assetIDArray,
+					assetEquilibriumWeightArray
 				),
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+				assetExcessReturnsCovarianceMatrix,
+				riskAversion
 			),
 			new PriorControlSpecification (
 				true,
-				dblRiskFreeRate,
-				dblTau
+				riskFreeRate,
+				tau
 			),
 			new ProjectionSpecification (
-				viewDistribution,
-				aadblAssetSpaceViewProjection
+<span class="fc" id="L223">				R1MultivariateNormal.Standard (</span>
+					new MultivariateMeta (
+						new String[]
+						{
+							&quot;PROJECTION #1&quot;,
+							&quot;PROJECTION #2&quot;,
+							&quot;PROJECTION #3&quot;
+						}
+					),
+					projectionExpectedExcessReturnsArray,
+<span class="fc" id="L233">					ProjectionDistributionLoading.ProjectionCovariance (</span>
+						assetExcessReturnsCovarianceMatrix,
+						assetSpaceViewProjectionMatrix,
+						tau
+					)
+				),
+				assetSpaceViewProjectionMatrix
 			)
+<span class="fc" id="L241">		).userConfidenceProjectionTitMatrix (</span>
+			userSpecifiedProjectionConfidenceArray
 		);
 
-<span class="fc" id="L239">		double[][] aadblProjectionTilt = blce.userConfidenceProjectionTilt (adblUserSpecifiedProjectionConfidence);</span>
+<span class="fc" id="L245">		System.out.println (&quot;\n\n&quot;);</span>
 
-<span class="fc" id="L241">		System.out.println (&quot;\n\n&quot;);</span>
-
-<span class="fc bfc" id="L243" title="All 2 branches covered.">		for (int i = 0; i &lt; adblUserSpecifiedProjectionConfidence.length; ++i)</span>
-<span class="fc" id="L244">			DisplayTilt (</span>
-				astrAssetID,
-				i,
-				aadblProjectionTilt[i],
-				adblAssetEquilibriumWeight,
-				adblUserSpecifiedProjectionConfidence[i]
+<span class="fc" id="L247">		for (int userSpecifiedProjectionConfidenceIndex = 0;</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			userSpecifiedProjectionConfidenceIndex &lt; userSpecifiedProjectionConfidenceArray.length;</span>
+<span class="fc" id="L249">			++userSpecifiedProjectionConfidenceIndex)</span>
+		{
+<span class="fc" id="L251">			DisplayTilt (</span>
+				assetIDArray,
+				userSpecifiedProjectionConfidenceIndex,
+				projectionTiltArray[userSpecifiedProjectionConfidenceIndex],
+				assetEquilibriumWeightArray,
+				userSpecifiedProjectionConfidenceArray[userSpecifiedProjectionConfidenceIndex]
 			);
+		}
 
-<span class="fc" id="L252">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L253">	}</span>
+<span class="fc" id="L260">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L261">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
