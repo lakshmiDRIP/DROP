@@ -81,50 +81,53 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitHoldingsTermIssuerWeightedAverage extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTermIssuer
+public class LimitHoldingsTermIssuerWeightedAverage
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTermIssuer
 {
-	private double[] _adblPrice = null;
+	private double[] _priceArray = null;
 
 	/**
 	 * LimitHoldingsTermIssuerWeightedAverage Constructor
 	 * 
-	 * @param strName Name of the Limit Issuer Net Holdings
+	 * @param name Name of the Limit Issuer Net Holdings
 	 * @param scope Scope of the Limit Issuer Net Holdings
 	 * @param unit Unit of the Limit Issuer Net Holdings
-	 * @param dblMinimum Minimum Bound of the Limit Issuer Net Holdings
-	 * @param dblMaximum Maximum Bound of the Limit Issuer Net Holdings
-	 * @param adblIssuerSelection Array of Issuer Selection Entries
-	 * @param adblPrice Array of Asset Prices
+	 * @param minimum Minimum Bound of the Limit Issuer Net Holdings
+	 * @param maximum Maximum Bound of the Limit Issuer Net Holdings
+	 * @param issuerSelectionArray Array of Issuer Selection Entries
+	 * @param priceArray Array of Asset Prices
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitHoldingsTermIssuerWeightedAverage (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection,
-		final double[] adblPrice)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_WEIGHTED_AVERAGE_HOLDINGS",
 			"Limit Issuer Weighted Average Holdings Constraint Term",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
 
-		if (null == (_adblPrice = adblPrice) || adblIssuerSelection.length != _adblPrice.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))
+		if (null == (_priceArray = priceArray) ||
+			issuerSelectionArray.length != _priceArray.length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray))
+		{
 			throw new java.lang.Exception
 				("LimitHoldingsTermIssuerWeightedAverage Constructor => Invalid Selection");
+		}
 	}
 
 	/**
@@ -133,9 +136,9 @@ public class LimitHoldingsTermIssuerWeightedAverage extends
 	 * @return Array of Asset Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-		return _adblPrice;
+		return _priceArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -144,34 +147,35 @@ public class LimitHoldingsTermIssuerWeightedAverage extends
 		{
 			@Override public int dimension()
 			{
-				return issuerSelection().length;
+				return issuerSelectionArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				int iNumAsset = adblIssuerSelection.length;
-				double dblPortfolioSelectionValue = 0.;
-				double dblPortfolioValue = 0.;
+				int assetCount = issuerSelectionArray.length;
+				double portfolioSelectionValue = 0.;
+				double portfolioValue = 0.;
 
-				double[] adblPrice = price();
-
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitHoldingsTermIssuerWeightedAverage::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					double dblAssetValue = adblFinalHoldings[i] * adblPrice[i];
-					dblPortfolioValue += dblAssetValue;
-					dblPortfolioSelectionValue += adblIssuerSelection[i] * dblAssetValue;
 				}
 
-				return dblPortfolioSelectionValue / dblPortfolioValue;
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					double assetValue = finalHoldingsArray[assetIndex] * _priceArray[assetIndex];
+					portfolioValue += assetValue;
+					portfolioSelectionValue += issuerSelectionArray[assetIndex] * assetValue;
+				}
+
+				return portfolioSelectionValue / portfolioValue;
 			}
 		};
 	}

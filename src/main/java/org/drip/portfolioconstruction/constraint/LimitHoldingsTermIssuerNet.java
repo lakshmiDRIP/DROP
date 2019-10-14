@@ -80,41 +80,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitHoldingsTermIssuerNet extends
-	org.drip.portfolioconstruction.constraint.LimitHoldingsTermIssuer
+public class LimitHoldingsTermIssuerNet
+	extends org.drip.portfolioconstruction.constraint.LimitHoldingsTermIssuer
 {
 
 	/**
 	 * LimitHoldingsTermIssuerNet Constructor
 	 * 
-	 * @param strName Name of the Limit Issuer Net Holdings
+	 * @param name Name of the Limit Issuer Net Holdings
 	 * @param scope Scope of the Limit Issuer Net Holdings
 	 * @param unit Unit of the Limit Issuer Net Holdings
-	 * @param dblMinimum Minimum Bound of the Limit Issuer Net Holdings
-	 * @param dblMaximum Maximum Bound of the Limit Issuer Net Holdings
-	 * @param adblIssuerSelection Array of Issuer Selection Entries
+	 * @param minimum Minimum Bound of the Limit Issuer Net Holdings
+	 * @param maximum Maximum Bound of the Limit Issuer Net Holdings
+	 * @param issuerSelectionArray Array of Issuer Selection Entries
 	 * 
 	 * @throws java.lang.Exception Thrwon if the Inputs are Invalid
 	 */
 
 	public LimitHoldingsTermIssuerNet (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_ISSUER_LIMIT_NET_HOLDINGS",
 			"Limit Issuer Net Holdings Constraint Term",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
 	}
 
@@ -124,27 +124,33 @@ public class LimitHoldingsTermIssuerNet extends
 		{
 			@Override public int dimension()
 			{
-				return issuerSelection().length;
+				return issuerSelectionArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				int iNumAsset = adblIssuerSelection.length;
-				double dblConstraintValue = 0.;
+				int assetCount = issuerSelectionArray.length;
+				double limitHoldingsIssuerNet = 0.;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitHoldingsTermIssuerNet::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += adblIssuerSelection[i] * adblFinalHoldings[i];
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitHoldingsIssuerNet += issuerSelectionArray[assetIndex] *
+						finalHoldingsArray[assetIndex];
+				}
 
-				return dblConstraintValue;
+				return limitHoldingsIssuerNet;
 			}
 		};
 	}

@@ -80,27 +80,28 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitTradesTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblInitialHoldings = null;
-	private double[] _adblIssuerSelection = null;
+	private double[] _initialHoldingsArray = null;
+	private double[] _issuerSelectionArray = null;
 
 	protected LimitTradesTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
 		final double dblMinimum,
 		final double dblMaximum,
-		final double[] adblIssuerSelection,
-		final double[] adblInitialHoldings)
+		final double[] issuerSelectionArray,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_TRADES",
 			scope,
 			unit,
@@ -108,16 +109,20 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 			dblMaximum
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) ||
-			null == (_adblInitialHoldings = adblInitialHoldings))
+		if (null == (_issuerSelectionArray = issuerSelectionArray) ||
+			null == (_initialHoldingsArray = initialHoldingsArray))
+		{
 			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
+		}
 
-		int iNumAsset = _adblIssuerSelection.length;
+		int assetCount = _issuerSelectionArray.length;
 
-		if (0 == iNumAsset || _adblInitialHoldings.length == iNumAsset ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection)||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))
+		if (0 == assetCount || _initialHoldingsArray.length == assetCount ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))
+		{
 			throw new java.lang.Exception ("LimitTradesTermIssuer Constructor => Invalid Section");
+		}
 	}
 
 	/**
@@ -126,9 +131,9 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 	 * @return Initial Holdings Array
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-		return _adblInitialHoldings;
+		return _initialHoldingsArray;
 	}
 
 	/**
@@ -137,8 +142,8 @@ public abstract class LimitTradesTermIssuer extends org.drip.portfolioconstructi
 	 * @return Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-		return _adblIssuerSelection;
+		return _issuerSelectionArray;
 	}
 }

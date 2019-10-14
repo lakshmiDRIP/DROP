@@ -80,111 +80,155 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class MeanVarianceOptimizer {
+public abstract class MeanVarianceOptimizer
+{
 
 	protected abstract org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
 		constrainedPCP (
-			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcpDesign,
-			final double dblReturnsConstraint);
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				designPortfolioConstructionParameters,
+			final double returnsConstraint);
 
 	/**
 	 * Allocate the Long-Only Maximum Returns Portfolio
 	 * 
-	 * @param pcp The Portfolio Construction Parameters
-	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * @param portfolioConstructionParameters The Portfolio Construction Parameters
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
 	 * 
 	 * @return The Long-Only Maximum Returns Portfolio
 	 */
 
-	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp);
+	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput
+		longOnlyMaximumReturnsAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties);
 
 	/**
 	 * Allocate the Global Minimum Variance Portfolio without any Returns Constraints in the Parameters
 	 * 
-	 * @param pcp The Portfolio Construction Parameters
-	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * @param portfolioConstructionParameters The Portfolio Construction Parameters
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
 	 * 
 	 * @return The Global Minimum Variance Portfolio
 	 */
 
-	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceAllocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp);
+	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput
+		globalMinimumVarianceAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties);
 
 	/**
 	 * Allocate the Optimal Portfolio Weights given the Portfolio Construction Parameters
 	 * 
-	 * @param pcp The Portfolio Construction Parameters
-	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * @param portfolioConstructionParameters The Portfolio Construction Parameters
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
 	 * 
 	 * @return The Optimal Portfolio
 	 */
 
 	public abstract org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp);
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			portfolioConstructionParameters,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties);
 
 	/**
 	 * Generate the Efficient Frontier given the Portfolio Construction Parameters
 	 * 
-	 * @param pcp The Portfolio Construction Parameters
-	 * @param ausp The Asset Universe Statistical Properties Instance
-	 * @param iFrontierSampleUnits The Number of Frontier Sample Units
+	 * @param portfolioConstructionParameters The Portfolio Construction Parameters
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
+	 * @param frontierSampleUnits The Number of Frontier Sample Units
 	 * 
 	 * @return The Efficient Frontier
 	 */
 
 	public org.drip.portfolioconstruction.mpt.MarkovitzBullet efficientFrontier (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp,
-		final int iFrontierSampleUnits)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			portfolioConstructionParameters,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties,
+		final int frontierSampleUnits)
 	{
-		if (0 >= iFrontierSampleUnits) return null;
+		if (0 >= frontierSampleUnits)
+		{
+			return null;
+		}
 
-		org.drip.portfolioconstruction.allocator.OptimizationOutput opGlobalMinimumVariance =
-			globalMinimumVarianceAllocate (pcp, ausp);
+		org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceOptimizationOutput =
+			globalMinimumVarianceAllocate (
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
+			);
 
-		if (null == opGlobalMinimumVariance) return null;
+		if (null == globalMinimumVarianceOptimizationOutput)
+		{
+			return null;
+		}
 
-		org.drip.portfolioconstruction.allocator.OptimizationOutput opLongOnlyMaximumReturns =
-			longOnlyMaximumReturnsAllocate (pcp, ausp);
+		org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsOptimizationOutput
+			= longOnlyMaximumReturnsAllocate (
+				portfolioConstructionParameters,
+				assetUniverseStatisticalProperties
+			);
 
-		if (null == opLongOnlyMaximumReturns) return null;
+		if (null == longOnlyMaximumReturnsOptimizationOutput)
+		{
+			return null;
+		}
 
-		double dblReturnsGlobalMinimumVariance =
-			opGlobalMinimumVariance.optimalMetrics().excessReturnsMean();
+		double globalMinimumVarianceReturns =
+			globalMinimumVarianceOptimizationOutput.optimalMetrics().excessReturnsMean();
 
-		double dblReturnsLongOnlyMaximumReturns =
-			opLongOnlyMaximumReturns.optimalMetrics().excessReturnsMean();
+		double longOnlyMaximumReturns =
+			longOnlyMaximumReturnsOptimizationOutput.optimalMetrics().excessReturnsMean();
 
-		double dblReturnsConstraintGridWidth = (dblReturnsLongOnlyMaximumReturns -
-			dblReturnsGlobalMinimumVariance) / iFrontierSampleUnits;
-		double dblReturnsConstraint = dblReturnsGlobalMinimumVariance + dblReturnsConstraintGridWidth;
-		org.drip.portfolioconstruction.mpt.MarkovitzBullet mb = null;
+		double returnsConstraintGridWidth = (longOnlyMaximumReturns - globalMinimumVarianceReturns) /
+			frontierSampleUnits;
+		double returnsConstraint = globalMinimumVarianceReturns + returnsConstraintGridWidth;
+		org.drip.portfolioconstruction.mpt.MarkovitzBullet markovitzBullet = null;
 
-		try {
-			mb = new org.drip.portfolioconstruction.mpt.MarkovitzBullet (opGlobalMinimumVariance,
-				opLongOnlyMaximumReturns);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			markovitzBullet = new org.drip.portfolioconstruction.mpt.MarkovitzBullet (
+				globalMinimumVarianceOptimizationOutput,
+				longOnlyMaximumReturnsOptimizationOutput
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		while (dblReturnsConstraint <= dblReturnsLongOnlyMaximumReturns) {
-			try {
-				mb.addOptimalPortfolio (allocate (constrainedPCP (pcp, dblReturnsConstraint), ausp));
-			} catch (java.lang.Exception e) {
+		while (returnsConstraint <= longOnlyMaximumReturns)
+		{
+			try
+			{
+				markovitzBullet.addOptimalPortfolio (
+					allocate (
+						constrainedPCP (
+							portfolioConstructionParameters,
+							returnsConstraint
+						),
+						assetUniverseStatisticalProperties
+					)
+				);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 
-			dblReturnsConstraint += dblReturnsConstraintGridWidth;
+			returnsConstraint += returnsConstraintGridWidth;
 		}
 
-		return mb;
+		return markovitzBullet;
 	}
 }

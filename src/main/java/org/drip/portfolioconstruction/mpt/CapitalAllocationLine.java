@@ -82,27 +82,30 @@ package org.drip.portfolioconstruction.mpt;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalAllocationLine {
-	private double _dblRiskFreeRate = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmTangency = null;
+public class CapitalAllocationLine
+{
+	private double _riskFreeRate = java.lang.Double.NaN;
+	private org.drip.portfolioconstruction.asset.PortfolioMetrics _tangencyPortfolioMetrics = null;
 
 	/**
 	 * CapitalAllocationLine Constructor
 	 * 
-	 * @param dblRiskFreeRate The Risk Free Rate
-	 * @param pmTangency The Tangency Portfolio Metrics
+	 * @param riskFreeRate The Risk Free Rate
+	 * @param tangencyPortfolioMetrics The Tangency Portfolio Metrics
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CapitalAllocationLine (
-		final double dblRiskFreeRate,
-		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmTangency)
+		final double riskFreeRate,
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics tangencyPortfolioMetrics)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) || null ==
-			(_pmTangency = pmTangency))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskFreeRate = riskFreeRate) ||
+			null == (_tangencyPortfolioMetrics = tangencyPortfolioMetrics))
+		{
 			throw new java.lang.Exception ("CapitalAllocationLine Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -113,7 +116,7 @@ public class CapitalAllocationLine {
 
 	public double riskFreeRate()
 	{
-		return _dblRiskFreeRate;
+		return _riskFreeRate;
 	}
 
 	/**
@@ -124,13 +127,13 @@ public class CapitalAllocationLine {
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics tangencyPortfolioMetrics()
 	{
-		return _pmTangency;
+		return _tangencyPortfolioMetrics;
 	}
 
 	/**
 	 * Calculate the Combination Portfolio's Expected Returns from the corresponding Standard Deviation
 	 * 
-	 * @param dblCombinationPortfolioStandardDeviation The Combination Portfolio's Standard Deviation
+	 * @param combinationPortfolioStandardDeviation The Combination Portfolio's Standard Deviation
 	 * 
 	 * @return The Combination Portfolio's Expected Returns
 	 * 
@@ -138,21 +141,24 @@ public class CapitalAllocationLine {
 	 */
 
 	public double combinationPortfolioExpectedReturn (
-		final double dblCombinationPortfolioStandardDeviation)
+		final double combinationPortfolioStandardDeviation)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCombinationPortfolioStandardDeviation))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (combinationPortfolioStandardDeviation))
+		{
 			throw new java.lang.Exception
 				("CapitalAllocationLine::combinationPortfolioExpectedReturn => Invalid Inputs");
+		}
 
-		return _dblRiskFreeRate + dblCombinationPortfolioStandardDeviation * (_pmTangency.excessReturnsMean()
-			- _dblRiskFreeRate) / _pmTangency.excessReturnsStandardDeviation();
+		return _riskFreeRate + combinationPortfolioStandardDeviation * (
+			_tangencyPortfolioMetrics.excessReturnsMean() - _riskFreeRate
+		) / _tangencyPortfolioMetrics.excessReturnsStandardDeviation();
 	}
 
 	/**
 	 * Compute the Combination Portfolio's Standard Deviation
 	 * 
-	 * @param dblCombinationPortfolioExpectedReturn The Expected Returns of the Combination Portfolio
+	 * @param combinationPortfolioExpectedReturn The Expected Returns of the Combination Portfolio
 	 * 
 	 * @return The Combination Portfolio's Standard Deviation
 	 * 
@@ -160,14 +166,17 @@ public class CapitalAllocationLine {
 	 */
 
 	public double combinationPortfolioStandardDeviation (
-		final double dblCombinationPortfolioExpectedReturn)
+		final double combinationPortfolioExpectedReturn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCombinationPortfolioExpectedReturn))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (combinationPortfolioExpectedReturn))
+		{
 			throw new java.lang.Exception
 				("CapitalAllocationLine::combinationPortfolioStandardDeviation => Invalid Inputs");
+		}
 
-		return (dblCombinationPortfolioExpectedReturn - _dblRiskFreeRate) / (_pmTangency.excessReturnsMean()
-			- _dblRiskFreeRate) * _pmTangency.excessReturnsStandardDeviation();
+		return (combinationPortfolioExpectedReturn - _riskFreeRate) / (
+			_tangencyPortfolioMetrics.excessReturnsMean() - _riskFreeRate
+		) * _tangencyPortfolioMetrics.excessReturnsStandardDeviation();
 	}
 }

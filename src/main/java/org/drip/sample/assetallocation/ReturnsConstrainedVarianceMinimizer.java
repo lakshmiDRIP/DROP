@@ -198,8 +198,8 @@ public class ReturnsConstrainedVarianceMinimizer {
 		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (
 			astrAsset,
 			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
 				dblDesignReturn
 			)
 		);
@@ -216,7 +216,7 @@ public class ReturnsConstrainedVarianceMinimizer {
 			ausp
 		);
 
-		AssetComponent[] aAC = pf.optimalPortfolio().assets();
+		AssetComponent[] aAC = pf.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\t|---------------||");
 

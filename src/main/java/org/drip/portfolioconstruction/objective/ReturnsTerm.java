@@ -81,38 +81,45 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+public abstract class ReturnsTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-	private double[] _adblAlpha = null;
-	private double[] _adblBenchmarkConstrictedHoldings = null;
+	private double[] _alphaArray = null;
+	private double[] _benchmarkConstrictedHoldingsArray = null;
 
 	protected ReturnsTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final double[] adblAlpha,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final double[] alphaArray,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"RETURNS",
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-		int iNumAsset = adblInitialHoldings.length;
+		int assetCount = initialHoldingsArray.length;
 
-		if (null == (_adblAlpha = adblAlpha) || !org.drip.numerical.common.NumberUtil.IsValid (_adblAlpha) ||
-			iNumAsset != _adblAlpha.length)
+		if (null == (_alphaArray = alphaArray) || !org.drip.numerical.common.NumberUtil.IsValid (_alphaArray)
+			|| assetCount != _alphaArray.length)
+		{
 			throw new java.lang.Exception ("ReturnsTerm Constructor => Invalid Inputs");
+		}
 
-		if (null != (_adblBenchmarkConstrictedHoldings = adblBenchmarkConstrictedHoldings) && (iNumAsset !=
-			_adblBenchmarkConstrictedHoldings.length || !org.drip.numerical.common.NumberUtil.IsValid
-				(_adblBenchmarkConstrictedHoldings)))
+		if (null != (_benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldingsArray) && 
+			(
+				assetCount != _benchmarkConstrictedHoldingsArray.length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_benchmarkConstrictedHoldingsArray))
+			)
+		{
 			throw new java.lang.Exception ("RiskTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -121,19 +128,19 @@ public abstract class ReturnsTerm extends org.drip.portfolioconstruction.optimiz
 	 * @return The Array of Alphas
 	 */
 
-	public double[] alpha()
+	public double[] alphaArray()
 	{
-		return _adblAlpha;
+		return _alphaArray;
 	}
 
 	/**
-	 * Retrieve the Benchmark Constricted Holdings
+	 * Retrieve the Benchmark Constricted Holdings Array
 	 * 
-	 * @return The Benchmark Constricted Holdings
+	 * @return The Benchmark Constricted Holdings Array
 	 */
 
-	public double[] benchmarkConstrictedHoldings()
+	public double[] benchmarkConstrictedHoldingsArray()
 	{
-		return _adblBenchmarkConstrictedHoldings;
+		return _benchmarkConstrictedHoldingsArray;
 	}
 }

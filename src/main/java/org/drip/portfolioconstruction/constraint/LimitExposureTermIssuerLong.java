@@ -80,44 +80,44 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermIssuerLong extends
-	org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
+public class LimitExposureTermIssuerLong
+	extends org.drip.portfolioconstruction.constraint.LimitExposureTermIssuer
 {
 
 	/**
 	 * LimitExposureTermIssuerLong Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of the Asset Prices
-	 * @param adblIssuerSelection Array of Issuer Selection
+	 * @param minimum Minimum Value of the Constraint
+	 * @param maximum Maximum Value of the Constraint
+	 * @param priceArray Array of the Asset Prices
+	 * @param issuerSelectionArray Array of Issuer Selection
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitExposureTermIssuerLong (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_ISSUER_LONG_EXPOSURE",
 			"Constrains the Issuer Long Exposure",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			priceArray,
+			issuerSelectionArray
 		);
 	}
 
@@ -127,32 +127,38 @@ public class LimitExposureTermIssuerLong extends
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return priceArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] priceArray = priceArray();
 
-				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
+				double limitExposureIssuerLong = 0.;
+				int assetCount = priceArray.length;
 
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitExposureTermIssuerLong::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (adblFinalHoldings[i] > 0.)
-						dblConstraintValue += adblIssuerSelection[i] * adblPrice[i] * adblFinalHoldings[i];
 				}
 
-				return dblConstraintValue;
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					if (finalHoldingsArray[assetIndex] > 0.)
+					{
+						limitExposureIssuerLong += issuerSelectionArray[assetIndex] * priceArray[assetIndex]
+							* finalHoldingsArray[assetIndex];
+					}
+				}
+
+				return limitExposureIssuerLong;
 			}
 		};
 	}

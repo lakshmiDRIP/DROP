@@ -80,11 +80,13 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
-	private int _iDimension = -1;
+public class ObjectiveFunction
+	extends org.drip.function.definition.RdToR1
+{
+	private int _dimension = -1;
 
-	private java.util.List<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit> _lsOTU = new
-		java.util.ArrayList<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit>();
+	private java.util.List<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit> _objectiveTermUnitList
+		= new java.util.ArrayList<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit>();
 
 	/**
 	 * Empty Objective Function Constructor
@@ -98,17 +100,20 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 	/**
 	 * Add the Objective Term Unit Instance
 	 * 
-	 * @param otu The Objective Term Unit Instance
+	 * @param objectiveTermUnit The Objective Term Unit Instance
 	 * 
 	 * @return TRUE - The Objective Term Unit Instance successfully added
 	 */
 
 	public boolean addObjectiveTermUnit (
-		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu)
+		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit)
 	{
-		if (null == otu || _lsOTU.contains (otu)) return false;
+		if (null == objectiveTermUnit || _objectiveTermUnitList.contains (objectiveTermUnit))
+		{
+			return false;
+		}
 
-		_lsOTU.add (otu);
+		_objectiveTermUnitList.add (objectiveTermUnit);
 
 		return true;
 	}
@@ -121,25 +126,32 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 
 	public java.util.List<org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit> list()
 	{
-		return _lsOTU;
+		return _objectiveTermUnitList;
 	}
 
 	@Override public int dimension()
 	{
-		return _iDimension;
+		return _dimension;
 	}
 
 	@Override public double evaluate (
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		double dblValue = 0.;
+		double value = 0.;
 
-		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {
-			if (otu.isActive()) dblValue += otu.weight() * otu.term().rdtoR1().evaluate (adblVariate);
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit :
+			_objectiveTermUnitList)
+		{
+			if (objectiveTermUnit.isActive())
+			{
+				value += objectiveTermUnit.weight() * objectiveTermUnit.objectiveTerm().rdtoR1().evaluate (
+					adblVariate
+				);
+			}
 		}
 
-		return dblValue;
+		return value;
 	}
 
 	@Override public double derivative (
@@ -148,17 +160,22 @@ public class ObjectiveFunction extends org.drip.function.definition.RdToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		double dblValue = 0.;
+		double derivative = 0.;
 
-		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit otu : _lsOTU) {
-			if (otu.isActive())
-				dblValue += otu.weight() * otu.term().rdtoR1().derivative (
-					adblVariate,
-					iVariateIndex,
-					iOrder
-				);
+		for (org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit :
+			_objectiveTermUnitList)
+		{
+			if (objectiveTermUnit.isActive())
+			{
+				derivative += objectiveTermUnit.weight() *
+					objectiveTermUnit.objectiveTerm().rdtoR1().derivative (
+						adblVariate,
+						iVariateIndex,
+						iOrder
+					);
+			}
 		}
 
-		return dblValue;
+		return derivative;
 	}
 }

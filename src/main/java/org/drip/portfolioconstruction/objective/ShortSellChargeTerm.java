@@ -81,31 +81,32 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShortSellChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class ShortSellChargeTerm
+	extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
 	 * ShortSellChargeTerm Conastructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTC Array of Asset Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Initial Holdings
+	 * @param transactionChargeArray Array of Asset Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ShortSellChargeTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTC)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_SHORT_SELL_CHARGE",
 			"Short Sell Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTC
+			initialHoldingsArray,
+			transactionChargeArray
 		);
 	}
 
@@ -115,36 +116,44 @@ public class ShortSellChargeTerm extends org.drip.portfolioconstruction.objectiv
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception ("ShortSellChargeTerm::rdToR1::evaluate => Invalid Input");
-
-				org.drip.portfolioconstruction.cost.TransactionCharge[] aTCF = transactionCharge();
-
-				double[] adblInitialHoldings = initialHoldings();
-
-				int iNumAsset = aTCF.length;
-				double dblShortSellChargeTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("ShortSellChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i) {
-					if (adblVariate[i] < adblInitialHoldings[i])
-						dblShortSellChargeTerm += aTCF[i].estimate (
-							adblInitialHoldings[i],
-							adblVariate[i]
-						);
 				}
 
-				return dblShortSellChargeTerm;
+				org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray =
+					transactionChargeArray();
+
+				double[] initialHoldingsArray = initialHoldingsArray();
+
+				int assetCount = transactionChargeArray.length;
+				double shortSellChargeTerm = 0.;
+
+				if (variateArray.length != assetCount)
+				{
+					throw new java.lang.Exception
+						("ShortSellChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
+
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					if (variateArray[assetIndex] < initialHoldingsArray[assetIndex])
+					{
+						shortSellChargeTerm += transactionChargeArray[assetIndex].estimate (
+							initialHoldingsArray[assetIndex],
+							variateArray[assetIndex]
+						);
+					}
+				}
+
+				return shortSellChargeTerm;
 			}
 		};
 	}

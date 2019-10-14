@@ -81,7 +81,8 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InvestorCliffSettings {
+public class InvestorCliffSettings
+{
 
 	/**
 	 * Date Phase - Before Retirement
@@ -101,27 +102,29 @@ public class InvestorCliffSettings {
 
 	public static final int DATE_PHASE_AFTER_MORTALITY = 2;
 
-	private double _dblMaximumAge = java.lang.Double.NaN;
-	private double _dblRetirementAge = java.lang.Double.NaN;
+	private double _maximumAge = java.lang.Double.NaN;
+	private double _retirementAge = java.lang.Double.NaN;
 
 	/**
 	 * InvestorCliffSettings Constructor
 	 * 
-	 * @param dblRetirementAge The Investor Retirement Age
-	 * @param dblMaximumAge The Investor Maximum Age
+	 * @param retirementAge The Investor Retirement Age
+	 * @param maximumAge The Investor Maximum Age
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public InvestorCliffSettings (
-		final double dblRetirementAge,
-		final double dblMaximumAge)
+		final double retirementAge,
+		final double maximumAge)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRetirementAge = dblRetirementAge) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblMaximumAge = dblMaximumAge) || _dblRetirementAge
-				>= _dblMaximumAge)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_retirementAge = retirementAge) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_maximumAge = maximumAge) ||
+			_retirementAge >= _maximumAge)
+		{
 			throw new java.lang.Exception ("InvestorCliffSettings Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -132,7 +135,7 @@ public class InvestorCliffSettings {
 
 	public double retirementAge()
 	{
-		return _dblRetirementAge;
+		return _retirementAge;
 	}
 
 	/**
@@ -143,13 +146,13 @@ public class InvestorCliffSettings {
 
 	public double maximumAge()
 	{
-		return _dblMaximumAge;
+		return _maximumAge;
 	}
 
 	/**
 	 * Retrieve the Investment Phase corresponding to the specified Age
 	 * 
-	 * @param dblAge The Age whose Investment Phase is needed
+	 * @param age The Age whose Investment Phase is needed
 	 * 
 	 * @return The Investment Phase
 	 * 
@@ -157,15 +160,23 @@ public class InvestorCliffSettings {
 	 */
 
 	public int phase (
-		final double dblAge)
+		final double age)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblAge))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (age))
+		{
 			throw new java.lang.Exception ("InvestorHorizon::phase => Invalid Inputs");
+		}
 
-		if (dblAge <= _dblRetirementAge) return DATE_PHASE_BEFORE_RETIREMENT;
+		if (age <= _retirementAge)
+		{
+			return DATE_PHASE_BEFORE_RETIREMENT;
+		}
 
-		if (dblAge <= _dblMaximumAge) return DATE_PHASE_AFTER_RETIREMENT;
+		if (age <= _maximumAge)
+		{
+			return DATE_PHASE_AFTER_RETIREMENT;
+		}
 
 		return DATE_PHASE_AFTER_MORTALITY;
 	}
@@ -173,7 +184,7 @@ public class InvestorCliffSettings {
 	/**
 	 * Retrieve the Investor Retirement Indicator Flag corresponding to the specified Age
 	 * 
-	 * @param dblAge The Age whose Retirement Indicator is needed
+	 * @param age The Age whose Retirement Indicator is needed
 	 * 
 	 * @return TRUE - The Age indicates that the Investor has retired
 	 * 
@@ -181,16 +192,16 @@ public class InvestorCliffSettings {
 	 */
 
 	public boolean retirementIndicator (
-		final double dblAge)
+		final double age)
 		throws java.lang.Exception
 	{
-		return DATE_PHASE_BEFORE_RETIREMENT != phase (dblAge);
+		return DATE_PHASE_BEFORE_RETIREMENT != phase (age);
 	}
 
 	/**
 	 * Retrieve the Investor "Is Alive" Indicator Flag corresponding to the specified Age
 	 * 
-	 * @param dblAge The Age whose "Is Alive" Indicator is needed
+	 * @param age The Age whose "Is Alive" Indicator is needed
 	 * 
 	 * @return TRUE - The Age indicates that the Investor "Is Alive"
 	 * 
@@ -198,9 +209,9 @@ public class InvestorCliffSettings {
 	 */
 
 	public boolean isAlive (
-		final double dblAge)
+		final double age)
 		throws java.lang.Exception
 	{
-		return DATE_PHASE_AFTER_MORTALITY != phase (dblAge);
+		return DATE_PHASE_AFTER_MORTALITY != phase (age);
 	}
 }

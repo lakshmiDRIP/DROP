@@ -82,35 +82,38 @@ package org.drip.portfolioconstruction.cost;
 
 public class TransactionChargeMarketImpact extends org.drip.portfolioconstruction.cost.TransactionCharge
 {
-	private double _dblExponent = java.lang.Double.NaN;
-	private double _dblCoefficient = java.lang.Double.NaN;
+	private double _exponent = java.lang.Double.NaN;
+	private double _coefficient = java.lang.Double.NaN;
 
 	/**
 	 * Construction of the Two-Third's Power Law TransactionChargeMarketImpact Instance
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblCoefficient Transaction Charge Coefficient
+	 * @param name Transaction Charge Name
+	 * @param id Transaction Charge ID
+	 * @param description Description of the Transaction Charge
+	 * @param coefficient Transaction Charge Coefficient
 	 * 
 	 * @return The Two-Third's Power Law TransactionChargeMarketImpact Instance
 	 */
 
 	public static final TransactionChargeMarketImpact TwoThirdsPowerLaw (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblCoefficient)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double coefficient)
 	{
-		try {
+		try
+		{
 			return new TransactionChargeMarketImpact (
-				strName,
-				strID,
-				strDescription,
-				dblCoefficient,
+				name,
+				id,
+				description,
+				coefficient,
 				2. / 3.
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -120,29 +123,32 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 	/**
 	 * Construction of the Three-Fifth's Power Law TransactionChargeMarketImpact Instance
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblCoefficient Transaction Charge Coefficient
+	 * @param name Transaction Charge Name
+	 * @param id Transaction Charge ID
+	 * @param description Description of the Transaction Charge
+	 * @param coefficient Transaction Charge Coefficient
 	 * 
 	 * @return The Three-Fifth's Power Law TransactionChargeMarketImpact Instance
 	 */
 
 	public static final TransactionChargeMarketImpact ThreeFifthsPowerLaw (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblCoefficient)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double coefficient)
 	{
-		try {
+		try
+		{
 			return new TransactionChargeMarketImpact (
-				strName,
-				strID,
-				strDescription,
-				dblCoefficient,
+				name,
+				id,
+				description,
+				coefficient,
 				3. / 5.
 			);
-		} catch (java.lang.Exception e) {
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -152,34 +158,36 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 	/**
 	 * TransactionChargeMarketImpact Constructor
 	 * 
-	 * @param strName Transaction Charge Name
-	 * @param strID Transaction Charge ID
-	 * @param strDescription Description of the Transaction Charge
-	 * @param dblCoefficient Transaction Charge Coefficient
-	 * @param dblExponent Transaction Charge Exponent
+	 * @param name Transaction Charge Name
+	 * @param id Transaction Charge ID
+	 * @param description Description of the Transaction Charge
+	 * @param coefficient Transaction Charge Coefficient
+	 * @param exponent Transaction Charge Exponent
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	 public TransactionChargeMarketImpact (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double dblCoefficient,
-		final double dblExponent)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double coefficient,
+		final double exponent)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription
+			name,
+			id,
+			description
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCoefficient = dblCoefficient) || 0. >
-			_dblCoefficient || !org.drip.numerical.common.NumberUtil.IsValid (_dblExponent = dblExponent) || 0. >
-				_dblExponent)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_coefficient = coefficient) ||
+				0. > _coefficient ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_exponent = exponent) || 0. > _exponent)
+		{
 			throw new java.lang.Exception
 				("TransactionChargeMarketImpact Constuctor => Invalid Linear Charge");
+		}
 	}
 
 	/**
@@ -190,7 +198,7 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 
 	public double coefficient()
 	{
-		return _dblCoefficient;
+		return _coefficient;
 	}
 
 	/**
@@ -201,19 +209,25 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 
 	public double exponent()
 	{
-		return _dblExponent;
+		return _exponent;
 	}
 
 	@Override public double estimate (
-		final double dblInitial,
-		final double dblFinal)
+		final double initialSize,
+		final double finalSize)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblInitial) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblFinal))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (initialSize) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (finalSize))
+		{
 			throw new java.lang.Exception ("TransactionChargeMarketImpact::estimate => Invalid Inputs");
+		}
 
-		return _dblCoefficient * java.lang.Math.pow (java.lang.Math.abs (dblFinal - dblInitial),
-			_dblExponent);
+		return _coefficient * java.lang.Math.pow (
+			java.lang.Math.abs (
+				finalSize - initialSize
+			),
+			_exponent
+		);
 	}
 }

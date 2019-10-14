@@ -81,35 +81,41 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TransactionChargeTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+public abstract class TransactionChargeTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
 {
-	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;
+	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;
 
 	protected TransactionChargeTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"TRANSACTION_COST",
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
-		int iNumAsset = adblInitialHoldings.length;
+		int assetCount = initialHoldingsArray.length;
 
-		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length)
-			throw new java.lang.Exception ("TransactionChargeTerm Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i)
+		if (null == (_transactionChargeArray = transactionChargeArray) ||
+			assetCount != _transactionChargeArray.length)
 		{
-			if (null == _aTransactionCharge[i])
+			throw new java.lang.Exception ("TransactionChargeTerm Constructor => Invalid Inputs");
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _transactionChargeArray[assetIndex])
+			{
 				throw new java.lang.Exception ("TransactionChargeTerm Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -119,9 +125,9 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray()
 	{
-		return _aTransactionCharge;
+		return _transactionChargeArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -130,36 +136,39 @@ public abstract class TransactionChargeTerm extends org.drip.portfolioconstructi
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception
 						("TransactionChargeTerm::rdToR1::evaluate => Invalid Input");
+				}
 
-				org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge =
-					transactionCharge();
+				double[] initialHoldingsArray = initialHoldingsArray();
 
-				double[] adblInitialHoldings = initialHoldings();
+				int assetCount = _transactionChargeArray.length;
+				double fixedChargeTerm = 0.;
 
-				int iNumAsset = aTransactionCharge.length;
-				double dblFixedChargeTerm = 0.;
-
-				if (adblVariate.length != iNumAsset)
+				if (variateArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("TransactionChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblFixedChargeTerm += aTransactionCharge[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					fixedChargeTerm += _transactionChargeArray[assetIndex].estimate (
+						initialHoldingsArray[assetIndex],
+						variateArray[assetIndex]
 					);
+				}
 
-				return dblFixedChargeTerm;
+				return fixedChargeTerm;
 			}
 		};
 	}

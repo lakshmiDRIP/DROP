@@ -103,15 +103,15 @@ public class RiskTolerantVarianceMinimizer {
 			new PortfolioConstructionParameters (
 				astrAsset,
 				CustomRiskUtilitySettings.RiskTolerant (dblRiskTolerance),
-				new PortfolioEqualityConstraintSettings (
-					PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 					Double.NaN
 				)
 			),
 			ausp
 		);
 
-		AssetComponent[] aAC = opf.optimalPortfolio().assets();
+		AssetComponent[] aAC = opf.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\t|----------------||");
 

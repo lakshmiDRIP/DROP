@@ -82,31 +82,33 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
+public class MarketImpactChargeTerm
+	extends org.drip.portfolioconstruction.objective.TransactionChargeTerm
 {
 
 	/**
 	 * MarketImpactChargeTerm Conastructor
 	 * 
-	 * @param strName Name of the Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param aTCMI Array of Asset Market Impact Transaction Charge Instances
+	 * @param name Name of the Objective Term
+	 * @param initialHoldingsArray Initial Holdings
+	 * @param marketImpactTransactionChargeArray Array of Asset Market Impact Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MarketImpactChargeTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTCMI)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[]
+			marketImpactTransactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_MARKET_IMPACT_TRANSACTION_CHARGE",
 			"Market Impact Transaction Charge Objective Function",
-			adblInitialHoldings,
-			aTCMI
+			initialHoldingsArray,
+			marketImpactTransactionChargeArray
 		);
 	}
 
@@ -116,37 +118,44 @@ public class MarketImpactChargeTerm extends org.drip.portfolioconstruction.objec
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception
 						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Input");
+				}
 
-				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[] aTCMI =
-					(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
-						transactionCharge();
+				org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[]
+					marketImpactTransactionChargeArray =
+						(org.drip.portfolioconstruction.cost.TransactionChargeMarketImpact[])
+							transactionChargeArray();
 
-				double[] adblInitialHoldings = initialHoldings();
+				double[] initialHoldingsArray = initialHoldingsArray();
 
-				int iNumAsset = aTCMI.length;
-				double dblMarketImpactChargeTerm = 0.;
+				int assetCount = marketImpactTransactionChargeArray.length;
+				double marketImpactChargeTerm = 0.;
 
-				if (adblVariate.length != iNumAsset)
+				if (variateArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("MarketImpactChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblMarketImpactChargeTerm += aTCMI[i].estimate (
-						adblInitialHoldings[i],
-						adblVariate[i]
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					marketImpactChargeTerm += marketImpactTransactionChargeArray[assetIndex].estimate (
+						initialHoldingsArray[assetIndex],
+						variateArray[assetIndex]
 					);
+				}
 
-				return dblMarketImpactChargeTerm;
+				return marketImpactChargeTerm;
 			}
 		};
 	}

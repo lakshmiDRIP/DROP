@@ -110,7 +110,7 @@ public class NetLiabilityCliffDependence {
 			dblAfterTaxIncome
 		);
 
-		NetLiabilityMetrics nlm = nls.metrics (
+		NetLiabilityMetrics nlm = nls.generateMetrics (
 			dblStartAge,
 			dblEndAge,
 			dr

@@ -81,34 +81,37 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitHoldingsTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitHoldingsTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private int _iSize = -1;
+	private int _size = -1;
 
 	protected LimitHoldingsTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final int iSize)
+		final double minimum,
+		final double maximum,
+		final int size)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_HOLDINGS",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (0 >= (_iSize = iSize))
+		if (0 >= (_size = size))
+		{
 			throw new java.lang.Exception ("LimitHoldingsTerm Constructor => Invalid Section");
+		}
 	}
 
 	/**
@@ -119,6 +122,6 @@ public abstract class LimitHoldingsTerm extends org.drip.portfolioconstruction.o
 
 	public int size()
 	{
-		return _iSize;
+		return _size;
 	}
 }

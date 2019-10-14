@@ -81,36 +81,39 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitThresholdTermIssuer extends
-	org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitThresholdTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblIssuerSelection = null;
+	private double[] _issuerSelectionArray = null;
 
 	protected LimitThresholdTermIssuer (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_THRESHOLD",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (null == (_adblIssuerSelection = adblIssuerSelection) || 0 == _adblIssuerSelection.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblIssuerSelection))
+		if (null == (_issuerSelectionArray = issuerSelectionArray) ||
+			0 == _issuerSelectionArray.length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_issuerSelectionArray))
+		{
 			throw new java.lang.Exception ("LimitThresholdTermIssuer Constructor => Invalid Section");
+		}
 	}
 
 	/**
@@ -119,8 +122,8 @@ public abstract class LimitThresholdTermIssuer extends
 	 * @return The Issuer Selection Array
 	 */
 
-	public double[] issuerSelection()
+	public double[] issuerSelectionArray()
 	{
-		return _adblIssuerSelection;
+		return _issuerSelectionArray;
 	}
 }

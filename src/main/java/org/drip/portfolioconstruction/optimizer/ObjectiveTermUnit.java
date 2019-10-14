@@ -80,30 +80,33 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ObjectiveTermUnit {
-	private boolean _bIsActive = false;
-	private double _dblWeight = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.optimizer.ObjectiveTerm _objTerm = null;
+public class ObjectiveTermUnit
+{
+	private boolean _isActive = false;
+	private double _weight = java.lang.Double.NaN;
+	private org.drip.portfolioconstruction.optimizer.ObjectiveTerm _objectiveTerm = null;
 
 	/**
 	 * ObjectiveTermUnit Constructor
 	 * 
-	 * @param objTerm The Objective Term
-	 * @param dblWeight The Objective Term Weight
+	 * @param objectiveTerm The Objective Term
+	 * @param weight The Objective Term Weight
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ObjectiveTermUnit (
-		final org.drip.portfolioconstruction.optimizer.ObjectiveTerm objTerm,
-		final double dblWeight)
+		final org.drip.portfolioconstruction.optimizer.ObjectiveTerm objectiveTerm,
+		final double weight)
 		throws java.lang.Exception
 	{
-		if (null == (_objTerm = objTerm) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWeight =
-			dblWeight))
+		if (null == (_objectiveTerm = objectiveTerm) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_weight = weight))
+		{
 			throw new java.lang.Exception ("ObjectiveTermUnit Constructor => Invalid Inputs");
+		}
 
-		_bIsActive = true;
+		_isActive = true;
 	}
 
 	/**
@@ -114,7 +117,7 @@ public class ObjectiveTermUnit {
 
 	public boolean isActive()
 	{
-		return _bIsActive;
+		return _isActive;
 	}
 
 	/**
@@ -125,9 +128,9 @@ public class ObjectiveTermUnit {
 
 	public boolean activate()
 	{
-		boolean bIsActiveOld = _bIsActive;
-		_bIsActive = true;
-		return bIsActiveOld;
+		boolean isActive = _isActive;
+		_isActive = true;
+		return isActive;
 	}
 
 	/**
@@ -138,9 +141,9 @@ public class ObjectiveTermUnit {
 
 	public boolean deactivate()
 	{
-		boolean bIsActiveOld = _bIsActive;
-		_bIsActive = false;
-		return bIsActiveOld;
+		boolean isActive = _isActive;
+		_isActive = false;
+		return isActive;
 	}
 
 	/**
@@ -151,7 +154,7 @@ public class ObjectiveTermUnit {
 
 	public double weight()
 	{
-		return _dblWeight;
+		return _weight;
 	}
 
 	/**
@@ -160,8 +163,8 @@ public class ObjectiveTermUnit {
 	 * @return TRUE - The Objective Term
 	 */
 
-	public org.drip.portfolioconstruction.optimizer.ObjectiveTerm term()
+	public org.drip.portfolioconstruction.optimizer.ObjectiveTerm objectiveTerm()
 	{
-		return _objTerm;
+		return _objectiveTerm;
 	}
 }

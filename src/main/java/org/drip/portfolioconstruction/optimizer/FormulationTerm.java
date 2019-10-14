@@ -81,24 +81,28 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FormulationTerm extends org.drip.portfolioconstruction.core.Block {
-	private java.lang.String _strCategory = "";
+public abstract class FormulationTerm
+	extends org.drip.portfolioconstruction.core.Block
+{
+	private java.lang.String _category = "";
 
 	protected FormulationTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCategory)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String category)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription
+			name,
+			id,
+			description
 		);
 
-		if (null == (_strCategory = strCategory) || _strCategory.isEmpty())
+		if (null == (_category = category) || _category.isEmpty())
+		{
 			throw new java.lang.Exception ("FormulationTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -109,13 +113,13 @@ public abstract class FormulationTerm extends org.drip.portfolioconstruction.cor
 
 	public java.lang.String category()
 	{
-		return _strCategory;
+		return _category;
 	}
 
 	/**
-	 * The R^d To R^1 Objective Term
+	 * The R<sup>d</sup> To R<sup>1</sup> Formulation Term
 	 * 
-	 * @return The R^d To R^1 Objective Term
+	 * @return The R<sup>d</sup> To R<sup>1</sup> Formulation Term
 	 */
 
 	public abstract org.drip.function.definition.RdToR1 rdtoR1();

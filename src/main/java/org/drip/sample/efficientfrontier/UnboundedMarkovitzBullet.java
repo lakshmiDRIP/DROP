@@ -94,69 +94,77 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnboundedMarkovitzBullet {
+public class UnboundedMarkovitzBullet
+{
 
 	private static void DisplayPortfolioMetrics (
-		final OptimizationOutput optPort)
+		final OptimizationOutput optimalOutput)
 		throws Exception
 	{
-		AssetComponent[] aACGlobalMinimum = optPort.optimalPortfolio().assets();
+		AssetComponent[] globalMinimumAssetComponentArray =
+			optimalOutput.optimalPortfolio().assetComponentArray();
 
-		String strDump = "\t|" +
-			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "% |" +
-			FormatUtil.FormatDouble (optPort.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + " |";
+		String strDump = "\t|" + FormatUtil.FormatDouble (
+				optimalOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.
+			) + "% |" + FormatUtil.FormatDouble (
+				optimalOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.
+			) + " |";
 
-		for (AssetComponent ac : aACGlobalMinimum)
-			strDump += " " + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + "% |";
+		for (AssetComponent assetComponent : globalMinimumAssetComponentArray)
+		{
+			strDump += " " + FormatUtil.FormatDouble (
+				assetComponent.amount(), 3, 2, 100.
+			) + "% |";
+		}
 
 		System.out.println (strDump + "|");
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] agrumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		int iFrontierSampleUnits = 20;
-		double dblRiskToleranceFactor = 0.;
-		String strSeriesLocation = "C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
+		int frontierSampleUnits = 20;
+		double riskToleranceFactor = 0.;
+		String seriesLocation =
+			"T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
 
-		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);
+		CSVGrid csvGrid = CSVParser.NamedStringGrid (
+			seriesLocation
+		);
 
-		String[] astrVariateHeader = csvGrid.headers();
+		String[] variateHeaderArray = csvGrid.headers();
 
-		String[] astrAsset = new String[astrVariateHeader.length - 1];
-		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];
+		String[] assetIDArray = new String[variateHeaderArray.length - 1];
+		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];
 
-		for (int i = 0; i < astrAsset.length; ++i) {
-			astrAsset[i] = astrVariateHeader[i + 1];
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];
 
-			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);
+			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (assetIndex + 1);
 		}
 
-		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (
-			MultivariateMoments.Standard (
-				astrAsset,
-				aadblVariateSample
-			)
-		);
-
-		PortfolioConstructionParameters pcp = new PortfolioConstructionParameters (
-			astrAsset,
-			CustomRiskUtilitySettings.RiskTolerant (dblRiskToleranceFactor),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
-				Double.NaN
-			)
-		);
-
-		MeanVarianceOptimizer mvo = new QuadraticMeanVarianceOptimizer();
-
-		MarkovitzBullet mb = mvo.efficientFrontier (
-			pcp,
-			ausp,
-			iFrontierSampleUnits
+		MarkovitzBullet markovitzBullet = new QuadraticMeanVarianceOptimizer().efficientFrontier (
+			new PortfolioConstructionParameters (
+				assetIDArray,
+				CustomRiskUtilitySettings.RiskTolerant (riskToleranceFactor),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					Double.NaN
+				)
+			),
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIDArray,
+					variateSampleGrid
+				)
+			),
+			frontierSampleUnits
 		);
 
 		System.out.println ("\n\n\t|-----------------------------------------------------------------------------------------------||");
@@ -165,22 +173,26 @@ public class UnboundedMarkovitzBullet {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		String strHeader = "\t| RETURNS | RISK % |";
+		String header = "\t| RETURNS | RISK % |";
 
-		for (int i = 0; i < astrAsset.length; ++i)
-			strHeader += "   " + astrAsset[i] + "    |";
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			header += "   " + assetIDArray[assetIndex] + "    |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		DisplayPortfolioMetrics (mb.globalMinimumVariance());
+		DisplayPortfolioMetrics (markovitzBullet.globalMinimumVariance());
 
-		DisplayPortfolioMetrics (mb.longOnlyMaximumReturns());
+		DisplayPortfolioMetrics (markovitzBullet.longOnlyMaximumReturns());
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n\n");
 
-		TreeMap<Double, OptimizationOutput> mapFrontierPortfolio = mb.optimalPortfolios();
+		TreeMap<Double, OptimizationOutput> frontierPortfolioMap = markovitzBullet.optimalPortfolioMap();
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
@@ -188,12 +200,16 @@ public class UnboundedMarkovitzBullet {
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||");
 
-		for (Map.Entry<Double, OptimizationOutput> me : mapFrontierPortfolio.entrySet())
-			DisplayPortfolioMetrics (me.getValue());
+		for (Map.Entry<Double, OptimizationOutput> me : frontierPortfolioMap.entrySet())
+		{
+			DisplayPortfolioMetrics (
+				me.getValue()
+			);
+		}
 
 		System.out.println ("\t|-----------------------------------------------------------------------------------------------||\n\n");
 

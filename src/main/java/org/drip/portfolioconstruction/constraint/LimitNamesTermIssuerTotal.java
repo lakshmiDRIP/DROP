@@ -80,40 +80,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitNamesTermIssuerTotal extends org.drip.portfolioconstruction.constraint.LimitNamesTermIssuer
+public class LimitNamesTermIssuerTotal
+	extends org.drip.portfolioconstruction.constraint.LimitNamesTermIssuer
 {
 
 	/**
 	 * LimitNamesTermIssuerTotal Constructor
 	 * 
-	 * @param strName Name of the LimitNumberTermTotal Constraint
+	 * @param name Name of the LimitNumberTermTotal Constraint
 	 * @param scope Scope of the LimitNumberTermTotal Constraint
 	 * @param unit Unit of the LimitNumberTermTotal Constraint
-	 * @param dblMinimum Minimum of the Constraint
-	 * @param dblMaximum Maximum of the Constraint
-	 * @param adblIssuerSelection Array of the Issuer Selections
+	 * @param minimum Minimum of the Constraint
+	 * @param maximum Maximum of the Constraint
+	 * @param issuerSelectionArray Array of the Issuer Selections
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitNamesTermIssuerTotal (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblIssuerSelection)
+		final double minimum,
+		final double maximum,
+		final double[] issuerSelectionArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_TOTAL_NAMES",
 			"Limits the Total Number of Active Names in the Holdings",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblIssuerSelection
+			minimum,
+			maximum,
+			issuerSelectionArray
 		);
 	}
 
@@ -123,29 +124,35 @@ public class LimitNamesTermIssuerTotal extends org.drip.portfolioconstruction.co
 		{
 			@Override public int dimension()
 			{
-				return issuerSelection().length;
+				return issuerSelectionArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblIssuerSelection = issuerSelection();
+				double[] issuerSelectionArray = issuerSelectionArray();
 
-				int iNumAsset = adblIssuerSelection.length;
-				double dblNameCount = 0;
+				int assetCount = issuerSelectionArray.length;
+				int nameCount = 0;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitNamesTermIssuerTotal::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					if (0 != adblFinalHoldings[i] && 0. != adblIssuerSelection[i]) ++dblNameCount;
 				}
 
-				return dblNameCount;
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					if (0 != finalHoldingsArray[assetIndex] && 0. != issuerSelectionArray[assetIndex])
+					{
+						++nameCount;
+					}
+				}
+
+				return nameCount;
 			}
 		};
 	}

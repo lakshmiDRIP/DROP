@@ -80,9 +80,10 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LocalUniverse {
-	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.Asset> _mapAsset = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.Asset>();
+public class LocalUniverse
+{
+	private java.util.Map<java.lang.String, org.drip.portfolioconstruction.core.Asset> _assetMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.core.Asset>();
 
 	/**
 	 * Empty LocalUniverse Constructor
@@ -95,19 +96,22 @@ public class LocalUniverse {
 	/**
 	 * Add an Asset to the Local Universe
 	 * 
-	 * @param a Asset to be added
+	 * @param asset Asset to be added
 	 * 
 	 * @return TRUE - The Asset has been added successfully
 	 */
 
 	public boolean add (
-		final org.drip.portfolioconstruction.core.Asset a)
+		final org.drip.portfolioconstruction.core.Asset asset)
 	{
-		if (null == a) return false;
+		if (null == asset)
+		{
+			return false;
+		}
 
-		_mapAsset.put (
-			a.id(),
-			a
+		_assetMap.put (
+			asset.id(),
+			asset
 		);
 
 		return true;
@@ -116,29 +120,29 @@ public class LocalUniverse {
 	/**
 	 * Indicate if the Asset is contained in the Local Universe
 	 * 
-	 * @param a The Asset Instance
+	 * @param asset The Asset Instance
 	 * 
 	 * @return TRUE - The Asset is contained in the Local Universe
 	 */
 
 	public boolean contains (
-		final org.drip.portfolioconstruction.core.Asset a)
+		final org.drip.portfolioconstruction.core.Asset asset)
 	{
-		return null != a && _mapAsset.containsKey (a.id());
+		return null != asset && _assetMap.containsKey (asset.id());
 	}
 
 	/**
 	 * Indicate if the Asset is contained in the Local Universe
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param id The Asset ID
 	 * 
 	 * @return TRUE - The Asset is contained in the Local Universe
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String id)
 	{
-		return null != strAssetID && !strAssetID.isEmpty() && _mapAsset.containsKey (strAssetID);
+		return null != id && !id.isEmpty() && _assetMap.containsKey (id);
 	}
 
 	/**
@@ -147,8 +151,8 @@ public class LocalUniverse {
 	 * @return The List of the Asset Identifiers
 	 */
 
-	public java.util.Set<java.lang.String> ids()
+	public java.util.Set<java.lang.String> idSet()
 	{
-		return _mapAsset.keySet();
+		return _assetMap.keySet();
 	}
 }

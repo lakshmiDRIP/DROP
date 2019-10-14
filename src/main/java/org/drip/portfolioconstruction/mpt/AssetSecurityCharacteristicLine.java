@@ -82,27 +82,30 @@ package org.drip.portfolioconstruction.mpt;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetSecurityCharacteristicLine {
-	private double _dblBeta = java.lang.Double.NaN;
-	private double _dblAlpha = java.lang.Double.NaN;
+public class AssetSecurityCharacteristicLine
+{
+	private double _beta = java.lang.Double.NaN;
+	private double _alpha = java.lang.Double.NaN;
 
 	/**
 	 * AssetSecurityCharacteristicLine Constructor
 	 * 
-	 * @param dblAlpha The Asset's Alpha
-	 * @param dblBeta The Asset's Beta
+	 * @param alpha The Asset's Alpha
+	 * @param beta The Asset's Beta
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetSecurityCharacteristicLine (
-		final double dblAlpha,
-		final double dblBeta)
+		final double alpha,
+		final double beta)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblAlpha = dblAlpha) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblBeta = dblBeta))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_alpha = alpha) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta))
+		{
 			throw new java.lang.Exception ("AssetSecurityCharacteristicLine Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -113,7 +116,7 @@ public class AssetSecurityCharacteristicLine {
 
 	public double alpha()
 	{
-		return _dblAlpha;
+		return _alpha;
 	}
 
 	/**
@@ -124,14 +127,13 @@ public class AssetSecurityCharacteristicLine {
 
 	public double beta()
 	{
-		return _dblBeta;
+		return _beta;
 	}
 
 	/**
 	 * Retrieve the Excess Returns over the Market for the Asset
 	 * 
-	 * @param dblMarketExcessReturns The Market Premium, i.e., the Excess Market Returns over the Risk Free
-	 * 	Rate
+	 * @param marketExcessReturns The Market Premium, i.e., the Excess Market Returns over the Risk Free Rate
 	 * 
 	 * @return The Excess Returns over the Market for the Asset
 	 * 
@@ -139,13 +141,15 @@ public class AssetSecurityCharacteristicLine {
 	 */
 
 	public double excessReturns (
-		final double dblMarketExcessReturns)
+		final double marketExcessReturns)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketExcessReturns))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (marketExcessReturns))
+		{
 			throw new java.lang.Exception
 				("AssetSecurityCharacteristicLine::excessReturns => Invalid Inputs");
+		}
 
-		return _dblAlpha + _dblBeta * dblMarketExcessReturns;
+		return _alpha + _beta * marketExcessReturns;
 	}
 }

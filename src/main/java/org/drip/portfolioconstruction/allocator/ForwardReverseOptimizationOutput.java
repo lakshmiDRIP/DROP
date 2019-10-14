@@ -82,132 +82,193 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 public class ForwardReverseOptimizationOutput extends
-	org.drip.portfolioconstruction.allocator.OptimizationOutput {
-	private double _dblRiskAversion = java.lang.Double.NaN;
-	private double[] _adblExpectedAssetExcessReturns = null;
-	private double[][] _aadblAssetExcessReturnsCovariance = null;
+	org.drip.portfolioconstruction.allocator.OptimizationOutput
+{
+	private double _riskAversion = java.lang.Double.NaN;
+	private double[] _expectedAssetExcessReturnsArray = null;
+	private double[][] _assetExcessReturnsCovarianceMatrix = null;
 
 	/**
 	 * Construct an Instance of ForwardReverseOptimizationOutput from a Standard Reverse Optimize Operation
 	 * 
-	 * @param pfEquilibrium The Equilibrium Portfolio
-	 * @param aadblAssetExcessReturnsCovariance Pair-wse Asset Excess Returns Co-variance Matrix
-	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * @param equilibriumPortfolio The Equilibrium Portfolio
+	 * @param assetExcessReturnsCovarianceMatrix Pair-wse Asset Excess Returns Co-variance Matrix
+	 * @param riskAversion The Risk Aversion Parameter
 	 * 
 	 * @return The Instance of ForwardReverseOptimizationOutput from a Standard Reverse Optimize Operation
 	 */
 
 	public static final ForwardReverseOptimizationOutput Reverse (
-		final org.drip.portfolioconstruction.asset.Portfolio pfEquilibrium,
-		final double[][] aadblAssetExcessReturnsCovariance,
-		final double dblRiskAversion)
+		final org.drip.portfolioconstruction.asset.Portfolio equilibriumPortfolio,
+		final double[][] assetExcessReturnsCovarianceMatrix,
+		final double riskAversion)
 	{
-		if (null == pfEquilibrium) return null;
+		if (null == equilibriumPortfolio)
+		{
+			return null;
+		}
 
-		double[] adblAssetWeight = pfEquilibrium.weights();
+		double[] assetWeightArray = equilibriumPortfolio.weightArray();
 
-		int iNumAsset = adblAssetWeight.length;
+		int assetCount = assetWeightArray.length;
 
-		double[] adblExpectedAssetExcessReturns = org.drip.numerical.linearalgebra.Matrix.Product
-			(aadblAssetExcessReturnsCovariance, pfEquilibrium.weights());
+		double[] expectedAssetExcessReturnsArray = org.drip.numerical.linearalgebra.Matrix.Product (
+			assetExcessReturnsCovarianceMatrix,
+			assetWeightArray
+		);
 
-		if (null == adblExpectedAssetExcessReturns);
+		if (null == expectedAssetExcessReturnsArray)
+		{
+			return null;
+		}
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblExpectedAssetExcessReturns[i] = adblExpectedAssetExcessReturns [i] * dblRiskAversion;
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			expectedAssetExcessReturnsArray[assetIndex] = expectedAssetExcessReturnsArray [assetIndex] *
+				riskAversion;
+		}
 
-		return ForwardReverseOptimizationOutput.Standard (pfEquilibrium, dblRiskAversion,
-			aadblAssetExcessReturnsCovariance, adblExpectedAssetExcessReturns);
+		return ForwardReverseOptimizationOutput.Standard (
+			equilibriumPortfolio,
+			riskAversion,
+			assetExcessReturnsCovarianceMatrix,
+			expectedAssetExcessReturnsArray
+		);
 	}
 
 	/**
 	 * Construct an Instance of ForwardReverseOptimizationOutput from a Standard Forward Optimize Operation
 	 * 
-	 * @param astrAssetID The Array of the Assets in the Portfolio
-	 * @param adblExpectedAssetExcessReturns Array of Expected Excess Returns
-	 * @param aadblAssetExcessReturnsCovariance Excess Returns Co-variance Matrix
-	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * @param assetIDArray The Array of the IDs of the Assets in the Portfolio
+	 * @param expectedAssetExcessReturnsArray Array of Expected Excess Returns
+	 * @param assetExcessReturnsCovarianceMatrix Excess Returns Co-variance Matrix
+	 * @param riskAversion The Risk Aversion Parameter
 	 * 
 	 * @return The Instance of ForwardReverseOptimizationOutput from a Standard Forward Optimize Operation
 	 */
 
 	public static final ForwardReverseOptimizationOutput Forward (
-		final java.lang.String[] astrAssetID,
-		final double[] adblExpectedAssetExcessReturns,
-		final double[][] aadblAssetExcessReturnsCovariance,
-		final double dblRiskAversion)
+		final java.lang.String[] assetIDArray,
+		final double[] expectedAssetExcessReturnsArray,
+		final double[][] assetExcessReturnsCovarianceMatrix,
+		final double riskAversion)
 	{
-		if (null == astrAssetID) return null;
+		if (null == assetIDArray)
+		{
+			return null;
+		}
 
-		int iNumAsset = astrAssetID.length;
+		int assetCount = assetIDArray.length;
 
-		double[] adblAssetWeight = org.drip.numerical.linearalgebra.Matrix.Product
-			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
-				(aadblAssetExcessReturnsCovariance), adblExpectedAssetExcessReturns);
+		double[] assetWeightArray = org.drip.numerical.linearalgebra.Matrix.Product (
+			org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (
+				assetExcessReturnsCovarianceMatrix
+			),
+			expectedAssetExcessReturnsArray
+		);
 
-		if (null == adblAssetWeight || iNumAsset != adblAssetWeight.length) return null;
+		if (null == assetWeightArray || assetCount != assetWeightArray.length)
+		{
+			return null;
+		}
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblAssetWeight[i] = adblAssetWeight[i] / dblRiskAversion;
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			assetWeightArray[assetIndex] = assetWeightArray[assetIndex] / riskAversion;
+		}
 
-		return ForwardReverseOptimizationOutput.Standard
-			(org.drip.portfolioconstruction.asset.Portfolio.Standard (astrAssetID, adblAssetWeight),
-				dblRiskAversion, aadblAssetExcessReturnsCovariance, adblExpectedAssetExcessReturns);
+		return ForwardReverseOptimizationOutput.Standard (
+			org.drip.portfolioconstruction.asset.Portfolio.Standard (
+				assetIDArray,
+				assetWeightArray
+			),
+			riskAversion,
+			assetExcessReturnsCovarianceMatrix,
+			expectedAssetExcessReturnsArray
+		);
 	}
 
 	/**
 	 * Construct a Standard Instance of ForwardReverseOptimizationOutput
 	 * 
-	 * @param pfOptimal The Optimal Equilibrium Portfolio
-	 * @param dblRiskAversion The Risk Aversion Parameter
-	 * @param aadblAssetExcessReturnsCovariance Pair-wise Asset Excess Returns Co-variance Matrix
-	 * @param adblExpectedAssetExcessReturns Array of Expected Excess Returns
+	 * @param equilibriumPortfolio The Optimal Equilibrium Portfolio
+	 * @param riskAversion The Risk Aversion Parameter
+	 * @param assetExcessReturnsCovarianceMatrix Pair-wise Asset Excess Returns Co-variance Matrix
+	 * @param expectedAssetExcessReturnsArray Array of Expected Excess Returns
 	 * 
 	 * @return The Standard Instance of ForwardReverseOptimizationOutput
 	 */
 
 	public static final ForwardReverseOptimizationOutput Standard (
-		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
-		final double dblRiskAversion,
-		final double[][] aadblAssetExcessReturnsCovariance,
-		final double[] adblExpectedAssetExcessReturns)
+		final org.drip.portfolioconstruction.asset.Portfolio equilibriumPortfolio,
+		final double riskAversion,
+		final double[][] assetExcessReturnsCovarianceMatrix,
+		final double[] expectedAssetExcessReturnsArray)
 	{
-		if (null == pfOptimal || null == adblExpectedAssetExcessReturns) return null;
-
-		double[] adblAssetWeight = pfOptimal.weights();
-
-		int iNumAsset = adblAssetWeight.length;
-		double dblPortfolioExcessReturnsMean = 0.;
-		double dblPortfolioExcessReturnsVariance = 0.;
-
-		if (iNumAsset != adblExpectedAssetExcessReturns.length) return null;
-
-		double[] adblImpliedBeta = org.drip.numerical.linearalgebra.Matrix.Product
-			(aadblAssetExcessReturnsCovariance, adblAssetWeight);
-
-		if (null == adblImpliedBeta) return null;
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			dblPortfolioExcessReturnsMean += adblAssetWeight[i] * adblExpectedAssetExcessReturns[i];
-
-			for (int j = 0; j < iNumAsset; ++j)
-				dblPortfolioExcessReturnsVariance += adblAssetWeight[i] * adblAssetWeight[j] *
-					aadblAssetExcessReturnsCovariance[i][j];
+		if (null == equilibriumPortfolio || null == expectedAssetExcessReturnsArray)
+		{
+			return null;
 		}
 
-		for (int i = 0; i < iNumAsset; ++i)
-			adblImpliedBeta[i] = adblImpliedBeta[i] / dblPortfolioExcessReturnsVariance;
+		double[] assetWeightArray = equilibriumPortfolio.weightArray();
 
-		double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt (dblPortfolioExcessReturnsVariance);
+		double portfolioExcessReturnsMean = 0.;
+		int assetCount = assetWeightArray.length;
+		double portfolioExcessReturnsVariance = 0.;
 
-		try {
-			return new ForwardReverseOptimizationOutput (pfOptimal, new
-				org.drip.portfolioconstruction.asset.PortfolioMetrics (dblPortfolioExcessReturnsMean,
-					dblPortfolioExcessReturnsVariance, dblPortfolioExcessReturnsSigma,
-						dblPortfolioExcessReturnsMean / dblPortfolioExcessReturnsSigma, adblImpliedBeta),
-							dblRiskAversion, aadblAssetExcessReturnsCovariance,
-								adblExpectedAssetExcessReturns);
-		} catch (java.lang.Exception e) {
+		if (assetCount != expectedAssetExcessReturnsArray.length)
+		{
+			return null;
+		}
+
+		double[] impliedBetaArray = org.drip.numerical.linearalgebra.Matrix.Product (
+			assetExcessReturnsCovarianceMatrix,
+			assetWeightArray
+		);
+
+		if (null == impliedBetaArray)
+		{
+			return null;
+		}
+
+		for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+		{
+			portfolioExcessReturnsMean += assetWeightArray[assetIndexI] *
+				expectedAssetExcessReturnsArray[assetIndexI];
+
+			for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+			{
+				portfolioExcessReturnsVariance += assetWeightArray[assetIndexI] *
+					assetWeightArray[assetIndexJ] *
+					assetExcessReturnsCovarianceMatrix[assetIndexI][assetIndexJ];
+			}
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			impliedBetaArray[assetIndex] = impliedBetaArray[assetIndex] / portfolioExcessReturnsVariance;
+		}
+
+		double portfolioExcessReturnsSigma = java.lang.Math.sqrt (portfolioExcessReturnsVariance);
+
+		try
+		{
+			return new ForwardReverseOptimizationOutput (
+				equilibriumPortfolio,
+				new org.drip.portfolioconstruction.asset.PortfolioMetrics (
+					portfolioExcessReturnsMean,
+					portfolioExcessReturnsVariance,
+					portfolioExcessReturnsSigma,
+					portfolioExcessReturnsMean / portfolioExcessReturnsSigma,
+					impliedBetaArray
+				),
+				riskAversion,
+				assetExcessReturnsCovarianceMatrix,
+				expectedAssetExcessReturnsArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -217,29 +278,34 @@ public class ForwardReverseOptimizationOutput extends
 	/**
 	 * ForwardReverseOptimizationOutput Constructor
 	 * 
-	 * @param pfOptimal The Optimal Equilibrium Portfolio
-	 * @param pmOptimal The Optimal Equilibrium Portfolio Metrics
-	 * @param dblRiskAversion The Risk Aversion Parameter
-	 * @param aadblAssetExcessReturnsCovariance Pair-wise Asset Excess Returns Co-variance Matrix
-	 * @param adblExpectedAssetExcessReturns Array of Expected Excess Returns
+	 * @param optimalEquilibriumPortfolio The Optimal Equilibrium Portfolio
+	 * @param optimalEquilibriumPortfolioMetrics The Optimal Equilibrium Portfolio Metrics
+	 * @param riskAversion The Risk Aversion Parameter
+	 * @param assetExcessReturnsCovarianceMatrix Pair-wise Asset Excess Returns Co-variance Matrix
+	 * @param expectedAssetExcessReturnsArray Array of Expected Excess Returns
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ForwardReverseOptimizationOutput (
-		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
-		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmOptimal,
-		final double dblRiskAversion,
-		final double[][] aadblAssetExcessReturnsCovariance,
-		final double[] adblExpectedAssetExcessReturns)
+		final org.drip.portfolioconstruction.asset.Portfolio optimalEquilibriumPortfolio,
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics optimalEquilibriumPortfolioMetrics,
+		final double riskAversion,
+		final double[][] assetExcessReturnsCovarianceMatrix,
+		final double[] expectedAssetExcessReturnsArray)
 		throws java.lang.Exception
 	{
-		super (pfOptimal, pmOptimal);
+		super (
+			optimalEquilibriumPortfolio,
+			optimalEquilibriumPortfolioMetrics
+		);
 
-		if (null == (_aadblAssetExcessReturnsCovariance = aadblAssetExcessReturnsCovariance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) || null ==
-				(_adblExpectedAssetExcessReturns = adblExpectedAssetExcessReturns))
+		if (null == (_assetExcessReturnsCovarianceMatrix = assetExcessReturnsCovarianceMatrix) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_riskAversion = riskAversion) ||
+			null == (_expectedAssetExcessReturnsArray = expectedAssetExcessReturnsArray))
+		{
 			throw new java.lang.Exception ("ForwardReverseOptimizationOutput Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -248,9 +314,9 @@ public class ForwardReverseOptimizationOutput extends
 	 * @return The Excess Returns Co-variance Matrix between each Pair-wise Asset
 	 */
 
-	public double[][] assetExcessReturnsCovariance()
+	public double[][] assetExcessReturnsCovarianceMatrix()
 	{
-		return _aadblAssetExcessReturnsCovariance;
+		return _assetExcessReturnsCovarianceMatrix;
 	}
 
 	/**
@@ -261,56 +327,70 @@ public class ForwardReverseOptimizationOutput extends
 
 	public double riskAversion()
 	{
-		return _dblRiskAversion;
+		return _riskAversion;
 	}
 
 	/**
-	 * Retrieve the Array of Expected Excess Returns for each Asset
+	 * Retrieve the Array of Expected Excess Returns Array for each Asset
 	 * 
-	 * @return The Array of Expected Excess Returns for each Asset
+	 * @return The Array of Expected Excess Returns Array for each Asset
 	 */
 
-	public double[] expectedAssetExcessReturns()
+	public double[] expectedAssetExcessReturnsArray()
 	{
-		return _adblExpectedAssetExcessReturns;
+		return _expectedAssetExcessReturnsArray;
 	}
 
 	/**
 	 * Compute the Portfolio Relative Metrics using the specified Benchmark
 	 * 
-	 * @param pmBenchmark The Benchmark Metrics
+	 * @param benchmarkPortfolioMetrics The Benchmark Metrics
 	 * 
 	 * @return The Portfolio Relative Metrics using the specified Benchmark
 	 */
 
 	public org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics benchmarkMetrics (
-		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmBenchmark)
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics benchmarkPortfolioMetrics)
 	{
-		if (null == pmBenchmark) return null;
+		if (null == benchmarkPortfolioMetrics)
+		{
+			return null;
+		}
 
-		org.drip.portfolioconstruction.asset.PortfolioMetrics pm = optimalMetrics();
+		org.drip.portfolioconstruction.asset.PortfolioMetrics portfolioMetrics = optimalMetrics();
 
-		try {
-			double dblBeta = org.drip.numerical.linearalgebra.Matrix.DotProduct (optimalPortfolio().weights(),
-				pmBenchmark.impliedBeta());
+		try
+		{
+			double beta = org.drip.numerical.linearalgebra.Matrix.DotProduct (
+				optimalPortfolio().weightArray(),
+				benchmarkPortfolioMetrics.impliedBeta()
+			);
 
-			double dblActiveBeta = dblBeta - 1.;
+			double activeBeta = beta - 1.;
 
-			double dblPortfolioExcessReturnsMean = pm.excessReturnsMean();
+			double portfolioExcessReturnsMean = portfolioMetrics.excessReturnsMean();
 
-			double dblBenchmarkExcessReturnsMean = pmBenchmark.excessReturnsMean();
+			double benchmarkExcessReturnsMean = benchmarkPortfolioMetrics.excessReturnsMean();
 
-			double dblBenchmarkExcessReturnsVariance = pmBenchmark.excessReturnsVariance();
+			double benchmarkExcessReturnsVariance = benchmarkPortfolioMetrics.excessReturnsVariance();
 
-			double dblResidualRisk = java.lang.Math.sqrt (pm.excessReturnsVariance() - dblBeta * dblBeta *
-				dblBenchmarkExcessReturnsVariance);
+			double residualRisk = java.lang.Math.sqrt (
+				portfolioMetrics.excessReturnsVariance() - beta * beta * benchmarkExcessReturnsVariance
+			);
 
-			return new org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics (dblBeta,
-				dblActiveBeta, java.lang.Math.sqrt (dblResidualRisk * dblResidualRisk + dblActiveBeta *
-					dblActiveBeta * dblBenchmarkExcessReturnsVariance), dblPortfolioExcessReturnsMean -
-						dblBenchmarkExcessReturnsMean, dblResidualRisk, dblPortfolioExcessReturnsMean -
-							dblBeta * dblBenchmarkExcessReturnsMean);
-		} catch (java.lang.Exception e) {
+			return new org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics (
+				beta,
+				activeBeta,
+				java.lang.Math.sqrt (
+					residualRisk * residualRisk + activeBeta * activeBeta * benchmarkExcessReturnsVariance
+				),
+				portfolioExcessReturnsMean - benchmarkExcessReturnsMean,
+				residualRisk,
+				portfolioExcessReturnsMean - beta * benchmarkExcessReturnsMean
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

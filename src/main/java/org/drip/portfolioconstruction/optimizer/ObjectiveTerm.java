@@ -80,26 +80,30 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.optimizer.FormulationTerm {
-	private double[] _adblInitialHoldings = null;
+public abstract class ObjectiveTerm
+	extends org.drip.portfolioconstruction.optimizer.FormulationTerm
+{
+	private double[] _initialHoldingsArray = null;
 
 	protected ObjectiveTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final java.lang.String strCategory,
-		final double[] adblInitialHoldings)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final java.lang.String category,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
-			strCategory
+			name,
+			id,
+			description,
+			category
 		);
 
-		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length)
+		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length)
+		{
 			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -108,8 +112,8 @@ public abstract class ObjectiveTerm extends org.drip.portfolioconstruction.optim
 	 * @return Array of Initial Holdings
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-		return _adblInitialHoldings;
+		return _initialHoldingsArray;
 	}
 }

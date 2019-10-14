@@ -81,49 +81,52 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
+public class LimitRiskTermMarginal
+	extends org.drip.portfolioconstruction.constraint.LimitRiskTerm
 {
-	private double[] _adblInitialHoldings = null;
+	private double[] _initialHoldingsArray = null;
 
 	/**
 	 * LimitRiskTermMarginal Constructor
 	 * 
-	 * @param strName Name of the LimitRiskTermMarginal Constraint
+	 * @param name Name of the LimitRiskTermMarginal Constraint
 	 * @param scope Scope of the LimitRiskTermMarginal Constraint
 	 * @param unit Unit of the LimitRiskTermMarginal Constraint
-	 * @param dblMinimum Minimum Limit Value of the LimitRiskTermMarginal Constraint
-	 * @param dblMaximum Maximum Limit Value of the LimitRiskTermMarginal Constraint
-	 * @param aadblAssetCovariance Asset Co-variance
-	 * @param adblInitialHoldings Array of the Initial Holdings
+	 * @param minimum Minimum Limit Value of the LimitRiskTermMarginal Constraint
+	 * @param maximum Maximum Limit Value of the LimitRiskTermMarginal Constraint
+	 * @param assetCovarianceMatrix Asset Co-variance
+	 * @param initialHoldingsArray Array of the Initial Holdings
 	 * 
 	 * @throws java.lang.Exception Throw if the Inputs are Invalid
 	 */
 
 	public LimitRiskTermMarginal (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[][] aadblAssetCovariance,
-		final double[] adblInitialHoldings)
+		final double minimum,
+		final double maximum,
+		final double[][] assetCovarianceMatrix,
+		final double[] initialHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_MARGINAL_RISK_CONTRIBUTION",
 			"Limits the Marginal Contribution to the Total Risk",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			aadblAssetCovariance
+			minimum,
+			maximum,
+			assetCovarianceMatrix
 		);
 
-		if (null == (_adblInitialHoldings = adblInitialHoldings) ||
-			_adblInitialHoldings.length != aadblAssetCovariance[0].length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))
+		if (null == (_initialHoldingsArray = initialHoldingsArray) ||
+			_initialHoldingsArray.length != assetCovarianceMatrix[0].length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))
+		{
 			throw new java.lang.Exception ("LimitRiskTermMarginal Constructor => Invalid Initial Holdings");
+		}
 	}
 
 	/**
@@ -132,9 +135,9 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 	 * @return The Initial Holdings Array
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-		return _adblInitialHoldings;
+		return _initialHoldingsArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -143,33 +146,41 @@ public class LimitRiskTermMarginal extends org.drip.portfolioconstruction.constr
 		{
 			@Override public int dimension()
 			{
-				return assetCovariance().length;
+				return assetCovarianceMatrix().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[][] aadblAssetCovariance = assetCovariance();
+				double[][] assetCovarianceMatrix = assetCovarianceMatrix();
 
-				int iNumAsset = aadblAssetCovariance.length;
-				double dblMarginalVariance = 0;
+				int assetCount = assetCovarianceMatrix.length;
+				double marginalVariance = 0;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitRiskTermMarginal::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i)
-				{
-					double dblHoldingsDifferentialI = adblFinalHoldings[i] - _adblInitialHoldings[i];
-
-					for (int j = 0; j < iNumAsset; ++j)
-						dblMarginalVariance += dblHoldingsDifferentialI * aadblAssetCovariance[i][j] *
-							(adblFinalHoldings[j] - _adblInitialHoldings[j]);
 				}
 
-				return dblMarginalVariance;
+				for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+				{
+					double dblHoldingsDifferentialI = finalHoldingsArray[assetIndexI] -
+						_initialHoldingsArray[assetIndexI];
+
+					for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+					{
+						marginalVariance += dblHoldingsDifferentialI *
+							assetCovarianceMatrix[assetIndexI][assetIndexJ] * (
+								finalHoldingsArray[assetIndexJ] - _initialHoldingsArray[assetIndexJ]
+							);
+					}
+				}
+
+				return marginalVariance;
 			}
 		};
 	}

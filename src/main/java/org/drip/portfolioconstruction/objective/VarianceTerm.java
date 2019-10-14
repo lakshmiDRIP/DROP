@@ -81,34 +81,35 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VarianceTerm extends org.drip.portfolioconstruction.objective.RiskTerm
+public class VarianceTerm
+	extends org.drip.portfolioconstruction.objective.RiskTerm
 {
 
 	/**
 	 * VarianceTerm Constructor
 	 * 
-	 * @param strName Name of the Objective Function
-	 * @param adblInitialHoldings The Initial Holdings
-	 * @param aadblAssetCovariance The Asset Covariance
-	 * @param adblBenchmarkConstrictedHoldings The Constricted Benchmark Holdings
+	 * @param name Name of the Objective Function
+	 * @param initialHoldingsArray The Initial Holdings
+	 * @param assetCovarianceMatrix The Asset Covariance
+	 * @param benchmarkConstrictedHoldingsArray The Constricted Benchmark Holdings
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VarianceTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[][] aadblAssetCovariance,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[][] assetCovarianceMatrix,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_VARIANCE",
 			"Variance Objective Term",
-			adblInitialHoldings,
-			aadblAssetCovariance,
-			adblBenchmarkConstrictedHoldings
+			initialHoldingsArray,
+			assetCovarianceMatrix,
+			benchmarkConstrictedHoldingsArray
 		);
 	}
 
@@ -118,38 +119,50 @@ public class VarianceTerm extends org.drip.portfolioconstruction.objective.RiskT
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception ("VarianceTerm::rdToR1::evaluate => Invalid Input");
-
-				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();
-
-				double[][] aadblCovariance = assetCovariance();
-
-				int iNumAsset = aadblCovariance.length;
-				double dblCovariance = 0.;
-
-				if (adblVariate.length != iNumAsset)
-					throw new java.lang.Exception
-						("VarianceTerm::rdToR1::evaluate => Invalid Variate Dimension");
-
-				for (int i = 0; i < iNumAsset; ++i) {
-					double dblOuterAdjustedVariate = null == adblBenchmarkHoldings ? adblVariate[i] :
-						adblVariate[i] - adblBenchmarkHoldings[i];
-
-					for (int j = 0; j < iNumAsset; ++j)
-						dblCovariance += aadblCovariance[i][j] * dblOuterAdjustedVariate * (null ==
-							adblBenchmarkHoldings ? adblVariate[j] : adblVariate[j] -
-								adblBenchmarkHoldings[j]);
 				}
 
-				return dblCovariance;
+				double[] benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldings();
+
+				double[][] assetCovarianceMatrix = assetCovariance();
+
+				int assetCount = assetCovarianceMatrix.length;
+				double covariance = 0.;
+
+				if (variateArray.length != assetCount)
+				{
+					throw new java.lang.Exception
+						("VarianceTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
+
+				for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+				{
+					double outerAdjustedVariate = null == benchmarkConstrictedHoldingsArray ?
+						variateArray[assetIndexI] :
+						variateArray[assetIndexI] - benchmarkConstrictedHoldingsArray[assetIndexI];
+
+					for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+					{
+						covariance += assetCovarianceMatrix[assetIndexI][assetIndexJ] * outerAdjustedVariate *
+						(
+							null == benchmarkConstrictedHoldingsArray ?
+								variateArray[assetIndexJ] :
+								variateArray[assetIndexJ] - benchmarkConstrictedHoldingsArray[assetIndexJ]
+						);
+					}
+				}
+
+				return covariance;
 			}
 		};
 	}

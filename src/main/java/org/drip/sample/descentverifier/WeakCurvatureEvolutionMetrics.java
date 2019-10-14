@@ -230,8 +230,8 @@ public class WeakCurvatureEvolutionMetrics {
 		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (
 			astrAssetName,
 			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
 				dblPortfolioDesignReturn
 			)
 		);

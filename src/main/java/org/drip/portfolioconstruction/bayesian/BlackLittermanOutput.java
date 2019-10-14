@@ -93,27 +93,34 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlackLittermanOutput {
-	private double[] _adblAllocationAdjustmentTilt = null;
-	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput _frooAdjusted = null;
+public class BlackLittermanOutput
+{
+	private double[] _allocationAdjustmentTiltArray = null;
+	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		_adjustedOptimizationOutput = null;
 
 	/**
 	 * BlackLittermanOutput Constructor
 	 * 
-	 * @param frooAdjusted The Black Litterman Adjusted Forward Reverse Equilibrium Optimization Output
-	 * @param adblAllocationAdjustmentTilt Array of the Allocation Adjustment Tilts
+	 * @param adjustedOptimizationOutput The Black Litterman Adjusted Forward Reverse Equilibrium
+	 * 	Optimization Output
+	 * @param allocationAdjustmentTiltArray Array of the Allocation Adjustment Tilts
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BlackLittermanOutput (
-		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput frooAdjusted,
-		final double[] adblAllocationAdjustmentTilt)
+		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+			adjustedOptimizationOutput,
+		final double[] allocationAdjustmentTiltArray)
 		throws java.lang.Exception
 	{
-		if (null == (_frooAdjusted = frooAdjusted) || null == (_adblAllocationAdjustmentTilt =
-			adblAllocationAdjustmentTilt) || 0 == _adblAllocationAdjustmentTilt.length)
+		if (null == (_adjustedOptimizationOutput = adjustedOptimizationOutput) ||
+			null == (_allocationAdjustmentTiltArray = allocationAdjustmentTiltArray) ||
+			0 == _allocationAdjustmentTiltArray.length)
+		{
 			throw new java.lang.Exception ("BlackLittermanOutput Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -122,19 +129,20 @@ public class BlackLittermanOutput {
 	 * @return The Adjusted Forward Equilibrium Optimization Metrics
 	 */
 
-	public org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput adjustedMetrics()
+	public org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
+		adjustedOptimizationOutput()
 	{
-		return _frooAdjusted;
+		return _adjustedOptimizationOutput;
 	}
 
 	/**
-	 * Retrieve the Array of the Black Litterman Allocation Adjustment Tilts
+	 * Retrieve the Array of the Black Litterman Allocation Adjustment Tilt
 	 * 
-	 * @return The Array of the Black Litterman Allocation Adjustment Tilts
+	 * @return The Array of the Black Litterman Allocation Adjustment Tilt
 	 */
 
-	public double[] allocationAdjustmentTilt()
+	public double[] allocationAdjustmentTiltArray()
 	{
-		return _adblAllocationAdjustmentTilt;
+		return _allocationAdjustmentTiltArray;
 	}
 }

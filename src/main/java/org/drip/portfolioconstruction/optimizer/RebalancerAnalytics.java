@@ -82,23 +82,23 @@ package org.drip.portfolioconstruction.optimizer;
 
 public class RebalancerAnalytics
 {
-	private double _dblObjectiveValue = java.lang.Double.NaN;
-	private org.drip.portfolioconstruction.composite.Holdings _holdingsFinal = null;
+	private double _objectiveValue = java.lang.Double.NaN;
+	private org.drip.portfolioconstruction.composite.Holdings _finalHoldings = null;
 	private org.drip.portfolioconstruction.asset.PortfolioMetrics _portfolioMetrics = null;
 	private org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics _portfolioBenchmarkMetrics = null;
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapObjectiveTermRealization
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _objectiveTermRealizationMap
 		= null;
 	private
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.optimizer.ConstraintRealization>
-			_mapConstraintRealization = null;
+			_constraintRealizationMap = null;
 
 	/**
 	 * RebalancerAnalytics Constructor
 	 * 
-	 * @param dblObjectiveValue The Objective Value
-	 * @param holdingsFinal The Final Holdings
-	 * @param mapObjectiveTermRealization Map of the Realized Objective Terms
-	 * @param mapConstraintRealization Map of the Constraint Terms
+	 * @param objectiveValue The Objective Value
+	 * @param finalHoldings The Final Holdings
+	 * @param objectiveTermRealizationMap Map of the Realized Objective Terms
+	 * @param constraintRealizationMap Map of the Constraint Terms
 	 * @param portfolioMetrics Portfolio Metrics
 	 * @param portfolioBenchmarkMetrics Portfolio Benchmark Metrics
 	 * 
@@ -106,36 +106,38 @@ public class RebalancerAnalytics
 	 */
 
 	public RebalancerAnalytics (
-		final double dblObjectiveValue,
-		final org.drip.portfolioconstruction.composite.Holdings holdingsFinal,
+		final double objectiveValue,
+		final org.drip.portfolioconstruction.composite.Holdings finalHoldings,
 		final org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>
-			mapObjectiveTermRealization,
+			objectiveTermRealizationMap,
 		final
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.optimizer.ConstraintRealization>
-				mapConstraintRealization,
+				constraintRealizationMap,
 		final org.drip.portfolioconstruction.asset.PortfolioMetrics portfolioMetrics,
 		final org.drip.portfolioconstruction.asset.PortfolioBenchmarkMetrics portfolioBenchmarkMetrics)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblObjectiveValue = dblObjectiveValue) ||
-			null == (_holdingsFinal = holdingsFinal) ||
-			null == (_mapObjectiveTermRealization = mapObjectiveTermRealization) ||
-			null == (_mapConstraintRealization = mapConstraintRealization))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_objectiveValue = objectiveValue) ||
+			null == (_finalHoldings = finalHoldings) ||
+			null == (_objectiveTermRealizationMap = objectiveTermRealizationMap) ||
+			null == (_constraintRealizationMap = constraintRealizationMap))
+		{
 			throw new java.lang.Exception ("RebalancerAnalytics Constructor => Invalid Inputs!");
+		}
 
 		_portfolioMetrics = portfolioMetrics;
 		_portfolioBenchmarkMetrics = portfolioBenchmarkMetrics;
 	}
 
 	/**
-	 * Retrieve the Objective Term
+	 * Retrieve the Objective Function Value
 	 * 
-	 * @return Objective Term
+	 * @return Objective Function Value
 	 */
 
 	public double objectiveValue()
 	{
-		return _dblObjectiveValue;
+		return _objectiveValue;
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class RebalancerAnalytics
 
 	public org.drip.portfolioconstruction.composite.Holdings finalHoldings()
 	{
-		return _holdingsFinal;
+		return _finalHoldings;
 	}
 
 	/**
@@ -178,9 +180,9 @@ public class RebalancerAnalytics
 	 */
 
 	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.optimizer.ConstraintRealization>
-		constraintRealizaton()
+		constraintRealizationMap()
 	{
-		return _mapConstraintRealization;
+		return _constraintRealizationMap;
 	}
 
 	/**
@@ -189,8 +191,8 @@ public class RebalancerAnalytics
 	 * @return Map of Objective Term Realizations
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> objectiveTermRealizaton()
+	public java.util.Map<java.lang.String, java.lang.Double> objectiveTermRealizationMap()
 	{
-		return _mapObjectiveTermRealization;
+		return _objectiveTermRealizationMap;
 	}
 }

@@ -81,34 +81,35 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objective.ReturnsTerm
+public class ExpectedReturnsTerm
+	extends org.drip.portfolioconstruction.objective.ReturnsTerm
 {
 
 	/**
 	 * ExpectedReturnsTerm Constructor
 	 * 
-	 * @param strName Name of the Expected Returns Objective Term
-	 * @param adblInitialHoldings Initial Holdings
-	 * @param adblAlpha Asset Alpha
-	 * @param adblBenchmarkConstrictedHoldings Benchmark Constricted Holdings
+	 * @param name Name of the Expected Returns Objective Term
+	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param alphaArray Asset Alpha Aray
+	 * @param benchmarkConstrictedHoldingsArray Benchmark Constricted Holdings Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedReturnsTerm (
-		final java.lang.String strName,
-		final double[] adblInitialHoldings,
-		final double[] adblAlpha,
-		final double[] adblBenchmarkConstrictedHoldings)
+		final java.lang.String name,
+		final double[] initialHoldingsArray,
+		final double[] alphaArray,
+		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"OT_EXPECTED_RETURN",
 			"Expected Portfolio Returns Objective Term",
-			adblInitialHoldings,
-			adblAlpha,
-			adblBenchmarkConstrictedHoldings
+			initialHoldingsArray,
+			alphaArray,
+			benchmarkConstrictedHoldingsArray
 		);
 	}
 
@@ -118,32 +119,42 @@ public class ExpectedReturnsTerm extends org.drip.portfolioconstruction.objectiv
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return initialHoldingsArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws java.lang.Exception
 			{
-				if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
+				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				{
 					throw new java.lang.Exception ("ExpectedReturnsTerm::rdToR1::evaluate => Invalid Input");
+				}
 
-				double[] adblAlpha = alpha();
+				double[] alphaArray = alphaArray();
 
-				double dblExpectedReturn = 0.;
-				int iNumAsset = adblAlpha.length;
+				double expectedReturn = 0.;
+				int assetCount = alphaArray.length;
 
-				if (adblVariate.length != iNumAsset)
+				if (variateArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("ExpectedReturnsTerm::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				double[] adblBenchmarkHoldings = benchmarkConstrictedHoldings();
+				double[] benchmarkConstrictedHoldingsArray = benchmarkConstrictedHoldingsArray();
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblExpectedReturn += adblAlpha[i] * (adblVariate[i] - (null == adblBenchmarkHoldings ? 0.
-						: adblBenchmarkHoldings[i]));
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					expectedReturn += alphaArray[assetIndex] * (
+						variateArray[assetIndex] - (
+							null == benchmarkConstrictedHoldingsArray ?
+								0. : benchmarkConstrictedHoldingsArray[assetIndex]
+						)
+					);
+				}
 
-				return dblExpectedReturn;
+				return expectedReturn;
 			}
 		};
 	}

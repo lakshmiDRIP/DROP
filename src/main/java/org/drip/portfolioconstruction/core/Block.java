@@ -80,26 +80,34 @@ package org.drip.portfolioconstruction.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Block {
-	private java.lang.String _strID = "";
-	private java.lang.String _strName = "";
+public class Block
+{
+	private java.lang.String _id = "";
+	private java.lang.String _name = "";
 	private java.util.Date _dateTimeStamp = null;
-	private java.lang.String _strDescription = "";
+	private java.lang.String _description = "";
 
 	/**
 	 * Construct a Standard Instance of a Block
 	 * 
-	 * @param strName The Block Name
+	 * @param name The Block Name
 	 * 
 	 * @return The Standard Block Instance
 	 */
 
 	public static final Block Standard (
-		final java.lang.String strName)
+		final java.lang.String name)
 	{
-		try {
-			return new Block (strName, strName, strName);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new Block (
+				name,
+				name,
+				name
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -109,22 +117,25 @@ public class Block {
 	/**
 	 * Block Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Block (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || null == (_strID = strID) ||
-			_strID.isEmpty() || null == (_strDescription = strDescription) || _strDescription.isEmpty())
+		if (null == (_name = name) || _name.isEmpty() ||
+			null == (_id = id) || _id.isEmpty() ||
+			null == (_description = description) || _description.isEmpty())
+		{
 			throw new java.lang.Exception ("Block Constructor => Invalid Inputs");
+		}
 
 		_dateTimeStamp = new java.util.Date();
 	}
@@ -137,7 +148,7 @@ public class Block {
 
 	public java.lang.String name()
 	{
-		return _strName;
+		return _name;
 	}
 
 	/**
@@ -148,7 +159,7 @@ public class Block {
 
 	public java.lang.String id()
 	{
-		return _strID;
+		return _id;
 	}
 
 	/**
@@ -159,7 +170,7 @@ public class Block {
 
 	public java.lang.String description()
 	{
-		return _strDescription;
+		return _description;
 	}
 
 	/**

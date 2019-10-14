@@ -253,8 +253,8 @@ public class CMVMonthlyReconciler09 {
 		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (
 			astrAssetName,
 			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
 				dblPortfolioDesignReturn
 			)
 		);
@@ -271,7 +271,7 @@ public class CMVMonthlyReconciler09 {
 			ausp
 		);
 
-		AssetComponent[] aACOptimal = pfOptimal.optimalPortfolio().assets();
+		AssetComponent[] aACOptimal = pfOptimal.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\t|--------------------------||");
 

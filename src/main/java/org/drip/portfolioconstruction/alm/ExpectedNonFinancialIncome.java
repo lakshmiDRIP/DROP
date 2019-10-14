@@ -81,23 +81,26 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExpectedNonFinancialIncome {
-	private double _dblIncomeReplacementRate = java.lang.Double.NaN;
+public class ExpectedNonFinancialIncome
+{
+	private double _incomeReplacementRate = java.lang.Double.NaN;
 
 	/**
 	 * ExpectedNonFinancialIncome Constructor
 	 * 
-	 * @param dblIncomeReplacementRate The Pension Based Income Replacement Rate
+	 * @param incomeReplacementRate The Pension Based Income Replacement Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExpectedNonFinancialIncome (
-		final double dblIncomeReplacementRate)
+		final double incomeReplacementRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblIncomeReplacementRate = dblIncomeReplacementRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_incomeReplacementRate = incomeReplacementRate))
+		{
 			throw new java.lang.Exception ("ExpectedNonFinancialIncome Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -108,14 +111,14 @@ public class ExpectedNonFinancialIncome {
 
 	public double incomeReplacementRate()
 	{
-		return _dblIncomeReplacementRate;
+		return _incomeReplacementRate;
 	}
 
 	/**
 	 * Compute the Retirement Age Income Replacement Rate
 	 * 
-	 * @param dblAge The Age whose Investment Phase is needed
-	 * @param ics The Investor's Time Cliff Settings Instance
+	 * @param age The Age whose Investment Phase is needed
+	 * @param investorCliffSettings The Investor's Time Cliff Settings Instance
 	 * 
 	 * @return The Retirement Age Income Replacement Rate
 	 * 
@@ -123,22 +126,27 @@ public class ExpectedNonFinancialIncome {
 	 */
 
 	public double rate (
-		final double dblAge,
-		final org.drip.portfolioconstruction.alm.InvestorCliffSettings ics)
+		final double age,
+		final org.drip.portfolioconstruction.alm.InvestorCliffSettings investorCliffSettings)
 		throws java.lang.Exception
 	{
-		if (null == ics)
+		if (null == investorCliffSettings)
+		{
 			throw new java.lang.Exception ("ExpectedNonFinancialIncome::rate => Invalid Inputs");
+		}
 
-		int iAgePhase = ics.phase (dblAge);
+		int agePhase = investorCliffSettings.phase (age);
 
 		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_BEFORE_RETIREMENT ==
-			iAgePhase)
+			agePhase)
+		{
 			return 1.;
+		}
 
-		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT ==
-			iAgePhase)
-			return _dblIncomeReplacementRate;
+		if (org.drip.portfolioconstruction.alm.InvestorCliffSettings.DATE_PHASE_AFTER_RETIREMENT == agePhase)
+		{
+			return _incomeReplacementRate;
+		}
 
 		return 0.;
 	}

@@ -80,56 +80,73 @@ package org.drip.portfolioconstruction.risk;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCovarianceFactor extends org.drip.portfolioconstruction.risk.AttributeJointFactor
-	implements org.drip.portfolioconstruction.risk.AssetCovariance {
+public class AssetCovarianceFactor
+	extends org.drip.portfolioconstruction.risk.AttributeJointFactor
+	implements org.drip.portfolioconstruction.risk.AssetCovariance
+{
 
 	/**
 	 * AssetCovarianceFactor Constructor
 	 * 
-	 * @param strName The Name
-	 * @param strID The ID
-	 * @param strDescription The Description
+	 * @param name The Name
+	 * @param id The ID
+	 * @param description The Description
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetCovarianceFactor (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription)
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (strName, strID, strDescription);
+		super (
+			name,
+			id,
+			description
+		);
 	}
 
 	@Override public double[][] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		if (null == holdings) return null;
+		if (null == holdings)
+		{
+			return null;
+		}
 
-		java.util.Set<java.lang.String> setAsset = holdings.assets();
+		java.util.Set<java.lang.String> assetIDSet = holdings.assetIDSet();
 
-		int iSize = setAsset.size();
+		int assetCount = assetIDSet.size();
 
-		int i = 0;
-		double[][] aadblAssetCovariance = new double[iSize][iSize];
+		int assetIndexI = 0;
+		double[][] assetCovarianceMatrix = new double[assetCount][assetCount];
 
-		for (java.lang.String strAsset1 : setAsset) {
-			int j = 0;
+		for (java.lang.String assetID1 : assetIDSet)
+		{
+			int assetIndexJ = 0;
 
-			for (java.lang.String strAsset2 : setAsset) {
-				try {
-					aadblAssetCovariance[i][j++] = crossAssetAttribute (strAsset1, strAsset2);
-				} catch (java.lang.Exception e) {
+			for (java.lang.String assetID2 : assetIDSet)
+			{
+				try
+				{
+					assetCovarianceMatrix[assetIndexI][assetIndexJ++] = crossAssetAttribute (
+						assetID1,
+						assetID2
+					);
+				}
+				catch (java.lang.Exception e)
+				{
 					e.printStackTrace();
 
 					return null;
 				}
 			}
 
-			++i;
+			++assetIndexI;
 		}
 
-		return aadblAssetCovariance;
+		return assetCovarianceMatrix;
 	}
 }

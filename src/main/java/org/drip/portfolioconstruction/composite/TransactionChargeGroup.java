@@ -79,28 +79,36 @@ package org.drip.portfolioconstruction.composite;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionChargeGroup {
+public class TransactionChargeGroup
+{
 	private
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.cost.TransactionCharge>
-		_mapTransactionCharge = new
+		_transactionChargeMap = new
 			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.cost.TransactionCharge>();
 
 	/**
 	 * Add an Asset's Transaction Charge
 	 * 
-	 * @param strAssetID The Asset ID
-	 * @param tc The Asset's Transaction Charge
+	 * @param assetID The Asset ID
+	 * @param transactionCharge The Asset's Transaction Charge
 	 * 
 	 * @return TRUE - The Asset's Transaction Charge successfully added.
 	 */
 
 	public boolean add (
-		final java.lang.String strAssetID,
-		final org.drip.portfolioconstruction.cost.TransactionCharge tc)
+		final java.lang.String assetID,
+		final org.drip.portfolioconstruction.cost.TransactionCharge transactionCharge)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || null == tc) return false;
+		if (null == assetID || assetID.isEmpty() ||
+			null == transactionCharge)
+		{
+			return false;
+		}
 
-		_mapTransactionCharge.put (strAssetID, tc);
+		_transactionChargeMap.put (
+			assetID,
+			transactionCharge
+		);
 
 		return true;
 	}
@@ -108,32 +116,34 @@ public class TransactionChargeGroup {
 	/**
 	 * Indicate if the Asset's Transaction Charge is Available
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return TRUE - The Asset's Transaction Charge is Available
 	 */
 
 	public boolean contains (
-		final java.lang.String strAssetID)
+		final java.lang.String assetID)
 	{
-		return null != strAssetID && !strAssetID.isEmpty() && _mapTransactionCharge.containsKey (strAssetID);
+		return null != assetID && !assetID.isEmpty() && _transactionChargeMap.containsKey (assetID);
 	}
 
 	/**
 	 * Retrieve the Asset's Transaction Charge
 	 * 
-	 * @param strAssetID The Asset ID
+	 * @param assetID The Asset ID
 	 * 
 	 * @return The Asset's Transaction Charge
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge get (
-		final java.lang.String strAssetID)
+	public org.drip.portfolioconstruction.cost.TransactionCharge transactionCharge (
+		final java.lang.String assetID)
 	{
-		if (null == strAssetID || strAssetID.isEmpty() || !_mapTransactionCharge.containsKey (strAssetID))
+		if (null == assetID || assetID.isEmpty() || !_transactionChargeMap.containsKey (assetID))
+		{
 			return null;
+		}
 
-		return _mapTransactionCharge.get (strAssetID);
+		return _transactionChargeMap.get (assetID);
 	}
 
 	/**
@@ -142,9 +152,10 @@ public class TransactionChargeGroup {
 	 * @return Map of the Transaction Charge
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.cost.TransactionCharge> map()
+	public java.util.Map<java.lang.String, org.drip.portfolioconstruction.cost.TransactionCharge>
+		transactionChargeMap()
 	{
-		return _mapTransactionCharge;
+		return _transactionChargeMap;
 	}
 
 	/**
@@ -158,16 +169,21 @@ public class TransactionChargeGroup {
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-		if (null == holdings) return null;
+		if (null == holdings)
+		{
+			return null;
+		}
 
-		java.util.Set<java.lang.String> setAsset = holdings.assets();
+		java.util.Set<java.lang.String> assetIDSet = holdings.assetIDSet();
 
-		java.util.List<org.drip.portfolioconstruction.cost.TransactionCharge> lsTransactionCharge = new
-			java.util.ArrayList<org.drip.portfolioconstruction.cost.TransactionCharge>();
+		java.util.List<org.drip.portfolioconstruction.cost.TransactionCharge> transactionChargeList =
+			new java.util.ArrayList<org.drip.portfolioconstruction.cost.TransactionCharge>();
 
-		for (java.lang.String strAssetID : setAsset)
-			lsTransactionCharge.add (contains (strAssetID) ? get (strAssetID) : null);
+		for (java.lang.String assetID : assetIDSet)
+		{
+			transactionChargeList.add (contains (assetID) ? transactionCharge (assetID) : null);
+		}
 
-		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) lsTransactionCharge.toArray();
+		return (org.drip.portfolioconstruction.cost.TransactionCharge[]) transactionChargeList.toArray();
 	}
 }

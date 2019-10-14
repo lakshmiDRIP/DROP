@@ -81,9 +81,10 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CustomRiskUtilitySettings {
-	private double _dblRiskAversion = java.lang.Double.NaN;
-	private double _dblRiskTolerance = java.lang.Double.NaN;
+public class CustomRiskUtilitySettings
+{
+	private double _riskAversion = java.lang.Double.NaN;
+	private double _riskTolerance = java.lang.Double.NaN;
 
 	/**
 	 * The Variance Minimizer CustomRiskUtilitySettings Instance
@@ -93,9 +94,15 @@ public class CustomRiskUtilitySettings {
 
 	public static final CustomRiskUtilitySettings VarianceMinimizer()
 	{
-		try {
-			return new CustomRiskUtilitySettings (1., 0.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CustomRiskUtilitySettings (
+				1.,
+				0.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -105,17 +112,23 @@ public class CustomRiskUtilitySettings {
 	/**
 	 * The Risk Tolerant Variance Minimizer CustomRiskUtilitySettings Instance
 	 * 
-	 * @param dblRiskTolerance The Risk Tolerance Parameter
+	 * @param riskTolerance The Risk Tolerance Parameter
 	 * 
 	 * @return The Risk Tolerant Variance Minimizer CustomRiskUtilitySettings Instance
 	 */
 
 	public static final CustomRiskUtilitySettings RiskTolerant (
-		final double dblRiskTolerance)
+		final double riskTolerance)
 	{
-		try {
-			return new CustomRiskUtilitySettings (1., dblRiskTolerance);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CustomRiskUtilitySettings (
+				1.,
+				riskTolerance
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -125,17 +138,23 @@ public class CustomRiskUtilitySettings {
 	/**
 	 * The Risk Aversion Variance Minimizer CustomRiskUtilitySettings Instance
 	 * 
-	 * @param dblRiskAversion The Risk Aversion Parameter
+	 * @param riskAversion The Risk Aversion Parameter
 	 * 
 	 * @return The Risk Aversion Variance Minimizer CustomRiskUtilitySettings Instance
 	 */
 
 	public static final CustomRiskUtilitySettings RiskAversion (
-		final double dblRiskAversion)
+		final double riskAversion)
 	{
-		try {
-			return new CustomRiskUtilitySettings (dblRiskAversion, 1.);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CustomRiskUtilitySettings (
+				riskAversion,
+				1.
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -145,21 +164,23 @@ public class CustomRiskUtilitySettings {
 	/**
 	 * CustomRiskUtilitySettings Constructor
 	 * 
-	 * @param dblRiskAversion The Risk Aversion Parameter
-	 * @param dblRiskTolerance The Risk Tolerance Parameter
+	 * @param riskAversion The Risk Aversion Parameter
+	 * @param riskTolerance The Risk Tolerance Parameter
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CustomRiskUtilitySettings (
-		final double dblRiskAversion,
-		final double dblRiskTolerance)
+		final double riskAversion,
+		final double riskTolerance)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskAversion = dblRiskAversion) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskTolerance = dblRiskTolerance) || 0. >
-				_dblRiskTolerance)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskAversion = riskAversion) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_riskTolerance = riskTolerance) ||
+				0. > _riskTolerance)
+		{
 			throw new java.lang.Exception ("CustomRiskUtilitySettings Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -170,7 +191,7 @@ public class CustomRiskUtilitySettings {
 
 	public double riskAversion()
 	{
-		return _dblRiskAversion;
+		return _riskAversion;
 	}
 
 	/**
@@ -181,46 +202,68 @@ public class CustomRiskUtilitySettings {
 
 	public double riskTolerance()
 	{
-		return _dblRiskTolerance;
+		return _riskTolerance;
 	}
 
 	/**
 	 * Retrieve the Custom Risk Objective Utility Multivariate
 	 * 
-	 * @param astrAssetID Array of the Asset IDs
-	 * @param ausp The Asset Universe Statistical Properties Instance
+	 * @param assetIDArray Array of the Asset IDs
+	 * @param assetUniverseStatisticalProperties The Asset Universe Statistical Properties Instance
 	 * 
 	 * @return The Custom Risk Objective Utility Multivariate
 	 */
 
 	public org.drip.function.definition.RdToR1 riskObjectiveUtility (
-		final java.lang.String[] astrAssetID,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final java.lang.String[] assetIDArray,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 	{
-		if (null == astrAssetID || null == ausp) return null;
-
-		int iNumAsset = astrAssetID.length;
-		double[] adblExpectedReturns = new double[iNumAsset];
-		double[][] aadblCovariance = new double[iNumAsset][iNumAsset];
-		org.drip.portfolioconstruction.params.AssetStatisticalProperties[] aASP = new
-			org.drip.portfolioconstruction.params.AssetStatisticalProperties[iNumAsset];
-
-		if (0 == iNumAsset) return null;
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			if (null == (aASP[i] = ausp.asp (astrAssetID[i]))) return null;
-
-			adblExpectedReturns[i] = aASP[i].expectedReturn();
+		if (null == assetIDArray || null == assetUniverseStatisticalProperties)
+		{
+			return null;
 		}
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			double dblVarianceI = aASP[i].variance();
+		int assetCount = assetIDArray.length;
+		double[] expectedReturnsArray = new double[assetCount];
+		double[][] covarianceMatrix = new double[assetCount][assetCount];
+		org.drip.portfolioconstruction.params.AssetStatisticalProperties[] assetStatisticalPropertiesArray =
+			new org.drip.portfolioconstruction.params.AssetStatisticalProperties[assetCount];
 
-			for (int j = 0; j < iNumAsset; ++j) {
-				try {
-					aadblCovariance[i][j] = java.lang.Math.sqrt (dblVarianceI * aASP[j].variance()) * (i == j
-						? 1. : ausp.correlation (astrAssetID[i], astrAssetID[j]));
-				} catch (java.lang.Exception e) {
+		if (0 == assetCount)
+		{
+			return null;
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == (assetStatisticalPropertiesArray[assetIndex] =
+				assetUniverseStatisticalProperties.assetStatisticalProperties (assetIDArray[assetIndex])))
+			{
+				return null;
+			}
+
+			expectedReturnsArray[assetIndex] = assetStatisticalPropertiesArray[assetIndex].expectedReturn();
+		}
+
+		for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+		{
+			double dblVarianceI = assetStatisticalPropertiesArray[assetIndexI].variance();
+
+			for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+			{
+				try
+				{
+					covarianceMatrix[assetIndexI][assetIndexJ] = java.lang.Math.sqrt (
+						dblVarianceI * assetStatisticalPropertiesArray[assetIndexJ].variance()
+					) * (
+						assetIndexI == assetIndexJ ? 1. : assetUniverseStatisticalProperties.correlation (
+							assetIDArray[assetIndexI], assetIDArray[assetIndexJ]
+						)
+					);
+				}
+				catch (java.lang.Exception e)
+				{
 					e.printStackTrace();
 
 					return null;
@@ -228,10 +271,18 @@ public class CustomRiskUtilitySettings {
 			}
 		}
 
-		try {
-			return new org.drip.function.rdtor1.RiskObjectiveUtilityMultivariate (aadblCovariance,
-				adblExpectedReturns, _dblRiskAversion, _dblRiskTolerance, ausp.riskFreeRate());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.function.rdtor1.RiskObjectiveUtilityMultivariate (
+				covarianceMatrix,
+				expectedReturnsArray,
+				_riskAversion,
+				_riskTolerance,
+				assetUniverseStatisticalProperties.riskFreeRate()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

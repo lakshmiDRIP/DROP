@@ -80,44 +80,52 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public class LimitChargeTermIssuer
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
+	private double[] _initialHoldingsArray = null;
+	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;
+
 
 	/**
 	 * Construct a Static Instance of LimitChargeTermIssuer
 	 * 
-	 * @param strName Name of the LimitChargeTermIssuer Constraint
+	 * @param name Name of the LimitChargeTermIssuer Constraint
 	 * @param scope Scope of the LimitChargeTermIssuer Constraint
 	 * @param unit Unit of the LimitChargeTermIssuer Constraint
-	 * @param dblMinimum Minimum Value for the LimitChargeTermIssuer Constraint
-	 * @param dblMaximum Maximum Value for the LimitChargeTermIssuer Constraint
-	 * @param adblInitialHoldings Array of Initial Holdings
-	 * @param aTransactionCharge Array of Transaction Charge
+	 * @param minimum Minimum Value for the LimitChargeTermIssuer Constraint
+	 * @param maximum Maximum Value for the LimitChargeTermIssuer Constraint
+	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param transactionChargeArray Array of Transaction Charge
 	 * 
 	 * @return Instance of LimitChargeTermIssuer
 	 */
 
 	public static final LimitChargeTermIssuer Standard (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final double minimum,
+		final double maximum,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 	{
-		try {
+		try
+		{
 			return new LimitChargeTermIssuer (
-				strName,
+				name,
 				"CT_LIMIT_TRANSACTION_CHARGE",
 				"Constrains the Total Transaction Charge",
 				scope,
 				unit,
-				dblMinimum,
-				dblMaximum,
-				adblInitialHoldings,
-				aTransactionCharge);
-		} catch (java.lang.Exception e) {
+				minimum,
+				maximum,
+				initialHoldingsArray,
+				transactionChargeArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -127,101 +135,108 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 	/**
 	 * Construct a Static Instance of GoldmanSachsShortfall LimitChargeTermIssuer
 	 * 
-	 * @param strName Name of the LimitChargeTermIssuer Constraint
+	 * @param name Name of the LimitChargeTermIssuer Constraint
 	 * @param scope Scope of the LimitChargeTermIssuer Constraint
 	 * @param unit Unit of the LimitChargeTermIssuer Constraint
-	 * @param dblMinimum Minimum Value for the LimitChargeTermIssuer Constraint
-	 * @param dblMaximum Maximum Value for the LimitChargeTermIssuer Constraint
-	 * @param adblInitialHoldings Array of Initial Holdings
-	 * @param aTransactionChargeGSS Array of GoldmanSachsShortfall Transaction Charge
+	 * @param minimum Minimum Value for the LimitChargeTermIssuer Constraint
+	 * @param maximum Maximum Value for the LimitChargeTermIssuer Constraint
+	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param goldmanSachsShortfallTransactionChargeArray Array of GoldmanSachsShortfall Transaction Charge
 	 * 
 	 * @return Instance of GoldmanSachsShortfall LimitChargeTermIssuer
 	 */
 
 	public static final LimitChargeTermIssuer GoldmanSachsShortfall (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblInitialHoldings,
+		final double minimum,
+		final double maximum,
+		final double[] initialHoldingsArray,
 		final org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[]
-			aTransactionChargeGSS)
+			goldmanSachsShortfallTransactionChargeArray)
 	{
-		try {
+		try
+		{
 			return new LimitChargeTermIssuer (
-				strName,
+				name,
 				"CT_LIMIT_GOLDMAN_SACHS_SHORTFALL",
 				"Constrains the Total Transaction Charge using the Goldman Sachs Shortfall Model",
 				scope,
 				unit,
-				dblMinimum,
-				dblMaximum,
-				adblInitialHoldings,
-				aTransactionChargeGSS);
-		} catch (java.lang.Exception e) {
+				minimum,
+				maximum,
+				initialHoldingsArray,
+				goldmanSachsShortfallTransactionChargeArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	private double[] _adblInitialHoldings = null;
-	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;
-
 	/**
 	 * LimitChargeTermIssuer Constructor
 	 * 
-	 * @param strName Name of the LimitChargeTermIssuer Constraint
+	 * @param name Name of the LimitChargeTermIssuer Constraint
 	 * @param strID ID of the LimitChargeTermIssuer Constraint
 	 * @param strDescription Description of the LimitChargeTermIssuer Constraint
 	 * @param scope Scope of the LimitChargeTermIssuer Constraint
 	 * @param unit Unit of the LimitChargeTermIssuer Constraint
-	 * @param dblMinimum Minimum Value for the LimitChargeTermIssuer Constraint
-	 * @param dblMaximum Maximum Value for the LimitChargeTermIssuer Constraint
-	 * @param adblInitialHoldings Array of Initial Holdings
-	 * @param aTransactionCharge Array of Transaction Charge
+	 * @param minimum Minimum Value for the LimitChargeTermIssuer Constraint
+	 * @param maximum Maximum Value for the LimitChargeTermIssuer Constraint
+	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param transactionChargeArray Array of Transaction Charge
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitChargeTermIssuer (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final java.lang.String strID,
 		final java.lang.String strDescription,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final double minimum,
+		final double maximum,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			strID,
 			strDescription,
 			"LIMIT_TRANSACTION_CHARGE",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (null == (_adblInitialHoldings = adblInitialHoldings) ||
-			null == (_aTransactionCharge = aTransactionCharge))
-			throw new java.lang.Exception ("LimitChargeTermIssuer Constructor => Invalid Inputs");
-
-		int iNumAsset = _adblInitialHoldings.length;
-
-		if (0 == iNumAsset || iNumAsset != _aTransactionCharge.length)
-			throw new java.lang.Exception ("LimitChargeTermIssuer Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i)
+		if (null == (_initialHoldingsArray = initialHoldingsArray) ||
+			null == (_transactionChargeArray = transactionChargeArray))
 		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings[i]) ||
-				null == _aTransactionCharge[i])
+			throw new java.lang.Exception ("LimitChargeTermIssuer Constructor => Invalid Inputs");
+		}
+
+		int assetCount = _initialHoldingsArray.length;
+
+		if (0 == assetCount || assetCount != _transactionChargeArray.length)
+		{
+			throw new java.lang.Exception ("LimitChargeTermIssuer Constructor => Invalid Inputs");
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray[assetIndex]) ||
+				null == _transactionChargeArray[assetIndex])
+			{
 				throw new java.lang.Exception ("LimitChargeTermIssuer Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -231,9 +246,9 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 	 * @return The Initial Holdings Array
 	 */
 
-	public double[] initialHoldings()
+	public double[] initialHoldingsArray()
 	{
-		return _adblInitialHoldings;
+		return _initialHoldingsArray;
 	}
 
 	/**
@@ -242,9 +257,9 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray()
 	{
-		return _aTransactionCharge;
+		return _transactionChargeArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -253,30 +268,33 @@ public class LimitChargeTermIssuer extends org.drip.portfolioconstruction.optimi
 		{
 			@Override public int dimension()
 			{
-				return initialHoldings().length;
+				return _initialHoldingsArray.length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double dblConstraintValue = 0.;
-				int iNumAsset = _adblInitialHoldings.length;
+				double limitChargeIssuer = 0.;
+				int assetCount = _initialHoldingsArray.length;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitChargeTermIssuer::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i) {
-					dblConstraintValue +=
-						_aTransactionCharge[i].estimate (
-							_adblInitialHoldings[i],
-							adblFinalHoldings[i]
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitChargeIssuer += _transactionChargeArray[assetIndex].estimate (
+						_initialHoldingsArray[assetIndex],
+						finalHoldingsArray[assetIndex]
 					);
 				}
 
-				return dblConstraintValue;
+				return limitChargeIssuer;
 			}
 		};
 	}

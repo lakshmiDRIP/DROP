@@ -109,7 +109,7 @@ public class NetLiabilityTaxYieldDependence {
 			dblAfterTaxIncome
 		);
 
-		NetLiabilityMetrics nlm = nls.metrics (
+		NetLiabilityMetrics nlm = nls.generateMetrics (
 			dblStartAge,
 			dblEndAge,
 			new DiscountRate (

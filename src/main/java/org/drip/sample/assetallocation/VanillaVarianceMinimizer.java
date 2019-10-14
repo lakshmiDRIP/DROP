@@ -103,15 +103,15 @@ public class VanillaVarianceMinimizer {
 			new PortfolioConstructionParameters (
 				astrAsset,
 				CustomRiskUtilitySettings.VarianceMinimizer(),
-				new PortfolioEqualityConstraintSettings (
-					PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 					Double.NaN
 				)
 			),
 			ausp
 		);
 
-		AssetComponent[] aAC = opf.optimalPortfolio().assets();
+		AssetComponent[] aAC = opf.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\n\n\t|---------------||");
 

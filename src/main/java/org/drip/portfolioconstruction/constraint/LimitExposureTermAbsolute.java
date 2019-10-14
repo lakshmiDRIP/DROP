@@ -80,40 +80,41 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
+public class LimitExposureTermAbsolute
+	extends org.drip.portfolioconstruction.constraint.LimitExposureTerm
 {
 
 	/**
 	 * LimitExposureTermAbsolute Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblMinimum Minimum Value of the Constraint
-	 * @param dblMaximum Maximum Value of the Constraint
-	 * @param adblPrice Array of the Asset Prices
+	 * @param minimum Minimum Value of the Constraint
+	 * @param maximum Maximum Value of the Constraint
+	 * @param priceArray Array of the Asset Prices
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitExposureTermAbsolute (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_LIMIT_ABSOLUTE_EXPOSURE",
 			"Constrains the Absolute Exposure",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum,
-			adblPrice
+			minimum,
+			maximum,
+			priceArray
 		);
 	}
 
@@ -123,27 +124,34 @@ public class LimitExposureTermAbsolute extends org.drip.portfolioconstruction.co
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return priceArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] priceArray = priceArray();
 
-				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
+				double limitExposureAbsolute = 0.;
+				int assetCount = priceArray.length;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitExposureTermAbsolute::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += java.lang.Math.abs (adblPrice[i] * adblFinalHoldings[i]);
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitExposureAbsolute += java.lang.Math.abs (
+						priceArray[assetIndex] * finalHoldingsArray[assetIndex]
+					);
+				}
 
-				return dblConstraintValue;
+				return limitExposureAbsolute;
 			}
 		};
 	}

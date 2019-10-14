@@ -80,57 +80,64 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitRiskTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitRiskTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[][] _aadblAssetCovariance = null;
+	private double[][] _assetCovarianceMatrix = null;
 
 	protected LimitRiskTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[][] aadblAssetCovariance)
+		final double minimum,
+		final double maximum,
+		final double[][] assetCovarianceMatrix)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_RISK",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (null == (_aadblAssetCovariance = aadblAssetCovariance))
-			throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
-
-		int iNumAsset = _aadblAssetCovariance.length;
-
-		if (0 == iNumAsset)
-			throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
-
-		for (int i = 0; i < iNumAsset; ++i)
+		if (null == (_assetCovarianceMatrix = assetCovarianceMatrix))
 		{
-			if (null == _aadblAssetCovariance[i] ||
-				iNumAsset != _aadblAssetCovariance[i].length ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_aadblAssetCovariance[i]))
+			throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
+		}
+
+		int assetCount = _assetCovarianceMatrix.length;
+
+		if (0 == assetCount)
+		{
+			throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _assetCovarianceMatrix[assetIndex] ||
+				assetCount != _assetCovarianceMatrix[assetIndex].length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_assetCovarianceMatrix[assetIndex]))
+			{
 				throw new java.lang.Exception ("LimitRiskTerm Constructor => Invalid Covariance");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Asset Co-variance
+	 * Retrieve the Asset Co-variance Matrix
 	 * 
-	 * @return The Asset Co-variance
+	 * @return The Asset Co-variance Matrix
 	 */
 
-	public double[][] assetCovariance()
+	public double[][] assetCovarianceMatrix()
 	{
-		return _aadblAssetCovariance;
+		return _assetCovarianceMatrix;
 	}
 }

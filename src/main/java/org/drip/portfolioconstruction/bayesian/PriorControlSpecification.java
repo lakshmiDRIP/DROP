@@ -93,33 +93,36 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PriorControlSpecification {
-	private double _dblTau = java.lang.Double.NaN;
-	private boolean _bAlternateReferenceModel = false;
-	private double _dblRiskFreeRate = java.lang.Double.NaN;
+public class PriorControlSpecification
+{
+	private double _tau = java.lang.Double.NaN;
+	private double _riskFreeRate = java.lang.Double.NaN;
+	private boolean _useAlternateReferenceModel = false;
 
 	/**
 	 * PriorControlSpecification Constructor
 	 * 
-	 * @param bAlternateReferenceModel TRUE - Use Alternate Reference in place of the Traditional Black
+	 * @param useAlternateReferenceModel TRUE - Use Alternate Reference in place of the Traditional Black
 	 * 	Litterman Model
-	 * @param dblRiskFreeRate The Risk Free Rate
-	 * @param dblTau The Asset Space Excess Returns "Confidence" Parameter
+	 * @param riskFreeRate The Risk Free Rate
+	 * @param tau The Asset Space Excess Returns "Confidence" Parameter
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PriorControlSpecification (
-		final boolean bAlternateReferenceModel,
-		final double dblRiskFreeRate,
-		final double dblTau)
+		final boolean useAlternateReferenceModel,
+		final double riskFreeRate,
+		final double tau)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblTau = dblTau))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskFreeRate = riskFreeRate) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_tau = tau))
+		{
 			throw new java.lang.Exception ("PriorControlSpecification Constructor => Invalid Inputs");
+		}
 
-		_bAlternateReferenceModel = bAlternateReferenceModel;
+		_useAlternateReferenceModel = useAlternateReferenceModel;
 	}
 
 	/**
@@ -130,7 +133,7 @@ public class PriorControlSpecification {
 
 	public boolean useAlternateReferenceModel()
 	{
-		return _bAlternateReferenceModel;
+		return _useAlternateReferenceModel;
 	}
 
 	/**
@@ -141,7 +144,7 @@ public class PriorControlSpecification {
 
 	public double riskFreeRate()
 	{
-		return _dblRiskFreeRate;
+		return _riskFreeRate;
 	}
 
 	/**
@@ -152,6 +155,6 @@ public class PriorControlSpecification {
 
 	public double tau()
 	{
-		return _dblTau;
+		return _tau;
 	}
 }

@@ -82,36 +82,54 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 public class ConstrainedMeanVarianceOptimizer extends
-	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer {
-	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;
-	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _ipbc = null;
+	org.drip.portfolioconstruction.allocator.MeanVarianceOptimizer
+{
+	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;
+	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;
 
 	protected org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters constrainedPCP (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcpDesign,
-		final double dblReturnsConstraint)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			designPortfolioConstructionParameters,
+		final double returnsConstraint)
 	{
-		java.lang.String[] astrAssetID = pcpDesign.assets();
+		java.lang.String[] assetIDArray = designPortfolioConstructionParameters.assetIDArray();
 
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcpDesign;
+		int assetCount = assetIDArray.length;
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			boundedPortfolioConstructionParametersIn =
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					designPortfolioConstructionParameters;
 
-		try {
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcpMB = new
-				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters (astrAssetID,
-					pcpDesign.optimizerSettings(),  new
-						org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings
-							(pcpDesign.constraintSettings().constraintType() |
-								org.drip.portfolioconstruction.allocator.PortfolioEqualityConstraintSettings.RETURNS_CONSTRAINT,
-								dblReturnsConstraint));
+		try
+		{
+			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+				boundedPortfolioConstructionParametersOut =
+					new org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters (
+						assetIDArray,
+						designPortfolioConstructionParameters.customRiskUtilitySettings(),
+						new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings (
+							designPortfolioConstructionParameters.equalityConstraintSettings().constraintType() |
+								org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT,
+							returnsConstraint
+						)
+					);
 
-			for (int i = 0; i < astrAssetID.length; ++i) {
-				if (!bpcpMB.addBound (astrAssetID[i], bpcp.lowerBound (astrAssetID[i]), bpcp.upperBound
-					(astrAssetID[i])))
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				if (!boundedPortfolioConstructionParametersOut.addBound (
+					assetIDArray[assetIndex],
+					boundedPortfolioConstructionParametersIn.lowerBound (assetIDArray[assetIndex]),
+					boundedPortfolioConstructionParametersIn.upperBound (assetIDArray[assetIndex])
+				))
+				{
 					return null;
+				}
 			}
 
-			return bpcpMB;
-		} catch (java.lang.Exception e) {
+			return boundedPortfolioConstructionParametersOut;
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -121,122 +139,199 @@ public class ConstrainedMeanVarianceOptimizer extends
 	/**
 	 * ConstrainedMeanVarianceOptimizer Constructor
 	 * 
-	 * @param ipbc Interior Fixed Point Barrier Control Parameters
-	 * @param lsec Line Step Evolution Control Parameters
+	 * @param interiorPointBarrierControl Interior Fixed Point Barrier Control Parameters
+	 * @param lineStepEvolutionControl Line Step Evolution Control Parameters
 	 */
 
 	public ConstrainedMeanVarianceOptimizer (
-		final org.drip.function.rdtor1solver.InteriorPointBarrierControl ipbc,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec)
+		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
 	{
-		if (null == (_ipbc = ipbc))
-			_ipbc = org.drip.function.rdtor1solver.InteriorPointBarrierControl.Standard();
+		if (null == (_interiorPointBarrierControl = interiorPointBarrierControl))
+		{
+			_interiorPointBarrierControl =
+				org.drip.function.rdtor1solver.InteriorPointBarrierControl.Standard();
+		}
 
-		_lsec = lsec;
+		_lineStepEvolutionControl = lineStepEvolutionControl;
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+		longOnlyMaximumReturnsAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties)
 	{
-		if (null == pcp || !(pcp instanceof
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) || null == ausp)
+		if (null == portfolioConstructionParameters ||
+			!(portfolioConstructionParameters instanceof
+				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+			null == assetUniverseStatisticalProperties)
+		{
 			return null;
+		}
 
-		java.lang.String[] astrAssetID = pcp.assets();
+		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
 
-		int iPortfolioAssetIndex = 0;
-		double dblCumulativeWeight = 0.;
-		int iNumAsset = astrAssetID.length;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcp;
+		int portfolioAssetIndex = 0;
+		double cumulativeWeight = 0.;
+		int assetCount = assetIDArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			boundedPortfolioConstructionParameters =
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					portfolioConstructionParameters;
 
-		double[] adblExpectedAssetReturns = ausp.expectedReturns (astrAssetID);
+		double[] expectedAssetReturnsArray = assetUniverseStatisticalProperties.expectedReturns (
+			assetIDArray
+		);
 
-		if (null == adblExpectedAssetReturns || iNumAsset != adblExpectedAssetReturns.length) return null;
+		if (null == expectedAssetReturnsArray || assetCount != expectedAssetReturnsArray.length)
+		{
+			return null;
+		}
 
-		java.util.TreeMap<java.lang.Double, java.lang.String> mapAssetReturns = new
-			java.util.TreeMap<java.lang.Double, java.lang.String>();
+		java.util.TreeMap<java.lang.Double, java.lang.String> assetReturnsMap =
+			new java.util.TreeMap<java.lang.Double, java.lang.String>();
 
-		for (int i = 0; i < iNumAsset; ++i)
-			mapAssetReturns.put (adblExpectedAssetReturns[i], astrAssetID[i]);
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			assetReturnsMap.put (
+				expectedAssetReturnsArray[assetIndex],
+				assetIDArray[assetIndex]
+			);
+		}
 
-		java.util.Set<java.lang.Double> setAssetReturns = mapAssetReturns.descendingKeySet();
+		java.util.Set<java.lang.Double> descendingAssetReturnsSet = assetReturnsMap.descendingKeySet();
 
-		for (double dblAssetReturns : setAssetReturns) {
-			double dblAssetWeight = 0.;
+		for (double assetReturns : descendingAssetReturnsSet)
+		{
+			double assetWeight = 0.;
 
-			java.lang.String strAssetID = mapAssetReturns.get (dblAssetReturns);
+			java.lang.String assetID = assetReturnsMap.get (assetReturns);
 
-			try {
-				if (1. > dblCumulativeWeight) {
-					double dblMaxAssetWeight = bpcp.upperBound (strAssetID);
+			try
+			{
+				if (1. > cumulativeWeight)
+				{
+					double assetWeightUpperBound = boundedPortfolioConstructionParameters.upperBound (
+						assetID
+					);
 
-					double dblMaxAllowedAssetWeight = 1. - dblCumulativeWeight;
+					double maximumAllowedAssetWeight = 1. - cumulativeWeight;
 
-					if (!org.drip.numerical.common.NumberUtil.IsValid (dblMaxAssetWeight))
-						dblMaxAssetWeight = dblMaxAllowedAssetWeight;
+					if (!org.drip.numerical.common.NumberUtil.IsValid (assetWeightUpperBound))
+					{
+						assetWeightUpperBound = maximumAllowedAssetWeight;
+					}
 
-					dblAssetWeight = dblMaxAssetWeight < dblMaxAllowedAssetWeight ? dblMaxAssetWeight :
-						dblMaxAllowedAssetWeight;
-					dblCumulativeWeight += dblAssetWeight;
+					assetWeight = assetWeightUpperBound < maximumAllowedAssetWeight ? assetWeightUpperBound :
+						maximumAllowedAssetWeight;
+					cumulativeWeight += assetWeight;
 				}
 
-				aAC[iPortfolioAssetIndex++] = new org.drip.portfolioconstruction.asset.AssetComponent
-					(strAssetID, dblAssetWeight);
-			} catch (java.lang.Exception e) {
+				assetComponentArray[portfolioAssetIndex++] =
+					new org.drip.portfolioconstruction.asset.AssetComponent (
+						assetID,
+						assetWeight
+					);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);
+		return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+			assetComponentArray,
+			assetUniverseStatisticalProperties
+		);
 	}
 
-	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceAllocate
-		(final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput
+		globalMinimumVarianceAllocate (
+			final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+				portfolioConstructionParameters,
+			final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+				assetUniverseStatisticalProperties)
 	{
-		if (null == pcp || !(pcp instanceof
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) || null == ausp)
+		if (null == portfolioConstructionParameters ||
+			!(portfolioConstructionParameters instanceof
+				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+			null == assetUniverseStatisticalProperties)
+		{
 			return null;
+		}
 
-		java.lang.String[] astrAssetID = pcp.assets();
+		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
 
-		double[][] aadblCovariance = ausp.covariance (astrAssetID);
+		double[][] assetCovarianceMatrix = assetUniverseStatisticalProperties.covariance (assetIDArray);
 
-		if (null == aadblCovariance) return null;
+		if (null == assetCovarianceMatrix)
+		{
+			return null;
+		}
 
-		int iNumAsset = astrAssetID.length;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcp;
+		int assetCount = assetIDArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			boundedPortfolioConstructionParameters =
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					portfolioConstructionParameters;
 
-		try {
-			org.drip.function.rdtor1.LagrangianMultivariate lm = new
-				org.drip.function.rdtor1.LagrangianMultivariate (pcp.optimizerSettings().riskObjectiveUtility
-					(astrAssetID, ausp), new org.drip.function.definition.RdToR1[]
-						{bpcp.fullyInvestedConstraint()});
+		try
+		{
+			org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate =
+				new org.drip.function.rdtor1.LagrangianMultivariate (
+					portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (
+						assetIDArray,
+						assetUniverseStatisticalProperties
+					),
+					new org.drip.function.definition.RdToR1[]
+					{
+						boundedPortfolioConstructionParameters.fullyInvestedConstraint()
+					}
+				);
 
-			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmt = new
-				org.drip.function.rdtor1solver.BarrierFixedPointFinder (lm, bpcp.boundingConstraints
-					(lm.constraintFunctionDimension()), _ipbc, _lsec).solve
-						(bpcp.weightConstrainedFeasibleStart());
+			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+				variateInequalityConstraintMultiplier =
+					new org.drip.function.rdtor1solver.BarrierFixedPointFinder (
+						lagrangianMultivariate,
+						boundedPortfolioConstructionParameters.boundingConstraintsArray (
+							lagrangianMultivariate.constraintFunctionDimension()
+						),
+						_interiorPointBarrierControl,
+						_lineStepEvolutionControl
+					).solve (
+						boundedPortfolioConstructionParameters.weightConstrainedFeasibleStart()
+					);
 
-			if (null == vcmt) return null;
+			if (null == variateInequalityConstraintMultiplier)
+			{
+				return null;
+			}
 
-			double[] adblOptimalWeight = vcmt.variates();
+			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variates();
 
-			for (int i = 0; i < iNumAsset; ++i)
-				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],
-					adblOptimalWeight[i]);
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (
+					assetIDArray[assetIndex],
+					optimalWeightArray[assetIndex]
+				);
+			}
 
-			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);
-		} catch (java.lang.Exception e) {
+			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+				assetComponentArray,
+				assetUniverseStatisticalProperties
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -244,45 +339,84 @@ public class ConstrainedMeanVarianceOptimizer extends
 	}
 
 	@Override public org.drip.portfolioconstruction.allocator.OptimizationOutput allocate (
-		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters pcp,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
+			portfolioConstructionParameters,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
+			assetUniverseStatisticalProperties)
 	{
-		if (null == pcp || !(pcp instanceof
-			org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) || null == ausp)
+		if (null == portfolioConstructionParameters ||
+			!(portfolioConstructionParameters instanceof
+				org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) ||
+			null == assetUniverseStatisticalProperties)
+		{
 			return null;
+		}
 
-		java.lang.String[] astrAssetID = pcp.assets();
+		java.lang.String[] assetIDArray = portfolioConstructionParameters.assetIDArray();
 
-		double[][] aadblCovariance = ausp.covariance (astrAssetID);
+		double[][] aadblCovariance = assetUniverseStatisticalProperties.covariance (assetIDArray);
 
-		if (null == aadblCovariance) return null;
+		if (null == aadblCovariance)
+		{
+			return null;
+		}
 
-		int iNumAsset = astrAssetID.length;
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = new
-			org.drip.portfolioconstruction.asset.AssetComponent[iNumAsset];
-		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters bpcp =
-			(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters) pcp;
+		int assetCount = assetIDArray.length;
+		org.drip.portfolioconstruction.asset.AssetComponent[] assetComponentArray = new
+			org.drip.portfolioconstruction.asset.AssetComponent[assetCount];
+		org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters
+			boundedPortfolioConstructionParameters =
+				(org.drip.portfolioconstruction.allocator.BoundedPortfolioConstructionParameters)
+					portfolioConstructionParameters;
 
-		try {
-			org.drip.function.rdtor1.LagrangianMultivariate lm = new
-				org.drip.function.rdtor1.LagrangianMultivariate (pcp.optimizerSettings().riskObjectiveUtility
-					(astrAssetID, ausp), bpcp.equalityConstraintRdToR1 (ausp));
+		try
+		{
+			org.drip.function.rdtor1.LagrangianMultivariate lagrangianMultivariate =
+				new org.drip.function.rdtor1.LagrangianMultivariate (
+					portfolioConstructionParameters.customRiskUtilitySettings().riskObjectiveUtility (
+						assetIDArray,
+						assetUniverseStatisticalProperties
+					),
+					boundedPortfolioConstructionParameters.equalityConstraintArray (
+						assetUniverseStatisticalProperties
+					)
+				);
 
-			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmt = new
-				org.drip.function.rdtor1solver.BarrierFixedPointFinder (lm, bpcp.boundingConstraints
-					(lm.constraintFunctionDimension()), _ipbc, _lsec).solve
-						(bpcp.weightConstrainedFeasibleStart());
+			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+				variateInequalityConstraintMultiplier =
+					new org.drip.function.rdtor1solver.BarrierFixedPointFinder (
+						lagrangianMultivariate,
+						boundedPortfolioConstructionParameters.boundingConstraintsArray (
+							lagrangianMultivariate.constraintFunctionDimension()
+						),
+						_interiorPointBarrierControl,
+						_lineStepEvolutionControl
+					).solve (
+						boundedPortfolioConstructionParameters.weightConstrainedFeasibleStart()
+					);
 
-			if (null == vcmt) return null;
+			if (null == variateInequalityConstraintMultiplier)
+			{
+				return null;
+			}
 
-			double[] adblOptimalWeight = vcmt.variates();
+			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variates();
 
-			for (int i = 0; i < iNumAsset; ++i)
-				aAC[i] = new org.drip.portfolioconstruction.asset.AssetComponent (astrAssetID[i],
-					adblOptimalWeight[i]);
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+			{
+				assetComponentArray[assetIndex] = new org.drip.portfolioconstruction.asset.AssetComponent (
+					assetIDArray[assetIndex],
+					optimalWeightArray[assetIndex]
+				);
+			}
 
-			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (aAC, ausp);
-		} catch (java.lang.Exception e) {
+			return org.drip.portfolioconstruction.allocator.OptimizationOutput.Create (
+				assetComponentArray,
+				assetUniverseStatisticalProperties
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

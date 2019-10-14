@@ -80,32 +80,44 @@ package org.drip.portfolioconstruction.optimizer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintHierarchy {
-	public int[] _aiOrder = null;
-	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _aCT = null;
+public class ConstraintHierarchy
+{
+	public int[] _constraintOrderArray = null;
+	private org.drip.portfolioconstruction.optimizer.ConstraintTerm[] _constraintTermArray = null;
 
 	/**
 	 * Construct a Flat Non-Feudal Instance of ConstraintHierarchy
 	 * 
-	 * @param aCT Array of Constraint Terms
+	 * @param constraintTermArray Array of Constraint Terms
 	 * 
 	 * @return Flat Non-Feudal Instance of ConstraintHierarchy
 	 */
 
 	public static final ConstraintHierarchy NonFeudal (
-		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] aCT)
+		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraintTermArray)
 	{
-		if (null == aCT) return null;
+		if (null == constraintTermArray)
+		{
+			return null;
+		}
 
-		int iNumConstraint = aCT.length;
-		int[] aiOrder = new int[iNumConstraint];
+		int constraintCount = constraintTermArray.length;
+		int[] constraintOrderArray = new int[constraintCount];
 
-		for (int i = 0; i < iNumConstraint; ++i)
-			aiOrder[i] = 0;
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		{
+			constraintOrderArray[constraintIndex] = 0;
+		}
 
-		try {
-			return new ConstraintHierarchy (aCT, aiOrder);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ConstraintHierarchy (
+				constraintTermArray,
+				constraintOrderArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -115,29 +127,38 @@ public class ConstraintHierarchy {
 	/**
 	 * ConstraintHierarchy Constructor
 	 * 
-	 * @param aCT Array of Constraint Terms
-	 * @param aiOrder Array of Constraint Order
+	 * @param constraintTermArray Array of Constraint Terms
+	 * @param constraintOrderArray Array of Constraint Order
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintHierarchy (
-		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] aCT,
-		final int[] aiOrder)
+		final org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraintTermArray,
+		final int[] constraintOrderArray)
 		throws java.lang.Exception
 	{
-		if ((null == (_aCT = aCT) && null != (_aiOrder = aiOrder)) && (null != (_aCT = aCT) && null ==
-			(_aiOrder = aiOrder)))
+		if ((null == (_constraintTermArray = constraintTermArray) &&
+				null != (_constraintOrderArray = constraintOrderArray)) &&
+			(null != (_constraintTermArray = constraintTermArray) &&
+				null == (_constraintOrderArray = constraintOrderArray)))
+		{
 			throw new java.lang.Exception ("ConstraintHierarchy Constructor => Invalid Inputs");
+		}
 
-		int iNumConstraint = _aCT.length;
+		int constraintCount = _constraintTermArray.length;
 
-		if (iNumConstraint != _aiOrder.length)
+		if (constraintCount != _constraintOrderArray.length)
+		{
 			throw new java.lang.Exception ("ConstraintHierarchy Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumConstraint; ++i) {
-			if (null == _aCT[i])
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		{
+			if (null == _constraintTermArray[constraintIndex])
+			{
 				throw new java.lang.Exception ("ConstraintHierarchy Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -147,9 +168,9 @@ public class ConstraintHierarchy {
 	 * @return The Array of Constraint Term Order
 	 */
 
-	public int[] order()
+	public int[] constraintOrderArray()
 	{
-		return _aiOrder;
+		return _constraintOrderArray;
 	}
 
 	/**
@@ -160,7 +181,7 @@ public class ConstraintHierarchy {
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraints()
 	{
-		return _aCT;
+		return _constraintTermArray;
 	}
 
 	/**
@@ -171,12 +192,19 @@ public class ConstraintHierarchy {
 
 	public boolean nonFeudal()
 	{
-		if (null == _aCT) return true;
+		if (null == _constraintTermArray)
+		{
+			return true;
+		}
 
-		int iNumConstraint = _aCT.length;
+		int constraintCount = _constraintTermArray.length;
 
-		for (int i = 0; i < iNumConstraint; ++i) {
-			if (0 != _aiOrder[i]) return false;
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		{
+			if (0 != _constraintOrderArray[constraintIndex])
+			{
+				return false;
+			}
 		}
 
 		return true;

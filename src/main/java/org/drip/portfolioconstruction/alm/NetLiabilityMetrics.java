@@ -81,35 +81,41 @@ package org.drip.portfolioconstruction.alm;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NetLiabilityMetrics {
-	private double _dblBasicConsumptionPV = java.lang.Double.NaN;
-	private double _dblWorkingAgeIncomePV = java.lang.Double.NaN;
-	private double _dblPensionBenefitsIncomePV = java.lang.Double.NaN;
-	private java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> _lsNLCF = null;
+public class NetLiabilityMetrics
+{
+	private double _basicConsumptionPV = java.lang.Double.NaN;
+	private double _workingAgeIncomePV = java.lang.Double.NaN;
+	private double _pensionBenefitsIncomePV = java.lang.Double.NaN;
+	private java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> _netLiabilityCashFlowList
+		= null;
 
 	/**
 	 * NetLiabilityMetrics Constructor
 	 * 
-	 * @param lsNLCF List of Net Liability Cash Flows
-	 * @param dblWorkingAgeIncomePV PV of the Working Age Income
-	 * @param dblPensionBenefitsIncomePV PV of the Pension Benefits Income
-	 * @param dblBasicConsumptionPV PV of the Basic Consumption
+	 * @param netLiabilityCashFlowList List of Net Liability Cash Flows
+	 * @param workingAgeIncomePV PV of the Working Age Income
+	 * @param pensionBenefitsIncomePV PV of the Pension Benefits Income
+	 * @param basicConsumptionPV PV of the Basic Consumption
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NetLiabilityMetrics (
-		final java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> lsNLCF,
-		final double dblWorkingAgeIncomePV,
-		final double dblPensionBenefitsIncomePV,
-		final double dblBasicConsumptionPV)
+		final java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow>
+			netLiabilityCashFlowList,
+		final double workingAgeIncomePV,
+		final double pensionBenefitsIncomePV,
+		final double basicConsumptionPV)
 		throws java.lang.Exception
 	{
-		if (null == (_lsNLCF = lsNLCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dblWorkingAgeIncomePV =
-			dblWorkingAgeIncomePV) || !org.drip.numerical.common.NumberUtil.IsValid (_dblPensionBenefitsIncomePV
-				= dblPensionBenefitsIncomePV) || !org.drip.numerical.common.NumberUtil.IsValid
-					(_dblBasicConsumptionPV = dblBasicConsumptionPV))
+		if (null == (_netLiabilityCashFlowList = netLiabilityCashFlowList) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncomePV = workingAgeIncomePV) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefitsIncomePV =
+				pensionBenefitsIncomePV) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumptionPV = basicConsumptionPV))
+		{
 			throw new java.lang.Exception ("NetLiabilityMetrics Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -118,9 +124,9 @@ public class NetLiabilityMetrics {
 	 * @return The List of Net Liability Cash Flows
 	 */
 
-	public java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> cashFlowList()
+	public java.util.List<org.drip.portfolioconstruction.alm.NetLiabilityCashFlow> netLiabilityCashFlowList()
 	{
-		return _lsNLCF;
+		return _netLiabilityCashFlowList;
 	}
 
 	/**
@@ -131,7 +137,7 @@ public class NetLiabilityMetrics {
 
 	public double workingAgeIncomePV()
 	{
-		return _dblWorkingAgeIncomePV;
+		return _workingAgeIncomePV;
 	}
 
 	/**
@@ -142,7 +148,7 @@ public class NetLiabilityMetrics {
 
 	public double pensionBenefitsIncomePV()
 	{
-		return _dblPensionBenefitsIncomePV;
+		return _pensionBenefitsIncomePV;
 	}
 
 	/**
@@ -153,6 +159,6 @@ public class NetLiabilityMetrics {
 
 	public double basicConsumptionPV()
 	{
-		return _dblBasicConsumptionPV;
+		return _basicConsumptionPV;
 	}
 }

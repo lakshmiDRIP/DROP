@@ -197,8 +197,8 @@ public class BudgetConstrainedVarianceMinimizer {
 		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (
 			astrAsset,
 			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new PortfolioEqualityConstraintSettings (
-				PortfolioEqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+			new EqualityConstraintSettings (
+				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 				Double.NaN
 			)
 		);
@@ -215,7 +215,7 @@ public class BudgetConstrainedVarianceMinimizer {
 			ausp
 		);
 
-		AssetComponent[] aAC = pf.optimalPortfolio().assets();
+		AssetComponent[] aAC = pf.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\t|---------------||");
 

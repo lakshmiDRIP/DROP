@@ -81,61 +81,68 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitBudgetTermTransactionCharge extends
-	org.drip.portfolioconstruction.constraint.LimitBudgetTerm
+public class LimitBudgetTermTransactionCharge
+	extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
-	private double[] _adblInitialHoldings = null;
-	private org.drip.portfolioconstruction.cost.TransactionCharge[] _aTransactionCharge = null;
+	private double[] _initialHoldingsArray = null;
+	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;
 
 	/**
 	 * LimitBudgetTermTransactionCharge Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblBudget Budget Value of the Constraint
-	 * @param adblPrice Array of Asset Prices
-	 * @param adblInitialHoldings Array of Initial Holdings
-	 * @param aTransactionCharge Array of Transaction Charge Instances
+	 * @param budget Budget Value of the Constraint
+	 * @param priceArray Array of Asset Prices
+	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param transactionChargeArray Array of Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitBudgetTermTransactionCharge (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblBudget,
-		final double[] adblPrice,
-		final double[] adblInitialHoldings,
-		final org.drip.portfolioconstruction.cost.TransactionCharge[] aTransactionCharge)
+		final double budget,
+		final double[] priceArray,
+		final double[] initialHoldingsArray,
+		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_AFTER_TRANSACTION_CHARGE_BUDGET",
 			"Constrains the After Transaction Charge Allocation Budget",
 			scope,
 			unit,
-			dblBudget,
-			adblPrice
+			budget,
+			priceArray
 		);
 
-		if (null == (_adblInitialHoldings = adblInitialHoldings) || 0 == _adblInitialHoldings.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblInitialHoldings))
-			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
-
-		int iNumAsset = _adblInitialHoldings.length;
-
-		if (null == (_aTransactionCharge = aTransactionCharge) || iNumAsset != _aTransactionCharge.length ||
-			iNumAsset != adblPrice.length)
-			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumAsset; ++i)
+		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))
 		{
-			if (null == _aTransactionCharge[i])
+			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
+		}
+
+		int assetCount = _initialHoldingsArray.length;
+
+		if (null == (_transactionChargeArray = transactionChargeArray) ||
+			assetCount != _transactionChargeArray.length ||
+			assetCount != priceArray.length)
+		{
+			throw new java.lang.Exception ("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
+		}
+
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+		{
+			if (null == _transactionChargeArray[assetIndex])
+			{
 				throw new java.lang.Exception
 					("LimitBudgetTermTransactionCharge Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -145,9 +152,9 @@ public class LimitBudgetTermTransactionCharge extends
 	 * @return The Transaction Charge Array
 	 */
 
-	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionCharge()
+	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray()
 	{
-		return _aTransactionCharge;
+		return _transactionChargeArray;
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
@@ -156,33 +163,39 @@ public class LimitBudgetTermTransactionCharge extends
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return priceArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] priceArray = priceArray();
 
-				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
+				double limitBudgetTransactionCharge = 0.;
+				int assetCount = priceArray.length;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitBudgetTermTransactionCharge::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i) {
-					dblConstraintValue += (adblPrice[i] * (adblFinalHoldings[i] - _adblInitialHoldings[i]) -
-						_aTransactionCharge[i].estimate (
-							_adblInitialHoldings[i],
-							adblFinalHoldings[i]
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitBudgetTransactionCharge += (
+						priceArray[assetIndex] * (
+							finalHoldingsArray[assetIndex] - _initialHoldingsArray[assetIndex]
+						) - _transactionChargeArray[assetIndex].estimate (
+							_initialHoldingsArray[assetIndex],
+							finalHoldingsArray[assetIndex]
 						)
 					);
 				}
 
-				return dblConstraintValue;
+				return limitBudgetTransactionCharge;
 			}
 		};
 	}

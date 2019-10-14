@@ -81,55 +81,77 @@ package org.drip.portfolioconstruction.allocator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OptimizationOutput {
-	private org.drip.portfolioconstruction.asset.Portfolio _pfOptimal = null;
-	private org.drip.portfolioconstruction.asset.PortfolioMetrics _pmOptimal = null;
+public class OptimizationOutput
+{
+	private org.drip.portfolioconstruction.asset.Portfolio _optimalPortfolio = null;
+	private org.drip.portfolioconstruction.asset.PortfolioMetrics _optimalPortfolioMetrics = null;
 
 	/**
 	 * Create an Instance of the Optimal Portfolio
 	 * 
-	 * @param aACOptimal The Array of the Optimal Asset Components
-	 * @param ausp The AUSP Instance
+	 * @param optimalAssetComponentArray The Array of the Optimal Asset Components
+	 * @param assetUniverseStatisticalProperties The AssetUniverseStatisticalProperties Instance
 	 * 
 	 * @return The Instance of the Optimal Portfolio
 	 */
 
 	public static final OptimizationOutput Create (
-		final org.drip.portfolioconstruction.asset.AssetComponent[] aACOptimal,
-		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp)
+		final org.drip.portfolioconstruction.asset.AssetComponent[] optimalAssetComponentArray,
+		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties assetUniverseStatisticalProperties)
 	{
-		if (null == aACOptimal || null == ausp) return null;
+		if (null == optimalAssetComponentArray || null == assetUniverseStatisticalProperties)
+		{
+			return null;
+		}
 
-		int iNumAsset = aACOptimal.length;
+		int iNumAsset = optimalAssetComponentArray.length;
 
-		if (0 == iNumAsset) return null;
+		if (0 == iNumAsset)
+		{
+			return null;
+		}
 
-		try {
-			org.drip.portfolioconstruction.asset.Portfolio pfOptimal = new
-				org.drip.portfolioconstruction.asset.Portfolio (aACOptimal);
+		try
+		{
+			org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio = new
+				org.drip.portfolioconstruction.asset.Portfolio (optimalAssetComponentArray);
 
-			double dblPortfolioExcessReturnsMean = pfOptimal.expectedReturn (ausp);
+			double portfolioExcessReturnsMean = optimalPortfolio.expectedReturn
+				(assetUniverseStatisticalProperties);
 
-			double dblPortfolioExcessReturnsVariance = pfOptimal.variance (ausp);
+			double portfolioExcessReturnsVariance = optimalPortfolio.variance
+				(assetUniverseStatisticalProperties);
 
-			double dblPortfolioExcessReturnsSigma = java.lang.Math.sqrt
-				(dblPortfolioExcessReturnsVariance);
+			double portfolioExcessReturnsSigma = java.lang.Math.sqrt (portfolioExcessReturnsVariance);
 
-			double[] adblImpliedBeta = org.drip.numerical.linearalgebra.Matrix.Product (ausp.covariance
-				(pfOptimal.id()), pfOptimal.weights());
+			double[] impliedBetaArray = org.drip.numerical.linearalgebra.Matrix.Product (
+				assetUniverseStatisticalProperties.covariance (optimalPortfolio.assetIDArray()),
+				optimalPortfolio.weightArray()
+			);
 
-			if (null == adblImpliedBeta) return null;
+			if (null == impliedBetaArray)
+			{
+				return null;
+			}
 
 			for (int i = 0; i < iNumAsset; ++i)
-				adblImpliedBeta[i] = adblImpliedBeta[i] / dblPortfolioExcessReturnsVariance;
+			{
+				impliedBetaArray[i] = impliedBetaArray[i] / portfolioExcessReturnsVariance;
+			}
 
-			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (new
-				org.drip.portfolioconstruction.asset.Portfolio (aACOptimal), new
-					org.drip.portfolioconstruction.asset.PortfolioMetrics (dblPortfolioExcessReturnsMean,
-						dblPortfolioExcessReturnsVariance, dblPortfolioExcessReturnsSigma,
-							dblPortfolioExcessReturnsMean / dblPortfolioExcessReturnsSigma,
-								adblImpliedBeta));
-		} catch (java.lang.Exception e) {
+			return new org.drip.portfolioconstruction.allocator.OptimizationOutput (
+				new org.drip.portfolioconstruction.asset.Portfolio (optimalAssetComponentArray),
+				new org.drip.portfolioconstruction.asset.PortfolioMetrics (
+					portfolioExcessReturnsMean,
+					portfolioExcessReturnsVariance,
+					portfolioExcessReturnsSigma,
+					portfolioExcessReturnsMean / portfolioExcessReturnsSigma,
+					impliedBetaArray
+				)
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -139,19 +161,22 @@ public class OptimizationOutput {
 	/**
 	 * OptimizationOutput Constructor
 	 * 
-	 * @param pfOptimal The Optimal Portfolio
-	 * @param pmOptimal The Optimal Portfolio Metrics
+	 * @param optimalPortfolio The Optimal Portfolio
+	 * @param optimalPortfolioMetrics The Optimal Portfolio Metrics
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public OptimizationOutput (
-		final org.drip.portfolioconstruction.asset.Portfolio pfOptimal,
-		final org.drip.portfolioconstruction.asset.PortfolioMetrics pmOptimal)
+		final org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio,
+		final org.drip.portfolioconstruction.asset.PortfolioMetrics optimalPortfolioMetrics)
 		throws java.lang.Exception
 	{
-		if (null == (_pfOptimal = pfOptimal) || null == (_pmOptimal = pmOptimal))
+		if (null == (_optimalPortfolio = optimalPortfolio) ||
+			null == (_optimalPortfolioMetrics = optimalPortfolioMetrics))
+		{
 			throw new java.lang.Exception ("OptimizationOutput Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -162,7 +187,7 @@ public class OptimizationOutput {
 
 	public org.drip.portfolioconstruction.asset.PortfolioMetrics optimalMetrics()
 	{
-		return _pmOptimal;
+		return _optimalPortfolioMetrics;
 	}
 
 	/**
@@ -173,6 +198,6 @@ public class OptimizationOutput {
 
 	public org.drip.portfolioconstruction.asset.Portfolio optimalPortfolio()
 	{
-		return _pfOptimal;
+		return _optimalPortfolio;
 	}
 }

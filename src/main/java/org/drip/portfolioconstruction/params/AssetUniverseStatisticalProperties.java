@@ -81,52 +81,84 @@ package org.drip.portfolioconstruction.params;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetUniverseStatisticalProperties {
-	private double _dblRiskFreeRate = java.lang.Double.NaN;
+public class AssetUniverseStatisticalProperties
+{
+	private double _riskFreeRate = java.lang.Double.NaN;
 
 	private
 		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.params.AssetStatisticalProperties>
-		_mapASP = new
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.params.AssetStatisticalProperties>();
+			_assetUniverseStatisticalPropertiesMap = new
+				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.portfolioconstruction.params.AssetStatisticalProperties>();
 
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapCorrelation = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _correlationMap =
+		new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 	/**
-	 * Construct an Instance of AUSP from the corresponding MultivariateMetrics Instance
+	 * Construct an Instance of AssetUniverseStatisticalProperties from the corresponding MultivariateMetrics
+	 * 	Instance
 	 * 
-	 * @param mvm The MultivariateMetrics Instance
+	 * @param multivariateMoments The MultivariateMetrics Instance
 	 * 
-	 * @return The AUSP Instance
+	 * @return The AssetUniverseStatisticalProperties Instance
 	 */
 
 	public static final AssetUniverseStatisticalProperties FromMultivariateMetrics (
-		final org.drip.measure.statistics.MultivariateMoments mvm)
+		final org.drip.measure.statistics.MultivariateMoments multivariateMoments)
 	{
-		if (null == mvm) return null;
+		if (null == multivariateMoments)
+		{
+			return null;
+		}
 
-		java.util.Set<java.lang.String> setstrAsset = mvm.variateList();
+		java.util.Set<java.lang.String> assetSet = multivariateMoments.variateList();
 
-		if (null == setstrAsset|| 0 == setstrAsset.size()) return null;
+		if (null == assetSet || 0 == assetSet.size())
+		{
+			return null;
+		}
 
-		try {
-			AssetUniverseStatisticalProperties ausp = new AssetUniverseStatisticalProperties (0.);
+		try
+		{
+			AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+				new AssetUniverseStatisticalProperties (0.);
 
-			for (java.lang.String strAsset : setstrAsset) {
-				if (!ausp.setASP (new org.drip.portfolioconstruction.params.AssetStatisticalProperties
-					(strAsset, strAsset, mvm.mean (strAsset), mvm.variance (strAsset))))
+			for (java.lang.String asset : assetSet)
+			{
+				if (!assetUniverseStatisticalProperties.setAssetStatisticalProperties (
+					new org.drip.portfolioconstruction.params.AssetStatisticalProperties (
+						asset,
+						asset,
+						multivariateMoments.mean (asset),
+						multivariateMoments.variance (asset)
+					)
+				))
+				{
 					return null;
-			}
-
-			for (java.lang.String strAsset1 : setstrAsset) {
-				for (java.lang.String strAsset2 : setstrAsset) {
-					if (!ausp.setCorrelation (strAsset1, strAsset2, mvm.correlation (strAsset1, strAsset2)))
-						return null;
 				}
 			}
 
-			return ausp;
-		} catch (java.lang.Exception e) {
+			for (java.lang.String asset1 : assetSet)
+			{
+				for (java.lang.String asset2 : assetSet)
+				{
+					if (!assetUniverseStatisticalProperties.setCorrelation (
+						asset1,
+						asset2,
+						multivariateMoments.correlation (
+							asset1,
+							asset2
+						)
+					))
+					{
+						return null;
+					}
+				}
+			}
+
+			return assetUniverseStatisticalProperties;
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -136,61 +168,78 @@ public class AssetUniverseStatisticalProperties {
 	/**
 	 * AssetUniverseStatisticalProperties Constructor
 	 * 
-	 * @param dblRiskFreeRate The Risk Free Rate
+	 * @param riskFreeRate The Risk Free Rate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetUniverseStatisticalProperties (
-		final double dblRiskFreeRate)
+		final double riskFreeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRiskFreeRate = dblRiskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskFreeRate = riskFreeRate))
+		{
 			throw new java.lang.Exception
 				("AssetUniverseStatisticalProperties Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Set the ASP Instance
+	 * Set the AssetStatisticalProperties Instance
 	 * 
-	 * @param asp ASP Instance
+	 * @param assetStatisticalProperties AssetStatisticalProperties Instance
 	 * 
-	 * @return TRUE - ASP Instance Successfully added
+	 * @return TRUE - AssetStatisticalProperties Instance Successfully added
 	 */
 
-	public boolean setASP (
-		final org.drip.portfolioconstruction.params.AssetStatisticalProperties asp)
+	public boolean setAssetStatisticalProperties (
+		final org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties)
 	{
-		if (null == asp) return false;
+		if (null == assetStatisticalProperties)
+		{
+			return false;
+		}
 
-		_mapASP.put (asp.id(), asp);
+		_assetUniverseStatisticalPropertiesMap.put (
+			assetStatisticalProperties.id(),
+			assetStatisticalProperties
+		);
 
 		return true;
 	}
 
 	/**
-	 * Set the Correlation Between the Specified Assets
+	 * Set the Correlation Between the Specified Pair of Assets
 	 * 
-	 * @param strID1 Asset #1
-	 * @param strID2 Asset #2
-	 * @param dblCorrelation Cross-asset Correlation
+	 * @param id1 Asset #1
+	 * @param id2 Asset #2
+	 * @param correlation Cross-asset Correlation
 	 * 
-	 * @return Correlation Between the Specified Assets
+	 * @return Correlation Between the Specified Pair of Assets
 	 */
 
 	public boolean setCorrelation (
-		final java.lang.String strID1,
-		final java.lang.String strID2,
-		final double dblCorrelation)
+		final java.lang.String id1,
+		final java.lang.String id2,
+		final double correlation)
 	{
-		if (null == strID1 || strID1.isEmpty() || null == strID2 || strID2.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblCorrelation) || 1. < dblCorrelation || -1. >
-				dblCorrelation)
+		if (null == id1 || id1.isEmpty() ||
+			null == id2 || id2.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (correlation) ||
+				1. < correlation || -1. > correlation)
+		{
 			return false;
+		}
 
-		_mapCorrelation.put (strID1 + "@#" + strID2, dblCorrelation);
+		_correlationMap.put (
+			id1 + "@#" + id2,
+			correlation
+		);
 
-		_mapCorrelation.put (strID2 + "@#" + strID1, dblCorrelation);
+		_correlationMap.put (
+			id2 + "@#" + id1,
+			correlation
+		);
 
 		return true;
 	}
@@ -203,28 +252,29 @@ public class AssetUniverseStatisticalProperties {
 
 	public double riskFreeRate()
 	{
-		return _dblRiskFreeRate;
+		return _riskFreeRate;
 	}
 
 	/**
-	 * Retrieve the ASP Instance corresponding to the specified ID
+	 * Retrieve the AssetStatisticalProperties Instance corresponding to the specified ID
 	 * 
-	 * @param strID The ASP ID
+	 * @param id The AssetStatisticalProperties ID
 	 * 
-	 * @return The ASP Instance
+	 * @return The AssetStatisticalProperties Instance
 	 */
 
-	public org.drip.portfolioconstruction.params.AssetStatisticalProperties asp (
-		final java.lang.String strID)
+	public org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties (
+		final java.lang.String id)
 	{
-		return null == strID || strID.isEmpty() || !_mapASP.containsKey (strID) ? null : _mapASP.get (strID);
+		return null == id || id.isEmpty() || !_assetUniverseStatisticalPropertiesMap.containsKey (id) ? null
+			: _assetUniverseStatisticalPropertiesMap.get (id);
 	}
 
 	/**
 	 * Retrieve the Correlation between the Specified Assets
 	 * 
-	 * @param strID1 Asset #1
-	 * @param strID2 Asset #2
+	 * @param id1 Asset #1
+	 * @param id2 Asset #2
 	 * 
 	 * @return Correlation between the Specified Assets
 	 * 
@@ -232,88 +282,130 @@ public class AssetUniverseStatisticalProperties {
 	 */
 
 	public double correlation (
-		final java.lang.String strID1,
-		final java.lang.String strID2)
+		final java.lang.String id1,
+		final java.lang.String id2)
 		throws java.lang.Exception
 	{
-		if (null == strID1 || strID1.isEmpty() || null == strID2 || strID2.isEmpty())
+		if (null == id1 || id1.isEmpty() ||
+			null == id2 || id2.isEmpty())
+		{
 			throw new java.lang.Exception
 				("AssetUniverseStatisticalProperties::correlation => Invalid Inputs");
+		}
 
-		if (strID1.equalsIgnoreCase (strID2)) return 1.;
+		if (id1.equalsIgnoreCase (id2))
+		{
+			return 1.;
+		}
 
-		java.lang.String strCorrelationSlot = strID1 + "@#" + strID2;
+		java.lang.String strCorrelationSlot = id1 + "@#" + id2;
 
-		if (!_mapCorrelation.containsKey (strCorrelationSlot))
+		if (!_correlationMap.containsKey (strCorrelationSlot))
+		{
 			throw new java.lang.Exception
 				("AssetUniverseStatisticalProperties::correlation => Invalid Inputs");
+		}
 
-		return _mapCorrelation.get (strCorrelationSlot);
+		return _correlationMap.get (strCorrelationSlot);
 	}
 
 	/**
 	 * Retrieve the Asset Expected Returns Array
 	 * 
-	 * @param astrAssetID Array of Asset IDs
+	 * @param idArray Array of Asset IDs
 	 * 
 	 * @return The Asset Covariance Matrix
 	 */
 
 	public double[] expectedReturns (
-		final java.lang.String[] astrAssetID)
+		final java.lang.String[] idArray)
 	{
-		if (null == astrAssetID) return null;
-
-		int iNumAsset = astrAssetID.length;
-		double[] adblExpectedReturns = new double[iNumAsset];
-
-		if (0 == iNumAsset) return null;
-
-		for (int i = 0; i < iNumAsset; ++i) {
-			org.drip.portfolioconstruction.params.AssetStatisticalProperties asp = asp (astrAssetID[i]);
-
-			if (null == asp) return null;
-
-			adblExpectedReturns[i] = asp.expectedReturn();
+		if (null == idArray)
+		{
+			return null;
 		}
 
-		return adblExpectedReturns;
+		int assetCount = idArray.length;
+		double[] expectedReturnsArray = new double[assetCount];
+
+		if (0 == assetCount)
+		{
+			return null;
+		}
+
+		for (int i = 0; i < assetCount; ++i)
+		{
+			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =
+				assetStatisticalProperties (idArray[i]);
+
+			if (null == assetStatisticalProperties)
+			{
+				return null;
+			}
+
+			expectedReturnsArray[i] = assetStatisticalProperties.expectedReturn();
+		}
+
+		return expectedReturnsArray;
 	}
 
 	/**
 	 * Retrieve the Asset Covariance Matrix
 	 * 
-	 * @param astrID Array of Asset ID
+	 * @param idArray Array of Asset IDs
 	 * 
 	 * @return The Asset Covariance Matrix
 	 */
 
 	public double[][] covariance (
-		final java.lang.String[] astrID)
+		final java.lang.String[] idArray)
 	{
-		if (null == astrID) return null;
+		if (null == idArray)
+		{
+			return null;
+		}
 
-		int iNumAsset = astrID.length;
-		double[][] aadblCovariance = new double[iNumAsset][iNumAsset];
+		int assetCount = idArray.length;
+		double[][] covarianceMatrix = new double[assetCount][assetCount];
 
-		if (0 == iNumAsset) return null;
+		if (0 == assetCount)
+		{
+			return null;
+		}
 
-		for (int i = 0; i < iNumAsset; ++i) {
-			org.drip.portfolioconstruction.params.AssetStatisticalProperties asp1 = asp (astrID[i]);
+		for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+		{
+			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesI =
+				assetStatisticalProperties (idArray[assetIndexI]);
 
-			if (null == asp1) return null;
+			if (null == assetStatisticalPropertiesI)
+			{
+				return null;
+			}
 
-			double dblVarianceI = asp1.variance();
+			double dblVarianceI = assetStatisticalPropertiesI.variance();
 
-			for (int j = 0; j < iNumAsset; ++j) {
-				org.drip.portfolioconstruction.params.AssetStatisticalProperties asp2 = asp (astrID[j]);
+			for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+			{
+				org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesJ
+					= assetStatisticalProperties (idArray[assetIndexJ]);
 
-				if (null == asp2) return null;
+				if (null == assetStatisticalPropertiesJ)
+				{
+					return null;
+				}
 
-				try {
-					aadblCovariance[i][j] = java.lang.Math.sqrt (dblVarianceI * asp2.variance()) *
-						correlation (astrID[i], astrID[j]);
-				} catch (java.lang.Exception e) {
+				try
+				{
+					covarianceMatrix[assetIndexI][assetIndexJ] = java.lang.Math.sqrt (
+						dblVarianceI * assetStatisticalPropertiesJ.variance()
+					) * correlation (
+						idArray[assetIndexI],
+						idArray[assetIndexJ]
+					);
+				}
+				catch (java.lang.Exception e)
+				{
 					e.printStackTrace();
 
 					return null;
@@ -321,6 +413,6 @@ public class AssetUniverseStatisticalProperties {
 			}
 		}
 
-		return aadblCovariance;
+		return covarianceMatrix;
 	}
 }

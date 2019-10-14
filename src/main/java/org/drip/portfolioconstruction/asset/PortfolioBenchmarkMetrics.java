@@ -75,44 +75,46 @@ package org.drip.portfolioconstruction.asset;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PortfolioBenchmarkMetrics {
-	private double _dblBeta = java.lang.Double.NaN;
-	private double _dblActiveBeta = java.lang.Double.NaN;
-	private double _dblActiveRisk = java.lang.Double.NaN;
-	private double _dblActiveReturn = java.lang.Double.NaN;
-	private double _dblResidualRisk = java.lang.Double.NaN;
-	private double _dblResidualReturn = java.lang.Double.NaN;
+public class PortfolioBenchmarkMetrics
+{
+	private double _beta = java.lang.Double.NaN;
+	private double _activeBeta = java.lang.Double.NaN;
+	private double _activeRisk = java.lang.Double.NaN;
+	private double _activeReturn = java.lang.Double.NaN;
+	private double _residualRisk = java.lang.Double.NaN;
+	private double _residualReturn = java.lang.Double.NaN;
 
 	/**
 	 * PortfolioBenchmarkMetrics Constructor
 	 * 
-	 * @param dblBeta Portfolio-to-Benchmark Beta
-	 * @param dblActiveBeta Portfolio-to-Benchmark Active Beta
-	 * @param dblActiveRisk Portfolio-to-Benchmark Active Risk
-	 * @param dblActiveReturn Portfolio-to-Benchmark Active Return
-	 * @param dblResidualRisk Portfolio-to-Benchmark Residual Risk
-	 * @param dblResidualReturn Portfolio-to-Benchmark Residual Return
+	 * @param beta Portfolio-to-Benchmark Beta
+	 * @param activeBeta Portfolio-to-Benchmark Active Beta
+	 * @param activeRisk Portfolio-to-Benchmark Active Risk
+	 * @param activeReturn Portfolio-to-Benchmark Active Return
+	 * @param residualRisk Portfolio-to-Benchmark Residual Risk
+	 * @param residualReturn Portfolio-to-Benchmark Residual Return
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PortfolioBenchmarkMetrics (
-		final double dblBeta,
-		final double dblActiveBeta,
-		final double dblActiveRisk,
-		final double dblActiveReturn,
-		final double dblResidualRisk,
-		final double dblResidualReturn)
+		final double beta,
+		final double activeBeta,
+		final double activeRisk,
+		final double activeReturn,
+		final double residualRisk,
+		final double residualReturn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBeta = dblBeta) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblActiveBeta = dblActiveBeta) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblActiveRisk = dblActiveRisk) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblActiveReturn = dblActiveReturn) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblResidualRisk = dblResidualRisk) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (_dblResidualReturn =
-								dblResidualReturn))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_activeBeta = activeBeta) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_activeRisk = activeRisk) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_activeReturn = activeReturn) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_residualRisk = residualRisk) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_residualReturn = residualReturn))
+		{
 			throw new java.lang.Exception ("PortfolioBenchmarkMetrics Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -123,7 +125,7 @@ public class PortfolioBenchmarkMetrics {
 
 	public double beta()
 	{
-		return _dblBeta;
+		return _beta;
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class PortfolioBenchmarkMetrics {
 
 	public double activeBeta()
 	{
-		return _dblActiveBeta;
+		return _activeBeta;
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class PortfolioBenchmarkMetrics {
 
 	public double activeRisk()
 	{
-		return _dblActiveRisk;
+		return _activeRisk;
 	}
 
 	/**
@@ -156,7 +158,7 @@ public class PortfolioBenchmarkMetrics {
 
 	public double activeReturn()
 	{
-		return _dblActiveReturn;
+		return _activeReturn;
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class PortfolioBenchmarkMetrics {
 
 	public double residualRisk()
 	{
-		return _dblResidualRisk;
+		return _residualRisk;
 	}
 
 	/**
@@ -178,6 +180,6 @@ public class PortfolioBenchmarkMetrics {
 
 	public double residualReturn()
 	{
-		return _dblResidualReturn;
+		return _residualReturn;
 	}
 }

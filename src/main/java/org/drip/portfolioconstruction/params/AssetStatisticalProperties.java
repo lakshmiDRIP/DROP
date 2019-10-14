@@ -81,34 +81,38 @@ package org.drip.portfolioconstruction.params;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetStatisticalProperties {
-	private java.lang.String _strID = "";
-	private java.lang.String _strName = "";
-	private double _dblVariance = java.lang.Double.NaN;
-	private double _dblExpectedReturn = java.lang.Double.NaN;
+public class AssetStatisticalProperties
+{
+	private java.lang.String _id = "";
+	private java.lang.String _name = "";
+	private double _variance = java.lang.Double.NaN;
+	private double _expectedReturn = java.lang.Double.NaN;
 
 	/**
 	 * AssetStatisticalProperties Constructor
 	 * 
-	 * @param strName Name of the Asset
-	 * @param strID ID of the Asset
-	 * @param dblExpectedReturn Expected Return of the Asset
-	 * @param dblVariance Variance of the Assert
+	 * @param name Name of the Asset
+	 * @param id ID of the Asset
+	 * @param expectedReturn Expected Return of the Asset
+	 * @param variance Variance of the Assert
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public AssetStatisticalProperties (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final double dblExpectedReturn,
-		final double dblVariance)
+		final java.lang.String name,
+		final java.lang.String id,
+		final double expectedReturn,
+		final double variance)
 		throws java.lang.Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || null == (_strID = strID) ||
-			_strID.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (_dblExpectedReturn =
-				dblExpectedReturn) || !org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance))
+		if (null == (_name = name) || _name.isEmpty() ||
+			null == (_id = id) || _id.isEmpty() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_expectedReturn = expectedReturn) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_variance = variance))
+		{
 			throw new java.lang.Exception ("AssetStatisticalProperties Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -119,7 +123,7 @@ public class AssetStatisticalProperties {
 
 	public java.lang.String name()
 	{
-		return _strName;
+		return _name;
 	}
 
 	/**
@@ -130,7 +134,7 @@ public class AssetStatisticalProperties {
 
 	public java.lang.String id()
 	{
-		return _strID;
+		return _id;
 	}
 
 	/**
@@ -141,7 +145,7 @@ public class AssetStatisticalProperties {
 
 	public double expectedReturn()
 	{
-		return _dblExpectedReturn;
+		return _expectedReturn;
 	}
 
 	/**
@@ -152,6 +156,6 @@ public class AssetStatisticalProperties {
 
 	public double variance()
 	{
-		return _dblVariance;
+		return _variance;
 	}
 }

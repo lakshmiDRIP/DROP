@@ -126,6 +126,7 @@ public class ComparativeEstimate
 		int weierstrassTermCount = 1638400;
 		double[] sArray =
 		{
+			0.01000,
 			0.05000,
 			0.10000,
 			0.15000,

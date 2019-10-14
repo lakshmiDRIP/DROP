@@ -80,37 +80,38 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
+public class LimitBudgetTermNet
+	extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
 
 	/**
 	 * LimitBudgetTermNet Constructor
 	 * 
-	 * @param strName Name of the Constraint
+	 * @param name Name of the Constraint
 	 * @param scope Scope of the Constraint - ACCOUNT/ASSET/SET
 	 * @param unit Unit of the Constraint
-	 * @param dblBudget Budget Value of the Constraint
-	 * @param adblPrice Array of Asset Prices
+	 * @param budget Budget Value of the Constraint
+	 * @param priceArray Array of Asset Prices
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LimitBudgetTermNet (
-		final java.lang.String strName,
+		final java.lang.String name,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblBudget,
-		final double[] adblPrice)
+		final double budget,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
+			name,
 			"CT_BUDGET",
 			"Constrains the Net Budget",
 			scope,
 			unit,
-			dblBudget,
-			adblPrice
+			budget,
+			priceArray
 		);
 	}
 
@@ -120,27 +121,32 @@ public class LimitBudgetTermNet extends org.drip.portfolioconstruction.constrain
 		{
 			@Override public int dimension()
 			{
-				return price().length;
+				return priceArray().length;
 			}
 
 			@Override public double evaluate (
-				final double[] adblFinalHoldings)
+				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-				double[] adblPrice = price();
+				double[] priceArray = priceArray();
 
-				double dblConstraintValue = 0.;
-				int iNumAsset = adblPrice.length;
+				double limitExposureBudgetNet = 0.;
+				int assetCount = priceArray.length;
 
-				if (null == adblFinalHoldings || !org.drip.numerical.common.NumberUtil.IsValid
-					(adblFinalHoldings) || adblFinalHoldings.length != iNumAsset)
+				if (null == finalHoldingsArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||
+					finalHoldingsArray.length != assetCount)
+				{
 					throw new java.lang.Exception
 						("LimitExposureBudgetNet::rdToR1::evaluate => Invalid Variate Dimension");
+				}
 
-				for (int i = 0; i < iNumAsset; ++i)
-					dblConstraintValue += adblPrice[i] * adblFinalHoldings[i];
+				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
+				{
+					limitExposureBudgetNet += priceArray[assetIndex] * finalHoldingsArray[assetIndex];
+				}
 
-				return dblConstraintValue;
+				return limitExposureBudgetNet;
 			}
 		};
 	}

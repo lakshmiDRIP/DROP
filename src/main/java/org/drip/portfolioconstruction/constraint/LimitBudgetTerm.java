@@ -80,33 +80,37 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+public abstract class LimitBudgetTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
 {
-	private double[] _adblPrice = null;
+	private double[] _priceArray = null;
 
 	protected LimitBudgetTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblBudget,
-		final double[] adblPrice)
+		final double budget,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_BUDGET",
 			scope,
 			unit,
-			dblBudget,
-			dblBudget
+			budget,
+			budget
 		);
 
-		if (null == (_adblPrice = adblPrice) || !org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))
+		if (null == (_priceArray = priceArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray))
+		{
 			throw new java.lang.Exception ("LimitBudgetTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -115,8 +119,8 @@ public abstract class LimitBudgetTerm extends org.drip.portfolioconstruction.opt
 	 * @return Array of the Asset Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-		return _adblPrice;
+		return _priceArray;
 	}
 }

@@ -81,33 +81,38 @@ package org.drip.portfolioconstruction.constraint;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.optimizer.ConstraintTerm {
-	private double[] _adblPrice = null;
+public abstract class LimitExposureTerm
+	extends org.drip.portfolioconstruction.optimizer.ConstraintTerm
+{
+	private double[] _priceArray = null;
 
 	protected LimitExposureTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
 		final org.drip.portfolioconstruction.optimizer.Scope scope,
 		final org.drip.portfolioconstruction.optimizer.Unit unit,
-		final double dblMinimum,
-		final double dblMaximum,
-		final double[] adblPrice)
+		final double minimum,
+		final double maximum,
+		final double[] priceArray)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"LIMIT_EXPOSURE",
 			scope,
 			unit,
-			dblMinimum,
-			dblMaximum
+			minimum,
+			maximum
 		);
 
-		if (null == (_adblPrice = adblPrice) || !org.drip.numerical.common.NumberUtil.IsValid (_adblPrice))
+		if (null == (_priceArray = priceArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_priceArray))
+		{
 			throw new java.lang.Exception ("LimitExposureTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -116,8 +121,8 @@ public abstract class LimitExposureTerm extends org.drip.portfolioconstruction.o
 	 * @return Array of the Prices
 	 */
 
-	public double[] price()
+	public double[] priceArray()
 	{
-		return _adblPrice;
+		return _priceArray;
 	}
 }

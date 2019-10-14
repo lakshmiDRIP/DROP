@@ -80,27 +80,31 @@ package org.drip.portfolioconstruction.objective;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TaxTerm extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm {
+public abstract class TaxTerm
+	extends org.drip.portfolioconstruction.optimizer.ObjectiveTerm
+{
 	private org.drip.portfolioconstruction.objective.TaxationScheme _taxationScheme = null;
 
 	protected TaxTerm (
-		final java.lang.String strName,
-		final java.lang.String strID,
-		final java.lang.String strDescription,
-		final double[] adblInitialHoldings,
+		final java.lang.String name,
+		final java.lang.String id,
+		final java.lang.String description,
+		final double[] initialHoldingsArray,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
 		super (
-			strName,
-			strID,
-			strDescription,
+			name,
+			id,
+			description,
 			"TAX",
-			adblInitialHoldings
+			initialHoldingsArray
 		);
 
 		if (null == (_taxationScheme = taxationScheme))
+		{
 			throw new java.lang.Exception ("TaxTerm Constructor => Invalid Inputs");
+		}
 	}
 
 	/**

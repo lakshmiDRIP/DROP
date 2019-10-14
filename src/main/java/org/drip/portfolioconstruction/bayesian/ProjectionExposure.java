@@ -89,110 +89,123 @@ package org.drip.portfolioconstruction.bayesian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProjectionExposure {
-	private double[] _adblIntraViewComponent = null;
-	private double[] _adblInterViewComponent = null;
-	private double[] _adblPriorViewComponent = null;
-	private double[][] _aadblCompositeConfidenceCovariance = null;
+public class ProjectionExposure
+{
+	private double[] _interViewComponentArray = null;
+	private double[] _intraViewComponentArray = null;
+	private double[] _priorViewComponentArray = null;
+	private double[][] _compositeConfidenceCovarianceMatrix = null;
 
 	/**
 	 * ProjectionExposure Constructor
 	 * 
-	 * @param adblIntraViewComponent Array of Per-View View-Specific Exposure Component
-	 * @param adblInterViewComponent Array of Per-View Exposure Contribution from other Views
-	 * @param adblPriorViewComponent Array of View-Specific Per-View Components
-	 * @param aadblCompositeConfidenceCovariance Composite Confidence Co-variance Matrix
+	 * @param intraViewComponentArray Array of Per-View View-Specific Exposure Component Array
+	 * @param interViewComponentArray Array of Per-View Exposure Contribution Array from other Views
+	 * @param priorViewComponentArray Array of View-Specific Per-View Components Array
+	 * @param compositeConfidenceCovarianceMatrix Composite Confidence Co-variance Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ProjectionExposure (
-		final double[] adblIntraViewComponent,
-		final double[] adblInterViewComponent,
-		final double[] adblPriorViewComponent,
-		final double[][] aadblCompositeConfidenceCovariance)
+		final double[] intraViewComponentArray,
+		final double[] interViewComponentArray,
+		final double[] priorViewComponentArray,
+		final double[][] compositeConfidenceCovarianceMatrix)
 		throws java.lang.Exception
 	{
-		if (null == (_adblIntraViewComponent = adblIntraViewComponent) || null == (_adblInterViewComponent =
-			adblInterViewComponent) || null == (_adblPriorViewComponent = adblPriorViewComponent) || null ==
-				(_aadblCompositeConfidenceCovariance = aadblCompositeConfidenceCovariance))
+		if (null == (_intraViewComponentArray = intraViewComponentArray) ||
+			null == (_interViewComponentArray = interViewComponentArray) ||
+			null == (_priorViewComponentArray = priorViewComponentArray) ||
+			null == (_compositeConfidenceCovarianceMatrix = compositeConfidenceCovarianceMatrix))
+		{
 			throw new java.lang.Exception ("ProjectionExposure Constructor => Invalid Inputs");
+		}
 
-		int iNumView = _adblIntraViewComponent.length;
+		int viewCount = _intraViewComponentArray.length;
 
-		if (0 == iNumView || iNumView != _adblInterViewComponent.length || iNumView !=
-			_adblPriorViewComponent.length || iNumView != _aadblCompositeConfidenceCovariance.length)
+		if (0 == viewCount ||
+			viewCount != _interViewComponentArray.length ||
+			viewCount != _priorViewComponentArray.length ||
+			viewCount != _compositeConfidenceCovarianceMatrix.length)
+		{
 			throw new java.lang.Exception ("ProjectionExposure Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumView; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblIntraViewComponent[i]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_adblInterViewComponent[i]) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_adblPriorViewComponent[i]) || null ==
-						_aadblCompositeConfidenceCovariance[i] || iNumView !=
-							_aadblCompositeConfidenceCovariance[i].length)
+		for (int viewIndex = 0; viewIndex < viewCount; ++viewIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (_intraViewComponentArray[viewIndex]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_interViewComponentArray[viewIndex]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_priorViewComponentArray[viewIndex]) ||
+				null == _compositeConfidenceCovarianceMatrix[viewIndex] ||
+				viewCount != _compositeConfidenceCovarianceMatrix[viewIndex].length)
+			{
 				throw new java.lang.Exception ("ProjectionExposure Constructor => Invalid Inputs");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Single View Joint Contribution Component
+	 * Retrieve the Single View Joint Contribution Component Array
 	 * 
-	 * @return The Single View Joint Contribution Component
+	 * @return The Single View Joint Contribution Component Array
 	 */
 
-	public double[] intraViewComponent()
+	public double[] intraViewComponentArray()
 	{
-		return _adblIntraViewComponent;
+		return _intraViewComponentArray;
 	}
 
 	/**
-	 * Retrieve the View/View Joint Contribution Component
+	 * Retrieve the View/View Joint Contribution Component Array
 	 * 
-	 * @return The View/View Joint Contribution Component
+	 * @return The View/View Joint Contribution Component Array
 	 */
 
-	public double[] interViewComponent()
+	public double[] interViewComponentArray()
 	{
-		return _adblInterViewComponent;
+		return _interViewComponentArray;
 	}
 
 	/**
-	 * Retrieve the Prior/View Joint Contribution Component
+	 * Retrieve the Prior/View Joint Contribution Component Array
 	 * 
-	 * @return The Prior/View Joint Contribution Component
+	 * @return The Prior/View Joint Contribution Component Array
 	 */
 
-	public double[] priorViewComponent()
+	public double[] priorViewComponentArray()
 	{
-		return _adblPriorViewComponent;
+		return _priorViewComponentArray;
 	}
 
 	/**
-	 * Retrieve the Composite Confidence Co-variance
+	 * Retrieve the Composite Confidence Co-variance Matrix
 	 * 
-	 * @return The Composite Confidence Co-variance
+	 * @return The Composite Confidence Co-variance Matrix
 	 */
 
-	public double[][] compositeConfidenceCovariance()
+	public double[][] compositeConfidenceCovarianceMatrix()
 	{
-		return _aadblCompositeConfidenceCovariance;
+		return _compositeConfidenceCovarianceMatrix;
 	}
 
 	/**
-	 * Compute the Array of Cumulative View Loading Components
+	 * Compute the Array of Cumulative View Loading Component Array
 	 * 
-	 * @return The Array of Cumulative View Loading Components
+	 * @return The Array of Cumulative View Loading Component Array
 	 */
 
-	public double[] cumulativeViewComponent()
+	public double[] cumulativeViewComponentLoadingArray()
 	{
-		int iNumView = _adblIntraViewComponent.length;
-		double[] adblViewLoading = new double[iNumView];
+		int viewCount = _intraViewComponentArray.length;
+		double[] cumulativeViewComponentLoadingArray = new double[viewCount];
 
-		for (int i = 0; i < iNumView; ++i)
-			adblViewLoading[i] = _adblIntraViewComponent[i] + _adblInterViewComponent[i] +
-				_adblPriorViewComponent[i];
+		for (int viewIndex = 0; viewIndex < viewCount; ++viewIndex)
+		{
+			cumulativeViewComponentLoadingArray[viewIndex] = _intraViewComponentArray[viewIndex] +
+				_interViewComponentArray[viewIndex] + _priorViewComponentArray[viewIndex];
+		}
 
-		return adblViewLoading;
+		return cumulativeViewComponentLoadingArray;
 	}
 }

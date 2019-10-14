@@ -218,7 +218,7 @@ public class Yamabe2016 {
 			)
 		);
 
-		JointPosteriorMetrics jpm = blce.customConfidenceRun().combinationMetrics();
+		JointPosteriorMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
 		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jpm.prior();
 

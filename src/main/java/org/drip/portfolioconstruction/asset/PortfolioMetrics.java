@@ -80,40 +80,43 @@ package org.drip.portfolioconstruction.asset;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PortfolioMetrics {
-	private double[] _adblImpliedBeta = null;
-	private double _dblSharpeRatio = java.lang.Double.NaN;
-	private double _dblExcessReturnsMean = java.lang.Double.NaN;
-	private double _dblExcessReturnsVariance = java.lang.Double.NaN;
-	private double _dblExcessReturnsStandardDeviation = java.lang.Double.NaN;
+public class PortfolioMetrics
+{
+	private double[] _impliedBetaArray = null;
+	private double _sharpeRatio = java.lang.Double.NaN;
+	private double _excessReturnsMean = java.lang.Double.NaN;
+	private double _excessReturnsVariance = java.lang.Double.NaN;
+	private double _excessReturnsStandardDeviation = java.lang.Double.NaN;
 
 	/**
 	 * PortfolioMetrics Constructor
 	 * 
-	 * @param dblExcessReturnsMean The Expected Portfolio Excess Returns Mean
-	 * @param dblExcessReturnsVariance The Portfolio Excess Returns Variance
-	 * @param dblExcessReturnsStandardDeviation The Excess Returns Portfolio Standard Deviation
-	 * @param dblSharpeRatio Portfolio Sharpe Ratio
-	 * @param adblImpliedBeta Portfolio Implied Beta Vector
+	 * @param excessReturnsMean The Expected Portfolio Excess Returns Mean
+	 * @param excessReturnsVariance The Portfolio Excess Returns Variance
+	 * @param excessReturnsStandardDeviation The Excess Returns Portfolio Standard Deviation
+	 * @param sharpeRatio Portfolio Sharpe Ratio
+	 * @param impliedBetaArray Portfolio Implied Beta Vector
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PortfolioMetrics (
-		final double dblExcessReturnsMean,
-		final double dblExcessReturnsVariance,
-		final double dblExcessReturnsStandardDeviation,
-		final double dblSharpeRatio,
-		final double[] adblImpliedBeta)
+		final double excessReturnsMean,
+		final double excessReturnsVariance,
+		final double excessReturnsStandardDeviation,
+		final double sharpeRatio,
+		final double[] impliedBetaArray)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblExcessReturnsMean = dblExcessReturnsMean) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblExcessReturnsVariance = dblExcessReturnsVariance)
-				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblExcessReturnsStandardDeviation =
-					dblExcessReturnsStandardDeviation)|| !org.drip.numerical.common.NumberUtil.IsValid
-						(_dblSharpeRatio = dblSharpeRatio) || null == (_adblImpliedBeta = adblImpliedBeta) ||
-							0 == _adblImpliedBeta.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_excessReturnsMean = excessReturnsMean) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_excessReturnsVariance = excessReturnsVariance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_excessReturnsStandardDeviation =
+				excessReturnsStandardDeviation) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_sharpeRatio = sharpeRatio) ||
+			null == (_impliedBetaArray = impliedBetaArray) || 0 == _impliedBetaArray.length)
+		{
 			throw new java.lang.Exception ("PortfolioMetrics Constructor => Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -124,7 +127,7 @@ public class PortfolioMetrics {
 
 	public double excessReturnsMean()
 	{
-		return _dblExcessReturnsMean;
+		return _excessReturnsMean;
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class PortfolioMetrics {
 
 	public double excessReturnsVariance()
 	{
-		return _dblExcessReturnsVariance;
+		return _excessReturnsVariance;
 	}
 
 	/**
@@ -146,7 +149,7 @@ public class PortfolioMetrics {
 
 	public double excessReturnsStandardDeviation()
 	{
-		return _dblExcessReturnsStandardDeviation;
+		return _excessReturnsStandardDeviation;
 	}
 
 	/**
@@ -157,7 +160,7 @@ public class PortfolioMetrics {
 
 	public double sharpeRatio()
 	{
-		return _dblSharpeRatio;
+		return _sharpeRatio;
 	}
 
 	/**
@@ -168,6 +171,6 @@ public class PortfolioMetrics {
 
 	public double[] impliedBeta()
 	{
-		return _adblImpliedBeta;
+		return _impliedBetaArray;
 	}
 }
