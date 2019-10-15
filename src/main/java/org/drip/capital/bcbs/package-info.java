@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.bcbs.core;
+package org.drip.capital.bcbs;

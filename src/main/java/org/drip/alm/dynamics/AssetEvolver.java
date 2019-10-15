@@ -109,6 +109,7 @@ public class AssetEvolver
 	 * 
 	 * @param pathCount Count of the Number Paths
 	 * @param timeStepInTenor Time Step Size in Tenor
+	 * @param timeHorizonInTenor Time Horizon Size in Tenor
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */

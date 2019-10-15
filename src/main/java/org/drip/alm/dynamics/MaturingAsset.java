@@ -221,7 +221,7 @@ public class MaturingAsset extends org.drip.alm.dynamics.EvolvableAsset
 
 				meanReversionSpeed = java.lang.Math.pow (
 					meanReversionSpeed,
-					1.0
+					4.0
 				);
 
 				forwardYield = meanReversionSpeed *

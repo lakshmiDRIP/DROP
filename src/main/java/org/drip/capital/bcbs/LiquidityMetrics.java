@@ -1,5 +1,5 @@
 
-package org.drip.bcbs.core;
+package org.drip.capital.bcbs;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -276,7 +276,7 @@ public class LiquidityMetrics
 	 */
 
 	public boolean isCompliant (
-		final org.drip.bcbs.core.LiquidityMetrics liquidityMetricsStandard)
+		final org.drip.capital.bcbs.LiquidityMetrics liquidityMetricsStandard)
 	{
 		if (null == liquidityMetricsStandard)
 		{

@@ -1,5 +1,5 @@
 
-package org.drip.bcbs.core;
+package org.drip.capital.bcbs;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -65,9 +65,9 @@ package org.drip.bcbs.core;
  */
 
 /**
- * <i>BalanceSheet</i> holds the Quantities used to compute the Capital/Liquidity Ratios in the BCBS
- * Standards. The References are:
- *  
+ * <i>HighQualityLiquidAssetSettings</i> holds the Risk-Weights and the Haircuts associated with Levels 1,
+ * 2A, and 2B. The References are:
+ * 
  * <br><br>
  * 	<ul>
  * 		<li>
@@ -103,190 +103,32 @@ package org.drip.bcbs.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BalanceSheet
+public class HighQualityLiquidAssetSettings
 {
-	private org.drip.bcbs.core.BalanceSheetCapital _balanceSheetCapital = null;
-	private org.drip.bcbs.core.BalanceSheetFunding _balanceSheetFunding = null;
-	private org.drip.bcbs.core.BalanceSheetLiquidity _balanceSheetLiquidity = null;
+	private double _level1Haircut = java.lang.Double.NaN;
+	private double _level2AHaircut = java.lang.Double.NaN;
+	private double _level2BHaircut = java.lang.Double.NaN;
+	private double _level1RiskWeight = java.lang.Double.NaN;
+	private double _level2ARiskWeight = java.lang.Double.NaN;
+	private double _level2BRiskWeight = java.lang.Double.NaN;
 
 	/**
-	 * BalanceSheet Constructor
+	 * Retrieve the Federal Reserve Version of the HQLA Settings Standard
 	 * 
-	 * @param balanceSheetCapital Balance Sheet Capital Composite
-	 * @param balanceSheetLiquidity Balance Sheet Liquidity Composite
-	 * @param balanceSheetFunding Balance Sheet Funding Composite
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Federal Reserve Version of the HQLA Settings Standard
 	 */
 
-	public BalanceSheet (
-		final org.drip.bcbs.core.BalanceSheetCapital balanceSheetCapital,
-		final org.drip.bcbs.core.BalanceSheetLiquidity balanceSheetLiquidity,
-		final org.drip.bcbs.core.BalanceSheetFunding balanceSheetFunding)
-		throws java.lang.Exception
-	{
-		if (null == (_balanceSheetCapital = balanceSheetCapital) ||
-			null == (_balanceSheetLiquidity = balanceSheetLiquidity) ||
-			null == (_balanceSheetFunding = balanceSheetFunding))
-		{
-			throw new java.lang.Exception ("BalanceSheet Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Balance Sheet Capital Composite
-	 * 
-	 * @return The Balance Sheet Capital Composite
-	 */
-
-	public org.drip.bcbs.core.BalanceSheetCapital balanceSheetCapital()
-	{
-		return _balanceSheetCapital;
-	}
-
-	/**
-	 * Retrieve the Balance Sheet Liquidity Composite
-	 * 
-	 * @return The Balance Sheet Liquidity Composite
-	 */
-
-	public org.drip.bcbs.core.BalanceSheetLiquidity balanceSheetLiquidity()
-	{
-		return _balanceSheetLiquidity;
-	}
-
-	/**
-	 * Retrieve the Balance Sheet Funding Composite
-	 * 
-	 * @return The Balance Sheet Funding Composite
-	 */
-
-	public org.drip.bcbs.core.BalanceSheetFunding balanceSheetFunding()
-	{
-		return _balanceSheetFunding;
-	}
-
-	/**
-	 * Retrieve the Tier 1 Capital
-	 * 
-	 * @return The Tier 1 Capital
-	 */
-
-	public double tier1()
-	{
-		return _balanceSheetCapital.tier1();
-	}
-
-	/**
-	 * Retrieve the Total Capital
-	 * 
-	 * @return The Total Capital
-	 */
-
-	public double totalCapital()
-	{
-		return _balanceSheetCapital.totalCapital();
-	}
-
-	/**
-	 * Retrieve the CET 1 Ratio
-	 * 
-	 * @return The CET 1 Ratio
-	 */
-
-	public double cet1Ratio()
-	{
-		return _balanceSheetCapital.cet1Ratio();
-	}
-
-	/**
-	 * Retrieve the Tier 1 Ratio
-	 * 
-	 * @return The Tier 1 Ratio
-	 */
-
-	public double tier1Ratio()
-	{
-		return _balanceSheetCapital.tier1Ratio();
-	}
-
-	/**
-	 * Retrieve the Total Capital Ratio
-	 * 
-	 * @return The Total Capital Ratio
-	 */
-
-	public double totalCapitalRatio()
-	{
-		return _balanceSheetCapital.totalCapitalRatio();
-	}
-
-	/**
-	 * Retrieve the Leverage Ratio
-	 * 
-	 * @return The Leverage Ratio
-	 */
-
-	public double leverageRatio()
-	{
-		return _balanceSheetCapital.leverageRatio();
-	}
-
-	/**
-	 * Retrieve the Liquidity Coverage Ratio
-	 *  
-	 * @param hqlaSettings THe HQLA Settings
-	 * 
-	 * @return The Liquidity Coverage Ratio
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double liquidityCoverageRatio (
-		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
-		throws java.lang.Exception
-	{
-		return _balanceSheetLiquidity.liquidityCoverageRatio (hqlaSettings);
-	}
-
-	/**
-	 * Retrieve the Net Stable Funding Ratio
-	 * 
-	 * @return The Net Stable Funding Ratio
-	 */
-
-	public double netStableFundingRatio()
-	{
-		return _balanceSheetFunding.netStableFundingRatio();
-	}
-
-	/**
-	 * Generate the Balance Sheet Capital Metrics
-	 * 
-	 * @return The Balance Sheet Capital Metrics
-	 */
-
-	public org.drip.bcbs.core.CapitalMetrics capitalMetrics()
-	{
-		return _balanceSheetCapital.capitalMetrics();
-	}
-
-	/**
-	 * Generate the Balance Sheet Liquidity Metrics
-	 *  
-	 * @param hqlaSettings The HQLA Settings
-	 * 
-	 * @return The Balance Sheet Liquidity Metrics
-	 */
-
-	public org.drip.bcbs.core.LiquidityMetrics liquidityMetrics (
-		final org.drip.bcbs.core.HighQualityLiquidAssetSettings hqlaSettings)
+	public static final HighQualityLiquidAssetSettings FederalReserveStandard()
 	{
 		try
 		{
-			return new org.drip.bcbs.core.LiquidityMetrics (
-				_balanceSheetLiquidity.liquidityCoverageRatio (hqlaSettings),
-				_balanceSheetFunding.netStableFundingRatio()
+			return new HighQualityLiquidAssetSettings (
+				0.00,
+				0.00,
+				0.15,
+				0.20,
+				0.50,
+				0.50
 			);
 		}
 		catch (java.lang.Exception e)
@@ -295,5 +137,110 @@ public class BalanceSheet
 		}
 
 		return null;
+	}
+
+	/**
+	 * HighQualityLiquidAssetSettings Constructor
+	 * 
+	 * @param level1Haircut Level 1 HQLA Haircut
+	 * @param level1RiskWeight Level 1 HQLA Risk-Weight
+	 * @param level2AHaircut Level 2A HQLA Haircut
+	 * @param level2ARiskWeight Level 2A HQLA Risk-Weight
+	 * @param level2BHaircut Level 2B HQLA Haircut
+	 * @param level2BRiskWeight Level 2B HQLA Risk-Weight
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public HighQualityLiquidAssetSettings (
+		final double level1Haircut,
+		final double level1RiskWeight,
+		final double level2AHaircut,
+		final double level2ARiskWeight,
+		final double level2BHaircut,
+		final double level2BRiskWeight)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_level1Haircut = level1Haircut) ||
+				0. > _level1Haircut || 1. < _level1Haircut ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level1RiskWeight = level1RiskWeight) ||
+				0. > _level1RiskWeight ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2AHaircut = level2AHaircut) ||
+				0. > _level2AHaircut || 1. < _level2AHaircut ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2ARiskWeight = level2ARiskWeight) ||
+				0. > _level2ARiskWeight ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2BHaircut = level2BHaircut) ||
+				0. > _level2BHaircut || 1. < _level2BHaircut ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2BRiskWeight = level2BRiskWeight) ||
+				0. > _level2BRiskWeight)
+		{
+			throw new java.lang.Exception ("HighQualityLiquidAssetSettings Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Level 1 Risk Weight
+	 * 
+	 * @return The Level 1 Risk Weight
+	 */
+
+	public double level1RiskWeight()
+	{
+		return _level1RiskWeight;
+	}
+
+	/**
+	 * Retrieve the Level 1 Haircut
+	 * 
+	 * @return The Level 1 Haircut
+	 */
+
+	public double level1Haircut()
+	{
+		return _level1Haircut;
+	}
+
+	/**
+	 * Retrieve the Level 2A Risk Weight
+	 * 
+	 * @return The Level 2A Risk Weight
+	 */
+
+	public double level2ARiskWeight()
+	{
+		return _level2ARiskWeight;
+	}
+
+	/**
+	 * Retrieve the Level 2A Haircut
+	 * 
+	 * @return The Level 2A Haircut
+	 */
+
+	public double level2AHaircut()
+	{
+		return _level2AHaircut;
+	}
+
+	/**
+	 * Retrieve the Level 2B Risk Weight
+	 * 
+	 * @return The Level 2B Risk Weight
+	 */
+
+	public double level2BRiskWeight()
+	{
+		return _level2BRiskWeight;
+	}
+
+	/**
+	 * Retrieve the Level 2B Haircut
+	 * 
+	 * @return The Level 2B Haircut
+	 */
+
+	public double level2BHaircut()
+	{
+		return _level2BHaircut;
 	}
 }

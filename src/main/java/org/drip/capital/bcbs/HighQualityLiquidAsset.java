@@ -1,5 +1,5 @@
 
-package org.drip.bcbs.core;
+package org.drip.capital.bcbs;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -65,8 +65,8 @@ package org.drip.bcbs.core;
  */
 
 /**
- * <i>HighQualityLiquidAssetSettings</i> holds the Risk-Weights and the Haircuts associated with Levels 1,
- * 2A, and 2B. The References are:
+ * <i>HighQualityLiquidAsset</i> contains the Amounts and the Settings associated with Levels 1, 2A, and 2B.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,32 +103,124 @@ package org.drip.bcbs.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HighQualityLiquidAssetSettings
+public class HighQualityLiquidAsset
 {
-	private double _level1Haircut = java.lang.Double.NaN;
-	private double _level2AHaircut = java.lang.Double.NaN;
-	private double _level2BHaircut = java.lang.Double.NaN;
-	private double _level1RiskWeight = java.lang.Double.NaN;
-	private double _level2ARiskWeight = java.lang.Double.NaN;
-	private double _level2BRiskWeight = java.lang.Double.NaN;
+	private double _level1 = java.lang.Double.NaN;
+	private double _level2A = java.lang.Double.NaN;
+	private double _level2B = java.lang.Double.NaN;
 
 	/**
-	 * Retrieve the Federal Reserve Version of the HQLA Settings Standard
+	 * HighQualityLiquidAsset Constructor
 	 * 
-	 * @return The Federal Reserve Version of the HQLA Settings Standard
+	 * @param level1 Level 1 HQLA
+	 * @param level2A Level 2A HQLA
+	 * @param level2B Level 2B HQLA
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final HighQualityLiquidAssetSettings FederalReserveStandard()
+	public HighQualityLiquidAsset (
+		final double level1,
+		final double level2A,
+		final double level2B)
+		throws java.lang.Exception
 	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_level1 = level1) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2A = level2A) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2B = level2B))
+		{
+			throw new java.lang.Exception ("HighQualityLiquidAsset Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Amount of Level 1 Assets
+	 * 
+	 * @return The Amount of Level 1 Assets
+	 */
+
+	public double level1()
+	{
+		return _level1;
+	}
+
+	/**
+	 * Retrieve the Amount of Level 2A Assets
+	 * 
+	 * @return The Amount of Level 2A Assets
+	 */
+
+	public double level2A()
+	{
+		return _level2A;
+	}
+
+	/**
+	 * Retrieve the Amount of Level 2B Assets
+	 * 
+	 * @return The Amount of Level 2B Assets
+	 */
+
+	public double level2B()
+	{
+		return _level2B;
+	}
+
+	/**
+	 * Retrieve the Total HQLA
+	 * 
+	 * @return The Total HQLA
+	 */
+
+	public double total()
+	{
+		return _level1 + _level2A + _level2B;
+	}
+
+	/**
+	 * Retrieve the Level 2 Shares to the Total HQLA
+	 * 
+	 * @return The Level 2 Shares to the Total HQLA
+	 */
+
+	public double level2Ratio()
+	{
+		return (_level2A + _level2B) / (_level1 + _level2A + _level2B);
+	}
+
+	/**
+	 * Retrieve the Level 2B Share to the Total HQLA
+	 * 
+	 * @return The Level 2B Shares to the Total HQLA
+	 */
+
+	public double level2BRatio()
+	{
+		return _level2B / (_level1 + _level2A + _level2B);
+	}
+
+	/**
+	 * Apply the appropriate Risk Weight and Hair cut to each of the Level x Assets
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
+	 * 
+	 * @return The Risk Weight and Hair cut to each of the Level x Assets
+	 */
+
+	public HighQualityLiquidAsset applyRiskWeightAndHaircut (
+		final org.drip.capital.bcbs.HighQualityLiquidAssetSettings hqlaSettings)
+	{
+		if (null == hqlaSettings)
+		{
+			return null;
+		}
+
 		try
 		{
-			return new HighQualityLiquidAssetSettings (
-				0.00,
-				0.00,
-				0.15,
-				0.20,
-				0.50,
-				0.50
+			return new HighQualityLiquidAsset (
+				_level1,
+				_level2A * (1. - hqlaSettings.level2AHaircut()) / (1. + hqlaSettings.level2ARiskWeight()),
+				_level2B * (1. - hqlaSettings.level2BHaircut()) / (1. + hqlaSettings.level2BRiskWeight())
 			);
 		}
 		catch (java.lang.Exception e)
@@ -140,107 +232,43 @@ public class HighQualityLiquidAssetSettings
 	}
 
 	/**
-	 * HighQualityLiquidAssetSettings Constructor
+	 * Verify if the HQLA is Compliant with the Level 2 and 2B Standards
 	 * 
-	 * @param level1Haircut Level 1 HQLA Haircut
-	 * @param level1RiskWeight Level 1 HQLA Risk-Weight
-	 * @param level2AHaircut Level 2A HQLA Haircut
-	 * @param level2ARiskWeight Level 2A HQLA Risk-Weight
-	 * @param level2BHaircut Level 2B HQLA Haircut
-	 * @param level2BRiskWeight Level 2B HQLA Risk-Weight
+	 * @param hqlaStandard The HQLA Standard
+	 * 
+	 * @return TRUE - The HQLA is Compliant with the Level 2 and 2B Standards
+	 */
+
+	public boolean isCompliant (
+		final org.drip.capital.bcbs.HighQualityLiquidAssetStandard hqlaStandard)
+	{
+		return null == hqlaStandard ? false :
+			level2Ratio() <= hqlaStandard.level2Ratio() &&
+			level2BRatio() <= hqlaStandard.level2BRatio();
+	}
+
+	/**
+	 * Compute the Risk Weight and Hair cut HQLA Total
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
+	 * 
+	 * @return The Risk Weight and Hair cut HQLA Total
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public HighQualityLiquidAssetSettings (
-		final double level1Haircut,
-		final double level1RiskWeight,
-		final double level2AHaircut,
-		final double level2ARiskWeight,
-		final double level2BHaircut,
-		final double level2BRiskWeight)
+	public double totalRiskWeightAndHaircut (
+		final org.drip.capital.bcbs.HighQualityLiquidAssetSettings hqlaSettings)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_level1Haircut = level1Haircut) ||
-				0. > _level1Haircut || 1. < _level1Haircut ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_level1RiskWeight = level1RiskWeight) ||
-				0. > _level1RiskWeight ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_level2AHaircut = level2AHaircut) ||
-				0. > _level2AHaircut || 1. < _level2AHaircut ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_level2ARiskWeight = level2ARiskWeight) ||
-				0. > _level2ARiskWeight ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_level2BHaircut = level2BHaircut) ||
-				0. > _level2BHaircut || 1. < _level2BHaircut ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_level2BRiskWeight = level2BRiskWeight) ||
-				0. > _level2BRiskWeight)
+		HighQualityLiquidAsset hqla = applyRiskWeightAndHaircut (hqlaSettings);
+
+		if (null == hqla)
 		{
-			throw new java.lang.Exception ("HighQualityLiquidAssetSettings Constructor => Invalid Inputs");
+			throw new java.lang.Exception
+				("HighQualityLiquidAsset::totalRiskWeightAndHaircut => Invalid Inputs");
 		}
-	}
 
-	/**
-	 * Retrieve the Level 1 Risk Weight
-	 * 
-	 * @return The Level 1 Risk Weight
-	 */
-
-	public double level1RiskWeight()
-	{
-		return _level1RiskWeight;
-	}
-
-	/**
-	 * Retrieve the Level 1 Haircut
-	 * 
-	 * @return The Level 1 Haircut
-	 */
-
-	public double level1Haircut()
-	{
-		return _level1Haircut;
-	}
-
-	/**
-	 * Retrieve the Level 2A Risk Weight
-	 * 
-	 * @return The Level 2A Risk Weight
-	 */
-
-	public double level2ARiskWeight()
-	{
-		return _level2ARiskWeight;
-	}
-
-	/**
-	 * Retrieve the Level 2A Haircut
-	 * 
-	 * @return The Level 2A Haircut
-	 */
-
-	public double level2AHaircut()
-	{
-		return _level2AHaircut;
-	}
-
-	/**
-	 * Retrieve the Level 2B Risk Weight
-	 * 
-	 * @return The Level 2B Risk Weight
-	 */
-
-	public double level2BRiskWeight()
-	{
-		return _level2BRiskWeight;
-	}
-
-	/**
-	 * Retrieve the Level 2B Haircut
-	 * 
-	 * @return The Level 2B Haircut
-	 */
-
-	public double level2BHaircut()
-	{
-		return _level2BHaircut;
+		return hqla.total();
 	}
 }

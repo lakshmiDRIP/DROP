@@ -1,5 +1,5 @@
 
-package org.drip.assetbacked.borrower;
+package org.drip.capital.bcbs;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -7,9 +7,6 @@ package org.drip.assetbacked.borrower;
 
 /*!
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
  *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
@@ -34,10 +31,10 @@ package org.drip.assetbacked.borrower;
  * 	- Transaction Cost Analytics
  * 
  * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	- Statistical Learning
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ * 	- Algorithm Support
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -68,46 +65,112 @@ package org.drip.assetbacked.borrower;
  */
 
 /**
- * <i>OriginationFICO</i> contains the Borrower's FICO Score at a given Loan's Origination.
+ * <i>HighQualityLiquidAssetStandard</i> contains the Regulatory HQLA Ratios associated with Levels 1, 2A,
+ * and 2B. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure
+ * 				Requirements https://www.bis.org/publ/bcbs270.pdf
+ * 		</li>
+ * 		<li>
+ * 			Central Banking (2013): Fed and FDIC agree 6% Leverage Ratio for US SIFIs
+ * 				https://www.centralbanking.com/central-banking/news/2280726/fed-and-fdic-agree-6-leverage-ratio-for-us-sifis
+ * 		</li>
+ * 		<li>
+ * 			European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package
+ * 				https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
+ * 		</li>
+ * 		<li>
+ * 			Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and
+ * 				Monitoring
+ * 				https://web.archive.org/web/20131102074614/http:/www.federalreserve.gov/FR_notice_lcr_20131024.pdf
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md">Analytics Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetBackedAnalyticsLibrary.md">Asset Backed Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/README.md">Asset Backed</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/README.md">Borrower</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md">Exposure Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/README.md">BCBS</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/bcbs/core/README.md">Core</a></li>
  *  </ul>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class OriginationFICO {
-	private double _dblFICO = java.lang.Double.NaN;
+public class HighQualityLiquidAssetStandard
+{
+	private double _level2Ratio = java.lang.Double.NaN;
+	private double _level2BRatio = java.lang.Double.NaN;
 
 	/**
-	 * OriginationFICO Constructor
+	 * Generate an Instance of the Fed's HQLA Standard
 	 * 
-	 * @param dblFICO The Borrower's FICO Score at Origination
+	 * @return The Fed's HQLA Standard
+	 */
+
+	public static final HighQualityLiquidAssetStandard FederalReserve()
+	{
+		try
+		{
+			return new HighQualityLiquidAssetStandard (
+				0.40,
+				0.15
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * HighQualityLiquidAssetStandard Constructor
+	 * 
+	 * @param level2Ratio Level 2 Ratio
+	 * @param level2BRatio Level 2B Ratio
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OriginationFICO (
-		final double dblFICO)
+	public HighQualityLiquidAssetStandard (
+		final double level2Ratio,
+		final double level2BRatio)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFICO = dblFICO))
-			throw new java.lang.Exception ("OriginationFICO Constructor => Invalid Inputs");
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_level2Ratio = level2Ratio) || 0. > _level2Ratio ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_level2BRatio = level2BRatio) || 0. > _level2BRatio)
+		{
+			throw new java.lang.Exception ("HighQualityLiquidAssetStandard Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Borrower's FICO Score at Origination
+	 * Retrieve the Level 2 share to the Total HQLA
 	 * 
-	 * @return The Borrower's FICO Score at Origination
+	 * @return The Level 2 share to the Total HQLA
 	 */
 
-	public double score()
+	public double level2Ratio()
 	{
-		return _dblFICO;
+		return _level2Ratio;
+	}
+
+	/**
+	 * Retrieve the Level 2B share to the Total HQLA
+	 * 
+	 * @return The Level 2B share to the Total HQLA
+	 */
+
+	public double level2BRatio()
+	{
+		return _level2BRatio;
 	}
 }

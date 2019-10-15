@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.assetbacked.loan;
+package org.drip.loan.characteristics;

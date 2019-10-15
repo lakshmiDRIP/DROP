@@ -1,14 +1,14 @@
 
 package org.drip.sample.bcbs;
 
-import org.drip.bcbs.core.BalanceSheet;
-import org.drip.bcbs.core.BalanceSheetCapital;
-import org.drip.bcbs.core.BalanceSheetFunding;
-import org.drip.bcbs.core.BalanceSheetLiquidity;
-import org.drip.bcbs.core.CapitalMetricsStandard;
-import org.drip.bcbs.core.HighQualityLiquidAsset;
-import org.drip.bcbs.core.HighQualityLiquidAssetSettings;
-import org.drip.bcbs.core.LiquidityMetrics;
+import org.drip.capital.bcbs.BalanceSheet;
+import org.drip.capital.bcbs.BalanceSheetCapital;
+import org.drip.capital.bcbs.BalanceSheetFunding;
+import org.drip.capital.bcbs.BalanceSheetLiquidity;
+import org.drip.capital.bcbs.CapitalMetricsStandard;
+import org.drip.capital.bcbs.HighQualityLiquidAsset;
+import org.drip.capital.bcbs.HighQualityLiquidAssetSettings;
+import org.drip.capital.bcbs.LiquidityMetrics;
 import org.drip.numerical.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
