@@ -76,7 +76,7 @@ package org.drip.capital.bcbs;
  */
 
 /**
- * <i>CapitalMetrics</i> holds the Realized Capital Metrics. The References are:
+ * <i>CapitalMetricsStandard</i> implements the Basel Capital Metrics Standards. The References are:
  * 
  * <br><br>
  * 	<ul>
