@@ -1,6 +1,6 @@
 
 /**
- * Coordinate Variation Based Adaptive Execution
+ * Coordinated Variation Based Adaptive Execution
  *
  * @author Lakshmi Krishnamurthy
  */
