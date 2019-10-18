@@ -99,42 +99,58 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LineEvolutionVerifier {
+public abstract class LineEvolutionVerifier
+{
 
-	protected static final double[] NextVariate (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength)
+	protected static final double[] NextVariateArray (
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final double stepLength)
 	{
-		if (null == adblCurrentVariate || !org.drip.numerical.common.NumberUtil.IsValid (dblStepLength))
+		if (null == currentVariateArray ||
+			!org.drip.numerical.common.NumberUtil.IsValid (stepLength))
+		{
 			return null;
-
-		int iDimension = adblCurrentVariate.length;
-		double[] adblNextVariate = 0 == iDimension ? null : new double[iDimension];
-
-		if (null == adblNextVariate || null == uvTargetDirection) return null;
-
-		double[] adblTargetDirection = uvTargetDirection.component();
-
-		if (null == adblTargetDirection || iDimension != adblTargetDirection.length) return null;
-
-		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblCurrentVariate[i]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (adblTargetDirection[i]))
-				return null;
-
-			adblNextVariate[i] = adblCurrentVariate[i] + dblStepLength * adblTargetDirection[i];
 		}
 
-		return adblNextVariate;
+		int dimension = currentVariateArray.length;
+		double[] nextVariateArray = 0 == dimension ? null : new double[dimension];
+
+		if (null == nextVariateArray || null == targetDirectionUnitVector)
+		{
+			return null;
+		}
+
+		double[] targetDirectionVector = targetDirectionUnitVector.component();
+
+		if (null == targetDirectionVector || dimension != targetDirectionVector.length)
+		{
+			return null;
+		}
+
+		for (int dimensionIndex = 0;
+			dimensionIndex < dimension;
+			++dimensionIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (currentVariateArray[dimensionIndex]) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (targetDirectionVector[dimensionIndex]))
+			{
+				return null;
+			}
+
+			nextVariateArray[dimensionIndex] = currentVariateArray[dimensionIndex] +
+				stepLength * targetDirectionVector[dimensionIndex];
+		}
+
+		return nextVariateArray;
 	}
 
 	/**
 	 * Verify if the specified Inputs satisfy the Criterion
 	 * 
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate The Current Variate
-	 * @param funcRdToR1 The R^d To R^1 Function
+	 * @param targetDirectionUnitVector The Target Direction Unit Vector
+	 * @param currentVariateArray The Current Variate
+	 * @param multivariateFunction The R<sup>d</sup> To R<sup>1</sup> Function
 	 * @param dblStepLength The Incremental Step Length
 	 * 
 	 * @return TRUE - The Specified Inputs satisfy the Criterion
@@ -143,34 +159,41 @@ public abstract class LineEvolutionVerifier {
 	 */
 
 	public boolean verify (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 		throws java.lang.Exception
 	{
-		org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = metrics (uvTargetDirection,
-			adblCurrentVariate, funcRdToR1, dblStepLength);
+		org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics lineEvolutionVerifierMetrics = metrics (
+			targetDirectionUnitVector,
+			currentVariateArray,
+			multivariateFunction,
+			stepLength
+		);
 
-		if (null == levm) throw new java.lang.Exception ("LineEvolutionVerifier::verify => Cannot Verify");
+		if (null == lineEvolutionVerifierMetrics)
+		{
+			throw new java.lang.Exception ("LineEvolutionVerifier::verify => Cannot Verify");
+		}
 
-		return levm.verify();
+		return lineEvolutionVerifierMetrics.verify();
 	}
 
 	/**
 	 * Generate the Verifier Metrics for the Specified Inputs
 	 * 
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate The Current Variate
-	 * @param funcRdToR1 The R^d To R^1 Function
-	 * @param dblStepLength The Incremental Step Length
+	 * @param targetDirectionUnitVector The Target Direction Unit Vector
+	 * @param currentVariateArray The Current Variate
+	 * @param multivariateFunction The R<sup>d</sup> To R<sup>1</sup> Function
+	 * @param stepLength The Incremental Step Length
 	 * 
 	 * @return The Verifier Metrics
 	 */
 
 	public abstract org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength);
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength);
 }

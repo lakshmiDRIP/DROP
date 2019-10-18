@@ -99,61 +99,70 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WolfeEvolutionVerifierMetrics extends
-	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-	private boolean _bMaximizerCheck = false;
-	private boolean _bStrongCurvatureCriterion = false;
-	private double[] _adblNextVariateFunctionJacobian = null;
-	private double _dblArmijoParameter = java.lang.Double.NaN;
-	private double _dblCurvatureParameter = java.lang.Double.NaN;
-	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;
-	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;
+public class WolfeEvolutionVerifierMetrics
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics
+{
+	private boolean _maximizerCheck = false;
+	private boolean _strongCurvatureCriterion = false;
+	private double[] _nextVariateFunctionJacobian = null;
+	private double _armijoParameter = java.lang.Double.NaN;
+	private double _curvatureParameter = java.lang.Double.NaN;
+	private double _nextVariateFunctionValue = java.lang.Double.NaN;
+	private double _currentVariateFunctionValue = java.lang.Double.NaN;
 
 	/**
 	 * WolfeEvolutionVerifierMetrics Constructor
 	 * 
-	 * @param dblArmijoParameter The Armijo Criterion Parameter
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
-	 * @param dblCurvatureParameter The Curvature Criterion Parameter
-	 * @param bStrongCurvatureCriterion TRUE - Apply the "Strong" Curvature Criterion
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate Array of the Current Variate
-	 * @param dblStepLength The Incremental Step Length
-	 * @param dblCurrentVariateFunctionValue The Function Value at the Current Variate
-	 * @param dblNextVariateFunctionValue The Function Value at the Next Variate
-	 * @param adblCurrentVariateFunctionJacobian The Function Jacobian at the Current Variate
-	 * @param adblNextVariateFunctionJacobian The Function Jacobian at the Next Variate
+	 * @param armijoParameter The Armijo Criterion Parameter
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param curvatureParameter The Curvature Criterion Parameter
+	 * @param strongCurvatureCriterion TRUE - Apply the "Strong" Curvature Criterion
+	 * @param targetDirection The Target Direction Unit Vector
+	 * @param currentVariateArray Array of the Current Variate
+	 * @param stepLength The Incremental Step Length
+	 * @param currentVariateFunctionValue The Function Value at the Current Variate
+	 * @param nextVariateFunctionValue The Function Value at the Next Variate
+	 * @param currentVariateFunctionJacobian The Function Jacobian at the Current Variate
+	 * @param nextVariateFunctionJacobian The Function Jacobian at the Next Variate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public WolfeEvolutionVerifierMetrics (
-		final double dblArmijoParameter,
-		final boolean bMaximizerCheck,
-		final double dblCurvatureParameter,
-		final boolean bStrongCurvatureCriterion,
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength,
-		final double dblCurrentVariateFunctionValue,
-		final double dblNextVariateFunctionValue,
-		final double[] adblCurrentVariateFunctionJacobian,
-		final double[] adblNextVariateFunctionJacobian)
+		final double armijoParameter,
+		final boolean maximizerCheck,
+		final double curvatureParameter,
+		final boolean strongCurvatureCriterion,
+		final org.drip.function.definition.UnitVector targetDirection,
+		final double[] currentVariateArray,
+		final double stepLength,
+		final double currentVariateFunctionValue,
+		final double nextVariateFunctionValue,
+		final double[] currentVariateFunctionJacobian,
+		final double[] nextVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);
+		super (
+			targetDirection,
+			currentVariateArray,
+			stepLength,
+			currentVariateFunctionJacobian
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||
-				null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =
-						dblCurrentVariateFunctionValue) || !org.drip.numerical.common.NumberUtil.IsValid
-							(_dblNextVariateFunctionValue = dblNextVariateFunctionValue) ||
-								adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter) ||
+			null == (_nextVariateFunctionJacobian = nextVariateFunctionJacobian) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_currentVariateFunctionValue =
+				currentVariateFunctionValue) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_nextVariateFunctionValue =
+				nextVariateFunctionValue) ||
+			currentVariateArray.length != _nextVariateFunctionJacobian.length)
+		{
 			throw new java.lang.Exception ("WolfeEvolutionVerifierMetrics Constructor => Invalid Inputs");
+		}
 
-		_bMaximizerCheck = bMaximizerCheck;
-		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;
+		_maximizerCheck = maximizerCheck;
+		_strongCurvatureCriterion = strongCurvatureCriterion;
 	}
 
 	/**
@@ -164,7 +173,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double armijoParameter()
 	{
-		return _dblArmijoParameter;
+		return _armijoParameter;
 	}
 
 	/**
@@ -175,7 +184,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean maximizerCheck()
 	{
-		return _bMaximizerCheck;
+		return _maximizerCheck;
 	}
 
 	/**
@@ -186,7 +195,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double curvatureParameter()
 	{
-		return _dblCurvatureParameter;
+		return _curvatureParameter;
 	}
 
 	/**
@@ -197,7 +206,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean strongCurvatureCriterion()
 	{
-		return _bStrongCurvatureCriterion;
+		return _strongCurvatureCriterion;
 	}
 
 	/**
@@ -208,7 +217,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double currentVariateFunctionValue()
 	{
-		return _dblCurrentVariateFunctionValue;
+		return _currentVariateFunctionValue;
 	}
 
 	/**
@@ -219,7 +228,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double nextVariateFunctionValue()
 	{
-		return _dblNextVariateFunctionValue;
+		return _nextVariateFunctionValue;
 	}
 
 	/**
@@ -230,7 +239,7 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public double[] nextVariateFunctionJacobian()
 	{
-		return _adblNextVariateFunctionJacobian;
+		return _nextVariateFunctionJacobian;
 	}
 
 	/**
@@ -241,30 +250,44 @@ public class WolfeEvolutionVerifierMetrics extends
 
 	public boolean verify()
 	{
-		double[] adblDirectionVector = targetDirection().component();
+		double[] targetDirectionVector = targetDirection().component();
 
-		double[] adblCurrentVariateFunctionJacobian = currentVariateFunctionJacobian();
+		double[] currentVariateFunctionJacobian = currentVariateFunctionJacobian();
 
-		try {
-			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *
-				stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,
-					adblCurrentVariateFunctionJacobian);
+		try
+		{
+			double gradientUpdatedFunctionValue = _currentVariateFunctionValue +
+				_armijoParameter * stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (
+					targetDirectionVector,
+					currentVariateFunctionJacobian
+				);
 
-			if ((_bMaximizerCheck && _dblNextVariateFunctionValue < dblGradientUpdatedFunctionValue) ||
-				(!_bMaximizerCheck && _dblNextVariateFunctionValue > dblGradientUpdatedFunctionValue))
+			if ((_maximizerCheck && _nextVariateFunctionValue < gradientUpdatedFunctionValue) ||
+				(!_maximizerCheck && _nextVariateFunctionValue > gradientUpdatedFunctionValue))
+			{
 				return false;
+			}
 
-			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct
-				(adblDirectionVector, _adblNextVariateFunctionJacobian);
+			double nextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct (
+				targetDirectionVector,
+				_nextVariateFunctionJacobian
+			);
 
-			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *
-				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,
-					adblCurrentVariateFunctionJacobian);
+			double parametrizedCurrentFunctionIncrement = _curvatureParameter *
+				org.drip.numerical.linearalgebra.Matrix.DotProduct (
+					targetDirectionVector,
+					currentVariateFunctionJacobian
+				);
 
-			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) <=
-				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement >=
-					dblParametrizedCurrentFunctionIncrement;
-		} catch (java.lang.Exception e) {
+			return _strongCurvatureCriterion ?
+				java.lang.Math.abs (
+					nextFunctionIncrement
+				) <= java.lang.Math.abs (
+					parametrizedCurrentFunctionIncrement
+				) : nextFunctionIncrement >= parametrizedCurrentFunctionIncrement;
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

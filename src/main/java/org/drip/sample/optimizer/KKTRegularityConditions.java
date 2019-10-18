@@ -73,43 +73,49 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KKTRegularityConditions {
+public class KKTRegularityConditions
+{
 
-	private static final RdToR1 Objective (
-		final double dblX0,
-		final double dblX1,
-		final double dblX2)
+	private static final RdToR1 ObjectiveFunction (
+		final double x0,
+		final double x1,
+		final double x2)
 		throws Exception
 	{
-		return new RdToR1 (null) {
+		return new RdToR1 (
+			null
+		)
+		{
 			@Override public int dimension()
 			{
 				return 3;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-				return (adblVariate[0] - dblX0) * (adblVariate[0] - dblX0) +
-					(adblVariate[1] - dblX1) * (adblVariate[1] - dblX1) +
-					(adblVariate[2] - dblX2) * (adblVariate[2] - dblX2);
+				return (variateArray[0] - x0) * (variateArray[0] - x0) +
+					(variateArray[1] - x1) * (variateArray[1] - x1) +
+					(variateArray[2] - x2) * (variateArray[2] - x2);
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-				return new double[] {
-					2. * (dblX0 - adblVariate[0]),
-					2. * (dblX1 - adblVariate[1]),
-					2. * (dblX2 - adblVariate[2])
+				return new double[]
+				{
+					2. * (x0 - variateArray[0]),
+					2. * (x1 - variateArray[1]),
+					2. * (x2 - variateArray[2])
 				};
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-				return new double[][] {
+				return new double[][]
+				{
 					{2., 0., 0.},
 					{0., 2., 0.},
 					{0., 0., 2.}
@@ -119,39 +125,44 @@ public class KKTRegularityConditions {
 	}
 
 	private static final RdToR1 RightConstraint (
-		final double dblDeadCenter,
-		final int iDimension,
-		final double dblHalfWidth,
-		final boolean bSignFlip)
+		final double deadCenter,
+		final int dimension,
+		final double halfWidth,
+		final boolean signFlip)
 		throws Exception
 	{
-		return new RdToR1 (null) {
+		return new RdToR1 (
+			null
+		)
+		{
 			@Override public int dimension()
 			{
 				return 3;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-				return (bSignFlip ? -1. : 1.) * (dblDeadCenter + dblHalfWidth - adblVariate[iDimension]);
+				return (signFlip ? -1. : 1.) * (deadCenter + halfWidth - variateArray[dimension]);
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-				return new double[] {
-					iDimension == 0 ? (bSignFlip ? -1. : 1.) * -1. : 0.,
-					iDimension == 1 ? (bSignFlip ? -1. : 1.) * -1. : 0.,
-					iDimension == 2 ? (bSignFlip ? -1. : 1.) * -1. : 0.
+				return new double[]
+				{
+					dimension == 0 ? (signFlip ? -1. : 1.) * -1. : 0.,
+					dimension == 1 ? (signFlip ? -1. : 1.) * -1. : 0.,
+					dimension == 2 ? (signFlip ? -1. : 1.) * -1. : 0.
 				};
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-				return new double[][] {
+				return new double[][]
+				{
 					{0., 0., 0.},
 					{0., 0., 0.},
 					{0., 0., 0.}
@@ -161,39 +172,44 @@ public class KKTRegularityConditions {
 	}
 
 	private static final RdToR1 LeftConstraint (
-		final double dblDeadCenter,
-		final int iDimension,
-		final double dblHalfWidth,
-		final boolean bSignFlip)
+		final double deadCenter,
+		final int dimension,
+		final double halfWidth,
+		final boolean signFlip)
 		throws Exception
 	{
-		return new RdToR1 (null) {
+		return new RdToR1 (
+			null
+		)
+		{
 			@Override public int dimension()
 			{
 				return 3;
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-				return (bSignFlip ? -1. : 1.) * (adblVariate[iDimension] - dblDeadCenter + dblHalfWidth);
+				return (signFlip ? -1. : 1.) * (variateArray[dimension] - deadCenter + halfWidth);
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-				return new double[] {
-					iDimension == 0 ? (bSignFlip ? -1. : 1.) * 1. : 0.,
-					iDimension == 1 ? (bSignFlip ? -1. : 1.) * 1. : 0.,
-					iDimension == 2 ? (bSignFlip ? -1. : 1.) * 1. : 0.
+				return new double[]
+				{
+					dimension == 0 ? (signFlip ? -1. : 1.) * 1. : 0.,
+					dimension == 1 ? (signFlip ? -1. : 1.) * 1. : 0.,
+					dimension == 2 ? (signFlip ? -1. : 1.) * 1. : 0.
 				};
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-				return new double[][] {
+				return new double[][]
+				{
 					{0., 0., 0.},
 					{0., 0., 0.},
 					{0., 0., 0.}
@@ -202,125 +218,124 @@ public class KKTRegularityConditions {
 		};
 	}
 
-	private static final RdToR1[] ConstraintSet (
-		final double dblX0,
-		final double dblX1,
-		final double dblX2,
-		final double dblHalfWidth,
-		final boolean bSignFlip)
+	private static final RdToR1[] ConstraintFunctionArray (
+		final double x0,
+		final double x1,
+		final double x2,
+		final double halfWidth,
+		final boolean signFlip)
 		throws Exception
 	{
 		return new RdToR1[] {
 			LeftConstraint (
-				dblX0,
+				x0,
 				0,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
 			RightConstraint (
-				dblX0,
+				x0,
 				0,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
 			LeftConstraint (
-				dblX1,
+				x1,
 				1,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
 			RightConstraint (
-				dblX1,
+				x1,
 				1,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
 			LeftConstraint (
-				dblX2,
+				x2,
 				2,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
 			RightConstraint (
-				dblX2,
+				x2,
 				2,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			)
 		};
 	}
 	public static final void main (
-		final String[] asrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
-
-		double dblX0 = 1.;
-		double dblX1 = 2.;
-		double dblX2 = 3.;
-		double dblHalfWidth = 1.;
-
-		RdToR1 objectiveRdToR1 = Objective (
-			dblX0,
-			dblX1,
-			dblX2
+		EnvManager.InitEnv (
+			""
 		);
 
-		RdToR1[] aConstraintRdToR1 = ConstraintSet (
-			dblX0,
-			dblX1,
-			dblX2,
-			dblHalfWidth,
-			false
+		double x0 = 1.;
+		double x1 = 2.;
+		double x2 = 3.;
+		double halfWidth = 1.;
+
+		RdToR1 objectiveFunction = ObjectiveFunction (
+			x0,
+			x1,
+			x2
 		);
 
-		BarrierFixedPointFinder bfpf = new BarrierFixedPointFinder (
-			objectiveRdToR1,
-			aConstraintRdToR1,
-			new InteriorPointBarrierControl (
-				InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
-				5.0e-06,
-				1.0e-07,
-				1.0e+10,
-				0.5,
-				20
-			),
-			null
-		);
-
-		double[] adblStartingVariate = new double[3];
-		adblStartingVariate[0] = dblX0 + 0.25 * dblHalfWidth;
-		adblStartingVariate[1] = dblX1 + 0.25 * dblHalfWidth;
-		adblStartingVariate[2] = dblX2 + 0.25 * dblHalfWidth;
-
-		VariateInequalityConstraintMultiplier vicm = bfpf.solve (adblStartingVariate);
-
-		double[] adblVariate = new double[] {
-			dblX0,
-			dblX1,
-			dblX2
+		double[] variateArray = new double[]
+		{
+			x0,
+			x1,
+			x2
 		};
 
-		FritzJohnMultipliers fjm = FritzJohnMultipliers.KarushKuhnTucker (
+		FritzJohnMultipliers karushKuhnTuckerMultipliers = FritzJohnMultipliers.KarushKuhnTucker (
 			null,
-			vicm.constraintMultipliers()
+			new BarrierFixedPointFinder (
+				objectiveFunction,
+				ConstraintFunctionArray (
+					x0,
+					x1,
+					x2,
+					halfWidth,
+					false
+				),
+				new InteriorPointBarrierControl (
+					InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
+					5.0e-06,
+					1.0e-07,
+					1.0e+10,
+					0.5,
+					20
+				),
+				null
+			).solve (
+				new double[]
+				{
+					x0 + 0.25 * halfWidth,
+					x1 + 0.25 * halfWidth,
+					x2 + 0.25 * halfWidth
+				}
+			).constraintMultiplierArray()
 		);
 
-		OptimizationFramework of = new OptimizationFramework (
-			objectiveRdToR1,
+		OptimizationFramework optimizationFramework = new OptimizationFramework (
+			objectiveFunction,
 			null,
-			ConstraintSet (
-				dblX0,
-				dblX1,
-				dblX2,
-				dblHalfWidth,
+			ConstraintFunctionArray (
+				x0,
+				x1,
+				x2,
+				halfWidth,
 				true
 			)
 		);
 
-		String[] astrSO = of.regularityQualifier (
-			fjm,
-			adblVariate
+		String[] strengthOrderArray = optimizationFramework.regularityQualifier (
+			karushKuhnTuckerMultipliers,
+			variateArray
 		).strengthOrder();
 
 		System.out.println();
@@ -332,38 +347,50 @@ public class KKTRegularityConditions {
 		System.out.println ("\t||----------------------------------------------------------------------||");
 
 		System.out.println ("\t|| ACTIVE SET RANK                                              : " +
-			of.activeConstraintRank (adblVariate) + "     ||"
+			optimizationFramework.activeConstraintRank (
+				variateArray
+			) + "     ||"
 		);
 
 		System.out.println ("\t|| LINEAR CONSTRAINT QUALIFICATION                              : " +
-			of.isLCQ() + " ||"
+			optimizationFramework.isLCQ() + " ||"
 		);
 
 		System.out.println ("\t|| LINEAR INDEPENDENT CONSTRAINT QUALIFICATION                  : " +
-			of.isLICQ (adblVariate) + "  ||"
+			optimizationFramework.isLICQ (
+				variateArray
+			) + "  ||"
 		);
 
 		System.out.println ("\t|| MANGASARIAN FROMOVITZ CONSTRAINT QUALIFICATION               : " +
-			of.isMFCQ (adblVariate) + "  ||"
+			optimizationFramework.isMFCQ (
+				variateArray
+			) + "  ||"
 		);
 
 		System.out.println ("\t|| CONSTANT RANK CONSTRAINT QUALIFICATION                       : " +
-			of.isCRCQ (adblVariate) + "  ||"
+			optimizationFramework.isCRCQ (
+				variateArray
+			) + "  ||"
 		);
 
 		System.out.println ("\t|| CONSTANT POSITIVE LINEAR DEPENDENCE CONSTRAINT QUALIFICATION : " +
-			of.isCPLDCQ (adblVariate) + "  ||"
+			optimizationFramework.isCPLDCQ (
+				variateArray
+			) + "  ||"
 		);
 
 		System.out.println ("\t|| QUASI NORMAL CONSTRAINT QUALIFICATION                        : " +
-			of.isQNCQ (
-				fjm,
-				adblVariate
+			optimizationFramework.isQNCQ (
+				karushKuhnTuckerMultipliers,
+				variateArray
 			) + "  ||"
 		);
 
 		System.out.println ("\t|| SLATER'S CONDITION CONSTRAINT QUALIFICATION                  : " +
-			of.isSCCQ (adblVariate) + " ||"
+			optimizationFramework.isSCCQ (
+				variateArray
+			) + " ||"
 		);
 
 		System.out.println ("\t||----------------------------------------------------------------------||");
@@ -376,8 +403,12 @@ public class KKTRegularityConditions {
 
 		System.out.println ("\t||----------------------------------------------------------------------||");
 
-		for (int i = 0; i < astrSO.length; ++i)
-			System.out.println ("\t|| " + astrSO[i]);
+		for (int strengthOrderIndex = 0;
+			strengthOrderIndex < strengthOrderArray.length;
+			++strengthOrderIndex)
+		{
+			System.out.println ("\t|| " + strengthOrderArray[strengthOrderIndex]);
+		}
 
 		System.out.println ("\t||----------------------------------------------------------------------||");
 

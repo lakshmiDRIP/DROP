@@ -81,52 +81,81 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NewtonFixedPointFinder extends org.drip.function.rdtor1solver.FixedRdFinder {
+public class NewtonFixedPointFinder
+	extends org.drip.function.rdtor1solver.FixedRdFinder
+{
 
 	/**
 	 * NewtonFixedPointFinder Constructor
 	 * 
-	 * @param rdToR1ObjectiveFunction The Objective Function
-	 * @param lsec The Line Step Evolution Control
-	 * @param cc Convergence Control Parameters
+	 * @param objectiveFunction The Objective Function
+	 * @param lineStepEvolutionControl The Line Step Evolution Control
+	 * @param convergenceControl Convergence Control Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NewtonFixedPointFinder (
-		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec,
-		final org.drip.function.rdtor1solver.ConvergenceControl cc)
+		final org.drip.function.definition.RdToR1 objectiveFunction,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl,
+		final org.drip.function.rdtor1solver.ConvergenceControl convergenceControl)
 		throws java.lang.Exception
 	{
-		super (rdToR1ObjectiveFunction, lsec, cc);
+		super (
+			objectiveFunction,
+			lineStepEvolutionControl,
+			convergenceControl
+		);
 	}
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier curentVariateConstraint)
 	{
-		if (null == vcmtCurrent) return null;
+		if (null == curentVariateConstraint)
+		{
+			return null;
+		}
 
-		double[] adblVariate = vcmtCurrent.variates();
+		double[] variateArray = curentVariateConstraint.variateArray();
 
-		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();
+		org.drip.function.definition.RdToR1 objectiveFunction = objectiveFunction();
 
-		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.Matrix.Product
-			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
-				(rdToR1ObjectiveFunction.hessian (adblVariate)), rdToR1ObjectiveFunction.jacobian
-					(adblVariate));
+		double[] variateIncrementArray = org.drip.numerical.linearalgebra.Matrix.Product (
+			org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (
+				objectiveFunction.hessian (
+					variateArray
+				)
+			),
+			objectiveFunction.jacobian (
+				variateArray
+			)
+		);
 
-		if (null == adblVariateIncrement) return null;
+		if (null == variateIncrementArray)
+		{
+			return null;
+		}
 
-		int iVariateDimension = adblVariateIncrement.length;
+		int variateDimension = variateIncrementArray.length;
 
-		for (int i = 0; i < iVariateDimension; ++i)
-			adblVariateIncrement[i] = -1. * adblVariateIncrement[i];
+		for (int variateDimensionIndex = 0;
+			variateDimensionIndex < variateDimension;
+			++variateDimensionIndex)
+		{
+			variateIncrementArray[variateDimensionIndex] =
+				-1. * variateIncrementArray[variateDimensionIndex];
+		}
 
-		try {
-			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (true,
-				adblVariateIncrement, null);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (
+				true,
+				variateIncrementArray,
+				null
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -134,11 +163,16 @@ public class NewtonFixedPointFinder extends org.drip.function.rdtor1solver.Fixed
 	}
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent,
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtIncrement,
-		final double dblIncrementFraction)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier curentVariateConstraint,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+			incrementalVariateConstraint,
+		final double incrementFraction)
 	{
-		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (vcmtCurrent,
-			vcmtIncrement, dblIncrementFraction, null);
+		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (
+			curentVariateConstraint,
+			incrementalVariateConstraint,
+			incrementFraction,
+			null
+		);
 	}
 }

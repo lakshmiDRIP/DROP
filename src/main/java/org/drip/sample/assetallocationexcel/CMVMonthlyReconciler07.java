@@ -92,10 +92,11 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CMVMonthlyReconciler07 {
+public class CMVMonthlyReconciler07
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv (
@@ -103,7 +104,8 @@ public class CMVMonthlyReconciler07 {
 			true
 		);
 
-		String[] astrAssetName = new String[] {
+		String[] assetIDArray = new String[]
+		{
 			"TOK",
 			"EWJ",
 			"HYG",
@@ -112,8 +114,8 @@ public class CMVMonthlyReconciler07 {
 			"GSG",
 			"BWX"
 		};
-
-		double[] adblAssetLowerBound = new double[] {
+		double[] assetHoldingsLowerBoundArray = new double[]
+		{
 			0.00,
 			0.00,
 			0.00,
@@ -122,8 +124,8 @@ public class CMVMonthlyReconciler07 {
 			0.00,
 			0.00
 		};
-
-		double[] adblAssetUpperBound = new double[] {
+		double[] assetHoldingsUpperBoundArray = new double[]
+		{
 			0.30,
 			0.30,
 			0.30,
@@ -132,8 +134,8 @@ public class CMVMonthlyReconciler07 {
 			0.30,
 			0.50
 		};
-
-		double[] adblAssetExpectedReturns = new double[] {
+		double[] expectedAssetReturnsArray = new double[]
+		{
 			0.009190,
 			0.007930,
 			0.007050,
@@ -142,11 +144,10 @@ public class CMVMonthlyReconciler07 {
 			0.007980,
 			0.003727
 		};
-
-		double dblPortfolioDesignReturn = 0.005586;
-		double dblPortfolioRiskExcel = 0.028166;
-
-		double[][] aadblAssetReturnsCovariance = new double[][] {
+		double portfolioDesignReturn = 0.005586;
+		double portfolioRiskExcel = 0.028166;
+		double[][] assetReturnsCovarianceMatrix = new double[][]
+		{
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
 			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
@@ -155,8 +156,8 @@ public class CMVMonthlyReconciler07 {
 			{0.002312, 0.001647, 0.001110, 0.000042, 0.000825, 0.005211, 0.000749},
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
-
-		double[] adblReconcilerVariate = new double[] {
+		double[] assetWeightsReconcilerArray = new double[]
+		{
 			0.059817,
 			0.059468,
 			0.181286,
@@ -166,25 +167,31 @@ public class CMVMonthlyReconciler07 {
 			0.246378
 		};
 
-		AssetComponent[] aACReconciler = new AssetComponent[adblReconcilerVariate.length];
+		AssetComponent[] assetComponentReconcilerArray =
+			new AssetComponent[assetWeightsReconcilerArray.length];
 
-		for (int i = 0; i < adblReconcilerVariate.length; ++i)
-			aACReconciler[i] = new AssetComponent (
-				astrAssetName[i],
-				adblReconcilerVariate[i]
+		for (int assetIndex = 0;
+			assetIndex < assetWeightsReconcilerArray.length;
+			++assetIndex)
+		{
+			assetComponentReconcilerArray[assetIndex] = new AssetComponent (
+				assetIDArray[assetIndex],
+				assetWeightsReconcilerArray[assetIndex]
+			);
+		}
+
+		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIDArray,
+					expectedAssetReturnsArray,
+					assetReturnsCovarianceMatrix
+				)
 			);
 
-		Portfolio pfReconciler = new Portfolio (aACReconciler);
-
-		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (
-			MultivariateMoments.Standard (
-				astrAssetName,
-				adblAssetExpectedReturns,
-				aadblAssetReturnsCovariance
-			)
+		double[][] covarianceMatrix = assetUniverseStatisticalProperties.covariance (
+			assetIDArray
 		);
-
-		double[][] aadblCovarianceMatrix = ausp.covariance (astrAssetName);
 
 		System.out.println ("\n\n\t|------------------------------------------------------------------------------------------------||");
 
@@ -192,22 +199,35 @@ public class CMVMonthlyReconciler07 {
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
 
-		String strHeader = "\t|     |";
+		String header = "\t|     |";
 
-		for (int i = 0; i < astrAssetName.length; ++i)
-			strHeader += "    " + astrAssetName[i] + "     |";
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			header += "    " + assetIDArray[assetIndex] + "     |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
 
-		for (int i = 0; i < astrAssetName.length; ++i) {
-			String strDump = "\t| " + astrAssetName[i] + " ";
+		for (int assetIndexI = 0;
+			assetIndexI < assetIDArray.length;
+			++assetIndexI)
+		{
+			String dump = "\t| " + assetIDArray[assetIndexI] + " ";
 
-			for (int j = 0; j < astrAssetName.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + " ";
+			for (int assetIndexJ = 0;
+				assetIndexJ < assetIDArray.length;
+				++assetIndexJ)
+			{
+				dump += "|" + FormatUtil.FormatDouble (
+					covarianceMatrix[assetIndexI][assetIndexJ], 1, 8, 1.
+				) + " ";
+			}
 
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||\n\n");
@@ -218,16 +238,20 @@ public class CMVMonthlyReconciler07 {
 
 		System.out.println ("\t|-------------------||");
 
-		for (int i = 0; i < astrAssetName.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
 			System.out.println (
-				"\t| " + astrAssetName[i] + " | " +
-				FormatUtil.FormatDouble (adblAssetLowerBound[i], 2, 0, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblAssetUpperBound[i], 2, 0, 100.) + "% ||"
+				"\t| " + assetIDArray[assetIndex] + " | " +
+				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + "% | " +
+				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|-------------------||\n\n");
 
-		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();
+		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();
 
 		System.out.println ("\t|--------------------------------------------||");
 
@@ -235,43 +259,58 @@ public class CMVMonthlyReconciler07 {
 
 		System.out.println ("\t|--------------------------------------------||");
 
-		System.out.println ("\t|    Barrier Decay Velocity        : " + 1. / ipbc.decayVelocity());
+		System.out.println (
+			"\t|    Barrier Decay Velocity        : " + 1. / interiorPointBarrierControl.decayVelocity()
+		);
 
-		System.out.println ("\t|    Barrier Decay Steps           : " + ipbc.numDecaySteps());
+		System.out.println (
+			"\t|    Barrier Decay Steps           : " + interiorPointBarrierControl.decayStepCount()
+		);
 
-		System.out.println ("\t|    Initial Barrier Strength      : " + ipbc.initialStrength());
+		System.out.println (
+			"\t|    Initial Barrier Strength      : " + interiorPointBarrierControl.initialStrength()
+		);
 
-		System.out.println ("\t|    Barrier Convergence Tolerance : " + ipbc.relativeTolerance());
+		System.out.println (
+			"\t|    Barrier Convergence Tolerance : " + interiorPointBarrierControl.relativeTolerance()
+		);
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (
-			ipbc,
-			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)
-		);
-
-		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (
-			astrAssetName,
-			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new EqualityConstraintSettings (
-				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
-				dblPortfolioDesignReturn
-			)
-		);
-
-		for (int i = 0; i < astrAssetName.length; ++i)
-			pdp.addBound (
-				astrAssetName[i],
-				adblAssetLowerBound[i],
-				adblAssetUpperBound[i]
+		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
+			new BoundedPortfolioConstructionParameters (
+				assetIDArray,
+				CustomRiskUtilitySettings.VarianceMinimizer(),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
+						EqualityConstraintSettings.RETURNS_CONSTRAINT,
+					portfolioDesignReturn
+				)
 			);
 
-		OptimizationOutput pfOptimal = cmva.allocate (
-			pdp,
-			ausp
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			boundedPortfolioConstructionParameters.addBound (
+				assetIDArray[assetIndex],
+				assetHoldingsLowerBoundArray[assetIndex],
+				assetHoldingsUpperBoundArray[assetIndex]
+			);
+		}
+
+		OptimizationOutput optimizationOutput = new ConstrainedMeanVarianceOptimizer (
+			interiorPointBarrierControl,
+			LineStepEvolutionControl.NocedalWrightStrongWolfe (
+				false
+			)
+		).allocate (
+			boundedPortfolioConstructionParameters,
+			assetUniverseStatisticalProperties
 		);
 
-		AssetComponent[] aACOptimal = pfOptimal.optimalPortfolio().assetComponentArray();
+		AssetComponent[] optimalAssetComponentArray =
+			optimizationOutput.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\t|------------------------------||");
 
@@ -279,32 +318,70 @@ public class CMVMonthlyReconciler07 {
 
 		System.out.println ("\t|------------------------------||");
 
-		System.out.println ("\t| ASSET |   DRIP   |   EXCEL   ||");
+		System.out.println ("\t| ASSET |   DROP   |   EXCEL   ||");
 
 		System.out.println ("\t|------------------------------||");
 
-		for (int i = 0; i < aACOptimal.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < optimalAssetComponentArray.length;
+			++assetIndex)
+		{
 			System.out.println (
-				"\t|  " + aACOptimal[i].id() + "  |" +
-				FormatUtil.FormatDouble (aACOptimal[i].amount(), 2, 4, 100.) + "% | " +
-				FormatUtil.FormatDouble (aACReconciler[i].amount(), 2, 4, 100.) + "% ||"
+				"\t|  " + optimalAssetComponentArray[assetIndex].id() + "  |" +
+				FormatUtil.FormatDouble (
+					optimalAssetComponentArray[assetIndex].amount(), 2, 4, 100.
+				) + "% | " +
+				FormatUtil.FormatDouble (
+					assetComponentReconcilerArray[assetIndex].amount(), 2, 4, 100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|------------------------------||\n\n");
 
 		System.out.println ("\t|-------------------------------------------------------------||");
 
-		System.out.println ("\t| Optimal Portfolio Normalize                     : " + FormatUtil.FormatDouble (pfOptimal.optimalPortfolio().notional(), 1, 4, 1.) + "   ||");
+		System.out.println (
+			"\t| Optimal Portfolio Normalize                     : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalPortfolio().notional(), 1, 4, 1.
+			) + "   ||"
+		);
 
-		System.out.println ("\t| Optimal Portfolio Input Return                  : " + FormatUtil.FormatDouble (dblPortfolioDesignReturn, 1, 4, 100.) + "%  ||");
+		System.out.println (
+			"\t| Optimal Portfolio Input Return                  : " + FormatUtil.FormatDouble (
+				portfolioDesignReturn, 1, 4, 100.
+			) + "%  ||"
+		);
 
-		System.out.println ("\t| Optimal Portfolio Expected Return               : " + FormatUtil.FormatDouble (pfOptimal.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "%  ||");
+		System.out.println (
+			"\t| Optimal Portfolio Expected Return               : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.
+			) + "%  ||"
+		);
 
-		System.out.println ("\t| Optimal Portfolio Standard Deviation            : " + FormatUtil.FormatDouble (pfOptimal.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + "%  ||");
+		System.out.println (
+			"\t| Optimal Portfolio Standard Deviation            : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.
+			) + "%  ||"
+		);
 
-		System.out.println ("\t| Excel Portfolio Standard Deviation (Calculated) : " + FormatUtil.FormatDouble (Math.sqrt (pfReconciler.variance (ausp)), 1, 4, 100.) + "%  ||");
+		System.out.println (
+			"\t| Excel Portfolio Standard Deviation (Calculated) : " + FormatUtil.FormatDouble (
+				Math.sqrt (
+					new Portfolio (
+						assetComponentReconcilerArray
+					).variance (
+						assetUniverseStatisticalProperties
+					)
+				), 1, 4, 100.
+			) + "%  ||"
+		);
 
-		System.out.println ("\t| Excel Portfolio Standard Deviation (Input)      : " + FormatUtil.FormatDouble (dblPortfolioRiskExcel, 1, 4, 100.) + "%  ||");
+		System.out.println (
+			"\t| Excel Portfolio Standard Deviation (Input)      : " + FormatUtil.FormatDouble (
+				portfolioRiskExcel, 1, 4, 100.
+			) + "%  ||"
+		);
 
 		System.out.println ("\t|-------------------------------------------------------------||\n");
 

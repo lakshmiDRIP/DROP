@@ -81,48 +81,75 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintFunctionPointMetrics {
-	private double[] _adblValue = null;
-	private double[] _adblMultiplier = null;
-	private double[][] _aadblJacobian = null;
+public class ConstraintFunctionPointMetrics
+{
+	private double[] _constraintFunctionValueArray = null;
+	private double[] _constraintFunctionMultiplierArray = null;
+	private double[][] _constraintFunctionJacobianArray = null;
 
 	/**
 	 * ConstraintFunctionPointMetrics Constructor
 	 * 
-	 * @param adblValue Constraint Value Array
-	 * @param aadblJacobian Constraint Jacobian Matrix
-	 * @param adblMultiplier Constraint Karush-Kahn-Tucker Multiplier Array
+	 * @param constraintFunctionValueArray Constraint Function Value Array
+	 * @param constraintFunctionJacobianArray Constraint Function Jacobian Array
+	 * @param constraintFunctionMultiplierArray Constraint Function Karush-Kahn-Tucker Multiplier Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintFunctionPointMetrics (
-		final double[] adblValue,
-		final double[][] aadblJacobian,
-		final double[] adblMultiplier)
+		final double[] constraintFunctionValueArray,
+		final double[][] constraintFunctionJacobianArray,
+		final double[] constraintFunctionMultiplierArray)
 		throws java.lang.Exception
 	{
-		if (null == (_adblValue = adblValue) || null == (_aadblJacobian = aadblJacobian) || null ==
-			(_adblMultiplier = adblMultiplier))
+		if (null == (_constraintFunctionValueArray = constraintFunctionValueArray) ||
+			null == (_constraintFunctionJacobianArray = constraintFunctionJacobianArray) ||
+			null == (_constraintFunctionMultiplierArray = constraintFunctionMultiplierArray))
+		{
 			throw new java.lang.Exception ("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
-
-		int iDimension = _aadblJacobian.length;
-		int iNumConstraint = _adblValue.length;
-
-		if (0 == iNumConstraint || iNumConstraint != adblMultiplier.length || 0 == iDimension)
-			throw new java.lang.Exception ("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumConstraint; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_adblValue[i]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_adblMultiplier[i]))
-				throw new java.lang.Exception ("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
 		}
 
-		for (int i = 0; i < iDimension; ++i) {
-			if (null == _aadblJacobian[i] || iNumConstraint != _aadblJacobian[i].length ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_aadblJacobian[i]))
+		int constraintCount = _constraintFunctionValueArray.length;
+		int functionDimension = _constraintFunctionJacobianArray.length;
+
+		if (0 == constraintCount || constraintCount != _constraintFunctionMultiplierArray.length ||
+			0 == functionDimension)
+		{
+			throw new java.lang.Exception ("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
+		}
+
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (
+					_constraintFunctionValueArray[constraintIndex]
+				) || !org.drip.numerical.common.NumberUtil.IsValid (
+					_constraintFunctionMultiplierArray[constraintIndex]
+				)
+			)
+			{
+				throw new java.lang.Exception (
+					"ConstraintFunctionPointMetrics Constructor => Invalid Inputs"
+				);
+			}
+		}
+
+		for (int functionDimensionIndex = 0;
+			functionDimensionIndex < functionDimension;
+			++functionDimensionIndex)
+		{
+			if (null == _constraintFunctionJacobianArray[functionDimensionIndex] ||
+				constraintCount != _constraintFunctionJacobianArray[functionDimensionIndex].length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (
+					_constraintFunctionJacobianArray[functionDimensionIndex]
+				)
+			)
+			{
 				throw new java.lang.Exception
 					("ConstraintFunctionPointMetrics Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -134,7 +161,7 @@ public class ConstraintFunctionPointMetrics {
 
 	public int count()
 	{
-		return _adblValue.length;
+		return _constraintFunctionValueArray.length;
 	}
 
 	/**
@@ -145,39 +172,39 @@ public class ConstraintFunctionPointMetrics {
 
 	public int dimension()
 	{
-		return _aadblJacobian.length;
+		return _constraintFunctionJacobianArray.length;
 	}
 
 	/**
-	 * Retrieve the Constraint Value Array
+	 * Retrieve the Constraint Function Value Array
 	 * 
-	 * @return The Constraint Value Array
+	 * @return The Constraint Function Value Array
 	 */
 
-	public double[] value()
+	public double[] constraintFunctionValueArray()
 	{
-		return _adblValue;
+		return _constraintFunctionValueArray;
 	}
 
 	/**
-	 * Retrieve the Constraint KKR Multiplier Array
+	 * Retrieve the Constraint Function KKR Multiplier Array
 	 * 
-	 * @return The Constraint KKR Multiplier Array
+	 * @return The Constraint Function KKR Multiplier Array
 	 */
 
-	public double[] multiplier()
+	public double[] constraintFunctionMultiplierArray()
 	{
-		return _adblMultiplier;
+		return _constraintFunctionMultiplierArray;
 	}
 
 	/**
-	 * Retrieve the Constraint Jacobian Matrix
+	 * Retrieve the Constraint Function Jacobian Array
 	 * 
-	 * @return The Constraint Jacobian Matrix
+	 * @return The Constraint Function Jacobian Array
 	 */
 
-	public double[][] jacobian()
+	public double[][] constraintFunctionJacobianArray()
 	{
-		return _aadblJacobian;
+		return _constraintFunctionJacobianArray;
 	}
 }

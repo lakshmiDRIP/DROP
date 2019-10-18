@@ -99,24 +99,28 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LineEvolutionVerifierMetrics {
-	private double[] _adblCurrentVariate = null;
-	private double _dblStepLength = java.lang.Double.NaN;
-	private double[] _adblCurrentVariateFunctionJacobian = null;
-	private org.drip.function.definition.UnitVector _uvTargetDirection = null;
+public abstract class LineEvolutionVerifierMetrics
+{
+	private double[] _currentVariateArray = null;
+	private double _stepLength = java.lang.Double.NaN;
+	private double[] _currentVariateFunctionJacobian = null;
+	private org.drip.function.definition.UnitVector _targetDirection = null;
 
 	protected LineEvolutionVerifierMetrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength,
-		final double[] adblCurrentVariateFunctionJacobian)
+		final org.drip.function.definition.UnitVector targetDirection,
+		final double[] currentVariateArray,
+		final double stepLength,
+		final double[] currentVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-		if (null == (_uvTargetDirection = uvTargetDirection) || null == (_adblCurrentVariate =
-			adblCurrentVariate) || !org.drip.numerical.common.NumberUtil.IsValid (_dblStepLength = dblStepLength)
-				|| null == (_adblCurrentVariateFunctionJacobian = adblCurrentVariateFunctionJacobian) ||
-					_adblCurrentVariate.length != _adblCurrentVariateFunctionJacobian.length)
+		if (null == (_targetDirection = targetDirection) ||
+			null == (_currentVariateArray = currentVariateArray) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_stepLength = stepLength) ||
+			null == (_currentVariateFunctionJacobian = currentVariateFunctionJacobian) ||
+			_currentVariateArray.length != _currentVariateFunctionJacobian.length)
+		{
 			throw new java.lang.Exception ("LineEvolutionVerifierMetrics Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -125,9 +129,9 @@ public abstract class LineEvolutionVerifierMetrics {
 	 * @return The Current Variate Array
 	 */
 
-	public double[] currentVariate()
+	public double[] currentVariateArray()
 	{
-		return _adblCurrentVariate;
+		return _currentVariateArray;
 	}
 
 	/**
@@ -138,7 +142,7 @@ public abstract class LineEvolutionVerifierMetrics {
 
 	public org.drip.function.definition.UnitVector targetDirection()
 	{
-		return _uvTargetDirection;
+		return _targetDirection;
 	}
 
 	/**
@@ -149,7 +153,7 @@ public abstract class LineEvolutionVerifierMetrics {
 
 	public double stepLength()
 	{
-		return _dblStepLength;
+		return _stepLength;
 	}
 
 	/**
@@ -160,28 +164,48 @@ public abstract class LineEvolutionVerifierMetrics {
 
 	public double[] currentVariateFunctionJacobian()
 	{
-		return _adblCurrentVariateFunctionJacobian;
+		return _currentVariateFunctionJacobian;
 	}
 
 	@Override public java.lang.String toString()
 	{
-		double[] adblDirection = _uvTargetDirection.component();
+		double[] targetDirectionVector = _targetDirection.component();
 
-		java.lang.String strDump = "\t[";
-		int iNumVariate = _adblCurrentVariate.length;
+		java.lang.String string = "\t[";
+		int variateCount = _currentVariateArray.length;
 
-		for (int i = 0; i < iNumVariate; ++i)
-			strDump = strDump + org.drip.numerical.common.FormatUtil.FormatDouble (_adblCurrentVariate[i], 2, 3,
-				1.) + " |";
+		for (int variateIndex = 0;
+			variateIndex < variateCount;
+			++variateIndex)
+		{
+			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (
+				_currentVariateArray[variateIndex],
+				2,
+				3,
+				1.
+			) + " |";
+		}
 
-		strDump = strDump + "]" + org.drip.numerical.common.FormatUtil.FormatDouble (_dblStepLength, 1, 3, 1.) +
-			" || {";
+		string = string + "]" + org.drip.numerical.common.FormatUtil.FormatDouble (
+			_stepLength,
+			1,
+			3,
+			1.
+		) + " || {";
 
-		for (int i = 0; i < iNumVariate; ++i)
-			strDump = strDump + org.drip.numerical.common.FormatUtil.FormatDouble (adblDirection[i], 1, 2, 1.) +
-				" |";
+		for (int variateIndex = 0;
+			variateIndex < variateCount;
+			++variateIndex)
+		{
+			string = string + org.drip.numerical.common.FormatUtil.FormatDouble (
+				targetDirectionVector[variateIndex],
+				1,
+				2,
+				1.
+			) + " |";
+		}
 
-		return strDump + " }";
+		return string + " }";
 	}
 
 	/**

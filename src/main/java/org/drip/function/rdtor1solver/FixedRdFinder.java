@@ -80,28 +80,32 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FixedRdFinder {
+public abstract class FixedRdFinder
+{
 
 	/**
 	 * Flag Indicating whether the Verifier Increment Metrics are to be Traced
 	 */
 
-	public static boolean s_bVerifierIncrementBlog = false;
+	public static boolean s_verifierIncrementBlog = false;
 
-	private org.drip.function.rdtor1solver.ConvergenceControl _cc = null;
-	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;
-	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;
+	private org.drip.function.definition.RdToR1 _objectiveFunction = null;
+	private org.drip.function.rdtor1solver.ConvergenceControl _convergenceControl = null;
+	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;
 
 	protected FixedRdFinder (
-		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec,
-		final org.drip.function.rdtor1solver.ConvergenceControl cc)
+		final org.drip.function.definition.RdToR1 objectiveFunction,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl,
+		final org.drip.function.rdtor1solver.ConvergenceControl convergenceControl)
 		throws java.lang.Exception
 	{
-		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null == (_cc = cc))
+		if (null == (_objectiveFunction = objectiveFunction) ||
+			null == (_convergenceControl = convergenceControl))
+		{
 			throw new java.lang.Exception ("FixedRdFinder Constructor => Invalid Inputs");
+		}
 
-		_lsec = lsec;
+		_lineStepEvolutionControl = lineStepEvolutionControl;
 	}
 
 	/**
@@ -112,7 +116,7 @@ public abstract class FixedRdFinder {
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-		return _rdToR1ObjectiveFunction;
+		return _objectiveFunction;
 	}
 
 	/**
@@ -123,7 +127,7 @@ public abstract class FixedRdFinder {
 
 	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
 	{
-		return _lsec;
+		return _lineStepEvolutionControl;
 	}
 
 	/**
@@ -132,153 +136,212 @@ public abstract class FixedRdFinder {
 	 * @return The Convergence Control Parameters
 	 */
 
-	public org.drip.function.rdtor1solver.ConvergenceControl control()
+	public org.drip.function.rdtor1solver.ConvergenceControl convergenceControl()
 	{
-		return _cc;
+		return _convergenceControl;
 	}
 
 	/**
 	 * Solve for the Optimal Variate-Inequality Constraint Multiplier Tuple Using the Variate/Inequality
 	 *  Constraint Tuple Convergence
 	 *  
-	 * @param vicmStarting The Starting Variate/Inequality Constraint Tuple Set
+	 * @param startingVariateConstraint The Starting Variate/Inequality Constraint Tuple
 	 * 
 	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
 	 */
 
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeVariate (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier startingVariateConstraint)
 	{
-		if (null == vicmStarting) return null;
+		if (null == startingVariateConstraint)
+		{
+			return null;
+		}
 
-		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();
+		org.drip.function.definition.RdToR1 objectiveFunction = objectiveFunction();
 
-		boolean bFixedPointFound = false;
-		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmCurrent = vicmStarting;
-		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmPrevious = vicmStarting;
+		boolean fixedPointFound = false;
+		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier currentVariateConstraint =
+			startingVariateConstraint;
+		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier previousVariateConstraint =
+			startingVariateConstraint;
 
-		int iNumComparisonVariate = rdToR1ObjectiveFunction instanceof
-			org.drip.function.rdtor1.LagrangianMultivariate ?
-				((org.drip.function.rdtor1.LagrangianMultivariate)
-					rdToR1ObjectiveFunction).objectiveFunctionDimension() :
-						rdToR1ObjectiveFunction.dimension();
+		int comparisonVariateCount = objectiveFunction instanceof
+			org.drip.function.rdtor1.LagrangianMultivariate ? (
+				(org.drip.function.rdtor1.LagrangianMultivariate) objectiveFunction).objectiveFunctionDimension() :
+				objectiveFunction.dimension();
 
-		org.drip.function.rdtor1solver.ConvergenceControl cc = control();
+		double absoluteToleranceFallback = _convergenceControl.absoluteTolerance();
 
-		double dblAbsoluteToleranceFallback = cc.absoluteTolerance();
+		double relativeTolerance = _convergenceControl.relativeTolerance();
 
-		double dblRelativeTolerance = cc.relativeTolerance();
+		while (!fixedPointFound)
+		{
+			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint =
+				increment (
+					currentVariateConstraint
+				);
 
-		while (!bFixedPointFound) {
-			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment
-				(vicmCurrent);
-
-			if (null == vicmIncrement || null == (vicmCurrent = next (vicmPrevious, vicmIncrement,
-				incrementFraction (vicmCurrent, vicmIncrement))))
+			if (null == variateConstraint ||
+				null == (
+					currentVariateConstraint = next (
+						previousVariateConstraint,
+						variateConstraint,
+						incrementFraction (
+							currentVariateConstraint,
+							variateConstraint
+						)
+					)
+				)
+			)
+			{
 				return null;
+			}
 
-			try {
-				bFixedPointFound =
-					org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Compare
-						(vicmCurrent, vicmPrevious, dblRelativeTolerance, dblAbsoluteToleranceFallback,
-							iNumComparisonVariate);
-			} catch (java.lang.Exception e) {
+			try
+			{
+				fixedPointFound =
+					org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Compare (
+						currentVariateConstraint,
+						previousVariateConstraint,
+						relativeTolerance,
+						absoluteToleranceFallback,
+						comparisonVariateCount
+					);
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 
-			vicmPrevious = vicmCurrent;
+			previousVariateConstraint = currentVariateConstraint;
 		}
 
-		return vicmCurrent;
+		return currentVariateConstraint;
 	}
 
 	/**
 	 * Solve for the Optimal Variate-Inequality Constraint Multiplier Tuple Using the Objective Function
 	 *  Convergence
 	 *  
-	 * @param vicmStarting The Starting Variate/Inequality Constraint Tuple Set
+	 * @param startingVariateConstraint The Starting Variate/Inequality Constraint Tuple Set
 	 * 
 	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
 	 */
 
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier convergeObjectiveFunction (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier startingVariateConstraint)
 	{
-		if (null == vicmStarting) return null;
+		if (null == startingVariateConstraint)
+		{
+			return null;
+		}
 
-		boolean bFixedPointFound = false;
-		double dblObjectiveFunctionPrevious = java.lang.Double.NaN;
-		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = vicmStarting;
+		boolean fixedPointFound = false;
+		double objectiveFunctionValuePrevious = java.lang.Double.NaN;
+		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint =
+			startingVariateConstraint;
 
-		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();
-
-		try {
-			dblObjectiveFunctionPrevious = rdToR1ObjectiveFunction.evaluate (vicm.variates());
-		} catch (java.lang.Exception e) {
+		try
+		{
+			objectiveFunctionValuePrevious = _objectiveFunction.evaluate (
+				variateConstraint.variateArray()
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.function.rdtor1solver.ConvergenceControl cc = control();
+		double convergenceControlAbsoluteTolerance = _convergenceControl.absoluteTolerance();
 
-		double dblIPBCAbsoluteTolerance = cc.absoluteTolerance();
+		double objectiveFunctionAbsoluteTolerance = java.lang.Math.abs (
+			objectiveFunctionValuePrevious * _convergenceControl.relativeTolerance()
+		);
 
-		double dblOFAbsoluteTolerance = java.lang.Math.abs (dblObjectiveFunctionPrevious *
-			cc.relativeTolerance());
+		double dblAbsoluteTolerance = convergenceControlAbsoluteTolerance <
+			objectiveFunctionAbsoluteTolerance ?
+			convergenceControlAbsoluteTolerance : objectiveFunctionAbsoluteTolerance;
 
-		double dblAbsoluteTolerance = dblIPBCAbsoluteTolerance < dblOFAbsoluteTolerance ?
-			dblIPBCAbsoluteTolerance : dblOFAbsoluteTolerance;
+		while (!fixedPointFound)
+		{
+			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier incrementalVariateConstraint
+				= increment (
+					variateConstraint
+				);
 
-		while (!bFixedPointFound) {
-			org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmIncrement = increment
-				(vicm);
-
-			if (null == vicmIncrement || null == (vicm = next (vicm, vicmIncrement, incrementFraction (vicm,
-				vicmIncrement))))
+			if (null == incrementalVariateConstraint ||
+				null == (
+					variateConstraint = next (
+						variateConstraint,
+						incrementalVariateConstraint,
+						incrementFraction (
+							variateConstraint,
+							incrementalVariateConstraint
+						)
+					)
+				)
+			)
+			{
 				return null;
+			}
 
-			try {
-				double dblObjectiveFunction = rdToR1ObjectiveFunction.evaluate (vicm.variates());
+			try
+			{
+				double objectiveFunctionValue = _objectiveFunction.evaluate (
+					variateConstraint.variateArray()
+				);
 
-				if (java.lang.Math.abs (dblObjectiveFunctionPrevious - dblObjectiveFunction) <
-					dblAbsoluteTolerance)
-					bFixedPointFound = true;
+				if (java.lang.Math.abs (
+						objectiveFunctionValuePrevious - objectiveFunctionValue
+					) < dblAbsoluteTolerance
+				)
+				{
+					fixedPointFound = true;
+				}
 
-				dblObjectiveFunctionPrevious = dblObjectiveFunction;
-			} catch (java.lang.Exception e) {
+				objectiveFunctionValuePrevious = objectiveFunctionValue;
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return vicm;
+		return variateConstraint;
 	}
 
 	/**
 	 * Find the Optimal Variate-Inequality Constraint Multiplier Tuple using the Iteration Parameters
 	 *  provided by the Convergence Control Instance
 	 *  
-	 * @param vicmStarting The Starting Variate-Inequality Constraint Multiplier Tuple
+	 * @param startingVariateConstraint The Starting Variate-Inequality Constraint Multiplier Tuple
 	 * 
 	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
 	 */
 
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier find (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmStarting)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier startingVariateConstraint)
 	{
-		int iConvergenceType = control().convergenceType();
+		int convergenceType = _convergenceControl.convergenceType();
 
 		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE
-			== iConvergenceType)
-			return convergeObjectiveFunction (vicmStarting);
+			== convergenceType)
+		{
+			return convergeObjectiveFunction (startingVariateConstraint);
+		}
 
 		if (org.drip.function.rdtor1solver.InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE
-			== iConvergenceType)
-			return convergeVariate (vicmStarting);
+			== convergenceType)
+		{
+			return convergeVariate (startingVariateConstraint);
+		}
 
 		return null;
 	}
@@ -286,45 +349,64 @@ public abstract class FixedRdFinder {
 	/**
 	 * Retrieve the Incremental Step Length Fraction
 	 * 
-	 * @param vicm The VICM Base Instance
-	 * @param vicmFullIncrement The Full VICM Instance Increment
+	 * @param variateConstraint The VariateInequalityConstraintMultiplier Base Instance
+	 * @param variateConstraintIncrement The Full VariateInequalityConstraintMultiplier Instance Increment
 	 * 
-	 * @return The VICM Incremental Step Length Fraction
+	 * @return The VariateInequalityConstraintMultiplier Incremental Step Length Fraction
 	 */
 
 	public double incrementFraction (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm,
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicmFullIncrement)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+			variateConstraintIncrement)
 	{
-		if (null == _lsec || null == vicm || vicm.incremental() || null == vicmFullIncrement ||
-			!vicmFullIncrement.incremental())
+		if (null == _lineStepEvolutionControl ||
+			null == variateConstraint || variateConstraint.incremental() ||
+			null == variateConstraintIncrement || !variateConstraintIncrement.incremental())
+		{
 			return 1.;
+		}
 
-		org.drip.function.rdtor1descent.LineEvolutionVerifier lev = _lsec.lineEvolutionVerifier();
+		org.drip.function.rdtor1descent.LineEvolutionVerifier lineEvolutionVerifier =
+			_lineStepEvolutionControl.lineEvolutionVerifier();
 
-		org.drip.function.definition.SizedVector sv = vicmFullIncrement.variateIncrementVector();
+		org.drip.function.definition.UnitVector variateIncrementDirectionVector =
+			variateConstraintIncrement.variateIncrementVector().direction();
 
-		org.drip.function.definition.UnitVector uvDirection = sv.direction();
+		int reductionStepCount = _lineStepEvolutionControl.reductionStepCount();
 
-		double dblReductionFactor = _lsec.reductionFactor();
+		double reductionFactor = _lineStepEvolutionControl.reductionFactor();
 
-		int iReductionStep = _lsec.reductionSteps();
+		double[] variateArray = variateConstraint.variateArray();
 
-		double[] adblVariate = vicm.variates();
+		double stepLength = 1.;
 
-		double dblStepLength = 1.;
+		while (0 <= --reductionStepCount)
+		{
+			org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics lineEvolutionVerifierMetrics =
+				lineEvolutionVerifier.metrics (
+					variateIncrementDirectionVector,
+					variateArray,
+					_objectiveFunction,
+					stepLength
+				);
 
-		while (0 <= --iReductionStep) {
-			org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = lev.metrics (uvDirection,
-				adblVariate, _rdToR1ObjectiveFunction, dblStepLength);
+			if (null == lineEvolutionVerifierMetrics)
+			{
+				return 1.;
+			}
 
-			if (null == levm) return 1.;
+			if (s_verifierIncrementBlog)
+			{
+				System.out.println (lineEvolutionVerifierMetrics);
+			}
 
-			if (s_bVerifierIncrementBlog) System.out.println (levm);
+			if (lineEvolutionVerifierMetrics.verify())
+			{
+				return stepLength;
+			}
 
-			if (levm.verify()) return dblStepLength;
-
-			dblStepLength *= dblReductionFactor;
+			stepLength *= reductionFactor;
 		}
 
 		return 1.;
@@ -333,26 +415,26 @@ public abstract class FixedRdFinder {
 	/**
 	 * Produce the Incremental Variate-Constraint Multiplier
 	 * 
-	 * @param vcmtCurrent The Current Variate-Constraint Multiplier Tuple
+	 * @param currentVariateConstraint The Current Variate-Constraint Multiplier Tuple
 	 * 
 	 * @return The Incremental Variate-Constraint Multiplier
 	 */
 
 	abstract public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent);
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier currentVariateConstraint);
 
 	/**
 	 * Iterate Over to the Next Variate-Constraint Multiplier Tuple
 	 * 
-	 * @param vcmtCurrent The Current Variate-Constraint Multiplier Tuple
-	 * @param vcmtIncrement The Incremental Variate-Constraint Multiplier Tuple
-	 * @param dblIncrementFraction The Incremental Fraction to be applied
+	 * @param currentVariateConstraint The Current Variate-Constraint Multiplier Tuple
+	 * @param incrementalVariateConstraint The Incremental Variate-Constraint Multiplier Tuple
+	 * @param incrementFraction The Incremental Fraction to be applied
 	 * 
 	 * @return The Next Variate-Constraint Multiplier Set
 	 */
 
 	abstract public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent,
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtIncrement,
-		final double dblIncrementFraction);
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier currentVariateConstraint,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier incrementalVariateConstraint,
+		final double incrementFraction);
 }

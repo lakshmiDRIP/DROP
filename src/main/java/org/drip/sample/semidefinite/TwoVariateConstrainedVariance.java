@@ -62,120 +62,135 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TwoVariateConstrainedVariance {
+public class TwoVariateConstrainedVariance
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		EnvManager.InitEnv (
+			""
+		);
 
-		double[][] aadblCovarianceMatrix = new double[][] {
+		double[][] covarianceMatrix = new double[][]
+		{
 			{0.09, 0.12},
 			{0.12, 0.04}
 		};
 
-		double[] adblEqualityConstraint = new double[] {
+		double[] equalityConstraintRHSArray = new double[]
+		{
 			1.,
 			1.
 		};
 
-		double dblEqualityConstraintConstant = -1.;
-		int iObjectiveDimension = aadblCovarianceMatrix.length;
+		double equalityConstraintConstant = -1.;
+		int objectiveDimension = covarianceMatrix.length;
 
-		RdToR1[] aEqualityConstraintRdToR1 = new AffineMultivariate[] {
+		RdToR1[] equalityConstraintMultivariateFunctionArray = new AffineMultivariate[]
+		{
 			new AffineMultivariate (
-				adblEqualityConstraint,
-				dblEqualityConstraintConstant
+				equalityConstraintRHSArray,
+				equalityConstraintConstant
 			)
 		};
 
-		int iNumEqualityConstraint = aEqualityConstraintRdToR1.length;
+		int equalityConstraintCount = equalityConstraintMultivariateFunctionArray.length;
 
-		AffineBoundMultivariate lmbConstraint1 = new AffineBoundMultivariate (
+		AffineBoundMultivariate affineBoundMultivariateFunction1 = new AffineBoundMultivariate (
 			true,
 			0,
-			2 + iNumEqualityConstraint,
+			2 + equalityConstraintCount,
 			0.65
 		);
 
-		AffineBoundMultivariate lmbConstraint2 = new AffineBoundMultivariate (
+		AffineBoundMultivariate affineBoundMultivariateFunction2 = new AffineBoundMultivariate (
 			true,
 			1,
-			2 + iNumEqualityConstraint,
+			2 + equalityConstraintCount,
 			0.65
 		);
 
-		AffineBoundMultivariate lmbConstraint3 = new AffineBoundMultivariate (
+		AffineBoundMultivariate affineBoundMultivariateFunction3 = new AffineBoundMultivariate (
 			false,
 			0,
-			2 + iNumEqualityConstraint,
+			2 + equalityConstraintCount,
 			0.15
 		);
 
-		AffineBoundMultivariate lmbConstraint4 = new AffineBoundMultivariate (
+		AffineBoundMultivariate affineBoundMultivariateFunction4 = new AffineBoundMultivariate (
 			false,
 			1,
-			2 + iNumEqualityConstraint,
+			2 + equalityConstraintCount,
 			0.15
 		);
 
-		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {
-			lmbConstraint1,
-			lmbConstraint2,
-			lmbConstraint3,
-			lmbConstraint4
+		RdToR1[] inequalityConstraintFunctionArray = new RdToR1[]
+		{
+			affineBoundMultivariateFunction1,
+			affineBoundMultivariateFunction2,
+			affineBoundMultivariateFunction3,
+			affineBoundMultivariateFunction4
 		};
 
-		double dblBarrierStrength = 1.;
+		double barrierStrength = 1.;
 
-		CovarianceEllipsoidMultivariate ce = new CovarianceEllipsoidMultivariate (aadblCovarianceMatrix);
-
-		LagrangianMultivariate ceec = new LagrangianMultivariate (
-			ce,
-			aEqualityConstraintRdToR1
+		LagrangianMultivariate lagrangianMultivariate = new LagrangianMultivariate (
+			new CovarianceEllipsoidMultivariate (
+				covarianceMatrix
+			),
+			equalityConstraintMultivariateFunctionArray
 		);
 
-		double[] adblStartingVariate = ObjectiveConstraintVariateSet.Uniform (
-			iObjectiveDimension,
+		double[] startingVariateArray = ObjectiveConstraintVariateSet.Uniform (
+			objectiveDimension,
 			1
 		);
 
-		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();
-
-		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (
-			ceec,
-			aRdToR1InequalityConstraint,
-			ipbc,
-			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)
-		);
-
-		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (adblStartingVariate);
+		VariateInequalityConstraintMultiplier variateInequalityConstraintMultiplier =
+			new BarrierFixedPointFinder (
+				lagrangianMultivariate,
+				inequalityConstraintFunctionArray,
+				InteriorPointBarrierControl.Standard(),
+				LineStepEvolutionControl.NocedalWrightStrongWolfe (
+					false
+				)
+			).solve (
+				startingVariateArray
+			);
 
 		System.out.println ("\n\n\t|----------------------------------------------------||");
 
 		System.out.println (
-			"\t| OPTIMAL VARIATES => " + FormatUtil.FormatDouble (vcmt.variates()[0], 1, 5, 1.) +
-			" | " + FormatUtil.FormatDouble (vcmt.variates()[1], 1, 5, 1.) +
-			" | " + FormatUtil.FormatDouble (ceec.evaluate (vcmt.variates()), 1, 5, 1.) + " ||"
+			"\t| OPTIMAL VARIATES => " + FormatUtil.FormatDouble (variateInequalityConstraintMultiplier.variateArray()[0], 1, 5, 1.) +
+			" | " + FormatUtil.FormatDouble (variateInequalityConstraintMultiplier.variateArray()[1], 1, 5, 1.) +
+			" | " + FormatUtil.FormatDouble (lagrangianMultivariate.evaluate (variateInequalityConstraintMultiplier.variateArray()), 1, 5, 1.) + " ||"
 		);
 
 		System.out.println ("\t|----------------------------------------------------||\n\n");
 
-		int iStepDown = 20;
+		int stepDown = 20;
 
-		double[] adblConstraintMultiplier = new double[aRdToR1InequalityConstraint.length];
+		double[] constraintMultiplierArray = new double[inequalityConstraintFunctionArray.length];
 
-		for (int i = 0; i < aRdToR1InequalityConstraint.length; ++i)
-			adblConstraintMultiplier[i] = dblBarrierStrength / aRdToR1InequalityConstraint[i].evaluate (adblStartingVariate);
+		for (int inequalityConstraintFunctionIndex = 0;
+			inequalityConstraintFunctionIndex < inequalityConstraintFunctionArray.length;
+			++inequalityConstraintFunctionIndex)
+		{
+			constraintMultiplierArray[inequalityConstraintFunctionIndex] = barrierStrength /
+				inequalityConstraintFunctionArray[inequalityConstraintFunctionIndex].evaluate (
+					startingVariateArray
+				);
+		}
 
-		vcmt = new VariateInequalityConstraintMultiplier (
+		variateInequalityConstraintMultiplier = new VariateInequalityConstraintMultiplier (
 			false,
-			adblStartingVariate,
-			adblConstraintMultiplier
+			startingVariateArray,
+			constraintMultiplierArray
 		);
 
-		ConvergenceControl cc = new ConvergenceControl (
+		ConvergenceControl convergenceControl = new ConvergenceControl (
 			ConvergenceControl.OBJECTIVE_FUNCTION_SEQUENCE_CONVERGENCE,
 			5.0e-02,
 			1.0e-06,
@@ -188,27 +203,38 @@ public class TwoVariateConstrainedVariance {
 
 		System.out.println ("\t|-------------------------------------------------||");
 
-		while (--iStepDown > 0) {
-			InteriorFixedPointFinder bfpf = new InteriorFixedPointFinder (
-				ceec,
-				aRdToR1InequalityConstraint,
-				LineStepEvolutionControl.NocedalWrightStrongWolfe (false),
-				cc,
-				dblBarrierStrength
+		while (--stepDown > 0)
+		{
+			variateInequalityConstraintMultiplier = new InteriorFixedPointFinder (
+				lagrangianMultivariate,
+				inequalityConstraintFunctionArray,
+				LineStepEvolutionControl.NocedalWrightStrongWolfe (
+					false
+				),
+				convergenceControl,
+				barrierStrength
+			).find (
+				variateInequalityConstraintMultiplier
 			);
 
-			vcmt = bfpf.find (vcmt);
-
-			adblStartingVariate = vcmt.variates();
+			startingVariateArray = variateInequalityConstraintMultiplier.variateArray();
 
 			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (dblBarrierStrength, 1, 10, 1.) +
-				" => " + FormatUtil.FormatDouble (vcmt.variates()[0], 1, 5, 1.) +
-				" | " + FormatUtil.FormatDouble (vcmt.variates()[1], 1, 5, 1.) +
-				" | " + FormatUtil.FormatDouble (ceec.evaluate (vcmt.variates()), 1, 5, 1.) + " ||"
+				"\t| " + FormatUtil.FormatDouble (barrierStrength, 1, 10, 1.) +
+				" => " + FormatUtil.FormatDouble (
+					variateInequalityConstraintMultiplier.variateArray()[0], 1, 5, 1.
+				) +
+				" | " + FormatUtil.FormatDouble (
+					variateInequalityConstraintMultiplier.variateArray()[1], 1, 5, 1.
+				) +
+				" | " + FormatUtil.FormatDouble (
+					lagrangianMultivariate.evaluate (
+						variateInequalityConstraintMultiplier.variateArray()
+					), 1, 5, 1.
+				) + " ||"
 			);
 
-			dblBarrierStrength *= 0.5;
+			barrierStrength *= 0.5;
 		}
 
 		System.out.println ("\t|-------------------------------------------------||\n\n");

@@ -266,7 +266,7 @@ public class LongOnlyMarkovitzBullet
 		);
 
 		System.out.println (
-			"\t|    Barrier Decay Steps           : " + interiorPointBarrierControl.numDecaySteps()
+			"\t|    Barrier Decay Steps           : " + interiorPointBarrierControl.decayStepCount()
 		);
 
 		System.out.println (

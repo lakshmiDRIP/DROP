@@ -82,43 +82,55 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BarrierFixedPointFinder {
-	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;
-	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;
-	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _ipbc = null;
-	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;
+public class BarrierFixedPointFinder
+{
+	private org.drip.function.definition.RdToR1 _objectiveFunction = null;
+	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;
+	private org.drip.function.definition.RdToR1[] _inequalityConstraintMultivariateFunctionArray = null;
+	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;
 
 	/**
 	 * BarrierFixedPointFinder Constructor
 	 * 
-	 * @param rdToR1ObjectiveFunction The Objective Function
-	 * @param aRdToR1InequalityConstraint Array of Inequality Constraints
-	 * @param ipbc Interior Point Barrier Strength Control Parameters
-	 * @param lsec Line Step Evolution Verifier Control Parameters
+	 * @param objectiveFunction The Objective Function
+	 * @param inequalityConstraintMultivariateFunctionArray Array of Multivariate Inequality Constraint
+	 * 		Functions
+	 * @param interiorPointBarrierControl Interior Point Barrier Strength Control Parameters
+	 * @param lineStepEvolutionControl Line Step Evolution Verifier Control Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BarrierFixedPointFinder (
-		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
-		final org.drip.function.definition.RdToR1[] aRdToR1InequalityConstraint,
-		final org.drip.function.rdtor1solver.InteriorPointBarrierControl ipbc,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec)
+		final org.drip.function.definition.RdToR1 objectiveFunction,
+		final org.drip.function.definition.RdToR1[] inequalityConstraintMultivariateFunctionArray,
+		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
 		throws java.lang.Exception
 	{
-		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null ==
-			(_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint) || null == (_ipbc = ipbc))
+		if (null == (_objectiveFunction = objectiveFunction) ||
+			null == (_inequalityConstraintMultivariateFunctionArray = inequalityConstraintMultivariateFunctionArray) ||
+			null == (_interiorPointBarrierControl = interiorPointBarrierControl))
+		{
 			throw new java.lang.Exception ("BarrierFixedPointFinder Constructor => Invalid Inputs");
+		}
 
-		_lsec = lsec;
-		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;
+		_lineStepEvolutionControl = lineStepEvolutionControl;
+		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;
 
-		if (0 == iNumInequalityConstraint)
+		if (0 == constraintCount)
+		{
 			throw new java.lang.Exception ("BarrierFixedPointFinder Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (null == _aRdToR1InequalityConstraint[i])
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
+		{
+			if (null == _inequalityConstraintMultivariateFunctionArray[constraintIndex])
+			{
 				throw new java.lang.Exception ("BarrierFixedPointFinder Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -130,7 +142,7 @@ public class BarrierFixedPointFinder {
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-		return _rdToR1ObjectiveFunction;
+		return _objectiveFunction;
 	}
 
 	/**
@@ -139,73 +151,112 @@ public class BarrierFixedPointFinder {
 	 * @return The Array of Inequality Constraints
 	 */
 
-	public org.drip.function.definition.RdToR1[] inequalityConstraints()
+	public org.drip.function.definition.RdToR1[] inequalityConstraintMultivariateFunctionArray()
 	{
-		return _aRdToR1InequalityConstraint;
+		return _inequalityConstraintMultivariateFunctionArray;
 	}
 
 	/**
-	 * Retrieve the Interior Point Barrier Strength Control Parameters
+	 * Retrieve the Line Step Evolution Interior Control Parameters
 	 * 
-	 * @return The Interior Point Barrier Strength Control Parameters
+	 * @return The Line Step Evolution Strength Control Parameters
 	 */
 
-	public org.drip.function.rdtor1solver.InteriorPointBarrierControl control()
+	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
 	{
-		return _ipbc;
+		return _lineStepEvolutionControl;
+	}
+
+	/**
+	 * Retrieve the Interior Point Barrier Control Parameters
+	 * 
+	 * @return The Interior Point Barrier Control Parameters
+	 */
+
+	public org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl()
+	{
+		return _interiorPointBarrierControl;
 	}
 
 	/**
 	 * Solve for the Optimal Variate-Inequality Constraint Multiplier Tuple using the Barrier Iteration
 	 *  Parameters provided by the IPBC Instance
 	 *  
-	 * @param adblStartingVariate The Starting Variate Sequence
+	 * @param startingVariateArray The Starting Variate Sequence
 	 * 
 	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
 	 */
 
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier solve (
-		final double[] adblStartingVariate)
+		final double[] startingVariateArray)
 	{
-		int iOutstandingDecaySteps = _ipbc.numDecaySteps();
+		double barrierStrength = _interiorPointBarrierControl.initialStrength();
 
-		double dblBarrierStrength = _ipbc.initialStrength();
+		int outstandingDecaySteps = _interiorPointBarrierControl.decayStepCount();
 
-		double dblBarrierDecayVelocity = _ipbc.decayVelocity();
+		double barrierDecayVelocity = _interiorPointBarrierControl.decayVelocity();
 
-		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;
-		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = null;
-		double[] adblStartingInequalityConstraintMultiplier = new double[iNumInequalityConstraint];
+		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint = null;
+		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;
+		double[] startingConstraintMultiplierArray = new double[constraintCount];
 
-		try {
-			for (int i = 0; i < iNumInequalityConstraint; ++i)
-				adblStartingInequalityConstraintMultiplier[i] = dblBarrierStrength /
-					_aRdToR1InequalityConstraint[i].evaluate (adblStartingVariate);
+		try
+		{
+			for (int constraintIndex = 0;
+				constraintIndex < constraintCount;
+				++constraintIndex)
+			{
+				startingConstraintMultiplierArray[constraintIndex] = barrierStrength /
+					_inequalityConstraintMultivariateFunctionArray[constraintIndex].evaluate (
+						startingVariateArray
+					);
+			}
 
-			vicm = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (false,
-				adblStartingVariate, adblStartingInequalityConstraintMultiplier);
-		} catch (java.lang.Exception e) {
+			variateConstraint = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (
+				false,
+				startingVariateArray,
+				startingConstraintMultiplierArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 
 			return null;
 		}
 
-		while (--iOutstandingDecaySteps >= 0) {
-			try {
-				org.drip.function.rdtor1solver.InteriorFixedPointFinder bfpf = new
-					org.drip.function.rdtor1solver.InteriorFixedPointFinder (_rdToR1ObjectiveFunction,
-						_aRdToR1InequalityConstraint, _lsec, _ipbc, dblBarrierStrength);
+		while (--outstandingDecaySteps >= 0)
+		{
+			try
+			{
+				org.drip.function.rdtor1solver.InteriorFixedPointFinder interiorFixedPointFinder =
+					new org.drip.function.rdtor1solver.InteriorFixedPointFinder (
+						_objectiveFunction,
+						_inequalityConstraintMultivariateFunctionArray,
+						_lineStepEvolutionControl,
+						_interiorPointBarrierControl,
+						barrierStrength
+					);
 
-				if (null == (vicm = bfpf.find (vicm))) return null;
-			} catch (java.lang.Exception e) {
+				if (null == (
+					variateConstraint = interiorFixedPointFinder.find (
+						variateConstraint
+					))
+				)
+				{
+					return null;
+				}
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 
-			dblBarrierStrength *= dblBarrierDecayVelocity;
+			barrierStrength *= barrierDecayVelocity;
 		}
 
-		return vicm;
+		return variateConstraint;
 	}
 }

@@ -93,10 +93,11 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BudgetConstrainedVarianceMinimizer {
+public class BudgetConstrainedVarianceMinimizer
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv (
@@ -104,31 +105,41 @@ public class BudgetConstrainedVarianceMinimizer {
 			true
 		);
 
-		String strSeriesLocation = "C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
+		String seriesPath = "T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
 
-		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);
-
-		String[] astrVariateHeader = csvGrid.headers();
-
-		double dblAssetLowerBound = 0.05;
-		double dblAssetUpperBound = 0.65;
-		String[] astrAsset = new String[astrVariateHeader.length - 1];
-		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];
-
-		for (int i = 0; i < astrAsset.length; ++i) {
-			astrAsset[i] = astrVariateHeader[i + 1];
-
-			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);
-		}
-
-		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (
-			MultivariateMoments.Standard (
-				astrAsset,
-				aadblVariateSample
-			)
+		CSVGrid csvGrid = CSVParser.NamedStringGrid (
+			seriesPath
 		);
 
-		double[][] aadblCovarianceMatrix = ausp.covariance (astrAsset);
+		String[] variateHeaderArray = csvGrid.headers();
+
+		double assetHoldingLowerBound = 0.05;
+		double assetHoldingUpperBound = 0.65;
+		String[] assetIDArray = new String[variateHeaderArray.length - 1];
+		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];
+
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];
+
+			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (
+				assetIndex + 1
+			);
+		}
+
+		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIDArray,
+					variateSampleGrid
+				)
+			);
+
+		double[][] covarianceMatrix = assetUniverseStatisticalProperties.covariance (
+			assetIDArray
+		);
 
 		System.out.println ("\n\n\t|------------------------------------------------------------------------------------------------||");
 
@@ -136,22 +147,35 @@ public class BudgetConstrainedVarianceMinimizer {
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
 
-		String strHeader = "\t|     |";
+		String header = "\t|     |";
 
-		for (int i = 0; i < astrAsset.length; ++i)
-			strHeader += "    " + astrAsset[i] + "     |";
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			header += "    " + assetIDArray[assetIndex] + "     |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
 
-		for (int i = 0; i < astrAsset.length; ++i) {
-			String strDump = "\t| " + astrAsset[i] + " ";
+		for (int assetIndexI = 0;
+			assetIndexI < assetIDArray.length;
+			++assetIndexI)
+		{
+			String dump = "\t| " + assetIDArray[assetIndexI] + " ";
 
-			for (int j = 0; j < astrAsset.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + " ";
+			for (int assetIndexJ = 0;
+				assetIndexJ < assetIDArray.length;
+				++assetIndexJ)
+			{
+				dump += "|" + FormatUtil.FormatDouble (
+					covarianceMatrix[assetIndexI][assetIndexJ], 1, 8, 1.
+				) + " ";
+			}
 
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
 		System.out.println ("\t|------------------------------------------------------------------------------------------------||\n\n");
@@ -162,16 +186,20 @@ public class BudgetConstrainedVarianceMinimizer {
 
 		System.out.println ("\t|------------------||");
 
-		for (int i = 0; i < astrAsset.length; ++i)
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
 			System.out.println (
-				"\t| " + astrAsset[i] + " | " +
-				FormatUtil.FormatDouble (dblAssetLowerBound, 1, 0, 100.) + "% | " +
-				FormatUtil.FormatDouble (dblAssetUpperBound, 2, 0, 100.) + "% ||"
+				"\t| " + assetIDArray[assetIndex] + " | " +
+				FormatUtil.FormatDouble (assetHoldingLowerBound, 1, 0, 100.) + "% | " +
+				FormatUtil.FormatDouble (assetHoldingUpperBound, 2, 0, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t|------------------||\n\n");
 
-		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();
+		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();
 
 		System.out.println ("\t|--------------------------------------------||");
 
@@ -179,43 +207,54 @@ public class BudgetConstrainedVarianceMinimizer {
 
 		System.out.println ("\t|--------------------------------------------||");
 
-		System.out.println ("\t|    Barrier Decay Velocity        : " + 1. / ipbc.decayVelocity());
+		System.out.println (
+			"\t|    Barrier Decay Velocity        : " + 1. / interiorPointBarrierControl.decayVelocity()
+		);
 
-		System.out.println ("\t|    Barrier Decay Steps           : " + ipbc.numDecaySteps());
+		System.out.println (
+			"\t|    Barrier Decay Steps           : " + interiorPointBarrierControl.decayStepCount()
+		);
 
-		System.out.println ("\t|    Initial Barrier Strength      : " + ipbc.initialStrength());
+		System.out.println (
+			"\t|    Initial Barrier Strength      : " + interiorPointBarrierControl.initialStrength()
+		);
 
-		System.out.println ("\t|    Barrier Convergence Tolerance : " + ipbc.relativeTolerance());
+		System.out.println (
+			"\t|    Barrier Convergence Tolerance : " + interiorPointBarrierControl.relativeTolerance()
+		);
 
 		System.out.println ("\t|--------------------------------------------||\n\n");
 
-		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (
-			ipbc,
-			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)
-		);
-
-		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (
-			astrAsset,
-			CustomRiskUtilitySettings.VarianceMinimizer(),
-			new EqualityConstraintSettings (
-				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
-				Double.NaN
-			)
-		);
-
-		for (int i = 0; i < astrAsset.length; ++i)
-			pdp.addBound (
-				astrAsset[i],
-				dblAssetLowerBound,
-				dblAssetUpperBound
+		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =
+			new BoundedPortfolioConstructionParameters (
+				assetIDArray,
+				CustomRiskUtilitySettings.VarianceMinimizer(),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					Double.NaN
+				)
 			);
 
-		OptimizationOutput pf = cmva.allocate (
-			pdp,
-			ausp
-		);
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			boundedPortfolioConstructionParameters.addBound (
+				assetIDArray[assetIndex],
+				assetHoldingLowerBound,
+				assetHoldingUpperBound
+			);
+		}
 
-		AssetComponent[] aAC = pf.optimalPortfolio().assetComponentArray();
+		OptimizationOutput optimizationOutput = new ConstrainedMeanVarianceOptimizer (
+			interiorPointBarrierControl,
+			LineStepEvolutionControl.NocedalWrightStrongWolfe (
+				false
+			)
+		).allocate (
+			boundedPortfolioConstructionParameters,
+			assetUniverseStatisticalProperties
+		);
 
 		System.out.println ("\t|---------------||");
 
@@ -223,18 +262,36 @@ public class BudgetConstrainedVarianceMinimizer {
 
 		System.out.println ("\t|---------------||");
 
-		for (AssetComponent ac : aAC)
-			System.out.println ("\t| " + ac.id() + " | " + FormatUtil.FormatDouble (ac.amount(), 2, 2, 100.) + "% ||");
+		for (AssetComponent assetComponent : optimizationOutput.optimalPortfolio().assetComponentArray())
+		{
+			System.out.println (
+				"\t| " + assetComponent.id() + " | " + FormatUtil.FormatDouble (
+					assetComponent.amount(), 2, 2, 100.
+				) + "% ||"
+			);
+		}
 
 		System.out.println ("\t|---------------||\n\n");
 
 		System.out.println ("\t|-----------------------------------------||");
 
-		System.out.println ("\t| Portfolio Notional           : " + FormatUtil.FormatDouble (pf.optimalPortfolio().notional(), 1, 4, 1.) + "  ||");
+		System.out.println (
+			"\t| Portfolio Notional           : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalPortfolio().notional(), 1, 4, 1.
+			) + "  ||"
+		);
 
-		System.out.println ("\t| Portfolio Expected Return    : " + FormatUtil.FormatDouble (pf.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + "% ||");
+		System.out.println (
+			"\t| Portfolio Expected Return    : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.
+			) + "% ||"
+		);
 
-		System.out.println ("\t| Portfolio Standard Deviation : " + FormatUtil.FormatDouble (pf.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + "% ||");
+		System.out.println (
+			"\t| Portfolio Standard Deviation : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.
+			) + "% ||"
+		);
 
 		System.out.println ("\t|-----------------------------------------||\n");
 

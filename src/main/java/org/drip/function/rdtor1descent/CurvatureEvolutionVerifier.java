@@ -93,7 +93,9 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
+public class CurvatureEvolutionVerifier
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifier
+{
 
 	/**
 	 * The Nocedal-Wright Curvature Parameter
@@ -101,24 +103,29 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 
 	public static final double NOCEDAL_WRIGHT_CURVATURE_PARAMETER = 0.9;
 
-	private boolean _bStrongCurvatureCriterion = false;
-	private double _dblCurvatureParameter = java.lang.Double.NaN;
+	private boolean _strongCurvatureCriterion = false;
+	private double _curvatureParameter = java.lang.Double.NaN;
 
 	/**
 	 * Construct the Nocedal-Wright Curvature Evolution Verifier
 	 * 
-	 * @param bStrongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
+	 * @param strongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
 	 * 
 	 * @return The Nocedal-Wright Curvature Evolution Verifier Instance
 	 */
 
 	public static final CurvatureEvolutionVerifier NocedalWrightStandard (
-		final boolean bStrongCurvatureCriterion)
+		final boolean strongCurvatureCriterion)
 	{
-		try {
-			return new CurvatureEvolutionVerifier (NOCEDAL_WRIGHT_CURVATURE_PARAMETER,
-				bStrongCurvatureCriterion);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new CurvatureEvolutionVerifier (
+				NOCEDAL_WRIGHT_CURVATURE_PARAMETER,
+				strongCurvatureCriterion
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -128,21 +135,23 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 	/**
 	 * CurvatureEvolutionVerifier Constructor
 	 * 
-	 * @param dblCurvatureParameter The Curvature Parameter
-	 * @param bStrongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
+	 * @param curvatureParameter The Curvature Parameter
+	 * @param strongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurvatureEvolutionVerifier (
-		final double dblCurvatureParameter,
-		final boolean bStrongCurvatureCriterion)
+		final double curvatureParameter,
+		final boolean strongCurvatureCriterion)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter))
+		{
 			throw new java.lang.Exception ("CurvatureEvolutionVerifier Constructor => Invalid Inputs");
+		}
 
-		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;
+		_strongCurvatureCriterion = strongCurvatureCriterion;
 	}
 
 	/**
@@ -153,7 +162,7 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 
 	public double curvatureParameter()
 	{
-		return _dblCurvatureParameter;
+		return _curvatureParameter;
 	}
 
 	/**
@@ -162,24 +171,40 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 	 * @return TRUE - The "Strong" Curvature Criterion needs to be met
 	 */
 
-	public boolean strongCriterion()
+	public boolean strongCurvatureCriterion()
 	{
-		return _bStrongCurvatureCriterion;
+		return _strongCurvatureCriterion;
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 	{
-		try {
-			return null == funcRdToR1 ? null : new
-				org.drip.function.rdtor1descent.CurvatureEvolutionVerifierMetrics (_dblCurvatureParameter,
-					_bStrongCurvatureCriterion, uvTargetDirection, adblCurrentVariate, dblStepLength,
-						funcRdToR1.jacobian (adblCurrentVariate), funcRdToR1.jacobian (NextVariate
-							(uvTargetDirection, adblCurrentVariate, dblStepLength)));
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return null == multivariateFunction ? null :
+				new org.drip.function.rdtor1descent.CurvatureEvolutionVerifierMetrics (
+					_curvatureParameter,
+					_strongCurvatureCriterion,
+					targetDirectionUnitVector,
+					currentVariateArray,
+					stepLength,
+					multivariateFunction.jacobian (
+						currentVariateArray
+					),
+					multivariateFunction.jacobian (
+						NextVariateArray (
+							targetDirectionUnitVector,
+							currentVariateArray,
+							stepLength
+						)
+					)
+				);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

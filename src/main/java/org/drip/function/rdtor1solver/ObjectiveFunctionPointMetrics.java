@@ -81,38 +81,53 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ObjectiveFunctionPointMetrics {
-	private double[] _adblJacobian = null;
-	private double[][] _aadblHessian = null;
+public class ObjectiveFunctionPointMetrics
+{
+	private double[] _jacobian = null;
+	private double[][] _hessian = null;
 
 	/**
 	 * ObjectiveFunctionPointMetrics Constructor
 	 * 
-	 * @param adblJacobian The Jacobian Array
-	 * @param aadblHessian The Hessian Matrix
+	 * @param jacobian The Jacobian Array
+	 * @param hessian The Hessian Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public ObjectiveFunctionPointMetrics (
-		final double[] adblJacobian,
-		final double[][] aadblHessian)
+		final double[] jacobian,
+		final double[][] hessian)
 		throws java.lang.Exception
 	{
-		if (null == (_adblJacobian = adblJacobian) || null == (_aadblHessian = aadblHessian))
+		if (null == (_jacobian = jacobian) ||
+			null == (_hessian = hessian))
+		{
 			throw new java.lang.Exception ("ObjectiveFunctionPointMetrics Constructor => Invalid Inputs");
+		}
 
-		int iDimension = _adblJacobian.length;
+		int dimensionCount = _jacobian.length;
 
-		if (0 == iDimension || iDimension != _aadblHessian.length)
+		if (0 == dimensionCount || dimensionCount != _hessian.length)
+		{
 			throw new java.lang.Exception ("ObjectiveFunctionPointMetrics Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iDimension; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblJacobian[i]) || null == _aadblHessian[i] ||
-				iDimension != _aadblHessian[i].length || !org.drip.numerical.common.NumberUtil.IsValid
-					(_aadblHessian[i]))
+		for (int dimensionIndex = 0;
+			dimensionIndex < dimensionCount;
+			++dimensionIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (
+				_jacobian[dimensionIndex]
+			) || null == _hessian[dimensionIndex] ||
+				dimensionCount != _hessian[dimensionIndex].length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (
+					_hessian[dimensionIndex]
+			))
+			{
 				throw new java.lang.Exception
 					("ObjectiveFunctionPointMetrics Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -124,7 +139,7 @@ public class ObjectiveFunctionPointMetrics {
 
 	public int dimension()
 	{
-		return _adblJacobian.length;
+		return _jacobian.length;
 	}
 
 	/**
@@ -135,7 +150,7 @@ public class ObjectiveFunctionPointMetrics {
 
 	public double[] jacobian()
 	{
-		return _adblJacobian;
+		return _jacobian;
 	}
 
 	/**
@@ -146,6 +161,6 @@ public class ObjectiveFunctionPointMetrics {
 
 	public double[][] hessian()
 	{
-		return _aadblHessian;
+		return _hessian;
 	}
 }

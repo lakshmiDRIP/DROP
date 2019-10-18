@@ -93,45 +93,53 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEvolutionVerifierMetrics extends
-	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-	private boolean _bStrongCurvatureCriterion = false;
-	private double[] _adblNextVariateFunctionJacobian = null;
-	private double _dblCurvatureParameter = java.lang.Double.NaN;
+public class CurvatureEvolutionVerifierMetrics
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics
+{
+	private boolean _strongCurvatureCriterion = false;
+	private double[] _nextVariateFunctionJacobian = null;
+	private double _curvatureParameter = java.lang.Double.NaN;
 
 	/**
 	 * CurvatureEvolutionVerifierMetrics Constructor
 	 * 
-	 * @param dblCurvatureParameter The Curvature Criterion Parameter
-	 * @param bStrongCurvatureCriterion TRUE - Apply the "Strong" Curvature Criterion
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate Array of Current Variate
-	 * @param dblStepLength The Incremental Step Length
-	 * @param adblCurrentVariateFunctionJacobian The Function Jacobian at the Current Variate
-	 * @param adblNextVariateFunctionJacobian The Function Jacobian at the Next Variate
+	 * @param curvatureParameter The Curvature Criterion Parameter
+	 * @param strongCurvatureCriterion TRUE - Apply the "Strong" Curvature Criterion
+	 * @param targetDirectionUnitVector The Target Direction Unit Vector
+	 * @param currentVariateArray Array of Current Variate
+	 * @param stepLength The Incremental Step Length
+	 * @param currentVariateFunctionJacobian The Function Jacobian at the Current Variate
+	 * @param nextVariateFunctionJacobian The Function Jacobian at the Next Variate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurvatureEvolutionVerifierMetrics (
-		final double dblCurvatureParameter,
-		final boolean bStrongCurvatureCriterion,
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength,
-		final double[] adblCurrentVariateFunctionJacobian,
-		final double[] adblNextVariateFunctionJacobian)
+		final double curvatureParameter,
+		final boolean strongCurvatureCriterion,
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final double stepLength,
+		final double[] currentVariateFunctionJacobian,
+		final double[] nextVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);
+		super (
+			targetDirectionUnitVector,
+			currentVariateArray,
+			stepLength,
+			currentVariateFunctionJacobian
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||
-			null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-				adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter) ||
+			null == (_nextVariateFunctionJacobian = nextVariateFunctionJacobian) ||
+			currentVariateArray.length != _nextVariateFunctionJacobian.length)
+		{
 			throw new java.lang.Exception
 				("CurvatureEvolutionVerifierMetrics Constructor => Invalid Inputs");
+		}
 
-		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;
+		_strongCurvatureCriterion = strongCurvatureCriterion;
 	}
 
 	/**
@@ -142,7 +150,7 @@ public class CurvatureEvolutionVerifierMetrics extends
 
 	public double curvatureParameter()
 	{
-		return _dblCurvatureParameter;
+		return _curvatureParameter;
 	}
 
 	/**
@@ -151,9 +159,9 @@ public class CurvatureEvolutionVerifierMetrics extends
 	 * @return TRUE - The "Strong" Curvature Criterion needs to be met
 	 */
 
-	public boolean strongCriterion()
+	public boolean strongCurvatureCriterion()
 	{
-		return _bStrongCurvatureCriterion;
+		return _strongCurvatureCriterion;
 	}
 
 	/**
@@ -164,7 +172,7 @@ public class CurvatureEvolutionVerifierMetrics extends
 
 	public double[] nextVariateFunctionJacobian()
 	{
-		return _adblNextVariateFunctionJacobian;
+		return _nextVariateFunctionJacobian;
 	}
 
 	/**
@@ -175,20 +183,30 @@ public class CurvatureEvolutionVerifierMetrics extends
 
 	public boolean verify()
 	{
-		double[] adblDirectionVector = targetDirection().component();
+		double[] targetDirectionVector = targetDirection().component();
 
-		try {
-			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct
-				(adblDirectionVector, _adblNextVariateFunctionJacobian);
+		try
+		{
+			double nextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct (
+				targetDirectionVector,
+				_nextVariateFunctionJacobian
+			);
 
-			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *
-				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,
-					currentVariateFunctionJacobian());
+			double parametrizedCurrentFunctionIncrement =
+				_curvatureParameter * org.drip.numerical.linearalgebra.Matrix.DotProduct (
+					targetDirectionVector,
+					currentVariateFunctionJacobian()
+				);
 
-			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) <=
-				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement >=
-					dblParametrizedCurrentFunctionIncrement;
-		} catch (java.lang.Exception e) {
+			return _strongCurvatureCriterion ?
+				java.lang.Math.abs (
+					nextFunctionIncrement
+				) <= java.lang.Math.abs (
+					parametrizedCurrentFunctionIncrement
+				) : nextFunctionIncrement >= parametrizedCurrentFunctionIncrement;
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

@@ -80,10 +80,12 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.ConvergenceControl {
-	private int _iNumDecaySteps = -1;
-	private double _dblDecayVelocity = java.lang.Double.NaN;
-	private double _dblInitialStrength = java.lang.Double.NaN;
+public class InteriorPointBarrierControl
+	extends org.drip.function.rdtor1solver.ConvergenceControl
+{
+	private int _decayStepCount = -1;
+	private double _decayVelocity = java.lang.Double.NaN;
+	private double _initialStrength = java.lang.Double.NaN;
 
 	/**
 	 * Construct a Standard InteriorPointBarrierControl Instance
@@ -93,10 +95,19 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 
 	public static InteriorPointBarrierControl Standard()
 	{
-		try {
-			return new InteriorPointBarrierControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02,
-				1.0e-06, 1.0e+04, 0.5, 70);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new InteriorPointBarrierControl (
+				VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
+				5.0e-02,
+				1.0e-06,
+				1.0e+04,
+				0.5,
+				70
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -106,31 +117,38 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 	/**
 	 * InteriorPointBarrierControl Constructor
 	 * 
-	 * @param iConvergenceType The Convergence Type
-	 * @param dblRelativeTolerance The Objective Function Relative Tolerance
-	 * @param dblAbsoluteTolerance The Objective Function Absolute Tolerance
-	 * @param dblInitialStrength The Initial Barrier Strength Level
-	 * @param dblDecayVelocity The Barrier Decay Velocity
-	 * @param iNumDecaySteps The Number Barrier Decay Steps
+	 * @param convergenceType The Convergence Type
+	 * @param relativeTolerance The Objective Function Relative Tolerance
+	 * @param absoluteTolerance The Objective Function Absolute Tolerance
+	 * @param initialStrength The Initial Barrier Strength Level
+	 * @param decayVelocity The Barrier Decay Velocity
+	 * @param decayStepCount The Number Barrier Decay Steps
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public InteriorPointBarrierControl (
-		final int iConvergenceType,
-		final double dblRelativeTolerance,
-		final double dblAbsoluteTolerance,
-		final double dblInitialStrength,
-		final double dblDecayVelocity,
-		final int iNumDecaySteps)
+		final int convergenceType,
+		final double relativeTolerance,
+		final double absoluteTolerance,
+		final double initialStrength,
+		final double decayVelocity,
+		final int decayStepCount)
 		throws java.lang.Exception
 	{
-		super (iConvergenceType, dblRelativeTolerance, dblAbsoluteTolerance, 100);
+		super (
+			convergenceType,
+			relativeTolerance,
+			absoluteTolerance,
+			100
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblInitialStrength = dblInitialStrength) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblDecayVelocity = dblDecayVelocity) || 1 >
-				(_iNumDecaySteps = iNumDecaySteps))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_initialStrength = initialStrength) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_decayVelocity = decayVelocity) ||
+				1 > (_decayStepCount = decayStepCount))
+		{
 			throw new java.lang.Exception ("InteriorPointBarrierControl Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -139,9 +157,9 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 	 * @return The Number of Decay Steps
 	 */
 
-	public int numDecaySteps()
+	public int decayStepCount()
 	{
-		return _iNumDecaySteps;
+		return _decayStepCount;
 	}
 
 	/**
@@ -152,7 +170,7 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 
 	public double initialStrength()
 	{
-		return _dblInitialStrength;
+		return _initialStrength;
 	}
 
 	/**
@@ -163,6 +181,6 @@ public class InteriorPointBarrierControl extends org.drip.function.rdtor1solver.
 
 	public double decayVelocity()
 	{
-		return _dblDecayVelocity;
+		return _decayVelocity;
 	}
 }

@@ -315,7 +315,7 @@ public class ConstrainedMeanVarianceOptimizer extends
 				return null;
 			}
 
-			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variates();
+			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variateArray();
 
 			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 			{
@@ -400,7 +400,7 @@ public class ConstrainedMeanVarianceOptimizer extends
 				return null;
 			}
 
-			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variates();
+			double[] optimalWeightArray = variateInequalityConstraintMultiplier.variateArray();
 
 			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 			{

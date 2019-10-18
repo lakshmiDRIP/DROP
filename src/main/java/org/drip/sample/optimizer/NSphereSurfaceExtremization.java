@@ -62,134 +62,151 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NSphereSurfaceExtremization {
+public class NSphereSurfaceExtremization
+{
 
 	private static final void Solve (
-		final NewtonFixedPointFinder nfpf,
-		final double[] adblVariateStarting)
+		final NewtonFixedPointFinder newtonFixedPointFinder,
+		final double[] startingVariateArray)
 		throws Exception
 	{
 		System.out.println ("\n\t|------------------------------------||");
 
 		String strDump = "\t| STARTER: [";
 
-		strDump += FormatUtil.FormatDouble (adblVariateStarting[0], 1, 4, 1.) + ",";
+		strDump += FormatUtil.FormatDouble (startingVariateArray[0], 1, 4, 1.) + ",";
 
-		strDump += FormatUtil.FormatDouble (adblVariateStarting[1], 1, 4, 1.) + ",";
+		strDump += FormatUtil.FormatDouble (startingVariateArray[1], 1, 4, 1.) + ",";
 
-		strDump += FormatUtil.FormatDouble (adblVariateStarting[2], 1, 4, 1.);
+		strDump += FormatUtil.FormatDouble (startingVariateArray[2], 1, 4, 1.);
 
 		System.out.println (strDump + "] ||");
 
 		System.out.println ("\t|------------------------------------||");
 
-		VariateInequalityConstraintMultiplier vcmt = nfpf.convergeVariate (
+		double[] variateArray = newtonFixedPointFinder.convergeVariate (
 			new VariateInequalityConstraintMultiplier (
 				false,
-				adblVariateStarting,
+				startingVariateArray,
 				null
 			)
+		).variateArray();
+
+		System.out.println (
+			"\t| Optimal X      : " + FormatUtil.FormatDouble (variateArray[0], 1, 4, 1.) + "           ||"
 		);
 
-		double[] adblVariate = vcmt.variates();
+		System.out.println (
+			"\t| Optimal Y      : " + FormatUtil.FormatDouble (variateArray[1], 1, 4, 1.) + "           ||"
+		);
 
-		System.out.println ("\t| Optimal X      : " + FormatUtil.FormatDouble (adblVariate[0], 1, 4, 1.) + "           ||");
-
-		System.out.println ("\t| Optimal Y      : " + FormatUtil.FormatDouble (adblVariate[1], 1, 4, 1.) + "           ||");
-
-		System.out.println ("\t| Optimal Lambda : " + FormatUtil.FormatDouble (adblVariate[2], 1, 4, 1.) + "           ||");
+		System.out.println (
+			"\t| Optimal Lambda : " + FormatUtil.FormatDouble (variateArray[2], 1, 4, 1.) + "           ||"
+		);
 
 		System.out.println ("\t|------------------------------------||");
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
-
-		RdToR1 rdToR1VariateSumObjectiveFunction = new RdToR1 (null) {
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws Exception
-			{
-				return adblVariate[0] * adblVariate[0] * adblVariate[1];
-			}
-
-			@Override public int dimension()
-			{
-				return 2;
-			}
-
-			@Override public double[] jacobian (
-				final double[] adblVariate)
-			{
-				double[] adblJacobian = new double[2];
-				adblJacobian[0] = 2. * adblVariate[0] * adblVariate[1];
-				adblJacobian[1] = adblVariate[0] * adblVariate[0];
-				return adblJacobian;
-			}
-
-			@Override public double[][] hessian (
-				final double[] adblVariate)
-			{
-				double[][] aadblHessian = new double[2][2];
-				aadblHessian[0][0] = 2. * adblVariate[1];
-				aadblHessian[0][1] = 2. * adblVariate[0];
-				aadblHessian[1][0] = 2. * adblVariate[0];
-				aadblHessian[1][1] = 0.;
-				return aadblHessian;
-			}
-		};
-
-		RdToR1 rdToR1SphereSurfaceConstraintFunction = new RdToR1 (null) {
-			@Override public double evaluate (
-				final double[] adblVariate)
-				throws Exception
-			{
-				return adblVariate[0] * adblVariate[0] + adblVariate[1] * adblVariate[1] - 3.;
-			}
-
-			@Override public int dimension()
-			{
-				return 2;
-			}
-
-			@Override public double[] jacobian (
-				final double[] adblVariate)
-			{
-				double[] adblJacobian = new double[2];
-				adblJacobian[0] = 2. * adblVariate[0];
-				adblJacobian[1] = 2. * adblVariate[1];
-				return adblJacobian;
-			}
-
-			@Override public double[][] hessian (
-				final double[] adblVariate)
-			{
-				double[][] aadblHessian = new double[2][2];
-				aadblHessian[0][0] = 2.;
-				aadblHessian[0][1] = 0.;
-				aadblHessian[1][0] = 0.;
-				aadblHessian[1][1] = 2.;
-				return aadblHessian;
-			}
-		};
-
-		LagrangianMultivariate lm = new LagrangianMultivariate (
-			rdToR1VariateSumObjectiveFunction,
-			new RdToR1[] {rdToR1SphereSurfaceConstraintFunction}
+		EnvManager.InitEnv (
+			""
 		);
 
-		NewtonFixedPointFinder nfpf = new NewtonFixedPointFinder (
-			lm,
-			LineStepEvolutionControl.NocedalWrightStrongWolfe (false),
+		RdToR1 variateSumObjectiveFunction = new RdToR1 (
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double[] variateArray)
+				throws Exception
+			{
+				return variateArray[0] * variateArray[0] * variateArray[1];
+			}
+
+			@Override public int dimension()
+			{
+				return 2;
+			}
+
+			@Override public double[] jacobian (
+				final double[] variateArray)
+			{
+				double[] jacobian = new double[2];
+				jacobian[0] = 2. * variateArray[0] * variateArray[1];
+				jacobian[1] = variateArray[0] * variateArray[0];
+				return jacobian;
+			}
+
+			@Override public double[][] hessian (
+				final double[] variateArray)
+			{
+				double[][] hessian = new double[2][2];
+				hessian[0][0] = 2. * variateArray[1];
+				hessian[0][1] = 2. * variateArray[0];
+				hessian[1][0] = 2. * variateArray[0];
+				hessian[1][1] = 0.;
+				return hessian;
+			}
+		};
+
+		RdToR1 sphereSurfaceConstraintFunction = new RdToR1 (
+			null
+		)
+		{
+			@Override public double evaluate (
+				final double[] variateArray)
+				throws Exception
+			{
+				return variateArray[0] * variateArray[0] + variateArray[1] * variateArray[1] - 3.;
+			}
+
+			@Override public int dimension()
+			{
+				return 2;
+			}
+
+			@Override public double[] jacobian (
+				final double[] variateArray)
+			{
+				double[] jacobian = new double[2];
+				jacobian[0] = 2. * variateArray[0];
+				jacobian[1] = 2. * variateArray[1];
+				return jacobian;
+			}
+
+			@Override public double[][] hessian (
+				final double[] variateArray)
+			{
+				double[][] hessian = new double[2][2];
+				hessian[0][0] = 2.;
+				hessian[0][1] = 0.;
+				hessian[1][0] = 0.;
+				hessian[1][1] = 2.;
+				return hessian;
+			}
+		};
+
+		NewtonFixedPointFinder newtonFixedPointFinder = new NewtonFixedPointFinder (
+			new LagrangianMultivariate (
+				variateSumObjectiveFunction,
+				new RdToR1[]
+				{
+					sphereSurfaceConstraintFunction
+				}
+			),
+			LineStepEvolutionControl.NocedalWrightStrongWolfe (
+				false
+			),
 			ConvergenceControl.Standard()
 		);
 
 		Solve (
-			nfpf,
-			new double[] {
+			newtonFixedPointFinder,
+			new double[]
+			{
 				2.,
 				1.,
 				1.
@@ -197,8 +214,9 @@ public class NSphereSurfaceExtremization {
 		);
 
 		Solve (
-			nfpf,
-			new double[] {
+			newtonFixedPointFinder,
+			new double[]
+			{
 				-2.,
 				 1.,
 				 1.
@@ -206,7 +224,7 @@ public class NSphereSurfaceExtremization {
 		);
 
 		Solve (
-			nfpf,
+			newtonFixedPointFinder,
 			new double[] {
 				 2.,
 				-1.,
@@ -215,8 +233,9 @@ public class NSphereSurfaceExtremization {
 		);
 
 		Solve (
-			nfpf,
-			new double[] {
+			newtonFixedPointFinder,
+			new double[]
+			{
 				-2.,
 				-1.,
 				 1.
@@ -224,8 +243,9 @@ public class NSphereSurfaceExtremization {
 		);
 
 		Solve (
-			nfpf,
-			new double[] {
+			newtonFixedPointFinder,
+			new double[]
+			{
 				0.,
 				1.,
 				0.
@@ -233,8 +253,9 @@ public class NSphereSurfaceExtremization {
 		);
 
 		Solve (
-			nfpf,
-			new double[] {
+			newtonFixedPointFinder,
+			new double[]
+			{
 				 0.,
 				-1.,
 				 0.

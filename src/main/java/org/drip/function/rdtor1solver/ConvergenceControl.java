@@ -81,7 +81,8 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConvergenceControl {
+public class ConvergenceControl
+{
 
 	/**
 	 * Solve Using the Convergence of the Objective Function Realization
@@ -95,10 +96,10 @@ public class ConvergenceControl {
 
 	public static final int VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE = 2;
 
-	private int _iNumFinderSteps = -1;
-	private double _dblAbsoluteTolerance = java.lang.Double.NaN;
-	private double _dblRelativeTolerance = java.lang.Double.NaN;
-	private int _iConvergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;
+	private int _finderStepCount = -1;
+	private double _absoluteTolerance = java.lang.Double.NaN;
+	private double _relativeTolerance = java.lang.Double.NaN;
+	private int _convergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;
 
 	/**
 	 * Construct a Standard ConvergenceControl Instance
@@ -108,9 +109,17 @@ public class ConvergenceControl {
 
 	public static ConvergenceControl Standard()
 	{
-		try {
-			return new ConvergenceControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02, 1.0e-06, 70);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ConvergenceControl (
+				VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
+				5.0e-02,
+				1.0e-06,
+				70
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -120,27 +129,29 @@ public class ConvergenceControl {
 	/**
 	 * ConvergenceControl Constructor
 	 * 
-	 * @param iConvergenceType The Convergence Type
-	 * @param dblRelativeTolerance The Objective Function Relative Tolerance
-	 * @param dblAbsoluteTolerance The Objective Function Absolute Tolerance
-	 * @param iNumFinderSteps The Number of the Fixed Point Finder Steps
+	 * @param convergenceType The Convergence Type
+	 * @param relativeTolerance The Objective Function Relative Tolerance
+	 * @param absoluteTolerance The Objective Function Absolute Tolerance
+	 * @param finderStepCount The Number of the Fixed Point Finder Steps
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConvergenceControl (
-		final int iConvergenceType,
-		final double dblRelativeTolerance,
-		final double dblAbsoluteTolerance,
-		final int iNumFinderSteps)
+		final int convergenceType,
+		final double relativeTolerance,
+		final double absoluteTolerance,
+		final int finderStepCount)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 >
-				(_iNumFinderSteps = iNumFinderSteps))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_relativeTolerance = relativeTolerance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_absoluteTolerance = absoluteTolerance) ||
+			1 > (_finderStepCount = finderStepCount))
+		{
 			throw new java.lang.Exception ("ConvergenceControl Constructor => Invalid Inputs");
+		}
 
-		_iConvergenceType = iConvergenceType;
+		_convergenceType = convergenceType;
 	}
 
 	/**
@@ -151,7 +162,7 @@ public class ConvergenceControl {
 
 	public int convergenceType()
 	{
-		return _iConvergenceType;
+		return _convergenceType;
 	}
 
 	/**
@@ -160,9 +171,9 @@ public class ConvergenceControl {
 	 * @return The Number of Finder Steps
 	 */
 
-	public int numFinderSteps()
+	public int finderStepCount()
 	{
-		return _iNumFinderSteps;
+		return _finderStepCount;
 	}
 
 	/**
@@ -173,7 +184,7 @@ public class ConvergenceControl {
 
 	public double relativeTolerance()
 	{
-		return _dblRelativeTolerance;
+		return _relativeTolerance;
 	}
 
 	/**
@@ -184,6 +195,6 @@ public class ConvergenceControl {
 
 	public double absoluteTolerance()
 	{
-		return _dblAbsoluteTolerance;
+		return _absoluteTolerance;
 	}
 }

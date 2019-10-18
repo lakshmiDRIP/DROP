@@ -100,32 +100,38 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
-	private boolean _bMaximizerCheck = false;
-	private boolean _bStrongCurvatureCriterion = false;
-	private double _dblArmijoParameter = java.lang.Double.NaN;
-	private double _dblCurvatureParameter = java.lang.Double.NaN;
+public class WolfeEvolutionVerifier
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifier
+{
+	private boolean _maximizerCheck = false;
+	private boolean _strongCurvatureCriterion = false;
+	private double _armijoParameter = java.lang.Double.NaN;
+	private double _curvatureParameter = java.lang.Double.NaN;
 
 	/**
 	 * Construct the Nocedal-Wright Wolfe Evolution Verifier
 	 * 
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
-	 * @param bStrongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param strongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
 	 * 
 	 * @return The Nocedal-Wright Wolfe Evolution Verifier Instance
 	 */
 
 	public static final WolfeEvolutionVerifier NocedalWrightStandard (
-		final boolean bMaximizerCheck,
-		final boolean bStrongCurvatureCriterion)
+		final boolean maximizerCheck,
+		final boolean strongCurvatureCriterion)
 	{
-		try {
-			return new WolfeEvolutionVerifier
-				(org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NOCEDAL_WRIGHT_ARMIJO_PARAMETER,
-					bMaximizerCheck,
-						org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NOCEDAL_WRIGHT_CURVATURE_PARAMETER,
-						bStrongCurvatureCriterion);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new WolfeEvolutionVerifier (
+				org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NOCEDAL_WRIGHT_ARMIJO_PARAMETER,
+				maximizerCheck,
+				org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NOCEDAL_WRIGHT_CURVATURE_PARAMETER,
+				strongCurvatureCriterion
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -135,27 +141,29 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 	/**
 	 * WolfeEvolutionVerifier Constructor
 	 * 
-	 * @param dblArmijoParameter The Armijo Criterion Parameter
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
-	 * @param dblCurvatureParameter The Curvature Parameter
-	 * @param bStrongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
+	 * @param armijoParameter The Armijo Criterion Parameter
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param curvatureParameter The Curvature Parameter
+	 * @param strongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public WolfeEvolutionVerifier (
-		final double dblArmijoParameter,
-		final boolean bMaximizerCheck,
-		final double dblCurvatureParameter,
-		final boolean bStrongCurvatureCriterion)
+		final double armijoParameter,
+		final boolean maximizerCheck,
+		final double curvatureParameter,
+		final boolean strongCurvatureCriterion)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter))
+		{
 			throw new java.lang.Exception ("WolfeEvolutionVerifier Constructor => Invalid Inputs");
+		}
 
-		_bMaximizerCheck = bMaximizerCheck;
-		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;
+		_maximizerCheck = maximizerCheck;
+		_strongCurvatureCriterion = strongCurvatureCriterion;
 	}
 
 	/**
@@ -166,7 +174,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public double armijoParameter()
 	{
-		return _dblArmijoParameter;
+		return _armijoParameter;
 	}
 
 	/**
@@ -177,7 +185,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public boolean maximizerCheck()
 	{
-		return _bMaximizerCheck;
+		return _maximizerCheck;
 	}
 
 	/**
@@ -188,7 +196,7 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 
 	public double curvatureParameter()
 	{
-		return _dblCurvatureParameter;
+		return _curvatureParameter;
 	}
 
 	/**
@@ -197,27 +205,50 @@ public class WolfeEvolutionVerifier extends org.drip.function.rdtor1descent.Line
 	 * @return TRUE - The "Strong" Curvature Criterion needs to be met
 	 */
 
-	public boolean strongCriterion()
+	public boolean strongCurvatureCriterion()
 	{
-		return _bStrongCurvatureCriterion;
+		return _strongCurvatureCriterion;
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 	{
-		double[] adblNextVariate = NextVariate (uvTargetDirection, adblCurrentVariate, dblStepLength);
+		double[] nextVariateArray = NextVariateArray (
+			targetDirectionUnitVector,
+			currentVariateArray,
+			stepLength
+		);
 
-		try {
-			return null == funcRdToR1 ? null : new
-				org.drip.function.rdtor1descent.WolfeEvolutionVerifierMetrics (_dblArmijoParameter,
-					_bMaximizerCheck, _dblCurvatureParameter, _bStrongCurvatureCriterion, uvTargetDirection,
-						adblCurrentVariate, dblStepLength, funcRdToR1.evaluate (adblCurrentVariate),
-							funcRdToR1.evaluate (adblNextVariate), funcRdToR1.jacobian (adblCurrentVariate),
-								funcRdToR1.jacobian (adblNextVariate));
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return null == multivariateFunction ? null :
+				new org.drip.function.rdtor1descent.WolfeEvolutionVerifierMetrics (
+					_armijoParameter,
+					_maximizerCheck,
+					_curvatureParameter,
+					_strongCurvatureCriterion,
+					targetDirectionUnitVector,
+					currentVariateArray,
+					stepLength,
+					multivariateFunction.evaluate (
+						currentVariateArray
+					),
+					multivariateFunction.evaluate (
+						nextVariateArray
+					),
+					multivariateFunction.jacobian (
+						currentVariateArray
+					),
+					multivariateFunction.jacobian (
+						nextVariateArray
+					)
+				);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

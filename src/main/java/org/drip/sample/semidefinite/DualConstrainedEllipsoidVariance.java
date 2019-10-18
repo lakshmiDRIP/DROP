@@ -62,15 +62,17 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DualConstrainedEllipsoidVariance {
+public class DualConstrainedEllipsoidVariance
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
 
-		String[] astrEntityName = new String[] {
+		String[] entityNameArray = new String[]
+		{
 			"IBM",
 			"ATT",
 			"ALU",
@@ -79,8 +81,8 @@ public class DualConstrainedEllipsoidVariance {
 			"MSF",
 			"VER"
 		};
-
-		double[] adblEntityReturn = new double[] {
+		double[] entityReturnsArray = new double[]
+		{
 			0.0264,
 			0.0332,
 			0.0400,
@@ -89,10 +91,9 @@ public class DualConstrainedEllipsoidVariance {
 			0.0604,
 			0.0672
 		};
-
-		double dblEntityDesignReturn = 0.0468;
-
-		double[][] aadblEntityCovariance = new double[][] {
+		double entityDesignReturn = 0.0468;
+		double[][] entityCovarianceMatrix = new double[][]
+		{
 			{1.00, 0.76, 0.80, 0.38, 0.60, 0.61, 0.51},
 			{0.76, 1.00, 0.65, 0.35, 0.56, 0.43, 0.40},
 			{0.80, 0.65, 1.00, 0.68, 0.74, 0.40, 0.51},
@@ -102,83 +103,108 @@ public class DualConstrainedEllipsoidVariance {
 			{0.51, 0.40, 0.51, 0.57, 0.67, 0.39, 1.00}
 		};
 
+		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();
+
 		System.out.println ("\n\n\t|------------------------------------------------------||");
 
-		String strHeader = "\t|     |";
+		String header = "\t|     |";
 
-		for (int i = 0; i < astrEntityName.length; ++i)
-			strHeader += " " + astrEntityName[i] + "  |";
+		for (int entityIndex = 0;
+			entityIndex < entityNameArray.length;
+			++entityIndex)
+		{
+			header += " " + entityNameArray[entityIndex] + "  |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		for (int i = 0; i < astrEntityName.length; ++i) {
-			String strDump = "\t| " + astrEntityName[i] + " ";
+		for (int entityIndexI = 0;
+			entityIndexI < entityNameArray.length;
+			++entityIndexI)
+		{
+			String dump = "\t| " + entityNameArray[entityIndexI] + " ";
 
-			for (int j = 0; j < astrEntityName.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblEntityCovariance[i][j], 1, 2, 1.) + " ";
+			for (int entityIndexJ = 0;
+				entityIndexJ < entityNameArray.length;
+				++entityIndexJ)
+			{
+				dump += "|" + FormatUtil.FormatDouble (
+					entityCovarianceMatrix[entityIndexI][entityIndexJ], 1, 2, 1.
+				) + " ";
+			}
 
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
 		System.out.println ("\t|------------------------------------------------------||\n\n");
 
-		double dblEqualityConstraintConstant = -1.;
-		int iNumEntity = aadblEntityCovariance.length;
+		double equalityConstraintConstant = -1.;
+		int entityCount = entityCovarianceMatrix.length;
 
-		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();
-
-		RdToR1[] aRdToR1EqualityConstraint = new RdToR1[] {
+		RdToR1[] equalityConstraintFunctionArray = new RdToR1[]
+		{
 			new AffineMultivariate (
-				ObjectiveConstraintVariateSet.Unitary (iNumEntity),
-				dblEqualityConstraintConstant
+				ObjectiveConstraintVariateSet.Unitary (
+					entityCount
+				),
+				equalityConstraintConstant
 			),
 			new AffineMultivariate (
-				adblEntityReturn,
-				-1. * dblEntityDesignReturn
+				entityReturnsArray,
+				-1. * entityDesignReturn
 			)
 		};
 
-		int iNumEqualityConstraint = aRdToR1EqualityConstraint.length;
+		int equalityConstraintCount = equalityConstraintFunctionArray.length;
 
-		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {
-			new AffineBoundMultivariate (false, 0, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 0, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 1, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 1, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 2, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 2, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 3, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 3, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 4, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 4, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 5, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 5, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 6, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 6, iNumEntity + iNumEqualityConstraint, 0.65)
-		};
-
-		LagrangianMultivariate ceec = new LagrangianMultivariate (
-			new CovarianceEllipsoidMultivariate (aadblEntityCovariance),
-			aRdToR1EqualityConstraint
+		LagrangianMultivariate lagrangianMultivariate = new LagrangianMultivariate (
+			new CovarianceEllipsoidMultivariate (
+				entityCovarianceMatrix
+			),
+			equalityConstraintFunctionArray
 		);
 
-		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (
-			ceec,
-			aRdToR1InequalityConstraint,
-			ipbc,
-			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)
-		);
-
-		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (
+		double[] optimalVariateArray = new BarrierFixedPointFinder (
+			lagrangianMultivariate,
+			new RdToR1[]
+			{
+				new AffineBoundMultivariate (
+					false,
+					0,
+					entityCount + equalityConstraintCount,
+					0.05
+				),
+				new AffineBoundMultivariate (
+					true,
+					0,
+					entityCount + equalityConstraintCount,
+					0.65
+				),
+				new AffineBoundMultivariate (false, 1, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 1, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 2, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 2, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 3, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 3, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 4, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 4, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 5, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 5, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 6, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 6, entityCount + equalityConstraintCount, 0.65)
+			},
+			interiorPointBarrierControl,
+			LineStepEvolutionControl.NocedalWrightStrongWolfe (
+				false
+			)
+		).solve (
 			ObjectiveConstraintVariateSet.Uniform (
-				iNumEntity,
-				ceec.constraintFunctionDimension()
+				entityCount,
+				lagrangianMultivariate.constraintFunctionDimension()
 			)
-		);
-
-		double[] adblOptimalVariate = vcmt.variates();
+		).variateArray();
 
 		System.out.println ("\t|----------------------||");
 
@@ -186,23 +212,44 @@ public class DualConstrainedEllipsoidVariance {
 
 		System.out.println ("\t|----------------------||");
 
-		double dblExpectedReturn = 0.;
+		double expectedReturn = 0.;
 
-		for (int i = 0; i < iNumEntity; ++i) {
-			System.out.println ("\t|   " + astrEntityName[i] + "   =>  " + FormatUtil.FormatDouble (adblOptimalVariate[i], 2, 2, 100.) + "%  ||");
+		for (int entityIndex = 0;
+			entityIndex < entityCount;
+			++entityIndex)
+		{
+			System.out.println (
+				"\t|   " + entityNameArray[entityIndex] + "   =>  " + FormatUtil.FormatDouble (
+					optimalVariateArray[entityIndex], 2, 2, 100.
+				) + "%  ||"
+			);
 
-			dblExpectedReturn += adblOptimalVariate[i] * adblEntityReturn[i];
+			expectedReturn += optimalVariateArray[entityIndex] * entityReturnsArray[entityIndex];
 		}
 
 		System.out.println ("\t|----------------------||\n");
 
 		System.out.println ("\t|------------------------------||");
 
-		System.out.println ("\t| DESIGN RETURN    => " + FormatUtil.FormatDouble (dblEntityDesignReturn, 1, 5, 1.) + " ||");
+		System.out.println (
+			"\t| DESIGN RETURN    => " + FormatUtil.FormatDouble (
+				entityDesignReturn, 1, 5, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t| EXPECTED RETURN  => " + FormatUtil.FormatDouble (dblExpectedReturn, 1, 5, 1.) + " ||");
+		System.out.println (
+			"\t| EXPECTED RETURN  => " + FormatUtil.FormatDouble (
+				expectedReturn, 1, 5, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t| OPTIMAL VARIANCE => " + FormatUtil.FormatDouble (ceec.evaluate (adblOptimalVariate), 1, 5, 1.) + " ||");
+		System.out.println (
+			"\t| OPTIMAL VARIANCE => " + FormatUtil.FormatDouble (
+				lagrangianMultivariate.evaluate (
+					optimalVariateArray
+				), 1, 5, 1.
+			) + " ||"
+		);
 
 		System.out.println ("\t|------------------------------||\n");
 	}

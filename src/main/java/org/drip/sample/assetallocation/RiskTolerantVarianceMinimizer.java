@@ -91,48 +91,67 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiskTolerantVarianceMinimizer {
+public class RiskTolerantVarianceMinimizer
+{
 
 	static final void RiskTolerancePortfolio (
-		final String[] astrAsset,
-		final AssetUniverseStatisticalProperties ausp,
-		final double dblRiskTolerance)
+		final String[] assetIDArray,
+		final AssetUniverseStatisticalProperties assetUniverseStatisticalProperties,
+		final double riskTolerance)
 		throws Exception
 	{
-		OptimizationOutput opf = new QuadraticMeanVarianceOptimizer().allocate (
+		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (
 			new PortfolioConstructionParameters (
-				astrAsset,
-				CustomRiskUtilitySettings.RiskTolerant (dblRiskTolerance),
+				assetIDArray,
+				CustomRiskUtilitySettings.RiskTolerant (
+					riskTolerance
+				),
 				new EqualityConstraintSettings (
 					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 					Double.NaN
 				)
 			),
-			ausp
+			assetUniverseStatisticalProperties
 		);
-
-		AssetComponent[] aAC = opf.optimalPortfolio().assetComponentArray();
 
 		System.out.println ("\t|----------------||");
 
-		for (AssetComponent ac : aAC)
-			System.out.println ("\t| " + ac.id() + " | " + FormatUtil.FormatDouble (ac.amount(), 3, 2, 100.) + "% ||");
+		for (AssetComponent assetComponent : optimizationOutput.optimalPortfolio().assetComponentArray())
+		{
+			System.out.println (
+				"\t| " + assetComponent.id() + " | " + FormatUtil.FormatDouble (
+					assetComponent.amount(), 3, 2, 100.
+				) + "% ||"
+			);
+		}
 
 		System.out.println ("\t|----------------||");
 
 		System.out.println ("\t|---------------------------------------||");
 
-		System.out.println ("\t| Portfolio Notional           : " + FormatUtil.FormatDouble (opf.optimalPortfolio().notional(), 1, 3, 1.) + " ||");
+		System.out.println (
+			"\t| Portfolio Notional           : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalPortfolio().notional(), 1, 3, 1.
+			) + " ||"
+		);
 
-		System.out.println ("\t| Portfolio Expected Return    : " + FormatUtil.FormatDouble (opf.optimalMetrics().excessReturnsMean(), 1, 2, 100.) + "% ||");
+		System.out.println (
+			"\t| Portfolio Expected Return    : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 2, 100.
+			) + "% ||"
+		);
 
-		System.out.println ("\t| Portfolio Standard Deviation : " + FormatUtil.FormatDouble (opf.optimalMetrics().excessReturnsStandardDeviation(), 1, 2, 100.) + "% ||");
+		System.out.println (
+			"\t| Portfolio Standard Deviation : " + FormatUtil.FormatDouble (
+				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 2, 100.
+			) + "% ||"
+		);
 
 		System.out.println ("\t|---------------------------------------||\n");
 	}
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
 		EnvManager.InitEnv (
@@ -140,29 +159,38 @@ public class RiskTolerantVarianceMinimizer {
 			true
 		);
 
-		String strSeriesLocation = "C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
+		String seriesPath = "T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv";
 
-		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);
-
-		String[] astrVariateHeader = csvGrid.headers();
-
-		String[] astrAsset = new String[astrVariateHeader.length - 1];
-		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];
-
-		for (int i = 0; i < astrAsset.length; ++i) {
-			astrAsset[i] = astrVariateHeader[i + 1];
-
-			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);
-		}
-
-		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (
-			MultivariateMoments.Standard (
-				astrAsset,
-				aadblVariateSample
-			)
+		CSVGrid csvGrid = CSVParser.NamedStringGrid (
+			seriesPath
 		);
 
-		double[] adblRiskTolerance = new double[] {
+		String[] variateHeaderArray = csvGrid.headers();
+
+		String[] assetIDArray = new String[variateHeaderArray.length - 1];
+		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];
+
+		for (int assetIndex = 0;
+			assetIndex < assetIDArray.length;
+			++assetIndex)
+		{
+			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];
+
+			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (
+				assetIndex + 1
+			);
+		}
+
+		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIDArray,
+					variateSampleGrid
+				)
+			);
+
+		double[] riskToleranceArray = new double[]
+		{
 			0.1,
 			0.2,
 			0.3,
@@ -170,17 +198,18 @@ public class RiskTolerantVarianceMinimizer {
 			1.0
 		};
 
-		for (double dblRiskTolerance : adblRiskTolerance) {
+		for (double riskTolerance : riskToleranceArray)
+		{
 			System.out.println ("\n\t|---------------------------------------------||");
 
-			System.out.println ("\t| Running Optimization For Risk Tolerance " + dblRiskTolerance + " ||");
+			System.out.println ("\t| Running Optimization For Risk Tolerance " + riskTolerance + " ||");
 
 			System.out.println ("\t|---------------------------------------------||");
 
 			RiskTolerancePortfolio (
-				astrAsset,
-				ausp,
-				dblRiskTolerance
+				assetIDArray,
+				assetUniverseStatisticalProperties,
+				riskTolerance
 			);
 		}
 

@@ -88,7 +88,9 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
+public class ArmijoEvolutionVerifier
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifier
+{
 
 	/**
 	 * The Nocedal-Wright Armijo Parameter
@@ -96,22 +98,29 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public static final double NOCEDAL_WRIGHT_ARMIJO_PARAMETER = 0.0001;
 
-	private boolean _bMaximizerCheck = false;
-	private double _dblArmijoParameter = java.lang.Double.NaN;
+	private boolean _maximizerCheck = false;
+	private double _armijoParameter = java.lang.Double.NaN;
 
 	/**
 	 * Construct the Nocedal-Wright Armijo Evolution Verifier
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * 
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
 	 * 
 	 * @return The Nocedal-Wright Armijo Evolution Verifier Instance
 	 */
 
 	public static final ArmijoEvolutionVerifier NocedalWrightStandard (
-		final boolean bMaximizerCheck)
+		final boolean maximizerCheck)
 	{
-		try {
-			return new ArmijoEvolutionVerifier (NOCEDAL_WRIGHT_ARMIJO_PARAMETER, bMaximizerCheck);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new ArmijoEvolutionVerifier (
+				NOCEDAL_WRIGHT_ARMIJO_PARAMETER,
+				maximizerCheck
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -121,21 +130,23 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 	/**
 	 * ArmijoEvolutionVerifier Constructor
 	 * 
-	 * @param dblArmijoParameter The Armijo Parameter
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param armijoParameter The Armijo Parameter
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ArmijoEvolutionVerifier (
-		final double dblArmijoParameter,
-		final boolean bMaximizerCheck)
+		final double armijoParameter,
+		final boolean maximizerCheck)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter))
+		{
 			throw new java.lang.Exception ("ArmijoEvolutionVerifier Constructor => Invalid Inputs");
+		}
 
-		_bMaximizerCheck = bMaximizerCheck;
+		_maximizerCheck = maximizerCheck;
 	}
 
 	/**
@@ -146,7 +157,7 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public boolean maximizerCheck()
 	{
-		return _bMaximizerCheck;
+		return _maximizerCheck;
 	}
 
 	/**
@@ -157,23 +168,41 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public double armijoParameter()
 	{
-		return _dblArmijoParameter;
+		return _armijoParameter;
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 	{
-		try {
-			return null == funcRdToR1 ? null : new
-				org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (_dblArmijoParameter,
-					_bMaximizerCheck, uvTargetDirection, adblCurrentVariate, dblStepLength,
-						funcRdToR1.evaluate (adblCurrentVariate), funcRdToR1.evaluate (NextVariate
-							(uvTargetDirection, adblCurrentVariate, dblStepLength)), funcRdToR1.jacobian
-								(adblCurrentVariate));
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return null == multivariateFunction ? null :
+				new org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (
+					_armijoParameter,
+					_maximizerCheck,
+					targetDirectionUnitVector,
+					currentVariateArray,
+					stepLength,
+					multivariateFunction.evaluate (
+						currentVariateArray
+					),
+					multivariateFunction.evaluate (
+						NextVariateArray (
+							targetDirectionUnitVector,
+							currentVariateArray,
+							stepLength
+						)
+					),
+					multivariateFunction.jacobian (
+						currentVariateArray
+					)
+				);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 

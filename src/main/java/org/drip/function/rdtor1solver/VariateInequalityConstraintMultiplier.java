@@ -81,114 +81,170 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VariateInequalityConstraintMultiplier {
+public class VariateInequalityConstraintMultiplier
+{
 
 	/**
 	 * Flag Indicating whether the Variate Contents are to be Logged "Before" Bounding
 	 */
 
-	public static boolean s_bPreBoundBlog = false;
+	public static boolean s_preBoundBlog = false;
 
 	/**
 	 * Flag Indicating whether the Variate Contents are to be Logged "After" Bounding
 	 */
 
-	public static boolean s_bPostBoundBlog = false;
+	public static boolean s_postBoundBlog = false;
 
-	private double[] _adblVariate = null;
-	private boolean _bIncremental = false;
-	private double[] _adblConstraintMultiplier = null;
+	private boolean _incremental = false;
+	private double[] _variateArray = null;
+	private double[] _constraintMultiplierArray = null;
 
 	/**
-	 * Add the Specified VICM Instances together
+	 * Add the Specified VariateInequalityConstraintMultiplier Instances together
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param dblIncrementFactor The Increment Factor - 1. corresponds to Full Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param incrementFactor The Increment Factor - 1. corresponds to Full Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Added VICM Instance
+	 * @return The Added VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Add (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final double dblIncrementFactor,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final double incrementFactor,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-		if (null == vicmBase || null == vicmIncrement || vicmBase.incremental() ||
-			!vicmIncrement.incremental() || !org.drip.numerical.common.NumberUtil.IsValid (dblIncrementFactor) ||
-				1. < dblIncrementFactor)
+		if (null == baseVariateConstriantMultiplier ||
+			null == incrementalVariateConstriantMultiplier ||
+			baseVariateConstriantMultiplier.incremental() ||
+			!incrementalVariateConstriantMultiplier.incremental() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (incrementFactor) || 1. < incrementFactor)
+		{
 			return null;
-
-		double[] adblVariateBase = vicmBase.variates();
-
-		double[] adblVariateIncrement = vicmIncrement.variates();
-
-		double[] adblInequalityConstraintMultiplierBase = vicmBase.constraintMultipliers();
-
-		double[] adblInequalityConstraintMultiplierIncrement = vicmIncrement.constraintMultipliers();
-
-		int iNumVariate = adblVariateBase.length;
-		int iNumBounder = null == aBM ? 0 : aBM.length;
-		double[] adblVariate = new double[iNumVariate];
-		int iNumInequalityConstraint = null == adblInequalityConstraintMultiplierBase ? 0 :
-			adblInequalityConstraintMultiplierBase.length;
-		int iNumInequalityConstraintIncrement = null == adblInequalityConstraintMultiplierIncrement ? 0 :
-			adblInequalityConstraintMultiplierIncrement.length;
-		double[] adblInequalityConstraintMultiplier = 0 == iNumInequalityConstraint ? null : new
-			double[iNumInequalityConstraint];
-
-		if (iNumVariate != adblVariateIncrement.length || iNumInequalityConstraint !=
-			iNumInequalityConstraintIncrement)
-			return null;
-
-		for (int i = 0; i < iNumVariate; ++i)
-			adblVariate[i] = adblVariateBase[i] + dblIncrementFactor * adblVariateIncrement[i];
-
-		if (s_bPreBoundBlog) {
-			java.lang.String strDump = "\tB";
-
-			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
-					" |";
-
-			System.out.println (strDump);
 		}
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. > (adblInequalityConstraintMultiplier[i] = adblInequalityConstraintMultiplierBase[i] +
-				dblIncrementFactor * adblInequalityConstraintMultiplierIncrement[i]))
-				adblInequalityConstraintMultiplier[i] = 0.;
+		double[] baseVariateArray = baseVariateConstriantMultiplier.variateArray();
 
-			if (iNumBounder <= i || null == aBM[i]) continue;
+		double[] incrementalVariateArray = incrementalVariateConstriantMultiplier.variateArray();
 
-			int iBoundVariateIndex = aBM[i].boundVariateIndex();
+		double[] baseConstraintMultiplierArray = baseVariateConstriantMultiplier.constraintMultiplierArray();
 
-			try {
-				if (aBM[i].violated (adblVariate[iBoundVariateIndex]))
-					adblVariate[iBoundVariateIndex] = aBM[i].boundValue();
-			} catch (java.lang.Exception e) {
+		double[] incrementalConstraintMultiplierArray =
+			incrementalVariateConstriantMultiplier.constraintMultiplierArray();
+
+		int variateCount = baseVariateArray.length;
+		double[] variateArray = new double[variateCount];
+		int boundMultivariateFunctionCount = null == boundMultivariateFunctionArray ?
+			0 : boundMultivariateFunctionArray.length;
+		int constraintCount = null == baseConstraintMultiplierArray ? 0 :
+			baseConstraintMultiplierArray.length;
+		int constraintCountIncrementCount = null == incrementalConstraintMultiplierArray ? 0 :
+			incrementalConstraintMultiplierArray.length;
+		double[] constraintMultiplierArray = 0 == constraintCount ? null : new double[constraintCount];
+
+		if (variateCount != incrementalVariateArray.length ||
+			constraintCount != constraintCountIncrementCount)
+		{
+			return null;
+		}
+
+		for (int variateIndex = 0;
+			variateIndex < variateCount;
+			++variateIndex)
+		{
+			variateArray[variateIndex] = baseVariateArray[variateIndex] +
+				incrementFactor * incrementalVariateArray[variateIndex];
+		}
+
+		if (s_preBoundBlog)
+		{
+			java.lang.String dump = "\tB";
+
+			for (int variateIndex = 0;
+				variateIndex < variateCount;
+				++variateIndex)
+			{
+				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + " |";
+			}
+
+			System.out.println (dump);
+		}
+
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
+		{
+			if (0. > (
+				constraintMultiplierArray[constraintIndex] = baseConstraintMultiplierArray[constraintIndex] +
+					incrementFactor * incrementalConstraintMultiplierArray[constraintIndex]
+			))
+			{
+				constraintMultiplierArray[constraintIndex] = 0.;
+			}
+
+			if (boundMultivariateFunctionCount <= constraintIndex ||
+				null == boundMultivariateFunctionArray[constraintIndex])
+			{
+				continue;
+			}
+
+			int boundVariateIndex = boundMultivariateFunctionArray[constraintIndex].boundVariateIndex();
+
+			try
+			{
+				if (boundMultivariateFunctionArray[constraintIndex].violated (
+					variateArray[boundVariateIndex]
+				))
+				{
+					variateArray[boundVariateIndex] =
+						boundMultivariateFunctionArray[constraintIndex].boundValue();
+				}
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (s_bPostBoundBlog) {
-			java.lang.String strDump = "\tA";
+		if (s_postBoundBlog)
+		{
+			java.lang.String dump = "\tA";
 
-			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
-					" |";
+			for (int variateIndex = 0;
+				variateIndex < variateCount;
+				++variateIndex)
+			{
+				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + " |";
+			}
 
-			System.out.println (strDump);
+			System.out.println (dump);
 		}
 
-		try {
-			return new VariateInequalityConstraintMultiplier (false, adblVariate,
-				adblInequalityConstraintMultiplier);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new VariateInequalityConstraintMultiplier (
+				false,
+				variateArray,
+				constraintMultiplierArray
+			);
+		}
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -196,113 +252,174 @@ public class VariateInequalityConstraintMultiplier {
 	}
 
 	/**
-	 * Add the Specified VICM Instances together
+	 * Add the Specified VariateInequalityConstraintMultiplier Instances together
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Added VICM Instance
+	 * @return The Added VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Add (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-		return Add (vicmBase, vicmIncrement, 1., aBM);
+		return Add (
+			baseVariateConstriantMultiplier,
+			incrementalVariateConstriantMultiplier,
+			1.,
+			boundMultivariateFunctionArray
+		);
 	}
 
 	/**
-	 * Subtract the Second VICM Instance from the First
+	 * Subtract the Second VariateInequalityConstraintMultiplier Instance from the First
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param dblIncrementFactor The Increment Factor - 1. corresponds to Full Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param incrementFactor The Increment Factor - 1. corresponds to Full Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Subtracted VICM Instance
+	 * @return The Subtracted VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Subtract (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final double dblIncrementFactor,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final double incrementFactor,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-		if (null == vicmBase || null == vicmIncrement || vicmBase.incremental() ||
-			!vicmIncrement.incremental() || !org.drip.numerical.common.NumberUtil.IsValid (dblIncrementFactor) ||
-				1. < dblIncrementFactor)
+		if (null == baseVariateConstriantMultiplier ||
+			null == incrementalVariateConstriantMultiplier ||
+			baseVariateConstriantMultiplier.incremental() ||
+			!incrementalVariateConstriantMultiplier.incremental() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (incrementFactor) || 1. < incrementFactor)
+		{
 			return null;
-
-		double[] adblVariateBase = vicmBase.variates();
-
-		double[] adblVariateIncrement = vicmIncrement.variates();
-
-		double[] adblInequalityConstraintMultiplierBase = vicmBase.constraintMultipliers();
-
-		double[] adblInequalityConstraintMultiplierIncrement = vicmIncrement.constraintMultipliers();
-
-		int iNumVariate = adblVariateBase.length;
-		int iNumBounder = null == aBM ? 0 : aBM.length;
-		double[] adblVariate = new double[iNumVariate];
-		int iNumInequalityConstraint = null == adblInequalityConstraintMultiplierBase ? 0 :
-			adblInequalityConstraintMultiplierBase.length;
-		int iNumInequalityConstraintIncrement = null == adblInequalityConstraintMultiplierIncrement ? 0 :
-			adblInequalityConstraintMultiplierIncrement.length;
-		double[] adblInequalityConstraintMultiplier = 0 == iNumInequalityConstraint ? null : new
-			double[iNumInequalityConstraint];
-
-		if (iNumVariate != adblVariateIncrement.length || iNumInequalityConstraint !=
-			iNumInequalityConstraintIncrement)
-			return null;
-
-		for (int i = 0; i < iNumVariate; ++i)
-			adblVariate[i] = adblVariateBase[i] - dblIncrementFactor * adblVariateIncrement[i];
-
-		if (s_bPreBoundBlog) {
-			java.lang.String strDump = "\tB";
-
-			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
-					" |";
-
-			System.out.println (strDump);
 		}
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. > (adblInequalityConstraintMultiplier[i] = adblInequalityConstraintMultiplierBase[i] -
-				dblIncrementFactor * adblInequalityConstraintMultiplierIncrement[i]))
-				adblInequalityConstraintMultiplier[i] = 0.;
+		double[] baseVariateArray = baseVariateConstriantMultiplier.variateArray();
 
-			if (iNumBounder <= i || null == aBM[i]) continue;
+		double[] incrementalVariateIncrement = incrementalVariateConstriantMultiplier.variateArray();
 
-			int iBoundVariateIndex = aBM[i].boundVariateIndex();
+		double[] baseConstraintMultiplierArray = baseVariateConstriantMultiplier.constraintMultiplierArray();
 
-			try {
-				if (aBM[i].violated (adblVariate[iBoundVariateIndex]))
-					adblVariate[iBoundVariateIndex] = aBM[i].boundValue();
-			} catch (java.lang.Exception e) {
+		double[] incrementalConstraintMultiplierArray =
+			incrementalVariateConstriantMultiplier.constraintMultiplierArray();
+
+		int variateCount = baseVariateArray.length;
+		double[] variateArray = new double[variateCount];
+		int constraintCount = null == baseConstraintMultiplierArray ? 0 :
+			baseConstraintMultiplierArray.length;
+		int boundMultivariateFunctionCount = null == boundMultivariateFunctionArray ?
+			0 : boundMultivariateFunctionArray.length;
+		int constraintIncrementCount = null == incrementalConstraintMultiplierArray ? 0 :
+			incrementalConstraintMultiplierArray.length;
+		double[] constraintMultiplierArray = 0 == constraintCount ? null : new
+			double[constraintCount];
+
+		if (variateCount != incrementalVariateIncrement.length ||
+			constraintCount != constraintIncrementCount)
+		{
+			return null;
+		}
+
+		for (int variateIndex = 0;
+			variateIndex < variateCount;
+			++variateIndex)
+		{
+			variateArray[variateIndex] = baseVariateArray[variateIndex] -
+				incrementFactor * incrementalVariateIncrement[variateIndex];
+		}
+
+		if (s_preBoundBlog)
+		{
+			java.lang.String dump = "\tB";
+
+			for (int variateIndex = 0;
+				variateIndex < variateCount;
+				++variateIndex)
+			{
+				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + " |";
+			}
+
+			System.out.println (dump);
+		}
+
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
+		{
+			if (0. > (
+				constraintMultiplierArray[constraintIndex] = baseConstraintMultiplierArray[constraintIndex] -
+					incrementFactor * incrementalConstraintMultiplierArray[constraintIndex]
+			))
+			{
+				constraintMultiplierArray[constraintIndex] = 0.;
+			}
+
+			if (boundMultivariateFunctionCount <= constraintIndex ||
+				null == boundMultivariateFunctionArray[constraintIndex])
+			{
+				continue;
+			}
+
+			int boundVariateIndex = boundMultivariateFunctionArray[constraintIndex].boundVariateIndex();
+
+			try
+			{
+				if (boundMultivariateFunctionArray[constraintIndex].violated (
+					variateArray[boundVariateIndex]
+				))
+				{
+					variateArray[boundVariateIndex] =
+						boundMultivariateFunctionArray[constraintIndex].boundValue();
+				}
+			}
+			catch (java.lang.Exception e)
+			{
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (s_bPostBoundBlog) {
-			java.lang.String strDump = "\tA";
+		if (s_postBoundBlog)
+		{
+			java.lang.String dump = "\tA";
 
-			for (int i = 0; i < iNumVariate; ++i)
-				strDump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +
-					" |";
+			for (int variateIndex = 0;
+				variateIndex < variateCount;
+				++variateIndex)
+			{
+				dump += " " + org.drip.numerical.common.FormatUtil.FormatDouble (
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + " |";
+			}
 
-			System.out.println (strDump);
+			System.out.println (dump);
 		}
 
-		try {
-			return new VariateInequalityConstraintMultiplier (false, adblVariate,
-				adblInequalityConstraintMultiplier);
-		} catch (java.lang.Exception e) {
+		try
+		{
+			return new VariateInequalityConstraintMultiplier (
+				false,
+				variateArray,
+				constraintMultiplierArray
+			);
+		} 
+		catch (java.lang.Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -310,72 +427,99 @@ public class VariateInequalityConstraintMultiplier {
 	}
 
 	/**
-	 * Subtract the Second VICM Instance from the First
+	 * Subtract the Second VariateInequalityConstraintMultiplier Instance from the First
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Subtracted VICM Instance
+	 * @return The Subtracted VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Subtract (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-		return Subtract (vicmBase, vicmIncrement, 1., aBM);
+		return Subtract (
+			baseVariateConstriantMultiplier,
+			incrementalVariateConstriantMultiplier,
+			1.,
+			boundMultivariateFunctionArray
+		);
 	}
 
 	/**
-	 * Compare the Specified VICM Instances
+	 * Compare the Specified VariateInequalityConstraintMultiplier Instances
 	 * 
-	 * @param vicm1 VICM Instance #1
-	 * @param vicm2 VICM Instance #2
-	 * @param dblRelativeTolerance The Relative Tolerance Between the Variates
-	 * @param dblAbsoluteToleranceFallback The Absolute Tolerance Fall-back Between the Variates
-	 * @param iNumComparisonVariate The Number of Variates to Compare
+	 * @param variateConstraint1 VariateInequalityConstraintMultiplier Instance #1
+	 * @param variateConstraint2 VariateInequalityConstraintMultiplier Instance #2
+	 * @param relativeTolerance The Relative Tolerance Between the Variates
+	 * @param absoluteToleranceFallback The Absolute Tolerance Fall-back Between the Variates
+	 * @param comparisonVariate The Number of Variates to Compare
 	 * 
-	 * @return TRUE - The VICM Instances are Close (Enough)
+	 * @return TRUE - The VariateInequalityConstraintMultiplier Instances are Close (Enough)
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final boolean Compare (
-		final VariateInequalityConstraintMultiplier vicm1,
-		final VariateInequalityConstraintMultiplier vicm2,
-		final double dblRelativeTolerance,
-		final double dblAbsoluteToleranceFallback,
-		final int iNumComparisonVariate)
+		final VariateInequalityConstraintMultiplier variateConstraint1,
+		final VariateInequalityConstraintMultiplier variateConstraint2,
+		final double relativeTolerance,
+		final double absoluteToleranceFallback,
+		final int comparisonVariate)
 		throws java.lang.Exception
 	{
-		if (null == vicm1 || null == vicm2 || vicm1.incremental() || vicm2.incremental() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblRelativeTolerance) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (dblAbsoluteToleranceFallback) || 0 >
-					dblAbsoluteToleranceFallback)
+		if (null == variateConstraint1 || variateConstraint1.incremental() ||
+			null == variateConstraint2 || variateConstraint2.incremental() ||
+			!org.drip.numerical.common.NumberUtil.IsValid (relativeTolerance) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (absoluteToleranceFallback) ||
+				0. > absoluteToleranceFallback)
+		{
 			throw new java.lang.Exception ("VariateInequalityConstraintMultiplier::Compare => Invalid Inputs");
+		}
 
-		double[] adblVariate1 = vicm1.variates();
+		double[] variateArray1 = variateConstraint1.variateArray();
 
-		double[] adblVariate2 = vicm2.variates();
+		double[] variateArray2 = variateConstraint2.variateArray();
 
-		int iNumVariate = adblVariate1.length;
+		int variateCount = variateArray1.length;
 
-		if (iNumVariate != adblVariate2.length || iNumComparisonVariate > iNumVariate)
+		if (variateCount != variateArray2.length || comparisonVariate > variateCount)
+		{
 			throw new java.lang.Exception ("VariateInequalityConstraintMultiplier::Compare => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumComparisonVariate; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate1[i]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (adblVariate2[i]))
+		for (int comparisonIndex = 0;
+			comparisonIndex < comparisonVariate;
+			++comparisonIndex)
+		{
+			if (!org.drip.numerical.common.NumberUtil.IsValid (
+				variateArray1[comparisonIndex]
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				variateArray2[comparisonIndex]
+			))
+			{
 				throw new java.lang.Exception
 					("VariateInequalityConstraintMultiplier::Compare => Invalid Inputs");
+			}
 
-			double dblAbsoluteTolerance = java.lang.Math.abs (adblVariate1[i] * dblRelativeTolerance);
+			double absoluteTolerance = java.lang.Math.abs (
+				variateArray1[comparisonIndex] * relativeTolerance
+			);
 
-			if (dblAbsoluteTolerance < dblAbsoluteToleranceFallback)
-				dblAbsoluteTolerance = dblAbsoluteToleranceFallback;
+			if (absoluteTolerance < absoluteToleranceFallback)
+			{
+				absoluteTolerance = absoluteToleranceFallback;
+			}
 
-			if (dblAbsoluteTolerance < java.lang.Math.abs (adblVariate1[i] - adblVariate2[i])) return false;
+			if (absoluteTolerance < java.lang.Math.abs (
+				variateArray1[comparisonIndex] - variateArray2[comparisonIndex]
+			))
+			{
+				return false;
+			}
 		}
 
 		return true;
@@ -384,25 +528,27 @@ public class VariateInequalityConstraintMultiplier {
 	/**
 	 * VariateInequalityConstraintMultiplier Constructor
 	 * 
-	 * @param bIncremental TRUE - Tuple represents an Incremental Unit
-	 * @param adblVariate Array of Variates
-	 * @param adblConstraintMultiplier Array of Constraint Multipliers
+	 * @param incremental TRUE - Tuple represents an Incremental Unit
+	 * @param variateArray Array of Variates
+	 * @param constraintMultiplierArray Array of Constraint Multipliers
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VariateInequalityConstraintMultiplier (
-		final boolean bIncremental,
-		final double[] adblVariate,
-		final double[] adblConstraintMultiplier)
+		final boolean incremental,
+		final double[] variateArray,
+		final double[] constraintMultiplierArray)
 		throws java.lang.Exception
 	{
-		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length)
+		if (null == (_variateArray = variateArray) || 0 == _variateArray.length)
+		{
 			throw new java.lang.Exception
 				("VariateInequalityConstraintMultiplier Constructor => Invalid Inputs");
+		}
 
-		_bIncremental = bIncremental;
-		_adblConstraintMultiplier = adblConstraintMultiplier;
+		_incremental = incremental;
+		_constraintMultiplierArray = constraintMultiplierArray;
 	}
 
 	/**
@@ -413,7 +559,7 @@ public class VariateInequalityConstraintMultiplier {
 
 	public boolean incremental()
 	{
-		return _bIncremental;
+		return _incremental;
 	}
 
 	/**
@@ -422,9 +568,9 @@ public class VariateInequalityConstraintMultiplier {
 	 * @return Array of Variates
 	 */
 
-	public double[] variates()
+	public double[] variateArray()
 	{
-		return _adblVariate;
+		return _variateArray;
 	}
 
 	/**
@@ -433,9 +579,9 @@ public class VariateInequalityConstraintMultiplier {
 	 * @return Array of Constraint Multipliers
 	 */
 
-	public double[] constraintMultipliers()
+	public double[] constraintMultiplierArray()
 	{
-		return _adblConstraintMultiplier;
+		return _constraintMultiplierArray;
 	}
 
 	/**
@@ -446,16 +592,21 @@ public class VariateInequalityConstraintMultiplier {
 
 	public double[] variateConstraintMultipler()
 	{
-		int iNumVariate = _adblVariate.length;
-		int iNumVariateConstraintMultipler = iNumVariate + (null == _adblConstraintMultiplier ? 0 :
-			_adblConstraintMultiplier.length);
-		double[] adblVariateConstraintMultipler = new double[iNumVariateConstraintMultipler];
+		int variateCount = _variateArray.length;
+		int variateConstraintCount = variateCount + (null == _constraintMultiplierArray ? 0 :
+			_constraintMultiplierArray.length);
+		double[] variateConstraintArray = new double[variateConstraintCount];
 
-		for (int i = 0; i < iNumVariateConstraintMultipler; ++i)
-			adblVariateConstraintMultipler[i] = i < iNumVariate ? _adblVariate[i] :
-				_adblConstraintMultiplier[i - iNumVariate];
+		for (int variateConstraintIndex = 0;
+			variateConstraintIndex < variateConstraintCount;
+			++variateConstraintIndex)
+		{
+			variateConstraintArray[variateConstraintIndex] = variateConstraintIndex < variateCount ?
+				_variateArray[variateConstraintIndex] :
+				_constraintMultiplierArray[variateConstraintIndex - variateCount];
+		}
 
-		return adblVariateConstraintMultipler;
+		return variateConstraintArray;
 	}
 
 	/**
@@ -466,8 +617,9 @@ public class VariateInequalityConstraintMultiplier {
 
 	public org.drip.function.definition.SizedVector incrementVector()
 	{
-		return _bIncremental ? org.drip.function.definition.SizedVector.Standard
-			(variateConstraintMultipler()) : null;
+		return _incremental ? org.drip.function.definition.SizedVector.Standard (
+			variateConstraintMultipler()
+		) : null;
 	}
 
 	/**
@@ -478,6 +630,8 @@ public class VariateInequalityConstraintMultiplier {
 
 	public org.drip.function.definition.SizedVector variateIncrementVector()
 	{
-		return _bIncremental ? org.drip.function.definition.SizedVector.Standard (_adblVariate) : null;
+		return _incremental ? org.drip.function.definition.SizedVector.Standard (
+			_variateArray
+		) : null;
 	}
 }
