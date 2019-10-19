@@ -44,6 +44,8 @@ DROP Capital BCBS Package implements BCBS and Jurisdictional Capital Ratios.
 
 ## References
 
+ * Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure Requirements https://www.bis.org/publ/bcbs270.pdf
+
  * Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
 
 
