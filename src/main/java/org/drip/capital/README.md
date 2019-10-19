@@ -19,6 +19,8 @@ DROP Capital implements the Basel Market Risk and Operational Capital Analytics.
 
  * European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
 
+ * Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and Monitoring https://web.archive.org/web/20131102074614/http:/www.federalreserve.gov/FR_notice_lcr_20131024.pdf
+
  * Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
 
 
