@@ -44,15 +44,6 @@ DROP Capital BCBS Package implements BCBS and Jurisdictional Capital Ratios.
 
 ## References
 
- * Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure
- Requirements https://www.bis.org/publ/bcbs270.pdf
-
- * Central Banking (2013): Fed and FDIC agree 6% Leverage Ratio for US SIFIs https://www.centralbanking.com/central-banking/news/2280726/fed-and-fdic-agree-6-leverage-ratio-for-us-sifis
-
- * European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
-
- * Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and Monitoring https://www.federalregister.gov/documents/2014/10/10/2014-22520/liquidity-coverage-ratio-liquidity-risk-measurement-standards
-
  * Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
 
 

@@ -151,7 +151,7 @@ public abstract class LineEvolutionVerifier
 	 * @param targetDirectionUnitVector The Target Direction Unit Vector
 	 * @param currentVariateArray The Current Variate
 	 * @param multivariateFunction The R<sup>d</sup> To R<sup>1</sup> Function
-	 * @param dblStepLength The Incremental Step Length
+	 * @param stepLength The Incremental Step Length
 	 * 
 	 * @return TRUE - The Specified Inputs satisfy the Criterion
 	 * 
