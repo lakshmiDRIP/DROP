@@ -6,39 +6,50 @@ package org.drip.dynamics.evolution;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -74,17 +85,17 @@ package org.drip.dynamics.evolution;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Latent State Evolution Edges/Vertexes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LSQMCurveIncrement {
-<span class="fc" id="L87">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, org.drip.spline.grid.Span&gt;&gt;</span>
+<span class="fc" id="L98">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, org.drip.spline.grid.Span&gt;&gt;</span>
 		_mmIncrement = new java.util.HashMap&lt;java.lang.String, java.util.Map&lt;java.lang.String,
 			org.drip.spline.grid.Span&gt;&gt;();
 
@@ -93,8 +104,8 @@ public class LSQMCurveIncrement {
 	 */
 
 	public LSQMCurveIncrement()
-<span class="fc" id="L96">	{</span>
-<span class="fc" id="L97">	}</span>
+<span class="fc" id="L107">	{</span>
+<span class="fc" id="L108">	}</span>
 
 	/**
 	 * Retrieve the Latent State Labels
@@ -104,7 +115,7 @@ public class LSQMCurveIncrement {
 
 	public java.util.Set&lt;java.lang.String&gt; latentStateLabel()
 	{
-<span class="nc" id="L107">		return _mmIncrement.keySet();</span>
+<span class="nc" id="L118">		return _mmIncrement.keySet();</span>
 	}
 
 	/**
@@ -118,7 +129,7 @@ public class LSQMCurveIncrement {
 	public boolean containsLatentState (
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		return null == lsl ? false : _mmIncrement.containsKey (lsl.fullyQualifiedName());</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		return null == lsl ? false : _mmIncrement.containsKey (lsl.fullyQualifiedName());</span>
 	}
 
 	/**
@@ -134,11 +145,11 @@ public class LSQMCurveIncrement {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final java.lang.String strQM)
 	{
-<span class="nc bnc" id="L137" title="All 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return false;</span>
+<span class="nc bnc" id="L148" title="All 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return false;</span>
 
-<span class="nc" id="L139">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="nc" id="L150">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L141" title="All 4 branches missed.">		return _mmIncrement.containsKey (strLabel) &amp;&amp; _mmIncrement.get (strLabel).containsKey (strQM);</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">		return _mmIncrement.containsKey (strLabel) &amp;&amp; _mmIncrement.get (strLabel).containsKey (strQM);</span>
 	}
 
 	/**
@@ -156,19 +167,19 @@ public class LSQMCurveIncrement {
 		final java.lang.String strQM,
 		final org.drip.spline.grid.Span spanIncrement)
 	{
-<span class="pc bpc" id="L159" title="4 of 8 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty() || null == spanIncrement) return false;</span>
+<span class="pc bpc" id="L170" title="4 of 8 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty() || null == spanIncrement) return false;</span>
 
-<span class="fc" id="L161">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L172">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="fc" id="L163">		java.util.Map&lt;java.lang.String, org.drip.spline.grid.Span&gt; mapSpanIncrement =</span>
-<span class="fc bfc" id="L164" title="All 2 branches covered.">			_mmIncrement.containsKey (strLabel) ? _mmIncrement.get (strLabel) : new</span>
+<span class="fc" id="L174">		java.util.Map&lt;java.lang.String, org.drip.spline.grid.Span&gt; mapSpanIncrement =</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">			_mmIncrement.containsKey (strLabel) ? _mmIncrement.get (strLabel) : new</span>
 				java.util.HashMap&lt;java.lang.String, org.drip.spline.grid.Span&gt;();
 
-<span class="fc" id="L167">		mapSpanIncrement.put (strQM, spanIncrement);</span>
+<span class="fc" id="L178">		mapSpanIncrement.put (strQM, spanIncrement);</span>
 
-<span class="fc" id="L169">		_mmIncrement.put (strLabel, mapSpanIncrement);</span>
+<span class="fc" id="L180">		_mmIncrement.put (strLabel, mapSpanIncrement);</span>
 
-<span class="fc" id="L171">		return true;</span>
+<span class="fc" id="L182">		return true;</span>
 	}
 
 	/**
@@ -184,14 +195,14 @@ public class LSQMCurveIncrement {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final java.lang.String strQM)
 	{
-<span class="pc bpc" id="L187" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return null;</span>
+<span class="pc bpc" id="L198" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return null;</span>
 
-<span class="fc" id="L189">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L200">		java.lang.String strLabel = lsl.fullyQualifiedName();</span>
 
-<span class="fc" id="L191">		java.util.Map&lt;java.lang.String, org.drip.spline.grid.Span&gt; mapSpanIncrement = _mmIncrement.get</span>
-<span class="fc" id="L192">			(strLabel);</span>
+<span class="fc" id="L202">		java.util.Map&lt;java.lang.String, org.drip.spline.grid.Span&gt; mapSpanIncrement = _mmIncrement.get</span>
+<span class="fc" id="L203">			(strLabel);</span>
 
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		return mapSpanIncrement.containsKey (strQM) ? mapSpanIncrement.get (strQM) : null;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		return mapSpanIncrement.containsKey (strQM) ? mapSpanIncrement.get (strQM) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -89,49 +89,58 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ArmijoEvolutionVerifierMetrics extends
-	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-<span class="fc" id="L94">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L95">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
-<span class="fc" id="L96">	private double _dblNextVariateFunctionValue = java.lang.Double.NaN;</span>
-<span class="fc" id="L97">	private double _dblCurrentVariateFunctionValue = java.lang.Double.NaN;</span>
+public class ArmijoEvolutionVerifierMetrics
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics
+{
+<span class="fc" id="L95">	private boolean _maximizerCheck = false;</span>
+<span class="fc" id="L96">	private double _armijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double _nextVariateFunctionValue = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _currentVariateFunctionValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * ArmijoEvolutionVerifierMetrics Constructor
 	 * 
-	 * @param dblArmijoParameter The Armijo Parameter
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
-	 * @param uvTargetDirection the Target Direction Unit Vector
-	 * @param adblCurrentVariate Array of the Current Variate
-	 * @param dblStepLength The Incremental Step Length
-	 * @param dblCurrentVariateFunctionValue The Function Value at the Current Variate
-	 * @param dblNextVariateFunctionValue The Function Value at the Next Variate
-	 * @param adblCurrentVariateFunctionJacobian The Function Jacobian at the Current Variate
+	 * @param armijoParameter The Armijo Parameter
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param targetDirectionUnitVector the Target Direction Unit Vector
+	 * @param currentVariateArray Array of the Current Variate
+	 * @param stepLength The Incremental Step Length
+	 * @param currentVariateFunctionValue The Function Value at the Current Variate
+	 * @param nextVariateFunctionValue The Function Value at the Next Variate
+	 * @param currentVariateFunctionJacobian The Function Jacobian at the Current Variate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ArmijoEvolutionVerifierMetrics (
-		final double dblArmijoParameter,
-		final boolean bMaximizerCheck,
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength,
-		final double dblCurrentVariateFunctionValue,
-		final double dblNextVariateFunctionValue,
-		final double[] adblCurrentVariateFunctionJacobian)
+		final double armijoParameter,
+		final boolean maximizerCheck,
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final double stepLength,
+		final double currentVariateFunctionValue,
+		final double nextVariateFunctionValue,
+		final double[] currentVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L125">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+<span class="fc" id="L126">		super (</span>
+			targetDirectionUnitVector,
+			currentVariateArray,
+			stepLength,
+			currentVariateFunctionJacobian
+		);
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter) ||</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentVariateFunctionValue =</span>
-				dblCurrentVariateFunctionValue) || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">					(_dblNextVariateFunctionValue = dblNextVariateFunctionValue))</span>
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter) ||</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_currentVariateFunctionValue =</span>
+				currentVariateFunctionValue) ||
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_nextVariateFunctionValue =</span>
+				nextVariateFunctionValue))
+		{
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L133">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L142">		_maximizerCheck = maximizerCheck;</span>
+<span class="fc" id="L143">	}</span>
 
 	/**
 	 * Retrieve the Armijo Parameter
@@ -141,7 +150,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L144">		return _dblArmijoParameter;</span>
+<span class="nc" id="L153">		return _armijoParameter;</span>
 	}
 
 	/**
@@ -152,7 +161,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L155">		return _bMaximizerCheck;</span>
+<span class="nc" id="L164">		return _maximizerCheck;</span>
 	}
 
 	/**
@@ -163,7 +172,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public double currentVariateFunctionValue()
 	{
-<span class="nc" id="L166">		return _dblCurrentVariateFunctionValue;</span>
+<span class="nc" id="L175">		return _currentVariateFunctionValue;</span>
 	}
 
 	/**
@@ -174,7 +183,7 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public double nextVariateFunctionValue()
 	{
-<span class="nc" id="L177">		return _dblNextVariateFunctionValue;</span>
+<span class="nc" id="L186">		return _nextVariateFunctionValue;</span>
 	}
 
 	/**
@@ -185,18 +194,23 @@ public class ArmijoEvolutionVerifierMetrics extends
 
 	public boolean verify()
 	{
-		try {
-<span class="fc" id="L189">			double dblGradientUpdatedFunctionValue = _dblCurrentVariateFunctionValue + _dblArmijoParameter *</span>
-<span class="fc" id="L190">				stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (targetDirection().component(),</span>
-<span class="fc" id="L191">					currentVariateFunctionJacobian());</span>
+		try
+		{
+<span class="fc" id="L199">			double gradientUpdatedFunctionValue = _currentVariateFunctionValue +</span>
+<span class="fc" id="L200">				_armijoParameter * stepLength() * org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+<span class="fc" id="L201">					targetDirection().component(),</span>
+<span class="fc" id="L202">					currentVariateFunctionJacobian()</span>
+				);
 
-<span class="pc bpc" id="L193" title="3 of 6 branches missed.">			return _bMaximizerCheck ? _dblNextVariateFunctionValue &gt;= dblGradientUpdatedFunctionValue :</span>
-				_dblNextVariateFunctionValue &lt;= dblGradientUpdatedFunctionValue;
-<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L196">			e.printStackTrace();</span>
+<span class="pc bpc" id="L205" title="3 of 6 branches missed.">			return _maximizerCheck ? _nextVariateFunctionValue &gt;= gradientUpdatedFunctionValue :</span>
+				_nextVariateFunctionValue &lt;= gradientUpdatedFunctionValue;
+		}
+<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L210">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L199">		return false;</span>
+<span class="nc" id="L213">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

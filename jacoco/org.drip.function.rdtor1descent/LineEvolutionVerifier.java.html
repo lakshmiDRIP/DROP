@@ -99,43 +99,59 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L102">public abstract class LineEvolutionVerifier {</span>
+<span class="fc" id="L102">public abstract class LineEvolutionVerifier</span>
+{
 
-	protected static final double[] NextVariate (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength)
+	protected static final double[] NextVariateArray (
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final double stepLength)
 	{
-<span class="pc bpc" id="L109" title="2 of 4 branches missed.">		if (null == adblCurrentVariate || !org.drip.numerical.common.NumberUtil.IsValid (dblStepLength))</span>
-<span class="nc" id="L110">			return null;</span>
-
-<span class="fc" id="L112">		int iDimension = adblCurrentVariate.length;</span>
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		double[] adblNextVariate = 0 == iDimension ? null : new double[iDimension];</span>
-
-<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		if (null == adblNextVariate || null == uvTargetDirection) return null;</span>
-
-<span class="fc" id="L117">		double[] adblTargetDirection = uvTargetDirection.component();</span>
-
-<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == adblTargetDirection || iDimension != adblTargetDirection.length) return null;</span>
-
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblCurrentVariate[i]) ||</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (adblTargetDirection[i]))</span>
-<span class="nc" id="L124">				return null;</span>
-
-<span class="fc" id="L126">			adblNextVariate[i] = adblCurrentVariate[i] + dblStepLength * adblTargetDirection[i];</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">		if (null == currentVariateArray ||</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (stepLength))</span>
+		{
+<span class="nc" id="L113">			return null;</span>
 		}
 
-<span class="fc" id="L129">		return adblNextVariate;</span>
+<span class="fc" id="L116">		int dimension = currentVariateArray.length;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		double[] nextVariateArray = 0 == dimension ? null : new double[dimension];</span>
+
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == nextVariateArray || null == targetDirectionUnitVector)</span>
+		{
+<span class="nc" id="L121">			return null;</span>
+		}
+
+<span class="fc" id="L124">		double[] targetDirectionVector = targetDirectionUnitVector.component();</span>
+
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">		if (null == targetDirectionVector || dimension != targetDirectionVector.length)</span>
+		{
+<span class="nc" id="L128">			return null;</span>
+		}
+
+<span class="fc" id="L131">		for (int dimensionIndex = 0;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">			dimensionIndex &lt; dimension;</span>
+<span class="fc" id="L133">			++dimensionIndex)</span>
+		{
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (currentVariateArray[dimensionIndex]) ||</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (targetDirectionVector[dimensionIndex]))</span>
+			{
+<span class="nc" id="L138">				return null;</span>
+			}
+
+<span class="fc" id="L141">			nextVariateArray[dimensionIndex] = currentVariateArray[dimensionIndex] +</span>
+				stepLength * targetDirectionVector[dimensionIndex];
+		}
+
+<span class="fc" id="L145">		return nextVariateArray;</span>
 	}
 
 	/**
 	 * Verify if the specified Inputs satisfy the Criterion
 	 * 
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate The Current Variate
-	 * @param funcRdToR1 The R^d To R^1 Function
-	 * @param dblStepLength The Incremental Step Length
+	 * @param targetDirectionUnitVector The Target Direction Unit Vector
+	 * @param currentVariateArray The Current Variate
+	 * @param multivariateFunction The R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Function
+	 * @param stepLength The Incremental Step Length
 	 * 
 	 * @return TRUE - The Specified Inputs satisfy the Criterion
 	 * 
@@ -143,35 +159,42 @@ package org.drip.function.rdtor1descent;
 	 */
 
 	public boolean verify (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L152">		org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics levm = metrics (uvTargetDirection,</span>
-			adblCurrentVariate, funcRdToR1, dblStepLength);
+<span class="nc" id="L168">		org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics lineEvolutionVerifierMetrics = metrics (</span>
+			targetDirectionUnitVector,
+			currentVariateArray,
+			multivariateFunction,
+			stepLength
+		);
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (null == levm) throw new java.lang.Exception (&quot;LineEvolutionVerifier::verify =&gt; Cannot Verify&quot;);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (null == lineEvolutionVerifierMetrics)</span>
+		{
+<span class="nc" id="L177">			throw new java.lang.Exception (&quot;LineEvolutionVerifier::verify =&gt; Cannot Verify&quot;);</span>
+		}
 
-<span class="nc" id="L157">		return levm.verify();</span>
+<span class="nc" id="L180">		return lineEvolutionVerifierMetrics.verify();</span>
 	}
 
 	/**
 	 * Generate the Verifier Metrics for the Specified Inputs
 	 * 
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate The Current Variate
-	 * @param funcRdToR1 The R^d To R^1 Function
-	 * @param dblStepLength The Incremental Step Length
+	 * @param targetDirectionUnitVector The Target Direction Unit Vector
+	 * @param currentVariateArray The Current Variate
+	 * @param multivariateFunction The R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Function
+	 * @param stepLength The Incremental Step Length
 	 * 
 	 * @return The Verifier Metrics
 	 */
 
 	public abstract org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength);
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength);
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

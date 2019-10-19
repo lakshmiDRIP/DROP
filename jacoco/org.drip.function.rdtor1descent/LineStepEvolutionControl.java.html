@@ -99,31 +99,39 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LineStepEvolutionControl {
-<span class="fc" id="L103">	private int _iNumReductionStep = -1;</span>
-<span class="fc" id="L104">	private double _dblReductionFactor = java.lang.Double.NaN;</span>
-<span class="fc" id="L105">	private org.drip.function.rdtor1descent.LineEvolutionVerifier _lev = null;</span>
+public class LineStepEvolutionControl
+{
+<span class="fc" id="L104">	private int _reductionStepCount = -1;</span>
+<span class="fc" id="L105">	private double _reductionFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private org.drip.function.rdtor1descent.LineEvolutionVerifier _lineEvolutionVerifier = null;</span>
 
 	/**
 	 * Retrieve the Nocedal-Wright-Armijo Verifier Based Standard LineStepEvolutionControl Instance
 	 * 
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
 	 * 
 	 * @return The Nocedal-Wright-Armijo Verifier Based Standard LineStepEvolutionControl Instance
 	 */
 
 	public static final LineStepEvolutionControl NocedalWrightArmijo (
-		final boolean bMaximizerCheck)
+		final boolean maximizerCheck)
 	{
-		try {
-<span class="fc" id="L119">			return new LineStepEvolutionControl</span>
-				(org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NocedalWrightStandard
-<span class="fc" id="L121">					(bMaximizerCheck), 0.75, 1);</span>
-<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L123">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L121">			return new LineStepEvolutionControl (</span>
+<span class="fc" id="L122">				org.drip.function.rdtor1descent.ArmijoEvolutionVerifier.NocedalWrightStandard (</span>
+					maximizerCheck
+				),
+				0.75,
+				1
+			);
+		}
+<span class="nc" id="L129">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L126">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	/**
@@ -134,15 +142,22 @@ public class LineStepEvolutionControl {
 
 	public static final LineStepEvolutionControl NocedalWrightWeakCurvature()
 	{
-		try {
-<span class="fc" id="L138">			return new LineStepEvolutionControl</span>
-<span class="fc" id="L139">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (false),</span>
-					0.75, 1);
-<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L142">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L147">			return new LineStepEvolutionControl (</span>
+<span class="fc" id="L148">				org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (</span>
+					false
+				),
+				0.75,
+				1
+			);
+		}
+<span class="nc" id="L155">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L157">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L145">		return null;</span>
+<span class="nc" id="L160">		return null;</span>
 	}
 
 	/**
@@ -153,33 +168,18 @@ public class LineStepEvolutionControl {
 
 	public static final LineStepEvolutionControl NocedalWrightStrongCurvature()
 	{
-		try {
-<span class="fc" id="L157">			return new LineStepEvolutionControl</span>
-<span class="fc" id="L158">				(org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (true),</span>
-					0.75, 1);
-<span class="nc" id="L160">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L161">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L173">			return new LineStepEvolutionControl (</span>
+<span class="fc" id="L174">				org.drip.function.rdtor1descent.CurvatureEvolutionVerifier.NocedalWrightStandard (</span>
+					true
+				),
+				0.75,
+				1
+			);
 		}
-
-<span class="nc" id="L164">		return null;</span>
-	}
-
-	/**
-	 * Retrieve the Nocedal-Wright-Weak Wolfe Verifier Based Standard LineStepEvolutionControl Instance
-	 * 
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
-	 * 
-	 * @return The Nocedal-Wright-Weak Wolfe Verifier Based Standard LineStepEvolutionControl Instance
-	 */
-
-	public static final LineStepEvolutionControl NocedalWrightWeakWolfe (
-		final boolean bMaximizerCheck)
-	{
-		try {
-<span class="fc" id="L179">			return new LineStepEvolutionControl</span>
-				(org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard
-<span class="fc" id="L181">					(bMaximizerCheck, false), 0.75, 1);</span>
-<span class="nc" id="L182">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L181">		catch (java.lang.Exception e)</span>
+		{
 <span class="nc" id="L183">			e.printStackTrace();</span>
 		}
 
@@ -187,48 +187,89 @@ public class LineStepEvolutionControl {
 	}
 
 	/**
+	 * Retrieve the Nocedal-Wright-Weak Wolfe Verifier Based Standard LineStepEvolutionControl Instance
+	 * 
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * 
+	 * @return The Nocedal-Wright-Weak Wolfe Verifier Based Standard LineStepEvolutionControl Instance
+	 */
+
+	public static final LineStepEvolutionControl NocedalWrightWeakWolfe (
+		final boolean maximizerCheck)
+	{
+		try
+		{
+<span class="fc" id="L202">			return new LineStepEvolutionControl (</span>
+<span class="fc" id="L203">				org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard (</span>
+					maximizerCheck,
+					false
+				),
+				0.75,
+				1
+			);
+		}
+<span class="nc" id="L211">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L213">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L216">		return null;</span>
+	}
+
+	/**
 	 * Retrieve the Nocedal-Wright-Strong Wolfe Verifier Based Standard LineStepEvolutionControl Instance
 	 * 
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
 	 * 
 	 * @return The Nocedal-Wright-Strong Wolfe Verifier Based Standard LineStepEvolutionControl Instance
 	 */
 
 	public static final LineStepEvolutionControl NocedalWrightStrongWolfe (
-		final boolean bMaximizerCheck)
+		final boolean maximizerCheck)
 	{
-		try {
-<span class="fc" id="L201">			return new LineStepEvolutionControl</span>
-				(org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard
-<span class="fc" id="L203">					(bMaximizerCheck, true), 0.75, 1);</span>
-<span class="nc" id="L204">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L205">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L232">			return new LineStepEvolutionControl (</span>
+<span class="fc" id="L233">				org.drip.function.rdtor1descent.WolfeEvolutionVerifier.NocedalWrightStandard (</span>
+					maximizerCheck,
+					true
+				),
+				0.75,
+				1
+			);
+		}
+<span class="nc" id="L241">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L243">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L208">		return null;</span>
+<span class="nc" id="L246">		return null;</span>
 	}
 
 	/**
 	 * LineStepEvolutionControl Constructor
 	 * 
-	 * @param lev The Lie Evolution Verifier Instance
-	 * @param dblReductionFactor The Per-Step Reduction Factor
-	 * @param iNumReductionStep Number of Reduction Steps
+	 * @param lineEvolutionVerifier The Line Evolution Verifier Instance
+	 * @param reductionFactor The Per-Step Reduction Factor
+	 * @param reductionStepCount Count of Reduction Steps
 	 * 
 	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
 	public LineStepEvolutionControl (
-		final org.drip.function.rdtor1descent.LineEvolutionVerifier lev,
-		final double dblReductionFactor,
-		final int iNumReductionStep)
+		final org.drip.function.rdtor1descent.LineEvolutionVerifier lineEvolutionVerifier,
+		final double reductionFactor,
+		final int reductionStepCount)
 		throws java.lang.Exception
-<span class="fc" id="L226">	{</span>
-<span class="pc bpc" id="L227" title="4 of 8 branches missed.">		if (null == (_lev = lev) || !org.drip.numerical.common.NumberUtil.IsValid (_dblReductionFactor =</span>
-			dblReductionFactor) || 1. &lt;= _dblReductionFactor || 0 &gt;= (_iNumReductionStep =
-				iNumReductionStep))
-<span class="nc" id="L230">			throw new java.lang.Exception (&quot;LineStepEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L231">	}</span>
+<span class="fc" id="L264">	{</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">		if (null == (_lineEvolutionVerifier = lineEvolutionVerifier) ||</span>
+<span class="pc bpc" id="L266" title="3 of 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_reductionFactor = reductionFactor) ||</span>
+				1. &lt;= _reductionFactor ||
+			0 &gt;= (_reductionStepCount = reductionStepCount))
+		{
+<span class="nc" id="L270">			throw new java.lang.Exception (&quot;LineStepEvolutionControl Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="fc" id="L272">	}</span>
 
 	/**
 	 * Retrieve the Line Evolution Verifier Instance
@@ -238,7 +279,7 @@ public class LineStepEvolutionControl {
 
 	public org.drip.function.rdtor1descent.LineEvolutionVerifier lineEvolutionVerifier()
 	{
-<span class="fc" id="L241">		return _lev;</span>
+<span class="fc" id="L282">		return _lineEvolutionVerifier;</span>
 	}
 
 	/**
@@ -249,18 +290,18 @@ public class LineStepEvolutionControl {
 
 	public double reductionFactor()
 	{
-<span class="fc" id="L252">		return _dblReductionFactor;</span>
+<span class="fc" id="L293">		return _reductionFactor;</span>
 	}
 
 	/**
-	 * Retrieve the Number of Reduction Steps
+	 * Retrieve the Count of Reduction Steps
 	 * 
-	 * @return The Number of Reduction Steps
+	 * @return The Count of Reduction Steps
 	 */
 
-	public int reductionSteps()
+	public int reductionStepCount()
 	{
-<span class="fc" id="L263">		return _iNumReductionStep;</span>
+<span class="fc" id="L304">		return _reductionStepCount;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

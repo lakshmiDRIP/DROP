@@ -6,39 +6,50 @@ package org.drip.dynamics.lmm;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -91,19 +102,19 @@ package org.drip.dynamics.lmm;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LMM Based Latent State Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *  
  * @author Lakshmi Krishnamurthy
  */
 
 public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution.PointStateEvolver {
-<span class="nc" id="L104">	private org.drip.dynamics.hjm.MultiFactorVolatility _mfv = null;</span>
-<span class="nc" id="L105">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
-<span class="nc" id="L106">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="nc" id="L115">	private org.drip.dynamics.hjm.MultiFactorVolatility _mfv = null;</span>
+<span class="nc" id="L116">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="nc" id="L117">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
 
 	private double volatilityRandomDotProduct (
 		final int iViewDate,
@@ -111,21 +122,21 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L114">		double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (iViewTimeIncrement);</span>
+<span class="nc" id="L125">		double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (iViewTimeIncrement);</span>
 
-<span class="nc" id="L116">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="nc" id="L127">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="nc" id="L118">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="nc" id="L129">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="nc" id="L120">		double dblVolatilityRandomDotProduct = 0.;</span>
+<span class="nc" id="L131">		double dblVolatilityRandomDotProduct = 0.;</span>
 
-<span class="nc" id="L122">		int iNumFactor = pfsg.numFactor();</span>
+<span class="nc" id="L133">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="nc" id="L125">			dblVolatilityRandomDotProduct += _mfv.weightedFactorPointVolatility (i, iViewDate, iTargetDate) *</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="nc" id="L136">			dblVolatilityRandomDotProduct += _mfv.weightedFactorPointVolatility (i, iViewDate, iTargetDate) *</span>
 				adblMultivariateRandom[i] * dblViewTimeIncrementSQRT;
 
-<span class="nc" id="L128">		return dblVolatilityRandomDotProduct;</span>
+<span class="nc" id="L139">		return dblVolatilityRandomDotProduct;</span>
 	}
 
 	private double volatilityRandomDotDerivative (
@@ -135,18 +146,18 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final boolean bTerminal)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L138">		org.drip.function.definition.R1ToR1 pointVolatilityFunctionR1ToR1 = new</span>
-<span class="nc" id="L139">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L149">		org.drip.function.definition.R1ToR1 pointVolatilityFunctionR1ToR1 = new</span>
+<span class="nc" id="L150">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">				return bTerminal ? volatilityRandomDotProduct (iViewDate, (int) dblX, iViewTimeIncrement) :</span>
-<span class="nc" id="L145">					volatilityRandomDotProduct ((int) dblX, iTargetDate, iViewTimeIncrement);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">				return bTerminal ? volatilityRandomDotProduct (iViewDate, (int) dblX, iViewTimeIncrement) :</span>
+<span class="nc" id="L156">					volatilityRandomDotProduct ((int) dblX, iTargetDate, iViewTimeIncrement);</span>
 			}
 		};
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		return pointVolatilityFunctionR1ToR1.derivative (bTerminal ? iTargetDate : iViewDate, 1);</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		return pointVolatilityFunctionR1ToR1.derivative (bTerminal ? iTargetDate : iViewDate, 1);</span>
 	}
 
 	/**
@@ -166,10 +177,10 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final org.drip.dynamics.hjm.MultiFactorVolatility mfv,
 		final org.drip.function.definition.R1ToR1 auInitialInstantaneousForwardRate)
 		throws java.lang.Exception
-<span class="nc" id="L169">	{</span>
-<span class="nc bnc" id="L170" title="All 6 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_mfv = mfv))</span>
-<span class="nc" id="L171">			throw new java.lang.Exception (&quot;ContinuousForwardRateEvolver ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L172">	}</span>
+<span class="nc" id="L180">	{</span>
+<span class="nc bnc" id="L181" title="All 6 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_mfv = mfv))</span>
+<span class="nc" id="L182">			throw new java.lang.Exception (&quot;ContinuousForwardRateEvolver ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L183">	}</span>
 
 	/**
 	 * Retrieve the Funding Label
@@ -179,7 +190,7 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L182">		return _lslFunding;</span>
+<span class="nc" id="L193">		return _lslFunding;</span>
 	}
 
 	/**
@@ -190,7 +201,7 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-<span class="nc" id="L193">		return _lslForward;</span>
+<span class="nc" id="L204">		return _lslForward;</span>
 	}
 
 	/**
@@ -201,7 +212,7 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 
 	public org.drip.dynamics.hjm.MultiFactorVolatility mfv()
 	{
-<span class="nc" id="L204">		return _mfv;</span>
+<span class="nc" id="L215">		return _mfv;</span>
 	}
 
 	@Override public org.drip.dynamics.lmm.ContinuousForwardRateUpdate evolve (
@@ -210,46 +221,46 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final int iSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
-<span class="nc bnc" id="L213" title="All 6 branches missed.">		if (iSpotDate &gt; iViewDate || (null != lsqmPrev &amp;&amp; !(lsqmPrev instanceof</span>
+<span class="nc bnc" id="L224" title="All 6 branches missed.">		if (iSpotDate &gt; iViewDate || (null != lsqmPrev &amp;&amp; !(lsqmPrev instanceof</span>
 			org.drip.dynamics.lmm.ContinuousForwardRateUpdate)))
-<span class="nc" id="L215">			return null;</span>
+<span class="nc" id="L226">			return null;</span>
 
-<span class="nc" id="L217">		org.drip.dynamics.lmm.ContinuousForwardRateUpdate bgmPrev =</span>
+<span class="nc" id="L228">		org.drip.dynamics.lmm.ContinuousForwardRateUpdate bgmPrev =</span>
 			(org.drip.dynamics.lmm.ContinuousForwardRateUpdate) lsqmPrev;
 
-<span class="nc" id="L220">		double dblDContinuousForwardDXTerminalPrev = bgmPrev.dContinuousForwardDXTerminal();</span>
+<span class="nc" id="L231">		double dblDContinuousForwardDXTerminalPrev = bgmPrev.dContinuousForwardDXTerminal();</span>
 
-<span class="nc" id="L222">		double dblDContinuousForwardDXInitialPrev = bgmPrev.dContinuousForwardDXInitial();</span>
+<span class="nc" id="L233">		double dblDContinuousForwardDXInitialPrev = bgmPrev.dContinuousForwardDXInitial();</span>
 
 		try {
-<span class="nc" id="L225">			double dblDiscountFactorPrev = bgmPrev.discountFactor();</span>
+<span class="nc" id="L236">			double dblDiscountFactorPrev = bgmPrev.discountFactor();</span>
 
-<span class="nc" id="L227">			double dblSpotRateIncrement = dblDContinuousForwardDXInitialPrev * iSpotTimeIncrement +</span>
-<span class="nc" id="L228">				volatilityRandomDotDerivative (iSpotDate, iViewDate, iSpotTimeIncrement, false);</span>
+<span class="nc" id="L238">			double dblSpotRateIncrement = dblDContinuousForwardDXInitialPrev * iSpotTimeIncrement +</span>
+<span class="nc" id="L239">				volatilityRandomDotDerivative (iSpotDate, iViewDate, iSpotTimeIncrement, false);</span>
 
-<span class="nc" id="L230">			double dblContinuousForwardIncrement = (dblDContinuousForwardDXTerminalPrev + 0.5 *</span>
-<span class="nc" id="L231">				_mfv.pointVolatilityModulusDerivative (iSpotDate, iViewDate, 1, true)) * iSpotTimeIncrement +</span>
-<span class="nc" id="L232">					volatilityRandomDotDerivative (iSpotDate, iViewDate, iSpotTimeIncrement, true);</span>
+<span class="nc" id="L241">			double dblContinuousForwardIncrement = (dblDContinuousForwardDXTerminalPrev + 0.5 *</span>
+<span class="nc" id="L242">				_mfv.pointVolatilityModulusDerivative (iSpotDate, iViewDate, 1, true)) * iSpotTimeIncrement +</span>
+<span class="nc" id="L243">					volatilityRandomDotDerivative (iSpotDate, iViewDate, iSpotTimeIncrement, true);</span>
 
-<span class="nc" id="L234">			double dblContinuousForwardRate = bgmPrev.continuousForwardRate() +</span>
+<span class="nc" id="L245">			double dblContinuousForwardRate = bgmPrev.continuousForwardRate() +</span>
 				dblContinuousForwardIncrement;
 
-<span class="nc" id="L237">			double dblSpotRate = bgmPrev.spotRate() + dblSpotRateIncrement;</span>
+<span class="nc" id="L248">			double dblSpotRate = bgmPrev.spotRate() + dblSpotRateIncrement;</span>
 
-<span class="nc" id="L239">			double dblDiscountFactorIncrement = dblDiscountFactorPrev * ((dblSpotRate -</span>
-<span class="nc" id="L240">				dblContinuousForwardRate) * iSpotTimeIncrement - volatilityRandomDotProduct (iSpotDate,</span>
+<span class="nc" id="L250">			double dblDiscountFactorIncrement = dblDiscountFactorPrev * ((dblSpotRate -</span>
+<span class="nc" id="L251">				dblContinuousForwardRate) * iSpotTimeIncrement - volatilityRandomDotProduct (iSpotDate,</span>
 					iViewDate, iSpotTimeIncrement));
 
-<span class="nc" id="L243">			return org.drip.dynamics.lmm.ContinuousForwardRateUpdate.Create (_lslFunding, _lslForward,</span>
+<span class="nc" id="L254">			return org.drip.dynamics.lmm.ContinuousForwardRateUpdate.Create (_lslFunding, _lslForward,</span>
 				iSpotDate, iSpotDate + iSpotTimeIncrement, iViewDate, dblContinuousForwardRate,
 					dblContinuousForwardIncrement, dblSpotRate, dblSpotRateIncrement, dblDiscountFactorPrev +
 						dblDiscountFactorIncrement, dblDiscountFactorIncrement,
 							dblDContinuousForwardDXInitialPrev, dblDContinuousForwardDXTerminalPrev);
-<span class="nc" id="L248">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L249">			e.printStackTrace();</span>
+<span class="nc" id="L259">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L260">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L252">		return null;</span>
+<span class="nc" id="L263">		return null;</span>
 	}
 
 	/**
@@ -274,17 +285,17 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final double dblSpotForwardReinvestmentAccrual)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L277" title="All 4 branches missed.">		if (iSpotDate &gt; iForwardDate || iForwardDate &gt; iMaturityDate ||</span>
-<span class="nc bnc" id="L278" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblSpotPrice) ||</span>
-<span class="nc bnc" id="L279" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblSpotForwardReinvestmentAccrual))</span>
-<span class="nc" id="L280">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L288" title="All 4 branches missed.">		if (iSpotDate &gt; iForwardDate || iForwardDate &gt; iMaturityDate ||</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblSpotPrice) ||</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblSpotForwardReinvestmentAccrual))</span>
+<span class="nc" id="L291">			throw new java.lang.Exception</span>
 				(&quot;ContinuousForwardRateEvolver::zeroCouponForwardPrice =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L283">		int iPeriodIncrement = iForwardDate - iSpotDate;</span>
+<span class="nc" id="L294">		int iPeriodIncrement = iForwardDate - iSpotDate;</span>
 
-<span class="nc" id="L285">		return dblSpotPrice / dblSpotForwardReinvestmentAccrual * java.lang.Math.exp (-1. *</span>
-<span class="nc" id="L286">			(volatilityRandomDotProduct (iSpotDate, iForwardDate, iPeriodIncrement) + 0.5 * iPeriodIncrement</span>
-<span class="nc" id="L287">				* _mfv.pointVolatilityModulus (iSpotDate, iForwardDate)));</span>
+<span class="nc" id="L296">		return dblSpotPrice / dblSpotForwardReinvestmentAccrual * java.lang.Math.exp (-1. *</span>
+<span class="nc" id="L297">			(volatilityRandomDotProduct (iSpotDate, iForwardDate, iPeriodIncrement) + 0.5 * iPeriodIncrement</span>
+<span class="nc" id="L298">				* _mfv.pointVolatilityModulus (iSpotDate, iForwardDate)));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

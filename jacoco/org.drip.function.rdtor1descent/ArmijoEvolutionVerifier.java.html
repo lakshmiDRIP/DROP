@@ -88,7 +88,9 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
+public class ArmijoEvolutionVerifier
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifier
+{
 
 	/**
 	 * The Nocedal-Wright Armijo Parameter
@@ -96,47 +98,56 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public static final double NOCEDAL_WRIGHT_ARMIJO_PARAMETER = 0.0001;
 
-<span class="fc" id="L99">	private boolean _bMaximizerCheck = false;</span>
-<span class="fc" id="L100">	private double _dblArmijoParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private boolean _maximizerCheck = false;</span>
+<span class="fc" id="L102">	private double _armijoParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Nocedal-Wright Armijo Evolution Verifier
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * 
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
 	 * 
 	 * @return The Nocedal-Wright Armijo Evolution Verifier Instance
 	 */
 
 	public static final ArmijoEvolutionVerifier NocedalWrightStandard (
-		final boolean bMaximizerCheck)
+		final boolean maximizerCheck)
 	{
-		try {
-<span class="fc" id="L113">			return new ArmijoEvolutionVerifier (NOCEDAL_WRIGHT_ARMIJO_PARAMETER, bMaximizerCheck);</span>
-<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L115">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L117">			return new ArmijoEvolutionVerifier (</span>
+				NOCEDAL_WRIGHT_ARMIJO_PARAMETER,
+				maximizerCheck
+			);
+		}
+<span class="nc" id="L122">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L124">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L118">		return null;</span>
+<span class="nc" id="L127">		return null;</span>
 	}
 
 	/**
 	 * ArmijoEvolutionVerifier Constructor
 	 * 
-	 * @param dblArmijoParameter The Armijo Parameter
-	 * @param bMaximizerCheck TRUE - Perform a Check for the Function Maxima
+	 * @param armijoParameter The Armijo Parameter
+	 * @param maximizerCheck TRUE - Perform a Check for the Function Maxima
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ArmijoEvolutionVerifier (
-		final double dblArmijoParameter,
-		final boolean bMaximizerCheck)
+		final double armijoParameter,
+		final boolean maximizerCheck)
 		throws java.lang.Exception
-<span class="fc" id="L134">	{</span>
-<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblArmijoParameter = dblArmijoParameter))</span>
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L143">	{</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_armijoParameter = armijoParameter))</span>
+		{
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;ArmijoEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L138">		_bMaximizerCheck = bMaximizerCheck;</span>
-<span class="fc" id="L139">	}</span>
+<span class="fc" id="L149">		_maximizerCheck = maximizerCheck;</span>
+<span class="fc" id="L150">	}</span>
 
 	/**
 	 * Indicate if the Check is for Minimizer/Maximizer
@@ -146,7 +157,7 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public boolean maximizerCheck()
 	{
-<span class="nc" id="L149">		return _bMaximizerCheck;</span>
+<span class="nc" id="L160">		return _maximizerCheck;</span>
 	}
 
 	/**
@@ -157,27 +168,45 @@ public class ArmijoEvolutionVerifier extends org.drip.function.rdtor1descent.Lin
 
 	public double armijoParameter()
 	{
-<span class="nc" id="L160">		return _dblArmijoParameter;</span>
+<span class="nc" id="L171">		return _armijoParameter;</span>
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 	{
-		try {
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			return null == funcRdToR1 ? null : new</span>
-				org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (_dblArmijoParameter,
-					_bMaximizerCheck, uvTargetDirection, adblCurrentVariate, dblStepLength,
-<span class="fc" id="L173">						funcRdToR1.evaluate (adblCurrentVariate), funcRdToR1.evaluate (NextVariate</span>
-<span class="fc" id="L174">							(uvTargetDirection, adblCurrentVariate, dblStepLength)), funcRdToR1.jacobian</span>
-<span class="fc" id="L175">								(adblCurrentVariate));</span>
-<span class="nc" id="L176">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L177">			e.printStackTrace();</span>
+		try
+		{
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			return null == multivariateFunction ? null :</span>
+				new org.drip.function.rdtor1descent.ArmijoEvolutionVerifierMetrics (
+					_armijoParameter,
+					_maximizerCheck,
+					targetDirectionUnitVector,
+					currentVariateArray,
+					stepLength,
+<span class="fc" id="L189">					multivariateFunction.evaluate (</span>
+						currentVariateArray
+					),
+<span class="fc" id="L192">					multivariateFunction.evaluate (</span>
+<span class="fc" id="L193">						NextVariateArray (</span>
+							targetDirectionUnitVector,
+							currentVariateArray,
+							stepLength
+						)
+					),
+<span class="fc" id="L199">					multivariateFunction.jacobian (</span>
+						currentVariateArray
+					)
+				);
+		}
+<span class="nc" id="L204">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L206">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L180">		return null;</span>
+<span class="nc" id="L209">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

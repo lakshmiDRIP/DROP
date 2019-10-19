@@ -6,38 +6,49 @@ package org.drip.execution.athl;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,18 +108,18 @@ package org.drip.execution.athl;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;Almgren-Thum-Hauptmann-Li Calibration&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.TransactionFunctionPower {
-<span class="nc" id="L110">	private double _dblLiquidityFactor = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
+<span class="nc" id="L121">	private double _dblLiquidityFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
 
 	/**
 	 * PermanentImpactQuasiArbitrage Constructor
@@ -121,13 +132,13 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 	public PermanentImpactQuasiArbitrage (
 		final org.drip.execution.parameters.AssetFlowSettings afp)
 		throws java.lang.Exception
-<span class="nc" id="L124">	{</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == (_afp = afp))</span>
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L135">	{</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (null == (_afp = afp))</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L128">		_dblLiquidityFactor = java.lang.Math.pow (afp.inverseTurnover(),</span>
+<span class="nc" id="L139">		_dblLiquidityFactor = java.lang.Math.pow (afp.inverseTurnover(),</span>
 			org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_INVERSE_TURNOVER_EXPONENT);
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Liquidity Factor
@@ -137,7 +148,7 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 
 	public double liquidityFactor()
 	{
-<span class="nc" id="L140">		return _dblLiquidityFactor;</span>
+<span class="nc" id="L151">		return _dblLiquidityFactor;</span>
 	}
 
 	/**
@@ -148,52 +159,52 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 
 	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
 	{
-<span class="nc" id="L151">		return _afp;</span>
+<span class="nc" id="L162">		return _afp;</span>
 	}
 
 	@Override public double regularize (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L158" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::regularize =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="nc" id="L170">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::regularize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L161">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
+<span class="nc" id="L172">		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);</span>
 	}
 
 	@Override public double modulate (
 		final double dblTradeInterval)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L168" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
-<span class="nc" id="L169">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::modulate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 &gt;= dblTradeInterval)</span>
+<span class="nc" id="L180">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::modulate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L171">		return dblTradeInterval * _afp.dailyVolatility();</span>
+<span class="nc" id="L182">		return dblTradeInterval * _afp.dailyVolatility();</span>
 	}
 
 	@Override public double constant()
 	{
-<span class="nc" id="L176">		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
+<span class="nc" id="L187">		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *</span>
 			_dblLiquidityFactor;
 	}
 
 	@Override public double exponent()
 	{
-<span class="nc" id="L182">		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;</span>
+<span class="nc" id="L193">		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;</span>
 	}
 
 	@Override public double evaluate (
 		final double dblNormalizedX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L189" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))</span>
-<span class="nc" id="L190">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))</span>
+<span class="nc" id="L201">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::evaluate =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L192">		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;</span>
-<span class="nc" id="L193">		double dblGamma = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT;</span>
+<span class="nc" id="L203">		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;</span>
+<span class="nc" id="L204">		double dblGamma = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT;</span>
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		return 0.5 * dblGamma * (dblNormalizedX &lt; 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L196">			(dblNormalizedX), dblAlpha) * _dblLiquidityFactor;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		return 0.5 * dblGamma * (dblNormalizedX &lt; 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L207">			(dblNormalizedX), dblAlpha) * _dblLiquidityFactor;</span>
 	}
 
 	@Override public double derivative  (
@@ -201,18 +212,18 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 		final int iOrder)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L204" title="All 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))</span>
-<span class="nc" id="L205">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L215" title="All 4 branches missed.">		if (0 &gt;= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))</span>
+<span class="nc" id="L216">			throw new java.lang.Exception (&quot;PermanentImpactQuasiArbitrage::derivative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L207">		double dblCoefficient = 1.;</span>
-<span class="nc" id="L208">		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;</span>
-<span class="nc" id="L209">		double dblGamma = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT;</span>
+<span class="nc" id="L218">		double dblCoefficient = 1.;</span>
+<span class="nc" id="L219">		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;</span>
+<span class="nc" id="L220">		double dblGamma = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT;</span>
 
-<span class="nc bnc" id="L211" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
-<span class="nc" id="L212">			dblCoefficient = dblCoefficient * (dblAlpha - i);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		for (int i = 0; i &lt; iOrder; ++i)</span>
+<span class="nc" id="L223">			dblCoefficient = dblCoefficient * (dblAlpha - i);</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">		return 0.5 * dblGamma * (dblNormalizedX &lt; 0. ? -1. : 1.) * dblCoefficient * java.lang.Math.pow</span>
-<span class="nc" id="L215">			(java.lang.Math.abs (dblNormalizedX), dblAlpha - iOrder) * _dblLiquidityFactor;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		return 0.5 * dblGamma * (dblNormalizedX &lt; 0. ? -1. : 1.) * dblCoefficient * java.lang.Math.pow</span>
+<span class="nc" id="L226">			(java.lang.Math.abs (dblNormalizedX), dblAlpha - iOrder) * _dblLiquidityFactor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

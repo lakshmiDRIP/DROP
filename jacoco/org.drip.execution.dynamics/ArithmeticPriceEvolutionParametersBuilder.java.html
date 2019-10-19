@@ -6,38 +6,49 @@ package org.drip.execution.dynamics;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,16 +108,16 @@ package org.drip.execution.dynamics;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/dynamics/README.md&quot;&gt;Arithmetic Price Evolution Execution Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class ArithmeticPriceEvolutionParametersBuilder {</span>
+<span class="nc" id="L120">public class ArithmeticPriceEvolutionParametersBuilder {</span>
 
 	/**
 	 * Linear Expectation Version of LinearPermanentExpectationParameters Instance
@@ -126,13 +137,13 @@ package org.drip.execution.dynamics;
 		final org.drip.execution.profiletime.BackgroundParticipationRateLinear bprlTemporaryExpectation)
 	{
 		try {
-<span class="fc" id="L129">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (apds,</span>
+<span class="fc" id="L140">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (apds,</span>
 				bprlPermanentExpectation, bprlTemporaryExpectation);
-<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L132">			e.printStackTrace();</span>
+<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L143">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L135">		return null;</span>
+<span class="nc" id="L146">		return null;</span>
 	}
 
 	/**
@@ -153,13 +164,13 @@ package org.drip.execution.dynamics;
 		final org.drip.execution.profiletime.BackgroundParticipationRate bprTemporaryExpectation)
 	{
 		try {
-<span class="fc" id="L156">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (apds,</span>
+<span class="fc" id="L167">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (apds,</span>
 				bprlPermanentExpectation, bprTemporaryExpectation);
-<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L159">			e.printStackTrace();</span>
+<span class="nc" id="L169">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L162">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 
 	/**
@@ -181,20 +192,20 @@ package org.drip.execution.dynamics;
 			final org.drip.execution.profiletime.BackgroundParticipationRateLinear bprlTemporaryVolatility)
 	{
 		try {
-<span class="fc" id="L184">			return new org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters (new</span>
+<span class="fc" id="L195">			return new org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters (new</span>
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
 					org.drip.function.r1tor1.FlatUnivariate (dblPriceVolatility), 0.), new
 						org.drip.execution.profiletime.UniformParticipationRate
-<span class="fc" id="L188">							(org.drip.execution.impact.ParticipationRateLinear.NoImpact()),</span>
+<span class="fc" id="L199">							(org.drip.execution.impact.ParticipationRateLinear.NoImpact()),</span>
 								bprlTemporaryExpectation, new
 									org.drip.execution.profiletime.UniformParticipationRate
-<span class="fc" id="L191">										(org.drip.execution.impact.ParticipationRateLinear.NoImpact()),</span>
+<span class="fc" id="L202">										(org.drip.execution.impact.ParticipationRateLinear.NoImpact()),</span>
 											bprlTemporaryVolatility);
-<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="nc" id="L204">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L205">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L197">		return null;</span>
+<span class="nc" id="L208">		return null;</span>
 	}
 
 	/**
@@ -211,21 +222,21 @@ package org.drip.execution.dynamics;
 		final org.drip.execution.tradingtime.CoordinatedVariation cv)
 	{
 		try {
-<span class="nc" id="L214">			return new org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters (new</span>
+<span class="nc" id="L225">			return new org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters (new</span>
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., r1ToR1Volatility, 0.), new
 					org.drip.execution.profiletime.UniformParticipationRate
-<span class="nc" id="L217">						(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
+<span class="nc" id="L228">						(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
 							org.drip.execution.tradingtime.CoordinatedParticipationRateLinear (cv,
 								r1ToR1Volatility), new
 									org.drip.execution.profiletime.UniformParticipationRate
-<span class="nc" id="L221">										(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
+<span class="nc" id="L232">										(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
 											org.drip.execution.profiletime.UniformParticipationRate
-<span class="nc" id="L223">												(org.drip.execution.impact.ParticipationRateLinear.NoImpact()));</span>
-<span class="nc" id="L224">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L225">			e.printStackTrace();</span>
+<span class="nc" id="L234">												(org.drip.execution.impact.ParticipationRateLinear.NoImpact()));</span>
+<span class="nc" id="L235">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L236">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L228">		return null;</span>
+<span class="nc" id="L239">		return null;</span>
 	}
 
 	/**
@@ -243,13 +254,13 @@ package org.drip.execution.dynamics;
 			final org.drip.execution.tradingtime.CoordinatedVariation cv)
 	{
 		try {
-<span class="nc" id="L246">			return CoordinatedVariation (new org.drip.function.r1tor1.FlatUnivariate (dblPriceVolatility),</span>
+<span class="nc" id="L257">			return CoordinatedVariation (new org.drip.function.r1tor1.FlatUnivariate (dblPriceVolatility),</span>
 				cv);
-<span class="nc" id="L248">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L249">			e.printStackTrace();</span>
+<span class="nc" id="L259">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L260">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L252">		return null;</span>
+<span class="nc" id="L263">		return null;</span>
 	}
 
 	/**
@@ -264,22 +275,22 @@ package org.drip.execution.dynamics;
 		ReferenceCoordinatedVariation (
 			final org.drip.execution.tradingtime.CoordinatedVariation cv)
 	{
-<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		if (null == cv) return null;</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">		if (null == cv) return null;</span>
 
 		try {
-<span class="fc" id="L270">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (new</span>
+<span class="fc" id="L281">			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (new</span>
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-<span class="fc" id="L272">					org.drip.function.r1tor1.FlatUnivariate (cv.referenceVolatility()), 0.), new</span>
+<span class="fc" id="L283">					org.drip.function.r1tor1.FlatUnivariate (cv.referenceVolatility()), 0.), new</span>
 						org.drip.execution.profiletime.UniformParticipationRateLinear
-<span class="fc" id="L274">							(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
+<span class="fc" id="L285">							(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new</span>
 								org.drip.execution.profiletime.UniformParticipationRateLinear
 									(org.drip.execution.impact.ParticipationRateLinear.SlopeOnly
-<span class="fc" id="L277">										(cv.referenceLiquidity())));</span>
-<span class="nc" id="L278">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L279">			e.printStackTrace();</span>
+<span class="fc" id="L288">										(cv.referenceLiquidity())));</span>
+<span class="nc" id="L289">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L290">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L282">		return null;</span>
+<span class="nc" id="L293">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

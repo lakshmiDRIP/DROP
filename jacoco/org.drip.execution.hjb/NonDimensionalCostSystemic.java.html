@@ -6,38 +6,49 @@ package org.drip.execution.hjb;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,9 +108,9 @@ package org.drip.execution.hjb;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/hjb/README.md&quot;&gt;Hamilton Jacobin Bellman Based Optimal Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
@@ -107,8 +118,8 @@ package org.drip.execution.hjb;
  */
 
 public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimensionalCost {
-<span class="fc" id="L110">	private double _dblGradient = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _dblJacobian = java.lang.Double.NaN;</span>
+<span class="fc" id="L121">	private double _dblGradient = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblJacobian = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a Zero Sensitivity Systemic Non Dimensional Cost Instance
@@ -119,12 +130,12 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 	public static final NonDimensionalCostSystemic Zero()
 	{
 		try {
-<span class="fc" id="L122">			return new NonDimensionalCostSystemic (0., 0., 0., 0.);</span>
-<span class="nc" id="L123">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L124">			e.printStackTrace();</span>
+<span class="fc" id="L133">			return new NonDimensionalCostSystemic (0., 0., 0., 0.);</span>
+<span class="nc" id="L134">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L135">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L127">		return null;</span>
+<span class="nc" id="L138">		return null;</span>
 	}
 
 	/**
@@ -140,21 +151,21 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 		final double dblMarketStateExponentiation,
 		final double dblNonDimensionalTime)
 	{
-<span class="nc bnc" id="L143" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketStateExponentiation) ||</span>
-<span class="nc bnc" id="L144" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalTime) || 0. &gt;= dblNonDimensionalTime)</span>
-<span class="nc" id="L145">			return null;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketStateExponentiation) ||</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalTime) || 0. &gt;= dblNonDimensionalTime)</span>
+<span class="nc" id="L156">			return null;</span>
 
-<span class="nc" id="L147">		double dblNonDimensionalUrgency = 1. / dblNonDimensionalTime;</span>
-<span class="nc" id="L148">		double dblNonDimensionalCostThreshold = dblMarketStateExponentiation * dblNonDimensionalUrgency;</span>
+<span class="nc" id="L158">		double dblNonDimensionalUrgency = 1. / dblNonDimensionalTime;</span>
+<span class="nc" id="L159">		double dblNonDimensionalCostThreshold = dblMarketStateExponentiation * dblNonDimensionalUrgency;</span>
 
 		try {
-<span class="nc" id="L151">			return new NonDimensionalCostSystemic (dblNonDimensionalCostThreshold,</span>
+<span class="nc" id="L162">			return new NonDimensionalCostSystemic (dblNonDimensionalCostThreshold,</span>
 				dblNonDimensionalCostThreshold, dblNonDimensionalCostThreshold, dblNonDimensionalUrgency);
-<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L154">			e.printStackTrace();</span>
+<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L165">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L157">		return null;</span>
+<span class="nc" id="L168">		return null;</span>
 	}
 
 	/**
@@ -172,20 +183,20 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 		final double dblNonDimensionalCost,
 		final double dblNonDimensionalCostCross)
 	{
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketState) ||</span>
-<span class="nc bnc" id="L176" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalCost) ||</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalCostCross))</span>
-<span class="nc" id="L178">			return null;</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblMarketState) ||</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalCost) ||</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblNonDimensionalCostCross))</span>
+<span class="nc" id="L189">			return null;</span>
 
 		try {
-<span class="nc" id="L181">			return new NonDimensionalCostSystemic (dblNonDimensionalCost, dblNonDimensionalCost +</span>
+<span class="nc" id="L192">			return new NonDimensionalCostSystemic (dblNonDimensionalCost, dblNonDimensionalCost +</span>
 				dblNonDimensionalCostCross, dblNonDimensionalCost + 2. * dblNonDimensionalCostCross,
-<span class="nc" id="L183">					java.lang.Math.exp (-dblMarketState) * dblNonDimensionalCost);</span>
-<span class="nc" id="L184">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L185">			e.printStackTrace();</span>
+<span class="nc" id="L194">					java.lang.Math.exp (-dblMarketState) * dblNonDimensionalCost);</span>
+<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L188">		return null;</span>
+<span class="nc" id="L199">		return null;</span>
 	}
 
 	/**
@@ -206,12 +217,12 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 		final double dblNonDimensionalTradeRate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L209">		super (dblRealization, dblNonDimensionalTradeRate);</span>
+<span class="fc" id="L220">		super (dblRealization, dblNonDimensionalTradeRate);</span>
 
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblGradient = dblGradient) ||</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblJacobian = dblJacobian))</span>
-<span class="nc" id="L213">			throw new java.lang.Exception (&quot;NonDimensionalCostSystemic Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L214">	}</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblGradient = dblGradient) ||</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblJacobian = dblJacobian))</span>
+<span class="nc" id="L224">			throw new java.lang.Exception (&quot;NonDimensionalCostSystemic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L225">	}</span>
 
 	/**
 	 * Retrieve the Realized Non Dimensional Cost Value Function Gradient to the Systemic Market State
@@ -221,7 +232,7 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 
 	public double gradient()
 	{
-<span class="fc" id="L224">		return _dblGradient;</span>
+<span class="fc" id="L235">		return _dblGradient;</span>
 	}
 
 	/**
@@ -232,7 +243,7 @@ public class NonDimensionalCostSystemic extends org.drip.execution.hjb.NonDimens
 
 	public double jacobian()
 	{
-<span class="fc" id="L235">		return _dblJacobian;</span>
+<span class="fc" id="L246">		return _dblJacobian;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

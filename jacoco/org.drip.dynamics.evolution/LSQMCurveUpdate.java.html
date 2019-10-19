@@ -6,39 +6,50 @@ package org.drip.dynamics.evolution;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -74,20 +85,20 @@ package org.drip.dynamics.evolution;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Latent State Evolution Edges/Vertexes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LSQMCurveUpdate {
-<span class="fc" id="L87">	private int _iFinalDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L88">	private int _iInitialDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L89">	private org.drip.dynamics.evolution.LSQMCurveSnapshot _snapshot = null;</span>
-<span class="fc" id="L90">	private org.drip.dynamics.evolution.LSQMCurveIncrement _increment = null;</span>
+<span class="fc" id="L98">	private int _iFinalDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L99">	private int _iInitialDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L100">	private org.drip.dynamics.evolution.LSQMCurveSnapshot _snapshot = null;</span>
+<span class="fc" id="L101">	private org.drip.dynamics.evolution.LSQMCurveIncrement _increment = null;</span>
 
 	/**
 	 * LSQMCurveUpdate Constructor
@@ -106,12 +117,12 @@ public class LSQMCurveUpdate {
 		final org.drip.dynamics.evolution.LSQMCurveSnapshot snapshot,
 		final org.drip.dynamics.evolution.LSQMCurveIncrement increment)
 		throws java.lang.Exception
-<span class="fc" id="L109">	{</span>
-<span class="pc bpc" id="L110" title="2 of 4 branches missed.">		if (null == (_snapshot = snapshot) || (_iFinalDate = iFinalDate) &lt; (_iInitialDate = iInitialDate))</span>
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;LSQMCurveUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (null == (_snapshot = snapshot) || (_iFinalDate = iFinalDate) &lt; (_iInitialDate = iInitialDate))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;LSQMCurveUpdate ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L113">		_increment = increment;</span>
-<span class="fc" id="L114">	}</span>
+<span class="fc" id="L124">		_increment = increment;</span>
+<span class="fc" id="L125">	}</span>
 
 	/**
 	 * Retrieve the Initial Date
@@ -121,7 +132,7 @@ public class LSQMCurveUpdate {
 
 	public int initialDate()
 	{
-<span class="nc" id="L124">		return _iInitialDate;</span>
+<span class="nc" id="L135">		return _iInitialDate;</span>
 	}
 
 	/**
@@ -132,7 +143,7 @@ public class LSQMCurveUpdate {
 
 	public int finalDate()
 	{
-<span class="nc" id="L135">		return _iFinalDate;</span>
+<span class="nc" id="L146">		return _iFinalDate;</span>
 	}
 
 	/**
@@ -143,7 +154,7 @@ public class LSQMCurveUpdate {
 
 	public org.drip.dynamics.evolution.LSQMCurveSnapshot snapshot()
 	{
-<span class="fc" id="L146">		return _snapshot;</span>
+<span class="fc" id="L157">		return _snapshot;</span>
 	}
 
 	/**
@@ -154,7 +165,7 @@ public class LSQMCurveUpdate {
 
 	public org.drip.dynamics.evolution.LSQMCurveIncrement increment()
 	{
-<span class="fc" id="L157">		return _increment;</span>
+<span class="fc" id="L168">		return _increment;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,39 +6,50 @@ package org.drip.dynamics.sabr;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -73,24 +84,24 @@ package org.drip.dynamics.sabr;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/README.md&quot;&gt;SABR&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/README.md&quot;&gt;SABR Based Latent State Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ImpliedBlackVolatility {
-<span class="fc" id="L86">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblB = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private double _dblZ = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblTTE = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblChiZ = java.lang.Double.NaN;</span>
-<span class="fc" id="L91">	private double _dblStrike = java.lang.Double.NaN;</span>
-<span class="fc" id="L92">	private double _dblATMForwardRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L93">	private double _dblImpliedVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _dblB = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblZ = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private double _dblTTE = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _dblChiZ = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private double _dblStrike = java.lang.Double.NaN;</span>
+<span class="fc" id="L103">	private double _dblATMForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L104">	private double _dblImpliedVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * ImpliedBlackVolatility Constructor
@@ -117,18 +128,18 @@ public class ImpliedBlackVolatility {
 		final double dblB,
 		final double dblImpliedVolatility)
 		throws java.lang.Exception
-<span class="fc" id="L120">	{</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblATMForwardRate = dblATMForwardRate) ||</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblTTE = dblTTE) ||</span>
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblZ = dblZ) ||</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (_dblChiZ = dblChiZ) ||</span>
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">								!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) ||</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">									!org.drip.numerical.common.NumberUtil.IsValid (_dblImpliedVolatility =</span>
+<span class="fc" id="L131">	{</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike) ||</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblATMForwardRate = dblATMForwardRate) ||</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblTTE = dblTTE) ||</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblZ = dblZ) ||</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (_dblChiZ = dblChiZ) ||</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">								!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) ||</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">									!org.drip.numerical.common.NumberUtil.IsValid (_dblImpliedVolatility =</span>
 										dblImpliedVolatility))
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;ImpliedBlackVolatility ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L131">	}</span>
+<span class="nc" id="L141">			throw new java.lang.Exception (&quot;ImpliedBlackVolatility ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Strike
@@ -138,7 +149,7 @@ public class ImpliedBlackVolatility {
 
 	public double strike()
 	{
-<span class="nc" id="L141">		return _dblStrike;</span>
+<span class="nc" id="L152">		return _dblStrike;</span>
 	}
 
 	/**
@@ -149,7 +160,7 @@ public class ImpliedBlackVolatility {
 
 	public double atmForwardRate()
 	{
-<span class="nc" id="L152">		return _dblATMForwardRate;</span>
+<span class="nc" id="L163">		return _dblATMForwardRate;</span>
 	}
 
 	/**
@@ -160,7 +171,7 @@ public class ImpliedBlackVolatility {
 
 	public double tte()
 	{
-<span class="nc" id="L163">		return _dblTTE;</span>
+<span class="nc" id="L174">		return _dblTTE;</span>
 	}
 
 	/**
@@ -171,7 +182,7 @@ public class ImpliedBlackVolatility {
 
 	public double a()
 	{
-<span class="nc" id="L174">		return _dblA;</span>
+<span class="nc" id="L185">		return _dblA;</span>
 	}
 
 	/**
@@ -182,7 +193,7 @@ public class ImpliedBlackVolatility {
 
 	public double z()
 	{
-<span class="nc" id="L185">		return _dblZ;</span>
+<span class="nc" id="L196">		return _dblZ;</span>
 	}
 
 	/**
@@ -193,7 +204,7 @@ public class ImpliedBlackVolatility {
 
 	public double chi()
 	{
-<span class="nc" id="L196">		return _dblChiZ;</span>
+<span class="nc" id="L207">		return _dblChiZ;</span>
 	}
 
 	/**
@@ -204,7 +215,7 @@ public class ImpliedBlackVolatility {
 
 	public double b()
 	{
-<span class="nc" id="L207">		return _dblB;</span>
+<span class="nc" id="L218">		return _dblB;</span>
 	}
 
 	/**
@@ -215,7 +226,7 @@ public class ImpliedBlackVolatility {
 
 	public double impliedVolatility()
 	{
-<span class="fc" id="L218">		return _dblImpliedVolatility;</span>
+<span class="fc" id="L229">		return _dblImpliedVolatility;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

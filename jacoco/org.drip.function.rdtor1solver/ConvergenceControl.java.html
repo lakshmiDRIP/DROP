@@ -81,7 +81,8 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConvergenceControl {
+public class ConvergenceControl
+{
 
 	/**
 	 * Solve Using the Convergence of the Objective Function Realization
@@ -95,10 +96,10 @@ public class ConvergenceControl {
 
 	public static final int VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE = 2;
 
-<span class="fc" id="L98">	private int _iNumFinderSteps = -1;</span>
-<span class="fc" id="L99">	private double _dblAbsoluteTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L100">	private double _dblRelativeTolerance = java.lang.Double.NaN;</span>
-<span class="fc" id="L101">	private int _iConvergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
+<span class="fc" id="L99">	private int _finderStepCount = -1;</span>
+<span class="fc" id="L100">	private double _absoluteTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _relativeTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private int _convergenceType = VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE;</span>
 
 	/**
 	 * Construct a Standard ConvergenceControl Instance
@@ -108,40 +109,50 @@ public class ConvergenceControl {
 
 	public static ConvergenceControl Standard()
 	{
-		try {
-<span class="fc" id="L112">			return new ConvergenceControl (VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE, 5.0e-02, 1.0e-06, 70);</span>
-<span class="nc" id="L113">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L114">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L114">			return new ConvergenceControl (</span>
+				VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
+				5.0e-02,
+				1.0e-06,
+				70
+			);
+		}
+<span class="nc" id="L121">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L123">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L117">		return null;</span>
+<span class="nc" id="L126">		return null;</span>
 	}
 
 	/**
 	 * ConvergenceControl Constructor
 	 * 
-	 * @param iConvergenceType The Convergence Type
-	 * @param dblRelativeTolerance The Objective Function Relative Tolerance
-	 * @param dblAbsoluteTolerance The Objective Function Absolute Tolerance
-	 * @param iNumFinderSteps The Number of the Fixed Point Finder Steps
+	 * @param convergenceType The Convergence Type
+	 * @param relativeTolerance The Objective Function Relative Tolerance
+	 * @param absoluteTolerance The Objective Function Absolute Tolerance
+	 * @param finderStepCount The Number of the Fixed Point Finder Steps
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConvergenceControl (
-		final int iConvergenceType,
-		final double dblRelativeTolerance,
-		final double dblAbsoluteTolerance,
-		final int iNumFinderSteps)
+		final int convergenceType,
+		final double relativeTolerance,
+		final double absoluteTolerance,
+		final int finderStepCount)
 		throws java.lang.Exception
-<span class="fc" id="L137">	{</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblRelativeTolerance = dblRelativeTolerance) ||</span>
-<span class="pc bpc" id="L139" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblAbsoluteTolerance = dblAbsoluteTolerance) || 1 &gt;</span>
-				(_iNumFinderSteps = iNumFinderSteps))
-<span class="nc" id="L141">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L146">	{</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_relativeTolerance = relativeTolerance) ||</span>
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_absoluteTolerance = absoluteTolerance) ||</span>
+			1 &gt; (_finderStepCount = finderStepCount))
+		{
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;ConvergenceControl Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L143">		_iConvergenceType = iConvergenceType;</span>
-<span class="fc" id="L144">	}</span>
+<span class="fc" id="L154">		_convergenceType = convergenceType;</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Retrieve the Convergence Type
@@ -151,7 +162,7 @@ public class ConvergenceControl {
 
 	public int convergenceType()
 	{
-<span class="fc" id="L154">		return _iConvergenceType;</span>
+<span class="fc" id="L165">		return _convergenceType;</span>
 	}
 
 	/**
@@ -160,9 +171,9 @@ public class ConvergenceControl {
 	 * @return The Number of Finder Steps
 	 */
 
-	public int numFinderSteps()
+	public int finderStepCount()
 	{
-<span class="nc" id="L165">		return _iNumFinderSteps;</span>
+<span class="nc" id="L176">		return _finderStepCount;</span>
 	}
 
 	/**
@@ -173,7 +184,7 @@ public class ConvergenceControl {
 
 	public double relativeTolerance()
 	{
-<span class="fc" id="L176">		return _dblRelativeTolerance;</span>
+<span class="fc" id="L187">		return _relativeTolerance;</span>
 	}
 
 	/**
@@ -184,7 +195,7 @@ public class ConvergenceControl {
 
 	public double absoluteTolerance()
 	{
-<span class="fc" id="L187">		return _dblAbsoluteTolerance;</span>
+<span class="fc" id="L198">		return _absoluteTolerance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

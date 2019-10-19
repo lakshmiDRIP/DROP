@@ -6,38 +6,49 @@ package org.drip.execution.adaptive;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -99,19 +110,19 @@ package org.drip.execution.adaptive;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md&quot;&gt;Adaptive&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md&quot;&gt;Coordinated Variation Based Adaptive Execution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.CoordinatedVariationTrajectory {
-<span class="fc" id="L112">	private double[] _adblNonDimensionalHoldings = null;</span>
-<span class="fc" id="L113">	private double[] _adblScaledNonDimensionalTradeRate = null;</span>
-<span class="fc" id="L114">	private org.drip.execution.hjb.NonDimensionalCost[] _aNDC = null;</span>
+<span class="fc" id="L123">	private double[] _adblNonDimensionalHoldings = null;</span>
+<span class="fc" id="L124">	private double[] _adblScaledNonDimensionalTradeRate = null;</span>
+<span class="fc" id="L125">	private org.drip.execution.hjb.NonDimensionalCost[] _aNDC = null;</span>
 
 	/**
 	 * CoordinatedVariationDynamic Constructor
@@ -131,25 +142,25 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 		final org.drip.execution.hjb.NonDimensionalCost[] aNDC)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L134">		super (cvtd);</span>
+<span class="fc" id="L145">		super (cvtd);</span>
 
-<span class="pc bpc" id="L136" title="3 of 6 branches missed.">		if (null == (_aNDC = aNDC) || null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) ||</span>
+<span class="pc bpc" id="L147" title="3 of 6 branches missed.">		if (null == (_aNDC = aNDC) || null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) ||</span>
 			null == (_adblScaledNonDimensionalTradeRate = adblScaledNonDimensionalTradeRate) ||
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||</span>
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))</span>
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L142">		int iNumTimeNode = _adblNonDimensionalHoldings.length;</span>
+<span class="fc" id="L153">		int iNumTimeNode = _adblNonDimensionalHoldings.length;</span>
 
-<span class="pc bpc" id="L144" title="3 of 6 branches missed.">		if (0 == iNumTimeNode || iNumTimeNode != _adblScaledNonDimensionalTradeRate.length || iNumTimeNode !=</span>
+<span class="pc bpc" id="L155" title="3 of 6 branches missed.">		if (0 == iNumTimeNode || iNumTimeNode != _adblScaledNonDimensionalTradeRate.length || iNumTimeNode !=</span>
 			_aNDC.length)
-<span class="nc" id="L146">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L157">			throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			if (null == _aNDC[i])</span>
-<span class="nc" id="L150">				throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTimeNode; ++i) {</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">			if (null == _aNDC[i])</span>
+<span class="nc" id="L161">				throw new java.lang.Exception (&quot;CoordinatedVariationDynamic Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L152">	}</span>
+<span class="fc" id="L163">	}</span>
 
 	/**
 	 * Retrieve the Array of the Non Dimensional Holdings
@@ -159,7 +170,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public double[] nonDimensionalHoldings()
 	{
-<span class="fc" id="L162">		return _adblNonDimensionalHoldings;</span>
+<span class="fc" id="L173">		return _adblNonDimensionalHoldings;</span>
 	}
 
 	/**
@@ -170,7 +181,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public double[] scaledNonDimensionalTradeRate()
 	{
-<span class="fc" id="L173">		return _adblScaledNonDimensionalTradeRate;</span>
+<span class="fc" id="L184">		return _adblScaledNonDimensionalTradeRate;</span>
 	}
 
 	/**
@@ -181,7 +192,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public org.drip.execution.hjb.NonDimensionalCost[] nonDimensionalCost()
 	{
-<span class="fc" id="L184">		return _aNDC;</span>
+<span class="fc" id="L195">		return _aNDC;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

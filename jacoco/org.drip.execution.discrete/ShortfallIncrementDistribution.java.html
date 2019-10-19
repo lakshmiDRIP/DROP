@@ -6,38 +6,49 @@ package org.drip.execution.discrete;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,22 +108,22 @@ package org.drip.execution.discrete;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Trajectory Slice Execution Cost Distribution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-<span class="fc" id="L110">	public double _dblMarketDynamicVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	public double _dblPermanentImpactVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	public double _dblTemporaryImpactVariance = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	public double _dblMarketDynamicExpectation = java.lang.Double.NaN;</span>
-<span class="fc" id="L114">	public double _dblPermanentImpactExpectation = java.lang.Double.NaN;</span>
-<span class="fc" id="L115">	public double _dblTemporaryImpactExpectation = java.lang.Double.NaN;</span>
+<span class="fc" id="L121">	public double _dblMarketDynamicVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	public double _dblPermanentImpactVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	public double _dblTemporaryImpactVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L124">	public double _dblMarketDynamicExpectation = java.lang.Double.NaN;</span>
+<span class="fc" id="L125">	public double _dblPermanentImpactExpectation = java.lang.Double.NaN;</span>
+<span class="fc" id="L126">	public double _dblTemporaryImpactExpectation = java.lang.Double.NaN;</span>
 
 	/**
 	 * ShortfallIncrementDistribution Constructor
@@ -136,17 +147,17 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 		final double dblMarketDynamicVariance)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L139">		super (dblPermanentImpactExpectation + dblTemporaryImpactExpectation + dblMarketDynamicExpectation,</span>
-<span class="fc" id="L140">			java.lang.Math.sqrt (dblPermanentImpactVariance + dblTemporaryImpactVariance +</span>
+<span class="fc" id="L150">		super (dblPermanentImpactExpectation + dblTemporaryImpactExpectation + dblMarketDynamicExpectation,</span>
+<span class="fc" id="L151">			java.lang.Math.sqrt (dblPermanentImpactVariance + dblTemporaryImpactVariance +</span>
 				dblMarketDynamicVariance));
 
-<span class="fc" id="L143">		_dblPermanentImpactExpectation = dblPermanentImpactExpectation;</span>
-<span class="fc" id="L144">		_dblTemporaryImpactExpectation = dblTemporaryImpactExpectation;</span>
-<span class="fc" id="L145">		_dblMarketDynamicExpectation = dblMarketDynamicExpectation;</span>
-<span class="fc" id="L146">		_dblPermanentImpactVariance = dblPermanentImpactVariance;</span>
-<span class="fc" id="L147">		_dblTemporaryImpactVariance = dblTemporaryImpactVariance;</span>
-<span class="fc" id="L148">		_dblMarketDynamicVariance = dblMarketDynamicVariance;</span>
-<span class="fc" id="L149">	}</span>
+<span class="fc" id="L154">		_dblPermanentImpactExpectation = dblPermanentImpactExpectation;</span>
+<span class="fc" id="L155">		_dblTemporaryImpactExpectation = dblTemporaryImpactExpectation;</span>
+<span class="fc" id="L156">		_dblMarketDynamicExpectation = dblMarketDynamicExpectation;</span>
+<span class="fc" id="L157">		_dblPermanentImpactVariance = dblPermanentImpactVariance;</span>
+<span class="fc" id="L158">		_dblTemporaryImpactVariance = dblTemporaryImpactVariance;</span>
+<span class="fc" id="L159">		_dblMarketDynamicVariance = dblMarketDynamicVariance;</span>
+<span class="fc" id="L160">	}</span>
 
 	/**
 	 * Retrieve the Total Expectation
@@ -156,7 +167,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double expectation()
 	{
-<span class="fc" id="L159">		return mean();</span>
+<span class="fc" id="L170">		return mean();</span>
 	}
 
 	/**
@@ -167,7 +178,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double marketDynamicExpectation()
 	{
-<span class="nc" id="L170">		return _dblMarketDynamicExpectation;</span>
+<span class="nc" id="L181">		return _dblMarketDynamicExpectation;</span>
 	}
 
 	/**
@@ -178,7 +189,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double marketDynamicVariance()
 	{
-<span class="nc" id="L181">		return _dblMarketDynamicVariance;</span>
+<span class="nc" id="L192">		return _dblMarketDynamicVariance;</span>
 	}
 
 	/**
@@ -189,7 +200,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double permanentImpactExpectation()
 	{
-<span class="fc" id="L192">		return _dblPermanentImpactExpectation;</span>
+<span class="fc" id="L203">		return _dblPermanentImpactExpectation;</span>
 	}
 
 	/**
@@ -200,7 +211,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double permanentImpactVariance()
 	{
-<span class="nc" id="L203">		return _dblPermanentImpactVariance;</span>
+<span class="nc" id="L214">		return _dblPermanentImpactVariance;</span>
 	}
 
 	/**
@@ -211,7 +222,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double temporaryImpactExpectation()
 	{
-<span class="fc" id="L214">		return _dblTemporaryImpactExpectation;</span>
+<span class="fc" id="L225">		return _dblTemporaryImpactExpectation;</span>
 	}
 
 	/**
@@ -222,7 +233,7 @@ public class ShortfallIncrementDistribution extends org.drip.measure.gaussian.R1
 
 	public double temporaryImpactVariance()
 	{
-<span class="nc" id="L225">		return _dblTemporaryImpactVariance;</span>
+<span class="nc" id="L236">		return _dblTemporaryImpactVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

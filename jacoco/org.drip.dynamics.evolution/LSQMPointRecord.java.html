@@ -6,39 +6,50 @@ package org.drip.dynamics.evolution;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -73,17 +84,17 @@ package org.drip.dynamics.evolution;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Evolution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/evolution/README.md&quot;&gt;Latent State Evolution Edges/Vertexes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LSQMPointRecord {
-<span class="fc" id="L86">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt; _mmLSQMValue =</span>
+<span class="fc" id="L97">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt; _mmLSQMValue =</span>
 		new java.util.HashMap&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;();
 
 	/**
@@ -91,8 +102,8 @@ public class LSQMPointRecord {
 	 */
 
 	public LSQMPointRecord()
-<span class="fc" id="L94">	{</span>
-<span class="fc" id="L95">	}</span>
+<span class="fc" id="L105">	{</span>
+<span class="fc" id="L106">	}</span>
 
 	/**
 	 * Retrieve the Latent State Labels
@@ -102,7 +113,7 @@ public class LSQMPointRecord {
 
 	public java.util.Set&lt;java.lang.String&gt; latentStateLabel()
 	{
-<span class="nc" id="L105">		return _mmLSQMValue.keySet();</span>
+<span class="nc" id="L116">		return _mmLSQMValue.keySet();</span>
 	}
 
 	/**
@@ -116,7 +127,7 @@ public class LSQMPointRecord {
 	public boolean containsLatentState (
 		final org.drip.state.identifier.LatentStateLabel lsl)
 	{
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		return null == lsl ? false : _mmLSQMValue.containsKey (lsl.fullyQualifiedName());</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		return null == lsl ? false : _mmLSQMValue.containsKey (lsl.fullyQualifiedName());</span>
 	}
 
 	/**
@@ -134,21 +145,21 @@ public class LSQMPointRecord {
 		final java.lang.String strQM,
 		final double dblValue)
 	{
-<span class="pc bpc" id="L137" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			(dblValue))</span>
-<span class="nc" id="L139">			return false;</span>
+<span class="pc bpc" id="L148" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			(dblValue))</span>
+<span class="nc" id="L150">			return false;</span>
 
-<span class="fc" id="L141">		java.lang.String strLatentStateLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L152">		java.lang.String strLatentStateLabel = lsl.fullyQualifiedName();</span>
 
-<span class="fc" id="L143">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLSQM = _mmLSQMValue.containsKey</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">			(strLatentStateLabel) ? _mmLSQMValue.get (strLatentStateLabel) : new</span>
+<span class="fc" id="L154">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLSQM = _mmLSQMValue.containsKey</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			(strLatentStateLabel) ? _mmLSQMValue.get (strLatentStateLabel) : new</span>
 				java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
-<span class="fc" id="L147">		mapLSQM.put (strQM, dblValue);</span>
+<span class="fc" id="L158">		mapLSQM.put (strQM, dblValue);</span>
 
-<span class="fc" id="L149">		_mmLSQMValue.put (lsl.fullyQualifiedName(), mapLSQM);</span>
+<span class="fc" id="L160">		_mmLSQMValue.put (lsl.fullyQualifiedName(), mapLSQM);</span>
 
-<span class="fc" id="L151">		return true;</span>
+<span class="fc" id="L162">		return true;</span>
 	}
 
 	/**
@@ -164,12 +175,12 @@ public class LSQMPointRecord {
 		final org.drip.state.identifier.LatentStateLabel lsl,
 		final java.lang.String strQM)
 	{
-<span class="nc bnc" id="L167" title="All 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return false;</span>
+<span class="nc bnc" id="L178" title="All 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty()) return false;</span>
 
-<span class="nc" id="L169">		java.lang.String strLatentStateLabel = lsl.fullyQualifiedName();</span>
+<span class="nc" id="L180">		java.lang.String strLatentStateLabel = lsl.fullyQualifiedName();</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		return _mmLSQMValue.containsKey (strLatentStateLabel) &amp;&amp; _mmLSQMValue.get</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			(strLatentStateLabel).containsKey (strQM);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		return _mmLSQMValue.containsKey (strLatentStateLabel) &amp;&amp; _mmLSQMValue.get</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">			(strLatentStateLabel).containsKey (strQM);</span>
 	}
 
 	/**
@@ -188,20 +199,20 @@ public class LSQMPointRecord {
 		final java.lang.String strQM)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L191" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty())</span>
-<span class="nc" id="L192">			throw new java.lang.Exception (&quot;LSQMPointRecord::qm =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L202" title="3 of 6 branches missed.">		if (null == lsl || null == strQM || strQM.isEmpty())</span>
+<span class="nc" id="L203">			throw new java.lang.Exception (&quot;LSQMPointRecord::qm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L194">		java.lang.String strLatentStateLabel = lsl.fullyQualifiedName();</span>
+<span class="fc" id="L205">		java.lang.String strLatentStateLabel = lsl.fullyQualifiedName();</span>
 
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (!_mmLSQMValue.containsKey (strLatentStateLabel))</span>
-<span class="nc" id="L197">			throw new java.lang.Exception (&quot;LSQMPointRecord::qm =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (!_mmLSQMValue.containsKey (strLatentStateLabel))</span>
+<span class="nc" id="L208">			throw new java.lang.Exception (&quot;LSQMPointRecord::qm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L199">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLSQM = _mmLSQMValue.get (strLatentStateLabel);</span>
+<span class="fc" id="L210">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLSQM = _mmLSQMValue.get (strLatentStateLabel);</span>
 
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">		if (!mapLSQM.containsKey (strQM))</span>
-<span class="nc" id="L202">			throw new java.lang.Exception (&quot;LSQMPointRecord::qm =&gt; No LSQM Entry&quot;);</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (!mapLSQM.containsKey (strQM))</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;LSQMPointRecord::qm =&gt; No LSQM Entry&quot;);</span>
 
-<span class="fc" id="L204">		return mapLSQM.get (strQM);</span>
+<span class="fc" id="L215">		return mapLSQM.get (strQM);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

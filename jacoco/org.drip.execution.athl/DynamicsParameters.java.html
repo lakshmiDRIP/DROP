@@ -6,38 +6,49 @@ package org.drip.execution.athl;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -96,17 +107,17 @@ package org.drip.execution.athl;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;Almgren-Thum-Hauptmann-Li Calibration&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class DynamicsParameters {
-<span class="fc" id="L109">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
+<span class="fc" id="L120">	private org.drip.execution.parameters.AssetFlowSettings _afp = null;</span>
 
 	/**
 	 * DynamicsParameters Constructor
@@ -119,10 +130,10 @@ public class DynamicsParameters {
 	public DynamicsParameters (
 		final org.drip.execution.parameters.AssetFlowSettings afp)
 		throws java.lang.Exception
-<span class="fc" id="L122">	{</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == (_afp = afp))</span>
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;DynamicsParameters Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L125">	}</span>
+<span class="fc" id="L133">	{</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == (_afp = afp))</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;DynamicsParameters Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L136">	}</span>
 
 	/**
 	 * Retrieve the Asset Flow Parameters Instance
@@ -132,7 +143,7 @@ public class DynamicsParameters {
 
 	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
 	{
-<span class="nc" id="L135">		return _afp;</span>
+<span class="nc" id="L146">		return _afp;</span>
 	}
 
 	/**
@@ -144,18 +155,18 @@ public class DynamicsParameters {
 	public org.drip.execution.dynamics.LinearPermanentExpectationParameters almgren2003()
 	{
 		try {
-<span class="fc" id="L147">			return org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (new</span>
+<span class="fc" id="L158">			return org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (new</span>
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-<span class="fc" id="L149">					org.drip.function.r1tor1.FlatUnivariate (_afp.dailyVolatility()), 0.), new</span>
+<span class="fc" id="L160">					org.drip.function.r1tor1.FlatUnivariate (_afp.dailyVolatility()), 0.), new</span>
 						org.drip.execution.profiletime.UniformParticipationRateLinear (new
 							org.drip.execution.athl.PermanentImpactNoArbitrage (_afp)), new
 								org.drip.execution.profiletime.UniformParticipationRate (new
 									org.drip.execution.athl.TemporaryImpact (_afp)));
-<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="nc" id="L165">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L166">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L158">		return null;</span>
+<span class="nc" id="L169">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

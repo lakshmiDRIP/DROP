@@ -93,46 +93,54 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEvolutionVerifierMetrics extends
-	org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics {
-<span class="fc" id="L98">	private boolean _bStrongCurvatureCriterion = false;</span>
-<span class="fc" id="L99">	private double[] _adblNextVariateFunctionJacobian = null;</span>
-<span class="fc" id="L100">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
+public class CurvatureEvolutionVerifierMetrics
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics
+{
+<span class="fc" id="L99">	private boolean _strongCurvatureCriterion = false;</span>
+<span class="fc" id="L100">	private double[] _nextVariateFunctionJacobian = null;</span>
+<span class="fc" id="L101">	private double _curvatureParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * CurvatureEvolutionVerifierMetrics Constructor
 	 * 
-	 * @param dblCurvatureParameter The Curvature Criterion Parameter
-	 * @param bStrongCurvatureCriterion TRUE - Apply the &quot;Strong&quot; Curvature Criterion
-	 * @param uvTargetDirection The Target Direction Unit Vector
-	 * @param adblCurrentVariate Array of Current Variate
-	 * @param dblStepLength The Incremental Step Length
-	 * @param adblCurrentVariateFunctionJacobian The Function Jacobian at the Current Variate
-	 * @param adblNextVariateFunctionJacobian The Function Jacobian at the Next Variate
+	 * @param curvatureParameter The Curvature Criterion Parameter
+	 * @param strongCurvatureCriterion TRUE - Apply the &quot;Strong&quot; Curvature Criterion
+	 * @param targetDirectionUnitVector The Target Direction Unit Vector
+	 * @param currentVariateArray Array of Current Variate
+	 * @param stepLength The Incremental Step Length
+	 * @param currentVariateFunctionJacobian The Function Jacobian at the Current Variate
+	 * @param nextVariateFunctionJacobian The Function Jacobian at the Next Variate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurvatureEvolutionVerifierMetrics (
-		final double dblCurvatureParameter,
-		final boolean bStrongCurvatureCriterion,
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final double dblStepLength,
-		final double[] adblCurrentVariateFunctionJacobian,
-		final double[] adblNextVariateFunctionJacobian)
+		final double curvatureParameter,
+		final boolean strongCurvatureCriterion,
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final double stepLength,
+		final double[] currentVariateFunctionJacobian,
+		final double[] nextVariateFunctionJacobian)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L126">		super (uvTargetDirection, adblCurrentVariate, dblStepLength, adblCurrentVariateFunctionJacobian);</span>
+<span class="fc" id="L127">		super (</span>
+			targetDirectionUnitVector,
+			currentVariateArray,
+			stepLength,
+			currentVariateFunctionJacobian
+		);
 
-<span class="pc bpc" id="L128" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter) ||</span>
-			null == (_adblNextVariateFunctionJacobian = adblNextVariateFunctionJacobian) ||
-				adblCurrentVariate.length != _adblNextVariateFunctionJacobian.length)
-<span class="nc" id="L131">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L134" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter) ||</span>
+			null == (_nextVariateFunctionJacobian = nextVariateFunctionJacobian) ||
+			currentVariateArray.length != _nextVariateFunctionJacobian.length)
+		{
+<span class="nc" id="L138">			throw new java.lang.Exception</span>
 				(&quot;CurvatureEvolutionVerifierMetrics Constructor =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="fc" id="L134">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
-<span class="fc" id="L135">	}</span>
+<span class="fc" id="L142">		_strongCurvatureCriterion = strongCurvatureCriterion;</span>
+<span class="fc" id="L143">	}</span>
 
 	/**
 	 * Retrieve the Curvature Parameter
@@ -142,7 +150,7 @@ public class CurvatureEvolutionVerifierMetrics extends
 
 	public double curvatureParameter()
 	{
-<span class="nc" id="L145">		return _dblCurvatureParameter;</span>
+<span class="nc" id="L153">		return _curvatureParameter;</span>
 	}
 
 	/**
@@ -151,9 +159,9 @@ public class CurvatureEvolutionVerifierMetrics extends
 	 * @return TRUE - The &quot;Strong&quot; Curvature Criterion needs to be met
 	 */
 
-	public boolean strongCriterion()
+	public boolean strongCurvatureCriterion()
 	{
-<span class="nc" id="L156">		return _bStrongCurvatureCriterion;</span>
+<span class="nc" id="L164">		return _strongCurvatureCriterion;</span>
 	}
 
 	/**
@@ -164,7 +172,7 @@ public class CurvatureEvolutionVerifierMetrics extends
 
 	public double[] nextVariateFunctionJacobian()
 	{
-<span class="nc" id="L167">		return _adblNextVariateFunctionJacobian;</span>
+<span class="nc" id="L175">		return _nextVariateFunctionJacobian;</span>
 	}
 
 	/**
@@ -175,24 +183,34 @@ public class CurvatureEvolutionVerifierMetrics extends
 
 	public boolean verify()
 	{
-<span class="fc" id="L178">		double[] adblDirectionVector = targetDirection().component();</span>
+<span class="fc" id="L186">		double[] targetDirectionVector = targetDirection().component();</span>
 
-		try {
-<span class="fc" id="L181">			double dblNextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct</span>
-<span class="fc" id="L182">				(adblDirectionVector, _adblNextVariateFunctionJacobian);</span>
+		try
+		{
+<span class="fc" id="L190">			double nextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+				targetDirectionVector,
+				_nextVariateFunctionJacobian
+			);
 
-<span class="fc" id="L184">			double dblParametrizedCurrentFunctionIncrement = _dblCurvatureParameter *</span>
-<span class="fc" id="L185">				org.drip.numerical.linearalgebra.Matrix.DotProduct (adblDirectionVector,</span>
-<span class="fc" id="L186">					currentVariateFunctionJacobian());</span>
+<span class="fc" id="L195">			double parametrizedCurrentFunctionIncrement =</span>
+<span class="fc" id="L196">				_curvatureParameter * org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+					targetDirectionVector,
+<span class="fc" id="L198">					currentVariateFunctionJacobian()</span>
+				);
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">			return _bStrongCurvatureCriterion ? java.lang.Math.abs (dblNextFunctionIncrement) &lt;=</span>
-<span class="fc bfc" id="L189" title="All 4 branches covered.">				java.lang.Math.abs (dblParametrizedCurrentFunctionIncrement) : dblNextFunctionIncrement &gt;=</span>
-					dblParametrizedCurrentFunctionIncrement;
-<span class="nc" id="L191">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L192">			e.printStackTrace();</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">			return _strongCurvatureCriterion ?</span>
+<span class="fc" id="L202">				java.lang.Math.abs (</span>
+					nextFunctionIncrement
+<span class="fc bfc" id="L204" title="All 4 branches covered.">				) &lt;= java.lang.Math.abs (</span>
+					parametrizedCurrentFunctionIncrement
+				) : nextFunctionIncrement &gt;= parametrizedCurrentFunctionIncrement;
+		}
+<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L210">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L195">		return false;</span>
+<span class="nc" id="L213">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

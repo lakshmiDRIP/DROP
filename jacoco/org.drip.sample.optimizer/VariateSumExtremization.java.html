@@ -23,7 +23,7 @@ import org.drip.service.env.EnvManager;
  *  
  *  DRIP is composed of four main libraries:
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
+ *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/laksh
  *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
  *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
  *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
@@ -62,97 +62,108 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L65">public class VariateSumExtremization {</span>
+<span class="nc" id="L65">public class VariateSumExtremization</span>
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L72">		EnvManager.InitEnv (</span>
+			&quot;&quot;
+		);
 
-<span class="fc" id="L73">		RdToR1 rdToR1VariateSumObjectiveFunction = new RdToR1 (null) {</span>
+<span class="fc" id="L76">		RdToR1 variateSumObjectiveFunction = new RdToR1 (</span>
+			null
+		)
+<span class="fc" id="L79">		{</span>
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-<span class="fc" id="L78">				return adblVariate[0] + adblVariate[1];</span>
+<span class="fc" id="L84">				return variateArray[0] + variateArray[1];</span>
 			}
 
 			@Override public int dimension()
 			{
-<span class="fc" id="L83">				return 2;</span>
+<span class="fc" id="L89">				return 2;</span>
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="fc" id="L89">				double[] adblJacobian = new double[2];</span>
-<span class="fc" id="L90">				adblJacobian[0] = 1.;</span>
-<span class="fc" id="L91">				adblJacobian[1] = 1.;</span>
-<span class="fc" id="L92">				return adblJacobian;</span>
+<span class="fc" id="L95">				double[] jacobian = new double[2];</span>
+<span class="fc" id="L96">				jacobian[0] = 1.;</span>
+<span class="fc" id="L97">				jacobian[1] = 1.;</span>
+<span class="fc" id="L98">				return jacobian;</span>
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="fc" id="L98">				double[][] aadblHessian = new double[2][2];</span>
-<span class="fc" id="L99">				aadblHessian[0][0] = 0.;</span>
-<span class="fc" id="L100">				aadblHessian[0][1] = 0.;</span>
-<span class="fc" id="L101">				aadblHessian[1][0] = 0.;</span>
-<span class="fc" id="L102">				aadblHessian[1][1] = 0.;</span>
-<span class="fc" id="L103">				return aadblHessian;</span>
+<span class="fc" id="L104">				double[][] hessian = new double[2][2];</span>
+<span class="fc" id="L105">				hessian[0][0] = 0.;</span>
+<span class="fc" id="L106">				hessian[0][1] = 0.;</span>
+<span class="fc" id="L107">				hessian[1][0] = 0.;</span>
+<span class="fc" id="L108">				hessian[1][1] = 0.;</span>
+<span class="fc" id="L109">				return hessian;</span>
 			}
 		};
 
-<span class="fc" id="L107">		RdToR1 rdToR1SphereSurfaceConstraintFunction = new RdToR1 (null) {</span>
+<span class="fc" id="L113">		RdToR1 rdToR1SphereSurfaceConstraintFunction = new RdToR1 (</span>
+			null
+		)
+<span class="fc" id="L116">		{</span>
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-<span class="fc" id="L112">				return adblVariate[0] * adblVariate[0] + adblVariate[1] * adblVariate[1] - 1.;</span>
+<span class="fc" id="L121">				return variateArray[0] * variateArray[0] + variateArray[1] * variateArray[1] - 1.;</span>
 			}
 
 			@Override public int dimension()
 			{
-<span class="nc" id="L117">				return 2;</span>
+<span class="nc" id="L126">				return 2;</span>
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="fc" id="L123">				double[] adblJacobian = new double[2];</span>
-<span class="fc" id="L124">				adblJacobian[0] = 2. * adblVariate[0];</span>
-<span class="fc" id="L125">				adblJacobian[1] = 2. * adblVariate[1];</span>
-<span class="fc" id="L126">				return adblJacobian;</span>
+<span class="fc" id="L132">				double[] jacobian = new double[2];</span>
+<span class="fc" id="L133">				jacobian[0] = 2. * variateArray[0];</span>
+<span class="fc" id="L134">				jacobian[1] = 2. * variateArray[1];</span>
+<span class="fc" id="L135">				return jacobian;</span>
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="fc" id="L132">				double[][] aadblHessian = new double[2][2];</span>
-<span class="fc" id="L133">				aadblHessian[0][0] = 2.;</span>
-<span class="fc" id="L134">				aadblHessian[0][1] = 0.;</span>
-<span class="fc" id="L135">				aadblHessian[1][0] = 0.;</span>
-<span class="fc" id="L136">				aadblHessian[1][1] = 2.;</span>
-<span class="fc" id="L137">				return aadblHessian;</span>
+<span class="fc" id="L141">				double[][] hessian = new double[2][2];</span>
+<span class="fc" id="L142">				hessian[0][0] = 2.;</span>
+<span class="fc" id="L143">				hessian[0][1] = 0.;</span>
+<span class="fc" id="L144">				hessian[1][0] = 0.;</span>
+<span class="fc" id="L145">				hessian[1][1] = 2.;</span>
+<span class="fc" id="L146">				return hessian;</span>
 			}
 		};
 
-<span class="fc" id="L141">		LagrangianMultivariate lm = new LagrangianMultivariate (</span>
-			rdToR1VariateSumObjectiveFunction,
-			new RdToR1[] {rdToR1SphereSurfaceConstraintFunction}
-		);
-
-<span class="fc" id="L146">		NewtonFixedPointFinder nfpf = new NewtonFixedPointFinder (</span>
-			lm,
-<span class="fc" id="L148">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false),</span>
-<span class="fc" id="L149">			ConvergenceControl.Standard()</span>
-		);
-
-<span class="fc" id="L152">		VariateInequalityConstraintMultiplier vcmt = nfpf.convergeVariate (</span>
+<span class="fc" id="L150">		VariateInequalityConstraintMultiplier vcmt = new NewtonFixedPointFinder (</span>
+			new LagrangianMultivariate (
+				variateSumObjectiveFunction,
+				new RdToR1[]
+				{
+					rdToR1SphereSurfaceConstraintFunction
+				}
+			),
+<span class="fc" id="L158">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
+				false
+			),
+<span class="fc" id="L161">			ConvergenceControl.Standard()</span>
+<span class="fc" id="L162">		).convergeVariate (</span>
 			new VariateInequalityConstraintMultiplier (
 				false,
-				new double[] {
+				new double[]
+				{
 					1.,
 					1.,
 					1.
@@ -161,13 +172,13 @@ import org.drip.service.env.EnvManager;
 			)
 		);
 
-<span class="fc" id="L164">		double[] adblVariate = vcmt.variates();</span>
+<span class="fc" id="L175">		double[] variateArray = vcmt.variateArray();</span>
 
-<span class="fc" id="L166">		System.out.println (&quot;\tOptimal X      : &quot; + FormatUtil.FormatDouble (adblVariate[0], 1, 4, 1.));</span>
+<span class="fc" id="L177">		System.out.println (&quot;\tOptimal X      : &quot; + FormatUtil.FormatDouble (variateArray[0], 1, 4, 1.));</span>
 
-<span class="fc" id="L168">		System.out.println (&quot;\tOptimal Y      : &quot; + FormatUtil.FormatDouble (adblVariate[1], 1, 4, 1.));</span>
+<span class="fc" id="L179">		System.out.println (&quot;\tOptimal Y      : &quot; + FormatUtil.FormatDouble (variateArray[1], 1, 4, 1.));</span>
 
-<span class="fc" id="L170">		System.out.println (&quot;\tOptimal Lambda : &quot; + FormatUtil.FormatDouble (adblVariate[2], 1, 4, 1.));</span>
-<span class="fc" id="L171">	}</span>
+<span class="fc" id="L181">		System.out.println (&quot;\tOptimal Lambda : &quot; + FormatUtil.FormatDouble (variateArray[2], 1, 4, 1.));</span>
+<span class="fc" id="L182">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

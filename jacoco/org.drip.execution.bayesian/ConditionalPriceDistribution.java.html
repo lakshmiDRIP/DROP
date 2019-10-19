@@ -6,38 +6,49 @@ package org.drip.execution.bayesian;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,19 +108,19 @@ package org.drip.execution.bayesian;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md&quot;&gt;Bayesian Price Based Optimal Execution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-<span class="fc" id="L110">	private double _dblTime = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _dblPriceVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _dblConditionalDrift = java.lang.Double.NaN;</span>
+<span class="fc" id="L121">	private double _dblTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblPriceVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _dblConditionalDrift = java.lang.Double.NaN;</span>
 
 	/**
 	 * ConditionalPriceDistribution Constructor
@@ -127,13 +138,13 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L130">		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));</span>
+<span class="fc" id="L141">		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));</span>
 
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. &gt;= _dblTime ||</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||</span>
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))</span>
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;ConditionalPriceDistribution Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L136">	}</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. &gt;= _dblTime ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;ConditionalPriceDistribution Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L147">	}</span>
 
 	/**
 	 * Retrieve the Distribution Time Horizon
@@ -143,7 +154,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double time()
 	{
-<span class="fc" id="L146">		return _dblTime;</span>
+<span class="fc" id="L157">		return _dblTime;</span>
 	}
 
 	/**
@@ -154,7 +165,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double priceVolatility()
 	{
-<span class="fc" id="L157">		return _dblPriceVolatility;</span>
+<span class="fc" id="L168">		return _dblPriceVolatility;</span>
 	}
 
 	/**
@@ -165,7 +176,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double conditionalDrift()
 	{
-<span class="nc" id="L168">		return _dblConditionalDrift;</span>
+<span class="nc" id="L179">		return _dblConditionalDrift;</span>
 	}
 
 	/**
@@ -179,8 +190,8 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	public double priceVolatilitySwing()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L182">		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
-<span class="fc" id="L183">			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);</span>
+<span class="fc" id="L193">		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
+<span class="fc" id="L194">			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);</span>
 	}
 
 	/**
@@ -194,24 +205,24 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	public double[] priceVolatilitySwings (
 		final int iNumRealization)
 	{
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (0 &gt;= iNumRealization) return null;</span>
 
-<span class="nc" id="L199">		double[] adblVolatilitySwings = new double[iNumRealization];</span>
+<span class="nc" id="L210">		double[] adblVolatilitySwings = new double[iNumRealization];</span>
 
-<span class="nc" id="L201">		double dblVolatilityTimeSQRT = _dblPriceVolatility * java.lang.Math.sqrt (_dblTime);</span>
+<span class="nc" id="L212">		double dblVolatilityTimeSQRT = _dblPriceVolatility * java.lang.Math.sqrt (_dblTime);</span>
 
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumRealization; ++i) {</span>
 			try {
-<span class="nc" id="L205">				adblVolatilitySwings[i] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
-<span class="nc" id="L206">					(java.lang.Math.random()) * dblVolatilityTimeSQRT;</span>
-<span class="nc" id="L207">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L208">				e.printStackTrace();</span>
+<span class="nc" id="L216">				adblVolatilitySwings[i] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF</span>
+<span class="nc" id="L217">					(java.lang.Math.random()) * dblVolatilityTimeSQRT;</span>
+<span class="nc" id="L218">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L219">				e.printStackTrace();</span>
 
-<span class="nc" id="L210">				return null;</span>
-<span class="nc" id="L211">			}</span>
+<span class="nc" id="L221">				return null;</span>
+<span class="nc" id="L222">			}</span>
 		}
 
-<span class="nc" id="L214">		return adblVolatilitySwings;</span>
+<span class="nc" id="L225">		return adblVolatilitySwings;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -81,65 +81,99 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NewtonFixedPointFinder extends org.drip.function.rdtor1solver.FixedRdFinder {
+public class NewtonFixedPointFinder
+	extends org.drip.function.rdtor1solver.FixedRdFinder
+{
 
 	/**
 	 * NewtonFixedPointFinder Constructor
 	 * 
-	 * @param rdToR1ObjectiveFunction The Objective Function
-	 * @param lsec The Line Step Evolution Control
-	 * @param cc Convergence Control Parameters
+	 * @param objectiveFunction The Objective Function
+	 * @param lineStepEvolutionControl The Line Step Evolution Control
+	 * @param convergenceControl Convergence Control Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NewtonFixedPointFinder (
-		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec,
-		final org.drip.function.rdtor1solver.ConvergenceControl cc)
+		final org.drip.function.definition.RdToR1 objectiveFunction,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl,
+		final org.drip.function.rdtor1solver.ConvergenceControl convergenceControl)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L102">		super (rdToR1ObjectiveFunction, lsec, cc);</span>
-<span class="fc" id="L103">	}</span>
+<span class="fc" id="L104">		super (</span>
+			objectiveFunction,
+			lineStepEvolutionControl,
+			convergenceControl
+		);
+<span class="fc" id="L109">	}</span>
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier increment (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier curentVariateConstraint)
 	{
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == vcmtCurrent) return null;</span>
-
-<span class="fc" id="L110">		double[] adblVariate = vcmtCurrent.variates();</span>
-
-<span class="fc" id="L112">		org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction = objectiveFunction();</span>
-
-<span class="fc" id="L114">		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.Matrix.Product</span>
-<span class="fc" id="L115">			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination</span>
-<span class="fc" id="L116">				(rdToR1ObjectiveFunction.hessian (adblVariate)), rdToR1ObjectiveFunction.jacobian</span>
-<span class="fc" id="L117">					(adblVariate));</span>
-
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (null == adblVariateIncrement) return null;</span>
-
-<span class="fc" id="L121">		int iVariateDimension = adblVariateIncrement.length;</span>
-
-<span class="fc bfc" id="L123" title="All 2 branches covered.">		for (int i = 0; i &lt; iVariateDimension; ++i)</span>
-<span class="fc" id="L124">			adblVariateIncrement[i] = -1. * adblVariateIncrement[i];</span>
-
-		try {
-<span class="fc" id="L127">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (true,</span>
-				adblVariateIncrement, null);
-<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L130">			e.printStackTrace();</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == curentVariateConstraint)</span>
+		{
+<span class="nc" id="L116">			return null;</span>
 		}
 
-<span class="nc" id="L133">		return null;</span>
+<span class="fc" id="L119">		double[] variateArray = curentVariateConstraint.variateArray();</span>
+
+<span class="fc" id="L121">		org.drip.function.definition.RdToR1 objectiveFunction = objectiveFunction();</span>
+
+<span class="fc" id="L123">		double[] variateIncrementArray = org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L124">			org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (</span>
+<span class="fc" id="L125">				objectiveFunction.hessian (</span>
+					variateArray
+				)
+			),
+<span class="fc" id="L129">			objectiveFunction.jacobian (</span>
+				variateArray
+			)
+		);
+
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (null == variateIncrementArray)</span>
+		{
+<span class="nc" id="L136">			return null;</span>
+		}
+
+<span class="fc" id="L139">		int variateDimension = variateIncrementArray.length;</span>
+
+<span class="fc" id="L141">		for (int variateDimensionIndex = 0;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">			variateDimensionIndex &lt; variateDimension;</span>
+<span class="fc" id="L143">			++variateDimensionIndex)</span>
+		{
+<span class="fc" id="L145">			variateIncrementArray[variateDimensionIndex] =</span>
+				-1. * variateIncrementArray[variateDimensionIndex];
+		}
+
+		try
+		{
+<span class="fc" id="L151">			return new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (</span>
+				true,
+				variateIncrementArray,
+				null
+			);
+		}
+<span class="nc" id="L157">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L159">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	@Override public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier next (
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtCurrent,
-		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vcmtIncrement,
-		final double dblIncrementFraction)
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier curentVariateConstraint,
+		final org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier
+			incrementalVariateConstraint,
+		final double incrementFraction)
 	{
-<span class="fc" id="L141">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (vcmtCurrent,</span>
-			vcmtIncrement, dblIncrementFraction, null);
+<span class="fc" id="L171">		return org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier.Add (</span>
+			curentVariateConstraint,
+			incrementalVariateConstraint,
+			incrementFraction,
+			null
+		);
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,39 +6,50 @@ package org.drip.dynamics.hjm;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -73,23 +84,23 @@ package org.drip.dynamics.hjm;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm/README.md&quot;&gt;HJM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm/README.md&quot;&gt;HJM Based Latent State Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class G2PlusPlus {
-<span class="fc" id="L86">	private double _dblA = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblB = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private double _dblEta = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblRho = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblSigma = java.lang.Double.NaN;</span>
-<span class="fc" id="L91">	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;</span>
-<span class="fc" id="L92">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;</span>
+<span class="fc" id="L97">	private double _dblA = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _dblB = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblEta = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private double _dblRho = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _dblSigma = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;</span>
+<span class="fc" id="L103">	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;</span>
 
 	/**
 	 * G2PlusPlus Constructor
@@ -114,15 +125,15 @@ public class G2PlusPlus {
 		final double dblRho,
 		final org.drip.function.definition.R1ToR1 auIFRInitial)
 		throws java.lang.Exception
-<span class="fc" id="L117">	{</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblEta = dblEta) ||</span>
-<span class="pc bpc" id="L121" title="3 of 6 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || null == (_aRSG = aRSG) || 2</span>
-<span class="pc bpc" id="L122" title="2 of 4 branches missed.">						!= _aRSG.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblRho = dblRho) ||</span>
+<span class="fc" id="L128">	{</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblEta = dblEta) ||</span>
+<span class="pc bpc" id="L132" title="3 of 6 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || null == (_aRSG = aRSG) || 2</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">						!= _aRSG.length || !org.drip.numerical.common.NumberUtil.IsValid (_dblRho = dblRho) ||</span>
 							null == (_auIFRInitial = auIFRInitial))
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;G2PlusPlus ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L125">	}</span>
+<span class="nc" id="L135">			throw new java.lang.Exception (&quot;G2PlusPlus ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L136">	}</span>
 
 	/**
 	 * Retrieve Sigma
@@ -132,7 +143,7 @@ public class G2PlusPlus {
 
 	public double sigma()
 	{
-<span class="nc" id="L135">		return _dblSigma;</span>
+<span class="nc" id="L146">		return _dblSigma;</span>
 	}
 
 	/**
@@ -143,7 +154,7 @@ public class G2PlusPlus {
 
 	public double a()
 	{
-<span class="nc" id="L146">		return _dblA;</span>
+<span class="nc" id="L157">		return _dblA;</span>
 	}
 
 	/**
@@ -154,7 +165,7 @@ public class G2PlusPlus {
 
 	public double eta()
 	{
-<span class="nc" id="L157">		return _dblEta;</span>
+<span class="nc" id="L168">		return _dblEta;</span>
 	}
 
 	/**
@@ -165,7 +176,7 @@ public class G2PlusPlus {
 
 	public double b()
 	{
-<span class="nc" id="L168">		return _dblB;</span>
+<span class="nc" id="L179">		return _dblB;</span>
 	}
 
 	/**
@@ -176,7 +187,7 @@ public class G2PlusPlus {
 
 	public org.drip.function.definition.R1ToR1 ifrInitialTermStructure()
 	{
-<span class="nc" id="L179">		return _auIFRInitial;</span>
+<span class="nc" id="L190">		return _auIFRInitial;</span>
 	}
 
 	/**
@@ -187,7 +198,7 @@ public class G2PlusPlus {
 
 	public org.drip.sequence.random.UnivariateSequenceGenerator[] rsg()
 	{
-<span class="nc" id="L190">		return _aRSG;</span>
+<span class="nc" id="L201">		return _aRSG;</span>
 	}
 
 	/**
@@ -198,7 +209,7 @@ public class G2PlusPlus {
 
 	public double rho()
 	{
-<span class="nc" id="L201">		return _dblRho;</span>
+<span class="nc" id="L212">		return _dblRho;</span>
 	}
 
 	/**
@@ -217,15 +228,15 @@ public class G2PlusPlus {
 		final int iViewDate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate) throw new java.lang.Exception (&quot;G2PlusPlus::phi =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate) throw new java.lang.Exception (&quot;G2PlusPlus::phi =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L222">		double dblSpotViewDCF = 1. * (iViewDate - iSpotDate) / 365.25;</span>
+<span class="fc" id="L233">		double dblSpotViewDCF = 1. * (iViewDate - iSpotDate) / 365.25;</span>
 
-<span class="fc" id="L224">		double dblFactor1Phi = _dblSigma / _dblA * (1. - java.lang.Math.exp (-1. * _dblA * dblSpotViewDCF));</span>
+<span class="fc" id="L235">		double dblFactor1Phi = _dblSigma / _dblA * (1. - java.lang.Math.exp (-1. * _dblA * dblSpotViewDCF));</span>
 
-<span class="fc" id="L226">		double dblFactor2Phi = _dblEta / _dblB * (1. - java.lang.Math.exp (-1. * _dblB * dblSpotViewDCF));</span>
+<span class="fc" id="L237">		double dblFactor2Phi = _dblEta / _dblB * (1. - java.lang.Math.exp (-1. * _dblB * dblSpotViewDCF));</span>
 
-<span class="fc" id="L228">		return _auIFRInitial.evaluate (iViewDate) + 0.5 * dblFactor1Phi * dblFactor1Phi + 0.5 * dblFactor2Phi</span>
+<span class="fc" id="L239">		return _auIFRInitial.evaluate (iViewDate) + 0.5 * dblFactor1Phi * dblFactor1Phi + 0.5 * dblFactor2Phi</span>
 			* dblFactor2Phi;
 	}
 
@@ -249,13 +260,13 @@ public class G2PlusPlus {
 		final int iSpotTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L252" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L253">			throw new java.lang.Exception (&quot;G2PlusPlus::deltaX =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L263" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L264">			throw new java.lang.Exception (&quot;G2PlusPlus::deltaX =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L255">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L266">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L257">		return -1. * _dblA * dblX * dblAnnualizedIncrement + _dblSigma * java.lang.Math.sqrt</span>
-<span class="fc" id="L258">			(dblAnnualizedIncrement) * _aRSG[0].random();</span>
+<span class="fc" id="L268">		return -1. * _dblA * dblX * dblAnnualizedIncrement + _dblSigma * java.lang.Math.sqrt</span>
+<span class="fc" id="L269">			(dblAnnualizedIncrement) * _aRSG[0].random();</span>
 	}
 
 	/**
@@ -278,13 +289,13 @@ public class G2PlusPlus {
 		final int iSpotTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L281" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblY))</span>
-<span class="nc" id="L282">			throw new java.lang.Exception (&quot;G2PlusPlus::deltaY =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L292" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblY))</span>
+<span class="nc" id="L293">			throw new java.lang.Exception (&quot;G2PlusPlus::deltaY =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L284">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L295">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L286">		return -1. * _dblB * dblY * dblAnnualizedIncrement + _dblEta * java.lang.Math.sqrt</span>
-<span class="fc" id="L287">			(dblAnnualizedIncrement) * _aRSG[1].random();</span>
+<span class="fc" id="L297">		return -1. * _dblB * dblY * dblAnnualizedIncrement + _dblEta * java.lang.Math.sqrt</span>
+<span class="fc" id="L298">			(dblAnnualizedIncrement) * _aRSG[1].random();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

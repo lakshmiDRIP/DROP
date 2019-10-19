@@ -6,39 +6,50 @@ package org.drip.dynamics.hjm;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -84,20 +95,20 @@ package org.drip.dynamics.hjm;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm/README.md&quot;&gt;HJM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/hjm/README.md&quot;&gt;HJM Based Latent State Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.PointStateEvolver {
-<span class="fc" id="L97">	private org.drip.dynamics.hjm.MultiFactorVolatility _mfv = null;</span>
-<span class="fc" id="L98">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
-<span class="fc" id="L99">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
-<span class="fc" id="L100">	private org.drip.function.definition.R1ToR1 _auInitialInstantaneousForwardRate = null;</span>
+<span class="fc" id="L108">	private org.drip.dynamics.hjm.MultiFactorVolatility _mfv = null;</span>
+<span class="fc" id="L109">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L110">	private org.drip.state.identifier.FundingLabel _lslFunding = null;</span>
+<span class="fc" id="L111">	private org.drip.function.definition.R1ToR1 _auInitialInstantaneousForwardRate = null;</span>
 
 	/**
 	 * MultiFactorStateEvolver Constructor
@@ -116,11 +127,11 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final org.drip.dynamics.hjm.MultiFactorVolatility mfv,
 		final org.drip.function.definition.R1ToR1 auInitialInstantaneousForwardRate)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="4 of 8 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_mfv = mfv)</span>
+<span class="fc" id="L130">	{</span>
+<span class="pc bpc" id="L131" title="4 of 8 branches missed.">		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_mfv = mfv)</span>
 			|| null == (_auInitialInstantaneousForwardRate = auInitialInstantaneousForwardRate))
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;MultiFactorStateEvolver ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L123">	}</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;MultiFactorStateEvolver ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the Funding Label
@@ -130,7 +141,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 
 	public org.drip.state.identifier.FundingLabel fundingLabel()
 	{
-<span class="nc" id="L133">		return _lslFunding;</span>
+<span class="nc" id="L144">		return _lslFunding;</span>
 	}
 
 	/**
@@ -141,7 +152,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 
 	public org.drip.state.identifier.ForwardLabel forwardLabel()
 	{
-<span class="nc" id="L144">		return _lslForward;</span>
+<span class="nc" id="L155">		return _lslForward;</span>
 	}
 
 	/**
@@ -152,7 +163,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 
 	public org.drip.dynamics.hjm.MultiFactorVolatility mfv()
 	{
-<span class="fc" id="L155">		return _mfv;</span>
+<span class="fc" id="L166">		return _mfv;</span>
 	}
 
 	/**
@@ -163,7 +174,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 
 	public org.drip.function.definition.R1ToR1 instantaneousForwardInitialTermStructure()
 	{
-<span class="nc" id="L166">		return _auInitialInstantaneousForwardRate;</span>
+<span class="nc" id="L177">		return _auInitialInstantaneousForwardRate;</span>
 	}
 
 	/**
@@ -185,36 +196,36 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (iTargetDate &lt;= iViewDate)</span>
-<span class="nc" id="L189">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		if (iTargetDate &lt;= iViewDate)</span>
+<span class="nc" id="L200">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::instantaneousForwardRateIncrement =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L192">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L203">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L194">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L205">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc" id="L196">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L207">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L198">		double dblIntantaneousForwardRateIncrement = 0.;</span>
-<span class="fc" id="L199">		double dblAnnualizedTimeIncrement = 1. * iViewTimeIncrement / 365.25;</span>
+<span class="fc" id="L209">		double dblIntantaneousForwardRateIncrement = 0.;</span>
+<span class="fc" id="L210">		double dblAnnualizedTimeIncrement = 1. * iViewTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L201">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedTimeIncrement);</span>
+<span class="fc" id="L212">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedTimeIncrement);</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L204">			double dblWeightedFactorPointVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L215">			double dblWeightedFactorPointVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 				iTargetDate);
 
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblWeightedFactorPointVolatility))</span>
-<span class="nc" id="L208">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblWeightedFactorPointVolatility))</span>
+<span class="nc" id="L219">				throw new java.lang.Exception</span>
 					(&quot;MultiFactorStateEvolver::instantaneousForwardRateIncrement =&gt; Cannot compute View/Target Date Point Volatility&quot;);
 
-<span class="fc" id="L211">			dblIntantaneousForwardRateIncrement += _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
+<span class="fc" id="L222">			dblIntantaneousForwardRateIncrement += _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
 				dblWeightedFactorPointVolatility * dblAnnualizedTimeIncrement +
 					dblWeightedFactorPointVolatility * dblAnnualizedTimeIncrementSQRT *
 						adblMultivariateRandom[i];
 		}
 
-<span class="fc" id="L217">		return dblIntantaneousForwardRateIncrement;</span>
+<span class="fc" id="L228">		return dblIntantaneousForwardRateIncrement;</span>
 	}
 
 	/**
@@ -238,26 +249,26 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L241" title="2 of 4 branches missed.">		if (iTargetDate &lt;= iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblShortRate))</span>
-<span class="nc" id="L242">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L252" title="2 of 4 branches missed.">		if (iTargetDate &lt;= iViewDate || !org.drip.numerical.common.NumberUtil.IsValid (dblShortRate))</span>
+<span class="nc" id="L253">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::proportionalPriceIncrement =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L245">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L256">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L247">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L258">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc" id="L249">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L260">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L251">		double dblAnnualizedTimeIncrement = 1. * iViewTimeIncrement / 365.25;</span>
-<span class="fc" id="L252">		double dblProportionalPriceIncrement = dblShortRate * dblAnnualizedTimeIncrement;</span>
+<span class="fc" id="L262">		double dblAnnualizedTimeIncrement = 1. * iViewTimeIncrement / 365.25;</span>
+<span class="fc" id="L263">		double dblProportionalPriceIncrement = dblShortRate * dblAnnualizedTimeIncrement;</span>
 
-<span class="fc" id="L254">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedTimeIncrement);</span>
+<span class="fc" id="L265">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedTimeIncrement);</span>
 
-<span class="fc bfc" id="L256" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="fc" id="L257">			dblProportionalPriceIncrement -= _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L268">			dblProportionalPriceIncrement -= _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
 				dblAnnualizedTimeIncrementSQRT * adblMultivariateRandom[i];
 
-<span class="fc" id="L260">		return dblProportionalPriceIncrement;</span>
+<span class="fc" id="L271">		return dblProportionalPriceIncrement;</span>
 	}
 
 	/**
@@ -278,34 +289,34 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate)</span>
-<span class="nc" id="L282">			throw new java.lang.Exception (&quot;MultiFactorStateEvolver::shortRateIncrement =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (iSpotDate &gt; iViewDate)</span>
+<span class="nc" id="L293">			throw new java.lang.Exception (&quot;MultiFactorStateEvolver::shortRateIncrement =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L284">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L295">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L286">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L297">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L288">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L299">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc" id="L290">		double dblShortRateIncrement = 0.;</span>
-<span class="fc" id="L291">		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;</span>
+<span class="fc" id="L301">		double dblShortRateIncrement = 0.;</span>
+<span class="fc" id="L302">		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L293">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="fc" id="L304">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L296">			double dblViewWeightedFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L307">			double dblViewWeightedFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 				iViewDate);
 
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewWeightedFactorVolatility))</span>
-<span class="nc" id="L300">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewWeightedFactorVolatility))</span>
+<span class="nc" id="L311">				throw new java.lang.Exception</span>
 					(&quot;MultiFactorStateEvolver::shortRateIncrement =&gt; Cannot compute View Date Factor Volatility&quot;);
 
-<span class="fc" id="L303">			dblShortRateIncrement += _mfv.volatilityIntegral (i, iSpotDate, iViewDate) *</span>
+<span class="fc" id="L314">			dblShortRateIncrement += _mfv.volatilityIntegral (i, iSpotDate, iViewDate) *</span>
 				dblViewWeightedFactorVolatility * dblAnnualizedIncrement + dblViewWeightedFactorVolatility *
 					dblAnnualizedIncrementSQRT * adblMultivariateRandom[i];
 		}
 
-<span class="fc" id="L308">		return dblShortRateIncrement;</span>
+<span class="fc" id="L319">		return dblShortRateIncrement;</span>
 	}
 
 	/**
@@ -335,31 +346,31 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L338" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate)</span>
-<span class="nc" id="L339">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L349" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate)</span>
+<span class="nc" id="L350">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::compoundedShortRateIncrement =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L342">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L353">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L344">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L355">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc" id="L346">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L357">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L348">		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;</span>
-<span class="fc" id="L349">		double dblCompoundedShortRateIncrement = (dblCompoundedShortRate - dblShortRate) *</span>
+<span class="fc" id="L359">		double dblAnnualizedIncrement = 1. * iViewTimeIncrement / 365.25;</span>
+<span class="fc" id="L360">		double dblCompoundedShortRateIncrement = (dblCompoundedShortRate - dblShortRate) *</span>
 			dblAnnualizedIncrement;
 
-<span class="fc" id="L352">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="fc" id="L363">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
-<span class="fc bfc" id="L354" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L355">			double dblViewTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iViewDate, iTargetDate);</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L366">			double dblViewTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iViewDate, iTargetDate);</span>
 
-<span class="fc" id="L357">			dblCompoundedShortRateIncrement += 0.5 * dblViewTargetVolatilityIntegral *</span>
+<span class="fc" id="L368">			dblCompoundedShortRateIncrement += 0.5 * dblViewTargetVolatilityIntegral *</span>
 				dblViewTargetVolatilityIntegral * dblAnnualizedIncrement + dblViewTargetVolatilityIntegral *
 					dblAnnualizedIncrementSQRT * adblMultivariateRandom[i];
 		}
 
-<span class="fc" id="L362">		return dblCompoundedShortRateIncrement * 365.25 / (iTargetDate - iViewDate);</span>
+<span class="fc" id="L373">		return dblCompoundedShortRateIncrement * 365.25 / (iTargetDate - iViewDate);</span>
 	}
 
 	/**
@@ -385,27 +396,27 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L388" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L389" title="1 of 2 branches missed.">			(dblLIBORForwardRate))</span>
-<span class="nc" id="L390">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L399" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">			(dblLIBORForwardRate))</span>
+<span class="nc" id="L401">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::liborForwardRateIncrement =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L393">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (1. * iViewTimeIncrement / 365.25);</span>
+<span class="fc" id="L404">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (1. * iViewTimeIncrement / 365.25);</span>
 
-<span class="fc" id="L395">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L406">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L397">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L408">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L399">		double dblLIBORForwardRateVolIncrement = 0.;</span>
+<span class="fc" id="L410">		double dblLIBORForwardRateVolIncrement = 0.;</span>
 
-<span class="fc" id="L401">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L412">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc bfc" id="L403" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="fc" id="L404">			dblLIBORForwardRateVolIncrement += _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
-<span class="fc" id="L405">				(_mfv.volatilityIntegral (i, iSpotDate, iTargetDate) + dblAnnualizedTimeIncrementSQRT *</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L415">			dblLIBORForwardRateVolIncrement += _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
+<span class="fc" id="L416">				(_mfv.volatilityIntegral (i, iSpotDate, iTargetDate) + dblAnnualizedTimeIncrementSQRT *</span>
 					adblMultivariateRandom[i]);
 
-<span class="fc" id="L408">		return (dblLIBORForwardRate + (365.25 / (iTargetDate - iViewDate))) *</span>
+<span class="fc" id="L419">		return (dblLIBORForwardRate + (365.25 / (iTargetDate - iViewDate))) *</span>
 			dblLIBORForwardRateVolIncrement;
 	}
 
@@ -432,27 +443,27 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iViewTimeIncrement)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L435" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L436" title="1 of 2 branches missed.">			(dblShiftedLIBORForwardRate))</span>
-<span class="nc" id="L437">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L446" title="2 of 4 branches missed.">		if (iSpotDate &gt; iViewDate || iViewDate &gt;= iTargetDate || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L447" title="1 of 2 branches missed.">			(dblShiftedLIBORForwardRate))</span>
+<span class="nc" id="L448">			throw new java.lang.Exception</span>
 				(&quot;MultiFactorStateEvolver::shiftedLIBORForwardIncrement =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L440">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (1. * iViewTimeIncrement / 365.25);</span>
+<span class="fc" id="L451">		double dblAnnualizedTimeIncrementSQRT = java.lang.Math.sqrt (1. * iViewTimeIncrement / 365.25);</span>
 
-<span class="fc" id="L442">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L453">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L444">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L455">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L446">		double dblShiftedLIBORVolIncrement = 0.;</span>
+<span class="fc" id="L457">		double dblShiftedLIBORVolIncrement = 0.;</span>
 
-<span class="fc" id="L448">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L459">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc bfc" id="L450" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
-<span class="fc" id="L451">			dblShiftedLIBORVolIncrement += _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
-<span class="fc" id="L452">				(_mfv.volatilityIntegral (i, iSpotDate, iTargetDate) + dblAnnualizedTimeIncrementSQRT *</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumFactor; ++i)</span>
+<span class="fc" id="L462">			dblShiftedLIBORVolIncrement += _mfv.volatilityIntegral (i, iViewDate, iTargetDate) *</span>
+<span class="fc" id="L463">				(_mfv.volatilityIntegral (i, iSpotDate, iTargetDate) + dblAnnualizedTimeIncrementSQRT *</span>
 					adblMultivariateRandom[i]);
 
-<span class="fc" id="L455">		return dblShiftedLIBORForwardRate * dblShiftedLIBORVolIncrement;</span>
+<span class="fc" id="L466">		return dblShiftedLIBORForwardRate * dblShiftedLIBORVolIncrement;</span>
 	}
 
 	@Override public org.drip.dynamics.evolution.LSQMPointUpdate evolve (
@@ -461,99 +472,99 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final int iSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
-<span class="pc bpc" id="L464" title="3 of 6 branches missed.">		if (iSpotDate &gt; iViewDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
+<span class="pc bpc" id="L475" title="3 of 6 branches missed.">		if (iSpotDate &gt; iViewDate || null == lsqmPrev || !(lsqmPrev instanceof</span>
 			org.drip.dynamics.hjm.ShortForwardRateUpdate))
-<span class="nc" id="L466">			return null;</span>
+<span class="nc" id="L477">			return null;</span>
 
-<span class="fc" id="L468">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
+<span class="fc" id="L479">		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();</span>
 
-<span class="fc" id="L470">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
+<span class="fc" id="L481">		double dblAnnualizedIncrement = 1. * iSpotTimeIncrement / 365.25;</span>
 
-<span class="fc" id="L472">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
+<span class="fc" id="L483">		double dblAnnualizedIncrementSQRT = java.lang.Math.sqrt (dblAnnualizedIncrement);</span>
 
-<span class="fc" id="L474">		double[] adblMultivariateRandom = pfsg.random();</span>
+<span class="fc" id="L485">		double[] adblMultivariateRandom = pfsg.random();</span>
 
-<span class="fc" id="L476">		int iNumFactor = pfsg.numFactor();</span>
+<span class="fc" id="L487">		int iNumFactor = pfsg.numFactor();</span>
 
-<span class="fc" id="L478">		org.drip.dynamics.hjm.ShortForwardRateUpdate qmInitial =</span>
+<span class="fc" id="L489">		org.drip.dynamics.hjm.ShortForwardRateUpdate qmInitial =</span>
 			(org.drip.dynamics.hjm.ShortForwardRateUpdate) lsqmPrev;
 
 		try {
-<span class="fc" id="L482">			double dblInitialPrice = qmInitial.price();</span>
+<span class="fc" id="L493">			double dblInitialPrice = qmInitial.price();</span>
 
-<span class="fc" id="L484">			double dblInitialShortRate = qmInitial.shortRate();</span>
+<span class="fc" id="L495">			double dblInitialShortRate = qmInitial.shortRate();</span>
 
-<span class="fc" id="L486">			double dblInitialLIBORForwardRate = qmInitial.liborForwardRate();</span>
+<span class="fc" id="L497">			double dblInitialLIBORForwardRate = qmInitial.liborForwardRate();</span>
 
-<span class="fc" id="L488">			double dblInitialCompoundedShortRate = qmInitial.compoundedShortRate();</span>
+<span class="fc" id="L499">			double dblInitialCompoundedShortRate = qmInitial.compoundedShortRate();</span>
 
-<span class="fc" id="L490">			int iTargetDate = new org.drip.analytics.date.JulianDate (iViewDate).addTenor</span>
-<span class="fc" id="L491">				(_lslForward.tenor()).julian();</span>
+<span class="fc" id="L501">			int iTargetDate = new org.drip.analytics.date.JulianDate (iViewDate).addTenor</span>
+<span class="fc" id="L502">				(_lslForward.tenor()).julian();</span>
 
-<span class="fc" id="L493">			double dblShortRateIncrement = 0.;</span>
-<span class="fc" id="L494">			double dblShiftedLIBORForwardRateIncrement = 0.;</span>
-<span class="fc" id="L495">			double dblInstantaneousForwardRateIncrement = 0.;</span>
-<span class="fc" id="L496">			double dblPriceIncrement = dblInitialShortRate * dblAnnualizedIncrement;</span>
-<span class="fc" id="L497">			double dblCompoundedShortRateIncrement = (dblInitialCompoundedShortRate - dblInitialShortRate) *</span>
+<span class="fc" id="L504">			double dblShortRateIncrement = 0.;</span>
+<span class="fc" id="L505">			double dblShiftedLIBORForwardRateIncrement = 0.;</span>
+<span class="fc" id="L506">			double dblInstantaneousForwardRateIncrement = 0.;</span>
+<span class="fc" id="L507">			double dblPriceIncrement = dblInitialShortRate * dblAnnualizedIncrement;</span>
+<span class="fc" id="L508">			double dblCompoundedShortRateIncrement = (dblInitialCompoundedShortRate - dblInitialShortRate) *</span>
 				dblAnnualizedIncrement;
 
-<span class="fc bfc" id="L500" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumFactor; ++i) {</span>
-<span class="fc" id="L501">				double dblViewDateFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumFactor; ++i) {</span>
+<span class="fc" id="L512">				double dblViewDateFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 					iViewDate);
 
-<span class="pc bpc" id="L504" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewDateFactorVolatility)) return null;</span>
+<span class="pc bpc" id="L515" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewDateFactorVolatility)) return null;</span>
 
-<span class="fc" id="L506">				double dblViewTargetFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
+<span class="fc" id="L517">				double dblViewTargetFactorVolatility = _mfv.weightedFactorPointVolatility (i, iViewDate,</span>
 					iTargetDate);
 
-<span class="pc bpc" id="L509" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetFactorVolatility)) return null;</span>
+<span class="pc bpc" id="L520" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetFactorVolatility)) return null;</span>
 
-<span class="fc" id="L511">				double dblViewTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iViewDate, iTargetDate);</span>
+<span class="fc" id="L522">				double dblViewTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iViewDate, iTargetDate);</span>
 
-<span class="pc bpc" id="L513" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetVolatilityIntegral)) return null;</span>
+<span class="pc bpc" id="L524" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblViewTargetVolatilityIntegral)) return null;</span>
 
-<span class="fc" id="L515">				double dblSpotViewVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iViewDate);</span>
+<span class="fc" id="L526">				double dblSpotViewVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iViewDate);</span>
 
-<span class="pc bpc" id="L517" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotViewVolatilityIntegral)) return null;</span>
+<span class="pc bpc" id="L528" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotViewVolatilityIntegral)) return null;</span>
 
-<span class="fc" id="L519">				double dblSpotTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iTargetDate);</span>
+<span class="fc" id="L530">				double dblSpotTargetVolatilityIntegral = _mfv.volatilityIntegral (i, iSpotDate, iTargetDate);</span>
 
-<span class="pc bpc" id="L521" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotTargetVolatilityIntegral)) return null;</span>
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblSpotTargetVolatilityIntegral)) return null;</span>
 
-<span class="fc" id="L523">				double dblScaledMultivariateRandom = dblAnnualizedIncrementSQRT * adblMultivariateRandom[i];</span>
-<span class="fc" id="L524">				dblInstantaneousForwardRateIncrement += dblViewTargetVolatilityIntegral *</span>
+<span class="fc" id="L534">				double dblScaledMultivariateRandom = dblAnnualizedIncrementSQRT * adblMultivariateRandom[i];</span>
+<span class="fc" id="L535">				dblInstantaneousForwardRateIncrement += dblViewTargetVolatilityIntegral *</span>
 					dblViewTargetFactorVolatility * dblAnnualizedIncrement + dblViewTargetFactorVolatility *
 						dblScaledMultivariateRandom;
-<span class="fc" id="L527">				dblShortRateIncrement += dblSpotViewVolatilityIntegral * dblViewDateFactorVolatility *</span>
+<span class="fc" id="L538">				dblShortRateIncrement += dblSpotViewVolatilityIntegral * dblViewDateFactorVolatility *</span>
 					dblAnnualizedIncrement + dblViewDateFactorVolatility * dblScaledMultivariateRandom;
-<span class="fc" id="L529">				dblCompoundedShortRateIncrement += 0.5 * dblViewTargetVolatilityIntegral *</span>
+<span class="fc" id="L540">				dblCompoundedShortRateIncrement += 0.5 * dblViewTargetVolatilityIntegral *</span>
 					dblViewTargetVolatilityIntegral * dblAnnualizedIncrement +
 						dblViewTargetVolatilityIntegral * dblScaledMultivariateRandom;
-<span class="fc" id="L532">				dblShiftedLIBORForwardRateIncrement += dblViewTargetVolatilityIntegral *</span>
+<span class="fc" id="L543">				dblShiftedLIBORForwardRateIncrement += dblViewTargetVolatilityIntegral *</span>
 					(dblSpotTargetVolatilityIntegral + dblScaledMultivariateRandom);
-<span class="fc" id="L534">				dblPriceIncrement -= dblViewTargetVolatilityIntegral * dblScaledMultivariateRandom;</span>
+<span class="fc" id="L545">				dblPriceIncrement -= dblViewTargetVolatilityIntegral * dblScaledMultivariateRandom;</span>
 			}
 
-<span class="fc" id="L537">			dblPriceIncrement *= dblInitialPrice;</span>
-<span class="fc" id="L538">			dblCompoundedShortRateIncrement *= 365.25 / (iTargetDate - iViewDate);</span>
-<span class="fc" id="L539">			double dblLIBORForwardRateIncrement = (dblInitialLIBORForwardRate + (365.25 / (iTargetDate -</span>
+<span class="fc" id="L548">			dblPriceIncrement *= dblInitialPrice;</span>
+<span class="fc" id="L549">			dblCompoundedShortRateIncrement *= 365.25 / (iTargetDate - iViewDate);</span>
+<span class="fc" id="L550">			double dblLIBORForwardRateIncrement = (dblInitialLIBORForwardRate + (365.25 / (iTargetDate -</span>
 				iViewDate))) * dblShiftedLIBORForwardRateIncrement;
 
-<span class="fc" id="L542">			return org.drip.dynamics.hjm.ShortForwardRateUpdate.Create (_lslFunding, _lslForward, iSpotDate,</span>
-<span class="fc" id="L543">				iSpotDate + iSpotTimeIncrement, iTargetDate, qmInitial.instantaneousForwardRate() +</span>
+<span class="fc" id="L553">			return org.drip.dynamics.hjm.ShortForwardRateUpdate.Create (_lslFunding, _lslForward, iSpotDate,</span>
+<span class="fc" id="L554">				iSpotDate + iSpotTimeIncrement, iTargetDate, qmInitial.instantaneousForwardRate() +</span>
 					dblInstantaneousForwardRateIncrement, dblInstantaneousForwardRateIncrement,
 						dblInitialLIBORForwardRate + dblLIBORForwardRateIncrement,
-<span class="fc" id="L546">							dblLIBORForwardRateIncrement, qmInitial.shiftedLIBORForwardRate() +</span>
+<span class="fc" id="L557">							dblLIBORForwardRateIncrement, qmInitial.shiftedLIBORForwardRate() +</span>
 								dblShiftedLIBORForwardRateIncrement, dblShiftedLIBORForwardRateIncrement,
 									dblInitialShortRate + dblShortRateIncrement, dblShortRateIncrement,
 										dblInitialCompoundedShortRate + dblCompoundedShortRateIncrement,
 											dblCompoundedShortRateIncrement, dblInitialPrice +
 												dblPriceIncrement, dblPriceIncrement);
-<span class="nc" id="L552">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L553">			e.printStackTrace();</span>
+<span class="nc" id="L563">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L564">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L556">		return null;</span>
+<span class="nc" id="L567">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

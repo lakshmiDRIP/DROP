@@ -81,329 +81,475 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VariateInequalityConstraintMultiplier {
+public class VariateInequalityConstraintMultiplier
+{
 
 	/**
 	 * Flag Indicating whether the Variate Contents are to be Logged &quot;Before&quot; Bounding
 	 */
 
-<span class="fc" id="L90">	public static boolean s_bPreBoundBlog = false;</span>
+<span class="fc" id="L91">	public static boolean s_preBoundBlog = false;</span>
 
 	/**
 	 * Flag Indicating whether the Variate Contents are to be Logged &quot;After&quot; Bounding
 	 */
 
-<span class="fc" id="L96">	public static boolean s_bPostBoundBlog = false;</span>
+<span class="fc" id="L97">	public static boolean s_postBoundBlog = false;</span>
 
-<span class="fc" id="L98">	private double[] _adblVariate = null;</span>
-<span class="fc" id="L99">	private boolean _bIncremental = false;</span>
-<span class="fc" id="L100">	private double[] _adblConstraintMultiplier = null;</span>
+<span class="fc" id="L99">	private boolean _incremental = false;</span>
+<span class="fc" id="L100">	private double[] _variateArray = null;</span>
+<span class="fc" id="L101">	private double[] _constraintMultiplierArray = null;</span>
 
 	/**
-	 * Add the Specified VICM Instances together
+	 * Add the Specified VariateInequalityConstraintMultiplier Instances together
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param dblIncrementFactor The Increment Factor - 1. corresponds to Full Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param incrementFactor The Increment Factor - 1. corresponds to Full Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Added VICM Instance
+	 * @return The Added VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Add (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final double dblIncrementFactor,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final double incrementFactor,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-<span class="pc bpc" id="L119" title="3 of 6 branches missed.">		if (null == vicmBase || null == vicmIncrement || vicmBase.incremental() ||</span>
-<span class="pc bpc" id="L120" title="3 of 6 branches missed.">			!vicmIncrement.incremental() || !org.drip.numerical.common.NumberUtil.IsValid (dblIncrementFactor) ||</span>
-				1. &lt; dblIncrementFactor)
-<span class="nc" id="L122">			return null;</span>
-
-<span class="fc" id="L124">		double[] adblVariateBase = vicmBase.variates();</span>
-
-<span class="fc" id="L126">		double[] adblVariateIncrement = vicmIncrement.variates();</span>
-
-<span class="fc" id="L128">		double[] adblInequalityConstraintMultiplierBase = vicmBase.constraintMultipliers();</span>
-
-<span class="fc" id="L130">		double[] adblInequalityConstraintMultiplierIncrement = vicmIncrement.constraintMultipliers();</span>
-
-<span class="fc" id="L132">		int iNumVariate = adblVariateBase.length;</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		int iNumBounder = null == aBM ? 0 : aBM.length;</span>
-<span class="fc" id="L134">		double[] adblVariate = new double[iNumVariate];</span>
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		int iNumInequalityConstraint = null == adblInequalityConstraintMultiplierBase ? 0 :</span>
-			adblInequalityConstraintMultiplierBase.length;
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		int iNumInequalityConstraintIncrement = null == adblInequalityConstraintMultiplierIncrement ? 0 :</span>
-			adblInequalityConstraintMultiplierIncrement.length;
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		double[] adblInequalityConstraintMultiplier = 0 == iNumInequalityConstraint ? null : new</span>
-			double[iNumInequalityConstraint];
-
-<span class="pc bpc" id="L142" title="2 of 4 branches missed.">		if (iNumVariate != adblVariateIncrement.length || iNumInequalityConstraint !=</span>
-			iNumInequalityConstraintIncrement)
-<span class="nc" id="L144">			return null;</span>
-
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L147">			adblVariate[i] = adblVariateBase[i] + dblIncrementFactor * adblVariateIncrement[i];</span>
-
-<span class="fc bfc" id="L149" title="All 2 branches covered.">		if (s_bPreBoundBlog) {</span>
-<span class="fc" id="L150">			java.lang.String strDump = &quot;\tB&quot;;</span>
-
-<span class="fc bfc" id="L152" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L153">				strDump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +</span>
-					&quot; |&quot;;
-
-<span class="fc" id="L156">			System.out.println (strDump);</span>
+<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (null == baseVariateConstriantMultiplier ||</span>
+			null == incrementalVariateConstriantMultiplier ||
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			baseVariateConstriantMultiplier.incremental() ||</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			!incrementalVariateConstriantMultiplier.incremental() ||</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (incrementFactor) || 1. &lt; incrementFactor)</span>
+		{
+<span class="nc" id="L126">			return null;</span>
 		}
 
-<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">			if (0. &gt; (adblInequalityConstraintMultiplier[i] = adblInequalityConstraintMultiplierBase[i] +</span>
-				dblIncrementFactor * adblInequalityConstraintMultiplierIncrement[i]))
-<span class="fc" id="L162">				adblInequalityConstraintMultiplier[i] = 0.;</span>
+<span class="fc" id="L129">		double[] baseVariateArray = baseVariateConstriantMultiplier.variateArray();</span>
 
-<span class="pc bpc" id="L164" title="1 of 4 branches missed.">			if (iNumBounder &lt;= i || null == aBM[i]) continue;</span>
+<span class="fc" id="L131">		double[] incrementalVariateArray = incrementalVariateConstriantMultiplier.variateArray();</span>
 
-<span class="fc" id="L166">			int iBoundVariateIndex = aBM[i].boundVariateIndex();</span>
+<span class="fc" id="L133">		double[] baseConstraintMultiplierArray = baseVariateConstriantMultiplier.constraintMultiplierArray();</span>
 
-			try {
-<span class="fc bfc" id="L169" title="All 2 branches covered.">				if (aBM[i].violated (adblVariate[iBoundVariateIndex]))</span>
-<span class="fc" id="L170">					adblVariate[iBoundVariateIndex] = aBM[i].boundValue();</span>
-<span class="nc" id="L171">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L172">				e.printStackTrace();</span>
+<span class="fc" id="L135">		double[] incrementalConstraintMultiplierArray =</span>
+<span class="fc" id="L136">			incrementalVariateConstriantMultiplier.constraintMultiplierArray();</span>
 
-<span class="nc" id="L174">				return null;</span>
-<span class="fc" id="L175">			}</span>
+<span class="fc" id="L138">		int variateCount = baseVariateArray.length;</span>
+<span class="fc" id="L139">		double[] variateArray = new double[variateCount];</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">		int boundMultivariateFunctionCount = null == boundMultivariateFunctionArray ?</span>
+			0 : boundMultivariateFunctionArray.length;
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		int constraintCount = null == baseConstraintMultiplierArray ? 0 :</span>
+			baseConstraintMultiplierArray.length;
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		int constraintCountIncrementCount = null == incrementalConstraintMultiplierArray ? 0 :</span>
+			incrementalConstraintMultiplierArray.length;
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		double[] constraintMultiplierArray = 0 == constraintCount ? null : new double[constraintCount];</span>
+
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">		if (variateCount != incrementalVariateArray.length ||</span>
+			constraintCount != constraintCountIncrementCount)
+		{
+<span class="nc" id="L151">			return null;</span>
 		}
 
-<span class="fc bfc" id="L178" title="All 2 branches covered.">		if (s_bPostBoundBlog) {</span>
-<span class="fc" id="L179">			java.lang.String strDump = &quot;\tA&quot;;</span>
-
-<span class="fc bfc" id="L181" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="fc" id="L182">				strDump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +</span>
-					&quot; |&quot;;
-
-<span class="fc" id="L185">			System.out.println (strDump);</span>
+<span class="fc" id="L154">		for (int variateIndex = 0;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">			variateIndex &lt; variateCount;</span>
+<span class="fc" id="L156">			++variateIndex)</span>
+		{
+<span class="fc" id="L158">			variateArray[variateIndex] = baseVariateArray[variateIndex] +</span>
+				incrementFactor * incrementalVariateArray[variateIndex];
 		}
 
-		try {
-<span class="fc" id="L189">			return new VariateInequalityConstraintMultiplier (false, adblVariate,</span>
-				adblInequalityConstraintMultiplier);
-<span class="nc" id="L191">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L192">			e.printStackTrace();</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		if (s_preBoundBlog)</span>
+		{
+<span class="fc" id="L164">			java.lang.String dump = &quot;\tB&quot;;</span>
+
+<span class="fc" id="L166">			for (int variateIndex = 0;</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">				variateIndex &lt; variateCount;</span>
+<span class="fc" id="L168">				++variateIndex)</span>
+			{
+<span class="fc" id="L170">				dump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + &quot; |&quot;;
+			}
+
+<span class="fc" id="L178">			System.out.println (dump);</span>
 		}
 
-<span class="nc" id="L195">		return null;</span>
+<span class="fc" id="L181">		for (int constraintIndex = 0;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">			constraintIndex &lt; constraintCount;</span>
+<span class="fc" id="L183">			++constraintIndex)</span>
+		{
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			if (0. &gt; (</span>
+				constraintMultiplierArray[constraintIndex] = baseConstraintMultiplierArray[constraintIndex] +
+					incrementFactor * incrementalConstraintMultiplierArray[constraintIndex]
+			))
+			{
+<span class="fc" id="L190">				constraintMultiplierArray[constraintIndex] = 0.;</span>
+			}
+
+<span class="pc bpc" id="L193" title="1 of 4 branches missed.">			if (boundMultivariateFunctionCount &lt;= constraintIndex ||</span>
+				null == boundMultivariateFunctionArray[constraintIndex])
+			{
+<span class="fc" id="L196">				continue;</span>
+			}
+
+<span class="fc" id="L199">			int boundVariateIndex = boundMultivariateFunctionArray[constraintIndex].boundVariateIndex();</span>
+
+			try
+			{
+<span class="fc bfc" id="L203" title="All 2 branches covered.">				if (boundMultivariateFunctionArray[constraintIndex].violated (</span>
+					variateArray[boundVariateIndex]
+				))
+				{
+<span class="fc" id="L207">					variateArray[boundVariateIndex] =</span>
+<span class="fc" id="L208">						boundMultivariateFunctionArray[constraintIndex].boundValue();</span>
+				}
+			}
+<span class="nc" id="L211">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L213">				e.printStackTrace();</span>
+
+<span class="nc" id="L215">				return null;</span>
+<span class="fc" id="L216">			}</span>
+		}
+
+<span class="fc bfc" id="L219" title="All 2 branches covered.">		if (s_postBoundBlog)</span>
+		{
+<span class="fc" id="L221">			java.lang.String dump = &quot;\tA&quot;;</span>
+
+<span class="fc" id="L223">			for (int variateIndex = 0;</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">				variateIndex &lt; variateCount;</span>
+<span class="fc" id="L225">				++variateIndex)</span>
+			{
+<span class="fc" id="L227">				dump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + &quot; |&quot;;
+			}
+
+<span class="fc" id="L235">			System.out.println (dump);</span>
+		}
+
+		try
+		{
+<span class="fc" id="L240">			return new VariateInequalityConstraintMultiplier (</span>
+				false,
+				variateArray,
+				constraintMultiplierArray
+			);
+		}
+<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L248">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L251">		return null;</span>
 	}
 
 	/**
-	 * Add the Specified VICM Instances together
+	 * Add the Specified VariateInequalityConstraintMultiplier Instances together
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Added VICM Instance
+	 * @return The Added VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Add (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-<span class="nc" id="L213">		return Add (vicmBase, vicmIncrement, 1., aBM);</span>
+<span class="nc" id="L269">		return Add (</span>
+			baseVariateConstriantMultiplier,
+			incrementalVariateConstriantMultiplier,
+			1.,
+			boundMultivariateFunctionArray
+		);
 	}
 
 	/**
-	 * Subtract the Second VICM Instance from the First
+	 * Subtract the Second VariateInequalityConstraintMultiplier Instance from the First
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param dblIncrementFactor The Increment Factor - 1. corresponds to Full Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param incrementFactor The Increment Factor - 1. corresponds to Full Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Subtracted VICM Instance
+	 * @return The Subtracted VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Subtract (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final double dblIncrementFactor,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final double incrementFactor,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-<span class="nc bnc" id="L233" title="All 6 branches missed.">		if (null == vicmBase || null == vicmIncrement || vicmBase.incremental() ||</span>
-<span class="nc bnc" id="L234" title="All 6 branches missed.">			!vicmIncrement.incremental() || !org.drip.numerical.common.NumberUtil.IsValid (dblIncrementFactor) ||</span>
-				1. &lt; dblIncrementFactor)
-<span class="nc" id="L236">			return null;</span>
-
-<span class="nc" id="L238">		double[] adblVariateBase = vicmBase.variates();</span>
-
-<span class="nc" id="L240">		double[] adblVariateIncrement = vicmIncrement.variates();</span>
-
-<span class="nc" id="L242">		double[] adblInequalityConstraintMultiplierBase = vicmBase.constraintMultipliers();</span>
-
-<span class="nc" id="L244">		double[] adblInequalityConstraintMultiplierIncrement = vicmIncrement.constraintMultipliers();</span>
-
-<span class="nc" id="L246">		int iNumVariate = adblVariateBase.length;</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		int iNumBounder = null == aBM ? 0 : aBM.length;</span>
-<span class="nc" id="L248">		double[] adblVariate = new double[iNumVariate];</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		int iNumInequalityConstraint = null == adblInequalityConstraintMultiplierBase ? 0 :</span>
-			adblInequalityConstraintMultiplierBase.length;
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		int iNumInequalityConstraintIncrement = null == adblInequalityConstraintMultiplierIncrement ? 0 :</span>
-			adblInequalityConstraintMultiplierIncrement.length;
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		double[] adblInequalityConstraintMultiplier = 0 == iNumInequalityConstraint ? null : new</span>
-			double[iNumInequalityConstraint];
-
-<span class="nc bnc" id="L256" title="All 4 branches missed.">		if (iNumVariate != adblVariateIncrement.length || iNumInequalityConstraint !=</span>
-			iNumInequalityConstraintIncrement)
-<span class="nc" id="L258">			return null;</span>
-
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L261">			adblVariate[i] = adblVariateBase[i] - dblIncrementFactor * adblVariateIncrement[i];</span>
-
-<span class="nc bnc" id="L263" title="All 2 branches missed.">		if (s_bPreBoundBlog) {</span>
-<span class="nc" id="L264">			java.lang.String strDump = &quot;\tB&quot;;</span>
-
-<span class="nc bnc" id="L266" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L267">				strDump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +</span>
-					&quot; |&quot;;
-
-<span class="nc" id="L270">			System.out.println (strDump);</span>
+<span class="nc bnc" id="L294" title="All 4 branches missed.">		if (null == baseVariateConstriantMultiplier ||</span>
+			null == incrementalVariateConstriantMultiplier ||
+<span class="nc bnc" id="L296" title="All 2 branches missed.">			baseVariateConstriantMultiplier.incremental() ||</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			!incrementalVariateConstriantMultiplier.incremental() ||</span>
+<span class="nc bnc" id="L298" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (incrementFactor) || 1. &lt; incrementFactor)</span>
+		{
+<span class="nc" id="L300">			return null;</span>
 		}
 
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="nc bnc" id="L274" title="All 2 branches missed.">			if (0. &gt; (adblInequalityConstraintMultiplier[i] = adblInequalityConstraintMultiplierBase[i] -</span>
-				dblIncrementFactor * adblInequalityConstraintMultiplierIncrement[i]))
-<span class="nc" id="L276">				adblInequalityConstraintMultiplier[i] = 0.;</span>
+<span class="nc" id="L303">		double[] baseVariateArray = baseVariateConstriantMultiplier.variateArray();</span>
 
-<span class="nc bnc" id="L278" title="All 4 branches missed.">			if (iNumBounder &lt;= i || null == aBM[i]) continue;</span>
+<span class="nc" id="L305">		double[] incrementalVariateIncrement = incrementalVariateConstriantMultiplier.variateArray();</span>
 
-<span class="nc" id="L280">			int iBoundVariateIndex = aBM[i].boundVariateIndex();</span>
+<span class="nc" id="L307">		double[] baseConstraintMultiplierArray = baseVariateConstriantMultiplier.constraintMultiplierArray();</span>
 
-			try {
-<span class="nc bnc" id="L283" title="All 2 branches missed.">				if (aBM[i].violated (adblVariate[iBoundVariateIndex]))</span>
-<span class="nc" id="L284">					adblVariate[iBoundVariateIndex] = aBM[i].boundValue();</span>
-<span class="nc" id="L285">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L286">				e.printStackTrace();</span>
+<span class="nc" id="L309">		double[] incrementalConstraintMultiplierArray =</span>
+<span class="nc" id="L310">			incrementalVariateConstriantMultiplier.constraintMultiplierArray();</span>
 
-<span class="nc" id="L288">				return null;</span>
-<span class="nc" id="L289">			}</span>
+<span class="nc" id="L312">		int variateCount = baseVariateArray.length;</span>
+<span class="nc" id="L313">		double[] variateArray = new double[variateCount];</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		int constraintCount = null == baseConstraintMultiplierArray ? 0 :</span>
+			baseConstraintMultiplierArray.length;
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		int boundMultivariateFunctionCount = null == boundMultivariateFunctionArray ?</span>
+			0 : boundMultivariateFunctionArray.length;
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		int constraintIncrementCount = null == incrementalConstraintMultiplierArray ? 0 :</span>
+			incrementalConstraintMultiplierArray.length;
+<span class="nc bnc" id="L320" title="All 2 branches missed.">		double[] constraintMultiplierArray = 0 == constraintCount ? null : new</span>
+			double[constraintCount];
+
+<span class="nc bnc" id="L323" title="All 4 branches missed.">		if (variateCount != incrementalVariateIncrement.length ||</span>
+			constraintCount != constraintIncrementCount)
+		{
+<span class="nc" id="L326">			return null;</span>
 		}
 
-<span class="nc bnc" id="L292" title="All 2 branches missed.">		if (s_bPostBoundBlog) {</span>
-<span class="nc" id="L293">			java.lang.String strDump = &quot;\tA&quot;;</span>
-
-<span class="nc bnc" id="L295" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L296">				strDump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (adblVariate[i], 2, 2, 100.) +</span>
-					&quot; |&quot;;
-
-<span class="nc" id="L299">			System.out.println (strDump);</span>
+<span class="nc" id="L329">		for (int variateIndex = 0;</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">			variateIndex &lt; variateCount;</span>
+<span class="nc" id="L331">			++variateIndex)</span>
+		{
+<span class="nc" id="L333">			variateArray[variateIndex] = baseVariateArray[variateIndex] -</span>
+				incrementFactor * incrementalVariateIncrement[variateIndex];
 		}
 
-		try {
-<span class="nc" id="L303">			return new VariateInequalityConstraintMultiplier (false, adblVariate,</span>
-				adblInequalityConstraintMultiplier);
-<span class="nc" id="L305">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L306">			e.printStackTrace();</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">		if (s_preBoundBlog)</span>
+		{
+<span class="nc" id="L339">			java.lang.String dump = &quot;\tB&quot;;</span>
+
+<span class="nc" id="L341">			for (int variateIndex = 0;</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">				variateIndex &lt; variateCount;</span>
+<span class="nc" id="L343">				++variateIndex)</span>
+			{
+<span class="nc" id="L345">				dump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + &quot; |&quot;;
+			}
+
+<span class="nc" id="L353">			System.out.println (dump);</span>
 		}
 
-<span class="nc" id="L309">		return null;</span>
+<span class="nc" id="L356">		for (int constraintIndex = 0;</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">			constraintIndex &lt; constraintCount;</span>
+<span class="nc" id="L358">			++constraintIndex)</span>
+		{
+<span class="nc bnc" id="L360" title="All 2 branches missed.">			if (0. &gt; (</span>
+				constraintMultiplierArray[constraintIndex] = baseConstraintMultiplierArray[constraintIndex] -
+					incrementFactor * incrementalConstraintMultiplierArray[constraintIndex]
+			))
+			{
+<span class="nc" id="L365">				constraintMultiplierArray[constraintIndex] = 0.;</span>
+			}
+
+<span class="nc bnc" id="L368" title="All 4 branches missed.">			if (boundMultivariateFunctionCount &lt;= constraintIndex ||</span>
+				null == boundMultivariateFunctionArray[constraintIndex])
+			{
+<span class="nc" id="L371">				continue;</span>
+			}
+
+<span class="nc" id="L374">			int boundVariateIndex = boundMultivariateFunctionArray[constraintIndex].boundVariateIndex();</span>
+
+			try
+			{
+<span class="nc bnc" id="L378" title="All 2 branches missed.">				if (boundMultivariateFunctionArray[constraintIndex].violated (</span>
+					variateArray[boundVariateIndex]
+				))
+				{
+<span class="nc" id="L382">					variateArray[boundVariateIndex] =</span>
+<span class="nc" id="L383">						boundMultivariateFunctionArray[constraintIndex].boundValue();</span>
+				}
+			}
+<span class="nc" id="L386">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L388">				e.printStackTrace();</span>
+
+<span class="nc" id="L390">				return null;</span>
+<span class="nc" id="L391">			}</span>
+		}
+
+<span class="nc bnc" id="L394" title="All 2 branches missed.">		if (s_postBoundBlog)</span>
+		{
+<span class="nc" id="L396">			java.lang.String dump = &quot;\tA&quot;;</span>
+
+<span class="nc" id="L398">			for (int variateIndex = 0;</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">				variateIndex &lt; variateCount;</span>
+<span class="nc" id="L400">				++variateIndex)</span>
+			{
+<span class="nc" id="L402">				dump += &quot; &quot; + org.drip.numerical.common.FormatUtil.FormatDouble (</span>
+					variateArray[variateIndex],
+					2,
+					2,
+					100.
+				) + &quot; |&quot;;
+			}
+
+<span class="nc" id="L410">			System.out.println (dump);</span>
+		}
+
+		try
+		{
+<span class="nc" id="L415">			return new VariateInequalityConstraintMultiplier (</span>
+				false,
+				variateArray,
+				constraintMultiplierArray
+			);
+		} 
+<span class="nc" id="L421">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L423">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L426">		return null;</span>
 	}
 
 	/**
-	 * Subtract the Second VICM Instance from the First
+	 * Subtract the Second VariateInequalityConstraintMultiplier Instance from the First
 	 * 
-	 * @param vicmBase VICM Instance Base
-	 * @param vicmIncrement VICM Instance Increment
-	 * @param aBM Array of Bounded Multivariate Stubs
+	 * @param baseVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Base
+	 * @param incrementalVariateConstriantMultiplier VariateInequalityConstraintMultiplier Instance Increment
+	 * @param boundMultivariateFunctionArray Array of Bounded Multivariate Stubs
 	 * 
-	 * @return The Subtracted VICM Instance
+	 * @return The Subtracted VariateInequalityConstraintMultiplier Instance
 	 */
 
 	public static final VariateInequalityConstraintMultiplier Subtract (
-		final VariateInequalityConstraintMultiplier vicmBase,
-		final VariateInequalityConstraintMultiplier vicmIncrement,
-		final org.drip.function.rdtor1.BoundMultivariate[] aBM)
+		final VariateInequalityConstraintMultiplier baseVariateConstriantMultiplier,
+		final VariateInequalityConstraintMultiplier incrementalVariateConstriantMultiplier,
+		final org.drip.function.rdtor1.BoundMultivariate[] boundMultivariateFunctionArray)
 	{
-<span class="nc" id="L327">		return Subtract (vicmBase, vicmIncrement, 1., aBM);</span>
+<span class="nc" id="L444">		return Subtract (</span>
+			baseVariateConstriantMultiplier,
+			incrementalVariateConstriantMultiplier,
+			1.,
+			boundMultivariateFunctionArray
+		);
 	}
 
 	/**
-	 * Compare the Specified VICM Instances
+	 * Compare the Specified VariateInequalityConstraintMultiplier Instances
 	 * 
-	 * @param vicm1 VICM Instance #1
-	 * @param vicm2 VICM Instance #2
-	 * @param dblRelativeTolerance The Relative Tolerance Between the Variates
-	 * @param dblAbsoluteToleranceFallback The Absolute Tolerance Fall-back Between the Variates
-	 * @param iNumComparisonVariate The Number of Variates to Compare
+	 * @param variateConstraint1 VariateInequalityConstraintMultiplier Instance #1
+	 * @param variateConstraint2 VariateInequalityConstraintMultiplier Instance #2
+	 * @param relativeTolerance The Relative Tolerance Between the Variates
+	 * @param absoluteToleranceFallback The Absolute Tolerance Fall-back Between the Variates
+	 * @param comparisonVariate The Number of Variates to Compare
 	 * 
-	 * @return TRUE - The VICM Instances are Close (Enough)
+	 * @return TRUE - The VariateInequalityConstraintMultiplier Instances are Close (Enough)
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final boolean Compare (
-		final VariateInequalityConstraintMultiplier vicm1,
-		final VariateInequalityConstraintMultiplier vicm2,
-		final double dblRelativeTolerance,
-		final double dblAbsoluteToleranceFallback,
-		final int iNumComparisonVariate)
+		final VariateInequalityConstraintMultiplier variateConstraint1,
+		final VariateInequalityConstraintMultiplier variateConstraint2,
+		final double relativeTolerance,
+		final double absoluteToleranceFallback,
+		final int comparisonVariate)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L352" title="4 of 8 branches missed.">		if (null == vicm1 || null == vicm2 || vicm1.incremental() || vicm2.incremental() ||</span>
-<span class="pc bpc" id="L353" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRelativeTolerance) ||</span>
-<span class="pc bpc" id="L354" title="2 of 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblAbsoluteToleranceFallback) || 0 &gt;</span>
-					dblAbsoluteToleranceFallback)
-<span class="nc" id="L356">			throw new java.lang.Exception (&quot;VariateInequalityConstraintMultiplier::Compare =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc" id="L358">		double[] adblVariate1 = vicm1.variates();</span>
-
-<span class="fc" id="L360">		double[] adblVariate2 = vicm2.variates();</span>
-
-<span class="fc" id="L362">		int iNumVariate = adblVariate1.length;</span>
-
-<span class="pc bpc" id="L364" title="2 of 4 branches missed.">		if (iNumVariate != adblVariate2.length || iNumComparisonVariate &gt; iNumVariate)</span>
-<span class="nc" id="L365">			throw new java.lang.Exception (&quot;VariateInequalityConstraintMultiplier::Compare =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumComparisonVariate; ++i) {</span>
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariate1[i]) ||</span>
-<span class="pc bpc" id="L369" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (adblVariate2[i]))</span>
-<span class="nc" id="L370">				throw new java.lang.Exception</span>
-					(&quot;VariateInequalityConstraintMultiplier::Compare =&gt; Invalid Inputs&quot;);
-
-<span class="fc" id="L373">			double dblAbsoluteTolerance = java.lang.Math.abs (adblVariate1[i] * dblRelativeTolerance);</span>
-
-<span class="fc bfc" id="L375" title="All 2 branches covered.">			if (dblAbsoluteTolerance &lt; dblAbsoluteToleranceFallback)</span>
-<span class="fc" id="L376">				dblAbsoluteTolerance = dblAbsoluteToleranceFallback;</span>
-
-<span class="fc bfc" id="L378" title="All 2 branches covered.">			if (dblAbsoluteTolerance &lt; java.lang.Math.abs (adblVariate1[i] - adblVariate2[i])) return false;</span>
+<span class="pc bpc" id="L474" title="3 of 6 branches missed.">		if (null == variateConstraint1 || variateConstraint1.incremental() ||</span>
+<span class="pc bpc" id="L475" title="1 of 2 branches missed.">			null == variateConstraint2 || variateConstraint2.incremental() ||</span>
+<span class="pc bpc" id="L476" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (relativeTolerance) ||</span>
+<span class="pc bpc" id="L477" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (absoluteToleranceFallback) ||</span>
+				0. &gt; absoluteToleranceFallback)
+		{
+<span class="nc" id="L480">			throw new java.lang.Exception (&quot;VariateInequalityConstraintMultiplier::Compare =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L381">		return true;</span>
+<span class="fc" id="L483">		double[] variateArray1 = variateConstraint1.variateArray();</span>
+
+<span class="fc" id="L485">		double[] variateArray2 = variateConstraint2.variateArray();</span>
+
+<span class="fc" id="L487">		int variateCount = variateArray1.length;</span>
+
+<span class="pc bpc" id="L489" title="2 of 4 branches missed.">		if (variateCount != variateArray2.length || comparisonVariate &gt; variateCount)</span>
+		{
+<span class="nc" id="L491">			throw new java.lang.Exception (&quot;VariateInequalityConstraintMultiplier::Compare =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc" id="L494">		for (int comparisonIndex = 0;</span>
+<span class="fc bfc" id="L495" title="All 2 branches covered.">			comparisonIndex &lt; comparisonVariate;</span>
+<span class="fc" id="L496">			++comparisonIndex)</span>
+		{
+<span class="pc bpc" id="L498" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+				variateArray1[comparisonIndex]
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">			) || !org.drip.numerical.common.NumberUtil.IsValid (</span>
+				variateArray2[comparisonIndex]
+			))
+			{
+<span class="nc" id="L504">				throw new java.lang.Exception</span>
+					(&quot;VariateInequalityConstraintMultiplier::Compare =&gt; Invalid Inputs&quot;);
+			}
+
+<span class="fc" id="L508">			double absoluteTolerance = java.lang.Math.abs (</span>
+				variateArray1[comparisonIndex] * relativeTolerance
+			);
+
+<span class="fc bfc" id="L512" title="All 2 branches covered.">			if (absoluteTolerance &lt; absoluteToleranceFallback)</span>
+			{
+<span class="fc" id="L514">				absoluteTolerance = absoluteToleranceFallback;</span>
+			}
+
+<span class="fc bfc" id="L517" title="All 2 branches covered.">			if (absoluteTolerance &lt; java.lang.Math.abs (</span>
+				variateArray1[comparisonIndex] - variateArray2[comparisonIndex]
+			))
+			{
+<span class="fc" id="L521">				return false;</span>
+			}
+		}
+
+<span class="fc" id="L525">		return true;</span>
 	}
 
 	/**
 	 * VariateInequalityConstraintMultiplier Constructor
 	 * 
-	 * @param bIncremental TRUE - Tuple represents an Incremental Unit
-	 * @param adblVariate Array of Variates
-	 * @param adblConstraintMultiplier Array of Constraint Multipliers
+	 * @param incremental TRUE - Tuple represents an Incremental Unit
+	 * @param variateArray Array of Variates
+	 * @param constraintMultiplierArray Array of Constraint Multipliers
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VariateInequalityConstraintMultiplier (
-		final boolean bIncremental,
-		final double[] adblVariate,
-		final double[] adblConstraintMultiplier)
+		final boolean incremental,
+		final double[] variateArray,
+		final double[] constraintMultiplierArray)
 		throws java.lang.Exception
-<span class="fc" id="L399">	{</span>
-<span class="pc bpc" id="L400" title="2 of 4 branches missed.">		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length)</span>
-<span class="nc" id="L401">			throw new java.lang.Exception</span>
+<span class="fc" id="L543">	{</span>
+<span class="pc bpc" id="L544" title="2 of 4 branches missed.">		if (null == (_variateArray = variateArray) || 0 == _variateArray.length)</span>
+		{
+<span class="nc" id="L546">			throw new java.lang.Exception</span>
 				(&quot;VariateInequalityConstraintMultiplier Constructor =&gt; Invalid Inputs&quot;);
+		}
 
-<span class="fc" id="L404">		_bIncremental = bIncremental;</span>
-<span class="fc" id="L405">		_adblConstraintMultiplier = adblConstraintMultiplier;</span>
-<span class="fc" id="L406">	}</span>
+<span class="fc" id="L550">		_incremental = incremental;</span>
+<span class="fc" id="L551">		_constraintMultiplierArray = constraintMultiplierArray;</span>
+<span class="fc" id="L552">	}</span>
 
 	/**
 	 * Retrieve the Incremental Flag
@@ -413,7 +559,7 @@ public class VariateInequalityConstraintMultiplier {
 
 	public boolean incremental()
 	{
-<span class="fc" id="L416">		return _bIncremental;</span>
+<span class="fc" id="L562">		return _incremental;</span>
 	}
 
 	/**
@@ -422,9 +568,9 @@ public class VariateInequalityConstraintMultiplier {
 	 * @return Array of Variates
 	 */
 
-	public double[] variates()
+	public double[] variateArray()
 	{
-<span class="fc" id="L427">		return _adblVariate;</span>
+<span class="fc" id="L573">		return _variateArray;</span>
 	}
 
 	/**
@@ -433,9 +579,9 @@ public class VariateInequalityConstraintMultiplier {
 	 * @return Array of Constraint Multipliers
 	 */
 
-	public double[] constraintMultipliers()
+	public double[] constraintMultiplierArray()
 	{
-<span class="fc" id="L438">		return _adblConstraintMultiplier;</span>
+<span class="fc" id="L584">		return _constraintMultiplierArray;</span>
 	}
 
 	/**
@@ -446,16 +592,21 @@ public class VariateInequalityConstraintMultiplier {
 
 	public double[] variateConstraintMultipler()
 	{
-<span class="nc" id="L449">		int iNumVariate = _adblVariate.length;</span>
-<span class="nc bnc" id="L450" title="All 2 branches missed.">		int iNumVariateConstraintMultipler = iNumVariate + (null == _adblConstraintMultiplier ? 0 :</span>
-			_adblConstraintMultiplier.length);
-<span class="nc" id="L452">		double[] adblVariateConstraintMultipler = new double[iNumVariateConstraintMultipler];</span>
+<span class="nc" id="L595">		int variateCount = _variateArray.length;</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">		int variateConstraintCount = variateCount + (null == _constraintMultiplierArray ? 0 :</span>
+			_constraintMultiplierArray.length);
+<span class="nc" id="L598">		double[] variateConstraintArray = new double[variateConstraintCount];</span>
 
-<span class="nc bnc" id="L454" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariateConstraintMultipler; ++i)</span>
-<span class="nc bnc" id="L455" title="All 2 branches missed.">			adblVariateConstraintMultipler[i] = i &lt; iNumVariate ? _adblVariate[i] :</span>
-				_adblConstraintMultiplier[i - iNumVariate];
+<span class="nc" id="L600">		for (int variateConstraintIndex = 0;</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">			variateConstraintIndex &lt; variateConstraintCount;</span>
+<span class="nc" id="L602">			++variateConstraintIndex)</span>
+		{
+<span class="nc bnc" id="L604" title="All 2 branches missed.">			variateConstraintArray[variateConstraintIndex] = variateConstraintIndex &lt; variateCount ?</span>
+				_variateArray[variateConstraintIndex] :
+				_constraintMultiplierArray[variateConstraintIndex - variateCount];
+		}
 
-<span class="nc" id="L458">		return adblVariateConstraintMultipler;</span>
+<span class="nc" id="L609">		return variateConstraintArray;</span>
 	}
 
 	/**
@@ -466,8 +617,9 @@ public class VariateInequalityConstraintMultiplier {
 
 	public org.drip.function.definition.SizedVector incrementVector()
 	{
-<span class="nc bnc" id="L469" title="All 2 branches missed.">		return _bIncremental ? org.drip.function.definition.SizedVector.Standard</span>
-<span class="nc" id="L470">			(variateConstraintMultipler()) : null;</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">		return _incremental ? org.drip.function.definition.SizedVector.Standard (</span>
+<span class="nc" id="L621">			variateConstraintMultipler()</span>
+		) : null;
 	}
 
 	/**
@@ -478,7 +630,9 @@ public class VariateInequalityConstraintMultiplier {
 
 	public org.drip.function.definition.SizedVector variateIncrementVector()
 	{
-<span class="pc bpc" id="L481" title="1 of 2 branches missed.">		return _bIncremental ? org.drip.function.definition.SizedVector.Standard (_adblVariate) : null;</span>
+<span class="pc bpc" id="L633" title="1 of 2 branches missed.">		return _incremental ? org.drip.function.definition.SizedVector.Standard (</span>
+			_variateArray
+		) : null;
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BalanceSheet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.capital.bcbs</a> &gt; <span class="el_source">BalanceSheet.java</span></div><h1>BalanceSheet.java</h1><pre class="source lang-java linenums">
+package org.drip.capital.bcbs;
+
+/*
+ * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ */
+
+/*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * 
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
+ *  
+ *  	https://lakshmidrip.github.io/DROP/
+ *  
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
+ * 
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
+ * 
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
+ * 
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
+ * 
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
+ * 
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *   	you may not use this file except in compliance with the License.
+ *   
+ *  You may obtain a copy of the License at
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  	distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  
+ *  See the License for the specific language governing permissions and
+ *  	limitations under the License.
+ */
+
+/**
+ * &lt;i&gt;BalanceSheet&lt;/i&gt; holds the Quantities used to compute the Capital/Liquidity Ratios in the BCBS
+ * Standards. The References are:
+ *  
+ * &lt;br&gt;&lt;br&gt;
+ * 	&lt;ul&gt;
+ * 		&lt;li&gt;
+ * 			Basel Committee on Banking Supervision (2017): Basel III Leverage Ratio Framework and Disclosure
+ * 				Requirements https://www.bis.org/publ/bcbs270.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Central Banking (2013): Fed and FDIC agree 6% Leverage Ratio for US SIFIs
+ * 				https://www.centralbanking.com/central-banking/news/2280726/fed-and-fdic-agree-6-leverage-ratio-for-us-sifis
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package
+ * 				https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Federal Reserve (2013): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and
+ * 				Monitoring
+ * 				https://web.archive.org/web/20131102074614/http:/www.federalreserve.gov/FR_notice_lcr_20131024.pdf
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
+ * 		&lt;/li&gt;
+ * 	&lt;/ul&gt;
+ *
+ *	&lt;br&gt;&lt;br&gt;
+ *  &lt;ul&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/CapitalAnalyticsLibrary.md&quot;&gt;Capital Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/README.md&quot;&gt;Basel Market Risk and Operational Capital&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capital/bcbs/README.md&quot;&gt;BCBS and Jurisdictional Capital Ratios&lt;/a&gt;&lt;/li&gt;
+ *  &lt;/ul&gt;
+ * 
+ * @author Lakshmi Krishnamurthy
+ */
+
+public class BalanceSheet
+{
+<span class="nc" id="L119">	private org.drip.capital.bcbs.BalanceSheetCapital _balanceSheetCapital = null;</span>
+<span class="nc" id="L120">	private org.drip.capital.bcbs.BalanceSheetFunding _balanceSheetFunding = null;</span>
+<span class="nc" id="L121">	private org.drip.capital.bcbs.BalanceSheetLiquidity _balanceSheetLiquidity = null;</span>
+
+	/**
+	 * BalanceSheet Constructor
+	 * 
+	 * @param balanceSheetCapital Balance Sheet Capital Composite
+	 * @param balanceSheetLiquidity Balance Sheet Liquidity Composite
+	 * @param balanceSheetFunding Balance Sheet Funding Composite
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BalanceSheet (
+		final org.drip.capital.bcbs.BalanceSheetCapital balanceSheetCapital,
+		final org.drip.capital.bcbs.BalanceSheetLiquidity balanceSheetLiquidity,
+		final org.drip.capital.bcbs.BalanceSheetFunding balanceSheetFunding)
+		throws java.lang.Exception
+<span class="nc" id="L138">	{</span>
+<span class="nc bnc" id="L139" title="All 6 branches missed.">		if (null == (_balanceSheetCapital = balanceSheetCapital) ||</span>
+			null == (_balanceSheetLiquidity = balanceSheetLiquidity) ||
+			null == (_balanceSheetFunding = balanceSheetFunding))
+		{
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;BalanceSheet Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+<span class="nc" id="L145">	}</span>
+
+	/**
+	 * Retrieve the Balance Sheet Capital Composite
+	 * 
+	 * @return The Balance Sheet Capital Composite
+	 */
+
+	public org.drip.capital.bcbs.BalanceSheetCapital balanceSheetCapital()
+	{
+<span class="nc" id="L155">		return _balanceSheetCapital;</span>
+	}
+
+	/**
+	 * Retrieve the Balance Sheet Liquidity Composite
+	 * 
+	 * @return The Balance Sheet Liquidity Composite
+	 */
+
+	public org.drip.capital.bcbs.BalanceSheetLiquidity balanceSheetLiquidity()
+	{
+<span class="nc" id="L166">		return _balanceSheetLiquidity;</span>
+	}
+
+	/**
+	 * Retrieve the Balance Sheet Funding Composite
+	 * 
+	 * @return The Balance Sheet Funding Composite
+	 */
+
+	public org.drip.capital.bcbs.BalanceSheetFunding balanceSheetFunding()
+	{
+<span class="nc" id="L177">		return _balanceSheetFunding;</span>
+	}
+
+	/**
+	 * Retrieve the Tier 1 Capital
+	 * 
+	 * @return The Tier 1 Capital
+	 */
+
+	public double tier1()
+	{
+<span class="nc" id="L188">		return _balanceSheetCapital.tier1();</span>
+	}
+
+	/**
+	 * Retrieve the Total Capital
+	 * 
+	 * @return The Total Capital
+	 */
+
+	public double totalCapital()
+	{
+<span class="nc" id="L199">		return _balanceSheetCapital.totalCapital();</span>
+	}
+
+	/**
+	 * Retrieve the CET 1 Ratio
+	 * 
+	 * @return The CET 1 Ratio
+	 */
+
+	public double cet1Ratio()
+	{
+<span class="nc" id="L210">		return _balanceSheetCapital.cet1Ratio();</span>
+	}
+
+	/**
+	 * Retrieve the Tier 1 Ratio
+	 * 
+	 * @return The Tier 1 Ratio
+	 */
+
+	public double tier1Ratio()
+	{
+<span class="nc" id="L221">		return _balanceSheetCapital.tier1Ratio();</span>
+	}
+
+	/**
+	 * Retrieve the Total Capital Ratio
+	 * 
+	 * @return The Total Capital Ratio
+	 */
+
+	public double totalCapitalRatio()
+	{
+<span class="nc" id="L232">		return _balanceSheetCapital.totalCapitalRatio();</span>
+	}
+
+	/**
+	 * Retrieve the Leverage Ratio
+	 * 
+	 * @return The Leverage Ratio
+	 */
+
+	public double leverageRatio()
+	{
+<span class="nc" id="L243">		return _balanceSheetCapital.leverageRatio();</span>
+	}
+
+	/**
+	 * Retrieve the Liquidity Coverage Ratio
+	 *  
+	 * @param hqlaSettings THe HQLA Settings
+	 * 
+	 * @return The Liquidity Coverage Ratio
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double liquidityCoverageRatio (
+		final org.drip.capital.bcbs.HighQualityLiquidAssetSettings hqlaSettings)
+		throws java.lang.Exception
+	{
+<span class="nc" id="L260">		return _balanceSheetLiquidity.liquidityCoverageRatio (hqlaSettings);</span>
+	}
+
+	/**
+	 * Retrieve the Net Stable Funding Ratio
+	 * 
+	 * @return The Net Stable Funding Ratio
+	 */
+
+	public double netStableFundingRatio()
+	{
+<span class="nc" id="L271">		return _balanceSheetFunding.netStableFundingRatio();</span>
+	}
+
+	/**
+	 * Generate the Balance Sheet Capital Metrics
+	 * 
+	 * @return The Balance Sheet Capital Metrics
+	 */
+
+	public org.drip.capital.bcbs.CapitalMetrics capitalMetrics()
+	{
+<span class="nc" id="L282">		return _balanceSheetCapital.capitalMetrics();</span>
+	}
+
+	/**
+	 * Generate the Balance Sheet Liquidity Metrics
+	 *  
+	 * @param hqlaSettings The HQLA Settings
+	 * 
+	 * @return The Balance Sheet Liquidity Metrics
+	 */
+
+	public org.drip.capital.bcbs.LiquidityMetrics liquidityMetrics (
+		final org.drip.capital.bcbs.HighQualityLiquidAssetSettings hqlaSettings)
+	{
+		try
+		{
+<span class="nc" id="L298">			return new org.drip.capital.bcbs.LiquidityMetrics (</span>
+<span class="nc" id="L299">				_balanceSheetLiquidity.liquidityCoverageRatio (hqlaSettings),</span>
+<span class="nc" id="L300">				_balanceSheetFunding.netStableFundingRatio()</span>
+			);
+		}
+<span class="nc" id="L303">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L305">			e.printStackTrace();</span>
+		}
+
+<span class="nc" id="L308">		return null;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,39 +6,50 @@ package org.drip.dynamics.lmm;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -90,18 +101,18 @@ package org.drip.dynamics.lmm;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LIBOR Market Model&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/README.md&quot;&gt;LMM Based Latent State Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ContinuouslyCompoundedForwardProcess {
-<span class="nc" id="L103">	private int _iSpotDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="nc" id="L104">	private org.drip.measure.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;</span>
+<span class="nc" id="L114">	private int _iSpotDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="nc" id="L115">	private org.drip.measure.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;</span>
 
 	/**
 	 * ContinuouslyCompoundedForwardProcess Constructor
@@ -116,12 +127,12 @@ public class ContinuouslyCompoundedForwardProcess {
 		final int iSpotDate,
 		final org.drip.measure.stochastic.R1R1ToR1 funcR1R1ToR1)
 		throws java.lang.Exception
-<span class="nc" id="L119">	{</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == (_funcR1R1ToR1 = funcR1R1ToR1))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;ContinuouslyCompoundedForwardProcess ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L130">	{</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == (_funcR1R1ToR1 = funcR1R1ToR1))</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;ContinuouslyCompoundedForwardProcess ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L123">		_iSpotDate = iSpotDate;</span>
-<span class="nc" id="L124">	}</span>
+<span class="nc" id="L134">		_iSpotDate = iSpotDate;</span>
+<span class="nc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -131,7 +142,7 @@ public class ContinuouslyCompoundedForwardProcess {
 
 	public int spotDate()
 	{
-<span class="nc" id="L134">		return _iSpotDate;</span>
+<span class="nc" id="L145">		return _iSpotDate;</span>
 	}
 
 	/**
@@ -142,7 +153,7 @@ public class ContinuouslyCompoundedForwardProcess {
 
 	public org.drip.measure.stochastic.R1R1ToR1 stochasticForwardRateFunction()
 	{
-<span class="nc" id="L145">		return _funcR1R1ToR1;</span>
+<span class="nc" id="L156">		return _funcR1R1ToR1;</span>
 	}
 
 	/**
@@ -159,11 +170,11 @@ public class ContinuouslyCompoundedForwardProcess {
 		final int iMaturityDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (iMaturityDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L163">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (iMaturityDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L174">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::realizedZeroCouponPrice =&gt; Invalid Maturity Date&quot;);
 
-<span class="nc" id="L166">		return java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iMaturityDate - _iSpotDate));</span>
+<span class="nc" id="L177">		return java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iMaturityDate - _iSpotDate));</span>
 	}
 
 	/**
@@ -183,12 +194,12 @@ public class ContinuouslyCompoundedForwardProcess {
 		final boolean bRealized)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L187">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L198">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::instantaneousForwardRateIntegral =&gt; Invalid Target Date&quot;);
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
-<span class="nc" id="L191">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
+<span class="nc" id="L202">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
 				_iSpotDate));
 	}
 
@@ -209,12 +220,12 @@ public class ContinuouslyCompoundedForwardProcess {
 		final boolean bRealized)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L213">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L224">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::discountFunctionValue =&gt; Invalid Target Date&quot;);
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
-<span class="nc" id="L217">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">		return bRealized ? java.lang.Math.exp (-1. * _funcR1R1ToR1.integralRealization (0., iTargetDate -</span>
+<span class="nc" id="L228">			_iSpotDate)) : java.lang.Math.exp (-1. * _funcR1R1ToR1.integralExpectation (0., iTargetDate -</span>
 				_iSpotDate));
 	}
 
@@ -236,13 +247,13 @@ public class ContinuouslyCompoundedForwardProcess {
 		final boolean bRealized)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
-<span class="nc" id="L240">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (iTargetDate &lt;= _iSpotDate)</span>
+<span class="nc" id="L251">			throw new java.lang.Exception</span>
 				(&quot;ContinuouslyCompoundedForwardProcess::liborRate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L243">		return (discountFunctionValue (new org.drip.analytics.date.JulianDate (iTargetDate).addTenor</span>
-<span class="nc" id="L244">			(strTenor).julian(), bRealized) / discountFunctionValue (iTargetDate, bRealized) - 1.) /</span>
-<span class="nc" id="L245">				org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
+<span class="nc" id="L254">		return (discountFunctionValue (new org.drip.analytics.date.JulianDate (iTargetDate).addTenor</span>
+<span class="nc" id="L255">			(strTenor).julian(), bRealized) / discountFunctionValue (iTargetDate, bRealized) - 1.) /</span>
+<span class="nc" id="L256">				org.drip.analytics.support.Helper.TenorToYearFraction (strTenor);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

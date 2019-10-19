@@ -82,45 +82,57 @@ package org.drip.function.rdtor1solver;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BarrierFixedPointFinder {
-<span class="fc" id="L86">	private org.drip.function.definition.RdToR1 _rdToR1ObjectiveFunction = null;</span>
-<span class="fc" id="L87">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lsec = null;</span>
-<span class="fc" id="L88">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _ipbc = null;</span>
-<span class="fc" id="L89">	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;</span>
+public class BarrierFixedPointFinder
+{
+<span class="fc" id="L87">	private org.drip.function.definition.RdToR1 _objectiveFunction = null;</span>
+<span class="fc" id="L88">	private org.drip.function.rdtor1descent.LineStepEvolutionControl _lineStepEvolutionControl = null;</span>
+<span class="fc" id="L89">	private org.drip.function.definition.RdToR1[] _inequalityConstraintMultivariateFunctionArray = null;</span>
+<span class="fc" id="L90">	private org.drip.function.rdtor1solver.InteriorPointBarrierControl _interiorPointBarrierControl = null;</span>
 
 	/**
 	 * BarrierFixedPointFinder Constructor
 	 * 
-	 * @param rdToR1ObjectiveFunction The Objective Function
-	 * @param aRdToR1InequalityConstraint Array of Inequality Constraints
-	 * @param ipbc Interior Point Barrier Strength Control Parameters
-	 * @param lsec Line Step Evolution Verifier Control Parameters
+	 * @param objectiveFunction The Objective Function
+	 * @param inequalityConstraintMultivariateFunctionArray Array of Multivariate Inequality Constraint
+	 * 		Functions
+	 * @param interiorPointBarrierControl Interior Point Barrier Strength Control Parameters
+	 * @param lineStepEvolutionControl Line Step Evolution Verifier Control Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BarrierFixedPointFinder (
-		final org.drip.function.definition.RdToR1 rdToR1ObjectiveFunction,
-		final org.drip.function.definition.RdToR1[] aRdToR1InequalityConstraint,
-		final org.drip.function.rdtor1solver.InteriorPointBarrierControl ipbc,
-		final org.drip.function.rdtor1descent.LineStepEvolutionControl lsec)
+		final org.drip.function.definition.RdToR1 objectiveFunction,
+		final org.drip.function.definition.RdToR1[] inequalityConstraintMultivariateFunctionArray,
+		final org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl,
+		final org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="3 of 6 branches missed.">		if (null == (_rdToR1ObjectiveFunction = rdToR1ObjectiveFunction) || null ==</span>
-			(_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint) || null == (_ipbc = ipbc))
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc" id="L113">		_lsec = lsec;</span>
-<span class="fc" id="L114">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
-
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (0 == iNumInequalityConstraint)</span>
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
-
-<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumInequalityConstraint; ++i) {</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			if (null == _aRdToR1InequalityConstraint[i])</span>
-<span class="nc" id="L121">				throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L110">	{</span>
+<span class="pc bpc" id="L111" title="3 of 6 branches missed.">		if (null == (_objectiveFunction = objectiveFunction) ||</span>
+			null == (_inequalityConstraintMultivariateFunctionArray = inequalityConstraintMultivariateFunctionArray) ||
+			null == (_interiorPointBarrierControl = interiorPointBarrierControl))
+		{
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L123">	}</span>
+
+<span class="fc" id="L118">		_lineStepEvolutionControl = lineStepEvolutionControl;</span>
+<span class="fc" id="L119">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (0 == constraintCount)</span>
+		{
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
+
+<span class="fc" id="L126">		for (int constraintIndex = 0;</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">			constraintIndex &lt; constraintCount;</span>
+<span class="fc" id="L128">			++constraintIndex)</span>
+		{
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if (null == _inequalityConstraintMultivariateFunctionArray[constraintIndex])</span>
+			{
+<span class="nc" id="L132">				throw new java.lang.Exception (&quot;BarrierFixedPointFinder Constructor =&gt; Invalid Inputs&quot;);</span>
+			}
+		}
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Objective Function
@@ -130,7 +142,7 @@ public class BarrierFixedPointFinder {
 
 	public org.drip.function.definition.RdToR1 objectiveFunction()
 	{
-<span class="nc" id="L133">		return _rdToR1ObjectiveFunction;</span>
+<span class="nc" id="L145">		return _objectiveFunction;</span>
 	}
 
 	/**
@@ -139,74 +151,113 @@ public class BarrierFixedPointFinder {
 	 * @return The Array of Inequality Constraints
 	 */
 
-	public org.drip.function.definition.RdToR1[] inequalityConstraints()
+	public org.drip.function.definition.RdToR1[] inequalityConstraintMultivariateFunctionArray()
 	{
-<span class="nc" id="L144">		return _aRdToR1InequalityConstraint;</span>
+<span class="nc" id="L156">		return _inequalityConstraintMultivariateFunctionArray;</span>
 	}
 
 	/**
-	 * Retrieve the Interior Point Barrier Strength Control Parameters
+	 * Retrieve the Line Step Evolution Interior Control Parameters
 	 * 
-	 * @return The Interior Point Barrier Strength Control Parameters
+	 * @return The Line Step Evolution Strength Control Parameters
 	 */
 
-	public org.drip.function.rdtor1solver.InteriorPointBarrierControl control()
+	public org.drip.function.rdtor1descent.LineStepEvolutionControl lineStepEvolutionControl()
 	{
-<span class="nc" id="L155">		return _ipbc;</span>
+<span class="nc" id="L167">		return _lineStepEvolutionControl;</span>
+	}
+
+	/**
+	 * Retrieve the Interior Point Barrier Control Parameters
+	 * 
+	 * @return The Interior Point Barrier Control Parameters
+	 */
+
+	public org.drip.function.rdtor1solver.InteriorPointBarrierControl interiorPointBarrierControl()
+	{
+<span class="nc" id="L178">		return _interiorPointBarrierControl;</span>
 	}
 
 	/**
 	 * Solve for the Optimal Variate-Inequality Constraint Multiplier Tuple using the Barrier Iteration
 	 *  Parameters provided by the IPBC Instance
 	 *  
-	 * @param adblStartingVariate The Starting Variate Sequence
+	 * @param startingVariateArray The Starting Variate Sequence
 	 * 
 	 * @return The Optimal Variate-Inequality Constraint Multiplier Tuple
 	 */
 
 	public org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier solve (
-		final double[] adblStartingVariate)
+		final double[] startingVariateArray)
 	{
-<span class="fc" id="L170">		int iOutstandingDecaySteps = _ipbc.numDecaySteps();</span>
+<span class="fc" id="L193">		double barrierStrength = _interiorPointBarrierControl.initialStrength();</span>
 
-<span class="fc" id="L172">		double dblBarrierStrength = _ipbc.initialStrength();</span>
+<span class="fc" id="L195">		int outstandingDecaySteps = _interiorPointBarrierControl.decayStepCount();</span>
 
-<span class="fc" id="L174">		double dblBarrierDecayVelocity = _ipbc.decayVelocity();</span>
+<span class="fc" id="L197">		double barrierDecayVelocity = _interiorPointBarrierControl.decayVelocity();</span>
 
-<span class="fc" id="L176">		int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;</span>
-<span class="fc" id="L177">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = null;</span>
-<span class="fc" id="L178">		double[] adblStartingInequalityConstraintMultiplier = new double[iNumInequalityConstraint];</span>
+<span class="fc" id="L199">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier variateConstraint = null;</span>
+<span class="fc" id="L200">		int constraintCount = _inequalityConstraintMultivariateFunctionArray.length;</span>
+<span class="fc" id="L201">		double[] startingConstraintMultiplierArray = new double[constraintCount];</span>
 
-		try {
-<span class="fc bfc" id="L181" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumInequalityConstraint; ++i)</span>
-<span class="fc" id="L182">				adblStartingInequalityConstraintMultiplier[i] = dblBarrierStrength /</span>
-<span class="fc" id="L183">					_aRdToR1InequalityConstraint[i].evaluate (adblStartingVariate);</span>
+		try
+		{
+<span class="fc" id="L205">			for (int constraintIndex = 0;</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">				constraintIndex &lt; constraintCount;</span>
+<span class="fc" id="L207">				++constraintIndex)</span>
+			{
+<span class="fc" id="L209">				startingConstraintMultiplierArray[constraintIndex] = barrierStrength /</span>
+<span class="fc" id="L210">					_inequalityConstraintMultivariateFunctionArray[constraintIndex].evaluate (</span>
+						startingVariateArray
+					);
+			}
 
-<span class="fc" id="L185">			vicm = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (false,</span>
-				adblStartingVariate, adblStartingInequalityConstraintMultiplier);
-<span class="nc" id="L187">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L188">			e.printStackTrace();</span>
+<span class="fc" id="L215">			variateConstraint = new org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (</span>
+				false,
+				startingVariateArray,
+				startingConstraintMultiplierArray
+			);
+		}
+<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L223">			e.printStackTrace();</span>
 
-<span class="nc" id="L190">			return null;</span>
-<span class="fc" id="L191">		}</span>
+<span class="nc" id="L225">			return null;</span>
+<span class="fc" id="L226">		}</span>
 
-<span class="fc bfc" id="L193" title="All 2 branches covered.">		while (--iOutstandingDecaySteps &gt;= 0) {</span>
-			try {
-<span class="fc" id="L195">				org.drip.function.rdtor1solver.InteriorFixedPointFinder bfpf = new</span>
-					org.drip.function.rdtor1solver.InteriorFixedPointFinder (_rdToR1ObjectiveFunction,
-						_aRdToR1InequalityConstraint, _lsec, _ipbc, dblBarrierStrength);
+<span class="fc bfc" id="L228" title="All 2 branches covered.">		while (--outstandingDecaySteps &gt;= 0)</span>
+		{
+			try
+			{
+<span class="fc" id="L232">				org.drip.function.rdtor1solver.InteriorFixedPointFinder interiorFixedPointFinder =</span>
+					new org.drip.function.rdtor1solver.InteriorFixedPointFinder (
+						_objectiveFunction,
+						_inequalityConstraintMultivariateFunctionArray,
+						_lineStepEvolutionControl,
+						_interiorPointBarrierControl,
+						barrierStrength
+					);
 
-<span class="fc bfc" id="L199" title="All 2 branches covered.">				if (null == (vicm = bfpf.find (vicm))) return null;</span>
-<span class="nc" id="L200">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L201">				e.printStackTrace();</span>
+<span class="fc" id="L241">				if (null == (</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">					variateConstraint = interiorFixedPointFinder.find (</span>
+						variateConstraint
+					))
+				)
+				{
+<span class="fc" id="L247">					return null;</span>
+				}
+			}
+<span class="nc" id="L250">			catch (java.lang.Exception e)</span>
+			{
+<span class="nc" id="L252">				e.printStackTrace();</span>
 
-<span class="nc" id="L203">				return null;</span>
-<span class="fc" id="L204">			}</span>
+<span class="nc" id="L254">				return null;</span>
+<span class="fc" id="L255">			}</span>
 
-<span class="fc" id="L206">			dblBarrierStrength *= dblBarrierDecayVelocity;</span>
+<span class="fc" id="L257">			barrierStrength *= barrierDecayVelocity;</span>
 		}
 
-<span class="fc" id="L209">		return vicm;</span>
+<span class="fc" id="L260">		return variateConstraint;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

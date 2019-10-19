@@ -6,39 +6,50 @@ package org.drip.dynamics.sabr;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -74,17 +85,17 @@ package org.drip.dynamics.sabr;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;Dynamics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/README.md&quot;&gt;SABR&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md&quot;&gt;HJM, Hull White, LMM, and SABR Dynamic Evolution Models&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/README.md&quot;&gt;SABR Based Latent State Evolution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate {
-<span class="fc" id="L87">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
+<span class="fc" id="L98">	private org.drip.state.identifier.ForwardLabel _lslForward = null;</span>
 
 	/**
 	 * ForwardRateUpdate Creator
@@ -111,39 +122,39 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 		final double dblForwardRateVolatility,
 		final double dblForwardRateVolatilityIncrement)
 	{
-<span class="fc" id="L114">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
+<span class="fc" id="L125">		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE, dblForwardRate))
-<span class="nc" id="L119">			return null;</span>
+<span class="nc" id="L130">			return null;</span>
 
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (!lrSnapshot.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY,
 				dblForwardRateVolatility))
-<span class="nc" id="L124">			return null;</span>
+<span class="nc" id="L135">			return null;</span>
 
-<span class="fc" id="L126">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
+<span class="fc" id="L137">		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new</span>
 			org.drip.dynamics.evolution.LSQMPointRecord();
 
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE,
 				dblForwardRateIncrement))
-<span class="nc" id="L132">			return null;</span>
+<span class="nc" id="L143">			return null;</span>
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (!lrIncrement.setQM (org.drip.state.identifier.VolatilityLabel.Standard (lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY,
 				dblForwardRateVolatilityIncrement))
-<span class="nc" id="L137">			return null;</span>
+<span class="nc" id="L148">			return null;</span>
 
 		try {
-<span class="fc" id="L140">			return new ForwardRateUpdate (lslForward, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
+<span class="fc" id="L151">			return new ForwardRateUpdate (lslForward, iInitialDate, iFinalDate, iTargetPointDate, lrSnapshot,</span>
 				lrIncrement);
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L154">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L157">		return null;</span>
 	}
 
 	private ForwardRateUpdate (
@@ -155,11 +166,11 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L158">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
+<span class="fc" id="L169">		super (iInitialDate, iFinalDate, iViewDate, lrSnapshot, lrIncrement);</span>
 
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
-<span class="nc" id="L161">			throw new java.lang.Exception (&quot;ForwardRateUpdate ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L162">	}</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (null == (_lslForward = lslForward))</span>
+<span class="nc" id="L172">			throw new java.lang.Exception (&quot;ForwardRateUpdate ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L173">	}</span>
 
 	/**
 	 * Retrieve the Forward Rate
@@ -172,7 +183,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	public double forwardRate()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L175">		return snapshot().qm (_lslForward,</span>
+<span class="fc" id="L186">		return snapshot().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE);
 	}
 
@@ -187,7 +198,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	public double forwardRateIncrement()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L190">		return increment().qm (_lslForward,</span>
+<span class="nc" id="L201">		return increment().qm (_lslForward,</span>
 			org.drip.analytics.definition.LatentStateStatic.FORWARD_QM_FORWARD_RATE);
 	}
 
@@ -202,7 +213,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	public double forwardRateVolatility()
 		throws java.lang.Exception
 	{
-<span class="fc" id="L205">		return snapshot().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
+<span class="fc" id="L216">		return snapshot().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY);
 	}
 
@@ -217,7 +228,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	public double forwardRateVolatilityIncrement()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L220">		return increment().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
+<span class="nc" id="L231">		return increment().qm (org.drip.state.identifier.VolatilityLabel.Standard (_lslForward),</span>
 			org.drip.analytics.definition.LatentStateStatic.VOLATILITY_QM_SABR_VOLATILITY);
 	}
 }

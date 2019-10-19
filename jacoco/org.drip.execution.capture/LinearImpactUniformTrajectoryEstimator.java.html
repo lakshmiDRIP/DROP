@@ -6,38 +6,49 @@ package org.drip.execution.capture;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,10 +109,10 @@ package org.drip.execution.capture;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture/README.md&quot;&gt;Capture&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture/README.md&quot;&gt;Execution Trajectory Transaction Cost Capture&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -122,56 +133,56 @@ public class LinearImpactUniformTrajectoryEstimator extends
 		final org.drip.execution.strategy.MinimumImpactTradingTrajectory mittUniform)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L125">		super (mittUniform);</span>
-<span class="nc" id="L126">	}</span>
+<span class="nc" id="L136">		super (mittUniform);</span>
+<span class="nc" id="L137">	}</span>
 
 	@Override public org.drip.measure.gaussian.R1UnivariateNormal totalCostDistributionSynopsis (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == apep) return null;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="nc" id="L133">		org.drip.execution.strategy.MinimumImpactTradingTrajectory mitt =</span>
-<span class="nc" id="L134">			(org.drip.execution.strategy.MinimumImpactTradingTrajectory) trajectory();</span>
+<span class="nc" id="L144">		org.drip.execution.strategy.MinimumImpactTradingTrajectory mitt =</span>
+<span class="nc" id="L145">			(org.drip.execution.strategy.MinimumImpactTradingTrajectory) trajectory();</span>
 
-<span class="nc" id="L136">		double dblBlockSize = mitt.tradeSize();</span>
+<span class="nc" id="L147">		double dblBlockSize = mitt.tradeSize();</span>
 
-<span class="nc" id="L138">		double dblExecutionTime = mitt.executionTime();</span>
+<span class="nc" id="L149">		double dblExecutionTime = mitt.executionTime();</span>
 
-<span class="nc" id="L140">		double dblNumberOfTradesReciprocal = 1. / mitt.numberOfTrades();</span>
+<span class="nc" id="L151">		double dblNumberOfTradesReciprocal = 1. / mitt.numberOfTrades();</span>
 
-<span class="nc" id="L142">		double dblMarketCoreVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L143">		double dblBlockSizeSquared = dblBlockSize * dblBlockSize;</span>
-<span class="nc" id="L144">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
+<span class="nc" id="L153">		double dblMarketCoreVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L154">		double dblBlockSizeSquared = dblBlockSize * dblBlockSize;</span>
+<span class="nc" id="L155">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
 			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) apep;
 
-<span class="nc" id="L147">		double dblPermanentLinearImpactParameter = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
-<span class="nc" id="L148">			lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
+<span class="nc" id="L158">		double dblPermanentLinearImpactParameter = ((org.drip.execution.impact.TransactionFunctionLinear)</span>
+<span class="nc" id="L159">			lpep.linearPermanentExpectation().epochImpactFunction()).slope();</span>
 
-<span class="nc" id="L150">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
+<span class="nc" id="L161">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
 			(org.drip.execution.impact.TransactionFunctionLinear)
-<span class="nc" id="L152">				apep.temporaryExpectation().epochImpactFunction();</span>
+<span class="nc" id="L163">				apep.temporaryExpectation().epochImpactFunction();</span>
 
 		try {
-<span class="nc" id="L155">			dblMarketCoreVolatility = apep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
-<span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L157">			e.printStackTrace();</span>
+<span class="nc" id="L166">			dblMarketCoreVolatility = apep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 
-<span class="nc" id="L159">			return null;</span>
-<span class="nc" id="L160">		}</span>
+<span class="nc" id="L170">			return null;</span>
+<span class="nc" id="L171">		}</span>
 
 		try {
-<span class="nc" id="L163">			return new org.drip.measure.gaussian.R1UnivariateNormal (0.5 * dblPermanentLinearImpactParameter</span>
-<span class="nc" id="L164">				* dblBlockSizeSquared + tflTemporaryExpectation.offset() * java.lang.Math.abs (dblBlockSize)</span>
-<span class="nc" id="L165">					+ (tflTemporaryExpectation.slope() - 0.5 * dblPermanentLinearImpactParameter *</span>
-<span class="nc" id="L166">						mitt.tradeTimeInterval()) * dblBlockSizeSquared / dblExecutionTime,</span>
+<span class="nc" id="L174">			return new org.drip.measure.gaussian.R1UnivariateNormal (0.5 * dblPermanentLinearImpactParameter</span>
+<span class="nc" id="L175">				* dblBlockSizeSquared + tflTemporaryExpectation.offset() * java.lang.Math.abs (dblBlockSize)</span>
+<span class="nc" id="L176">					+ (tflTemporaryExpectation.slope() - 0.5 * dblPermanentLinearImpactParameter *</span>
+<span class="nc" id="L177">						mitt.tradeTimeInterval()) * dblBlockSizeSquared / dblExecutionTime,</span>
 							dblMarketCoreVolatility * dblMarketCoreVolatility * dblBlockSizeSquared *
 								dblExecutionTime * (1. - dblNumberOfTradesReciprocal) * (1. - 0.5 *
 									dblNumberOfTradesReciprocal) / 3.);
-<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L171">			e.printStackTrace();</span>
+<span class="nc" id="L181">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L182">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L174">		return null;</span>
+<span class="nc" id="L185">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

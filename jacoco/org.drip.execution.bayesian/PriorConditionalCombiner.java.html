@@ -6,38 +6,49 @@ package org.drip.execution.bayesian;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,18 +109,18 @@ package org.drip.execution.bayesian;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md&quot;&gt;Bayesian Price Based Optimal Execution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PriorConditionalCombiner {
-<span class="fc" id="L111">	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;</span>
-<span class="fc" id="L112">	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;</span>
+<span class="fc" id="L122">	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;</span>
+<span class="fc" id="L123">	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;</span>
 
 	/**
 	 * PriorConditionalCombiner Constructor
@@ -124,10 +135,10 @@ public class PriorConditionalCombiner {
 		final org.drip.execution.bayesian.PriorDriftDistribution pdd,
 		final org.drip.execution.bayesian.ConditionalPriceDistribution cpd)
 		throws java.lang.Exception
-<span class="fc" id="L127">	{</span>
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (null == (_pdd = pdd) || null == (_cpd = cpd))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;PriorConditionalCombiner Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L130">	}</span>
+<span class="fc" id="L138">	{</span>
+<span class="pc bpc" id="L139" title="2 of 4 branches missed.">		if (null == (_pdd = pdd) || null == (_cpd = cpd))</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;PriorConditionalCombiner Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Prior Drift Distribution Instance
@@ -137,7 +148,7 @@ public class PriorConditionalCombiner {
 
 	public org.drip.execution.bayesian.PriorDriftDistribution prior()
 	{
-<span class="fc" id="L140">		return _pdd;</span>
+<span class="fc" id="L151">		return _pdd;</span>
 	}
 
 	/**
@@ -148,7 +159,7 @@ public class PriorConditionalCombiner {
 
 	public org.drip.execution.bayesian.ConditionalPriceDistribution conditional()
 	{
-<span class="fc" id="L151">		return _cpd;</span>
+<span class="fc" id="L162">		return _cpd;</span>
 	}
 
 	/**
@@ -159,16 +170,16 @@ public class PriorConditionalCombiner {
 
 	public org.drip.measure.gaussian.R1UnivariateNormal jointPriceDistribution()
 	{
-<span class="nc" id="L162">		double dblTime = _cpd.time();</span>
+<span class="nc" id="L173">		double dblTime = _cpd.time();</span>
 
 		try {
-<span class="nc" id="L165">			return new org.drip.measure.gaussian.R1UnivariateNormal (_pdd.expectation() * dblTime,</span>
-<span class="nc" id="L166">				_pdd.variance() * dblTime * dblTime +_cpd.variance());</span>
-<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L176">			return new org.drip.measure.gaussian.R1UnivariateNormal (_pdd.expectation() * dblTime,</span>
+<span class="nc" id="L177">				_pdd.variance() * dblTime * dblTime +_cpd.variance());</span>
+<span class="nc" id="L178">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L179">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L182">		return null;</span>
 	}
 
 	/**
@@ -182,25 +193,25 @@ public class PriorConditionalCombiner {
 	public org.drip.measure.gaussian.R1UnivariateNormal posteriorDriftDistribution (
 		final double dblDeltaS)
 	{
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDeltaS)) return null;</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDeltaS)) return null;</span>
 
-<span class="fc" id="L187">		double dblT = _cpd.time();</span>
+<span class="fc" id="L198">		double dblT = _cpd.time();</span>
 
-<span class="fc" id="L189">		double dblNuSquared = _pdd.variance();</span>
+<span class="fc" id="L200">		double dblNuSquared = _pdd.variance();</span>
 
-<span class="fc" id="L191">		double dblSigmaSquared = _cpd.variance() / dblT;</span>
+<span class="fc" id="L202">		double dblSigmaSquared = _cpd.variance() / dblT;</span>
 
-<span class="fc" id="L193">		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);</span>
+<span class="fc" id="L204">		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);</span>
 
 		try {
-<span class="fc" id="L196">			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +</span>
+<span class="fc" id="L207">			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +</span>
 				dblNuSquared * dblDeltaS) * dblPrecisionSquared, dblSigmaSquared * dblNuSquared *
 					dblPrecisionSquared);
-<span class="nc" id="L199">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L200">			e.printStackTrace();</span>
+<span class="nc" id="L210">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L211">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L203">		return null;</span>
+<span class="nc" id="L214">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

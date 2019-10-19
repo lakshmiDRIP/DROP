@@ -6,38 +6,49 @@ package org.drip.execution.athl;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -96,23 +107,23 @@ package org.drip.execution.athl;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;ATHL&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md&quot;&gt;Almgren-Thum-Hauptmann-Li Calibration&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TransactionRealization {
-<span class="nc" id="L109">	private double _dblT = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dblX = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _dblTPost = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _dblTSQRT = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private double _dblVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L114">	private org.drip.execution.impact.TransactionFunction _tfPermanent = null;</span>
-<span class="nc" id="L115">	private org.drip.execution.impact.TransactionFunction _tfTemporary = null;</span>
+<span class="nc" id="L120">	private double _dblT = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _dblX = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _dblTPost = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private double _dblTSQRT = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private double _dblVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L125">	private org.drip.execution.impact.TransactionFunction _tfPermanent = null;</span>
+<span class="nc" id="L126">	private org.drip.execution.impact.TransactionFunction _tfTemporary = null;</span>
 
 	/**
 	 * TransactionRealization Constructor
@@ -135,17 +146,17 @@ public class TransactionRealization {
 		final double dblT,
 		final double dblTPost)
 		throws java.lang.Exception
-<span class="nc" id="L138">	{</span>
-<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == (_tfPermanent = tfPermanent) || null == (_tfTemporary = tfTemporary) ||</span>
-<span class="nc bnc" id="L140" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) || 0. &gt; _dblVolatility</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblX = dblX) ||</span>
-<span class="nc bnc" id="L142" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblT = dblT) || 0. &gt; _dblT ||</span>
-<span class="nc bnc" id="L143" title="All 4 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblTPost = dblTPost) || _dblT &gt;=</span>
+<span class="nc" id="L149">	{</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">		if (null == (_tfPermanent = tfPermanent) || null == (_tfTemporary = tfTemporary) ||</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) || 0. &gt; _dblVolatility</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblX = dblX) ||</span>
+<span class="nc bnc" id="L153" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblT = dblT) || 0. &gt; _dblT ||</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblTPost = dblTPost) || _dblT &gt;=</span>
 							_dblTPost)
-<span class="nc" id="L145">			throw new java.lang.Exception  (&quot;TransactionRealization Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L156">			throw new java.lang.Exception  (&quot;TransactionRealization Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L147">		_dblTSQRT = java.lang.Math.sqrt (_dblT);</span>
-<span class="nc" id="L148">	}</span>
+<span class="nc" id="L158">		_dblTSQRT = java.lang.Math.sqrt (_dblT);</span>
+<span class="nc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Permanent Market Impact Transaction Function
@@ -155,7 +166,7 @@ public class TransactionRealization {
 
 	public org.drip.execution.impact.TransactionFunction permanentMarketImpactFunction()
 	{
-<span class="nc" id="L158">		return _tfPermanent;</span>
+<span class="nc" id="L169">		return _tfPermanent;</span>
 	}
 
 	/**
@@ -166,7 +177,7 @@ public class TransactionRealization {
 
 	public org.drip.execution.impact.TransactionFunction temporaryMarketImpactFunction()
 	{
-<span class="nc" id="L169">		return _tfTemporary;</span>
+<span class="nc" id="L180">		return _tfTemporary;</span>
 	}
 
 	/**
@@ -177,7 +188,7 @@ public class TransactionRealization {
 
 	public double volatility()
 	{
-<span class="nc" id="L180">		return _dblVolatility;</span>
+<span class="nc" id="L191">		return _dblVolatility;</span>
 	}
 
 	/**
@@ -188,7 +199,7 @@ public class TransactionRealization {
 
 	public double x()
 	{
-<span class="nc" id="L191">		return _dblX;</span>
+<span class="nc" id="L202">		return _dblX;</span>
 	}
 
 	/**
@@ -199,7 +210,7 @@ public class TransactionRealization {
 
 	public double t()
 	{
-<span class="nc" id="L202">		return _dblT;</span>
+<span class="nc" id="L213">		return _dblT;</span>
 	}
 
 	/**
@@ -210,7 +221,7 @@ public class TransactionRealization {
 
 	public double tPost()
 	{
-<span class="nc" id="L213">		return _dblTPost;</span>
+<span class="nc" id="L224">		return _dblTPost;</span>
 	}
 
 	/**
@@ -226,21 +237,21 @@ public class TransactionRealization {
 		final double dblIRandom,
 		final double dblJRandom)
 	{
-<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIRandom) ||</span>
-<span class="nc bnc" id="L230" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblJRandom))</span>
-<span class="nc" id="L231">			return null;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIRandom) ||</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblJRandom))</span>
+<span class="nc" id="L242">			return null;</span>
 
 		try {
-<span class="nc" id="L234">			return new org.drip.execution.athl.IJK (new org.drip.execution.athl.TransactionSignal</span>
-<span class="nc" id="L235">				(_tfPermanent.evaluate (_dblX, _dblT), _dblVolatility * _dblTSQRT * dblIRandom, 0.), new</span>
-<span class="nc" id="L236">					org.drip.execution.athl.TransactionSignal (_tfTemporary.evaluate (_dblX, _dblT),</span>
-<span class="nc" id="L237">						_dblVolatility * java.lang.Math.sqrt (_dblT / 12. * (4. - (3. * _dblT / _dblTPost)))</span>
+<span class="nc" id="L245">			return new org.drip.execution.athl.IJK (new org.drip.execution.athl.TransactionSignal</span>
+<span class="nc" id="L246">				(_tfPermanent.evaluate (_dblX, _dblT), _dblVolatility * _dblTSQRT * dblIRandom, 0.), new</span>
+<span class="nc" id="L247">					org.drip.execution.athl.TransactionSignal (_tfTemporary.evaluate (_dblX, _dblT),</span>
+<span class="nc" id="L248">						_dblVolatility * java.lang.Math.sqrt (_dblT / 12. * (4. - (3. * _dblT / _dblTPost)))</span>
 							* dblJRandom, 0.5 * (_dblTPost - _dblT) / _dblTSQRT * dblIRandom));
-<span class="nc" id="L239">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L240">			e.printStackTrace();</span>
+<span class="nc" id="L250">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L251">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L243">		return null;</span>
+<span class="nc" id="L254">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

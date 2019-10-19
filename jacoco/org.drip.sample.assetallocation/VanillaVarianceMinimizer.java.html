@@ -91,84 +91,106 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L94">public class VanillaVarianceMinimizer {</span>
+<span class="nc" id="L94">public class VanillaVarianceMinimizer</span>
+{
 
-	static final void RiskTolerancePortfolio (
-		final String[] astrAsset,
-		final AssetUniverseStatisticalProperties ausp,
-		final double dblRiskTolerance)
+	private static final void RiskTolerancePortfolio (
+		final String[] assetIDArray,
+		final AssetUniverseStatisticalProperties assetUniverseStatisticalProperties,
+		final double riskTolerance)
 		throws Exception
 	{
-<span class="nc" id="L102">		OptimizationOutput opf = new QuadraticMeanVarianceOptimizer().allocate (</span>
+<span class="nc" id="L103">		OptimizationOutput optimizationOutput = new QuadraticMeanVarianceOptimizer().allocate (</span>
 			new PortfolioConstructionParameters (
-				astrAsset,
-<span class="nc" id="L105">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+				assetIDArray,
+<span class="nc" id="L106">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
 				new EqualityConstraintSettings (
 					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
 					Double.NaN
 				)
 			),
-			ausp
+			assetUniverseStatisticalProperties
 		);
 
-<span class="nc" id="L114">		AssetComponent[] aAC = opf.optimalPortfolio().assetComponentArray();</span>
+<span class="nc" id="L115">		System.out.println (&quot;\n\n\t|---------------||&quot;);</span>
 
-<span class="nc" id="L116">		System.out.println (&quot;\n\n\t|---------------||&quot;);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (AssetComponent assetComponent : optimizationOutput.optimalPortfolio().assetComponentArray())</span>
+		{
+<span class="nc" id="L119">			System.out.println (</span>
+<span class="nc" id="L120">				&quot;\t| &quot; + assetComponent.id() + &quot; | &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L121">					assetComponent.amount(), 2, 2, 100.</span>
+				) + &quot;% ||&quot;
+			);
+		}
 
-<span class="nc bnc" id="L118" title="All 2 branches missed.">		for (AssetComponent ac : aAC)</span>
-<span class="nc" id="L119">			System.out.println (&quot;\t| &quot; + ac.id() + &quot; | &quot; + FormatUtil.FormatDouble (ac.amount(), 2, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="nc" id="L126">		System.out.println (&quot;\t|---------------||&quot;);</span>
 
-<span class="nc" id="L121">		System.out.println (&quot;\t|---------------||&quot;);</span>
+<span class="nc" id="L128">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
 
-<span class="nc" id="L123">		System.out.println (&quot;\t|---------------------------------------||&quot;);</span>
+<span class="nc" id="L130">		System.out.println (</span>
+<span class="nc" id="L131">			&quot;\t| Portfolio Notional           : &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L132">				optimizationOutput.optimalPortfolio().notional(), 1, 3, 1.</span>
+			) + &quot; ||&quot;
+		);
 
-<span class="nc" id="L125">		System.out.println (&quot;\t| Portfolio Notional           : &quot; + FormatUtil.FormatDouble (opf.optimalPortfolio().notional(), 1, 3, 1.) + &quot; ||&quot;);</span>
+<span class="nc" id="L136">		System.out.println (</span>
+<span class="nc" id="L137">			&quot;\t| Portfolio Expected Return    : &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L138">				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 2, 100.</span>
+			) + &quot;% ||&quot;
+		);
 
-<span class="nc" id="L127">		System.out.println (&quot;\t| Portfolio Expected Return    : &quot; + FormatUtil.FormatDouble (opf.optimalMetrics().excessReturnsMean(), 1, 2, 100.) + &quot;% ||&quot;);</span>
+<span class="nc" id="L142">		System.out.println (</span>
+<span class="nc" id="L143">			&quot;\t| Portfolio Standard Deviation : &quot; + FormatUtil.FormatDouble (</span>
+<span class="nc" id="L144">				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 2, 100.</span>
+			) + &quot;% ||&quot;
+		);
 
-<span class="nc" id="L129">		System.out.println (&quot;\t| Portfolio Standard Deviation : &quot; + FormatUtil.FormatDouble (opf.optimalMetrics().excessReturnsStandardDeviation(), 1, 2, 100.) + &quot;% ||&quot;);</span>
-
-<span class="nc" id="L131">		System.out.println (&quot;\t|---------------------------------------||\n&quot;);</span>
-<span class="nc" id="L132">	}</span>
+<span class="nc" id="L148">		System.out.println (&quot;\t|---------------------------------------||\n&quot;);</span>
+<span class="nc" id="L149">	}</span>
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="nc" id="L138">		EnvManager.InitEnv (</span>
+<span class="nc" id="L155">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="nc" id="L143">		String strSeriesLocation = &quot;C:\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
+<span class="nc" id="L160">		String seriesPath = &quot;T:\\Lakshmi\\DROP\\Daemons\\Feeds\\MeanVarianceOptimizer\\FormattedSeries1.csv&quot;;</span>
 
-<span class="nc" id="L145">		CSVGrid csvGrid = CSVParser.NamedStringGrid (strSeriesLocation);</span>
-
-<span class="nc" id="L147">		String[] astrVariateHeader = csvGrid.headers();</span>
-
-<span class="nc" id="L149">		String[] astrAsset = new String[astrVariateHeader.length - 1];</span>
-<span class="nc" id="L150">		double[][] aadblVariateSample = new double[astrVariateHeader.length - 1][];</span>
-
-<span class="nc bnc" id="L152" title="All 2 branches missed.">		for (int i = 0; i &lt; astrAsset.length; ++i) {</span>
-<span class="nc" id="L153">			astrAsset[i] = astrVariateHeader[i + 1];</span>
-
-<span class="nc" id="L155">			aadblVariateSample[i] = csvGrid.doubleArrayAtColumn (i + 1);</span>
-		}
-
-<span class="nc" id="L158">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="nc" id="L159">			MultivariateMoments.Standard (</span>
-				astrAsset,
-				aadblVariateSample
-			)
+<span class="nc" id="L162">		CSVGrid csvGrid = CSVParser.NamedStringGrid (</span>
+			seriesPath
 		);
 
-<span class="nc" id="L165">		RiskTolerancePortfolio (</span>
-			astrAsset,
-			ausp,
+<span class="nc" id="L166">		String[] variateHeaderArray = csvGrid.headers();</span>
+
+<span class="nc" id="L168">		String[] assetIDArray = new String[variateHeaderArray.length - 1];</span>
+<span class="nc" id="L169">		double[][] variateSampleGrid = new double[variateHeaderArray.length - 1][];</span>
+
+<span class="nc" id="L171">		for (int assetIndex = 0;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="nc" id="L173">			++assetIndex)</span>
+		{
+<span class="nc" id="L175">			assetIDArray[assetIndex] = variateHeaderArray[assetIndex + 1];</span>
+
+<span class="nc" id="L177">			variateSampleGrid[assetIndex] = csvGrid.doubleArrayAtColumn (</span>
+				assetIndex + 1
+			);
+		}
+
+<span class="nc" id="L182">		RiskTolerancePortfolio (</span>
+			assetIDArray,
+<span class="nc" id="L184">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="nc" id="L185">				MultivariateMoments.Standard (</span>
+					assetIDArray,
+					variateSampleGrid
+				)
+			),
 			0.
 		);
 
-<span class="nc" id="L171">		EnvManager.TerminateEnv();</span>
-<span class="nc" id="L172">	}</span>
+<span class="nc" id="L193">		EnvManager.TerminateEnv();</span>
+<span class="nc" id="L194">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

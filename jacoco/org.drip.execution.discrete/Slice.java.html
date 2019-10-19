@@ -6,38 +6,49 @@ package org.drip.execution.discrete;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,19 +108,19 @@ package org.drip.execution.discrete;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Trajectory Slice Execution Cost Distribution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGenerator {
-<span class="fc" id="L110">	private double _dblTimeInterval = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private double _dblLeftHoldings = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _dblRightHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L121">	private double _dblTimeInterval = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblLeftHoldings = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _dblRightHoldings = java.lang.Double.NaN;</span>
 
 	/**
 	 * Slice Constructor
@@ -126,13 +137,13 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 		final double dblRightHoldings,
 		final double dblTimeInterval)
 		throws java.lang.Exception
-<span class="fc" id="L129">	{</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeftHoldings = dblLeftHoldings) ||</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblRightHoldings = dblRightHoldings) ||</span>
-<span class="pc bpc" id="L132" title="2 of 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblTimeInterval = dblTimeInterval) || 0. &gt;=</span>
+<span class="fc" id="L140">	{</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLeftHoldings = dblLeftHoldings) ||</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblRightHoldings = dblRightHoldings) ||</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblTimeInterval = dblTimeInterval) || 0. &gt;=</span>
 					_dblTimeInterval)
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;Slice Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L135">	}</span>
+<span class="nc" id="L145">			throw new java.lang.Exception (&quot;Slice Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L146">	}</span>
 
 	/**
 	 * Retrieve the Left-of-Slice Holdings
@@ -142,7 +153,7 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 
 	public double leftHoldings()
 	{
-<span class="nc" id="L145">		return _dblLeftHoldings;</span>
+<span class="nc" id="L156">		return _dblLeftHoldings;</span>
 	}
 
 	/**
@@ -153,7 +164,7 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 
 	public double rightHoldings()
 	{
-<span class="nc" id="L156">		return _dblRightHoldings;</span>
+<span class="nc" id="L167">		return _dblRightHoldings;</span>
 	}
 
 	/**
@@ -164,7 +175,7 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 
 	public double timeInterval()
 	{
-<span class="nc" id="L167">		return _dblTimeInterval;</span>
+<span class="nc" id="L178">		return _dblTimeInterval;</span>
 	}
 
 	/**
@@ -175,7 +186,7 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 
 	public boolean isSell()
 	{
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		return _dblLeftHoldings - _dblRightHoldings &gt; 0.;</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		return _dblLeftHoldings - _dblRightHoldings &gt; 0.;</span>
 	}
 
 	/**
@@ -193,43 +204,43 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 		final org.drip.execution.dynamics.WalkSuite ws,
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (null == ws || null == apep) return null;</span>
+<span class="nc bnc" id="L207" title="All 4 branches missed.">		if (null == ws || null == apep) return null;</span>
 
-<span class="nc" id="L198">		org.drip.execution.parameters.ArithmeticPriceDynamicsSettings apds =</span>
-<span class="nc" id="L199">			apep.arithmeticPriceDynamicsSettings();</span>
+<span class="nc" id="L209">		org.drip.execution.parameters.ArithmeticPriceDynamicsSettings apds =</span>
+<span class="nc" id="L210">			apep.arithmeticPriceDynamicsSettings();</span>
 
-<span class="nc" id="L201">		double dblSerialCorrelation = apds.serialCorrelation();</span>
+<span class="nc" id="L212">		double dblSerialCorrelation = apds.serialCorrelation();</span>
 
-<span class="nc" id="L203">		double dblTimeUnitSQRT = java.lang.Math.sqrt (_dblTimeInterval);</span>
+<span class="nc" id="L214">		double dblTimeUnitSQRT = java.lang.Math.sqrt (_dblTimeInterval);</span>
 
-<span class="nc" id="L205">		double dblExecutionRate = (_dblRightHoldings - _dblLeftHoldings) / _dblTimeInterval;</span>
+<span class="nc" id="L216">		double dblExecutionRate = (_dblRightHoldings - _dblLeftHoldings) / _dblTimeInterval;</span>
 
 		try {
-<span class="nc" id="L208">			double dblMarketCoreJumpUnit = apds.epochVolatility() * dblTimeUnitSQRT;</span>
+<span class="nc" id="L219">			double dblMarketCoreJumpUnit = apds.epochVolatility() * dblTimeUnitSQRT;</span>
 
-<span class="nc" id="L210">			return new org.drip.execution.discrete.PriceIncrement (</span>
+<span class="nc" id="L221">			return new org.drip.execution.discrete.PriceIncrement (</span>
 				dblPreviousEquilibriumPrice,
 				new org.drip.execution.evolution.MarketImpactComponent (
-<span class="nc" id="L213">					_dblTimeInterval * apds.drift(),</span>
+<span class="nc" id="L224">					_dblTimeInterval * apds.drift(),</span>
 					0.,
-<span class="nc" id="L215">					_dblTimeInterval * apep.permanentExpectation().epochImpactFunction().evaluate (dblExecutionRate),</span>
-<span class="nc" id="L216">					apep.temporaryExpectation().epochImpactFunction().evaluate (dblExecutionRate)</span>
+<span class="nc" id="L226">					_dblTimeInterval * apep.permanentExpectation().epochImpactFunction().evaluate (dblExecutionRate),</span>
+<span class="nc" id="L227">					apep.temporaryExpectation().epochImpactFunction().evaluate (dblExecutionRate)</span>
 				),
 				new org.drip.execution.evolution.MarketImpactComponent (
-<span class="nc" id="L219">					dblMarketCoreJumpUnit * java.lang.Math.sqrt (1. + dblSerialCorrelation * dblSerialCorrelation) *</span>
-<span class="nc" id="L220">						ws.currentWanderer(),</span>
-<span class="nc" id="L221">					dblMarketCoreJumpUnit * dblSerialCorrelation * ws.previousWanderer(),</span>
-<span class="nc" id="L222">					dblTimeUnitSQRT * apep.permanentVolatility().epochImpactFunction().evaluate (dblExecutionRate) *</span>
-<span class="nc" id="L223">						ws.permanentImpactWanderer(),</span>
-<span class="nc" id="L224">					dblTimeUnitSQRT * apep.temporaryVolatility().epochImpactFunction().evaluate (dblExecutionRate) *</span>
-<span class="nc" id="L225">						ws.temporaryImpactWanderer()</span>
+<span class="nc" id="L230">					dblMarketCoreJumpUnit * java.lang.Math.sqrt (1. + dblSerialCorrelation * dblSerialCorrelation) *</span>
+<span class="nc" id="L231">						ws.currentWanderer(),</span>
+<span class="nc" id="L232">					dblMarketCoreJumpUnit * dblSerialCorrelation * ws.previousWanderer(),</span>
+<span class="nc" id="L233">					dblTimeUnitSQRT * apep.permanentVolatility().epochImpactFunction().evaluate (dblExecutionRate) *</span>
+<span class="nc" id="L234">						ws.permanentImpactWanderer(),</span>
+<span class="nc" id="L235">					dblTimeUnitSQRT * apep.temporaryVolatility().epochImpactFunction().evaluate (dblExecutionRate) *</span>
+<span class="nc" id="L236">						ws.temporaryImpactWanderer()</span>
 				)
 			);
-<span class="nc" id="L228">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L229">			e.printStackTrace();</span>
+<span class="nc" id="L239">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L240">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L232">		return null;</span>
+<span class="nc" id="L243">		return null;</span>
 	}
 
 	/**
@@ -247,8 +258,8 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 		final org.drip.execution.dynamics.WalkSuite ws,
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="nc" id="L250">		return org.drip.execution.discrete.ShortfallIncrement.Standard (</span>
-<span class="nc" id="L251">			priceIncrementRealization (dblPreviousEquilibriumPrice, ws, apep),</span>
+<span class="nc" id="L261">		return org.drip.execution.discrete.ShortfallIncrement.Standard (</span>
+<span class="nc" id="L262">			priceIncrementRealization (dblPreviousEquilibriumPrice, ws, apep),</span>
 			_dblLeftHoldings,
 			_dblRightHoldings - _dblLeftHoldings
 		);
@@ -265,82 +276,82 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 	public org.drip.execution.discrete.ShortfallIncrementDistribution costIncrementDistribution (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L268" title="1 of 2 branches missed.">		double dblTradeAmount = _dblRightHoldings &gt; _dblLeftHoldings ? _dblRightHoldings - _dblLeftHoldings :</span>
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">		double dblTradeAmount = _dblRightHoldings &gt; _dblLeftHoldings ? _dblRightHoldings - _dblLeftHoldings :</span>
 			_dblLeftHoldings - _dblRightHoldings;
-<span class="fc" id="L270">		double dblExecutionRate = dblTradeAmount / _dblTimeInterval;</span>
+<span class="fc" id="L281">		double dblExecutionRate = dblTradeAmount / _dblTimeInterval;</span>
 
-<span class="fc" id="L272">		org.drip.execution.parameters.ArithmeticPriceDynamicsSettings apds =</span>
-<span class="fc" id="L273">			apep.arithmeticPriceDynamicsSettings();</span>
+<span class="fc" id="L283">		org.drip.execution.parameters.ArithmeticPriceDynamicsSettings apds =</span>
+<span class="fc" id="L284">			apep.arithmeticPriceDynamicsSettings();</span>
 
 		try {
-<span class="fc" id="L276">			double dblMarketCoreVolatility = apds.epochVolatility();</span>
+<span class="fc" id="L287">			double dblMarketCoreVolatility = apds.epochVolatility();</span>
 
-<span class="fc" id="L278">			double dblTemporaryVolatility = apep.temporaryVolatility().epochImpactFunction().evaluate</span>
-<span class="fc" id="L279">				(dblTradeAmount, _dblTimeInterval);</span>
+<span class="fc" id="L289">			double dblTemporaryVolatility = apep.temporaryVolatility().epochImpactFunction().evaluate</span>
+<span class="fc" id="L290">				(dblTradeAmount, _dblTimeInterval);</span>
 
-<span class="fc" id="L281">			return new org.drip.execution.discrete.ShortfallIncrementDistribution (</span>
-<span class="fc" id="L282">				_dblTimeInterval * _dblRightHoldings * apep.permanentExpectation().epochImpactFunction().evaluate</span>
-<span class="fc" id="L283">					(dblExecutionRate),</span>
-<span class="fc" id="L284">				dblTradeAmount * apep.temporaryExpectation().epochImpactFunction().evaluate (dblExecutionRate),</span>
-<span class="fc" id="L285">				-1. * _dblRightHoldings * apds.drift() * _dblTimeInterval,</span>
+<span class="fc" id="L292">			return new org.drip.execution.discrete.ShortfallIncrementDistribution (</span>
+<span class="fc" id="L293">				_dblTimeInterval * _dblRightHoldings * apep.permanentExpectation().epochImpactFunction().evaluate</span>
+<span class="fc" id="L294">					(dblExecutionRate),</span>
+<span class="fc" id="L295">				dblTradeAmount * apep.temporaryExpectation().epochImpactFunction().evaluate (dblExecutionRate),</span>
+<span class="fc" id="L296">				-1. * _dblRightHoldings * apds.drift() * _dblTimeInterval,</span>
 				0.,
 				dblExecutionRate * dblExecutionRate * dblTemporaryVolatility * dblTemporaryVolatility *
 					_dblTimeInterval,
 				_dblRightHoldings * _dblRightHoldings * dblMarketCoreVolatility * dblMarketCoreVolatility *
 					_dblTimeInterval
 			);
-<span class="nc" id="L292">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L293">			e.printStackTrace();</span>
+<span class="nc" id="L303">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L304">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L296">		return null;</span>
+<span class="nc" id="L307">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek permanentImpactExpectation (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="fc" id="L304">		double dblTradeAmount = _dblRightHoldings - _dblLeftHoldings;</span>
-<span class="fc bfc" id="L305" title="All 2 branches covered.">		double dblSign = _dblRightHoldings &lt; _dblLeftHoldings ? -1. : 1.;</span>
+<span class="fc" id="L315">		double dblTradeAmount = _dblRightHoldings - _dblLeftHoldings;</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">		double dblSign = _dblRightHoldings &lt; _dblLeftHoldings ? -1. : 1.;</span>
 
-<span class="fc" id="L307">		org.drip.execution.impact.TransactionFunction tfPermanentDrift =</span>
-<span class="fc" id="L308">			apep.permanentExpectation().epochImpactFunction();</span>
+<span class="fc" id="L318">		org.drip.execution.impact.TransactionFunction tfPermanentDrift =</span>
+<span class="fc" id="L319">			apep.permanentExpectation().epochImpactFunction();</span>
 
 		try {
-<span class="fc" id="L311">			double dblPermanentDrift = tfPermanentDrift.evaluate (dblTradeAmount, _dblTimeInterval);</span>
+<span class="fc" id="L322">			double dblPermanentDrift = tfPermanentDrift.evaluate (dblTradeAmount, _dblTimeInterval);</span>
 
-<span class="fc" id="L313">			double dblPermanentDriftLeftJacobian = tfPermanentDrift.leftHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L324">			double dblPermanentDriftLeftJacobian = tfPermanentDrift.leftHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 1);
 
-<span class="fc" id="L316">			double dblPermanentDriftRightJacobian = tfPermanentDrift.rightHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L327">			double dblPermanentDriftRightJacobian = tfPermanentDrift.rightHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 1);
 
-<span class="fc" id="L319">			double dblPermanentDriftLeftHessian = tfPermanentDrift.leftHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L330">			double dblPermanentDriftLeftHessian = tfPermanentDrift.leftHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 2);
 
-<span class="fc" id="L322">			double dblPermanentDriftRightHessian = tfPermanentDrift.rightHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L333">			double dblPermanentDriftRightHessian = tfPermanentDrift.rightHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 2);
 
-<span class="fc" id="L325">			double dblPermanentDriftCrossHessian = tfPermanentDrift.crossHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L336">			double dblPermanentDriftCrossHessian = tfPermanentDrift.crossHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval);
 
-<span class="fc" id="L328">			double dblPermanentDriftImpact = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
+<span class="fc" id="L339">			double dblPermanentDriftImpact = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
 				dblPermanentDrift;
-<span class="fc" id="L330">			double dblPermanentDriftImpactLeftJacobian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
+<span class="fc" id="L341">			double dblPermanentDriftImpactLeftJacobian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
 				dblPermanentDriftLeftJacobian;
-<span class="fc" id="L332">			double dblPermanentDriftImpactRightJacobian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
+<span class="fc" id="L343">			double dblPermanentDriftImpactRightJacobian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
 				dblPermanentDriftRightJacobian + dblSign * _dblTimeInterval * dblPermanentDrift;
-<span class="fc" id="L334">			double dblPermanentDriftImpactLeftHessian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
+<span class="fc" id="L345">			double dblPermanentDriftImpactLeftHessian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
 				dblPermanentDriftLeftHessian;
-<span class="fc" id="L336">			double dblPermanentDriftImpactRightHessian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
+<span class="fc" id="L347">			double dblPermanentDriftImpactRightHessian = dblSign * _dblTimeInterval * _dblRightHoldings *</span>
 				dblPermanentDriftRightHessian + 2. *  dblSign * _dblTimeInterval *
 					dblPermanentDriftRightJacobian;
-<span class="fc" id="L339">			double dblPermanentDriftImpactCrossHessian = dblSign * _dblTimeInterval *</span>
+<span class="fc" id="L350">			double dblPermanentDriftImpactCrossHessian = dblSign * _dblTimeInterval *</span>
 				dblPermanentDriftLeftJacobian + dblSign * _dblTimeInterval * _dblRightHoldings *
 					dblPermanentDriftCrossHessian;
 
-<span class="fc" id="L343">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
+<span class="fc" id="L354">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
 				dblPermanentDriftImpact,
 				new double[] {
 					dblPermanentDriftImpactLeftJacobian,
@@ -351,68 +362,68 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 					{dblPermanentDriftImpactCrossHessian, dblPermanentDriftImpactRightHessian}
 				}
 			);
-<span class="nc" id="L354">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L355">			e.printStackTrace();</span>
+<span class="nc" id="L365">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L366">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L358">		return null;</span>
+<span class="nc" id="L369">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek permanentImpactVariance (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
 		try {
-<span class="fc" id="L365">			return new org.drip.execution.sensitivity.ControlNodesGreek (0., new double[] {0., 0.}, new</span>
+<span class="fc" id="L376">			return new org.drip.execution.sensitivity.ControlNodesGreek (0., new double[] {0., 0.}, new</span>
 				double[][] {{0., 0.}, {0., 0.}});
-<span class="nc" id="L367">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L368">			e.printStackTrace();</span>
+<span class="nc" id="L378">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L379">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L371">		return null;</span>
+<span class="nc" id="L382">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek temporaryImpactExpectation (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L377" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="fc" id="L379">		double dblTradeAmount = _dblRightHoldings - _dblLeftHoldings;</span>
+<span class="fc" id="L390">		double dblTradeAmount = _dblRightHoldings - _dblLeftHoldings;</span>
 
-<span class="fc" id="L381">		org.drip.execution.impact.TransactionFunction tfTemporaryDrift =</span>
-<span class="fc" id="L382">			apep.temporaryExpectation().epochImpactFunction();</span>
+<span class="fc" id="L392">		org.drip.execution.impact.TransactionFunction tfTemporaryDrift =</span>
+<span class="fc" id="L393">			apep.temporaryExpectation().epochImpactFunction();</span>
 
 		try {
-<span class="fc" id="L385">			double dblTemporaryDrift = tfTemporaryDrift.evaluate (dblTradeAmount, _dblTimeInterval);</span>
+<span class="fc" id="L396">			double dblTemporaryDrift = tfTemporaryDrift.evaluate (dblTradeAmount, _dblTimeInterval);</span>
 
-<span class="fc" id="L387">			double dblTemporaryDriftLeftJacobian = tfTemporaryDrift.leftHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L398">			double dblTemporaryDriftLeftJacobian = tfTemporaryDrift.leftHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 1);
 
-<span class="fc" id="L390">			double dblTemporaryDriftRightJacobian = tfTemporaryDrift.rightHoldingsDerivative</span>
-<span class="fc" id="L391">				(dblTradeAmount, _dblTimeInterval, 1);</span>
+<span class="fc" id="L401">			double dblTemporaryDriftRightJacobian = tfTemporaryDrift.rightHoldingsDerivative</span>
+<span class="fc" id="L402">				(dblTradeAmount, _dblTimeInterval, 1);</span>
 
-<span class="fc" id="L393">			double dblTemporaryDriftLeftHessian = tfTemporaryDrift.leftHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L404">			double dblTemporaryDriftLeftHessian = tfTemporaryDrift.leftHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 2);
 
-<span class="fc" id="L396">			double dblTemporaryDriftRightHessian = tfTemporaryDrift.rightHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L407">			double dblTemporaryDriftRightHessian = tfTemporaryDrift.rightHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval, 2);
 
-<span class="fc" id="L399">			double dblTemporaryDriftCrossHessian = tfTemporaryDrift.crossHoldingsDerivative (dblTradeAmount,</span>
+<span class="fc" id="L410">			double dblTemporaryDriftCrossHessian = tfTemporaryDrift.crossHoldingsDerivative (dblTradeAmount,</span>
 				_dblTimeInterval);
 
-<span class="fc" id="L402">			double dblTemporaryDriftImpact = dblTradeAmount * dblTemporaryDrift;</span>
+<span class="fc" id="L413">			double dblTemporaryDriftImpact = dblTradeAmount * dblTemporaryDrift;</span>
 
-<span class="fc" id="L404">			double dblTemporaryDriftImpactLeftJacobian = -1. * dblTemporaryDrift + dblTradeAmount *</span>
+<span class="fc" id="L415">			double dblTemporaryDriftImpactLeftJacobian = -1. * dblTemporaryDrift + dblTradeAmount *</span>
 				dblTemporaryDriftLeftJacobian;
-<span class="fc" id="L406">			double dblTemporaryDriftImpactRightJacobian = dblTemporaryDrift + dblTradeAmount *</span>
+<span class="fc" id="L417">			double dblTemporaryDriftImpactRightJacobian = dblTemporaryDrift + dblTradeAmount *</span>
 				dblTemporaryDriftRightJacobian;
-<span class="fc" id="L408">			double dblTemporaryDriftImpactLeftHessian = -2. * dblTemporaryDriftLeftJacobian + dblTradeAmount</span>
+<span class="fc" id="L419">			double dblTemporaryDriftImpactLeftHessian = -2. * dblTemporaryDriftLeftJacobian + dblTradeAmount</span>
 				* dblTemporaryDriftLeftHessian;
-<span class="fc" id="L410">			double dblTemporaryDriftImpactRightHessian = 2. * dblTemporaryDriftRightJacobian + dblTradeAmount</span>
+<span class="fc" id="L421">			double dblTemporaryDriftImpactRightHessian = 2. * dblTemporaryDriftRightJacobian + dblTradeAmount</span>
 				* dblTemporaryDriftRightHessian;
-<span class="fc" id="L412">			double dblTemporaryDriftImpactCrossHessian = -1. * dblTemporaryDriftRightJacobian +</span>
+<span class="fc" id="L423">			double dblTemporaryDriftImpactCrossHessian = -1. * dblTemporaryDriftRightJacobian +</span>
 				dblTemporaryDriftLeftJacobian + dblTradeAmount * dblTemporaryDriftCrossHessian;
 
-<span class="fc" id="L415">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
+<span class="fc" id="L426">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
 				dblTemporaryDriftImpact,
 				new double[] {
 					dblTemporaryDriftImpactLeftJacobian,
@@ -423,57 +434,57 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 					{dblTemporaryDriftImpactCrossHessian, dblTemporaryDriftImpactRightHessian}
 				}
 			);
-<span class="nc" id="L426">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L427">			e.printStackTrace();</span>
+<span class="nc" id="L437">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L438">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L430">		return null;</span>
+<span class="nc" id="L441">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek temporaryImpactVariance (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L436" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L447" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="fc" id="L438">		double dblTradeAmount = _dblRightHoldings - _dblLeftHoldings;</span>
-<span class="fc" id="L439">		double dblTradeAmountSquared = dblTradeAmount * dblTradeAmount;</span>
+<span class="fc" id="L449">		double dblTradeAmount = _dblRightHoldings - _dblLeftHoldings;</span>
+<span class="fc" id="L450">		double dblTradeAmountSquared = dblTradeAmount * dblTradeAmount;</span>
 
-<span class="fc" id="L441">		org.drip.execution.impact.TransactionFunction tfTemporaryVolatility =</span>
-<span class="fc" id="L442">			apep.temporaryVolatility().epochImpactFunction();</span>
+<span class="fc" id="L452">		org.drip.execution.impact.TransactionFunction tfTemporaryVolatility =</span>
+<span class="fc" id="L453">			apep.temporaryVolatility().epochImpactFunction();</span>
 
 		try {
-<span class="pc bpc" id="L445" title="1 of 2 branches missed.">			if (null == tfTemporaryVolatility)</span>
-<span class="nc" id="L446">				return new org.drip.execution.sensitivity.ControlNodesGreek (0., new double[] {0., 0.}, new</span>
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">			if (null == tfTemporaryVolatility)</span>
+<span class="nc" id="L457">				return new org.drip.execution.sensitivity.ControlNodesGreek (0., new double[] {0., 0.}, new</span>
 					double[][] {{0., 0.}, {0., 0.}});
 
-<span class="fc" id="L449">			double dblTemporaryVolatility = tfTemporaryVolatility.evaluate (dblTradeAmount,</span>
+<span class="fc" id="L460">			double dblTemporaryVolatility = tfTemporaryVolatility.evaluate (dblTradeAmount,</span>
 				_dblTimeInterval);
 
-<span class="fc" id="L452">			double dblTemporaryVolatilityLeftJacobian = tfTemporaryVolatility.leftHoldingsDerivative</span>
-<span class="fc" id="L453">				(dblTradeAmount, _dblTimeInterval, 1);</span>
+<span class="fc" id="L463">			double dblTemporaryVolatilityLeftJacobian = tfTemporaryVolatility.leftHoldingsDerivative</span>
+<span class="fc" id="L464">				(dblTradeAmount, _dblTimeInterval, 1);</span>
 
-<span class="fc" id="L455">			double dblTemporaryVolatilityRightJacobian = tfTemporaryVolatility.rightHoldingsDerivative</span>
-<span class="fc" id="L456">				(dblTradeAmount, _dblTimeInterval, 1);</span>
+<span class="fc" id="L466">			double dblTemporaryVolatilityRightJacobian = tfTemporaryVolatility.rightHoldingsDerivative</span>
+<span class="fc" id="L467">				(dblTradeAmount, _dblTimeInterval, 1);</span>
 
-<span class="fc" id="L458">			double dblTemporaryVolatilityLeftHessian = tfTemporaryVolatility.leftHoldingsDerivative</span>
-<span class="fc" id="L459">				(dblTradeAmount, _dblTimeInterval, 2);</span>
+<span class="fc" id="L469">			double dblTemporaryVolatilityLeftHessian = tfTemporaryVolatility.leftHoldingsDerivative</span>
+<span class="fc" id="L470">				(dblTradeAmount, _dblTimeInterval, 2);</span>
 
-<span class="fc" id="L461">			double dblTemporaryVolatilityRightHessian = tfTemporaryVolatility.rightHoldingsDerivative</span>
-<span class="fc" id="L462">				(dblTradeAmount, _dblTimeInterval, 2);</span>
+<span class="fc" id="L472">			double dblTemporaryVolatilityRightHessian = tfTemporaryVolatility.rightHoldingsDerivative</span>
+<span class="fc" id="L473">				(dblTradeAmount, _dblTimeInterval, 2);</span>
 
-<span class="fc" id="L464">			double dblTemporaryVolatilityCrossHessian = tfTemporaryVolatility.crossHoldingsDerivative</span>
-<span class="fc" id="L465">				(dblTradeAmount, _dblTimeInterval);</span>
+<span class="fc" id="L475">			double dblTemporaryVolatilityCrossHessian = tfTemporaryVolatility.crossHoldingsDerivative</span>
+<span class="fc" id="L476">				(dblTradeAmount, _dblTimeInterval);</span>
 
-<span class="fc" id="L467">			double dblTemporaryVolatilitySquared = dblTemporaryVolatility * dblTemporaryVolatility;</span>
+<span class="fc" id="L478">			double dblTemporaryVolatilitySquared = dblTemporaryVolatility * dblTemporaryVolatility;</span>
 
-<span class="fc" id="L469">			double dblTemporaryVarianceCrossHessian =</span>
+<span class="fc" id="L480">			double dblTemporaryVarianceCrossHessian =</span>
 				2. * dblTradeAmountSquared * dblTemporaryVolatilityLeftJacobian * dblTemporaryVolatilityRightJacobian * _dblTimeInterval
 					+ 2. * dblTradeAmountSquared * dblTemporaryVolatility * dblTemporaryVolatilityCrossHessian * _dblTimeInterval
 						+ 4. * dblTradeAmount * dblTemporaryVolatility * dblTemporaryVolatilityLeftJacobian * _dblTimeInterval
 							- 4. * dblTradeAmount * dblTemporaryVolatility * dblTemporaryVolatilityRightJacobian * _dblTimeInterval
 								- 2. * dblTemporaryVolatilitySquared * _dblTimeInterval;
 
-<span class="fc" id="L476">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
+<span class="fc" id="L487">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
 				dblTradeAmountSquared * dblTemporaryVolatilitySquared * _dblTimeInterval,
 				new double[] {
 					2. * dblTradeAmountSquared * dblTemporaryVolatility * dblTemporaryVolatilityLeftJacobian * _dblTimeInterval
@@ -497,22 +508,22 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 					}
 				}
 			);
-<span class="nc" id="L500">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L501">			e.printStackTrace();</span>
+<span class="nc" id="L511">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L512">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L504">		return null;</span>
+<span class="nc" id="L515">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek marketDynamicsExpectation (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L510" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="fc" id="L512">		double dblDrift = apep.arithmeticPriceDynamicsSettings().drift();</span>
+<span class="fc" id="L523">		double dblDrift = apep.arithmeticPriceDynamicsSettings().drift();</span>
 
 		try {
-<span class="fc" id="L515">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
+<span class="fc" id="L526">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
 				-1. * _dblTimeInterval * dblDrift * _dblRightHoldings,
 				new double[] {
 					0.,
@@ -523,22 +534,22 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 					{0., 0.}
 				}
 			);
-<span class="nc" id="L526">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L527">			e.printStackTrace();</span>
+<span class="nc" id="L537">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L538">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L530">		return null;</span>
+<span class="nc" id="L541">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek marketDynamicsVariance (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L536" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
 		try {
-<span class="fc" id="L539">			double dblVolatility = apep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="fc" id="L550">			double dblVolatility = apep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
 
-<span class="fc" id="L541">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
+<span class="fc" id="L552">			return new org.drip.execution.sensitivity.ControlNodesGreek (</span>
 				_dblTimeInterval * dblVolatility * dblVolatility * _dblRightHoldings * _dblRightHoldings,
 				new double[] {
 					0.,
@@ -548,113 +559,113 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 					{0., 2. * _dblTimeInterval * dblVolatility * dblVolatility}
 				}
 			);
-<span class="nc" id="L551">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L552">			e.printStackTrace();</span>
+<span class="nc" id="L562">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L563">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L555">		return null;</span>
+<span class="nc" id="L566">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek expectationContribution (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L561">		org.drip.execution.sensitivity.ControlNodesGreek cngPermanentImpact = permanentImpactExpectation</span>
-<span class="fc" id="L562">			(apep);</span>
+<span class="fc" id="L572">		org.drip.execution.sensitivity.ControlNodesGreek cngPermanentImpact = permanentImpactExpectation</span>
+<span class="fc" id="L573">			(apep);</span>
 
-<span class="pc bpc" id="L564" title="1 of 2 branches missed.">		if (null == cngPermanentImpact) return null;</span>
+<span class="pc bpc" id="L575" title="1 of 2 branches missed.">		if (null == cngPermanentImpact) return null;</span>
 
-<span class="fc" id="L566">		org.drip.execution.sensitivity.ControlNodesGreek cngTemporaryImpact = temporaryImpactExpectation</span>
-<span class="fc" id="L567">			(apep);</span>
+<span class="fc" id="L577">		org.drip.execution.sensitivity.ControlNodesGreek cngTemporaryImpact = temporaryImpactExpectation</span>
+<span class="fc" id="L578">			(apep);</span>
 
-<span class="pc bpc" id="L569" title="1 of 2 branches missed.">		if (null == cngTemporaryImpact) return null;</span>
+<span class="pc bpc" id="L580" title="1 of 2 branches missed.">		if (null == cngTemporaryImpact) return null;</span>
 
-<span class="fc" id="L571">		org.drip.execution.sensitivity.ControlNodesGreek cngMarketCore = marketDynamicsExpectation (apep);</span>
+<span class="fc" id="L582">		org.drip.execution.sensitivity.ControlNodesGreek cngMarketCore = marketDynamicsExpectation (apep);</span>
 
-<span class="pc bpc" id="L573" title="1 of 2 branches missed.">		if (null == cngMarketCore) return null;</span>
+<span class="pc bpc" id="L584" title="1 of 2 branches missed.">		if (null == cngMarketCore) return null;</span>
 
-<span class="fc" id="L575">		double[][] aadblPermanentImpactExpectationHessian = cngPermanentImpact.hessian();</span>
+<span class="fc" id="L586">		double[][] aadblPermanentImpactExpectationHessian = cngPermanentImpact.hessian();</span>
 
-<span class="fc" id="L577">		double[][] aadblTemporaryImpactExpectationHessian = cngTemporaryImpact.hessian();</span>
+<span class="fc" id="L588">		double[][] aadblTemporaryImpactExpectationHessian = cngTemporaryImpact.hessian();</span>
 
-<span class="fc" id="L579">		double[] adblPermanentImpactExpectationJacobian = cngPermanentImpact.jacobian();</span>
+<span class="fc" id="L590">		double[] adblPermanentImpactExpectationJacobian = cngPermanentImpact.jacobian();</span>
 
-<span class="fc" id="L581">		double[] adblTemporaryImpactExpectationJacobian = cngTemporaryImpact.jacobian();</span>
+<span class="fc" id="L592">		double[] adblTemporaryImpactExpectationJacobian = cngTemporaryImpact.jacobian();</span>
 
-<span class="fc" id="L583">		double[][] aadblMarketCoreExpectationHessian = cngMarketCore.hessian();</span>
+<span class="fc" id="L594">		double[][] aadblMarketCoreExpectationHessian = cngMarketCore.hessian();</span>
 
-<span class="fc" id="L585">		double[] adblMarketCoreExpectationJacobian = cngMarketCore.jacobian();</span>
+<span class="fc" id="L596">		double[] adblMarketCoreExpectationJacobian = cngMarketCore.jacobian();</span>
 
-<span class="fc" id="L587">		int iNumSliceNode = adblMarketCoreExpectationJacobian.length;</span>
-<span class="fc" id="L588">		double[][] aadblHessian = new double[iNumSliceNode][iNumSliceNode];</span>
-<span class="fc" id="L589">		double[] adblJacobian = new double[iNumSliceNode];</span>
+<span class="fc" id="L598">		int iNumSliceNode = adblMarketCoreExpectationJacobian.length;</span>
+<span class="fc" id="L599">		double[][] aadblHessian = new double[iNumSliceNode][iNumSliceNode];</span>
+<span class="fc" id="L600">		double[] adblJacobian = new double[iNumSliceNode];</span>
 
-<span class="fc bfc" id="L591" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSliceNode; ++i) {</span>
-<span class="fc" id="L592">			adblJacobian[i] = adblPermanentImpactExpectationJacobian[i] +</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSliceNode; ++i) {</span>
+<span class="fc" id="L603">			adblJacobian[i] = adblPermanentImpactExpectationJacobian[i] +</span>
 				adblTemporaryImpactExpectationJacobian[i] + adblMarketCoreExpectationJacobian[i];
 
-<span class="fc bfc" id="L595" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumSliceNode; ++j)</span>
-<span class="fc" id="L596">				aadblHessian[i][j] = aadblPermanentImpactExpectationHessian[i][j] +</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumSliceNode; ++j)</span>
+<span class="fc" id="L607">				aadblHessian[i][j] = aadblPermanentImpactExpectationHessian[i][j] +</span>
 					aadblTemporaryImpactExpectationHessian[i][j] + aadblMarketCoreExpectationHessian[i][j];
 		}
 
 		try {
-<span class="fc" id="L601">			return new org.drip.execution.sensitivity.ControlNodesGreek (cngPermanentImpact.value() +</span>
-<span class="fc" id="L602">				cngTemporaryImpact.value() + cngMarketCore.value(), adblJacobian, aadblHessian);</span>
-<span class="nc" id="L603">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L604">			e.printStackTrace();</span>
+<span class="fc" id="L612">			return new org.drip.execution.sensitivity.ControlNodesGreek (cngPermanentImpact.value() +</span>
+<span class="fc" id="L613">				cngTemporaryImpact.value() + cngMarketCore.value(), adblJacobian, aadblHessian);</span>
+<span class="nc" id="L614">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L615">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L607">		return null;</span>
+<span class="nc" id="L618">		return null;</span>
 	}
 
 	@Override public org.drip.execution.sensitivity.ControlNodesGreek varianceContribution (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="fc" id="L613">		org.drip.execution.sensitivity.ControlNodesGreek cngPermanentImpact = permanentImpactVariance (apep);</span>
+<span class="fc" id="L624">		org.drip.execution.sensitivity.ControlNodesGreek cngPermanentImpact = permanentImpactVariance (apep);</span>
 
-<span class="pc bpc" id="L615" title="1 of 2 branches missed.">		if (null == cngPermanentImpact) return null;</span>
+<span class="pc bpc" id="L626" title="1 of 2 branches missed.">		if (null == cngPermanentImpact) return null;</span>
 
-<span class="fc" id="L617">		org.drip.execution.sensitivity.ControlNodesGreek cngTemporaryImpact = temporaryImpactVariance (apep);</span>
+<span class="fc" id="L628">		org.drip.execution.sensitivity.ControlNodesGreek cngTemporaryImpact = temporaryImpactVariance (apep);</span>
 
-<span class="pc bpc" id="L619" title="1 of 2 branches missed.">		if (null == cngTemporaryImpact) return null;</span>
+<span class="pc bpc" id="L630" title="1 of 2 branches missed.">		if (null == cngTemporaryImpact) return null;</span>
 
-<span class="fc" id="L621">		org.drip.execution.sensitivity.ControlNodesGreek cngMarketCore = marketDynamicsVariance (apep);</span>
+<span class="fc" id="L632">		org.drip.execution.sensitivity.ControlNodesGreek cngMarketCore = marketDynamicsVariance (apep);</span>
 
-<span class="pc bpc" id="L623" title="1 of 2 branches missed.">		if (null == cngMarketCore) return null;</span>
+<span class="pc bpc" id="L634" title="1 of 2 branches missed.">		if (null == cngMarketCore) return null;</span>
 
-<span class="fc" id="L625">		double[][] aadblPermanentImpactExpectationHessian = cngPermanentImpact.hessian();</span>
+<span class="fc" id="L636">		double[][] aadblPermanentImpactExpectationHessian = cngPermanentImpact.hessian();</span>
 
-<span class="fc" id="L627">		double[][] aadblTemporaryImpactExpectationHessian = cngTemporaryImpact.hessian();</span>
+<span class="fc" id="L638">		double[][] aadblTemporaryImpactExpectationHessian = cngTemporaryImpact.hessian();</span>
 
-<span class="fc" id="L629">		double[] adblPermanentImpactExpectationJacobian = cngPermanentImpact.jacobian();</span>
+<span class="fc" id="L640">		double[] adblPermanentImpactExpectationJacobian = cngPermanentImpact.jacobian();</span>
 
-<span class="fc" id="L631">		double[] adblTemporaryImpactExpectationJacobian = cngTemporaryImpact.jacobian();</span>
+<span class="fc" id="L642">		double[] adblTemporaryImpactExpectationJacobian = cngTemporaryImpact.jacobian();</span>
 
-<span class="fc" id="L633">		double[][] aadblMarketCoreExpectationHessian = cngMarketCore.hessian();</span>
+<span class="fc" id="L644">		double[][] aadblMarketCoreExpectationHessian = cngMarketCore.hessian();</span>
 
-<span class="fc" id="L635">		double[] adblMarketCoreExpectationJacobian = cngMarketCore.jacobian();</span>
+<span class="fc" id="L646">		double[] adblMarketCoreExpectationJacobian = cngMarketCore.jacobian();</span>
 
-<span class="fc" id="L637">		int iNumSliceNode = adblMarketCoreExpectationJacobian.length;</span>
-<span class="fc" id="L638">		double[][] aadblHessian = new double[iNumSliceNode][iNumSliceNode];</span>
-<span class="fc" id="L639">		double[] adblJacobian = new double[iNumSliceNode];</span>
+<span class="fc" id="L648">		int iNumSliceNode = adblMarketCoreExpectationJacobian.length;</span>
+<span class="fc" id="L649">		double[][] aadblHessian = new double[iNumSliceNode][iNumSliceNode];</span>
+<span class="fc" id="L650">		double[] adblJacobian = new double[iNumSliceNode];</span>
 
-<span class="fc bfc" id="L641" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSliceNode; ++i) {</span>
-<span class="fc" id="L642">			adblJacobian[i] = adblPermanentImpactExpectationJacobian[i] +</span>
+<span class="fc bfc" id="L652" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSliceNode; ++i) {</span>
+<span class="fc" id="L653">			adblJacobian[i] = adblPermanentImpactExpectationJacobian[i] +</span>
 				adblTemporaryImpactExpectationJacobian[i] + adblMarketCoreExpectationJacobian[i];
 
-<span class="fc bfc" id="L645" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumSliceNode; ++j)</span>
-<span class="fc" id="L646">				aadblHessian[i][j] = aadblPermanentImpactExpectationHessian[i][j] +</span>
+<span class="fc bfc" id="L656" title="All 2 branches covered.">			for (int j = 0; j &lt; iNumSliceNode; ++j)</span>
+<span class="fc" id="L657">				aadblHessian[i][j] = aadblPermanentImpactExpectationHessian[i][j] +</span>
 					aadblTemporaryImpactExpectationHessian[i][j] + aadblMarketCoreExpectationHessian[i][j];
 		}
 
 		try {
-<span class="fc" id="L651">			return new org.drip.execution.sensitivity.ControlNodesGreek (cngPermanentImpact.value() +</span>
-<span class="fc" id="L652">				cngTemporaryImpact.value() + cngMarketCore.value(), adblJacobian, aadblHessian);</span>
-<span class="nc" id="L653">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L654">			e.printStackTrace();</span>
+<span class="fc" id="L662">			return new org.drip.execution.sensitivity.ControlNodesGreek (cngPermanentImpact.value() +</span>
+<span class="fc" id="L663">				cngTemporaryImpact.value() + cngMarketCore.value(), adblJacobian, aadblHessian);</span>
+<span class="nc" id="L664">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L665">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L657">		return null;</span>
+<span class="nc" id="L668">		return null;</span>
 	}
 
 	/**
@@ -668,30 +679,30 @@ public class Slice implements org.drip.execution.sensitivity.ControlNodesGreekGe
 	public org.drip.execution.discrete.OptimalSerialCorrelationAdjustment serialCorrelationAdjustment (
 		final org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep)
 	{
-<span class="pc bpc" id="L671" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
+<span class="pc bpc" id="L682" title="1 of 2 branches missed.">		if (null == apep) return null;</span>
 
-<span class="fc" id="L673">		org.drip.execution.parameters.ArithmeticPriceDynamicsSettings apds =</span>
-<span class="fc" id="L674">			apep.arithmeticPriceDynamicsSettings();</span>
+<span class="fc" id="L684">		org.drip.execution.parameters.ArithmeticPriceDynamicsSettings apds =</span>
+<span class="fc" id="L685">			apep.arithmeticPriceDynamicsSettings();</span>
 
-<span class="fc" id="L676">		double dblTradeRate = (_dblRightHoldings - _dblLeftHoldings) / _dblTimeInterval;</span>
+<span class="fc" id="L687">		double dblTradeRate = (_dblRightHoldings - _dblLeftHoldings) / _dblTimeInterval;</span>
 
-<span class="fc" id="L678">		org.drip.execution.impact.TransactionFunction miTemporary =</span>
-<span class="fc" id="L679">			apep.temporaryExpectation().epochImpactFunction();</span>
+<span class="fc" id="L689">		org.drip.execution.impact.TransactionFunction miTemporary =</span>
+<span class="fc" id="L690">			apep.temporaryExpectation().epochImpactFunction();</span>
 
 		try {
-<span class="fc" id="L682">			double dblRhoSigma = apds.serialCorrelation() * apds.epochVolatility();</span>
+<span class="fc" id="L693">			double dblRhoSigma = apds.serialCorrelation() * apds.epochVolatility();</span>
 
-<span class="fc" id="L684">			double dblDenominator = 1. / (dblTradeRate * miTemporary.derivative (dblTradeRate, 2) + 2. *</span>
-<span class="fc" id="L685">				miTemporary.derivative (dblTradeRate, 1));</span>
+<span class="fc" id="L695">			double dblDenominator = 1. / (dblTradeRate * miTemporary.derivative (dblTradeRate, 2) + 2. *</span>
+<span class="fc" id="L696">				miTemporary.derivative (dblTradeRate, 1));</span>
 
-<span class="fc" id="L687">			return new org.drip.execution.discrete.OptimalSerialCorrelationAdjustment (dblDenominator *</span>
-<span class="fc" id="L688">				dblRhoSigma * java.lang.Math.pow (_dblTimeInterval, 1.5), 0.5 * dblDenominator * dblRhoSigma</span>
+<span class="fc" id="L698">			return new org.drip.execution.discrete.OptimalSerialCorrelationAdjustment (dblDenominator *</span>
+<span class="fc" id="L699">				dblRhoSigma * java.lang.Math.pow (_dblTimeInterval, 1.5), 0.5 * dblDenominator * dblRhoSigma</span>
 					* dblRhoSigma * _dblTimeInterval * _dblTimeInterval);
-<span class="nc" id="L690">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L691">			e.printStackTrace();</span>
+<span class="nc" id="L701">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L702">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L694">		return null;</span>
+<span class="nc" id="L705">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

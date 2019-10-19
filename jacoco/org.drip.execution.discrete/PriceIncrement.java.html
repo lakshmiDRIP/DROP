@@ -6,38 +6,49 @@ package org.drip.execution.discrete;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,17 +109,17 @@ package org.drip.execution.discrete;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/discrete/README.md&quot;&gt;Trajectory Slice Execution Cost Distribution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncrement {
-<span class="nc" id="L111">	private double _dblPreviousEquilibriumPrice = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _dblPreviousEquilibriumPrice = java.lang.Double.NaN;</span>
 
 	/**
 	 * PriceIncrement Constructor
@@ -126,12 +137,12 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 		final org.drip.execution.evolution.MarketImpactComponent micStochastic)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L129">		super (micDeterministic, micStochastic);</span>
+<span class="nc" id="L140">		super (micDeterministic, micStochastic);</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPreviousEquilibriumPrice =</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblPreviousEquilibriumPrice =</span>
 			dblPreviousEquilibriumPrice))
-<span class="nc" id="L133">			throw new java.lang.Exception (&quot;PriceIncrement Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L134">	}</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;PriceIncrement Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Previous Equilibrium Price
@@ -141,7 +152,7 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 
 	public double previousEquilibriumPrice()
 	{
-<span class="nc" id="L144">		return _dblPreviousEquilibriumPrice;</span>
+<span class="nc" id="L155">		return _dblPreviousEquilibriumPrice;</span>
 	}
 
 	/**
@@ -152,8 +163,8 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 
 	public double newEquilibriumPrice()
 	{
-<span class="nc" id="L155">		return _dblPreviousEquilibriumPrice + marketDynamicWander() + marketDynamicDrift() +</span>
-<span class="nc" id="L156">			permanentImpactWander() + permanentImpactDrift();</span>
+<span class="nc" id="L166">		return _dblPreviousEquilibriumPrice + marketDynamicWander() + marketDynamicDrift() +</span>
+<span class="nc" id="L167">			permanentImpactWander() + permanentImpactDrift();</span>
 	}
 
 	/**
@@ -164,7 +175,7 @@ public class PriceIncrement extends org.drip.execution.discrete.EvolutionIncreme
 
 	public double newExecutionPrice()
 	{
-<span class="nc" id="L167">		return newEquilibriumPrice() + temporaryImpactWander() + temporaryImpactDrift();</span>
+<span class="nc" id="L178">		return newEquilibriumPrice() + temporaryImpactWander() + temporaryImpactDrift();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

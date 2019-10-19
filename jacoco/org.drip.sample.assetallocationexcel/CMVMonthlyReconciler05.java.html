@@ -92,18 +92,20 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L95">public class CMVMonthlyReconciler05 {</span>
+<span class="nc" id="L95">public class CMVMonthlyReconciler05</span>
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L101">		EnvManager.InitEnv (</span>
+<span class="fc" id="L102">		EnvManager.InitEnv (</span>
 			&quot;&quot;,
 			true
 		);
 
-<span class="fc" id="L106">		String[] astrAssetName = new String[] {</span>
+<span class="fc" id="L107">		String[] assetIDArray = new String[]</span>
+		{
 			&quot;TOK&quot;,
 			&quot;EWJ&quot;,
 			&quot;HYG&quot;,
@@ -112,8 +114,8 @@ import org.drip.service.env.EnvManager;
 			&quot;GSG&quot;,
 			&quot;BWX&quot;
 		};
-
-<span class="fc" id="L116">		double[] adblAssetLowerBound = new double[] {</span>
+<span class="fc" id="L117">		double[] assetHoldingsLowerBoundArray = new double[]</span>
+		{
 			0.00,
 			0.00,
 			0.00,
@@ -122,8 +124,8 @@ import org.drip.service.env.EnvManager;
 			0.00,
 			0.00
 		};
-
-<span class="fc" id="L126">		double[] adblAssetUpperBound = new double[] {</span>
+<span class="fc" id="L127">		double[] assetHoldingsUpperBoundArray = new double[]</span>
+		{
 			0.30,
 			0.30,
 			0.30,
@@ -132,8 +134,8 @@ import org.drip.service.env.EnvManager;
 			0.30,
 			0.50
 		};
-
-<span class="fc" id="L136">		double[] adblAssetExpectedReturns = new double[] {</span>
+<span class="fc" id="L137">		double[] expectedAssetReturnsArray = new double[]</span>
+		{
 			0.008930,
 			0.007730,
 			0.006950,
@@ -142,11 +144,10 @@ import org.drip.service.env.EnvManager;
 			0.007140,
 			0.003870
 		};
-
-<span class="fc" id="L146">		double dblPortfolioDesignReturn = 0.005319;</span>
-<span class="fc" id="L147">		double dblPortfolioRiskExcel = 0.026572;</span>
-
-<span class="fc" id="L149">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
+<span class="fc" id="L147">		double portfolioDesignReturn = 0.005319;</span>
+<span class="fc" id="L148">		double portfolioRiskExcel = 0.026572;</span>
+<span class="fc" id="L149">		double[][] assetReturnsCovarianceMatrix = new double[][]</span>
+		{
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
 			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
@@ -155,8 +156,8 @@ import org.drip.service.env.EnvManager;
 			{0.002312, 0.001647, 0.001110, 0.000042, 0.000825, 0.005211, 0.000749},
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
-
-<span class="fc" id="L159">		double[] adblReconcilerVariate = new double[] {</span>
+<span class="fc" id="L159">		double[] assetWeightsReconcilerArray = new double[]</span>
+		{
 			0.101541,
 			0.050369,
 			0.057521,
@@ -166,149 +167,225 @@ import org.drip.service.env.EnvManager;
 			0.193626
 		};
 
-<span class="fc" id="L169">		AssetComponent[] aACReconciler = new AssetComponent[adblReconcilerVariate.length];</span>
+<span class="fc" id="L170">		AssetComponent[] assetComponentReconcilerArray =</span>
+			new AssetComponent[assetWeightsReconcilerArray.length];
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">		for (int i = 0; i &lt; adblReconcilerVariate.length; ++i)</span>
-<span class="fc" id="L172">			aACReconciler[i] = new AssetComponent (</span>
-				astrAssetName[i],
-				adblReconcilerVariate[i]
+<span class="fc" id="L173">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">			assetIndex &lt; assetWeightsReconcilerArray.length;</span>
+<span class="fc" id="L175">			++assetIndex)</span>
+		{
+<span class="fc" id="L177">			assetComponentReconcilerArray[assetIndex] = new AssetComponent (</span>
+				assetIDArray[assetIndex],
+				assetWeightsReconcilerArray[assetIndex]
 			);
-
-<span class="fc" id="L177">		Portfolio pfReconciler = new Portfolio (aACReconciler);</span>
-
-<span class="fc" id="L179">		AssetUniverseStatisticalProperties ausp = AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
-<span class="fc" id="L180">			MultivariateMoments.Standard (</span>
-				astrAssetName,
-				adblAssetExpectedReturns,
-				aadblAssetReturnsCovariance
-			)
-		);
-
-<span class="fc" id="L187">		double[][] aadblCovarianceMatrix = ausp.covariance (astrAssetName);</span>
-
-<span class="fc" id="L189">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L191">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
-
-<span class="fc" id="L193">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L195">		String strHeader = &quot;\t|     |&quot;;</span>
-
-<span class="fc bfc" id="L197" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
-<span class="fc" id="L198">			strHeader += &quot;    &quot; + astrAssetName[i] + &quot;     |&quot;;</span>
-
-<span class="fc" id="L200">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L202">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L204" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i) {</span>
-<span class="fc" id="L205">			String strDump = &quot;\t| &quot; + astrAssetName[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L207" title="All 2 branches covered.">			for (int j = 0; j &lt; astrAssetName.length; ++j)</span>
-<span class="fc" id="L208">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblCovarianceMatrix[i][j], 1, 8, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L210">			System.out.println (strDump + &quot;||&quot;);</span>
 		}
 
-<span class="fc" id="L213">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
-
-<span class="fc" id="L215">		System.out.println (&quot;\t|-------------------||&quot;);</span>
-
-<span class="fc" id="L217">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
-
-<span class="fc" id="L219">		System.out.println (&quot;\t|-------------------||&quot;);</span>
-
-<span class="fc bfc" id="L221" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
-<span class="fc" id="L222">			System.out.println (</span>
-				&quot;\t| &quot; + astrAssetName[i] + &quot; | &quot; +
-<span class="fc" id="L224">				FormatUtil.FormatDouble (adblAssetLowerBound[i], 2, 0, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L225">				FormatUtil.FormatDouble (adblAssetUpperBound[i], 2, 0, 100.) + &quot;% ||&quot;</span>
+<span class="fc" id="L183">		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =</span>
+<span class="fc" id="L184">			AssetUniverseStatisticalProperties.FromMultivariateMetrics (</span>
+<span class="fc" id="L185">				MultivariateMoments.Standard (</span>
+					assetIDArray,
+					expectedAssetReturnsArray,
+					assetReturnsCovarianceMatrix
+				)
 			);
 
-<span class="fc" id="L228">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
-
-<span class="fc" id="L230">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
-
-<span class="fc" id="L232">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L234">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
-
-<span class="fc" id="L236">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L238">		System.out.println (&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / ipbc.decayVelocity());</span>
-
-<span class="fc" id="L240">		System.out.println (&quot;\t|    Barrier Decay Steps           : &quot; + ipbc.numDecaySteps());</span>
-
-<span class="fc" id="L242">		System.out.println (&quot;\t|    Initial Barrier Strength      : &quot; + ipbc.initialStrength());</span>
-
-<span class="fc" id="L244">		System.out.println (&quot;\t|    Barrier Convergence Tolerance : &quot; + ipbc.relativeTolerance());</span>
-
-<span class="fc" id="L246">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
-
-<span class="fc" id="L248">		ConstrainedMeanVarianceOptimizer cmva = new ConstrainedMeanVarianceOptimizer (</span>
-			ipbc,
-<span class="fc" id="L250">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
+<span class="fc" id="L192">		double[][] covarianceMatrix = assetUniverseStatisticalProperties.covariance (</span>
+			assetIDArray
 		);
 
-<span class="fc" id="L253">		BoundedPortfolioConstructionParameters pdp = new BoundedPortfolioConstructionParameters (</span>
-			astrAssetName,
-<span class="fc" id="L255">			CustomRiskUtilitySettings.VarianceMinimizer(),</span>
-			new EqualityConstraintSettings (
-				EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT | EqualityConstraintSettings.RETURNS_CONSTRAINT,
-				dblPortfolioDesignReturn
+<span class="fc" id="L196">		System.out.println (&quot;\n\n\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L198">		System.out.println (&quot;\t|                                  CROSS ASSET COVARIANCE MATRIX                                 ||&quot;);</span>
+
+<span class="fc" id="L200">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L202">		String header = &quot;\t|     |&quot;;</span>
+
+<span class="fc" id="L204">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="fc" id="L206">			++assetIndex)</span>
+		{
+<span class="fc" id="L208">			header += &quot;    &quot; + assetIDArray[assetIndex] + &quot;     |&quot;;</span>
+		}
+
+<span class="fc" id="L211">		System.out.println (header + &quot;|&quot;);</span>
+
+<span class="fc" id="L213">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L215">		for (int assetIndexI = 0;</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">			assetIndexI &lt; assetIDArray.length;</span>
+<span class="fc" id="L217">			++assetIndexI)</span>
+		{
+<span class="fc" id="L219">			String dump = &quot;\t| &quot; + assetIDArray[assetIndexI] + &quot; &quot;;</span>
+
+<span class="fc" id="L221">			for (int assetIndexJ = 0;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">				assetIndexJ &lt; assetIDArray.length;</span>
+<span class="fc" id="L223">				++assetIndexJ)</span>
+			{
+<span class="fc" id="L225">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					covarianceMatrix[assetIndexI][assetIndexJ], 1, 8, 1.
+				) + &quot; &quot;;
+			}
+
+<span class="fc" id="L230">			System.out.println (dump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L233">		System.out.println (&quot;\t|------------------------------------------------------------------------------------------------||\n\n&quot;);</span>
+
+<span class="fc" id="L235">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="fc" id="L237">		System.out.println (&quot;\t|   ASSET BOUNDS    ||&quot;);</span>
+
+<span class="fc" id="L239">		System.out.println (&quot;\t|-------------------||&quot;);</span>
+
+<span class="fc" id="L241">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="fc" id="L243">			++assetIndex)</span>
+		{
+<span class="fc" id="L245">			System.out.println (</span>
+				&quot;\t| &quot; + assetIDArray[assetIndex] + &quot; | &quot; +
+<span class="fc" id="L247">				FormatUtil.FormatDouble (assetHoldingsLowerBoundArray[assetIndex], 2, 0, 100.) + &quot;% | &quot; +</span>
+<span class="fc" id="L248">				FormatUtil.FormatDouble (assetHoldingsUpperBoundArray[assetIndex], 2, 0, 100.) + &quot;% ||&quot;</span>
+			);
+		}
+
+<span class="fc" id="L252">		System.out.println (&quot;\t|-------------------||\n\n&quot;);</span>
+
+<span class="fc" id="L254">		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();</span>
+
+<span class="fc" id="L256">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L258">		System.out.println (&quot;\t|  INTERIOR POINT METHOD BARRIER PARAMETERS  ||&quot;);</span>
+
+<span class="fc" id="L260">		System.out.println (&quot;\t|--------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L262">		System.out.println (</span>
+<span class="fc" id="L263">			&quot;\t|    Barrier Decay Velocity        : &quot; + 1. / interiorPointBarrierControl.decayVelocity()</span>
+		);
+
+<span class="fc" id="L266">		System.out.println (</span>
+<span class="fc" id="L267">			&quot;\t|    Barrier Decay Steps           : &quot; + interiorPointBarrierControl.decayStepCount()</span>
+		);
+
+<span class="fc" id="L270">		System.out.println (</span>
+<span class="fc" id="L271">			&quot;\t|    Initial Barrier Strength      : &quot; + interiorPointBarrierControl.initialStrength()</span>
+		);
+
+<span class="fc" id="L274">		System.out.println (</span>
+<span class="fc" id="L275">			&quot;\t|    Barrier Convergence Tolerance : &quot; + interiorPointBarrierControl.relativeTolerance()</span>
+		);
+
+<span class="fc" id="L278">		System.out.println (&quot;\t|--------------------------------------------||\n\n&quot;);</span>
+
+<span class="fc" id="L280">		BoundedPortfolioConstructionParameters boundedPortfolioConstructionParameters =</span>
+			new BoundedPortfolioConstructionParameters (
+				assetIDArray,
+<span class="fc" id="L283">				CustomRiskUtilitySettings.VarianceMinimizer(),</span>
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
+						EqualityConstraintSettings.RETURNS_CONSTRAINT,
+					portfolioDesignReturn
+				)
+			);
+
+<span class="fc" id="L291">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">			assetIndex &lt; assetIDArray.length;</span>
+<span class="fc" id="L293">			++assetIndex)</span>
+		{
+<span class="fc" id="L295">			boundedPortfolioConstructionParameters.addBound (</span>
+				assetIDArray[assetIndex],
+				assetHoldingsLowerBoundArray[assetIndex],
+				assetHoldingsUpperBoundArray[assetIndex]
+			);
+		}
+
+<span class="fc" id="L302">		OptimizationOutput optimizationOutput = new ConstrainedMeanVarianceOptimizer (</span>
+			interiorPointBarrierControl,
+<span class="fc" id="L304">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
+				false
 			)
+<span class="fc" id="L307">		).allocate (</span>
+			boundedPortfolioConstructionParameters,
+			assetUniverseStatisticalProperties
 		);
 
-<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (int i = 0; i &lt; astrAssetName.length; ++i)</span>
-<span class="fc" id="L263">			pdp.addBound (</span>
-				astrAssetName[i],
-				adblAssetLowerBound[i],
-				adblAssetUpperBound[i]
-			);
+<span class="fc" id="L312">		AssetComponent[] optimalAssetComponentArray =</span>
+<span class="fc" id="L313">			optimizationOutput.optimalPortfolio().assetComponentArray();</span>
 
-<span class="fc" id="L269">		OptimizationOutput pfOptimal = cmva.allocate (</span>
-			pdp,
-			ausp
+<span class="fc" id="L315">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+
+<span class="fc" id="L317">		System.out.println (&quot;\t|    OPTIMAL  ASSET  WEIGHTS   ||&quot;);</span>
+
+<span class="fc" id="L319">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+
+<span class="fc" id="L321">		System.out.println (&quot;\t| ASSET |   DROP   |   EXCEL   ||&quot;);</span>
+
+<span class="fc" id="L323">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+
+<span class="fc" id="L325">		for (int assetIndex = 0;</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">			assetIndex &lt; optimalAssetComponentArray.length;</span>
+<span class="fc" id="L327">			++assetIndex)</span>
+		{
+<span class="fc" id="L329">			System.out.println (</span>
+<span class="fc" id="L330">				&quot;\t|  &quot; + optimalAssetComponentArray[assetIndex].id() + &quot;  |&quot; +</span>
+<span class="fc" id="L331">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L332">					optimalAssetComponentArray[assetIndex].amount(), 2, 4, 100.</span>
+				) + &quot;% | &quot; +
+<span class="fc" id="L334">				FormatUtil.FormatDouble (</span>
+<span class="fc" id="L335">					assetComponentReconcilerArray[assetIndex].amount(), 2, 4, 100.</span>
+				) + &quot;% ||&quot;
+			);
+		}
+
+<span class="fc" id="L340">		System.out.println (&quot;\t|------------------------------||\n\n&quot;);</span>
+
+<span class="fc" id="L342">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L344">		System.out.println (</span>
+<span class="fc" id="L345">			&quot;\t| Optimal Portfolio Normalize                     : &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L346">				optimizationOutput.optimalPortfolio().notional(), 1, 4, 1.</span>
+			) + &quot;   ||&quot;
 		);
 
-<span class="fc" id="L274">		AssetComponent[] aACOptimal = pfOptimal.optimalPortfolio().assetComponentArray();</span>
+<span class="fc" id="L350">		System.out.println (</span>
+<span class="fc" id="L351">			&quot;\t| Optimal Portfolio Input Return                  : &quot; + FormatUtil.FormatDouble (</span>
+				portfolioDesignReturn, 1, 4, 100.
+			) + &quot;%  ||&quot;
+		);
 
-<span class="fc" id="L276">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="fc" id="L356">		System.out.println (</span>
+<span class="fc" id="L357">			&quot;\t| Optimal Portfolio Expected Return               : &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L358">				optimizationOutput.optimalMetrics().excessReturnsMean(), 1, 4, 100.</span>
+			) + &quot;%  ||&quot;
+		);
 
-<span class="fc" id="L278">		System.out.println (&quot;\t|    OPTIMAL  ASSET  WEIGHTS   ||&quot;);</span>
+<span class="fc" id="L362">		System.out.println (</span>
+<span class="fc" id="L363">			&quot;\t| Optimal Portfolio Standard Deviation            : &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L364">				optimizationOutput.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.</span>
+			) + &quot;%  ||&quot;
+		);
 
-<span class="fc" id="L280">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="fc" id="L368">		System.out.println (</span>
+<span class="fc" id="L369">			&quot;\t| Excel Portfolio Standard Deviation (Calculated) : &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L370">				Math.sqrt (</span>
+					new Portfolio (
+						assetComponentReconcilerArray
+<span class="fc" id="L373">					).variance (</span>
+						assetUniverseStatisticalProperties
+					)
+				), 1, 4, 100.
+			) + &quot;%  ||&quot;
+		);
 
-<span class="fc" id="L282">		System.out.println (&quot;\t| ASSET |   DRIP   |   EXCEL   ||&quot;);</span>
+<span class="fc" id="L380">		System.out.println (</span>
+<span class="fc" id="L381">			&quot;\t| Excel Portfolio Standard Deviation (Input)      : &quot; + FormatUtil.FormatDouble (</span>
+				portfolioRiskExcel, 1, 4, 100.
+			) + &quot;%  ||&quot;
+		);
 
-<span class="fc" id="L284">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="fc" id="L386">		System.out.println (&quot;\t|-------------------------------------------------------------||\n&quot;);</span>
 
-<span class="fc bfc" id="L286" title="All 2 branches covered.">		for (int i = 0; i &lt; aACOptimal.length; ++i)</span>
-<span class="fc" id="L287">			System.out.println (</span>
-<span class="fc" id="L288">				&quot;\t|  &quot; + aACOptimal[i].id() + &quot;  |&quot; +</span>
-<span class="fc" id="L289">				FormatUtil.FormatDouble (aACOptimal[i].amount(), 2, 4, 100.) + &quot;% | &quot; +</span>
-<span class="fc" id="L290">				FormatUtil.FormatDouble (aACReconciler[i].amount(), 2, 4, 100.) + &quot;% ||&quot;</span>
-			);
-
-<span class="fc" id="L293">		System.out.println (&quot;\t|------------------------------||\n\n&quot;);</span>
-
-<span class="fc" id="L295">		System.out.println (&quot;\t|-------------------------------------------------------------||&quot;);</span>
-
-<span class="fc" id="L297">		System.out.println (&quot;\t| Optimal Portfolio Normalize                     : &quot; + FormatUtil.FormatDouble (pfOptimal.optimalPortfolio().notional(), 1, 4, 1.) + &quot;   ||&quot;);</span>
-
-<span class="fc" id="L299">		System.out.println (&quot;\t| Optimal Portfolio Input Return                  : &quot; + FormatUtil.FormatDouble (dblPortfolioDesignReturn, 1, 4, 100.) + &quot;%  ||&quot;);</span>
-
-<span class="fc" id="L301">		System.out.println (&quot;\t| Optimal Portfolio Expected Return               : &quot; + FormatUtil.FormatDouble (pfOptimal.optimalMetrics().excessReturnsMean(), 1, 4, 100.) + &quot;%  ||&quot;);</span>
-
-<span class="fc" id="L303">		System.out.println (&quot;\t| Optimal Portfolio Standard Deviation            : &quot; + FormatUtil.FormatDouble (pfOptimal.optimalMetrics().excessReturnsStandardDeviation(), 1, 4, 100.) + &quot;%  ||&quot;);</span>
-
-<span class="fc" id="L305">		System.out.println (&quot;\t| Excel Portfolio Standard Deviation (Calculated) : &quot; + FormatUtil.FormatDouble (Math.sqrt (pfReconciler.variance (ausp)), 1, 4, 100.) + &quot;%  ||&quot;);</span>
-
-<span class="fc" id="L307">		System.out.println (&quot;\t| Excel Portfolio Standard Deviation (Input)      : &quot; + FormatUtil.FormatDouble (dblPortfolioRiskExcel, 1, 4, 100.) + &quot;%  ||&quot;);</span>
-
-<span class="fc" id="L309">		System.out.println (&quot;\t|-------------------------------------------------------------||\n&quot;);</span>
-
-<span class="fc" id="L311">		EnvManager.TerminateEnv();</span>
-<span class="fc" id="L312">	}</span>
+<span class="fc" id="L388">		EnvManager.TerminateEnv();</span>
+<span class="fc" id="L389">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

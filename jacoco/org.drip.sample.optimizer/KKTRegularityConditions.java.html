@@ -73,43 +73,49 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L76">public class KKTRegularityConditions {</span>
+<span class="nc" id="L76">public class KKTRegularityConditions</span>
+{
 
-	private static final RdToR1 Objective (
-		final double dblX0,
-		final double dblX1,
-		final double dblX2)
+	private static final RdToR1 ObjectiveFunction (
+		final double x0,
+		final double x1,
+		final double x2)
 		throws Exception
 	{
-<span class="fc" id="L84">		return new RdToR1 (null) {</span>
+<span class="fc" id="L85">		return new RdToR1 (</span>
+			null
+		)
+<span class="fc" id="L88">		{</span>
 			@Override public int dimension()
 			{
-<span class="fc" id="L87">				return 3;</span>
+<span class="fc" id="L91">				return 3;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-<span class="nc" id="L94">				return (adblVariate[0] - dblX0) * (adblVariate[0] - dblX0) +</span>
-					(adblVariate[1] - dblX1) * (adblVariate[1] - dblX1) +
-					(adblVariate[2] - dblX2) * (adblVariate[2] - dblX2);
+<span class="nc" id="L98">				return (variateArray[0] - x0) * (variateArray[0] - x0) +</span>
+					(variateArray[1] - x1) * (variateArray[1] - x1) +
+					(variateArray[2] - x2) * (variateArray[2] - x2);
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="fc" id="L102">				return new double[] {</span>
-					2. * (dblX0 - adblVariate[0]),
-					2. * (dblX1 - adblVariate[1]),
-					2. * (dblX2 - adblVariate[2])
+<span class="fc" id="L106">				return new double[]</span>
+				{
+					2. * (x0 - variateArray[0]),
+					2. * (x1 - variateArray[1]),
+					2. * (x2 - variateArray[2])
 				};
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="fc" id="L112">				return new double[][] {</span>
+<span class="fc" id="L117">				return new double[][]</span>
+				{
 					{2., 0., 0.},
 					{0., 2., 0.},
 					{0., 0., 2.}
@@ -119,39 +125,44 @@ import org.drip.service.env.EnvManager;
 	}
 
 	private static final RdToR1 RightConstraint (
-		final double dblDeadCenter,
-		final int iDimension,
-		final double dblHalfWidth,
-		final boolean bSignFlip)
+		final double deadCenter,
+		final int dimension,
+		final double halfWidth,
+		final boolean signFlip)
 		throws Exception
 	{
-<span class="fc" id="L128">		return new RdToR1 (null) {</span>
+<span class="fc" id="L134">		return new RdToR1 (</span>
+			null
+		)
+<span class="fc" id="L137">		{</span>
 			@Override public int dimension()
 			{
-<span class="fc" id="L131">				return 3;</span>
+<span class="fc" id="L140">				return 3;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-<span class="fc bfc" id="L138" title="All 2 branches covered.">				return (bSignFlip ? -1. : 1.) * (dblDeadCenter + dblHalfWidth - adblVariate[iDimension]);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">				return (signFlip ? -1. : 1.) * (deadCenter + halfWidth - variateArray[dimension]);</span>
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="pc bpc" id="L144" title="3 of 12 branches missed.">				return new double[] {</span>
-					iDimension == 0 ? (bSignFlip ? -1. : 1.) * -1. : 0.,
-					iDimension == 1 ? (bSignFlip ? -1. : 1.) * -1. : 0.,
-					iDimension == 2 ? (bSignFlip ? -1. : 1.) * -1. : 0.
+<span class="pc bpc" id="L153" title="3 of 12 branches missed.">				return new double[]</span>
+				{
+					dimension == 0 ? (signFlip ? -1. : 1.) * -1. : 0.,
+					dimension == 1 ? (signFlip ? -1. : 1.) * -1. : 0.,
+					dimension == 2 ? (signFlip ? -1. : 1.) * -1. : 0.
 				};
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="nc" id="L154">				return new double[][] {</span>
+<span class="nc" id="L164">				return new double[][]</span>
+				{
 					{0., 0., 0.},
 					{0., 0., 0.},
 					{0., 0., 0.}
@@ -161,39 +172,44 @@ import org.drip.service.env.EnvManager;
 	}
 
 	private static final RdToR1 LeftConstraint (
-		final double dblDeadCenter,
-		final int iDimension,
-		final double dblHalfWidth,
-		final boolean bSignFlip)
+		final double deadCenter,
+		final int dimension,
+		final double halfWidth,
+		final boolean signFlip)
 		throws Exception
 	{
-<span class="fc" id="L170">		return new RdToR1 (null) {</span>
+<span class="fc" id="L181">		return new RdToR1 (</span>
+			null
+		)
+<span class="fc" id="L184">		{</span>
 			@Override public int dimension()
 			{
-<span class="fc" id="L173">				return 3;</span>
+<span class="fc" id="L187">				return 3;</span>
 			}
 
 			@Override public double evaluate (
-				final double[] adblVariate)
+				final double[] variateArray)
 				throws Exception
 			{
-<span class="fc bfc" id="L180" title="All 2 branches covered.">				return (bSignFlip ? -1. : 1.) * (adblVariate[iDimension] - dblDeadCenter + dblHalfWidth);</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">				return (signFlip ? -1. : 1.) * (variateArray[dimension] - deadCenter + halfWidth);</span>
 			}
 
 			@Override public double[] jacobian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="pc bpc" id="L186" title="3 of 12 branches missed.">				return new double[] {</span>
-					iDimension == 0 ? (bSignFlip ? -1. : 1.) * 1. : 0.,
-					iDimension == 1 ? (bSignFlip ? -1. : 1.) * 1. : 0.,
-					iDimension == 2 ? (bSignFlip ? -1. : 1.) * 1. : 0.
+<span class="pc bpc" id="L200" title="3 of 12 branches missed.">				return new double[]</span>
+				{
+					dimension == 0 ? (signFlip ? -1. : 1.) * 1. : 0.,
+					dimension == 1 ? (signFlip ? -1. : 1.) * 1. : 0.,
+					dimension == 2 ? (signFlip ? -1. : 1.) * 1. : 0.
 				};
 			}
 
 			@Override public double[][] hessian (
-				final double[] adblVariate)
+				final double[] variateArray)
 			{
-<span class="nc" id="L196">				return new double[][] {</span>
+<span class="nc" id="L211">				return new double[][]</span>
+				{
 					{0., 0., 0.},
 					{0., 0., 0.},
 					{0., 0., 0.}
@@ -202,186 +218,201 @@ import org.drip.service.env.EnvManager;
 		};
 	}
 
-	private static final RdToR1[] ConstraintSet (
-		final double dblX0,
-		final double dblX1,
-		final double dblX2,
-		final double dblHalfWidth,
-		final boolean bSignFlip)
+	private static final RdToR1[] ConstraintFunctionArray (
+		final double x0,
+		final double x1,
+		final double x2,
+		final double halfWidth,
+		final boolean signFlip)
 		throws Exception
 	{
-<span class="fc" id="L213">		return new RdToR1[] {</span>
-<span class="fc" id="L214">			LeftConstraint (</span>
-				dblX0,
+<span class="fc" id="L229">		return new RdToR1[] {</span>
+<span class="fc" id="L230">			LeftConstraint (</span>
+				x0,
 				0,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
-<span class="fc" id="L220">			RightConstraint (</span>
-				dblX0,
+<span class="fc" id="L236">			RightConstraint (</span>
+				x0,
 				0,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
-<span class="fc" id="L226">			LeftConstraint (</span>
-				dblX1,
+<span class="fc" id="L242">			LeftConstraint (</span>
+				x1,
 				1,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
-<span class="fc" id="L232">			RightConstraint (</span>
-				dblX1,
+<span class="fc" id="L248">			RightConstraint (</span>
+				x1,
 				1,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
-<span class="fc" id="L238">			LeftConstraint (</span>
-				dblX2,
+<span class="fc" id="L254">			LeftConstraint (</span>
+				x2,
 				2,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			),
-<span class="fc" id="L244">			RightConstraint (</span>
-				dblX2,
+<span class="fc" id="L260">			RightConstraint (</span>
+				x2,
 				2,
-				dblHalfWidth,
-				bSignFlip
+				halfWidth,
+				signFlip
 			)
 		};
 	}
 	public static final void main (
-		final String[] asrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L256">		EnvManager.InitEnv (&quot;&quot;);</span>
-
-<span class="fc" id="L258">		double dblX0 = 1.;</span>
-<span class="fc" id="L259">		double dblX1 = 2.;</span>
-<span class="fc" id="L260">		double dblX2 = 3.;</span>
-<span class="fc" id="L261">		double dblHalfWidth = 1.;</span>
-
-<span class="fc" id="L263">		RdToR1 objectiveRdToR1 = Objective (</span>
-			dblX0,
-			dblX1,
-			dblX2
+<span class="fc" id="L272">		EnvManager.InitEnv (</span>
+			&quot;&quot;
 		);
 
-<span class="fc" id="L269">		RdToR1[] aConstraintRdToR1 = ConstraintSet (</span>
-			dblX0,
-			dblX1,
-			dblX2,
-			dblHalfWidth,
-			false
+<span class="fc" id="L276">		double x0 = 1.;</span>
+<span class="fc" id="L277">		double x1 = 2.;</span>
+<span class="fc" id="L278">		double x2 = 3.;</span>
+<span class="fc" id="L279">		double halfWidth = 1.;</span>
+
+<span class="fc" id="L281">		RdToR1 objectiveFunction = ObjectiveFunction (</span>
+			x0,
+			x1,
+			x2
 		);
 
-<span class="fc" id="L277">		BarrierFixedPointFinder bfpf = new BarrierFixedPointFinder (</span>
-			objectiveRdToR1,
-			aConstraintRdToR1,
-			new InteriorPointBarrierControl (
-				InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
-				5.0e-06,
-				1.0e-07,
-				1.0e+10,
-				0.5,
-				20
-			),
-			null
-		);
-
-<span class="fc" id="L291">		double[] adblStartingVariate = new double[3];</span>
-<span class="fc" id="L292">		adblStartingVariate[0] = dblX0 + 0.25 * dblHalfWidth;</span>
-<span class="fc" id="L293">		adblStartingVariate[1] = dblX1 + 0.25 * dblHalfWidth;</span>
-<span class="fc" id="L294">		adblStartingVariate[2] = dblX2 + 0.25 * dblHalfWidth;</span>
-
-<span class="fc" id="L296">		VariateInequalityConstraintMultiplier vicm = bfpf.solve (adblStartingVariate);</span>
-
-<span class="fc" id="L298">		double[] adblVariate = new double[] {</span>
-			dblX0,
-			dblX1,
-			dblX2
+<span class="fc" id="L287">		double[] variateArray = new double[]</span>
+		{
+			x0,
+			x1,
+			x2
 		};
 
-<span class="fc" id="L304">		FritzJohnMultipliers fjm = FritzJohnMultipliers.KarushKuhnTucker (</span>
+<span class="fc" id="L294">		FritzJohnMultipliers karushKuhnTuckerMultipliers = FritzJohnMultipliers.KarushKuhnTucker (</span>
 			null,
-<span class="fc" id="L306">			vicm.constraintMultipliers()</span>
+			new BarrierFixedPointFinder (
+				objectiveFunction,
+<span class="fc" id="L298">				ConstraintFunctionArray (</span>
+					x0,
+					x1,
+					x2,
+					halfWidth,
+					false
+				),
+				new InteriorPointBarrierControl (
+					InteriorPointBarrierControl.VARIATE_CONSTRAINT_SEQUENCE_CONVERGENCE,
+					5.0e-06,
+					1.0e-07,
+					1.0e+10,
+					0.5,
+					20
+				),
+				null
+<span class="fc" id="L314">			).solve (</span>
+				new double[]
+				{
+					x0 + 0.25 * halfWidth,
+					x1 + 0.25 * halfWidth,
+					x2 + 0.25 * halfWidth
+				}
+<span class="fc" id="L321">			).constraintMultiplierArray()</span>
 		);
 
-<span class="fc" id="L309">		OptimizationFramework of = new OptimizationFramework (</span>
-			objectiveRdToR1,
+<span class="fc" id="L324">		OptimizationFramework optimizationFramework = new OptimizationFramework (</span>
+			objectiveFunction,
 			null,
-<span class="fc" id="L312">			ConstraintSet (</span>
-				dblX0,
-				dblX1,
-				dblX2,
-				dblHalfWidth,
+<span class="fc" id="L327">			ConstraintFunctionArray (</span>
+				x0,
+				x1,
+				x2,
+				halfWidth,
 				true
 			)
 		);
 
-<span class="fc" id="L321">		String[] astrSO = of.regularityQualifier (</span>
-			fjm,
-			adblVariate
-<span class="fc" id="L324">		).strengthOrder();</span>
+<span class="fc" id="L336">		String[] strengthOrderArray = optimizationFramework.regularityQualifier (</span>
+			karushKuhnTuckerMultipliers,
+			variateArray
+<span class="fc" id="L339">		).strengthOrder();</span>
 
-<span class="fc" id="L326">		System.out.println();</span>
+<span class="fc" id="L341">		System.out.println();</span>
 
-<span class="fc" id="L328">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L343">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L330">		System.out.println (&quot;\t||                      KKT REGULARITY CONDITIONS                       ||&quot;);</span>
+<span class="fc" id="L345">		System.out.println (&quot;\t||                      KKT REGULARITY CONDITIONS                       ||&quot;);</span>
 
-<span class="fc" id="L332">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L347">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L334">		System.out.println (&quot;\t|| ACTIVE SET RANK                                              : &quot; +</span>
-<span class="fc" id="L335">			of.activeConstraintRank (adblVariate) + &quot;     ||&quot;</span>
+<span class="fc" id="L349">		System.out.println (&quot;\t|| ACTIVE SET RANK                                              : &quot; +</span>
+<span class="fc" id="L350">			optimizationFramework.activeConstraintRank (</span>
+				variateArray
+			) + &quot;     ||&quot;
 		);
 
-<span class="fc" id="L338">		System.out.println (&quot;\t|| LINEAR CONSTRAINT QUALIFICATION                              : &quot; +</span>
-<span class="fc" id="L339">			of.isLCQ() + &quot; ||&quot;</span>
+<span class="fc" id="L355">		System.out.println (&quot;\t|| LINEAR CONSTRAINT QUALIFICATION                              : &quot; +</span>
+<span class="fc" id="L356">			optimizationFramework.isLCQ() + &quot; ||&quot;</span>
 		);
 
-<span class="fc" id="L342">		System.out.println (&quot;\t|| LINEAR INDEPENDENT CONSTRAINT QUALIFICATION                  : &quot; +</span>
-<span class="fc" id="L343">			of.isLICQ (adblVariate) + &quot;  ||&quot;</span>
-		);
-
-<span class="fc" id="L346">		System.out.println (&quot;\t|| MANGASARIAN FROMOVITZ CONSTRAINT QUALIFICATION               : &quot; +</span>
-<span class="fc" id="L347">			of.isMFCQ (adblVariate) + &quot;  ||&quot;</span>
-		);
-
-<span class="fc" id="L350">		System.out.println (&quot;\t|| CONSTANT RANK CONSTRAINT QUALIFICATION                       : &quot; +</span>
-<span class="fc" id="L351">			of.isCRCQ (adblVariate) + &quot;  ||&quot;</span>
-		);
-
-<span class="fc" id="L354">		System.out.println (&quot;\t|| CONSTANT POSITIVE LINEAR DEPENDENCE CONSTRAINT QUALIFICATION : &quot; +</span>
-<span class="fc" id="L355">			of.isCPLDCQ (adblVariate) + &quot;  ||&quot;</span>
-		);
-
-<span class="fc" id="L358">		System.out.println (&quot;\t|| QUASI NORMAL CONSTRAINT QUALIFICATION                        : &quot; +</span>
-<span class="fc" id="L359">			of.isQNCQ (</span>
-				fjm,
-				adblVariate
+<span class="fc" id="L359">		System.out.println (&quot;\t|| LINEAR INDEPENDENT CONSTRAINT QUALIFICATION                  : &quot; +</span>
+<span class="fc" id="L360">			optimizationFramework.isLICQ (</span>
+				variateArray
 			) + &quot;  ||&quot;
 		);
 
-<span class="fc" id="L365">		System.out.println (&quot;\t|| SLATER'S CONDITION CONSTRAINT QUALIFICATION                  : &quot; +</span>
-<span class="fc" id="L366">			of.isSCCQ (adblVariate) + &quot; ||&quot;</span>
+<span class="fc" id="L365">		System.out.println (&quot;\t|| MANGASARIAN FROMOVITZ CONSTRAINT QUALIFICATION               : &quot; +</span>
+<span class="fc" id="L366">			optimizationFramework.isMFCQ (</span>
+				variateArray
+			) + &quot;  ||&quot;
 		);
 
-<span class="fc" id="L369">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L371">		System.out.println (&quot;\t|| CONSTANT RANK CONSTRAINT QUALIFICATION                       : &quot; +</span>
+<span class="fc" id="L372">			optimizationFramework.isCRCQ (</span>
+				variateArray
+			) + &quot;  ||&quot;
+		);
 
-<span class="fc" id="L371">		System.out.println();</span>
+<span class="fc" id="L377">		System.out.println (&quot;\t|| CONSTANT POSITIVE LINEAR DEPENDENCE CONSTRAINT QUALIFICATION : &quot; +</span>
+<span class="fc" id="L378">			optimizationFramework.isCPLDCQ (</span>
+				variateArray
+			) + &quot;  ||&quot;
+		);
 
-<span class="fc" id="L373">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L383">		System.out.println (&quot;\t|| QUASI NORMAL CONSTRAINT QUALIFICATION                        : &quot; +</span>
+<span class="fc" id="L384">			optimizationFramework.isQNCQ (</span>
+				karushKuhnTuckerMultipliers,
+				variateArray
+			) + &quot;  ||&quot;
+		);
 
-<span class="fc" id="L375">		System.out.println (&quot;\t||                      KKT REGULARITY CONDITIONS                       ||&quot;);</span>
+<span class="fc" id="L390">		System.out.println (&quot;\t|| SLATER'S CONDITION CONSTRAINT QUALIFICATION                  : &quot; +</span>
+<span class="fc" id="L391">			optimizationFramework.isSCCQ (</span>
+				variateArray
+			) + &quot; ||&quot;
+		);
 
-<span class="fc" id="L377">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L396">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L379" title="All 2 branches covered.">		for (int i = 0; i &lt; astrSO.length; ++i)</span>
-<span class="fc" id="L380">			System.out.println (&quot;\t|| &quot; + astrSO[i]);</span>
+<span class="fc" id="L398">		System.out.println();</span>
 
-<span class="fc" id="L382">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L400">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L384">		System.out.println();</span>
-<span class="fc" id="L385">	}</span>
+<span class="fc" id="L402">		System.out.println (&quot;\t||                      KKT REGULARITY CONDITIONS                       ||&quot;);</span>
+
+<span class="fc" id="L404">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L406">		for (int strengthOrderIndex = 0;</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">			strengthOrderIndex &lt; strengthOrderArray.length;</span>
+<span class="fc" id="L408">			++strengthOrderIndex)</span>
+		{
+<span class="fc" id="L410">			System.out.println (&quot;\t|| &quot; + strengthOrderArray[strengthOrderIndex]);</span>
+		}
+
+<span class="fc" id="L413">		System.out.println (&quot;\t||----------------------------------------------------------------------||&quot;);</span>
+
+<span class="fc" id="L415">		System.out.println();</span>
+<span class="fc" id="L416">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

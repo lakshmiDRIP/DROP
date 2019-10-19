@@ -62,15 +62,17 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L65">public class DualConstrainedEllipsoidVariance {</span>
+<span class="nc" id="L65">public class DualConstrainedEllipsoidVariance</span>
+{
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-<span class="fc" id="L71">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L72">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="fc" id="L73">		String[] astrEntityName = new String[] {</span>
+<span class="fc" id="L74">		String[] entityNameArray = new String[]</span>
+		{
 			&quot;IBM&quot;,
 			&quot;ATT&quot;,
 			&quot;ALU&quot;,
@@ -79,8 +81,8 @@ import org.drip.service.env.EnvManager;
 			&quot;MSF&quot;,
 			&quot;VER&quot;
 		};
-
-<span class="fc" id="L83">		double[] adblEntityReturn = new double[] {</span>
+<span class="fc" id="L84">		double[] entityReturnsArray = new double[]</span>
+		{
 			0.0264,
 			0.0332,
 			0.0400,
@@ -89,10 +91,9 @@ import org.drip.service.env.EnvManager;
 			0.0604,
 			0.0672
 		};
-
-<span class="fc" id="L93">		double dblEntityDesignReturn = 0.0468;</span>
-
-<span class="fc" id="L95">		double[][] aadblEntityCovariance = new double[][] {</span>
+<span class="fc" id="L94">		double entityDesignReturn = 0.0468;</span>
+<span class="fc" id="L95">		double[][] entityCovarianceMatrix = new double[][]</span>
+		{
 			{1.00, 0.76, 0.80, 0.38, 0.60, 0.61, 0.51},
 			{0.76, 1.00, 0.65, 0.35, 0.56, 0.43, 0.40},
 			{0.80, 0.65, 1.00, 0.68, 0.74, 0.40, 0.51},
@@ -102,109 +103,155 @@ import org.drip.service.env.EnvManager;
 			{0.51, 0.40, 0.51, 0.57, 0.67, 0.39, 1.00}
 		};
 
-<span class="fc" id="L105">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
+<span class="fc" id="L106">		InteriorPointBarrierControl interiorPointBarrierControl = InteriorPointBarrierControl.Standard();</span>
 
-<span class="fc" id="L107">		String strHeader = &quot;\t|     |&quot;;</span>
+<span class="fc" id="L108">		System.out.println (&quot;\n\n\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc bfc" id="L109" title="All 2 branches covered.">		for (int i = 0; i &lt; astrEntityName.length; ++i)</span>
-<span class="fc" id="L110">			strHeader += &quot; &quot; + astrEntityName[i] + &quot;  |&quot;;</span>
+<span class="fc" id="L110">		String header = &quot;\t|     |&quot;;</span>
 
-<span class="fc" id="L112">		System.out.println (strHeader + &quot;|&quot;);</span>
-
-<span class="fc" id="L114">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
-
-<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (int i = 0; i &lt; astrEntityName.length; ++i) {</span>
-<span class="fc" id="L117">			String strDump = &quot;\t| &quot; + astrEntityName[i] + &quot; &quot;;</span>
-
-<span class="fc bfc" id="L119" title="All 2 branches covered.">			for (int j = 0; j &lt; astrEntityName.length; ++j)</span>
-<span class="fc" id="L120">				strDump += &quot;|&quot; + FormatUtil.FormatDouble (aadblEntityCovariance[i][j], 1, 2, 1.) + &quot; &quot;;</span>
-
-<span class="fc" id="L122">			System.out.println (strDump + &quot;||&quot;);</span>
+<span class="fc" id="L112">		for (int entityIndex = 0;</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">			entityIndex &lt; entityNameArray.length;</span>
+<span class="fc" id="L114">			++entityIndex)</span>
+		{
+<span class="fc" id="L116">			header += &quot; &quot; + entityNameArray[entityIndex] + &quot;  |&quot;;</span>
 		}
 
-<span class="fc" id="L125">		System.out.println (&quot;\t|------------------------------------------------------||\n\n&quot;);</span>
+<span class="fc" id="L119">		System.out.println (header + &quot;|&quot;);</span>
 
-<span class="fc" id="L127">		double dblEqualityConstraintConstant = -1.;</span>
-<span class="fc" id="L128">		int iNumEntity = aadblEntityCovariance.length;</span>
+<span class="fc" id="L121">		System.out.println (&quot;\t|------------------------------------------------------||&quot;);</span>
 
-<span class="fc" id="L130">		InteriorPointBarrierControl ipbc = InteriorPointBarrierControl.Standard();</span>
+<span class="fc" id="L123">		for (int entityIndexI = 0;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">			entityIndexI &lt; entityNameArray.length;</span>
+<span class="fc" id="L125">			++entityIndexI)</span>
+		{
+<span class="fc" id="L127">			String dump = &quot;\t| &quot; + entityNameArray[entityIndexI] + &quot; &quot;;</span>
 
-<span class="fc" id="L132">		RdToR1[] aRdToR1EqualityConstraint = new RdToR1[] {</span>
+<span class="fc" id="L129">			for (int entityIndexJ = 0;</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">				entityIndexJ &lt; entityNameArray.length;</span>
+<span class="fc" id="L131">				++entityIndexJ)</span>
+			{
+<span class="fc" id="L133">				dump += &quot;|&quot; + FormatUtil.FormatDouble (</span>
+					entityCovarianceMatrix[entityIndexI][entityIndexJ], 1, 2, 1.
+				) + &quot; &quot;;
+			}
+
+<span class="fc" id="L138">			System.out.println (dump + &quot;||&quot;);</span>
+		}
+
+<span class="fc" id="L141">		System.out.println (&quot;\t|------------------------------------------------------||\n\n&quot;);</span>
+
+<span class="fc" id="L143">		double equalityConstraintConstant = -1.;</span>
+<span class="fc" id="L144">		int entityCount = entityCovarianceMatrix.length;</span>
+
+<span class="fc" id="L146">		RdToR1[] equalityConstraintFunctionArray = new RdToR1[]</span>
+		{
 			new AffineMultivariate (
-<span class="fc" id="L134">				ObjectiveConstraintVariateSet.Unitary (iNumEntity),</span>
-				dblEqualityConstraintConstant
+<span class="fc" id="L149">				ObjectiveConstraintVariateSet.Unitary (</span>
+					entityCount
+				),
+				equalityConstraintConstant
 			),
 			new AffineMultivariate (
-				adblEntityReturn,
-				-1. * dblEntityDesignReturn
+				entityReturnsArray,
+				-1. * entityDesignReturn
 			)
 		};
 
-<span class="fc" id="L143">		int iNumEqualityConstraint = aRdToR1EqualityConstraint.length;</span>
+<span class="fc" id="L160">		int equalityConstraintCount = equalityConstraintFunctionArray.length;</span>
 
-<span class="fc" id="L145">		RdToR1[] aRdToR1InequalityConstraint = new RdToR1[] {</span>
-			new AffineBoundMultivariate (false, 0, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 0, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 1, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 1, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 2, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 2, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 3, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 3, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 4, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 4, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 5, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 5, iNumEntity + iNumEqualityConstraint, 0.65),
-			new AffineBoundMultivariate (false, 6, iNumEntity + iNumEqualityConstraint, 0.05),
-			new AffineBoundMultivariate (true, 6, iNumEntity + iNumEqualityConstraint, 0.65)
-		};
-
-<span class="fc" id="L162">		LagrangianMultivariate ceec = new LagrangianMultivariate (</span>
-			new CovarianceEllipsoidMultivariate (aadblEntityCovariance),
-			aRdToR1EqualityConstraint
+<span class="fc" id="L162">		LagrangianMultivariate lagrangianMultivariate = new LagrangianMultivariate (</span>
+			new CovarianceEllipsoidMultivariate (
+				entityCovarianceMatrix
+			),
+			equalityConstraintFunctionArray
 		);
 
-<span class="fc" id="L167">		BarrierFixedPointFinder ifpm = new BarrierFixedPointFinder (</span>
-			ceec,
-			aRdToR1InequalityConstraint,
-			ipbc,
-<span class="fc" id="L171">			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)</span>
-		);
-
-<span class="fc" id="L174">		VariateInequalityConstraintMultiplier vcmt = ifpm.solve (</span>
-<span class="fc" id="L175">			ObjectiveConstraintVariateSet.Uniform (</span>
-				iNumEntity,
-<span class="fc" id="L177">				ceec.constraintFunctionDimension()</span>
+<span class="fc" id="L169">		double[] optimalVariateArray = new BarrierFixedPointFinder (</span>
+			lagrangianMultivariate,
+			new RdToR1[]
+			{
+				new AffineBoundMultivariate (
+					false,
+					0,
+					entityCount + equalityConstraintCount,
+					0.05
+				),
+				new AffineBoundMultivariate (
+					true,
+					0,
+					entityCount + equalityConstraintCount,
+					0.65
+				),
+				new AffineBoundMultivariate (false, 1, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 1, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 2, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 2, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 3, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 3, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 4, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 4, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 5, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 5, entityCount + equalityConstraintCount, 0.65),
+				new AffineBoundMultivariate (false, 6, entityCount + equalityConstraintCount, 0.05),
+				new AffineBoundMultivariate (true, 6, entityCount + equalityConstraintCount, 0.65)
+			},
+			interiorPointBarrierControl,
+<span class="fc" id="L199">			LineStepEvolutionControl.NocedalWrightStrongWolfe (</span>
+				false
 			)
-		);
+<span class="fc" id="L202">		).solve (</span>
+<span class="fc" id="L203">			ObjectiveConstraintVariateSet.Uniform (</span>
+				entityCount,
+<span class="fc" id="L205">				lagrangianMultivariate.constraintFunctionDimension()</span>
+			)
+<span class="fc" id="L207">		).variateArray();</span>
 
-<span class="fc" id="L181">		double[] adblOptimalVariate = vcmt.variates();</span>
+<span class="fc" id="L209">		System.out.println (&quot;\t|----------------------||&quot;);</span>
 
-<span class="fc" id="L183">		System.out.println (&quot;\t|----------------------||&quot;);</span>
+<span class="fc" id="L211">		System.out.println (&quot;\t|   OPTIMAL ENTITIES   ||&quot;);</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\t|   OPTIMAL ENTITIES   ||&quot;);</span>
+<span class="fc" id="L213">		System.out.println (&quot;\t|----------------------||&quot;);</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t|----------------------||&quot;);</span>
+<span class="fc" id="L215">		double expectedReturn = 0.;</span>
 
-<span class="fc" id="L189">		double dblExpectedReturn = 0.;</span>
+<span class="fc" id="L217">		for (int entityIndex = 0;</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">			entityIndex &lt; entityCount;</span>
+<span class="fc" id="L219">			++entityIndex)</span>
+		{
+<span class="fc" id="L221">			System.out.println (</span>
+<span class="fc" id="L222">				&quot;\t|   &quot; + entityNameArray[entityIndex] + &quot;   =&gt;  &quot; + FormatUtil.FormatDouble (</span>
+					optimalVariateArray[entityIndex], 2, 2, 100.
+				) + &quot;%  ||&quot;
+			);
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumEntity; ++i) {</span>
-<span class="fc" id="L192">			System.out.println (&quot;\t|   &quot; + astrEntityName[i] + &quot;   =&gt;  &quot; + FormatUtil.FormatDouble (adblOptimalVariate[i], 2, 2, 100.) + &quot;%  ||&quot;);</span>
-
-<span class="fc" id="L194">			dblExpectedReturn += adblOptimalVariate[i] * adblEntityReturn[i];</span>
+<span class="fc" id="L227">			expectedReturn += optimalVariateArray[entityIndex] * entityReturnsArray[entityIndex];</span>
 		}
 
-<span class="fc" id="L197">		System.out.println (&quot;\t|----------------------||\n&quot;);</span>
+<span class="fc" id="L230">		System.out.println (&quot;\t|----------------------||\n&quot;);</span>
 
-<span class="fc" id="L199">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
+<span class="fc" id="L232">		System.out.println (&quot;\t|------------------------------||&quot;);</span>
 
-<span class="fc" id="L201">		System.out.println (&quot;\t| DESIGN RETURN    =&gt; &quot; + FormatUtil.FormatDouble (dblEntityDesignReturn, 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L234">		System.out.println (</span>
+<span class="fc" id="L235">			&quot;\t| DESIGN RETURN    =&gt; &quot; + FormatUtil.FormatDouble (</span>
+				entityDesignReturn, 1, 5, 1.
+			) + &quot; ||&quot;
+		);
 
-<span class="fc" id="L203">		System.out.println (&quot;\t| EXPECTED RETURN  =&gt; &quot; + FormatUtil.FormatDouble (dblExpectedReturn, 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L240">		System.out.println (</span>
+<span class="fc" id="L241">			&quot;\t| EXPECTED RETURN  =&gt; &quot; + FormatUtil.FormatDouble (</span>
+				expectedReturn, 1, 5, 1.
+			) + &quot; ||&quot;
+		);
 
-<span class="fc" id="L205">		System.out.println (&quot;\t| OPTIMAL VARIANCE =&gt; &quot; + FormatUtil.FormatDouble (ceec.evaluate (adblOptimalVariate), 1, 5, 1.) + &quot; ||&quot;);</span>
+<span class="fc" id="L246">		System.out.println (</span>
+<span class="fc" id="L247">			&quot;\t| OPTIMAL VARIANCE =&gt; &quot; + FormatUtil.FormatDouble (</span>
+<span class="fc" id="L248">				lagrangianMultivariate.evaluate (</span>
+					optimalVariateArray
+				), 1, 5, 1.
+			) + &quot; ||&quot;
+		);
 
-<span class="fc" id="L207">		System.out.println (&quot;\t|------------------------------||\n&quot;);</span>
-<span class="fc" id="L208">	}</span>
+<span class="fc" id="L254">		System.out.println (&quot;\t|------------------------------||\n&quot;);</span>
+<span class="fc" id="L255">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

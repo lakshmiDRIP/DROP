@@ -93,7 +93,9 @@ package org.drip.function.rdtor1descent;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.LineEvolutionVerifier {
+public class CurvatureEvolutionVerifier
+	extends org.drip.function.rdtor1descent.LineEvolutionVerifier
+{
 
 	/**
 	 * The Nocedal-Wright Curvature Parameter
@@ -101,49 +103,56 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 
 	public static final double NOCEDAL_WRIGHT_CURVATURE_PARAMETER = 0.9;
 
-<span class="fc" id="L104">	private boolean _bStrongCurvatureCriterion = false;</span>
-<span class="fc" id="L105">	private double _dblCurvatureParameter = java.lang.Double.NaN;</span>
+<span class="fc" id="L106">	private boolean _strongCurvatureCriterion = false;</span>
+<span class="fc" id="L107">	private double _curvatureParameter = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Nocedal-Wright Curvature Evolution Verifier
 	 * 
-	 * @param bStrongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
+	 * @param strongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
 	 * 
 	 * @return The Nocedal-Wright Curvature Evolution Verifier Instance
 	 */
 
 	public static final CurvatureEvolutionVerifier NocedalWrightStandard (
-		final boolean bStrongCurvatureCriterion)
+		final boolean strongCurvatureCriterion)
 	{
-		try {
-<span class="fc" id="L119">			return new CurvatureEvolutionVerifier (NOCEDAL_WRIGHT_CURVATURE_PARAMETER,</span>
-				bStrongCurvatureCriterion);
-<span class="nc" id="L121">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L122">			e.printStackTrace();</span>
+		try
+		{
+<span class="fc" id="L122">			return new CurvatureEvolutionVerifier (</span>
+				NOCEDAL_WRIGHT_CURVATURE_PARAMETER,
+				strongCurvatureCriterion
+			);
+		}
+<span class="nc" id="L127">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L129">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L125">		return null;</span>
+<span class="nc" id="L132">		return null;</span>
 	}
 
 	/**
 	 * CurvatureEvolutionVerifier Constructor
 	 * 
-	 * @param dblCurvatureParameter The Curvature Parameter
-	 * @param bStrongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
+	 * @param curvatureParameter The Curvature Parameter
+	 * @param strongCurvatureCriterion TRUE - Apply the Strong Curvature Criterion
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CurvatureEvolutionVerifier (
-		final double dblCurvatureParameter,
-		final boolean bStrongCurvatureCriterion)
+		final double curvatureParameter,
+		final boolean strongCurvatureCriterion)
 		throws java.lang.Exception
-<span class="fc" id="L141">	{</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurvatureParameter = dblCurvatureParameter))</span>
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;CurvatureEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L148">	{</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_curvatureParameter = curvatureParameter))</span>
+		{
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;CurvatureEvolutionVerifier Constructor =&gt; Invalid Inputs&quot;);</span>
+		}
 
-<span class="fc" id="L145">		_bStrongCurvatureCriterion = bStrongCurvatureCriterion;</span>
-<span class="fc" id="L146">	}</span>
+<span class="fc" id="L154">		_strongCurvatureCriterion = strongCurvatureCriterion;</span>
+<span class="fc" id="L155">	}</span>
 
 	/**
 	 * Retrieve the Curvature Parameter
@@ -153,7 +162,7 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 
 	public double curvatureParameter()
 	{
-<span class="nc" id="L156">		return _dblCurvatureParameter;</span>
+<span class="nc" id="L165">		return _curvatureParameter;</span>
 	}
 
 	/**
@@ -162,28 +171,44 @@ public class CurvatureEvolutionVerifier extends org.drip.function.rdtor1descent.
 	 * @return TRUE - The &quot;Strong&quot; Curvature Criterion needs to be met
 	 */
 
-	public boolean strongCriterion()
+	public boolean strongCurvatureCriterion()
 	{
-<span class="nc" id="L167">		return _bStrongCurvatureCriterion;</span>
+<span class="nc" id="L176">		return _strongCurvatureCriterion;</span>
 	}
 
 	@Override public org.drip.function.rdtor1descent.LineEvolutionVerifierMetrics metrics (
-		final org.drip.function.definition.UnitVector uvTargetDirection,
-		final double[] adblCurrentVariate,
-		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final double dblStepLength)
+		final org.drip.function.definition.UnitVector targetDirectionUnitVector,
+		final double[] currentVariateArray,
+		final org.drip.function.definition.RdToR1 multivariateFunction,
+		final double stepLength)
 	{
-		try {
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">			return null == funcRdToR1 ? null : new</span>
-				org.drip.function.rdtor1descent.CurvatureEvolutionVerifierMetrics (_dblCurvatureParameter,
-					_bStrongCurvatureCriterion, uvTargetDirection, adblCurrentVariate, dblStepLength,
-<span class="fc" id="L180">						funcRdToR1.jacobian (adblCurrentVariate), funcRdToR1.jacobian (NextVariate</span>
-<span class="fc" id="L181">							(uvTargetDirection, adblCurrentVariate, dblStepLength)));</span>
-<span class="nc" id="L182">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L183">			e.printStackTrace();</span>
+		try
+		{
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">			return null == multivariateFunction ? null :</span>
+				new org.drip.function.rdtor1descent.CurvatureEvolutionVerifierMetrics (
+					_curvatureParameter,
+					_strongCurvatureCriterion,
+					targetDirectionUnitVector,
+					currentVariateArray,
+					stepLength,
+<span class="fc" id="L194">					multivariateFunction.jacobian (</span>
+						currentVariateArray
+					),
+<span class="fc" id="L197">					multivariateFunction.jacobian (</span>
+<span class="fc" id="L198">						NextVariateArray (</span>
+							targetDirectionUnitVector,
+							currentVariateArray,
+							stepLength
+						)
+					)
+				);
+		}
+<span class="nc" id="L206">		catch (java.lang.Exception e)</span>
+		{
+<span class="nc" id="L208">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L186">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
