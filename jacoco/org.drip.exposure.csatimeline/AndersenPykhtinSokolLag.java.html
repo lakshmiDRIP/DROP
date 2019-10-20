@@ -6,36 +6,47 @@ package org.drip.exposure.csatimeline;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -96,10 +107,10 @@ package org.drip.exposure.csatimeline;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/README.md&quot;&gt;CSA Time Line&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/README.md&quot;&gt;Time-line of IMA/CSA Event Dates&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,10 +118,10 @@ package org.drip.exposure.csatimeline;
 
 public class AndersenPykhtinSokolLag
 {
-<span class="nc" id="L110">	private int _clientTradePaymentDelay = -1;</span>
-<span class="nc" id="L111">	private int _dealerTradePaymentDelay = -1;</span>
-<span class="nc" id="L112">	private int _clientVariationMarginPostingDelay = -1;</span>
-<span class="nc" id="L113">	private int _dealerVariationMarginPostingDelay = -1;</span>
+<span class="nc" id="L121">	private int _clientTradePaymentDelay = -1;</span>
+<span class="nc" id="L122">	private int _dealerTradePaymentDelay = -1;</span>
+<span class="nc" id="L123">	private int _clientVariationMarginPostingDelay = -1;</span>
+<span class="nc" id="L124">	private int _dealerVariationMarginPostingDelay = -1;</span>
 
 	/**
 	 * Generate the &quot;Conservative&quot; Parameterization of AndersenPykhtinSokolLag
@@ -122,19 +133,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L125">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L136">			return new AndersenPykhtinSokolLag (</span>
 				15,
 				9,
 				8,
 				3
 			);
 		}
-<span class="nc" id="L132">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L143">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	/**
@@ -147,19 +158,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L150">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L161">			return new AndersenPykhtinSokolLag (</span>
 				7,
 				6,
 				4,
 				4
 			);
 		}
-<span class="nc" id="L157">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L168">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L159">			e.printStackTrace();</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L162">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 
 	/**
@@ -172,19 +183,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L175">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L186">			return new AndersenPykhtinSokolLag (</span>
 				10,
 				10,
 				0,
 				0
 			);
 		}
-<span class="nc" id="L182">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L193">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L184">			e.printStackTrace();</span>
+<span class="nc" id="L195">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L187">		return null;</span>
+<span class="nc" id="L198">		return null;</span>
 	}
 
 	/**
@@ -197,19 +208,19 @@ public class AndersenPykhtinSokolLag
 	{
 		try
 		{
-<span class="nc" id="L200">			return new AndersenPykhtinSokolLag (</span>
+<span class="nc" id="L211">			return new AndersenPykhtinSokolLag (</span>
 				10,
 				10,
 				10,
 				10
 			);
 		}
-<span class="nc" id="L207">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L218">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L209">			e.printStackTrace();</span>
+<span class="nc" id="L220">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L212">		return null;</span>
+<span class="nc" id="L223">		return null;</span>
 	}
 
 	/**
@@ -229,8 +240,8 @@ public class AndersenPykhtinSokolLag
 		final int clientTradePaymentDelay,
 		final int dealerTradePaymentDelay)
 		throws java.lang.Exception
-<span class="nc" id="L232">	{</span>
-<span class="nc bnc" id="L233" title="All 14 branches missed.">		if (0 &gt; (_clientVariationMarginPostingDelay = clientVariationMarginPostingDelay) ||</span>
+<span class="nc" id="L243">	{</span>
+<span class="nc bnc" id="L244" title="All 14 branches missed.">		if (0 &gt; (_clientVariationMarginPostingDelay = clientVariationMarginPostingDelay) ||</span>
 			0 &gt; (_dealerVariationMarginPostingDelay = dealerVariationMarginPostingDelay) ||
 			0 &gt; (_clientTradePaymentDelay = clientTradePaymentDelay) ||
 			0 &gt; (_dealerTradePaymentDelay = dealerTradePaymentDelay) ||
@@ -238,9 +249,9 @@ public class AndersenPykhtinSokolLag
 			_dealerVariationMarginPostingDelay &lt; _clientTradePaymentDelay ||
 			_clientTradePaymentDelay &lt; _dealerTradePaymentDelay)
 		{
-<span class="nc" id="L241">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolLag Constuctor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L252">			throw new java.lang.Exception (&quot;AndersenPykhtinSokolLag Constuctor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L243">	}</span>
+<span class="nc" id="L254">	}</span>
 
 	/**
 	 * Retrieve the Client Variation Margin Posting Delay
@@ -250,7 +261,7 @@ public class AndersenPykhtinSokolLag
 
 	public int clientVariationMarginPostingDelay()
 	{
-<span class="nc" id="L253">		return _clientVariationMarginPostingDelay;</span>
+<span class="nc" id="L264">		return _clientVariationMarginPostingDelay;</span>
 	}
 
 	/**
@@ -261,7 +272,7 @@ public class AndersenPykhtinSokolLag
 
 	public int dealerVariationMarginPostingDelay()
 	{
-<span class="nc" id="L264">		return _dealerVariationMarginPostingDelay;</span>
+<span class="nc" id="L275">		return _dealerVariationMarginPostingDelay;</span>
 	}
 
 	/**
@@ -272,7 +283,7 @@ public class AndersenPykhtinSokolLag
 
 	public int clientTradePaymentDelay()
 	{
-<span class="nc" id="L275">		return _clientTradePaymentDelay;</span>
+<span class="nc" id="L286">		return _clientTradePaymentDelay;</span>
 	}
 
 	/**
@@ -283,7 +294,7 @@ public class AndersenPykhtinSokolLag
 
 	public int dealerTradePaymentDelay()
 	{
-<span class="nc" id="L286">		return _dealerTradePaymentDelay;</span>
+<span class="nc" id="L297">		return _dealerTradePaymentDelay;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

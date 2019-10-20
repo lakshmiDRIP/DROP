@@ -6,38 +6,49 @@ package org.drip.execution.tradingtime;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,10 +108,10 @@ package org.drip.execution.tradingtime;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime/README.md&quot;&gt;Trading Time&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime/README.md&quot;&gt;Coordinated Variation Trading Time Models&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -108,8 +119,8 @@ package org.drip.execution.tradingtime;
 
 public class CoordinatedParticipationRateLinear implements
 	org.drip.execution.profiletime.BackgroundParticipationRateLinear {
-<span class="nc" id="L111">	private org.drip.function.definition.R1ToR1 _r1ToR1Volatility = null;</span>
-<span class="nc" id="L112">	private org.drip.execution.tradingtime.CoordinatedVariation _cv = null;</span>
+<span class="nc" id="L122">	private org.drip.function.definition.R1ToR1 _r1ToR1Volatility = null;</span>
+<span class="nc" id="L123">	private org.drip.execution.tradingtime.CoordinatedVariation _cv = null;</span>
 
 	/**
 	 * CoordinatedParticipationRateLinear Constructor
@@ -124,11 +135,11 @@ public class CoordinatedParticipationRateLinear implements
 		final org.drip.execution.tradingtime.CoordinatedVariation cv,
 		final org.drip.function.definition.R1ToR1 r1ToR1Volatility)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == (_cv = cv) || null == (_r1ToR1Volatility = r1ToR1Volatility))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception</span>
+<span class="nc" id="L138">	{</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == (_cv = cv) || null == (_r1ToR1Volatility = r1ToR1Volatility))</span>
+<span class="nc" id="L140">			throw new java.lang.Exception</span>
 				(&quot;CoordinatedParticipationRateLinear Constructor =&gt; Invalid Inputs&quot;);
-<span class="nc" id="L131">	}</span>
+<span class="nc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Coordinated Variation Constraint
@@ -138,38 +149,38 @@ public class CoordinatedParticipationRateLinear implements
 
 	public org.drip.execution.tradingtime.CoordinatedVariation variationConstraint()
 	{
-<span class="nc" id="L141">		return _cv;</span>
+<span class="nc" id="L152">		return _cv;</span>
 	}
 
 	@Override public org.drip.execution.impact.ParticipationRateLinear liquidityFunction (
 		final double dblTime)
 	{
 		try {
-<span class="nc" id="L148">			double dblVolatility = _r1ToR1Volatility.evaluate (dblTime);</span>
+<span class="nc" id="L159">			double dblVolatility = _r1ToR1Volatility.evaluate (dblTime);</span>
 
-<span class="nc" id="L150">			return org.drip.execution.impact.ParticipationRateLinear.SlopeOnly (_cv.invariant() /</span>
+<span class="nc" id="L161">			return org.drip.execution.impact.ParticipationRateLinear.SlopeOnly (_cv.invariant() /</span>
 				(dblVolatility * dblVolatility));
-<span class="nc" id="L152">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L153">			e.printStackTrace();</span>
+<span class="nc" id="L163">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L156">		return null;</span>
+<span class="nc" id="L167">		return null;</span>
 	}
 
 	@Override public org.drip.execution.impact.TransactionFunction impactFunction (
 		final double dblTime)
 	{
-<span class="nc" id="L162">		return liquidityFunction (dblTime);</span>
+<span class="nc" id="L173">		return liquidityFunction (dblTime);</span>
 	}
 
 	@Override public org.drip.execution.impact.ParticipationRateLinear epochLiquidityFunction()
 	{
-<span class="nc" id="L167">		return liquidityFunction (0.);</span>
+<span class="nc" id="L178">		return liquidityFunction (0.);</span>
 	}
 
 	@Override public org.drip.execution.impact.TransactionFunction epochImpactFunction()
 	{
-<span class="nc" id="L172">		return epochLiquidityFunction();</span>
+<span class="nc" id="L183">		return epochLiquidityFunction();</span>
 	}
 
 	/**
@@ -180,18 +191,18 @@ public class CoordinatedParticipationRateLinear implements
 
 	public org.drip.function.definition.R1ToR1 volatilityFunction()
 	{
-<span class="nc" id="L183">		return new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L194">		return new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L188">				org.drip.execution.impact.TransactionFunctionLinear tfl = liquidityFunction (dblTime);</span>
+<span class="nc" id="L199">				org.drip.execution.impact.TransactionFunctionLinear tfl = liquidityFunction (dblTime);</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">				if (null == tfl)</span>
-<span class="nc" id="L191">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">				if (null == tfl)</span>
+<span class="nc" id="L202">					throw new java.lang.Exception</span>
 						(&quot;CoordinatedParticipationRateLinear::volatilityFunction::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L194">				return java.lang.Math.sqrt (_cv.invariant() / tfl.slope());</span>
+<span class="nc" id="L205">				return java.lang.Math.sqrt (_cv.invariant() / tfl.slope());</span>
 			}
 		};
 	}

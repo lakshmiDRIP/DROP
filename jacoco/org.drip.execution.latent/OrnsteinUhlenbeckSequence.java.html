@@ -6,38 +6,49 @@ package org.drip.execution.latent;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,20 +108,20 @@ package org.drip.execution.latent;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/latent/README.md&quot;&gt;Latent&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/latent/README.md&quot;&gt;Correlated Latent Market State Sequence&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class OrnsteinUhlenbeckSequence {
-<span class="fc" id="L110">	private int _iCount = 0;</span>
-<span class="fc" id="L111">	private org.drip.execution.latent.MarketState[] _aMS = null;</span>
-<span class="fc" id="L112">	private double _dblGenerationInterval = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	private org.drip.measure.process.OrnsteinUhlenbeck _ou = null;</span>
+<span class="fc" id="L121">	private int _iCount = 0;</span>
+<span class="fc" id="L122">	private org.drip.execution.latent.MarketState[] _aMS = null;</span>
+<span class="fc" id="L123">	private double _dblGenerationInterval = java.lang.Double.NaN;</span>
+<span class="fc" id="L124">	private org.drip.measure.process.OrnsteinUhlenbeck _ou = null;</span>
 
 	/**
 	 * Construct a Standard Systemic Instance of OrnsteinUhlenbeckSequence
@@ -129,37 +140,37 @@ public class OrnsteinUhlenbeckSequence {
 		final double dblInitialMarketState,
 		final int iCount)
 	{
-<span class="pc bpc" id="L132" title="4 of 8 branches missed.">		if (null == deou || !org.drip.numerical.common.NumberUtil.IsValid (dblGenerationInterval) || 0 &gt;=</span>
+<span class="pc bpc" id="L143" title="4 of 8 branches missed.">		if (null == deou || !org.drip.numerical.common.NumberUtil.IsValid (dblGenerationInterval) || 0 &gt;=</span>
 			dblGenerationInterval || 1 &gt;= iCount)
-<span class="nc" id="L134">			return null;</span>
+<span class="nc" id="L145">			return null;</span>
 
-<span class="fc" id="L136">		double dblTime = 0.;</span>
-<span class="fc" id="L137">		org.drip.execution.latent.MarketStateSystemic[] aMSS = new</span>
+<span class="fc" id="L147">		double dblTime = 0.;</span>
+<span class="fc" id="L148">		org.drip.execution.latent.MarketStateSystemic[] aMSS = new</span>
 			org.drip.execution.latent.MarketStateSystemic[iCount];
 
 		try {
-<span class="fc" id="L141">			aMSS[0] = new org.drip.execution.latent.MarketStateSystemic (dblInitialMarketState);</span>
+<span class="fc" id="L152">			aMSS[0] = new org.drip.execution.latent.MarketStateSystemic (dblInitialMarketState);</span>
 
-<span class="fc" id="L143">			org.drip.measure.process.DiffusionEvolver de = new org.drip.measure.process.DiffusionEvolver</span>
+<span class="fc" id="L154">			org.drip.measure.process.DiffusionEvolver de = new org.drip.measure.process.DiffusionEvolver</span>
 				(deou);
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">			for (int i = 0; i &lt; iCount - 1; ++i) {</span>
-<span class="fc" id="L147">				org.drip.measure.realization.JumpDiffusionEdge gi = de.weinerIncrement (new</span>
-<span class="fc" id="L148">					org.drip.measure.realization.JumpDiffusionVertex (dblTime, aMSS[i].common(), 0., false),</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">			for (int i = 0; i &lt; iCount - 1; ++i) {</span>
+<span class="fc" id="L158">				org.drip.measure.realization.JumpDiffusionEdge gi = de.weinerIncrement (new</span>
+<span class="fc" id="L159">					org.drip.measure.realization.JumpDiffusionVertex (dblTime, aMSS[i].common(), 0., false),</span>
 						dblGenerationInterval);
 
-<span class="fc" id="L151">				aMSS[i + 1] = new org.drip.execution.latent.MarketStateSystemic (aMSS[i].common() +</span>
-<span class="fc" id="L152">					gi.deterministic() + gi.diffusionStochastic());</span>
+<span class="fc" id="L162">				aMSS[i + 1] = new org.drip.execution.latent.MarketStateSystemic (aMSS[i].common() +</span>
+<span class="fc" id="L163">					gi.deterministic() + gi.diffusionStochastic());</span>
 
-<span class="fc" id="L154">				dblTime += dblGenerationInterval;</span>
+<span class="fc" id="L165">				dblTime += dblGenerationInterval;</span>
 			}
-<span class="nc" id="L156">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L157">			e.printStackTrace();</span>
+<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 
-<span class="nc" id="L159">			return null;</span>
-<span class="fc" id="L160">		}</span>
+<span class="nc" id="L170">			return null;</span>
+<span class="fc" id="L171">		}</span>
 
-<span class="fc" id="L162">		return new OrnsteinUhlenbeckSequence (deou, aMSS, dblGenerationInterval);</span>
+<span class="fc" id="L173">		return new OrnsteinUhlenbeckSequence (deou, aMSS, dblGenerationInterval);</span>
 	}
 
 	/**
@@ -181,46 +192,46 @@ public class OrnsteinUhlenbeckSequence {
 		final double dblInitialVolatilityMarketState,
 		final int iCount)
 	{
-<span class="nc bnc" id="L184" title="All 8 branches missed.">		if (null == oup2D || !org.drip.numerical.common.NumberUtil.IsValid (dblGenerationInterval) || 0 &gt;=</span>
+<span class="nc bnc" id="L195" title="All 8 branches missed.">		if (null == oup2D || !org.drip.numerical.common.NumberUtil.IsValid (dblGenerationInterval) || 0 &gt;=</span>
 			dblGenerationInterval || 1 &gt;= iCount)
-<span class="nc" id="L186">			return null;</span>
+<span class="nc" id="L197">			return null;</span>
 
-<span class="nc" id="L188">		org.drip.execution.latent.MarketStateCorrelated[] aMSC = new</span>
+<span class="nc" id="L199">		org.drip.execution.latent.MarketStateCorrelated[] aMSC = new</span>
 			org.drip.execution.latent.MarketStateCorrelated[iCount];
 
 		try {
-<span class="nc" id="L192">			aMSC[0] = new org.drip.execution.latent.MarketStateCorrelated (dblInitialLiquidityMarketState,</span>
+<span class="nc" id="L203">			aMSC[0] = new org.drip.execution.latent.MarketStateCorrelated (dblInitialLiquidityMarketState,</span>
 				dblInitialVolatilityMarketState);
 
-<span class="nc bnc" id="L195" title="All 2 branches missed.">			for (int i = 0; i &lt; iCount - 1; ++i) {</span>
-<span class="nc" id="L196">				org.drip.measure.realization.JumpDiffusionEdge[] aGI = oup2D.weinerIncrement</span>
-<span class="nc" id="L197">					(aMSC[i].realization(), dblGenerationInterval);</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">			for (int i = 0; i &lt; iCount - 1; ++i) {</span>
+<span class="nc" id="L207">				org.drip.measure.realization.JumpDiffusionEdge[] aGI = oup2D.weinerIncrement</span>
+<span class="nc" id="L208">					(aMSC[i].realization(), dblGenerationInterval);</span>
 
-<span class="nc bnc" id="L199" title="All 4 branches missed.">				if (null == aGI || 2 != aGI.length) return null;</span>
+<span class="nc bnc" id="L210" title="All 4 branches missed.">				if (null == aGI || 2 != aGI.length) return null;</span>
 
-<span class="nc" id="L201">				aMSC[i + 1] = new org.drip.execution.latent.MarketStateCorrelated (aMSC[i].liquidity() +</span>
-<span class="nc" id="L202">					aGI[0].deterministic() + aGI[0].diffusionStochastic(), aMSC[i].volatility() +</span>
-<span class="nc" id="L203">						aGI[1].deterministic() + aGI[1].diffusionStochastic());</span>
+<span class="nc" id="L212">				aMSC[i + 1] = new org.drip.execution.latent.MarketStateCorrelated (aMSC[i].liquidity() +</span>
+<span class="nc" id="L213">					aGI[0].deterministic() + aGI[0].diffusionStochastic(), aMSC[i].volatility() +</span>
+<span class="nc" id="L214">						aGI[1].deterministic() + aGI[1].diffusionStochastic());</span>
 			}
-<span class="nc" id="L205">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L206">			e.printStackTrace();</span>
+<span class="nc" id="L216">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L217">			e.printStackTrace();</span>
 
-<span class="nc" id="L208">			return null;</span>
-<span class="nc" id="L209">		}</span>
+<span class="nc" id="L219">			return null;</span>
+<span class="nc" id="L220">		}</span>
 
-<span class="nc" id="L211">		return new OrnsteinUhlenbeckSequence (oup2D, aMSC, dblGenerationInterval);</span>
+<span class="nc" id="L222">		return new OrnsteinUhlenbeckSequence (oup2D, aMSC, dblGenerationInterval);</span>
 	}
 
 	private OrnsteinUhlenbeckSequence (
 		final org.drip.measure.process.OrnsteinUhlenbeck ou,
 		final org.drip.execution.latent.MarketState[] aMS,
 		final double dblGenerationInterval)
-<span class="fc" id="L218">	{</span>
-<span class="fc" id="L219">		_ou = ou;</span>
-<span class="fc" id="L220">		_aMS = aMS;</span>
-<span class="fc" id="L221">		_iCount = aMS.length;</span>
-<span class="fc" id="L222">		_dblGenerationInterval = dblGenerationInterval;</span>
-<span class="fc" id="L223">	}</span>
+<span class="fc" id="L229">	{</span>
+<span class="fc" id="L230">		_ou = ou;</span>
+<span class="fc" id="L231">		_aMS = aMS;</span>
+<span class="fc" id="L232">		_iCount = aMS.length;</span>
+<span class="fc" id="L233">		_dblGenerationInterval = dblGenerationInterval;</span>
+<span class="fc" id="L234">	}</span>
 
 	/**
 	 * Retrieve the Total Count of States realized
@@ -230,7 +241,7 @@ public class OrnsteinUhlenbeckSequence {
 
 	public int count()
 	{
-<span class="nc" id="L233">		return _iCount;</span>
+<span class="nc" id="L244">		return _iCount;</span>
 	}
 
 	/**
@@ -241,7 +252,7 @@ public class OrnsteinUhlenbeckSequence {
 
 	public double generationInterval()
 	{
-<span class="nc" id="L244">		return _dblGenerationInterval;</span>
+<span class="nc" id="L255">		return _dblGenerationInterval;</span>
 	}
 
 	/**
@@ -252,7 +263,7 @@ public class OrnsteinUhlenbeckSequence {
 
 	public org.drip.execution.latent.MarketState[] realizedMarketState()
 	{
-<span class="fc" id="L255">		return _aMS;</span>
+<span class="fc" id="L266">		return _aMS;</span>
 	}
 
 	/**
@@ -263,7 +274,7 @@ public class OrnsteinUhlenbeckSequence {
 
 	public org.drip.measure.process.OrnsteinUhlenbeck scheme()
 	{
-<span class="nc" id="L266">		return _ou;</span>
+<span class="nc" id="L277">		return _ou;</span>
 	}
 
 	/**
@@ -274,7 +285,7 @@ public class OrnsteinUhlenbeckSequence {
 
 	public org.drip.execution.latent.MarketState initialMarketState()
 	{
-<span class="nc" id="L277">		return _aMS[0];</span>
+<span class="nc" id="L288">		return _aMS[0];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

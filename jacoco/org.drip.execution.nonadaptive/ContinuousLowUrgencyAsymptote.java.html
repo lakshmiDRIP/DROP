@@ -6,38 +6,49 @@ package org.drip.execution.nonadaptive;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,10 +109,10 @@ package org.drip.execution.nonadaptive;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/nonadaptive/README.md&quot;&gt;Non Adaptive&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/nonadaptive/README.md&quot;&gt;Almgren-Chriss Static Optimal Trajectory&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -128,14 +139,14 @@ public class ContinuousLowUrgencyAsymptote extends
 		final double dblRiskAversion)
 	{
 		try {
-<span class="fc" id="L131">			return new ContinuousLowUrgencyAsymptote (new org.drip.execution.strategy.OrderSpecification</span>
+<span class="fc" id="L142">			return new ContinuousLowUrgencyAsymptote (new org.drip.execution.strategy.OrderSpecification</span>
 				(dblStartHoldings, dblFinishTime), lpep, new
 					org.drip.execution.risk.MeanVarianceObjectiveUtility (dblRiskAversion));
-<span class="nc" id="L134">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L135">			e.printStackTrace();</span>
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L138">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	private ContinuousLowUrgencyAsymptote (
@@ -144,130 +155,130 @@ public class ContinuousLowUrgencyAsymptote extends
 		final org.drip.execution.risk.MeanVarianceObjectiveUtility mvou)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L147">		super (os, lpep, mvou);</span>
-<span class="fc" id="L148">	}</span>
+<span class="fc" id="L158">		super (os, lpep, mvou);</span>
+<span class="fc" id="L159">	}</span>
 
 	@Override public org.drip.execution.optimum.EfficientTradingTrajectory generate()
 	{
-<span class="fc" id="L152">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
-<span class="fc" id="L153">			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) priceEvolutionParameters();</span>
+<span class="fc" id="L163">		org.drip.execution.dynamics.LinearPermanentExpectationParameters lpep =</span>
+<span class="fc" id="L164">			(org.drip.execution.dynamics.LinearPermanentExpectationParameters) priceEvolutionParameters();</span>
 
-<span class="fc" id="L155">		org.drip.execution.impact.TransactionFunction tfTemporaryExpectation =</span>
-<span class="fc" id="L156">			lpep.temporaryExpectation().epochImpactFunction();</span>
+<span class="fc" id="L166">		org.drip.execution.impact.TransactionFunction tfTemporaryExpectation =</span>
+<span class="fc" id="L167">			lpep.temporaryExpectation().epochImpactFunction();</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!(tfTemporaryExpectation instanceof org.drip.execution.impact.TransactionFunctionLinear))</span>
-<span class="nc" id="L159">			return null;</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!(tfTemporaryExpectation instanceof org.drip.execution.impact.TransactionFunctionLinear))</span>
+<span class="nc" id="L170">			return null;</span>
 
-<span class="fc" id="L161">		double dblEpochVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L162">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
+<span class="fc" id="L172">		double dblEpochVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L173">		org.drip.execution.impact.TransactionFunctionLinear tflTemporaryExpectation =</span>
 			(org.drip.execution.impact.TransactionFunctionLinear) tfTemporaryExpectation;
 
 		try {
-<span class="fc" id="L166">			dblEpochVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
-<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="fc" id="L177">			dblEpochVolatility = lpep.arithmeticPriceDynamicsSettings().epochVolatility();</span>
+<span class="nc" id="L178">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L179">			e.printStackTrace();</span>
 
-<span class="nc" id="L170">			return null;</span>
-<span class="fc" id="L171">		}</span>
+<span class="nc" id="L181">			return null;</span>
+<span class="fc" id="L182">		}</span>
 
-<span class="fc" id="L173">		final double dblSigma = dblEpochVolatility;</span>
+<span class="fc" id="L184">		final double dblSigma = dblEpochVolatility;</span>
 
-<span class="fc" id="L175">		final double dblEta = tflTemporaryExpectation.slope();</span>
+<span class="fc" id="L186">		final double dblEta = tflTemporaryExpectation.slope();</span>
 
-<span class="fc" id="L177">		final double dblLambda = ((org.drip.execution.risk.MeanVarianceObjectiveUtility)</span>
-<span class="fc" id="L178">			objectiveUtility()).riskAversion();</span>
+<span class="fc" id="L188">		final double dblLambda = ((org.drip.execution.risk.MeanVarianceObjectiveUtility)</span>
+<span class="fc" id="L189">			objectiveUtility()).riskAversion();</span>
 
-<span class="fc" id="L180">		final double dblKappa = java.lang.Math.sqrt (dblLambda * dblSigma * dblSigma / dblEta);</span>
+<span class="fc" id="L191">		final double dblKappa = java.lang.Math.sqrt (dblLambda * dblSigma * dblSigma / dblEta);</span>
 
-<span class="fc" id="L182">		org.drip.execution.strategy.OrderSpecification os = orderSpecification();</span>
+<span class="fc" id="L193">		org.drip.execution.strategy.OrderSpecification os = orderSpecification();</span>
 
-<span class="fc" id="L184">		final double dblT = os.maxExecutionTime();</span>
+<span class="fc" id="L195">		final double dblT = os.maxExecutionTime();</span>
 
-<span class="fc" id="L186">		final double dblX = os.size();</span>
+<span class="fc" id="L197">		final double dblX = os.size();</span>
 
-<span class="fc" id="L188">		final org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1</span>
-<span class="fc" id="L189">			(null) {</span>
+<span class="fc" id="L199">		final org.drip.function.definition.R1ToR1 r1ToR1Holdings = new org.drip.function.definition.R1ToR1</span>
+<span class="fc" id="L200">			(null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
-<span class="nc" id="L195">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
+<span class="nc" id="L206">					throw new java.lang.Exception</span>
 						(&quot;ContinuousLowUrgencyAsymptote::Holdings::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L198">				return java.lang.Math.sinh (dblKappa * (dblT - dblTime)) / java.lang.Math.sinh (dblKappa *</span>
+<span class="fc" id="L209">				return java.lang.Math.sinh (dblKappa * (dblT - dblTime)) / java.lang.Math.sinh (dblKappa *</span>
 					dblT) * dblX;
 			}
 		};
 
-<span class="fc" id="L203">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="fc" id="L204">		{</span>
+<span class="fc" id="L214">		org.drip.function.definition.R1ToR1 r1ToR1TradeRate = new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="fc" id="L215">		{</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
-<span class="nc" id="L210">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
+<span class="nc" id="L221">					throw new java.lang.Exception</span>
 						(&quot;ContinuousLowUrgencyAsymptote::TradeRate::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="fc bfc" id="L213" title="All 2 branches covered.">				return dblT == dblTime ? 0. : r1ToR1Holdings.evaluate (dblTime) / (dblT - dblTime);</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">				return dblT == dblTime ? 0. : r1ToR1Holdings.evaluate (dblTime) / (dblT - dblTime);</span>
 			}
 		};
 
-<span class="fc" id="L217">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation = new</span>
-<span class="fc" id="L218">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L228">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostExpectation = new</span>
+<span class="fc" id="L229">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
-<span class="nc" id="L224">					throw new java.lang.Exception</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
+<span class="nc" id="L235">					throw new java.lang.Exception</span>
 						(&quot;ContinuousLowUrgencyAsymptote::TransactionCostExpectation::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L227">				double dblRemainingTime = dblT - dblTime;</span>
+<span class="fc" id="L238">				double dblRemainingTime = dblT - dblTime;</span>
 
-<span class="fc bfc" id="L229" title="All 2 branches covered.">				if (0. &gt;= dblRemainingTime) return 0.;</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">				if (0. &gt;= dblRemainingTime) return 0.;</span>
 
-<span class="fc" id="L231">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
+<span class="fc" id="L242">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
 
-<span class="fc" id="L233">				return dblEta * dblHoldings * dblHoldings / dblRemainingTime + (dblLambda * dblSigma *</span>
+<span class="fc" id="L244">				return dblEta * dblHoldings * dblHoldings / dblRemainingTime + (dblLambda * dblSigma *</span>
 					dblSigma * dblHoldings * dblHoldings * dblRemainingTime / 3.);
 			}
 		};
 
-<span class="fc" id="L238">		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVarianceRate = new</span>
-<span class="fc" id="L239">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L249">		final org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVarianceRate = new</span>
+<span class="fc" id="L250">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L244">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
+<span class="nc" id="L255">				double dblHoldings = r1ToR1Holdings.evaluate (dblTime);</span>
 
-<span class="nc" id="L246">				return dblSigma * dblSigma * dblHoldings * dblHoldings;</span>
+<span class="nc" id="L257">				return dblSigma * dblSigma * dblHoldings * dblHoldings;</span>
 			}
 		};
 
-<span class="fc" id="L250">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance = new</span>
-<span class="fc" id="L251">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L261">		org.drip.function.definition.R1ToR1 r1ToR1TransactionCostVariance = new</span>
+<span class="fc" id="L262">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblTime)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L256">				return r1ToR1TransactionCostVarianceRate.integrate (dblTime, dblT);</span>
+<span class="nc" id="L267">				return r1ToR1TransactionCostVarianceRate.integrate (dblTime, dblT);</span>
 			}
 		};
 
 		try {
-<span class="fc" id="L261">			return new org.drip.execution.optimum.EfficientTradingTrajectoryContinuous (dblT, dblEta *</span>
-<span class="fc" id="L262">				dblKappa * dblX * dblX / java.lang.Math.tanh (dblKappa * dblT),</span>
-<span class="fc" id="L263">					r1ToR1TransactionCostExpectation.evaluate (0.), 1. / dblKappa, dblEta * dblX / (dblT *</span>
-<span class="fc" id="L264">						dblEpochVolatility * java.lang.Math.sqrt (dblT)), r1ToR1Holdings, r1ToR1TradeRate,</span>
+<span class="fc" id="L272">			return new org.drip.execution.optimum.EfficientTradingTrajectoryContinuous (dblT, dblEta *</span>
+<span class="fc" id="L273">				dblKappa * dblX * dblX / java.lang.Math.tanh (dblKappa * dblT),</span>
+<span class="fc" id="L274">					r1ToR1TransactionCostExpectation.evaluate (0.), 1. / dblKappa, dblEta * dblX / (dblT *</span>
+<span class="fc" id="L275">						dblEpochVolatility * java.lang.Math.sqrt (dblT)), r1ToR1Holdings, r1ToR1TradeRate,</span>
 							r1ToR1TransactionCostExpectation, r1ToR1TransactionCostVariance);
-<span class="nc" id="L266">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L267">			e.printStackTrace();</span>
+<span class="nc" id="L277">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L278">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L270">		return null;</span>
+<span class="nc" id="L281">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

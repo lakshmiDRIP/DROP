@@ -6,37 +6,48 @@ package org.drip.exposure.csadynamics;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,10 +108,10 @@ package org.drip.exposure.csadynamics;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csadynamics/README.md&quot;&gt;CSA Dynamics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csadynamics/README.md&quot;&gt;CSA Numeraire Basis/Measure Dynamics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -108,9 +119,9 @@ package org.drip.exposure.csadynamics;
 
 public class NumeraireInducedMeasureShift
 {
-<span class="fc" id="L111">	private double _csaForward = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _noCSAForward = java.lang.Double.NaN;</span>
-<span class="fc" id="L113">	private double _terminalVariance = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _csaForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _noCSAForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L124">	private double _terminalVariance = java.lang.Double.NaN;</span>
 
 	/**
 	 * NumeraireInducedMeasureShift Constructor
@@ -127,14 +138,14 @@ public class NumeraireInducedMeasureShift
 		final double noCSAForward,
 		final double terminalVariance)
 		throws java.lang.Exception
-<span class="fc" id="L130">	{</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_csaForward = csaForward) ||</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_noCSAForward = noCSAForward) ||</span>
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_terminalVariance = terminalVariance))</span>
+<span class="fc" id="L141">	{</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_csaForward = csaForward) ||</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_noCSAForward = noCSAForward) ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_terminalVariance = terminalVariance))</span>
 		{
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L137">	}</span>
+<span class="fc" id="L148">	}</span>
 
 	/**
 	 * Return the Value of the Forward Contract under CSA
@@ -144,7 +155,7 @@ public class NumeraireInducedMeasureShift
 
 	public double csaForward()
 	{
-<span class="nc" id="L147">		return _csaForward;</span>
+<span class="nc" id="L158">		return _csaForward;</span>
 	}
 
 	/**
@@ -155,7 +166,7 @@ public class NumeraireInducedMeasureShift
 
 	public double noCSAForward()
 	{
-<span class="nc" id="L158">		return _noCSAForward;</span>
+<span class="nc" id="L169">		return _noCSAForward;</span>
 	}
 
 	/**
@@ -166,7 +177,7 @@ public class NumeraireInducedMeasureShift
 
 	public double terminalVariance()
 	{
-<span class="nc" id="L169">		return _terminalVariance;</span>
+<span class="nc" id="L180">		return _terminalVariance;</span>
 	}
 
 	/**
@@ -177,7 +188,7 @@ public class NumeraireInducedMeasureShift
 
 	public double alpha1()
 	{
-<span class="nc" id="L180">		return (_noCSAForward - _csaForward) / _terminalVariance;</span>
+<span class="nc" id="L191">		return (_noCSAForward - _csaForward) / _terminalVariance;</span>
 	}
 
 	/**
@@ -188,7 +199,7 @@ public class NumeraireInducedMeasureShift
 
 	public double alpha0()
 	{
-<span class="nc" id="L191">		return 1. - alpha1() * _csaForward;</span>
+<span class="nc" id="L202">		return 1. - alpha1() * _csaForward;</span>
 	}
 
 	/**
@@ -205,13 +216,13 @@ public class NumeraireInducedMeasureShift
 		final double k)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (k))</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (k))</span>
 		{
-<span class="nc" id="L210">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift::densityRescale =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L221">			throw new java.lang.Exception (&quot;NumeraireInducedMeasureShift::densityRescale =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L213">		double dblAlpha1 = (_noCSAForward - _csaForward) / _terminalVariance;</span>
-<span class="fc" id="L214">		return 1. - dblAlpha1 * _csaForward + dblAlpha1 * k;</span>
+<span class="fc" id="L224">		double dblAlpha1 = (_noCSAForward - _csaForward) / _terminalVariance;</span>
+<span class="fc" id="L225">		return 1. - dblAlpha1 * _csaForward + dblAlpha1 * k;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,36 +6,47 @@ package org.drip.exposure.generator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,10 +108,10 @@ package org.drip.exposure.generator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator/README.md&quot;&gt;Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/generator/README.md&quot;&gt;Rates Stream Margin Period Exposure&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -108,8 +119,8 @@ package org.drip.exposure.generator;
 
 public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTradePaymentVertex
 {
-<span class="nc" id="L111">	private double _notional = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;</span>
+<span class="nc" id="L122">	private double _notional = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private org.drip.state.identifier.LatentStateLabel _latentStateLabel = null;</span>
 
 	/**
 	 * NumeraireMPoR Constructor
@@ -124,13 +135,13 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel,
 		final double notional)
 		throws java.lang.Exception
-<span class="nc" id="L127">	{</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (null == (_latentStateLabel = latentStateLabel) ||</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_notional = notional))</span>
+<span class="nc" id="L138">	{</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (null == (_latentStateLabel = latentStateLabel) ||</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_notional = notional))</span>
 		{
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;NumeraireMPoR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;NumeraireMPoR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L133">	}</span>
+<span class="nc" id="L144">	}</span>
 
 	/**
 	 * Retrieve the Notional
@@ -140,7 +151,7 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 
 	public double notional()
 	{
-<span class="nc" id="L143">		return _notional;</span>
+<span class="nc" id="L154">		return _notional;</span>
 	}
 
 	/**
@@ -151,7 +162,7 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 
 	public org.drip.state.identifier.LatentStateLabel latentStateLabel()
 	{
-<span class="nc" id="L154">		return _latentStateLabel;</span>
+<span class="nc" id="L165">		return _latentStateLabel;</span>
 	}
 
 	@Override public double variationMarginEstimate (
@@ -159,19 +170,19 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		final org.drip.exposure.universe.MarketPath marketPath)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L164">			throw new java.lang.Exception (&quot;NumeraireVertex::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;NumeraireVertex::variationMarginEstimate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L167">		return _notional * marketPath.marketVertex (forwardDate).latentStateValue (_latentStateLabel);</span>
+<span class="nc" id="L178">		return _notional * marketPath.marketVertex (forwardDate).latentStateValue (_latentStateLabel);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment tradePayment (
 		final int forwardDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc" id="L174">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
+<span class="nc" id="L185">		return org.drip.exposure.mpor.TradePayment.Standard (0.);</span>
 	}
 
 	@Override public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray (
@@ -179,24 +190,24 @@ public class NumeraireMPoR implements org.drip.exposure.mpor.VariationMarginTrad
 		final int endDate,
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (endDate &lt; startDate)</span>
 		{
-<span class="nc" id="L184">			return null;</span>
+<span class="nc" id="L195">			return null;</span>
 		}
 
-<span class="nc" id="L187">		int denseDateCount = endDate - startDate + 1;</span>
-<span class="nc" id="L188">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
+<span class="nc" id="L198">		int denseDateCount = endDate - startDate + 1;</span>
+<span class="nc" id="L199">		org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray = new</span>
 			org.drip.exposure.mpor.TradePayment[denseDateCount];
 
-<span class="nc" id="L191">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
-<span class="nc" id="L192">			(0.);</span>
+<span class="nc" id="L202">		org.drip.exposure.mpor.TradePayment zeroTradePayment = org.drip.exposure.mpor.TradePayment.Standard</span>
+<span class="nc" id="L203">			(0.);</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int denseDateIndex = 0; denseDateIndex &lt; denseDateCount; ++denseDateIndex)</span>
 		{
-<span class="nc" id="L196">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
+<span class="nc" id="L207">			denseTradePaymentArray[denseDateIndex] = zeroTradePayment;</span>
 		}
 
-<span class="nc" id="L199">		return denseTradePaymentArray;</span>
+<span class="nc" id="L210">		return denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

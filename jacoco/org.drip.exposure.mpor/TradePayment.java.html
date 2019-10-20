@@ -6,36 +6,47 @@ package org.drip.exposure.mpor;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -95,10 +106,10 @@ package org.drip.exposure.mpor;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/mpor/README.md&quot;&gt;MPoR&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/mpor/README.md&quot;&gt;Margin Period Collateral Amount Estimation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -106,8 +117,8 @@ package org.drip.exposure.mpor;
 
 public class TradePayment
 {
-<span class="nc" id="L109">	private double _client = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _dealer = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private double _client = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _dealer = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a &quot;Standard&quot; TradePayment Instance
@@ -120,36 +131,36 @@ public class TradePayment
 	public static final TradePayment Standard (
 		final double tradePayment)
 	{
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (tradePayment))</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (tradePayment))</span>
 		{
-<span class="nc" id="L125">			return null;</span>
+<span class="nc" id="L136">			return null;</span>
 		}
 
-<span class="nc" id="L128">		double clientTradePayment = 0.;</span>
-<span class="nc" id="L129">		double dealerTradePayment = 0.;</span>
+<span class="nc" id="L139">		double clientTradePayment = 0.;</span>
+<span class="nc" id="L140">		double dealerTradePayment = 0.;</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (0. &gt; tradePayment)</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (0. &gt; tradePayment)</span>
 		{
-<span class="nc" id="L133">			dealerTradePayment = tradePayment;</span>
+<span class="nc" id="L144">			dealerTradePayment = tradePayment;</span>
 		}
 		else
 		{
-<span class="nc" id="L137">			clientTradePayment = tradePayment;</span>
+<span class="nc" id="L148">			clientTradePayment = tradePayment;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L142">			return new TradePayment (</span>
+<span class="nc" id="L153">			return new TradePayment (</span>
 				dealerTradePayment,
 				clientTradePayment
 			);
 		}
-<span class="nc" id="L147">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L158">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L149">			e.printStackTrace();</span>
+<span class="nc" id="L160">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L152">		return null;</span>
+<span class="nc" id="L163">		return null;</span>
 	}
 
 	/**
@@ -165,14 +176,14 @@ public class TradePayment
 		final double dealer,
 		final double client)
 		throws java.lang.Exception
-<span class="nc" id="L168">	{</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
-<span class="nc bnc" id="L170" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_client = client) ||</span>
+<span class="nc" id="L179">	{</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dealer = dealer) ||</span>
+<span class="nc bnc" id="L181" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_client = client) ||</span>
 			_dealer &gt; 0. || _client &lt; 0.)
 		{
-<span class="nc" id="L173">			throw new java.lang.Exception (&quot;TradePayment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;TradePayment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L175">	}</span>
+<span class="nc" id="L186">	}</span>
 
 	/**
 	 * Retrieve the Dealer Trade Payment
@@ -182,7 +193,7 @@ public class TradePayment
 
 	public double dealer()
 	{
-<span class="nc" id="L185">		return _dealer;</span>
+<span class="nc" id="L196">		return _dealer;</span>
 	}
 
 	/**
@@ -193,7 +204,7 @@ public class TradePayment
 
 	public double client()
 	{
-<span class="nc" id="L196">		return _client;</span>
+<span class="nc" id="L207">		return _client;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

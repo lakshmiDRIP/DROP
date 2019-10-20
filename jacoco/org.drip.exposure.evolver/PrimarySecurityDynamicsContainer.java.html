@@ -6,37 +6,48 @@ package org.drip.exposure.evolver;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,10 +109,10 @@ package org.drip.exposure.evolver;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver/README.md&quot;&gt;Evolver&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/evolver/README.md&quot;&gt;Securities and Exposure States Evolvers&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -109,12 +120,12 @@ package org.drip.exposure.evolver;
 
 public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.DynamicsContainer
 {
-<span class="fc" id="L112">	private java.lang.String _csaID = null;</span>
-<span class="fc" id="L113">	private java.lang.String _overnightID = null;</span>
-<span class="fc" id="L114">	private java.lang.String _clientFundingID = null;</span>
-<span class="fc" id="L115">	private java.lang.String _dealerSeniorFundingID = null;</span>
-<span class="fc" id="L116">	private java.lang.String _dealerSubordinateFundingID = null;</span>
-<span class="fc" id="L117">	private java.util.List&lt;java.lang.String&gt; _assetIDList = null;</span>
+<span class="fc" id="L123">	private java.lang.String _csaID = null;</span>
+<span class="fc" id="L124">	private java.lang.String _overnightID = null;</span>
+<span class="fc" id="L125">	private java.lang.String _clientFundingID = null;</span>
+<span class="fc" id="L126">	private java.lang.String _dealerSeniorFundingID = null;</span>
+<span class="fc" id="L127">	private java.lang.String _dealerSubordinateFundingID = null;</span>
+<span class="fc" id="L128">	private java.util.List&lt;java.lang.String&gt; _assetIDList = null;</span>
 
 	/**
 	 * PrimarySecurityDynamicsContainer Constructor
@@ -137,63 +148,63 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 		final org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFunding,
 		final org.drip.exposure.evolver.PrimarySecurity clientFunding)
 		throws java.lang.Exception
-<span class="fc" id="L140">	{</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">		if (!addPrimarySecurity (overnight) ||</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			!addPrimarySecurity (csa) ||</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			!addPrimarySecurity (dealerSeniorFunding) ||</span>
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			!addPrimarySecurity (clientFunding) ||</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			!addPrimarySecurity (dealerSubordinateFunding))</span>
+<span class="fc" id="L151">	{</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!addPrimarySecurity (overnight) ||</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			!addPrimarySecurity (csa) ||</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			!addPrimarySecurity (dealerSeniorFunding) ||</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">			!addPrimarySecurity (clientFunding) ||</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">			!addPrimarySecurity (dealerSubordinateFunding))</span>
 		{
-<span class="nc" id="L147">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L158">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="pc bpc" id="L150" title="2 of 4 branches missed.">		if (null != assetList &amp;&amp; 0 != assetList.size())</span>
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (null != assetList &amp;&amp; 0 != assetList.size())</span>
 		{
-<span class="fc" id="L152">			_assetIDList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L163">			_assetIDList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">			for (org.drip.exposure.evolver.PrimarySecurity asset : assetList)</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">			for (org.drip.exposure.evolver.PrimarySecurity asset : assetList)</span>
 			{
-<span class="fc" id="L156">				addPrimarySecurity (asset);</span>
+<span class="fc" id="L167">				addPrimarySecurity (asset);</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				if (null != asset)</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">				if (null != asset)</span>
 				{
-<span class="fc" id="L160">					_assetIDList.add (asset.id());</span>
+<span class="fc" id="L171">					_assetIDList.add (asset.id());</span>
 				}
-<span class="fc" id="L162">			}</span>
+<span class="fc" id="L173">			}</span>
 		}
 
-<span class="fc" id="L165">		org.drip.state.identifier.LatentStateLabel csaLabel = csa.label();</span>
+<span class="fc" id="L176">		org.drip.state.identifier.LatentStateLabel csaLabel = csa.label();</span>
 
-<span class="fc" id="L167">		org.drip.state.identifier.LatentStateLabel overnightLabel = overnight.label();</span>
+<span class="fc" id="L178">		org.drip.state.identifier.LatentStateLabel overnightLabel = overnight.label();</span>
 
-<span class="fc" id="L169">		org.drip.state.identifier.LatentStateLabel clientFundingLabel = clientFunding.label();</span>
+<span class="fc" id="L180">		org.drip.state.identifier.LatentStateLabel clientFundingLabel = clientFunding.label();</span>
 
-<span class="fc" id="L171">		org.drip.state.identifier.LatentStateLabel dealerSeniorFundingLabel = dealerSeniorFunding.label();</span>
+<span class="fc" id="L182">		org.drip.state.identifier.LatentStateLabel dealerSeniorFundingLabel = dealerSeniorFunding.label();</span>
 
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		org.drip.state.identifier.LatentStateLabel dealerSubordinateFundingLabel = null ==</span>
-<span class="fc" id="L174">			dealerSubordinateFunding ? null : dealerSubordinateFunding.label();</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">		org.drip.state.identifier.LatentStateLabel dealerSubordinateFundingLabel = null ==</span>
+<span class="fc" id="L185">			dealerSubordinateFunding ? null : dealerSubordinateFunding.label();</span>
 
-<span class="pc bpc" id="L176" title="6 of 12 branches missed.">		if (!(csaLabel instanceof org.drip.state.identifier.CSALabel) ||</span>
+<span class="pc bpc" id="L187" title="6 of 12 branches missed.">		if (!(csaLabel instanceof org.drip.state.identifier.CSALabel) ||</span>
 			!(overnightLabel instanceof org.drip.state.identifier.OvernightLabel) ||
 			!(dealerSeniorFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
 			!(clientFundingLabel instanceof org.drip.state.identifier.EntityFundingLabel) ||
 			(null != dealerSubordinateFundingLabel &amp;&amp; !(dealerSubordinateFundingLabel instanceof
 				org.drip.state.identifier.EntityFundingLabel)))
 		{
-<span class="nc" id="L183">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;PrimarySecurityDynamicsContainer Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L186">		_csaID = csa.id();</span>
+<span class="fc" id="L197">		_csaID = csa.id();</span>
 
-<span class="fc" id="L188">		_overnightID = overnight.id();</span>
+<span class="fc" id="L199">		_overnightID = overnight.id();</span>
 
-<span class="fc" id="L190">		_clientFundingID = clientFunding.id();</span>
+<span class="fc" id="L201">		_clientFundingID = clientFunding.id();</span>
 
-<span class="fc" id="L192">		_dealerSeniorFundingID = dealerSeniorFunding.id();</span>
+<span class="fc" id="L203">		_dealerSeniorFundingID = dealerSeniorFunding.id();</span>
 
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		_dealerSubordinateFundingID = null == dealerSubordinateFundingLabel ? null :</span>
-<span class="fc" id="L195">			dealerSubordinateFunding.id();</span>
-<span class="fc" id="L196">	}</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		_dealerSubordinateFundingID = null == dealerSubordinateFundingLabel ? null :</span>
+<span class="fc" id="L206">			dealerSubordinateFunding.id();</span>
+<span class="fc" id="L207">	}</span>
 
 	/**
 	 * Retrieve the Asset Primary Security List
@@ -203,20 +214,20 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public java.util.List&lt;org.drip.exposure.evolver.PrimarySecurity&gt; assetList()
 	{
-<span class="pc bpc" id="L206" title="2 of 4 branches missed.">		if (null == _assetIDList || 0 == _assetIDList.size())</span>
+<span class="pc bpc" id="L217" title="2 of 4 branches missed.">		if (null == _assetIDList || 0 == _assetIDList.size())</span>
 		{
-<span class="nc" id="L208">			return null;</span>
+<span class="nc" id="L219">			return null;</span>
 		}
 
-<span class="fc" id="L211">		java.util.List&lt;org.drip.exposure.evolver.PrimarySecurity&gt; assetList = new</span>
+<span class="fc" id="L222">		java.util.List&lt;org.drip.exposure.evolver.PrimarySecurity&gt; assetList = new</span>
 			java.util.ArrayList&lt;org.drip.exposure.evolver.PrimarySecurity&gt;();
 
-<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (java.lang.String assetID : _assetIDList)</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (java.lang.String assetID : _assetIDList)</span>
 		{
-<span class="fc" id="L216">			assetList.add (primarySecurity (assetID));</span>
-<span class="fc" id="L217">		}</span>
+<span class="fc" id="L227">			assetList.add (primarySecurity (assetID));</span>
+<span class="fc" id="L228">		}</span>
 
-<span class="fc" id="L219">		return assetList;</span>
+<span class="fc" id="L230">		return assetList;</span>
 	}
 
 	/**
@@ -227,7 +238,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity overnight()
 	{
-<span class="fc" id="L230">		return primarySecurity (_overnightID);</span>
+<span class="fc" id="L241">		return primarySecurity (_overnightID);</span>
 	}
 
 	/**
@@ -238,7 +249,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity csa()
 	{
-<span class="fc" id="L241">		return primarySecurity (_csaID);</span>
+<span class="fc" id="L252">		return primarySecurity (_csaID);</span>
 	}
 
 	/**
@@ -249,7 +260,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity dealerSeniorFunding()
 	{
-<span class="fc" id="L252">		return primarySecurity (_dealerSeniorFundingID);</span>
+<span class="fc" id="L263">		return primarySecurity (_dealerSeniorFundingID);</span>
 	}
 
 	/**
@@ -260,7 +271,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity dealerSubordinateFunding()
 	{
-<span class="fc" id="L263">		return primarySecurity (_dealerSubordinateFundingID);</span>
+<span class="fc" id="L274">		return primarySecurity (_dealerSubordinateFundingID);</span>
 	}
 
 	/**
@@ -271,7 +282,7 @@ public class PrimarySecurityDynamicsContainer extends org.drip.exposure.evolver.
 
 	public org.drip.exposure.evolver.PrimarySecurity clientFunding()
 	{
-<span class="fc" id="L274">		return primarySecurity (_clientFundingID);</span>
+<span class="fc" id="L285">		return primarySecurity (_clientFundingID);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

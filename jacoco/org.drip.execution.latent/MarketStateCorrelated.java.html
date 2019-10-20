@@ -6,38 +6,49 @@ package org.drip.execution.latent;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,18 +108,18 @@ package org.drip.execution.latent;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/latent/README.md&quot;&gt;Latent&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/latent/README.md&quot;&gt;Correlated Latent Market State Sequence&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class MarketStateCorrelated implements org.drip.execution.latent.MarketState {
-<span class="nc" id="L110">	private double _dblLiquidity = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _dblVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _dblLiquidity = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _dblVolatility = java.lang.Double.NaN;</span>
 
 	/**
 	 * MarketStateCorrelated Constructor
@@ -123,20 +134,20 @@ public class MarketStateCorrelated implements org.drip.execution.latent.MarketSt
 		final double dblLiquidity,
 		final double dblVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L126">	{</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLiquidity = dblLiquidity) ||</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))</span>
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;MarketStateCorrelated Constructor =&gt; Invalid Inpus&quot;);</span>
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L137">	{</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLiquidity = dblLiquidity) ||</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))</span>
+<span class="nc" id="L140">			throw new java.lang.Exception (&quot;MarketStateCorrelated Constructor =&gt; Invalid Inpus&quot;);</span>
+<span class="nc" id="L141">	}</span>
 
 	@Override public double liquidity()
 	{
-<span class="nc" id="L134">		return _dblLiquidity;</span>
+<span class="nc" id="L145">		return _dblLiquidity;</span>
 	}
 
 	@Override public double volatility()
 	{
-<span class="nc" id="L139">		return _dblVolatility;</span>
+<span class="nc" id="L150">		return _dblVolatility;</span>
 	}
 
 	/**
@@ -147,7 +158,7 @@ public class MarketStateCorrelated implements org.drip.execution.latent.MarketSt
 
 	public double[] realization()
 	{
-<span class="nc" id="L150">		return new double[] {_dblLiquidity, _dblVolatility};</span>
+<span class="nc" id="L161">		return new double[] {_dblLiquidity, _dblVolatility};</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

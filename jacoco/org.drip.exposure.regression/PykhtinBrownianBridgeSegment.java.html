@@ -6,36 +6,47 @@ package org.drip.exposure.regression;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -96,10 +107,10 @@ package org.drip.exposure.regression;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression/README.md&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regression/README.md&quot;&gt;Regression Based Path Exposure Generation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,9 +118,9 @@ package org.drip.exposure.regression;
 
 public class PykhtinBrownianBridgeSegment
 {
-<span class="nc" id="L110">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
-<span class="nc" id="L111">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
-<span class="nc" id="L112">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
+<span class="nc" id="L121">	private org.drip.exposure.regression.PillarVertex _leftPillar = null;</span>
+<span class="nc" id="L122">	private org.drip.exposure.regression.PillarVertex _rightPillar = null;</span>
+<span class="nc" id="L123">	private org.drip.function.definition.R1ToR1 _rightPillarLocalVolatility = null;</span>
 
 	/**
 	 * PykhtinBrownianBridgeSegment Constructor
@@ -126,15 +137,15 @@ public class PykhtinBrownianBridgeSegment
 		final org.drip.exposure.regression.PillarVertex rightPillar,
 		final org.drip.function.definition.R1ToR1 rightPillarLocalVolatility)
 		throws java.lang.Exception
-<span class="nc" id="L129">	{</span>
-<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
+<span class="nc" id="L140">	{</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (null == (_leftPillar = leftPillar) ||</span>
 			null == (_rightPillar = rightPillar) ||
-<span class="nc bnc" id="L132" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">			_leftPillar.date() &gt;= _rightPillar.date() ||</span>
 			null == (_rightPillarLocalVolatility = rightPillarLocalVolatility))
 		{
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeSegment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;PykhtinBrownianBridgeSegment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L137">	}</span>
+<span class="nc" id="L148">	}</span>
 
 	/**
 	 * Retrieve the Left Pillar Vertex
@@ -144,7 +155,7 @@ public class PykhtinBrownianBridgeSegment
 
 	public org.drip.exposure.regression.PillarVertex leftPillar()
 	{
-<span class="nc" id="L147">		return _leftPillar;</span>
+<span class="nc" id="L158">		return _leftPillar;</span>
 	}
 
 	/**
@@ -155,7 +166,7 @@ public class PykhtinBrownianBridgeSegment
 
 	public org.drip.exposure.regression.PillarVertex rightPillar()
 	{
-<span class="nc" id="L158">		return _rightPillar;</span>
+<span class="nc" id="L169">		return _rightPillar;</span>
 	}
 
 	/**
@@ -166,7 +177,7 @@ public class PykhtinBrownianBridgeSegment
 
 	public org.drip.function.definition.R1ToR1 rightPillarLocalVolatility()
 	{
-<span class="nc" id="L169">		return _rightPillarLocalVolatility;</span>
+<span class="nc" id="L180">		return _rightPillarLocalVolatility;</span>
 	}
 
 	/**
@@ -182,62 +193,62 @@ public class PykhtinBrownianBridgeSegment
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; denseExposureTrajectory,
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; wanderTrajectory)
 	{
-<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (null == denseExposureTrajectory || null == wanderTrajectory)</span>
 		{
-<span class="nc" id="L187">			return false;</span>
+<span class="nc" id="L198">			return false;</span>
 		}
 
-<span class="nc" id="L190">		int leftPillarDate = _leftPillar.date();</span>
+<span class="nc" id="L201">		int leftPillarDate = _leftPillar.date();</span>
 
-<span class="nc" id="L192">		int rightPillarDate = _rightPillar.date();</span>
+<span class="nc" id="L203">		int rightPillarDate = _rightPillar.date();</span>
 
-<span class="nc" id="L194">		double leftPillarExposure = _leftPillar.exposure();</span>
+<span class="nc" id="L205">		double leftPillarExposure = _leftPillar.exposure();</span>
 
-<span class="nc" id="L196">		double rightPillarExposure = _rightPillar.exposure();</span>
+<span class="nc" id="L207">		double rightPillarExposure = _rightPillar.exposure();</span>
 
-<span class="nc" id="L198">		int dateWidth = rightPillarDate - leftPillarDate;</span>
-<span class="nc" id="L199">		double urgency = 1. / dateWidth;</span>
-<span class="nc" id="L200">		double localVolatility = java.lang.Double.NaN;</span>
-<span class="nc" id="L201">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
+<span class="nc" id="L209">		int dateWidth = rightPillarDate - leftPillarDate;</span>
+<span class="nc" id="L210">		double urgency = 1. / dateWidth;</span>
+<span class="nc" id="L211">		double localVolatility = java.lang.Double.NaN;</span>
+<span class="nc" id="L212">		double localDrift = (rightPillarExposure - leftPillarExposure) * urgency;</span>
 
-<span class="nc" id="L203">		denseExposureTrajectory.put (</span>
-<span class="nc" id="L204">			leftPillarDate,</span>
-<span class="nc" id="L205">			leftPillarExposure</span>
+<span class="nc" id="L214">		denseExposureTrajectory.put (</span>
+<span class="nc" id="L215">			leftPillarDate,</span>
+<span class="nc" id="L216">			leftPillarExposure</span>
 		);
 
-<span class="nc" id="L208">		denseExposureTrajectory.put (</span>
-<span class="nc" id="L209">			rightPillarDate,</span>
-<span class="nc" id="L210">			rightPillarExposure</span>
+<span class="nc" id="L219">		denseExposureTrajectory.put (</span>
+<span class="nc" id="L220">			rightPillarDate,</span>
+<span class="nc" id="L221">			rightPillarExposure</span>
 		);
 
 		try
 		{
-<span class="nc" id="L215">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
+<span class="nc" id="L226">			localVolatility = _rightPillarLocalVolatility.evaluate (rightPillarExposure);</span>
 		}
-<span class="nc" id="L217">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L228">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L219">			e.printStackTrace();</span>
+<span class="nc" id="L230">			e.printStackTrace();</span>
 
-<span class="nc" id="L221">			return false;</span>
-<span class="nc" id="L222">		}</span>
+<span class="nc" id="L232">			return false;</span>
+<span class="nc" id="L233">		}</span>
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		for (int dateIndex = dateWidth - 1; dateIndex &gt; 0; --dateIndex)</span>
 		{
-<span class="nc" id="L226">			int date = leftPillarDate + dateIndex;</span>
+<span class="nc" id="L237">			int date = leftPillarDate + dateIndex;</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (!wanderTrajectory.containsKey (date))</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			if (!wanderTrajectory.containsKey (date))</span>
 			{
-<span class="nc" id="L230">				return false;</span>
+<span class="nc" id="L241">				return false;</span>
 			}
 
-<span class="nc" id="L233">			denseExposureTrajectory.put (</span>
-<span class="nc" id="L234">				date,</span>
-<span class="nc" id="L235">				rightPillarExposure - localDrift * (dateWidth - dateIndex) + localVolatility * urgency *</span>
-<span class="nc" id="L236">					wanderTrajectory.get (date) * java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex))</span>
+<span class="nc" id="L244">			denseExposureTrajectory.put (</span>
+<span class="nc" id="L245">				date,</span>
+<span class="nc" id="L246">				rightPillarExposure - localDrift * (dateWidth - dateIndex) + localVolatility * urgency *</span>
+<span class="nc" id="L247">					wanderTrajectory.get (date) * java.lang.Math.sqrt (dateIndex * (dateWidth - dateIndex))</span>
 			);
 		}
 
-<span class="nc" id="L240">		return true;</span>
+<span class="nc" id="L251">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

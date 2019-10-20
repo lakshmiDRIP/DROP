@@ -6,38 +6,49 @@ package org.drip.execution.optimum;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,18 +109,18 @@ package org.drip.execution.optimum;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/optimum/README.md&quot;&gt;Optimum&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/optimum/README.md&quot;&gt;Almgren-Chriss Efficient Trading Trajectories&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TradingEnhancedDiscrete extends org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete {
-<span class="fc" id="L111">	private double _dblCharacteristicSize = java.lang.Double.NaN;</span>
-<span class="fc" id="L112">	private double _dblCharacteristicTime = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblCharacteristicSize = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private double _dblCharacteristicTime = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct a Standard TradingEnhancedDiscrete Instance
@@ -128,23 +139,23 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		final double dblCharacteristicTime,
 		final double dblCharacteristicSize)
 	{
-<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (null == dtt || null == apep) return null;</span>
+<span class="pc bpc" id="L142" title="2 of 4 branches missed.">		if (null == dtt || null == apep) return null;</span>
 
 		try {
-<span class="fc" id="L134">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
+<span class="fc" id="L145">			org.drip.measure.gaussian.R1UnivariateNormal r1un = (new</span>
 				org.drip.execution.capture.TrajectoryShortfallEstimator (dtt)).totalCostDistributionSynopsis
-<span class="fc" id="L136">					(apep);</span>
+<span class="fc" id="L147">					(apep);</span>
 
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">			return null == r1un ? null : new TradingEnhancedDiscrete (dtt.executionTimeNode(),</span>
-<span class="fc" id="L139">				dtt.holdings(), dtt.tradeList(), r1un.mean(), r1un.variance(), dblCharacteristicTime,</span>
-<span class="fc" id="L140">					dblCharacteristicSize, apep.temporaryExpectation().epochImpactFunction().evaluate</span>
-<span class="fc" id="L141">						(dtt.instantTradeRate()) / (apep.arithmeticPriceDynamicsSettings().epochVolatility()</span>
-<span class="fc" id="L142">							* java.lang.Math.sqrt (dtt.executionTime())));</span>
-<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L144">			e.printStackTrace();</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">			return null == r1un ? null : new TradingEnhancedDiscrete (dtt.executionTimeNode(),</span>
+<span class="fc" id="L150">				dtt.holdings(), dtt.tradeList(), r1un.mean(), r1un.variance(), dblCharacteristicTime,</span>
+<span class="fc" id="L151">					dblCharacteristicSize, apep.temporaryExpectation().epochImpactFunction().evaluate</span>
+<span class="fc" id="L152">						(dtt.instantTradeRate()) / (apep.arithmeticPriceDynamicsSettings().epochVolatility()</span>
+<span class="fc" id="L153">							* java.lang.Math.sqrt (dtt.executionTime())));</span>
+<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L155">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L147">		return null;</span>
+<span class="nc" id="L158">		return null;</span>
 	}
 
 	/**
@@ -173,13 +184,13 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 		final double dblMarketPower)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L176">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,</span>
+<span class="fc" id="L187">		super (adblExecutionTimeNode, adblHoldings, adblTradeList, dblTransactionCostExpectation,</span>
 			dblTransactionCostVariance, dblMarketPower);
 
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||</span>
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))</span>
-<span class="nc" id="L181">			throw new java.lang.Exception (&quot;TradingEnhancedDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L182">	}</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicTime = dblCharacteristicTime) ||</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCharacteristicSize = dblCharacteristicSize))</span>
+<span class="nc" id="L192">			throw new java.lang.Exception (&quot;TradingEnhancedDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L193">	}</span>
 
 	/**
 	 * Retrieve the Optimal Trajectory Characteristic Size
@@ -189,7 +200,7 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 
 	public double characteristicSize()
 	{
-<span class="fc" id="L192">		return _dblCharacteristicSize;</span>
+<span class="fc" id="L203">		return _dblCharacteristicSize;</span>
 	}
 
 	/**
@@ -200,7 +211,7 @@ public class TradingEnhancedDiscrete extends org.drip.execution.optimum.Efficien
 
 	public double characteristicTime()
 	{
-<span class="fc" id="L203">		return _dblCharacteristicTime;</span>
+<span class="fc" id="L214">		return _dblCharacteristicTime;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

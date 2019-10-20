@@ -6,36 +6,47 @@ package org.drip.exposure.mpor;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -95,10 +106,10 @@ package org.drip.exposure.mpor;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/mpor/README.md&quot;&gt;MPoR&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/mpor/README.md&quot;&gt;Margin Period Collateral Amount Estimation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -106,11 +117,11 @@ package org.drip.exposure.mpor;
 
 public class VariationMarginTradeVertexExposure
 {
-<span class="nc" id="L109">	private double _clientTradePaymentGap = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _variationMarginPosting = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _variationMarginEstimate = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _clientDealerTradePaymentGap = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private org.drip.exposure.csatimeline.LastFlowDates _lastFlowDates = null;</span>
+<span class="nc" id="L120">	private double _clientTradePaymentGap = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _variationMarginPosting = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _variationMarginEstimate = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private double _clientDealerTradePaymentGap = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private org.drip.exposure.csatimeline.LastFlowDates _lastFlowDates = null;</span>
 
 	/**
 	 * VariationMarginTradeVertexExposure Constructor
@@ -132,18 +143,18 @@ public class VariationMarginTradeVertexExposure
 		final double clientDealerTradePaymentGap,
 		final org.drip.exposure.csatimeline.LastFlowDates lastFlowDates)
 		throws java.lang.Exception
-<span class="nc" id="L135">	{</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting) ||</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientTradePaymentGap = clientTradePaymentGap) ||</span>
-<span class="nc bnc" id="L139" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientDealerTradePaymentGap =</span>
+<span class="nc" id="L146">	{</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginEstimate = variationMarginEstimate) ||</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_variationMarginPosting = variationMarginPosting) ||</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientTradePaymentGap = clientTradePaymentGap) ||</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_clientDealerTradePaymentGap =</span>
 				clientDealerTradePaymentGap) ||
 			null == (_lastFlowDates = lastFlowDates))
 		{
-<span class="nc" id="L143">			throw new java.lang.Exception</span>
+<span class="nc" id="L154">			throw new java.lang.Exception</span>
 				(&quot;VariationMarginTradeVertexExposure Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="nc" id="L146">	}</span>
+<span class="nc" id="L157">	}</span>
 
 	/**
 	 * Retrieve the Calculation Agent Generated Variation Margin Estimate
@@ -153,7 +164,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double variationMarginEstimate()
 	{
-<span class="nc" id="L156">		return _variationMarginEstimate;</span>
+<span class="nc" id="L167">		return _variationMarginEstimate;</span>
 	}
 
 	/**
@@ -164,7 +175,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double variationMarginPosting()
 	{
-<span class="nc" id="L167">		return _variationMarginPosting;</span>
+<span class="nc" id="L178">		return _variationMarginPosting;</span>
 	}
 
 	/**
@@ -175,7 +186,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double variationMarginGap()
 	{
-<span class="nc" id="L178">		return _variationMarginEstimate - _variationMarginPosting;</span>
+<span class="nc" id="L189">		return _variationMarginEstimate - _variationMarginPosting;</span>
 	}
 
 	/**
@@ -186,7 +197,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double clientTradePaymentGap()
 	{
-<span class="nc" id="L189">		return _clientTradePaymentGap;</span>
+<span class="nc" id="L200">		return _clientTradePaymentGap;</span>
 	}
 
 	/**
@@ -197,7 +208,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double clientDealerTradePaymentGap()
 	{
-<span class="nc" id="L200">		return _clientDealerTradePaymentGap;</span>
+<span class="nc" id="L211">		return _clientDealerTradePaymentGap;</span>
 	}
 
 	/**
@@ -208,7 +219,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double tradePaymentGap()
 	{
-<span class="nc" id="L211">		return _clientTradePaymentGap + _clientDealerTradePaymentGap;</span>
+<span class="nc" id="L222">		return _clientTradePaymentGap + _clientDealerTradePaymentGap;</span>
 	}
 
 	/**
@@ -219,7 +230,7 @@ public class VariationMarginTradeVertexExposure
 
 	public double collateralizedExposure()
 	{
-<span class="nc" id="L222">		return _variationMarginEstimate + _clientTradePaymentGap + _clientDealerTradePaymentGap -</span>
+<span class="nc" id="L233">		return _variationMarginEstimate + _clientTradePaymentGap + _clientDealerTradePaymentGap -</span>
 			_variationMarginPosting;
 	}
 
@@ -231,9 +242,9 @@ public class VariationMarginTradeVertexExposure
 
 	public double collateralizedPositiveExposure()
 	{
-<span class="nc" id="L234">		double collateralizedExposure = collateralizedExposure();</span>
+<span class="nc" id="L245">		double collateralizedExposure = collateralizedExposure();</span>
 
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		return collateralizedExposure &gt; 0. ? collateralizedExposure : 0.;</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		return collateralizedExposure &gt; 0. ? collateralizedExposure : 0.;</span>
 	}
 
 	/**
@@ -244,7 +255,7 @@ public class VariationMarginTradeVertexExposure
 
 	public org.drip.exposure.csatimeline.LastFlowDates lastFlowDates()
 	{
-<span class="nc" id="L247">		return _lastFlowDates;</span>
+<span class="nc" id="L258">		return _lastFlowDates;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

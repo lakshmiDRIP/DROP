@@ -6,36 +6,47 @@ package org.drip.exposure.holdings;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -95,10 +106,10 @@ package org.drip.exposure.holdings;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/holdings/README.md&quot;&gt;Holdings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/holdings/README.md&quot;&gt;Holdings Exposure - Position and Dependencies&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -106,9 +117,9 @@ package org.drip.exposure.holdings;
 
 public class PositionGroup
 {
-<span class="nc" id="L109">	private org.drip.xva.netting.CollateralGroupPath _collateralGroupPath = null;</span>
-<span class="nc" id="L110">	private org.drip.exposure.holdings.PositionGroupEstimator _positionGroupEstimator = null;</span>
-<span class="nc" id="L111">	private org.drip.xva.proto.PositionSchemaSpecification _positionGroupSpecification = null;</span>
+<span class="nc" id="L120">	private org.drip.xva.netting.CollateralGroupPath _collateralGroupPath = null;</span>
+<span class="nc" id="L121">	private org.drip.exposure.holdings.PositionGroupEstimator _positionGroupEstimator = null;</span>
+<span class="nc" id="L122">	private org.drip.xva.proto.PositionSchemaSpecification _positionGroupSpecification = null;</span>
 
 	/**
 	 * PositionGroup Constructor
@@ -123,13 +134,13 @@ public class PositionGroup
 		final org.drip.xva.proto.PositionSchemaSpecification positionGroupSpecification,
 		final org.drip.exposure.holdings.PositionGroupEstimator positionGroupEstimator)
 		throws java.lang.Exception
-<span class="nc" id="L126">	{</span>
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (null == (_positionGroupSpecification = positionGroupSpecification) ||</span>
+<span class="nc" id="L137">	{</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == (_positionGroupSpecification = positionGroupSpecification) ||</span>
 			null == (_positionGroupEstimator = positionGroupEstimator))
 		{
-<span class="nc" id="L130">			throw  new java.lang.Exception (&quot;PositionGroup Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L141">			throw  new java.lang.Exception (&quot;PositionGroup Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L132">	}</span>
+<span class="nc" id="L143">	}</span>
 
 	/**
 	 * Retrieve the Position Group Specification
@@ -139,7 +150,7 @@ public class PositionGroup
 
 	public org.drip.xva.proto.PositionSchemaSpecification positionGroupSpecification()
 	{
-<span class="nc" id="L142">		return _positionGroupSpecification;</span>
+<span class="nc" id="L153">		return _positionGroupSpecification;</span>
 	}
 
 	/**
@@ -150,7 +161,7 @@ public class PositionGroup
 
 	public org.drip.exposure.holdings.PositionGroupEstimator positionGroupEstimator()
 	{
-<span class="nc" id="L153">		return _positionGroupEstimator;</span>
+<span class="nc" id="L164">		return _positionGroupEstimator;</span>
 	}
 
 	/**
@@ -164,13 +175,13 @@ public class PositionGroup
 	public boolean setCollateralGroupPath (
 		final org.drip.xva.netting.CollateralGroupPath collateralGroupPath)
 	{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == collateralGroupPath)</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (null == collateralGroupPath)</span>
 		{
-<span class="nc" id="L169">			return false;</span>
+<span class="nc" id="L180">			return false;</span>
 		}
 
-<span class="nc" id="L172">		_collateralGroupPath = collateralGroupPath;</span>
-<span class="nc" id="L173">		return true;</span>
+<span class="nc" id="L183">		_collateralGroupPath = collateralGroupPath;</span>
+<span class="nc" id="L184">		return true;</span>
 	}
 
 	/**
@@ -181,7 +192,7 @@ public class PositionGroup
 
 	public org.drip.xva.netting.CollateralGroupPath collateralGroupPath()
 	{
-<span class="nc" id="L184">		return _collateralGroupPath;</span>
+<span class="nc" id="L195">		return _collateralGroupPath;</span>
 	}
 
 	/**
@@ -195,40 +206,40 @@ public class PositionGroup
 	public double[] valueArray (
 		final org.drip.exposure.universe.MarketPath marketPath)
 	{
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (null == marketPath)</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (null == marketPath)</span>
 		{
-<span class="nc" id="L200">			return null;</span>
+<span class="nc" id="L211">			return null;</span>
 		}
 
-<span class="nc" id="L203">		org.drip.analytics.date.JulianDate[] vertexDateArray = marketPath.anchorDates();</span>
+<span class="nc" id="L214">		org.drip.analytics.date.JulianDate[] vertexDateArray = marketPath.anchorDates();</span>
 
-<span class="nc" id="L205">		int vertexCount = vertexDateArray.length;</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		double[] positionGroupValueArray = 0 == vertexCount ? null : new double[vertexCount];</span>
+<span class="nc" id="L216">		int vertexCount = vertexDateArray.length;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		double[] positionGroupValueArray = 0 == vertexCount ? null : new double[vertexCount];</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (0 == vertexCount)</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (0 == vertexCount)</span>
 		{
-<span class="nc" id="L210">			return null;</span>
+<span class="nc" id="L221">			return null;</span>
 		}
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (int i = 0; i &lt; vertexCount; ++i)</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		for (int i = 0; i &lt; vertexCount; ++i)</span>
 		{
-<span class="nc" id="L215">			int forwardDate = vertexDateArray[i].julian();</span>
+<span class="nc" id="L226">			int forwardDate = vertexDateArray[i].julian();</span>
 
 			try {
-<span class="nc" id="L218">				positionGroupValueArray[i] = _positionGroupEstimator.variationMarginEstimate (</span>
+<span class="nc" id="L229">				positionGroupValueArray[i] = _positionGroupEstimator.variationMarginEstimate (</span>
 					forwardDate,
 					marketPath
 				);
 			}
-<span class="nc" id="L223">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L234">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L225">				e.printStackTrace();</span>
+<span class="nc" id="L236">				e.printStackTrace();</span>
 
-<span class="nc" id="L227">				return null;</span>
-<span class="nc" id="L228">			}</span>
+<span class="nc" id="L238">				return null;</span>
+<span class="nc" id="L239">			}</span>
 		}
 
-<span class="nc" id="L231">		return positionGroupValueArray;</span>
+<span class="nc" id="L242">		return positionGroupValueArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

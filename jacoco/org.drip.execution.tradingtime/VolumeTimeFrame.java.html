@@ -6,38 +6,49 @@ package org.drip.execution.tradingtime;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,18 +108,18 @@ package org.drip.execution.tradingtime;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime/README.md&quot;&gt;Trading Time&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/tradingtime/README.md&quot;&gt;Coordinated Variation Trading Time Models&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionEdge {
-<span class="nc" id="L110">	private double _dblHoldings = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _dblTradeRate = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _dblHoldings = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _dblTradeRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * VolumeTimeFrame Constructor
@@ -134,15 +145,15 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 		final double dblTradeRate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L137">		super (dblPrevious, dblVolatility * dblVolatility * dblTemporal, new</span>
+<span class="nc" id="L148">		super (dblPrevious, dblVolatility * dblVolatility * dblTemporal, new</span>
 			org.drip.measure.realization.StochasticEdgeDiffusion (dblVolatility * dblBrownian), null, new
 				org.drip.measure.realization.JumpDiffusionEdgeUnit (dblTimeIncrement, dblBrownian, 0.));
 
-<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate / (dblVolatility *</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate / (dblVolatility *</span>
 				dblVolatility)))
-<span class="nc" id="L144">			throw new java.lang.Exception (&quot;VolumeTimeFrame Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="nc" id="L145">	}</span>
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;VolumeTimeFrame Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Holdings
@@ -152,7 +163,7 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 
 	public double holdings()
 	{
-<span class="nc" id="L155">		return _dblHoldings;</span>
+<span class="nc" id="L166">		return _dblHoldings;</span>
 	}
 
 	/**
@@ -163,7 +174,7 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 
 	public double tradeRate()
 	{
-<span class="nc" id="L166">		return _dblTradeRate;</span>
+<span class="nc" id="L177">		return _dblTradeRate;</span>
 	}
 
 	/**
@@ -180,11 +191,11 @@ public class VolumeTimeFrame extends org.drip.measure.realization.JumpDiffusionE
 		final org.drip.execution.tradingtime.CoordinatedVariation cv)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (null == cv)</span>
-<span class="nc" id="L184">			throw new java.lang.Exception (&quot;VolumeTimeFrame::transactionCostIncrement =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (null == cv)</span>
+<span class="nc" id="L195">			throw new java.lang.Exception (&quot;VolumeTimeFrame::transactionCostIncrement =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L186">		return _dblHoldings * diffusionStochastic() + cv.invariant() * _dblTradeRate * _dblTradeRate *</span>
-<span class="nc" id="L187">			deterministic();</span>
+<span class="nc" id="L197">		return _dblHoldings * diffusionStochastic() + cv.invariant() * _dblTradeRate * _dblTradeRate *</span>
+<span class="nc" id="L198">			deterministic();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

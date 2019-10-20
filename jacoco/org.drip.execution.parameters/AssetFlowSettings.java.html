@@ -6,37 +6,49 @@ package org.drip.execution.parameters;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -94,20 +106,20 @@ package org.drip.execution.parameters;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters/README.md&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters/README.md&quot;&gt;Empirical Market Impact Coefficients Calibration&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class AssetFlowSettings {
-<span class="fc" id="L107">	private java.lang.String _strAssetID = &quot;&quot;;</span>
-<span class="fc" id="L108">	private double _dblDailyVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L109">	private double _dblNumberOutstanding = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _dblAverageDailyVolume = java.lang.Double.NaN;</span>
+<span class="fc" id="L119">	private java.lang.String _strAssetID = &quot;&quot;;</span>
+<span class="fc" id="L120">	private double _dblDailyVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L121">	private double _dblNumberOutstanding = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblAverageDailyVolume = java.lang.Double.NaN;</span>
 
 	/**
 	 * AssetFlowSettings Constructor
@@ -126,14 +138,14 @@ public class AssetFlowSettings {
 		final double dblNumberOutstanding,
 		final double dblDailyVolatility)
 		throws java.lang.Exception
-<span class="fc" id="L129">	{</span>
-<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == (_strAssetID = strAssetID) || _strAssetID.isEmpty() ||</span>
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblAverageDailyVolume = dblAverageDailyVolume) ||</span>
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblNumberOutstanding = dblNumberOutstanding) ||</span>
-<span class="pc bpc" id="L133" title="3 of 6 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblDailyVolatility = dblDailyVolatility) ||</span>
+<span class="fc" id="L141">	{</span>
+<span class="pc bpc" id="L142" title="2 of 4 branches missed.">		if (null == (_strAssetID = strAssetID) || _strAssetID.isEmpty() ||</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblAverageDailyVolume = dblAverageDailyVolume) ||</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblNumberOutstanding = dblNumberOutstanding) ||</span>
+<span class="pc bpc" id="L145" title="3 of 6 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblDailyVolatility = dblDailyVolatility) ||</span>
 						0. &gt;= _dblNumberOutstanding || 0. &gt;= _dblDailyVolatility)
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;AssetFlowSettings Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L136">	}</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;AssetFlowSettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L148">	}</span>
 
 	/**
 	 * Retrieve the Asset ID
@@ -143,7 +155,7 @@ public class AssetFlowSettings {
 
 	public java.lang.String assetID()
 	{
-<span class="nc" id="L146">		return _strAssetID;</span>
+<span class="nc" id="L158">		return _strAssetID;</span>
 	}
 
 	/**
@@ -154,7 +166,7 @@ public class AssetFlowSettings {
 
 	public double averageDailyVolume()
 	{
-<span class="fc" id="L157">		return _dblAverageDailyVolume;</span>
+<span class="fc" id="L169">		return _dblAverageDailyVolume;</span>
 	}
 
 	/**
@@ -165,7 +177,7 @@ public class AssetFlowSettings {
 
 	public double dailyVolatility()
 	{
-<span class="fc" id="L168">		return _dblDailyVolatility;</span>
+<span class="fc" id="L180">		return _dblDailyVolatility;</span>
 	}
 
 	/**
@@ -176,7 +188,7 @@ public class AssetFlowSettings {
 
 	public double outstandingUnits()
 	{
-<span class="nc" id="L179">		return _dblNumberOutstanding;</span>
+<span class="nc" id="L191">		return _dblNumberOutstanding;</span>
 	}
 
 	/**
@@ -187,7 +199,7 @@ public class AssetFlowSettings {
 
 	public double turnover()
 	{
-<span class="nc" id="L190">		return _dblAverageDailyVolume / _dblNumberOutstanding;</span>
+<span class="nc" id="L202">		return _dblAverageDailyVolume / _dblNumberOutstanding;</span>
 	}
 
 	/**
@@ -198,7 +210,7 @@ public class AssetFlowSettings {
 
 	public double inverseTurnover()
 	{
-<span class="fc" id="L201">		return _dblNumberOutstanding / _dblAverageDailyVolume;</span>
+<span class="fc" id="L213">		return _dblNumberOutstanding / _dblAverageDailyVolume;</span>
 	}
 
 	/**
@@ -217,11 +229,11 @@ public class AssetFlowSettings {
 		final double dblTime)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRawTradeSize) ||</span>
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
-<span class="nc" id="L222">			throw new java.lang.Exception (&quot;AssetFlowSettings::normalizeTradeSize =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRawTradeSize) ||</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblTime))</span>
+<span class="nc" id="L234">			throw new java.lang.Exception (&quot;AssetFlowSettings::normalizeTradeSize =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L224">		return dblRawTradeSize / (_dblAverageDailyVolume * dblTime);</span>
+<span class="fc" id="L236">		return dblRawTradeSize / (_dblAverageDailyVolume * dblTime);</span>
 	}
 
 	/**
@@ -238,10 +250,10 @@ public class AssetFlowSettings {
 		final double dblNormalizedImpact)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedImpact))</span>
-<span class="nc" id="L242">			throw new java.lang.Exception (&quot;AssetFlowSettings::denormalizeImpact =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedImpact))</span>
+<span class="nc" id="L254">			throw new java.lang.Exception (&quot;AssetFlowSettings::denormalizeImpact =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L244">		return dblNormalizedImpact * _dblDailyVolatility;</span>
+<span class="nc" id="L256">		return dblNormalizedImpact * _dblDailyVolatility;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

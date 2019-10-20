@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EventDateBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DROP</a> &gt; <a href="index.source.html" class="el_package">org.drip.exposure.csatimeline</a> &gt; <span class="el_source">EventDateBuilder.java</span></div><h1>EventDateBuilder.java</h1><pre class="source lang-java linenums">
 package org.drip.exposure.csatimeline;
 
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -97,16 +107,16 @@ package org.drip.exposure.csatimeline;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/README.md&quot;&gt;CSA Time Line&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/csatimeline/README.md&quot;&gt;Time-line of IMA/CSA Event Dates&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class EventDateBuilder</span>
+<span class="nc" id="L119">public class EventDateBuilder</span>
 {
 
 	/**
@@ -200,18 +210,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L203">			return new EventDate (</span>
+<span class="nc" id="L213">			return new EventDate (</span>
 				date,
 				&quot;Valuation Date&quot;,
 				&quot;T0&quot;
 			);
 		}
-<span class="nc" id="L209">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L219">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L211">			e.printStackTrace();</span>
+<span class="nc" id="L221">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L224">		return null;</span>
 	}
 
 	/**
@@ -227,18 +237,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L230">			return new org.drip.exposure.csatimeline.EventDate (</span>
+<span class="nc" id="L240">			return new org.drip.exposure.csatimeline.EventDate (</span>
 				date,
 				&quot;Honored Date&quot;,
 				&quot;T1&quot;
 			);
 		}
-<span class="nc" id="L236">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L246">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L238">			e.printStackTrace();</span>
+<span class="nc" id="L248">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L241">		return null;</span>
+<span class="nc" id="L251">		return null;</span>
 	}
 
 	/**
@@ -254,8 +264,8 @@ package org.drip.exposure.csatimeline;
 		final org.drip.exposure.csatimeline.EventDate valuation,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		return null == valuation ? null : Honored (</span>
-<span class="nc" id="L258">			valuation.date().addBusDays (</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		return null == valuation ? null : Honored (</span>
+<span class="nc" id="L268">			valuation.date().addBusDays (</span>
 				1,
 				calendarSet
 			)
@@ -275,18 +285,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L278">			return new EventDate (</span>
+<span class="nc" id="L288">			return new EventDate (</span>
 				date,
 				&quot;Collateral Transfer Initiation Date&quot;,
 				&quot;T2&quot;
 			);
 		}
-<span class="nc" id="L284">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L294">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L286">			e.printStackTrace();</span>
+<span class="nc" id="L296">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L289">		return null;</span>
+<span class="nc" id="L299">		return null;</span>
 	}
 
 	/**
@@ -302,8 +312,8 @@ package org.drip.exposure.csatimeline;
 		final org.drip.exposure.csatimeline.EventDate honored,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		return null == honored ? null : CollateralTransferInitiation (</span>
-<span class="nc" id="L306">			honored.date().addBusDays (</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		return null == honored ? null : CollateralTransferInitiation (</span>
+<span class="nc" id="L316">			honored.date().addBusDays (</span>
 				1,
 				calendarSet
 			)
@@ -323,8 +333,8 @@ package org.drip.exposure.csatimeline;
 		final org.drip.exposure.csatimeline.EventDate honored,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L326" title="All 2 branches missed.">		return null == honored ? null : CollateralTransferInitiation (</span>
-<span class="nc" id="L327">			honored.date().addBusDays (</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">		return null == honored ? null : CollateralTransferInitiation (</span>
+<span class="nc" id="L337">			honored.date().addBusDays (</span>
 				2,
 				calendarSet
 			)
@@ -344,18 +354,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L347">			return new EventDate (</span>
+<span class="nc" id="L357">			return new EventDate (</span>
 				date,
 				&quot;Non-Honored Date&quot;,
 				&quot;T3&quot;
 			);
 		}
-<span class="nc" id="L353">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L363">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L355">			e.printStackTrace();</span>
+<span class="nc" id="L365">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L358">		return null;</span>
+<span class="nc" id="L368">		return null;</span>
 	}
 
 	/**
@@ -371,8 +381,8 @@ package org.drip.exposure.csatimeline;
 		final org.drip.exposure.csatimeline.EventDate valuation,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L374" title="All 2 branches missed.">		return null == valuation ? null : NonHonored (</span>
-<span class="nc" id="L375">			valuation.date().addBusDays (</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		return null == valuation ? null : NonHonored (</span>
+<span class="nc" id="L385">			valuation.date().addBusDays (</span>
 				1,
 				calendarSet
 			)
@@ -392,18 +402,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L395">			return new EventDate (</span>
+<span class="nc" id="L405">			return new EventDate (</span>
 				date,
 				&quot;Potential Event of Default Date&quot;,
 				&quot;Tau&quot;
 			);
 		}
-<span class="nc" id="L401">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L411">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L403">			e.printStackTrace();</span>
+<span class="nc" id="L413">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L406">		return null;</span>
+<span class="nc" id="L416">		return null;</span>
 	}
 
 	/**
@@ -419,18 +429,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L422">			return new EventDate (</span>
+<span class="nc" id="L432">			return new EventDate (</span>
 				date,
 				&quot;Potential Event of Default Date&quot;,
 				&quot;Tau&quot;
 			);
 		}
-<span class="nc" id="L428">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L438">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L430">			e.printStackTrace();</span>
+<span class="nc" id="L440">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L433">		return null;</span>
+<span class="nc" id="L443">		return null;</span>
 	}
 
 	/**
@@ -446,18 +456,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L449">			return new EventDate (</span>
+<span class="nc" id="L459">			return new EventDate (</span>
 				date,
 				&quot;PED Communication Date&quot;,
 				&quot;T4&quot;
 			);
 		}
-<span class="nc" id="L455">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L465">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L457">			e.printStackTrace();</span>
+<span class="nc" id="L467">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L460">		return null;</span>
+<span class="nc" id="L470">		return null;</span>
 	}
 
 	/**
@@ -473,18 +483,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L476">			return new EventDate (</span>
+<span class="nc" id="L486">			return new EventDate (</span>
 				date,
 				&quot;Event of Default Date&quot;,
 				&quot;T5&quot;
 			);
 		}
-<span class="nc" id="L482">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L492">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L484">			e.printStackTrace();</span>
+<span class="nc" id="L494">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L487">		return null;</span>
+<span class="nc" id="L497">		return null;</span>
 	}
 
 	/**
@@ -500,18 +510,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L503">			return new EventDate (</span>
+<span class="nc" id="L513">			return new EventDate (</span>
 				date,
 				&quot;Event of Default Date&quot;,
 				&quot;T5&quot;
 			);
 		}
-<span class="nc" id="L509">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L519">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L511">			e.printStackTrace();</span>
+<span class="nc" id="L521">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L514">		return null;</span>
+<span class="nc" id="L524">		return null;</span>
 	}
 
 	/**
@@ -529,8 +539,8 @@ package org.drip.exposure.csatimeline;
 		final java.lang.String calendarSet,
 		final int curePeriod)
 	{
-<span class="nc bnc" id="L532" title="All 2 branches missed.">		return null == ped ? null : EventOfDefault (</span>
-<span class="nc" id="L533">			ped.date().addBusDays (</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">		return null == ped ? null : EventOfDefault (</span>
+<span class="nc" id="L543">			ped.date().addBusDays (</span>
 				curePeriod,
 				calendarSet
 			)
@@ -550,8 +560,8 @@ package org.drip.exposure.csatimeline;
 		final org.drip.exposure.csatimeline.EventDate ped,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L553" title="All 2 branches missed.">		return null == ped ? null : EventOfDefault (</span>
-<span class="nc" id="L554">			ped.date().addBusDays (</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">		return null == ped ? null : EventOfDefault (</span>
+<span class="nc" id="L564">			ped.date().addBusDays (</span>
 				CURE_PERIOD_IMA_1992,
 				calendarSet
 			)
@@ -571,8 +581,8 @@ package org.drip.exposure.csatimeline;
 		final org.drip.exposure.csatimeline.EventDate ped,
 		final java.lang.String calendarSet)
 	{
-<span class="nc bnc" id="L574" title="All 2 branches missed.">		return null == ped ? null : EventOfDefault (</span>
-<span class="nc" id="L575">			ped.date().addBusDays (</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">		return null == ped ? null : EventOfDefault (</span>
+<span class="nc" id="L585">			ped.date().addBusDays (</span>
 				CURE_PERIOD_IMA_2002,
 				calendarSet
 			)
@@ -592,18 +602,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L595">			return new EventDate (</span>
+<span class="nc" id="L605">			return new EventDate (</span>
 				date,
 				&quot;ED Communication Date&quot;,
 				&quot;T6&quot;
 			);
 		}
-<span class="nc" id="L601">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L611">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L603">			e.printStackTrace();</span>
+<span class="nc" id="L613">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L606">		return null;</span>
+<span class="nc" id="L616">		return null;</span>
 	}
 
 	/**
@@ -619,18 +629,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L622">			return new EventDate (</span>
+<span class="nc" id="L632">			return new EventDate (</span>
 				date,
 				&quot;ETD Designation Date&quot;,
 				&quot;T7&quot;
 			);
 		}
-<span class="nc" id="L628">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L638">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L630">			e.printStackTrace();</span>
+<span class="nc" id="L640">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L633">		return null;</span>
+<span class="nc" id="L643">		return null;</span>
 	}
 
 	/**
@@ -646,18 +656,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L649">			return new EventDate (</span>
+<span class="nc" id="L659">			return new EventDate (</span>
 				date,
 				&quot;Early Termination Date&quot;,
 				&quot;T8&quot;
 			);
 		}
-<span class="nc" id="L655">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L665">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L657">			e.printStackTrace();</span>
+<span class="nc" id="L667">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L660">		return null;</span>
+<span class="nc" id="L670">		return null;</span>
 	}
 
 	/**
@@ -673,18 +683,18 @@ package org.drip.exposure.csatimeline;
 	{
 		try
 		{
-<span class="nc" id="L676">			return new EventDate (</span>
+<span class="nc" id="L686">			return new EventDate (</span>
 				date,
 				&quot;Early Termination Date&quot;,
 				&quot;T8&quot;
 			);
 		}
-<span class="nc" id="L682">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L692">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L684">			e.printStackTrace();</span>
+<span class="nc" id="L694">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L687">		return null;</span>
+<span class="nc" id="L697">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

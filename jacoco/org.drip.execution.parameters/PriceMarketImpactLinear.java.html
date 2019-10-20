@@ -6,38 +6,49 @@ package org.drip.execution.parameters;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,10 +109,10 @@ package org.drip.execution.parameters;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters/README.md&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/parameters/README.md&quot;&gt;Empirical Market Impact Coefficients Calibration&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -125,13 +136,13 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 		final double dblBidAskSpread)
 	{
 		try {
-<span class="nc" id="L128">			return new PriceMarketImpactLinear (new org.drip.execution.parameters.AssetTransactionSettings</span>
+<span class="nc" id="L139">			return new PriceMarketImpactLinear (new org.drip.execution.parameters.AssetTransactionSettings</span>
 				(dblPrice, dblDailyVolume, dblBidAskSpread), 0.1, 0.01);
-<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L131">			e.printStackTrace();</span>
+<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L142">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L134">		return null;</span>
+<span class="nc" id="L145">		return null;</span>
 	}
 
 	/**
@@ -152,8 +163,8 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 		final double dblTemporaryImpactFactor)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L155">		super (ats, dblPermanentImpactFactor, dblTemporaryImpactFactor);</span>
-<span class="fc" id="L156">	}</span>
+<span class="fc" id="L166">		super (ats, dblPermanentImpactFactor, dblTemporaryImpactFactor);</span>
+<span class="fc" id="L167">	}</span>
 
 	/**
 	 * Generate the Permanent Impact Transaction Function
@@ -163,16 +174,16 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 
 	public org.drip.execution.impact.TransactionFunction permanentTransactionFunction()
 	{
-<span class="fc" id="L166">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
+<span class="fc" id="L177">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
 
 		try {
-<span class="fc" id="L169">			return new org.drip.execution.impact.ParticipationRateLinear (0., ats.bidAskSpread() /</span>
-<span class="fc" id="L170">				(permanentImpactFactor() * ats.backgroundVolume()));</span>
-<span class="nc" id="L171">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L172">			e.printStackTrace();</span>
+<span class="fc" id="L180">			return new org.drip.execution.impact.ParticipationRateLinear (0., ats.bidAskSpread() /</span>
+<span class="fc" id="L181">				(permanentImpactFactor() * ats.backgroundVolume()));</span>
+<span class="nc" id="L182">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L183">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L175">		return null;</span>
+<span class="nc" id="L186">		return null;</span>
 	}
 
 	/**
@@ -183,18 +194,18 @@ public class PriceMarketImpactLinear extends org.drip.execution.parameters.Price
 
 	public org.drip.execution.impact.TransactionFunction temporaryTransactionFunction()
 	{
-<span class="fc" id="L186">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
+<span class="fc" id="L197">		org.drip.execution.parameters.AssetTransactionSettings ats = ats();</span>
 
-<span class="fc" id="L188">		double dblBidAskSpread = ats.bidAskSpread();</span>
+<span class="fc" id="L199">		double dblBidAskSpread = ats.bidAskSpread();</span>
 
 		try {
-<span class="fc" id="L191">			return new org.drip.execution.impact.ParticipationRateLinear (0.5 * dblBidAskSpread,</span>
-<span class="fc" id="L192">				dblBidAskSpread / (temporaryImpactFactor() * ats.backgroundVolume()));</span>
-<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="fc" id="L202">			return new org.drip.execution.impact.ParticipationRateLinear (0.5 * dblBidAskSpread,</span>
+<span class="fc" id="L203">				dblBidAskSpread / (temporaryImpactFactor() * ats.backgroundVolume()));</span>
+<span class="nc" id="L204">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L205">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L197">		return null;</span>
+<span class="nc" id="L208">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

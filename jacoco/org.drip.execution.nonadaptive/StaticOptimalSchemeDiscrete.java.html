@@ -6,38 +6,49 @@ package org.drip.execution.nonadaptive;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -98,103 +109,103 @@ package org.drip.execution.nonadaptive;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md&quot;&gt;Transaction Cost Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Execution&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/nonadaptive/README.md&quot;&gt;Non Adaptive&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md&quot;&gt;Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/nonadaptive/README.md&quot;&gt;Almgren-Chriss Static Optimal Trajectory&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class StaticOptimalSchemeDiscrete extends org.drip.execution.nonadaptive.StaticOptimalScheme {
-<span class="fc" id="L111">	private org.drip.execution.strategy.DiscreteTradingTrajectoryControl _dttc = null;</span>
+<span class="fc" id="L122">	private org.drip.execution.strategy.DiscreteTradingTrajectoryControl _dttc = null;</span>
 
 	private double[] completeHoldings (
 		final double[] adblInnerHoldings)
 	{
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == adblInnerHoldings) return null;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == adblInnerHoldings) return null;</span>
 
-<span class="fc" id="L118">		int iNumCompleteHoldings = adblInnerHoldings.length + 2;</span>
-<span class="fc" id="L119">		double[] adblCompleteHoldings = new double[iNumCompleteHoldings];</span>
+<span class="fc" id="L129">		int iNumCompleteHoldings = adblInnerHoldings.length + 2;</span>
+<span class="fc" id="L130">		double[] adblCompleteHoldings = new double[iNumCompleteHoldings];</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCompleteHoldings; ++i) {</span>
-<span class="fc bfc" id="L122" title="All 2 branches covered.">			if (0 == i)</span>
-<span class="fc" id="L123">				adblCompleteHoldings[i] = _dttc.startHoldings();</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">			else if (iNumCompleteHoldings - 1 == i)</span>
-<span class="fc" id="L125">				adblCompleteHoldings[i] = 0.;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumCompleteHoldings; ++i) {</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L134">				adblCompleteHoldings[i] = _dttc.startHoldings();</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">			else if (iNumCompleteHoldings - 1 == i)</span>
+<span class="fc" id="L136">				adblCompleteHoldings[i] = 0.;</span>
 			else
-<span class="fc" id="L127">				adblCompleteHoldings[i] = adblInnerHoldings[i - 1];</span>
+<span class="fc" id="L138">				adblCompleteHoldings[i] = adblInnerHoldings[i - 1];</span>
 		}
 
-<span class="fc" id="L130">		return adblCompleteHoldings;</span>
+<span class="fc" id="L141">		return adblCompleteHoldings;</span>
 	}
 
 	private org.drip.execution.sensitivity.ControlNodesGreek objectiveSensitivity (
 		final double[] adblInnerHoldings)
 	{
-<span class="fc" id="L136">		org.drip.execution.capture.TrajectoryShortfallEstimator tse = null;</span>
+<span class="fc" id="L147">		org.drip.execution.capture.TrajectoryShortfallEstimator tse = null;</span>
 
 		try {
-<span class="fc" id="L139">			tse = new org.drip.execution.capture.TrajectoryShortfallEstimator</span>
-<span class="fc" id="L140">				(org.drip.execution.strategy.DiscreteTradingTrajectory.Standard (_dttc.executionTimeNodes(),</span>
-<span class="fc" id="L141">					completeHoldings (adblInnerHoldings)));</span>
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="fc" id="L150">			tse = new org.drip.execution.capture.TrajectoryShortfallEstimator</span>
+<span class="fc" id="L151">				(org.drip.execution.strategy.DiscreteTradingTrajectory.Standard (_dttc.executionTimeNodes(),</span>
+<span class="fc" id="L152">					completeHoldings (adblInnerHoldings)));</span>
+<span class="nc" id="L153">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L154">			e.printStackTrace();</span>
 
-<span class="nc" id="L145">			return null;</span>
-<span class="fc" id="L146">		}</span>
+<span class="nc" id="L156">			return null;</span>
+<span class="fc" id="L157">		}</span>
 
-<span class="fc" id="L148">		org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep = priceEvolutionParameters();</span>
+<span class="fc" id="L159">		org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters apep = priceEvolutionParameters();</span>
 
-<span class="fc" id="L150">		org.drip.execution.sensitivity.ControlNodesGreek cngVariance = tse.varianceContribution (apep);</span>
+<span class="fc" id="L161">		org.drip.execution.sensitivity.ControlNodesGreek cngVariance = tse.varianceContribution (apep);</span>
 
-<span class="fc" id="L152">		org.drip.execution.sensitivity.ControlNodesGreek cngExpectation = tse.expectationContribution (apep);</span>
+<span class="fc" id="L163">		org.drip.execution.sensitivity.ControlNodesGreek cngExpectation = tse.expectationContribution (apep);</span>
 
-<span class="pc bpc" id="L154" title="2 of 4 branches missed.">		if (null == cngExpectation || null == cngVariance) return null;</span>
+<span class="pc bpc" id="L165" title="2 of 4 branches missed.">		if (null == cngExpectation || null == cngVariance) return null;</span>
 
-<span class="fc" id="L156">		return objectiveUtility().sensitivity ((org.drip.execution.sensitivity.TrajectoryControlNodesGreek)</span>
+<span class="fc" id="L167">		return objectiveUtility().sensitivity ((org.drip.execution.sensitivity.TrajectoryControlNodesGreek)</span>
 			cngExpectation, (org.drip.execution.sensitivity.TrajectoryControlNodesGreek) cngVariance);
 	}
 
 	private org.drip.function.definition.RdToR1 optimizerRdToR1()
 	{
-<span class="fc" id="L162">		return new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="fc" id="L173">		return new org.drip.function.definition.RdToR1 (null) {</span>
 			@Override public int dimension()
 			{
-<span class="fc" id="L165">				return _dttc.executionTimeNodes().length - 2;</span>
+<span class="fc" id="L176">				return _dttc.executionTimeNodes().length - 2;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblInnerHoldings)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L172">				org.drip.execution.sensitivity.ControlNodesGreek cngObjectiveUtility = objectiveSensitivity</span>
+<span class="nc" id="L183">				org.drip.execution.sensitivity.ControlNodesGreek cngObjectiveUtility = objectiveSensitivity</span>
 					(adblInnerHoldings);
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">				if (null == cngObjectiveUtility)</span>
-<span class="nc" id="L176">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">				if (null == cngObjectiveUtility)</span>
+<span class="nc" id="L187">					throw new java.lang.Exception</span>
 						(&quot;StaticOptimalSchemeDiscrete::optimizerRdToR1::evaluate =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L179">				return cngObjectiveUtility.value();</span>
+<span class="nc" id="L190">				return cngObjectiveUtility.value();</span>
 			}
 
 			@Override public double[] jacobian (
 				final double[] adblInnerHoldings)
 			{
-<span class="fc" id="L185">				org.drip.execution.sensitivity.ControlNodesGreek cngObjectiveUtility = objectiveSensitivity</span>
+<span class="fc" id="L196">				org.drip.execution.sensitivity.ControlNodesGreek cngObjectiveUtility = objectiveSensitivity</span>
 					(adblInnerHoldings);
 
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">				return null == cngObjectiveUtility ? null : cngObjectiveUtility.jacobian();</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">				return null == cngObjectiveUtility ? null : cngObjectiveUtility.jacobian();</span>
 			}
 
 			@Override public double[][] hessian (
 				final double[] adblInnerHoldings)
 			{
-<span class="fc" id="L194">				org.drip.execution.sensitivity.ControlNodesGreek cngObjectiveUtility = objectiveSensitivity</span>
+<span class="fc" id="L205">				org.drip.execution.sensitivity.ControlNodesGreek cngObjectiveUtility = objectiveSensitivity</span>
 					(adblInnerHoldings);
 
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">				return null == cngObjectiveUtility ? null : cngObjectiveUtility.hessian();</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">				return null == cngObjectiveUtility ? null : cngObjectiveUtility.hessian();</span>
 			}
 		};
 	}
@@ -215,11 +226,11 @@ public class StaticOptimalSchemeDiscrete extends org.drip.execution.nonadaptive.
 		final org.drip.execution.risk.ObjectiveUtility ou)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L218">		super (apep, ou);</span>
+<span class="fc" id="L229">		super (apep, ou);</span>
 
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (null == (_dttc = dttc))</span>
-<span class="nc" id="L221">			throw new java.lang.Exception (&quot;StaticOptimalSchemeDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L222">	}</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (null == (_dttc = dttc))</span>
+<span class="nc" id="L232">			throw new java.lang.Exception (&quot;StaticOptimalSchemeDiscrete Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L233">	}</span>
 
 	/**
 	 * Retrieve the Discrete Trajectory Control Settings
@@ -229,35 +240,35 @@ public class StaticOptimalSchemeDiscrete extends org.drip.execution.nonadaptive.
 
 	public org.drip.execution.strategy.DiscreteTradingTrajectoryControl control()
 	{
-<span class="fc" id="L232">		return _dttc;</span>
+<span class="fc" id="L243">		return _dttc;</span>
 	}
 
 	@Override public org.drip.execution.optimum.EfficientTradingTrajectory generate()
 	{
-<span class="fc" id="L237">		double[] adblExecutionTimeNode = _dttc.executionTimeNodes();</span>
+<span class="fc" id="L248">		double[] adblExecutionTimeNode = _dttc.executionTimeNodes();</span>
 
-<span class="fc" id="L239">		org.drip.execution.strategy.DiscreteTradingTrajectory dtt =</span>
-<span class="fc" id="L240">			org.drip.execution.strategy.DiscreteTradingTrajectory.Linear (adblExecutionTimeNode,</span>
-<span class="fc" id="L241">				_dttc.startHoldings(), 0.);</span>
+<span class="fc" id="L250">		org.drip.execution.strategy.DiscreteTradingTrajectory dtt =</span>
+<span class="fc" id="L251">			org.drip.execution.strategy.DiscreteTradingTrajectory.Linear (adblExecutionTimeNode,</span>
+<span class="fc" id="L252">				_dttc.startHoldings(), 0.);</span>
 
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">		if (null == dtt) return null;</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		if (null == dtt) return null;</span>
 
-<span class="fc" id="L245">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = null;</span>
+<span class="fc" id="L256">		org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier vicm = null;</span>
 
 		try {
-<span class="fc" id="L248">			if (null == (vicm = new org.drip.function.rdtor1solver.NewtonFixedPointFinder (optimizerRdToR1(),</span>
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">				null, org.drip.function.rdtor1solver.ConvergenceControl.Standard()).convergeVariate (new</span>
+<span class="fc" id="L259">			if (null == (vicm = new org.drip.function.rdtor1solver.NewtonFixedPointFinder (optimizerRdToR1(),</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">				null, org.drip.function.rdtor1solver.ConvergenceControl.Standard()).convergeVariate (new</span>
 					org.drip.function.rdtor1solver.VariateInequalityConstraintMultiplier (false,
-<span class="fc" id="L251">						dtt.innerHoldings(), null))))</span>
-<span class="nc" id="L252">				return null;</span>
-<span class="nc" id="L253">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L254">			e.printStackTrace();</span>
+<span class="fc" id="L262">						dtt.innerHoldings(), null))))</span>
+<span class="nc" id="L263">				return null;</span>
+<span class="nc" id="L264">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L265">			e.printStackTrace();</span>
 
-<span class="nc" id="L256">			return null;</span>
-<span class="fc" id="L257">		}</span>
+<span class="nc" id="L267">			return null;</span>
+<span class="fc" id="L268">		}</span>
 
-<span class="fc" id="L259">		return org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete.Standard (adblExecutionTimeNode,</span>
-<span class="fc" id="L260">			completeHoldings (vicm.variateArray()), priceEvolutionParameters());</span>
+<span class="fc" id="L270">		return org.drip.execution.optimum.EfficientTradingTrajectoryDiscrete.Standard (adblExecutionTimeNode,</span>
+<span class="fc" id="L271">			completeHoldings (vicm.variateArray()), priceEvolutionParameters());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
