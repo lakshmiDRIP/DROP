@@ -1,6 +1,6 @@
 
 /**
- * Function Execution Ancillary Support Objects
+ * Function Implementation Ancillary Support Objects
  *
  * @author Lakshmi Krishnamurthy
  */
