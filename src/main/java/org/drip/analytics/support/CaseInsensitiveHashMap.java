@@ -82,7 +82,7 @@ package org.drip.analytics.support;
  */
 
 /**
- * <i>CaseInsensitiveHashMap</i> implements a Case Insensitive Key in a Hash Map
+ * <i>CaseInsensitiveHashMap</i> implements a Case Insensitive Key in a Hash Map.
  *
  *	<br><br>
  *  <ul>

@@ -82,7 +82,7 @@ package org.drip.analytics.support;
  */
 
 /**
- * <i>CaseInsensitiveTreeMap</i> implements a Case Insensitive Key in a Tree Map
+ * <i>CaseInsensitiveTreeMap</i> implements a Case Insensitive Key in a Tree Map.
  *
  *	<br><br>
  *  <ul>
