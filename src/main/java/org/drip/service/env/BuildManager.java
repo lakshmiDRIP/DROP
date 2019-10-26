@@ -97,7 +97,12 @@ public class BuildManager
 		try {
 			s_aBuildRecord = new org.drip.service.env.BuildRecord[] {
 				new org.drip.service.env.BuildRecord (
-					"4.37.0",
+					"4.39.0",
+					"1.8.0_112",
+					"Fri Oct 25 22:16:27 EST 2019"
+				),
+				new org.drip.service.env.BuildRecord (
+					"4.38.0",
 					"1.8.0_112",
 					"Sat Oct 19 19:50:20 EST 2019"
 				),
