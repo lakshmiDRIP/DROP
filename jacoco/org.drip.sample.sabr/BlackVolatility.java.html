@@ -70,8 +70,8 @@ import org.drip.state.identifier.ForwardLabel;
 		final double dblVolatilityOfVolatility)
 		throws Exception
 	{
-<span class="nc" id="L73">		return new StochasticVolatilityStateEvolver (</span>
-<span class="nc" id="L74">			ForwardLabel.Create (</span>
+<span class="fc" id="L73">		return new StochasticVolatilityStateEvolver (</span>
+<span class="fc" id="L74">			ForwardLabel.Create (</span>
 				&quot;USD&quot;,
 				&quot;6M&quot;
 			),
@@ -96,54 +96,54 @@ import org.drip.state.identifier.ForwardLabel;
 		final double dblTTE,
 		final double dblSigma0)
 	{
-<span class="nc" id="L99">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (dblTTE, 1, 2, 1.) + &quot; =&gt; &quot;;</span>
+<span class="fc" id="L99">		String strDump = &quot;\t| &quot; + FormatUtil.FormatDouble (dblTTE, 1, 2, 1.) + &quot; =&gt; &quot;;</span>
 
-<span class="nc bnc" id="L101" title="All 2 branches missed.">		for (int i = 0; i &lt; adblStrike.length; ++i) {</span>
-<span class="nc" id="L102">			ImpliedBlackVolatility ibv = seSABR.computeBlackVolatility (</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (int i = 0; i &lt; adblStrike.length; ++i) {</span>
+<span class="fc" id="L102">			ImpliedBlackVolatility ibv = seSABR.computeBlackVolatility (</span>
 				adblStrike[i],
 				dblATMForwardRate,
 				dblTTE,
 				dblSigma0
 			);
 
-<span class="nc" id="L109">			strDump += FormatUtil.FormatDouble (ibv.impliedVolatility(), 2, 1, 100.) + &quot; | &quot;;</span>
+<span class="fc" id="L109">			strDump += FormatUtil.FormatDouble (ibv.impliedVolatility(), 2, 1, 100.) + &quot; | &quot;;</span>
 		}
 
-<span class="nc" id="L112">		System.out.println (strDump);</span>
-<span class="nc" id="L113">	}</span>
+<span class="fc" id="L112">		System.out.println (strDump);</span>
+<span class="fc" id="L113">	}</span>
 
 	public static void main (
 		final String[] astrArgs)
 		throws Exception
 	{
-<span class="nc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="fc" id="L119">		EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L121">		double dblRho = 0.;</span>
-<span class="nc" id="L122">		double dblBeta = 0.7;</span>
-<span class="nc" id="L123">		double dblATMForwardRate = 0.04;</span>
-<span class="nc" id="L124">		double dblVolatilityOfVolatility = 0.5;</span>
-<span class="nc" id="L125">		double adblForwardRateVolatility = 0.10;</span>
-<span class="nc" id="L126">		double[] adblStrike = {</span>
+<span class="fc" id="L121">		double dblRho = 0.;</span>
+<span class="fc" id="L122">		double dblBeta = 0.7;</span>
+<span class="fc" id="L123">		double dblATMForwardRate = 0.04;</span>
+<span class="fc" id="L124">		double dblVolatilityOfVolatility = 0.5;</span>
+<span class="fc" id="L125">		double adblForwardRateVolatility = 0.10;</span>
+<span class="fc" id="L126">		double[] adblStrike = {</span>
 			0.30, 0.35, 0.40, 0.45, 0.50
 		};
-<span class="nc" id="L129">		double[] adblTTE = {</span>
+<span class="fc" id="L129">		double[] adblTTE = {</span>
 			0.25, 0.50, 0.75, 1.00, 2.00, 3.00, 4.00, 5.00, 7.00, 9.99
 		};
 
-<span class="nc" id="L133">		StochasticVolatilityStateEvolver seSABR = SABREvolver (</span>
+<span class="fc" id="L133">		StochasticVolatilityStateEvolver seSABR = SABREvolver (</span>
 			dblBeta,
 			dblRho,
 			dblVolatilityOfVolatility
 		);
 
-<span class="nc" id="L139">		System.out.println (&quot;\n\t|------------------------------------------------|&quot;);</span>
+<span class="fc" id="L139">		System.out.println (&quot;\n\t|------------------------------------------------|&quot;);</span>
 
-<span class="nc" id="L141">		System.out.println (&quot;\t|         SABR IMPLIED BLACK VOLATILITY          |&quot;);</span>
+<span class="fc" id="L141">		System.out.println (&quot;\t|         SABR IMPLIED BLACK VOLATILITY          |&quot;);</span>
 
-<span class="nc" id="L143">		System.out.println (&quot;\t|------------------------------------------------|&quot;);</span>
+<span class="fc" id="L143">		System.out.println (&quot;\t|------------------------------------------------|&quot;);</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		for (double dblTTE : adblTTE)</span>
-<span class="nc" id="L146">			VolatilitySurface (</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (double dblTTE : adblTTE)</span>
+<span class="fc" id="L146">			VolatilitySurface (</span>
 				seSABR,
 				adblStrike,
 				dblATMForwardRate,
@@ -151,7 +151,7 @@ import org.drip.state.identifier.ForwardLabel;
 				adblForwardRateVolatility
 			);
 
-<span class="nc" id="L154">		System.out.println (&quot;\t|------------------------------------------------|&quot;);</span>
-<span class="nc" id="L155">	}</span>
+<span class="fc" id="L154">		System.out.println (&quot;\t|------------------------------------------------|&quot;);</span>
+<span class="fc" id="L155">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

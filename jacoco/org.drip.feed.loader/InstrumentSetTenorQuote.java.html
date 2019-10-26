@@ -6,38 +6,49 @@ package org.drip.feed.loader;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -72,17 +83,17 @@ package org.drip.feed.loader;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Load, Transform, and compute Target Metrics across Feeds&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Reference/Market Data Feed Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class InstrumentSetTenorQuote {
-<span class="nc" id="L85">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.Integer,</span>
+<span class="nc" id="L96">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.Integer,</span>
 		org.drip.feed.loader.TenorQuote&gt;&gt; _mapOrderedInstrumentTenorQuote = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.util.Map&lt;java.lang.Integer,
 				org.drip.feed.loader.TenorQuote&gt;&gt;();
@@ -92,8 +103,8 @@ public class InstrumentSetTenorQuote {
 	 */
 
 	public InstrumentSetTenorQuote()
-<span class="nc" id="L95">	{</span>
-<span class="nc" id="L96">	}</span>
+<span class="nc" id="L106">	{</span>
+<span class="nc" id="L107">	}</span>
 
 	/**
 	 * Add the Instrument/Tenor/Quote/Scale Field Set
@@ -112,27 +123,27 @@ public class InstrumentSetTenorQuote {
 		final double dblQuote,
 		final double dblScale)
 	{
-<span class="nc" id="L115">		int iTenorDays = -1;</span>
-<span class="nc" id="L116">		org.drip.feed.loader.TenorQuote tq = null;</span>
+<span class="nc" id="L126">		int iTenorDays = -1;</span>
+<span class="nc" id="L127">		org.drip.feed.loader.TenorQuote tq = null;</span>
 
 		try {
-<span class="nc" id="L119">			tq = new org.drip.feed.loader.TenorQuote (strTenor, dblQuote * dblScale);</span>
+<span class="nc" id="L130">			tq = new org.drip.feed.loader.TenorQuote (strTenor, dblQuote * dblScale);</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">			if (0 &gt;= (iTenorDays = org.drip.analytics.support.Helper.TenorToDays (strTenor))) return false;</span>
-<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L123">			return false;</span>
-<span class="nc" id="L124">		}</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">			if (0 &gt;= (iTenorDays = org.drip.analytics.support.Helper.TenorToDays (strTenor))) return false;</span>
+<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L134">			return false;</span>
+<span class="nc" id="L135">		}</span>
 
-<span class="nc" id="L126">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapOrderedTenorQuote =</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? _mapOrderedInstrumentTenorQuote.get</span>
-<span class="nc" id="L128">				(strInstrument) : new java.util.TreeMap&lt;java.lang.Integer,</span>
+<span class="nc" id="L137">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapOrderedTenorQuote =</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">			_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? _mapOrderedInstrumentTenorQuote.get</span>
+<span class="nc" id="L139">				(strInstrument) : new java.util.TreeMap&lt;java.lang.Integer,</span>
 					org.drip.feed.loader.TenorQuote&gt;();
 
-<span class="nc" id="L131">		mapOrderedTenorQuote.put (iTenorDays, tq);</span>
+<span class="nc" id="L142">		mapOrderedTenorQuote.put (iTenorDays, tq);</span>
 
-<span class="nc" id="L133">		_mapOrderedInstrumentTenorQuote.put (strInstrument, mapOrderedTenorQuote);</span>
+<span class="nc" id="L144">		_mapOrderedInstrumentTenorQuote.put (strInstrument, mapOrderedTenorQuote);</span>
 
-<span class="nc" id="L135">		return true;</span>
+<span class="nc" id="L146">		return true;</span>
 	}
 
 	/**
@@ -146,8 +157,8 @@ public class InstrumentSetTenorQuote {
 	public java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; instrumentTenorQuote (
 		final java.lang.String strInstrument)
 	{
-<span class="nc bnc" id="L149" title="All 4 branches missed.">		return null == strInstrument || !_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? null :</span>
-<span class="nc" id="L150">			_mapOrderedInstrumentTenorQuote.get (strInstrument);</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">		return null == strInstrument || !_mapOrderedInstrumentTenorQuote.containsKey (strInstrument) ? null :</span>
+<span class="nc" id="L161">			_mapOrderedInstrumentTenorQuote.get (strInstrument);</span>
 	}
 
 	/**
@@ -161,23 +172,23 @@ public class InstrumentSetTenorQuote {
 	public java.lang.String[] instrumentTenor (
 		final java.lang.String strInstrument)
 	{
-<span class="nc" id="L164">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
-<span class="nc" id="L165">			instrumentTenorQuote (strInstrument);</span>
+<span class="nc" id="L175">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
+<span class="nc" id="L176">			instrumentTenorQuote (strInstrument);</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
 
-<span class="nc" id="L169">		int iNumTenor = mapTenorQuote.size();</span>
+<span class="nc" id="L180">		int iNumTenor = mapTenorQuote.size();</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L173">		int i = 0;</span>
-<span class="nc" id="L174">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
+<span class="nc" id="L184">		int i = 0;</span>
+<span class="nc" id="L185">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; meTQ :
-<span class="nc bnc" id="L177" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
-<span class="nc" id="L178">			astrTenor[i++] = meTQ.getValue().tenor();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
+<span class="nc" id="L189">			astrTenor[i++] = meTQ.getValue().tenor();</span>
 
-<span class="nc" id="L180">		return astrTenor;</span>
+<span class="nc" id="L191">		return astrTenor;</span>
 	}
 
 	/**
@@ -191,23 +202,23 @@ public class InstrumentSetTenorQuote {
 	public double[] instrumentQuote (
 		final java.lang.String strInstrument)
 	{
-<span class="nc" id="L194">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
-<span class="nc" id="L195">			instrumentTenorQuote (strInstrument);</span>
+<span class="nc" id="L205">		java.util.Map&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; mapTenorQuote =</span>
+<span class="nc" id="L206">			instrumentTenorQuote (strInstrument);</span>
 
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (null == mapTenorQuote) return null;</span>
 
-<span class="nc" id="L199">		int iNumTenor = mapTenorQuote.size();</span>
+<span class="nc" id="L210">		int iNumTenor = mapTenorQuote.size();</span>
 
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L203">		int i = 0;</span>
-<span class="nc" id="L204">		double[] adblQuote = new double[iNumTenor];</span>
+<span class="nc" id="L214">		int i = 0;</span>
+<span class="nc" id="L215">		double[] adblQuote = new double[iNumTenor];</span>
 
 		for (java.util.Map.Entry&lt;java.lang.Integer, org.drip.feed.loader.TenorQuote&gt; meTQ :
-<span class="nc bnc" id="L207" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
-<span class="nc" id="L208">			adblQuote[i++] = meTQ.getValue().quote();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			mapTenorQuote.entrySet())</span>
+<span class="nc" id="L219">			adblQuote[i++] = meTQ.getValue().quote();</span>
 
-<span class="nc" id="L210">		return adblQuote;</span>
+<span class="nc" id="L221">		return adblQuote;</span>
 	}
 
 	/**
@@ -218,7 +229,7 @@ public class InstrumentSetTenorQuote {
 
 	public boolean isEmpty()
 	{
-<span class="nc bnc" id="L221" title="All 2 branches missed.">		return 0 == _mapOrderedInstrumentTenorQuote.size();</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		return 0 == _mapOrderedInstrumentTenorQuote.size();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

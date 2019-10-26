@@ -6,38 +6,49 @@ package org.drip.feed.loader;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -72,18 +83,18 @@ package org.drip.feed.loader;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Loader&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Load, Transform, and compute Target Metrics across Feeds&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/loader/README.md&quot;&gt;Reference/Market Data Feed Loader&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class TenorQuote {
-<span class="nc" id="L85">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="nc" id="L86">	private double _dblQuote = java.lang.Double.NaN;</span>
+<span class="nc" id="L96">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="nc" id="L97">	private double _dblQuote = java.lang.Double.NaN;</span>
 
 	/**
 	 * TenorQuote Constructor
@@ -98,11 +109,11 @@ public class TenorQuote {
 		final java.lang.String strTenor,
 		final double dblQuote)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 4 branches missed.">		if (null == (_strTenor = strTenor) || _strTenor.isEmpty() ||</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblQuote = dblQuote))</span>
-<span class="nc" id="L104">			throw new java.lang.Exception (&quot;TenorQuote Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L105">	}</span>
+<span class="nc" id="L112">	{</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">		if (null == (_strTenor = strTenor) || _strTenor.isEmpty() ||</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblQuote = dblQuote))</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;TenorQuote Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Closing Tenor
@@ -112,7 +123,7 @@ public class TenorQuote {
 
 	public java.lang.String tenor()
 	{
-<span class="nc" id="L115">		return _strTenor;</span>
+<span class="nc" id="L126">		return _strTenor;</span>
 	}
 
 	/**
@@ -123,12 +134,12 @@ public class TenorQuote {
 
 	public double quote()
 	{
-<span class="nc" id="L126">		return _dblQuote;</span>
+<span class="nc" id="L137">		return _dblQuote;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L131">		return _strTenor + &quot;=&quot; + _dblQuote;</span>
+<span class="nc" id="L142">		return _strTenor + &quot;=&quot; + _dblQuote;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.learning.regularization;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,16 +109,16 @@ package org.drip.learning.regularization;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/regularization&quot;&gt;Regularization&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Agnostic Learning Bounds under Empirical Loss Minimization Schemes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/regularization&quot;&gt;Statistical Learning Empirical Loss Regularizer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class RegularizerBuilder {</span>
+<span class="nc" id="L121">public class RegularizerBuilder {</span>
 
 	/**
 	 * Construct an Instance of R^1 Combinatorial To R^1 Continuous Regularizer
@@ -124,16 +136,16 @@ package org.drip.learning.regularization;
 		final double dblLambda)
 	{
 		try {
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			return null == funcSpaceR1ToR1 ? null : new</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			return null == funcSpaceR1ToR1 ? null : new</span>
 				org.drip.learning.regularization.RegularizerR1CombinatorialToR1Continuous
 					(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Combinatorial)
-<span class="nc" id="L130">						funcSpaceR1ToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L131">							funcSpaceR1ToR1.outputMetricVectorSpace(), dblLambda);</span>
-<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L133">			e.printStackTrace();</span>
+<span class="nc" id="L142">						funcSpaceR1ToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L143">							funcSpaceR1ToR1.outputMetricVectorSpace(), dblLambda);</span>
+<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L136">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	/**
@@ -152,16 +164,16 @@ package org.drip.learning.regularization;
 		final double dblLambda)
 	{
 		try {
-<span class="nc bnc" id="L155" title="All 2 branches missed.">			return null == funcSpaceR1ToR1 ? null : new</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">			return null == funcSpaceR1ToR1 ? null : new</span>
 				org.drip.learning.regularization.RegularizerR1ContinuousToR1Continuous
 					(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Continuous)
-<span class="nc" id="L158">						funcSpaceR1ToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L159">							funcSpaceR1ToR1.outputMetricVectorSpace(), dblLambda);</span>
-<span class="nc" id="L160">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L161">			e.printStackTrace();</span>
+<span class="nc" id="L170">						funcSpaceR1ToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L171">							funcSpaceR1ToR1.outputMetricVectorSpace(), dblLambda);</span>
+<span class="nc" id="L172">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L173">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L164">		return null;</span>
+<span class="nc" id="L176">		return null;</span>
 	}
 
 	/**
@@ -181,22 +193,22 @@ package org.drip.learning.regularization;
 		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
 		final double dblLambda)
 	{
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (null == r1Input) return null;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (null == r1Input) return null;</span>
 
 		try {
-<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (r1Input instanceof org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L188">				return new org.drip.learning.regularization.RegularizerR1ContinuousToR1Continuous</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">			if (r1Input instanceof org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L200">				return new org.drip.learning.regularization.RegularizerR1ContinuousToR1Continuous</span>
 					(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Continuous) r1Input,
 						r1ContinuousOutput, dblLambda);
 
-<span class="nc" id="L192">			return new org.drip.learning.regularization.RegularizerR1CombinatorialToR1Continuous</span>
+<span class="nc" id="L204">			return new org.drip.learning.regularization.RegularizerR1CombinatorialToR1Continuous</span>
 				(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Combinatorial) r1Input,
 					r1ContinuousOutput, dblLambda);
-<span class="nc" id="L195">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L196">			e.printStackTrace();</span>
+<span class="nc" id="L207">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L208">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L199">		return null;</span>
+<span class="nc" id="L211">		return null;</span>
 	}
 
 	/**
@@ -215,16 +227,16 @@ package org.drip.learning.regularization;
 		final double dblLambda)
 	{
 		try {
-<span class="nc bnc" id="L218" title="All 2 branches missed.">			return null == funcSpaceRdToR1 ? null : new</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			return null == funcSpaceRdToR1 ? null : new</span>
 				org.drip.learning.regularization.RegularizerRdCombinatorialToR1Continuous
 					(funcRegularizerRdToR1, (org.drip.spaces.metric.RdCombinatorialBanach)
-<span class="nc" id="L221">						funcSpaceRdToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L222">							funcSpaceRdToR1.outputMetricVectorSpace(), dblLambda);</span>
-<span class="nc" id="L223">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L224">			e.printStackTrace();</span>
+<span class="nc" id="L233">						funcSpaceRdToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L234">							funcSpaceRdToR1.outputMetricVectorSpace(), dblLambda);</span>
+<span class="nc" id="L235">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L236">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L227">		return null;</span>
+<span class="nc" id="L239">		return null;</span>
 	}
 
 	/**
@@ -243,16 +255,16 @@ package org.drip.learning.regularization;
 		final double dblLambda)
 	{
 		try {
-<span class="nc bnc" id="L246" title="All 2 branches missed.">			return null == funcSpaceRdToR1 ? null : new</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">			return null == funcSpaceRdToR1 ? null : new</span>
 				org.drip.learning.regularization.RegularizerRdContinuousToR1Continuous
 					(funcRegularizerRdToR1, (org.drip.spaces.metric.RdContinuousBanach)
-<span class="nc" id="L249">						funcSpaceRdToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
-<span class="nc" id="L250">							funcSpaceRdToR1.outputMetricVectorSpace(), dblLambda);</span>
-<span class="nc" id="L251">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L252">			e.printStackTrace();</span>
+<span class="nc" id="L261">						funcSpaceRdToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)</span>
+<span class="nc" id="L262">							funcSpaceRdToR1.outputMetricVectorSpace(), dblLambda);</span>
+<span class="nc" id="L263">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L264">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L255">		return null;</span>
+<span class="nc" id="L267">		return null;</span>
 	}
 
 	/**
@@ -272,22 +284,22 @@ package org.drip.learning.regularization;
 		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
 		final double dblLambda)
 	{
-<span class="nc bnc" id="L275" title="All 2 branches missed.">		if (null == rdInput) return null;</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		if (null == rdInput) return null;</span>
 
 		try {
-<span class="nc bnc" id="L278" title="All 2 branches missed.">			if (rdInput instanceof org.drip.spaces.metric.RdContinuousBanach)</span>
-<span class="nc" id="L279">				return new org.drip.learning.regularization.RegularizerRdContinuousToR1Continuous</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">			if (rdInput instanceof org.drip.spaces.metric.RdContinuousBanach)</span>
+<span class="nc" id="L291">				return new org.drip.learning.regularization.RegularizerRdContinuousToR1Continuous</span>
 					(funcRegularizerRdToR1, (org.drip.spaces.metric.RdContinuousBanach) rdInput,
 						r1ContinuousOutput, dblLambda);
 
-<span class="nc" id="L283">			return new org.drip.learning.regularization.RegularizerRdCombinatorialToR1Continuous</span>
+<span class="nc" id="L295">			return new org.drip.learning.regularization.RegularizerRdCombinatorialToR1Continuous</span>
 				(funcRegularizerRdToR1, (org.drip.spaces.metric.RdCombinatorialBanach) rdInput,
 					r1ContinuousOutput, dblLambda);
-<span class="nc" id="L286">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L287">			e.printStackTrace();</span>
+<span class="nc" id="L298">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L299">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L290">		return null;</span>
+<span class="nc" id="L302">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

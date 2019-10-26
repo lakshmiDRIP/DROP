@@ -6,44 +6,56 @@ package org.drip.historical.engine;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,19 +84,19 @@ package org.drip.historical.engine;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/README.md&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine/README.md&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/README.md&quot;&gt;Historical State Processing Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine/README.md&quot;&gt;Product Horizon Change Explain Engine&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class MarketMeasureRollDown {
-<span class="nc" id="L85">	private double _dblInnate = java.lang.Double.NaN;</span>
+<span class="nc" id="L97">	private double _dblInnate = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L87">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapHorizonMetric = new</span>
+<span class="nc" id="L99">	private org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; _mapHorizonMetric = new</span>
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 	/**
@@ -98,10 +110,10 @@ public class MarketMeasureRollDown {
 	public MarketMeasureRollDown (
 		final double dblInnate)
 		throws java.lang.Exception
-<span class="nc" id="L101">	{</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblInnate = dblInnate))</span>
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;MarketMeasureRollDown Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L104">	}</span>
+<span class="nc" id="L113">	{</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblInnate = dblInnate))</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;MarketMeasureRollDown Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Innate Roll Down Market Measure
@@ -111,7 +123,7 @@ public class MarketMeasureRollDown {
 
 	public double innate()
 	{
-<span class="nc" id="L114">		return _dblInnate;</span>
+<span class="nc" id="L126">		return _dblInnate;</span>
 	}
 
 	/**
@@ -127,13 +139,13 @@ public class MarketMeasureRollDown {
 		final java.lang.String strHorizon,
 		final double dblHorizonRollDown)
 	{
-<span class="nc bnc" id="L130" title="All 4 branches missed.">		if (null == strHorizon || strHorizon.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			(dblHorizonRollDown))</span>
-<span class="nc" id="L132">			return false;</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">		if (null == strHorizon || strHorizon.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			(dblHorizonRollDown))</span>
+<span class="nc" id="L144">			return false;</span>
 
-<span class="nc" id="L134">		_mapHorizonMetric.put (strHorizon, dblHorizonRollDown);</span>
+<span class="nc" id="L146">		_mapHorizonMetric.put (strHorizon, dblHorizonRollDown);</span>
 
-<span class="nc" id="L136">		return true;</span>
+<span class="nc" id="L148">		return true;</span>
 	}
 
 	/**
@@ -150,10 +162,10 @@ public class MarketMeasureRollDown {
 		final java.lang.String strHorizon)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L153" title="All 6 branches missed.">		if (null == strHorizon || strHorizon.isEmpty() || !_mapHorizonMetric.containsKey (strHorizon))</span>
-<span class="nc" id="L154">			throw new java.lang.Exception (&quot;MarketMeasureRollDown::horizon =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L165" title="All 6 branches missed.">		if (null == strHorizon || strHorizon.isEmpty() || !_mapHorizonMetric.containsKey (strHorizon))</span>
+<span class="nc" id="L166">			throw new java.lang.Exception (&quot;MarketMeasureRollDown::horizon =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L156">		return _mapHorizonMetric.get (strHorizon);</span>
+<span class="nc" id="L168">		return _mapHorizonMetric.get (strHorizon);</span>
 	}
 
 	/**
@@ -164,7 +176,7 @@ public class MarketMeasureRollDown {
 
 	public org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; horizon()
 	{
-<span class="nc" id="L167">		return _mapHorizonMetric;</span>
+<span class="nc" id="L179">		return _mapHorizonMetric;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

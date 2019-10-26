@@ -6,45 +6,57 @@ package org.drip.json.simple;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.json.simple;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple&quot;&gt;Simple&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;RFC-4627 Compliant JSON Encoder/Decoder (Parser)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple&quot;&gt;RFC4627 Compliant JSON Message Object&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Fang Yidong
@@ -89,8 +101,8 @@ package org.drip.json.simple;
     
     
     public JSONObject() {
-<span class="fc" id="L92">            super();</span>
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L104">            super();</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Allows creation of a JSONObject from a Map. After that, both the
@@ -100,8 +112,8 @@ package org.drip.json.simple;
      */
 
     @SuppressWarnings (&quot;unchecked&quot;) public JSONObject(java.util.Map map) {
-<span class="nc" id="L103">            super(map);</span>
-<span class="nc" id="L104">    }</span>
+<span class="nc" id="L115">            super(map);</span>
+<span class="nc" id="L116">    }</span>
 
 
 /**
@@ -116,33 +128,33 @@ package org.drip.json.simple;
  * @throws java.io.IOException Thrown if the Inputs are Invalid
  */
     public static void writeJSONString(java.util.Map map, java.io.Writer out) throws java.io.IOException {
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            if(map == null){</span>
-<span class="nc" id="L120">                    out.write(&quot;null&quot;);</span>
-<span class="nc" id="L121">                    return;</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            if(map == null){</span>
+<span class="nc" id="L132">                    out.write(&quot;null&quot;);</span>
+<span class="nc" id="L133">                    return;</span>
             }
             
-<span class="fc" id="L124">            boolean first = true;</span>
-<span class="fc" id="L125">            java.util.Iterator iter=map.entrySet().iterator();</span>
+<span class="fc" id="L136">            boolean first = true;</span>
+<span class="fc" id="L137">            java.util.Iterator iter=map.entrySet().iterator();</span>
             
-<span class="fc" id="L127">    out.write('{');</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">            while(iter.hasNext()){</span>
-<span class="fc bfc" id="L129" title="All 2 branches covered.">        if(first)</span>
-<span class="fc" id="L130">            first = false;</span>
+<span class="fc" id="L139">    out.write('{');</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            while(iter.hasNext()){</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if(first)</span>
+<span class="fc" id="L142">            first = false;</span>
         else
-<span class="fc" id="L132">            out.write(',');</span>
-<span class="fc" id="L133">        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();</span>
-<span class="fc" id="L134">        out.write('\&quot;');</span>
-<span class="fc" id="L135">        out.write(escape(String.valueOf(entry.getKey())));</span>
-<span class="fc" id="L136">        out.write('\&quot;');</span>
-<span class="fc" id="L137">        out.write(':');</span>
-<span class="fc" id="L138">                    JSONValue.writeJSONString(entry.getValue(), out);</span>
-<span class="fc" id="L139">            }</span>
-<span class="fc" id="L140">            out.write('}');</span>
-<span class="fc" id="L141">    }</span>
+<span class="fc" id="L144">            out.write(',');</span>
+<span class="fc" id="L145">        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();</span>
+<span class="fc" id="L146">        out.write('\&quot;');</span>
+<span class="fc" id="L147">        out.write(escape(String.valueOf(entry.getKey())));</span>
+<span class="fc" id="L148">        out.write('\&quot;');</span>
+<span class="fc" id="L149">        out.write(':');</span>
+<span class="fc" id="L150">                    JSONValue.writeJSONString(entry.getValue(), out);</span>
+<span class="fc" id="L151">            }</span>
+<span class="fc" id="L152">            out.write('}');</span>
+<span class="fc" id="L153">    }</span>
 
     public void writeJSONString(java.io.Writer out) throws java.io.IOException{
-<span class="nc" id="L144">            writeJSONString(this, out);</span>
-<span class="nc" id="L145">    }</span>
+<span class="nc" id="L156">            writeJSONString(this, out);</span>
+<span class="nc" id="L157">    }</span>
     
     /**
      * Convert a map to JSON text. The result is a JSON object. 
@@ -155,52 +167,52 @@ package org.drip.json.simple;
      * @return JSON text, or &quot;null&quot; if map is null.
      */
     public static String toJSONString(java.util.Map map){
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">            if(map == null)</span>
-<span class="nc" id="L159">                    return &quot;null&quot;;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            if(map == null)</span>
+<span class="nc" id="L171">                    return &quot;null&quot;;</span>
             
-<span class="fc" id="L161">    StringBuffer sb = new StringBuffer();</span>
-<span class="fc" id="L162">    boolean first = true;</span>
-<span class="fc" id="L163">    java.util.Iterator iter=map.entrySet().iterator();</span>
+<span class="fc" id="L173">    StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L174">    boolean first = true;</span>
+<span class="fc" id="L175">    java.util.Iterator iter=map.entrySet().iterator();</span>
             
-<span class="fc" id="L165">    sb.append('{');</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">            while(iter.hasNext()){</span>
-<span class="fc bfc" id="L167" title="All 2 branches covered.">        if(first)</span>
-<span class="fc" id="L168">            first = false;</span>
+<span class="fc" id="L177">    sb.append('{');</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">            while(iter.hasNext()){</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if(first)</span>
+<span class="fc" id="L180">            first = false;</span>
         else
-<span class="fc" id="L170">            sb.append(',');</span>
+<span class="fc" id="L182">            sb.append(',');</span>
         
-<span class="fc" id="L172">        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();</span>
-<span class="fc" id="L173">                    toJSONString(String.valueOf(entry.getKey()),entry.getValue(), sb);</span>
-<span class="fc" id="L174">            }</span>
-<span class="fc" id="L175">    sb.append('}');</span>
-<span class="fc" id="L176">            return sb.toString();</span>
+<span class="fc" id="L184">        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();</span>
+<span class="fc" id="L185">                    toJSONString(String.valueOf(entry.getKey()),entry.getValue(), sb);</span>
+<span class="fc" id="L186">            }</span>
+<span class="fc" id="L187">    sb.append('}');</span>
+<span class="fc" id="L188">            return sb.toString();</span>
     }
     
     public String toJSONString(){
-<span class="fc" id="L180">            return toJSONString(this);</span>
+<span class="fc" id="L192">            return toJSONString(this);</span>
     }
     
     private static String toJSONString(String key,Object value, StringBuffer sb){
-<span class="fc" id="L184">            sb.append('\&quot;');</span>
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">    if(key == null)</span>
-<span class="nc" id="L186">        sb.append(&quot;null&quot;);</span>
+<span class="fc" id="L196">            sb.append('\&quot;');</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">    if(key == null)</span>
+<span class="nc" id="L198">        sb.append(&quot;null&quot;);</span>
     else
-<span class="fc" id="L188">        JSONValue.escape(key, sb);</span>
-<span class="fc" id="L189">            sb.append('\&quot;').append(':');</span>
+<span class="fc" id="L200">        JSONValue.escape(key, sb);</span>
+<span class="fc" id="L201">            sb.append('\&quot;').append(':');</span>
             
-<span class="fc" id="L191">            sb.append(JSONValue.toJSONString(value));</span>
+<span class="fc" id="L203">            sb.append(JSONValue.toJSONString(value));</span>
             
-<span class="fc" id="L193">            return sb.toString();</span>
+<span class="fc" id="L205">            return sb.toString();</span>
     }
     
     public String toString(){
-<span class="fc" id="L197">            return toJSONString();</span>
+<span class="fc" id="L209">            return toJSONString();</span>
     }
 
     public static String toString(String key,Object value){
-<span class="nc" id="L201">    StringBuffer sb = new StringBuffer();</span>
-<span class="nc" id="L202">            toJSONString(key, value, sb);</span>
-<span class="nc" id="L203">    return sb.toString();</span>
+<span class="nc" id="L213">    StringBuffer sb = new StringBuffer();</span>
+<span class="nc" id="L214">            toJSONString(key, value, sb);</span>
+<span class="nc" id="L215">    return sb.toString();</span>
     }
     
     /**
@@ -213,7 +225,7 @@ package org.drip.json.simple;
      * @return Escaped String
      */
     public static String escape(String s){
-<span class="fc" id="L216">            return JSONValue.escape(s);</span>
+<span class="fc" id="L228">            return JSONValue.escape(s);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

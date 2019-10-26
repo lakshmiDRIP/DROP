@@ -6,36 +6,47 @@ package org.drip.exposure.regressiontrade;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -96,10 +107,10 @@ package org.drip.exposure.regressiontrade;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade/README.md&quot;&gt;Regression Trade&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/README.md&quot;&gt;Exposure Group Level Collateralized/Uncollateralized Exposure&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/exposure/regressiontrade/README.md&quot;&gt;Exposure Regression under Margin and Trade Payments&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -107,8 +118,8 @@ package org.drip.exposure.regressiontrade;
 
 public class AdjustedVariationMarginEstimate
 {
-<span class="nc" id="L110">	private double[] _adjustedVariationMarginEstimateArray = null;</span>
-<span class="nc" id="L111">	private org.drip.exposure.mpor.TradePayment[] _denseTradePaymentArray = null;</span>
+<span class="nc" id="L121">	private double[] _adjustedVariationMarginEstimateArray = null;</span>
+<span class="nc" id="L122">	private org.drip.exposure.mpor.TradePayment[] _denseTradePaymentArray = null;</span>
 
 	/**
 	 * AdjustedVariationMarginEstimate Constructor
@@ -123,31 +134,31 @@ public class AdjustedVariationMarginEstimate
 		final double[] adjustedVariationMarginEstimateArray,
 		final org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray)
 		throws java.lang.Exception
-<span class="nc" id="L126">	{</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == (_adjustedVariationMarginEstimateArray = adjustedVariationMarginEstimateArray) ||</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adjustedVariationMarginEstimateArray) ||</span>
+<span class="nc" id="L137">	{</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (null == (_adjustedVariationMarginEstimateArray = adjustedVariationMarginEstimateArray) ||</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_adjustedVariationMarginEstimateArray) ||</span>
 			null == (_denseTradePaymentArray = denseTradePaymentArray))
 		{
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;AdjustedVariationMarginEstimate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;AdjustedVariationMarginEstimate Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L134">		int denseTradePaymentCount = _denseTradePaymentArray.length;</span>
-<span class="nc" id="L135">		int adjustedVariationMarginEstimate = _adjustedVariationMarginEstimateArray.length;</span>
+<span class="nc" id="L145">		int denseTradePaymentCount = _denseTradePaymentArray.length;</span>
+<span class="nc" id="L146">		int adjustedVariationMarginEstimate = _adjustedVariationMarginEstimateArray.length;</span>
 
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (0 == adjustedVariationMarginEstimate || denseTradePaymentCount &lt; adjustedVariationMarginEstimate)</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (0 == adjustedVariationMarginEstimate || denseTradePaymentCount &lt; adjustedVariationMarginEstimate)</span>
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;AdjustedVariationMarginEstimate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L150">			throw new java.lang.Exception (&quot;AdjustedVariationMarginEstimate Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int dateIndex = 0; dateIndex &lt; denseTradePaymentCount; ++denseTradePaymentCount)</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		for (int dateIndex = 0; dateIndex &lt; denseTradePaymentCount; ++denseTradePaymentCount)</span>
 		{
-<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (null == denseTradePaymentArray[dateIndex])</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			if (null == denseTradePaymentArray[dateIndex])</span>
 			{
-<span class="nc" id="L146">				throw new java.lang.Exception</span>
+<span class="nc" id="L157">				throw new java.lang.Exception</span>
 					(&quot;AdjustedVariationMarginEstimate Constructor =&gt; Invalid Inputs&quot;);
 			}
 		}
-<span class="nc" id="L150">	}</span>
+<span class="nc" id="L161">	}</span>
 
 	/**
 	 * Retrieve the Path-wise Adjusted Variation Margin Estimate Array
@@ -157,7 +168,7 @@ public class AdjustedVariationMarginEstimate
 
 	public double[] adjustedVariationMarginEstimateArray()
 	{
-<span class="nc" id="L160">		return _adjustedVariationMarginEstimateArray;</span>
+<span class="nc" id="L171">		return _adjustedVariationMarginEstimateArray;</span>
 	}
 
 	/**
@@ -168,7 +179,7 @@ public class AdjustedVariationMarginEstimate
 
 	public org.drip.exposure.mpor.TradePayment[] denseTradePaymentArray()
 	{
-<span class="nc" id="L171">		return _denseTradePaymentArray;</span>
+<span class="nc" id="L182">		return _denseTradePaymentArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

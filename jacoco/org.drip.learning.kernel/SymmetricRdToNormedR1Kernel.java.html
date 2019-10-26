@@ -6,45 +6,57 @@ package org.drip.learning.kernel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,18 +104,18 @@ package org.drip.learning.kernel;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/kernel&quot;&gt;Kernel&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Agnostic Learning Bounds under Empirical Loss Minimization Schemes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/kernel&quot;&gt;Statistical Learning Banach Mercer Kernels&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class SymmetricRdToNormedR1Kernel {
-<span class="nc" id="L105">	private org.drip.spaces.metric.RdNormed _rdContinuousInput = null;</span>
-<span class="nc" id="L106">	private org.drip.spaces.metric.R1Normed _r1ContinuousOutput = null;</span>
+<span class="nc" id="L117">	private org.drip.spaces.metric.RdNormed _rdContinuousInput = null;</span>
+<span class="nc" id="L118">	private org.drip.spaces.metric.R1Normed _r1ContinuousOutput = null;</span>
 
 	/**
 	 * SymmetricRdToNormedR1Kernel Constructor
@@ -118,11 +130,11 @@ public abstract class SymmetricRdToNormedR1Kernel {
 		final org.drip.spaces.metric.RdNormed rdContinuousInput,
 		final org.drip.spaces.metric.R1Normed r1ContinuousOutput)
 		throws java.lang.Exception
-<span class="nc" id="L121">	{</span>
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == (_rdContinuousInput = rdContinuousInput) || null == (_r1ContinuousOutput =</span>
+<span class="nc" id="L133">	{</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (null == (_rdContinuousInput = rdContinuousInput) || null == (_r1ContinuousOutput =</span>
 			r1ContinuousOutput))
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;SymmetricRdToNormedR1Kernel ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L125">	}</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;SymmetricRdToNormedR1Kernel ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the Symmetric Input Metric R^d Vector Space
@@ -132,7 +144,7 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public org.drip.spaces.metric.RdNormed inputMetricVectorSpace()
 	{
-<span class="nc" id="L135">		return _rdContinuousInput;</span>
+<span class="nc" id="L147">		return _rdContinuousInput;</span>
 	}
 
 	/**
@@ -143,7 +155,7 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
 	{
-<span class="nc" id="L146">		return _r1ContinuousOutput;</span>
+<span class="nc" id="L158">		return _r1ContinuousOutput;</span>
 	}
 
 	/**
@@ -154,7 +166,7 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public int featureSpaceDimension()
 	{
-<span class="nc" id="L157">		return _rdContinuousInput.dimension();</span>
+<span class="nc" id="L169">		return _rdContinuousInput.dimension();</span>
 	}
 
 	/**

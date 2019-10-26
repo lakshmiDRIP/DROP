@@ -6,45 +6,57 @@ package org.drip.learning.bound;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -123,19 +135,19 @@ package org.drip.learning.bound;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/bound&quot;&gt;Bound&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Agnostic Learning Bounds under Empirical Loss Minimization Schemes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/bound&quot;&gt;Covering Numbers, Concentration, Lipschitz Bounds&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CoveringNumberLossBound {
-<span class="nc" id="L136">	private double _dblExponentScaler = java.lang.Double.NaN;</span>
-<span class="nc" id="L137">	private double _dblEpsilonExponent = java.lang.Double.NaN;</span>
-<span class="nc" id="L138">	private org.drip.function.definition.R1ToR1 _funcSampleCoefficient = null;</span>
+<span class="nc" id="L148">	private double _dblExponentScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L149">	private double _dblEpsilonExponent = java.lang.Double.NaN;</span>
+<span class="nc" id="L150">	private org.drip.function.definition.R1ToR1 _funcSampleCoefficient = null;</span>
 
 	/**
 	 * CoveringNumberLossBound Constructor
@@ -152,12 +164,12 @@ public class CoveringNumberLossBound {
 		final double dblEpsilonExponent,
 		final double dblExponentScaler)
 		throws java.lang.Exception
-<span class="nc" id="L155">	{</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (null == (_funcSampleCoefficient = funcSampleCoefficient) ||</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblEpsilonExponent = dblEpsilonExponent) ||</span>
-<span class="nc bnc" id="L158" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblExponentScaler = dblExponentScaler))</span>
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;CoveringNumberLossBound ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L160">	}</span>
+<span class="nc" id="L167">	{</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (null == (_funcSampleCoefficient = funcSampleCoefficient) ||</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblEpsilonExponent = dblEpsilonExponent) ||</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblExponentScaler = dblExponentScaler))</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;CoveringNumberLossBound ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L172">	}</span>
 
 	/**
 	 * Retrieve the Sample Coefficient Function
@@ -167,7 +179,7 @@ public class CoveringNumberLossBound {
 
 	public org.drip.function.definition.R1ToR1 sampleCoefficient()
 	{
-<span class="nc" id="L170">		return _funcSampleCoefficient;</span>
+<span class="nc" id="L182">		return _funcSampleCoefficient;</span>
 	}
 
 	/**
@@ -178,7 +190,7 @@ public class CoveringNumberLossBound {
 
 	public double epsilonExponent()
 	{
-<span class="nc" id="L181">		return _dblEpsilonExponent;</span>
+<span class="nc" id="L193">		return _dblEpsilonExponent;</span>
 	}
 
 	/**
@@ -189,7 +201,7 @@ public class CoveringNumberLossBound {
 
 	public double exponentScaler()
 	{
-<span class="nc" id="L192">		return _dblExponentScaler;</span>
+<span class="nc" id="L204">		return _dblExponentScaler;</span>
 	}
 
 	/**
@@ -210,12 +222,12 @@ public class CoveringNumberLossBound {
 		final double dblEpsilon)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L213" title="All 6 branches missed.">		if (0 &gt;= iSampleSize || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon)</span>
-<span class="nc" id="L214">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L225" title="All 6 branches missed.">		if (0 &gt;= iSampleSize || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon)</span>
+<span class="nc" id="L226">			throw new java.lang.Exception</span>
 				(&quot;CoveringNumberLossBound::deviationProbabilityUpperBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L217">		return _funcSampleCoefficient.evaluate (iSampleSize) * java.lang.Math.exp (-1. * iSampleSize *</span>
-<span class="nc" id="L218">			java.lang.Math.pow (dblEpsilon, _dblEpsilonExponent) / _dblExponentScaler);</span>
+<span class="nc" id="L229">		return _funcSampleCoefficient.evaluate (iSampleSize) * java.lang.Math.exp (-1. * iSampleSize *</span>
+<span class="nc" id="L230">			java.lang.Math.pow (dblEpsilon, _dblEpsilonExponent) / _dblExponentScaler);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

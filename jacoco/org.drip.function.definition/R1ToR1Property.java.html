@@ -6,35 +6,46 @@ package org.drip.function.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -70,10 +81,10 @@ package org.drip.function.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition&quot;&gt;Function Implementation Ancillary Support Objects&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -81,8 +92,8 @@ package org.drip.function.definition;
 
 public class R1ToR1Property extends org.drip.function.definition.RxToR1Property
 {
-<span class="nc" id="L84">	private org.drip.function.definition.R1ToR1 _r1ToR1Left = null;</span>
-<span class="nc" id="L85">	private org.drip.function.definition.R1ToR1 _r1ToR1Right = null;</span>
+<span class="nc" id="L95">	private org.drip.function.definition.R1ToR1 _r1ToR1Left = null;</span>
+<span class="nc" id="L96">	private org.drip.function.definition.R1ToR1 _r1ToR1Right = null;</span>
 
 	/**
 	 * R1ToR1Property Constructor
@@ -102,17 +113,17 @@ public class R1ToR1Property extends org.drip.function.definition.RxToR1Property
 		final double mismatchTolerance)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L105">		super (</span>
+<span class="nc" id="L116">		super (</span>
 			type,
 			mismatchTolerance
 		);
 
-<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (null == (_r1ToR1Left = r1ToR1Left) ||</span>
+<span class="nc bnc" id="L121" title="All 4 branches missed.">		if (null == (_r1ToR1Left = r1ToR1Left) ||</span>
 			null == (_r1ToR1Right = r1ToR1Right))
 		{
-<span class="nc" id="L113">			throw new java.lang.Exception (&quot;R1ToR1Property Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;R1ToR1Property Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L115">	}</span>
+<span class="nc" id="L126">	}</span>
 
 	/**
 	 * Retrieve the Left R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Function
@@ -122,7 +133,7 @@ public class R1ToR1Property extends org.drip.function.definition.RxToR1Property
 
 	public org.drip.function.definition.R1ToR1 r1ToR1Left()
 	{
-<span class="nc" id="L125">		return _r1ToR1Left;</span>
+<span class="nc" id="L136">		return _r1ToR1Left;</span>
 	}
 
 	/**
@@ -133,7 +144,7 @@ public class R1ToR1Property extends org.drip.function.definition.RxToR1Property
 
 	public org.drip.function.definition.R1ToR1 r1ToR1Right()
 	{
-<span class="nc" id="L136">		return _r1ToR1Right;</span>
+<span class="nc" id="L147">		return _r1ToR1Right;</span>
 	}
 
 	/**
@@ -149,17 +160,17 @@ public class R1ToR1Property extends org.drip.function.definition.RxToR1Property
 	{
 		try
 		{
-<span class="nc" id="L152">			return super.verify (</span>
-<span class="nc" id="L153">				_r1ToR1Left.evaluate (x),</span>
-<span class="nc" id="L154">				_r1ToR1Right.evaluate (x)</span>
+<span class="nc" id="L163">			return super.verify (</span>
+<span class="nc" id="L164">				_r1ToR1Left.evaluate (x),</span>
+<span class="nc" id="L165">				_r1ToR1Right.evaluate (x)</span>
 			);
 		}
-<span class="nc" id="L157">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L168">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L159">			e.printStackTrace();</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L162">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
