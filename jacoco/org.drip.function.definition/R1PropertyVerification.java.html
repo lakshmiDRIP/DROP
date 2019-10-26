@@ -6,35 +6,46 @@ package org.drip.function.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -70,10 +81,10 @@ package org.drip.function.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md&quot;&gt;Function&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition/README.md&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition&quot;&gt;Function Implementation Ancillary Support Objects&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -81,9 +92,9 @@ package org.drip.function.definition;
 
 public class R1PropertyVerification
 {
-<span class="nc" id="L84">	private boolean _verified = false;</span>
-<span class="nc" id="L85">	private double _lValue = java.lang.Double.NaN;</span>
-<span class="nc" id="L86">	private double _rValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L95">	private boolean _verified = false;</span>
+<span class="nc" id="L96">	private double _lValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L97">	private double _rValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * R1PropertyVerification Constructor
@@ -100,15 +111,15 @@ public class R1PropertyVerification
 		final double rValue,
 		final boolean verified)
 		throws java.lang.Exception
-<span class="nc" id="L103">	{</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_lValue = lValue) ||</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_rValue = rValue))</span>
+<span class="nc" id="L114">	{</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_lValue = lValue) ||</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_rValue = rValue))</span>
 		{
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;R1PropertyVerification Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;R1PropertyVerification Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L110">		_verified = verified;</span>
-<span class="nc" id="L111">	}</span>
+<span class="nc" id="L121">		_verified = verified;</span>
+<span class="nc" id="L122">	}</span>
 
 	/**
 	 * Retrieve the LHS Value
@@ -118,7 +129,7 @@ public class R1PropertyVerification
 
 	public double lValue()
 	{
-<span class="nc" id="L121">		return _lValue;</span>
+<span class="nc" id="L132">		return _lValue;</span>
 	}
 
 	/**
@@ -129,7 +140,7 @@ public class R1PropertyVerification
 
 	public double rValue()
 	{
-<span class="nc" id="L132">		return _rValue;</span>
+<span class="nc" id="L143">		return _rValue;</span>
 	}
 
 	/**
@@ -140,7 +151,7 @@ public class R1PropertyVerification
 
 	public boolean verified()
 	{
-<span class="nc" id="L143">		return _verified;</span>
+<span class="nc" id="L154">		return _verified;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

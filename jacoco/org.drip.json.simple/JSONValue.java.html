@@ -6,45 +6,57 @@ package org.drip.json.simple;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,17 +85,17 @@ package org.drip.json.simple;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple&quot;&gt;Simple&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;RFC-4627 Compliant JSON Encoder/Decoder (Parser)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/simple&quot;&gt;RFC4627 Compliant JSON Message Object&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class JSONValue {</span>
+<span class="nc" id="L98">public class JSONValue {</span>
     /**
      * Parse JSON text into java object from the input source. 
      * Please use parseWithException() if you don't want to ignore the exception.
@@ -104,17 +116,17 @@ package org.drip.json.simple;
      */
     public static Object parse(java.io.Reader in){
             try{
-<span class="fc" id="L107">                    org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
-<span class="fc" id="L108">                    return parser.parse(in);</span>
+<span class="fc" id="L119">                    org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="fc" id="L120">                    return parser.parse(in);</span>
             }
-<span class="nc" id="L110">            catch(Exception e){</span>
-<span class="nc" id="L111">                    return null;</span>
+<span class="nc" id="L122">            catch(Exception e){</span>
+<span class="nc" id="L123">                    return null;</span>
             }
     }
     
     public static Object parse(String s){
-<span class="fc" id="L116">    	java.io.StringReader in=new java.io.StringReader(s);</span>
-<span class="fc" id="L117">            return parse(in);</span>
+<span class="fc" id="L128">    	java.io.StringReader in=new java.io.StringReader(s);</span>
+<span class="fc" id="L129">            return parse(in);</span>
     }
     
     /**
@@ -136,13 +148,13 @@ package org.drip.json.simple;
      * @throws org.drip.json.parser.ParseException Thrown if the Inputs are Invalid
      */
     public static Object parseWithException(java.io.Reader in) throws java.io.IOException, org.drip.json.parser.ParseException{
-<span class="nc" id="L139">    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
-<span class="nc" id="L140">            return parser.parse(in);</span>
+<span class="nc" id="L151">    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="nc" id="L152">            return parser.parse(in);</span>
     }
     
     public static Object parseWithException(String s) throws org.drip.json.parser.ParseException{
-<span class="nc" id="L144">    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
-<span class="nc" id="L145">            return parser.parse(s);</span>
+<span class="nc" id="L156">    	org.drip.json.parser.JSONParser parser=new org.drip.json.parser.JSONParser();</span>
+<span class="nc" id="L157">            return parser.parse(s);</span>
     }
     
 /**
@@ -162,66 +174,66 @@ package org.drip.json.simple;
  * @throws java.io.IOException Thrown if the Inputs are Invalid
  */
     @SuppressWarnings (&quot;rawtypes&quot;) public static void writeJSONString(Object value, java.io.Writer out) throws java.io.IOException {
-<span class="fc bfc" id="L165" title="All 2 branches covered.">            if(value == null){</span>
-<span class="fc" id="L166">                    out.write(&quot;null&quot;);</span>
-<span class="fc" id="L167">                    return;</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            if(value == null){</span>
+<span class="fc" id="L178">                    out.write(&quot;null&quot;);</span>
+<span class="fc" id="L179">                    return;</span>
             }
             
-<span class="fc bfc" id="L170" title="All 2 branches covered.">            if(value instanceof String){            </span>
-<span class="fc" id="L171">        out.write('\&quot;');</span>
-<span class="fc" id="L172">                    out.write(escape((String)value));</span>
-<span class="fc" id="L173">        out.write('\&quot;');</span>
-<span class="fc" id="L174">                    return;</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            if(value instanceof String){            </span>
+<span class="fc" id="L183">        out.write('\&quot;');</span>
+<span class="fc" id="L184">                    out.write(escape((String)value));</span>
+<span class="fc" id="L185">        out.write('\&quot;');</span>
+<span class="fc" id="L186">                    return;</span>
             }
             
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if(value instanceof Double){</span>
-<span class="nc bnc" id="L178" title="All 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
-<span class="nc" id="L179">                            out.write(&quot;null&quot;);</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">            if(value instanceof Double){</span>
+<span class="nc bnc" id="L190" title="All 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
+<span class="nc" id="L191">                            out.write(&quot;null&quot;);</span>
                     else
-<span class="nc" id="L181">                            out.write(value.toString());</span>
-<span class="nc" id="L182">                    return;</span>
+<span class="nc" id="L193">                            out.write(value.toString());</span>
+<span class="nc" id="L194">                    return;</span>
             }
             
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
-<span class="nc bnc" id="L186" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
-<span class="nc" id="L187">                            out.write(&quot;null&quot;);</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
+<span class="nc bnc" id="L198" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
+<span class="nc" id="L199">                            out.write(&quot;null&quot;);</span>
                     else
-<span class="nc" id="L189">                            out.write(value.toString());</span>
-<span class="nc" id="L190">                    return;</span>
+<span class="nc" id="L201">                            out.write(value.toString());</span>
+<span class="nc" id="L202">                    return;</span>
             }               
             
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">            if(value instanceof Number){</span>
-<span class="nc" id="L194">                    out.write(value.toString());</span>
-<span class="nc" id="L195">                    return;</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">            if(value instanceof Number){</span>
+<span class="nc" id="L206">                    out.write(value.toString());</span>
+<span class="nc" id="L207">                    return;</span>
             }
             
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            if(value instanceof Boolean){</span>
-<span class="nc" id="L199">                    out.write(value.toString());</span>
-<span class="nc" id="L200">                    return;</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if(value instanceof Boolean){</span>
+<span class="nc" id="L211">                    out.write(value.toString());</span>
+<span class="nc" id="L212">                    return;</span>
             }
             
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">            if((value instanceof JSONStreamAware)){</span>
-<span class="nc" id="L204">                    ((JSONStreamAware)value).writeJSONString(out);</span>
-<span class="nc" id="L205">                    return;</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">            if((value instanceof JSONStreamAware)){</span>
+<span class="nc" id="L216">                    ((JSONStreamAware)value).writeJSONString(out);</span>
+<span class="nc" id="L217">                    return;</span>
             }
             
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            if((value instanceof JSONAware)){</span>
-<span class="nc" id="L209">                    out.write(((JSONAware)value).toJSONString());</span>
-<span class="nc" id="L210">                    return;</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">            if((value instanceof JSONAware)){</span>
+<span class="nc" id="L221">                    out.write(((JSONAware)value).toJSONString());</span>
+<span class="nc" id="L222">                    return;</span>
             }
             
-<span class="fc bfc" id="L213" title="All 2 branches covered.">            if(value instanceof java.util.Map){</span>
-<span class="fc" id="L214">            	org.drip.json.simple.JSONObject.writeJSONString((java.util.Map)value, out);</span>
-<span class="fc" id="L215">                    return;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            if(value instanceof java.util.Map){</span>
+<span class="fc" id="L226">            	org.drip.json.simple.JSONObject.writeJSONString((java.util.Map)value, out);</span>
+<span class="fc" id="L227">                    return;</span>
             }
             
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            if(value instanceof java.util.List){</span>
-<span class="fc" id="L219">                    JSONArray.writeJSONString((java.util.List)value, out);</span>
-<span class="fc" id="L220">        return;</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">            if(value instanceof java.util.List){</span>
+<span class="fc" id="L231">                    JSONArray.writeJSONString((java.util.List)value, out);</span>
+<span class="fc" id="L232">        return;</span>
             }
             
-<span class="nc" id="L223">            out.write(value.toString());</span>
-<span class="nc" id="L224">    }</span>
+<span class="nc" id="L235">            out.write(value.toString());</span>
+<span class="nc" id="L236">    }</span>
 
     /**
      * Convert an object to JSON text.
@@ -240,42 +252,42 @@ package org.drip.json.simple;
      */
 
     @SuppressWarnings (&quot;rawtypes&quot;) public static String toJSONString(Object value){
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            if(value == null)</span>
-<span class="nc" id="L244">                    return &quot;null&quot;;</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">            if(value == null)</span>
+<span class="nc" id="L256">                    return &quot;null&quot;;</span>
             
-<span class="fc bfc" id="L246" title="All 2 branches covered.">            if(value instanceof String)</span>
-<span class="fc" id="L247">                    return &quot;\&quot;&quot;+escape((String)value)+&quot;\&quot;&quot;;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">            if(value instanceof String)</span>
+<span class="fc" id="L259">                    return &quot;\&quot;&quot;+escape((String)value)+&quot;\&quot;&quot;;</span>
             
-<span class="fc bfc" id="L249" title="All 2 branches covered.">            if(value instanceof Double){</span>
-<span class="pc bpc" id="L250" title="1 of 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
-<span class="fc" id="L251">                            return &quot;null&quot;;</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">            if(value instanceof Double){</span>
+<span class="pc bpc" id="L262" title="1 of 4 branches missed.">                    if(((Double)value).isInfinite() || ((Double)value).isNaN())</span>
+<span class="fc" id="L263">                            return &quot;null&quot;;</span>
                     else
-<span class="fc" id="L253">                            return value.toString();</span>
+<span class="fc" id="L265">                            return value.toString();</span>
             }
             
-<span class="pc bpc" id="L256" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
-<span class="nc bnc" id="L257" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
-<span class="nc" id="L258">                            return &quot;null&quot;;</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">            if(value instanceof Float){</span>
+<span class="nc bnc" id="L269" title="All 4 branches missed.">                    if(((Float)value).isInfinite() || ((Float)value).isNaN())</span>
+<span class="nc" id="L270">                            return &quot;null&quot;;</span>
                     else
-<span class="nc" id="L260">                            return value.toString();</span>
+<span class="nc" id="L272">                            return value.toString();</span>
             }               
             
-<span class="fc bfc" id="L263" title="All 2 branches covered.">            if(value instanceof Number)</span>
-<span class="fc" id="L264">                    return value.toString();</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">            if(value instanceof Number)</span>
+<span class="fc" id="L276">                    return value.toString();</span>
             
-<span class="fc bfc" id="L266" title="All 2 branches covered.">            if(value instanceof Boolean)</span>
-<span class="fc" id="L267">                    return value.toString();</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            if(value instanceof Boolean)</span>
+<span class="fc" id="L279">                    return value.toString();</span>
             
-<span class="fc bfc" id="L269" title="All 2 branches covered.">            if((value instanceof JSONAware))</span>
-<span class="fc" id="L270">                    return ((JSONAware)value).toJSONString();</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">            if((value instanceof JSONAware))</span>
+<span class="fc" id="L282">                    return ((JSONAware)value).toJSONString();</span>
             
-<span class="fc bfc" id="L272" title="All 2 branches covered.">            if(value instanceof java.util.Map)</span>
-<span class="fc" id="L273">                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">            if(value instanceof java.util.Map)</span>
+<span class="fc" id="L285">                    return org.drip.json.simple.JSONObject.toJSONString((java.util.Map)value);</span>
             
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">            if(value instanceof java.util.List)</span>
-<span class="fc" id="L276">                    return org.drip.json.simple.JSONArray.toJSONString((java.util.List)value);</span>
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">            if(value instanceof java.util.List)</span>
+<span class="fc" id="L288">                    return org.drip.json.simple.JSONArray.toJSONString((java.util.List)value);</span>
             
-<span class="nc" id="L278">            return value.toString();</span>
+<span class="nc" id="L290">            return value.toString();</span>
     }
 
     /**
@@ -286,11 +298,11 @@ package org.drip.json.simple;
      * @return The Escape String
      */
     public static String escape(String s){
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">            if(s==null)</span>
-<span class="nc" id="L290">                    return null;</span>
-<span class="fc" id="L291">    StringBuffer sb = new StringBuffer();</span>
-<span class="fc" id="L292">    escape(s, sb);</span>
-<span class="fc" id="L293">    return sb.toString();</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">            if(s==null)</span>
+<span class="nc" id="L302">                    return null;</span>
+<span class="fc" id="L303">    StringBuffer sb = new StringBuffer();</span>
+<span class="fc" id="L304">    escape(s, sb);</span>
+<span class="fc" id="L305">    return sb.toString();</span>
 }
 
 /**
@@ -298,48 +310,48 @@ package org.drip.json.simple;
  * @param sb The StringBuffer
  */
 static void escape(String s, StringBuffer sb) {
-<span class="fc bfc" id="L301" title="All 2 branches covered.">            for(int i=0;i&lt;s.length();i++){</span>
-<span class="fc" id="L302">                    char ch=s.charAt(i);</span>
-<span class="pc bpc" id="L303" title="7 of 9 branches missed.">                    switch(ch){</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">            for(int i=0;i&lt;s.length();i++){</span>
+<span class="fc" id="L314">                    char ch=s.charAt(i);</span>
+<span class="pc bpc" id="L315" title="7 of 9 branches missed.">                    switch(ch){</span>
                     case '&quot;':
-<span class="nc" id="L305">                            sb.append(&quot;\\\&quot;&quot;);</span>
-<span class="nc" id="L306">                            break;</span>
-                    case '\\':
-<span class="nc" id="L308">                            sb.append(&quot;\\\\&quot;);</span>
-<span class="nc" id="L309">                            break;</span>
-                    case '\b':
-<span class="nc" id="L311">                            sb.append(&quot;\\b&quot;);</span>
-<span class="nc" id="L312">                            break;</span>
-                    case '\f':
-<span class="nc" id="L314">                            sb.append(&quot;\\f&quot;);</span>
-<span class="nc" id="L315">                            break;</span>
-                    case '\n':
-<span class="nc" id="L317">                            sb.append(&quot;\\n&quot;);</span>
+<span class="nc" id="L317">                            sb.append(&quot;\\\&quot;&quot;);</span>
 <span class="nc" id="L318">                            break;</span>
-                    case '\r':
-<span class="nc" id="L320">                            sb.append(&quot;\\r&quot;);</span>
+                    case '\\':
+<span class="nc" id="L320">                            sb.append(&quot;\\\\&quot;);</span>
 <span class="nc" id="L321">                            break;</span>
-                    case '\t':
-<span class="nc" id="L323">                            sb.append(&quot;\\t&quot;);</span>
+                    case '\b':
+<span class="nc" id="L323">                            sb.append(&quot;\\b&quot;);</span>
 <span class="nc" id="L324">                            break;</span>
+                    case '\f':
+<span class="nc" id="L326">                            sb.append(&quot;\\f&quot;);</span>
+<span class="nc" id="L327">                            break;</span>
+                    case '\n':
+<span class="nc" id="L329">                            sb.append(&quot;\\n&quot;);</span>
+<span class="nc" id="L330">                            break;</span>
+                    case '\r':
+<span class="nc" id="L332">                            sb.append(&quot;\\r&quot;);</span>
+<span class="nc" id="L333">                            break;</span>
+                    case '\t':
+<span class="nc" id="L335">                            sb.append(&quot;\\t&quot;);</span>
+<span class="nc" id="L336">                            break;</span>
                     case '/':
-<span class="fc" id="L326">                            sb.append(&quot;\\/&quot;);</span>
-<span class="fc" id="L327">                            break;</span>
+<span class="fc" id="L338">                            sb.append(&quot;\\/&quot;);</span>
+<span class="fc" id="L339">                            break;</span>
                     default:
             //Reference: http://www.unicode.org/versions/Unicode5.1.0/
-<span class="pc bpc" id="L330" title="7 of 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
-<span class="fc" id="L331">                                    String ss=Integer.toHexString(ch);</span>
-<span class="fc" id="L332">                                    sb.append(&quot;\\u&quot;);</span>
-<span class="fc bfc" id="L333" title="All 2 branches covered.">                                    for(int k=0;k&lt;4-ss.length();k++){</span>
-<span class="fc" id="L334">                                            sb.append('0');</span>
+<span class="pc bpc" id="L342" title="7 of 12 branches missed.">                            if((ch&gt;='\u0000' &amp;&amp; ch&lt;='\u001F') || (ch&gt;='\u007F' &amp;&amp; ch&lt;='\u009F') || (ch&gt;='\u2000' &amp;&amp; ch&lt;='\u20FF')){</span>
+<span class="fc" id="L343">                                    String ss=Integer.toHexString(ch);</span>
+<span class="fc" id="L344">                                    sb.append(&quot;\\u&quot;);</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">                                    for(int k=0;k&lt;4-ss.length();k++){</span>
+<span class="fc" id="L346">                                            sb.append('0');</span>
                                     }
-<span class="fc" id="L336">                                    sb.append(ss.toUpperCase());</span>
-<span class="fc" id="L337">                            }</span>
+<span class="fc" id="L348">                                    sb.append(ss.toUpperCase());</span>
+<span class="fc" id="L349">                            }</span>
                             else{
-<span class="fc" id="L339">                                    sb.append(ch);</span>
+<span class="fc" id="L351">                                    sb.append(ch);</span>
                             }
                     }
             }//for
-<span class="fc" id="L343">    }</span>
+<span class="fc" id="L355">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

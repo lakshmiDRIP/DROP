@@ -6,44 +6,56 @@ package org.drip.historical.engine;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.historical.engine;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/README.md&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine/README.md&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/README.md&quot;&gt;Historical State Processing Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/engine/README.md&quot;&gt;Product Horizon Change Explain Engine&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -113,234 +125,234 @@ public class FixFloatExplainProcessor extends org.drip.historical.engine.Horizon
 			mapCSQCRollDown)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L116">		super (ffc, iSettleLag, strMarketMeasureName, dblMarketMeasureValue, dtFirst, dtSecond, csqcFirst,</span>
+<span class="nc" id="L128">		super (ffc, iSettleLag, strMarketMeasureName, dblMarketMeasureValue, dtFirst, dtSecond, csqcFirst,</span>
 			csqcSecond, mapCSQCRollDown);
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L130">	}</span>
 
 	@Override public org.drip.historical.attribution.PositionMarketSnap snapFirstMarketValue()
 	{
-<span class="nc" id="L122">		org.drip.analytics.date.JulianDate dtFirst = firstDate();</span>
+<span class="nc" id="L134">		org.drip.analytics.date.JulianDate dtFirst = firstDate();</span>
 
-<span class="nc" id="L124">		org.drip.product.rates.FixFloatComponent ffc = (org.drip.product.rates.FixFloatComponent)</span>
-<span class="nc" id="L125">			component();</span>
+<span class="nc" id="L136">		org.drip.product.rates.FixFloatComponent ffc = (org.drip.product.rates.FixFloatComponent)</span>
+<span class="nc" id="L137">			component();</span>
 
-<span class="nc" id="L127">		java.lang.String strPayCurrency = ffc.payCurrency();</span>
+<span class="nc" id="L139">		java.lang.String strPayCurrency = ffc.payCurrency();</span>
 
-<span class="nc" id="L129">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFixFloat = ffc.value</span>
-<span class="nc" id="L130">			(org.drip.param.valuation.ValuationParams.Spot (dtFirst.addBusDays (settleLag(),</span>
-<span class="nc" id="L131">				strPayCurrency).julian()), null, firstMarketParameters(), null);</span>
+<span class="nc" id="L141">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFixFloat = ffc.value</span>
+<span class="nc" id="L142">			(org.drip.param.valuation.ValuationParams.Spot (dtFirst.addBusDays (settleLag(),</span>
+<span class="nc" id="L143">				strPayCurrency).julian()), null, firstMarketParameters(), null);</span>
 
-<span class="nc bnc" id="L133" title="All 4 branches missed.">		if (null == mapFixFloat || !mapFixFloat.containsKey (&quot;Accrued&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L134" title="All 4 branches missed.">			(&quot;CleanFixedDV01&quot;) || !mapFixFloat.containsKey (&quot;CleanFloatingDV01&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L135" title="All 4 branches missed.">				(&quot;CleanPV&quot;) || !mapFixFloat.containsKey (&quot;CumulativeCouponAmount&quot;) ||</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">					!mapFixFloat.containsKey (&quot;CumulativeCouponDCF&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L137" title="All 4 branches missed.">						(&quot;DerivedCleanPV&quot;) || !mapFixFloat.containsKey (&quot;DerivedCumulativeCouponAmount&quot;) ||</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">							!mapFixFloat.containsKey (&quot;DerivedCumulativeCouponDCF&quot;) ||</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">								!mapFixFloat.containsKey (&quot;ReferenceCleanPV&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">									(&quot;ReferenceCumulativeCouponAmount&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">										(&quot;ReferenceCumulativeCouponDCF&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">											(&quot;SwapRate&quot;))</span>
-<span class="nc" id="L143">			return null;</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (null == mapFixFloat || !mapFixFloat.containsKey (&quot;Accrued&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">			(&quot;CleanFixedDV01&quot;) || !mapFixFloat.containsKey (&quot;CleanFloatingDV01&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">				(&quot;CleanPV&quot;) || !mapFixFloat.containsKey (&quot;CumulativeCouponAmount&quot;) ||</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">					!mapFixFloat.containsKey (&quot;CumulativeCouponDCF&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">						(&quot;DerivedCleanPV&quot;) || !mapFixFloat.containsKey (&quot;DerivedCumulativeCouponAmount&quot;) ||</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">							!mapFixFloat.containsKey (&quot;DerivedCumulativeCouponDCF&quot;) ||</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">								!mapFixFloat.containsKey (&quot;ReferenceCleanPV&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">									(&quot;ReferenceCumulativeCouponAmount&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">										(&quot;ReferenceCumulativeCouponDCF&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">											(&quot;SwapRate&quot;))</span>
+<span class="nc" id="L155">			return null;</span>
 
-<span class="nc" id="L145">		double dblCleanPV = mapFixFloat.get (&quot;CleanPV&quot;);</span>
+<span class="nc" id="L157">		double dblCleanPV = mapFixFloat.get (&quot;CleanPV&quot;);</span>
 
-<span class="nc" id="L147">		double dblSwapRate = mapFixFloat.get (&quot;SwapRate&quot;);</span>
+<span class="nc" id="L159">		double dblSwapRate = mapFixFloat.get (&quot;SwapRate&quot;);</span>
 
-<span class="nc" id="L149">		double dblSwapRateSensitivity = 10000. * mapFixFloat.get (&quot;CleanFixedDV01&quot;);</span>
+<span class="nc" id="L161">		double dblSwapRateSensitivity = 10000. * mapFixFloat.get (&quot;CleanFixedDV01&quot;);</span>
 
-<span class="nc" id="L151">		org.drip.state.identifier.ForwardLabel forwardLabel = ffc.derivedStream().forwardLabel();</span>
+<span class="nc" id="L163">		org.drip.state.identifier.ForwardLabel forwardLabel = ffc.derivedStream().forwardLabel();</span>
 
-<span class="nc" id="L153">		org.drip.historical.engine.MarketMeasureRollDown mmrd = rollDownMeasureMap();</span>
+<span class="nc" id="L165">		org.drip.historical.engine.MarketMeasureRollDown mmrd = rollDownMeasureMap();</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (null == mmrd) return null;</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == mmrd) return null;</span>
 
-<span class="nc" id="L157">		double dblRollDownInnate = mmrd.innate();</span>
+<span class="nc" id="L169">		double dblRollDownInnate = mmrd.innate();</span>
 
-<span class="nc" id="L159">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapHorizonMetric =</span>
-<span class="nc" id="L160">			mmrd.horizon();</span>
+<span class="nc" id="L171">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapHorizonMetric =</span>
+<span class="nc" id="L172">			mmrd.horizon();</span>
 
 		try {
-<span class="nc" id="L163">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
+<span class="nc" id="L175">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
 				org.drip.historical.attribution.PositionMarketSnap (dtFirst, dblCleanPV);
 
-<span class="nc bnc" id="L166" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Accrued&quot;, mapFixFloat.get (&quot;Accrued&quot;))) return null;</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (!pms.setR1 (&quot;Accrued&quot;, mapFixFloat.get (&quot;Accrued&quot;))) return null;</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CleanFixedDV01&quot;, dblSwapRateSensitivity)) return null;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CleanFixedDV01&quot;, dblSwapRateSensitivity)) return null;</span>
 
-<span class="nc bnc" id="L170" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CleanFloatingDV01&quot;, 10000. * mapFixFloat.get (&quot;CleanFloatingDV01&quot;)))</span>
-<span class="nc" id="L171">				return null;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CleanFloatingDV01&quot;, 10000. * mapFixFloat.get (&quot;CleanFloatingDV01&quot;)))</span>
+<span class="nc" id="L183">				return null;</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">			if (!pms.setC1 (&quot;CouponCurrency&quot;, forwardLabel.currency())) return null;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if (!pms.setC1 (&quot;CouponCurrency&quot;, forwardLabel.currency())) return null;</span>
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, mapFixFloat.get (&quot;CumulativeCouponAmount&quot;)))</span>
-<span class="nc" id="L176">				return null;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, mapFixFloat.get (&quot;CumulativeCouponAmount&quot;)))</span>
+<span class="nc" id="L188">				return null;</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, mapFixFloat.get (&quot;CumulativeCouponDCF&quot;))) return null;</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, mapFixFloat.get (&quot;CumulativeCouponDCF&quot;))) return null;</span>
 
-<span class="nc bnc" id="L180" title="All 2 branches missed.">			if (!pms.setR1 (&quot;DerivedCleanPV&quot;, mapFixFloat.get (&quot;DerivedCleanPV&quot;))) return null;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (!pms.setR1 (&quot;DerivedCleanPV&quot;, mapFixFloat.get (&quot;DerivedCleanPV&quot;))) return null;</span>
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">			if (!pms.setDate (&quot;EffectiveDate&quot;, ffc.effectiveDate())) return null;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">			if (!pms.setDate (&quot;EffectiveDate&quot;, ffc.effectiveDate())) return null;</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FixedAccrualDayCount&quot;, ffc.referenceStream().accrualDC())) return null;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FixedAccrualDayCount&quot;, ffc.referenceStream().accrualDC())) return null;</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCoupon&quot;, dblSwapRate)) return null;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCoupon&quot;, dblSwapRate)) return null;</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponAmount&quot;, mapFixFloat.get</span>
-<span class="nc" id="L189">				(&quot;ReferenceCumulativeCouponAmount&quot;)))</span>
-<span class="nc" id="L190">				return null;</span>
-
-<span class="nc bnc" id="L192" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;ReferenceCumulativeCouponDCF&quot;)))</span>
-<span class="nc" id="L193">				return null;</span>
-
-<span class="nc bnc" id="L195" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FloatAccrualDayCount&quot;, forwardLabel.floaterIndex().dayCount())) return null;</span>
-
-<span class="nc bnc" id="L197" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponAmount&quot;, mapFixFloat.get</span>
-<span class="nc" id="L198">				(&quot;DerivedCumulativeCouponAmount&quot;)))</span>
-<span class="nc" id="L199">				return null;</span>
-
-<span class="nc bnc" id="L201" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;DerivedCumulativeCouponDCF&quot;)))</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponAmount&quot;, mapFixFloat.get</span>
+<span class="nc" id="L201">				(&quot;ReferenceCumulativeCouponAmount&quot;)))</span>
 <span class="nc" id="L202">				return null;</span>
 
-<span class="nc bnc" id="L204" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FloaterLabel&quot;, forwardLabel.fullyQualifiedName())) return null;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;ReferenceCumulativeCouponDCF&quot;)))</span>
+<span class="nc" id="L205">				return null;</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (!pms.setDate (&quot;MaturityDate&quot;, ffc.maturityDate())) return null;</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FloatAccrualDayCount&quot;, forwardLabel.floaterIndex().dayCount())) return null;</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">			if (!pms.setC1 (&quot;MaturityTenor&quot;, ffc.tenor())) return null;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponAmount&quot;, mapFixFloat.get</span>
+<span class="nc" id="L210">				(&quot;DerivedCumulativeCouponAmount&quot;)))</span>
+<span class="nc" id="L211">				return null;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (!pms.setC1 (&quot;PayCurrency&quot;, strPayCurrency)) return null;</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;DerivedCumulativeCouponDCF&quot;)))</span>
+<span class="nc" id="L214">				return null;</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">			if (!pms.setR1 (&quot;ReferenceCleanPV&quot;, mapFixFloat.get (&quot;ReferenceCleanPV&quot;))) return null;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (!pms.setC1 (&quot;FloaterLabel&quot;, forwardLabel.fullyQualifiedName())) return null;</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">			if (!pms.setR1 (&quot;SwapRate&quot;, dblSwapRate)) return null;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">			if (!pms.setDate (&quot;MaturityDate&quot;, ffc.maturityDate())) return null;</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (!pms.setR1 (&quot;SwapRateRollDown&quot;, dblRollDownInnate)) return null;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (!pms.setC1 (&quot;MaturityTenor&quot;, ffc.tenor())) return null;</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">			for (java.lang.String strRollDownTenor : mapHorizonMetric.keySet()) {</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">				if (!pms.setR1 (&quot;SwapRateRollDown&quot; + strRollDownTenor, mapHorizonMetric.get</span>
-<span class="nc" id="L220">					(strRollDownTenor)))</span>
-<span class="nc" id="L221">					return null;</span>
-<span class="nc" id="L222">			}</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">			if (!pms.setC1 (&quot;PayCurrency&quot;, strPayCurrency)) return null;</span>
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;SwapRate&quot;, dblSwapRate, -1. * dblSwapRateSensitivity,</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">			if (!pms.setR1 (&quot;ReferenceCleanPV&quot;, mapFixFloat.get (&quot;ReferenceCleanPV&quot;))) return null;</span>
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">			if (!pms.setR1 (&quot;SwapRate&quot;, dblSwapRate)) return null;</span>
+
+<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (!pms.setR1 (&quot;SwapRateRollDown&quot;, dblRollDownInnate)) return null;</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">			for (java.lang.String strRollDownTenor : mapHorizonMetric.keySet()) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">				if (!pms.setR1 (&quot;SwapRateRollDown&quot; + strRollDownTenor, mapHorizonMetric.get</span>
+<span class="nc" id="L232">					(strRollDownTenor)))</span>
+<span class="nc" id="L233">					return null;</span>
+<span class="nc" id="L234">			}</span>
+
+<span class="nc bnc" id="L236" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;SwapRate&quot;, dblSwapRate, -1. * dblSwapRateSensitivity,</span>
 				dblRollDownInnate))
-<span class="nc" id="L226">				return null;</span>
+<span class="nc" id="L238">				return null;</span>
 
-<span class="nc" id="L228">			return pms;</span>
-<span class="nc" id="L229">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L230">			e.printStackTrace();</span>
+<span class="nc" id="L240">			return pms;</span>
+<span class="nc" id="L241">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L242">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L233">		return null;</span>
+<span class="nc" id="L245">		return null;</span>
 	}
 
 	@Override public boolean updateFixings()
 	{
-<span class="nc" id="L238">		org.drip.product.rates.FixFloatComponent ffc = (org.drip.product.rates.FixFloatComponent)</span>
-<span class="nc" id="L239">			component();</span>
+<span class="nc" id="L250">		org.drip.product.rates.FixFloatComponent ffc = (org.drip.product.rates.FixFloatComponent)</span>
+<span class="nc" id="L251">			component();</span>
 
-<span class="nc" id="L241">		org.drip.product.rates.Stream floatingStream = ffc.derivedStream();</span>
+<span class="nc" id="L253">		org.drip.product.rates.Stream floatingStream = ffc.derivedStream();</span>
 
-<span class="nc" id="L243">		int iDate = secondDate().julian();</span>
+<span class="nc" id="L255">		int iDate = secondDate().julian();</span>
 
-<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (iDate &gt; ffc.maturityDate().julian()) return false;</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (iDate &gt; ffc.maturityDate().julian()) return false;</span>
 
-<span class="nc" id="L247">		int iEffectiveDate = ffc.effectiveDate().julian();</span>
+<span class="nc" id="L259">		int iEffectiveDate = ffc.effectiveDate().julian();</span>
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (iDate &lt;= iEffectiveDate) iDate = iEffectiveDate;</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (iDate &lt;= iEffectiveDate) iDate = iEffectiveDate;</span>
 
-<span class="nc" id="L251">		org.drip.analytics.cashflow.CompositePeriod cpFixing = floatingStream.containingPeriod (iDate);</span>
+<span class="nc" id="L263">		org.drip.analytics.cashflow.CompositePeriod cpFixing = floatingStream.containingPeriod (iDate);</span>
 
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (null == cpFixing) return false;</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (null == cpFixing) return false;</span>
 
-<span class="nc" id="L255">		org.drip.analytics.cashflow.ComposableUnitPeriod cupEnclosing = cpFixing.enclosingCUP (iDate);</span>
+<span class="nc" id="L267">		org.drip.analytics.cashflow.ComposableUnitPeriod cupEnclosing = cpFixing.enclosingCUP (iDate);</span>
 
-<span class="nc bnc" id="L257" title="All 4 branches missed.">		if (null == cupEnclosing || !(cupEnclosing instanceof</span>
+<span class="nc bnc" id="L269" title="All 4 branches missed.">		if (null == cupEnclosing || !(cupEnclosing instanceof</span>
 			org.drip.analytics.cashflow.ComposableUnitFloatingPeriod))
-<span class="nc" id="L259">			return false;</span>
+<span class="nc" id="L271">			return false;</span>
 
-<span class="nc" id="L261">		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = firstMarketParameters();</span>
+<span class="nc" id="L273">		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = firstMarketParameters();</span>
 
-<span class="nc" id="L263">		org.drip.state.identifier.ForwardLabel forwardLabel = floatingStream.forwardLabel();</span>
+<span class="nc" id="L275">		org.drip.state.identifier.ForwardLabel forwardLabel = floatingStream.forwardLabel();</span>
 
-<span class="nc" id="L265">		int iFixingDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
-<span class="nc" id="L266">			cupEnclosing).referenceIndexPeriod().fixingDate();</span>
+<span class="nc" id="L277">		int iFixingDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod)</span>
+<span class="nc" id="L278">			cupEnclosing).referenceIndexPeriod().fixingDate();</span>
 
 		try {
-<span class="nc" id="L269">			double dblResetFixingRate = cupEnclosing.baseRate (csqcFirst);</span>
+<span class="nc" id="L281">			double dblResetFixingRate = cupEnclosing.baseRate (csqcFirst);</span>
 
-<span class="nc bnc" id="L271" title="All 2 branches missed.">			return csqcFirst.setFixing (iFixingDate, forwardLabel, dblResetFixingRate) &amp;&amp;</span>
-<span class="nc bnc" id="L272" title="All 2 branches missed.">				secondMarketParameters().setFixing (iFixingDate, forwardLabel, dblResetFixingRate);</span>
-<span class="nc" id="L273">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L274">			e.printStackTrace();</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">			return csqcFirst.setFixing (iFixingDate, forwardLabel, dblResetFixingRate) &amp;&amp;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">				secondMarketParameters().setFixing (iFixingDate, forwardLabel, dblResetFixingRate);</span>
+<span class="nc" id="L285">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L286">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L277">		return false;</span>
+<span class="nc" id="L289">		return false;</span>
 	}
 
 	@Override public org.drip.historical.attribution.PositionMarketSnap snapSecondMarketValue()
 	{
-<span class="nc" id="L282">		org.drip.analytics.date.JulianDate dtSecond = secondDate();</span>
+<span class="nc" id="L294">		org.drip.analytics.date.JulianDate dtSecond = secondDate();</span>
 
-<span class="nc" id="L284">		org.drip.product.rates.FixFloatComponent ffc = (org.drip.product.rates.FixFloatComponent)</span>
-<span class="nc" id="L285">			component();</span>
+<span class="nc" id="L296">		org.drip.product.rates.FixFloatComponent ffc = (org.drip.product.rates.FixFloatComponent)</span>
+<span class="nc" id="L297">			component();</span>
 
-<span class="nc" id="L287">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFixFloat = ffc.value</span>
-<span class="nc" id="L288">			(org.drip.param.valuation.ValuationParams.Spot (dtSecond.addBusDays (settleLag(),</span>
-<span class="nc" id="L289">				ffc.payCurrency()).julian()), null, secondMarketParameters(), null);</span>
+<span class="nc" id="L299">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFixFloat = ffc.value</span>
+<span class="nc" id="L300">			(org.drip.param.valuation.ValuationParams.Spot (dtSecond.addBusDays (settleLag(),</span>
+<span class="nc" id="L301">				ffc.payCurrency()).julian()), null, secondMarketParameters(), null);</span>
 
-<span class="nc bnc" id="L291" title="All 4 branches missed.">		if (null == mapFixFloat || !mapFixFloat.containsKey (&quot;CleanFixedDV01&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L292" title="All 4 branches missed.">			(&quot;CleanPV&quot;) || !mapFixFloat.containsKey (&quot;CumulativeCouponAmount&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L293" title="All 4 branches missed.">				(&quot;CumulativeCouponDCF&quot;) || !mapFixFloat.containsKey (&quot;DerivedCumulativeCouponAmount&quot;) ||</span>
-<span class="nc bnc" id="L294" title="All 2 branches missed.">					!mapFixFloat.containsKey (&quot;DerivedCumulativeCouponDCF&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L295" title="All 2 branches missed.">						(&quot;ReferenceCumulativeCouponAmount&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L296" title="All 4 branches missed.">							(&quot;ReferenceCumulativeCouponDCF&quot;) || !mapFixFloat.containsKey (&quot;ResetDate&quot;) ||</span>
-<span class="nc bnc" id="L297" title="All 2 branches missed.">								!mapFixFloat.containsKey (&quot;ResetRate&quot;) || !mapFixFloat.containsKey</span>
-<span class="nc bnc" id="L298" title="All 2 branches missed.">									(&quot;SwapRate&quot;))</span>
-<span class="nc" id="L299">			return null;</span>
+<span class="nc bnc" id="L303" title="All 4 branches missed.">		if (null == mapFixFloat || !mapFixFloat.containsKey (&quot;CleanFixedDV01&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L304" title="All 4 branches missed.">			(&quot;CleanPV&quot;) || !mapFixFloat.containsKey (&quot;CumulativeCouponAmount&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L305" title="All 4 branches missed.">				(&quot;CumulativeCouponDCF&quot;) || !mapFixFloat.containsKey (&quot;DerivedCumulativeCouponAmount&quot;) ||</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">					!mapFixFloat.containsKey (&quot;DerivedCumulativeCouponDCF&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">						(&quot;ReferenceCumulativeCouponAmount&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L308" title="All 4 branches missed.">							(&quot;ReferenceCumulativeCouponDCF&quot;) || !mapFixFloat.containsKey (&quot;ResetDate&quot;) ||</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">								!mapFixFloat.containsKey (&quot;ResetRate&quot;) || !mapFixFloat.containsKey</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">									(&quot;SwapRate&quot;))</span>
+<span class="nc" id="L311">			return null;</span>
 
-<span class="nc" id="L301">		double dblSwapRate = mapFixFloat.get (&quot;SwapRate&quot;);</span>
+<span class="nc" id="L313">		double dblSwapRate = mapFixFloat.get (&quot;SwapRate&quot;);</span>
 
 		try {
-<span class="nc" id="L304">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
-<span class="nc" id="L305">				org.drip.historical.attribution.PositionMarketSnap (dtSecond, mapFixFloat.get (&quot;CleanPV&quot;));</span>
+<span class="nc" id="L316">			org.drip.historical.attribution.PositionMarketSnap pms = new</span>
+<span class="nc" id="L317">				org.drip.historical.attribution.PositionMarketSnap (dtSecond, mapFixFloat.get (&quot;CleanPV&quot;));</span>
 
-<span class="nc bnc" id="L307" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, mapFixFloat.get (&quot;CumulativeCouponAmount&quot;)))</span>
-<span class="nc" id="L308">				return null;</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponAmount&quot;, mapFixFloat.get (&quot;CumulativeCouponAmount&quot;)))</span>
+<span class="nc" id="L320">				return null;</span>
 
-<span class="nc bnc" id="L310" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, mapFixFloat.get (&quot;CumulativeCouponDCF&quot;))) return null;</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			if (!pms.setR1 (&quot;CumulativeCouponDCF&quot;, mapFixFloat.get (&quot;CumulativeCouponDCF&quot;))) return null;</span>
 
-<span class="nc bnc" id="L312" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponAmount&quot;, mapFixFloat.get</span>
-<span class="nc" id="L313">				(&quot;ReferenceCumulativeCouponAmount&quot;)))</span>
-<span class="nc" id="L314">				return null;</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponAmount&quot;, mapFixFloat.get</span>
+<span class="nc" id="L325">				(&quot;ReferenceCumulativeCouponAmount&quot;)))</span>
+<span class="nc" id="L326">				return null;</span>
 
-<span class="nc bnc" id="L316" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;ReferenceCumulativeCouponDCF&quot;)))</span>
-<span class="nc" id="L317">				return null;</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FixedCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;ReferenceCumulativeCouponDCF&quot;)))</span>
+<span class="nc" id="L329">				return null;</span>
 
-<span class="nc bnc" id="L319" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponAmount&quot;, mapFixFloat.get</span>
-<span class="nc" id="L320">				(&quot;DerivedCumulativeCouponAmount&quot;)))</span>
-<span class="nc" id="L321">				return null;</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponAmount&quot;, mapFixFloat.get</span>
+<span class="nc" id="L332">				(&quot;DerivedCumulativeCouponAmount&quot;)))</span>
+<span class="nc" id="L333">				return null;</span>
 
-<span class="nc bnc" id="L323" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;DerivedCumulativeCouponDCF&quot;)))</span>
-<span class="nc" id="L324">				return null;</span>
-
-<span class="nc bnc" id="L326" title="All 2 branches missed.">			if (!pms.setDate (&quot;ResetDate&quot;, new org.drip.analytics.date.JulianDate ((int) (double)</span>
-<span class="nc" id="L327">				mapFixFloat.get (&quot;ResetDate&quot;))))</span>
-<span class="nc" id="L328">				return null;</span>
-
-<span class="nc bnc" id="L330" title="All 2 branches missed.">			if (!pms.setR1 (&quot;ResetRate&quot;, mapFixFloat.get (&quot;ResetRate&quot;))) return null;</span>
-
-<span class="nc bnc" id="L332" title="All 2 branches missed.">			if (!pms.setR1 (&quot;SwapRate&quot;, dblSwapRate)) return null;</span>
-
-<span class="nc bnc" id="L334" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;SwapRate&quot;, dblSwapRate, -10000. * mapFixFloat.get</span>
-<span class="nc" id="L335">				(&quot;CleanFixedDV01&quot;), 0.))</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">			if (!pms.setR1 (&quot;FloatCumulativeCouponDCF&quot;, mapFixFloat.get (&quot;DerivedCumulativeCouponDCF&quot;)))</span>
 <span class="nc" id="L336">				return null;</span>
 
-<span class="nc" id="L338">			return pms;</span>
-<span class="nc" id="L339">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L340">			e.printStackTrace();</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">			if (!pms.setDate (&quot;ResetDate&quot;, new org.drip.analytics.date.JulianDate ((int) (double)</span>
+<span class="nc" id="L339">				mapFixFloat.get (&quot;ResetDate&quot;))))</span>
+<span class="nc" id="L340">				return null;</span>
+
+<span class="nc bnc" id="L342" title="All 2 branches missed.">			if (!pms.setR1 (&quot;ResetRate&quot;, mapFixFloat.get (&quot;ResetRate&quot;))) return null;</span>
+
+<span class="nc bnc" id="L344" title="All 2 branches missed.">			if (!pms.setR1 (&quot;SwapRate&quot;, dblSwapRate)) return null;</span>
+
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			if (!pms.addManifestMeasureSnap (&quot;SwapRate&quot;, dblSwapRate, -10000. * mapFixFloat.get</span>
+<span class="nc" id="L347">				(&quot;CleanFixedDV01&quot;), 0.))</span>
+<span class="nc" id="L348">				return null;</span>
+
+<span class="nc" id="L350">			return pms;</span>
+<span class="nc" id="L351">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L352">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L343">		return null;</span>
+<span class="nc" id="L355">		return null;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;
@@ -348,80 +360,80 @@ public class FixFloatExplainProcessor extends org.drip.historical.engine.Horizon
 			final org.drip.historical.attribution.PositionMarketSnap pmsFirst,
 			final org.drip.historical.attribution.PositionMarketSnap pmsSecond)
 	{
-<span class="nc bnc" id="L351" title="All 4 branches missed.">		if (null == pmsFirst || null == pmsSecond) return null;</span>
+<span class="nc bnc" id="L363" title="All 4 branches missed.">		if (null == pmsFirst || null == pmsSecond) return null;</span>
 
-<span class="nc" id="L353">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapDifferentialMetric = new</span>
+<span class="nc" id="L365">		org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt; mapDifferentialMetric = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L356">		org.drip.analytics.date.JulianDate dtEffective = pmsFirst.date (&quot;EffectiveDate&quot;);</span>
+<span class="nc" id="L368">		org.drip.analytics.date.JulianDate dtEffective = pmsFirst.date (&quot;EffectiveDate&quot;);</span>
 
-<span class="nc" id="L358">		java.lang.String strFixedAccrualDayCount = pmsFirst.c1 (&quot;FixedAccrualDayCount&quot;);</span>
+<span class="nc" id="L370">		java.lang.String strFixedAccrualDayCount = pmsFirst.c1 (&quot;FixedAccrualDayCount&quot;);</span>
 
-<span class="nc" id="L360">		java.lang.String strFloatAccrualDayCount = pmsFirst.c1 (&quot;FloatAccrualDayCount&quot;);</span>
+<span class="nc" id="L372">		java.lang.String strFloatAccrualDayCount = pmsFirst.c1 (&quot;FloatAccrualDayCount&quot;);</span>
 
-<span class="nc" id="L362">		java.lang.String strCalendar = pmsFirst.c1 (&quot;PayCurrency&quot;);</span>
+<span class="nc" id="L374">		java.lang.String strCalendar = pmsFirst.c1 (&quot;PayCurrency&quot;);</span>
 
-<span class="nc" id="L364">		int iDate1M = dtEffective.addTenor (&quot;1M&quot;).julian();</span>
+<span class="nc" id="L376">		int iDate1M = dtEffective.addTenor (&quot;1M&quot;).julian();</span>
 
-<span class="nc" id="L366">		int iDate3M = dtEffective.addTenor (&quot;3M&quot;).julian();</span>
+<span class="nc" id="L378">		int iDate3M = dtEffective.addTenor (&quot;3M&quot;).julian();</span>
 
-<span class="nc" id="L368">		int iEffectiveDate = dtEffective.julian();</span>
+<span class="nc" id="L380">		int iEffectiveDate = dtEffective.julian();</span>
 
 		try {
-<span class="nc" id="L371">			double dblFixedCumulativeCouponAmount = pmsSecond.r1 (&quot;FixedCumulativeCouponAmount&quot;) -</span>
-<span class="nc" id="L372">				pmsFirst.r1 (&quot;FixedCumulativeCouponAmount&quot;);</span>
+<span class="nc" id="L383">			double dblFixedCumulativeCouponAmount = pmsSecond.r1 (&quot;FixedCumulativeCouponAmount&quot;) -</span>
+<span class="nc" id="L384">				pmsFirst.r1 (&quot;FixedCumulativeCouponAmount&quot;);</span>
 
-<span class="nc" id="L374">			double dblFixedCumulativeCouponDCF = pmsSecond.r1 (&quot;FixedCumulativeCouponDCF&quot;) - pmsFirst.r1</span>
-<span class="nc" id="L375">				(&quot;FixedCumulativeCouponDCF&quot;);</span>
+<span class="nc" id="L386">			double dblFixedCumulativeCouponDCF = pmsSecond.r1 (&quot;FixedCumulativeCouponDCF&quot;) - pmsFirst.r1</span>
+<span class="nc" id="L387">				(&quot;FixedCumulativeCouponDCF&quot;);</span>
 
-<span class="nc" id="L377">			double dblFloatCumulativeCouponAmount = pmsSecond.r1 (&quot;FloatCumulativeCouponAmount&quot;) -</span>
-<span class="nc" id="L378">				pmsFirst.r1 (&quot;FloatCumulativeCouponAmount&quot;);</span>
+<span class="nc" id="L389">			double dblFloatCumulativeCouponAmount = pmsSecond.r1 (&quot;FloatCumulativeCouponAmount&quot;) -</span>
+<span class="nc" id="L390">				pmsFirst.r1 (&quot;FloatCumulativeCouponAmount&quot;);</span>
 
-<span class="nc" id="L380">			double dblFloatCumulativeCouponDCF = pmsSecond.r1 (&quot;FloatCumulativeCouponDCF&quot;) - pmsFirst.r1</span>
-<span class="nc" id="L381">				(&quot;FloatCumulativeCouponDCF&quot;);</span>
+<span class="nc" id="L392">			double dblFloatCumulativeCouponDCF = pmsSecond.r1 (&quot;FloatCumulativeCouponDCF&quot;) - pmsFirst.r1</span>
+<span class="nc" id="L393">				(&quot;FloatCumulativeCouponDCF&quot;);</span>
 
-<span class="nc" id="L383">			mapDifferentialMetric.put (&quot;CumulativeCouponAmount&quot;, pmsSecond.r1 (&quot;CumulativeCouponAmount&quot;) -</span>
-<span class="nc" id="L384">				pmsFirst.r1 (&quot;CumulativeCouponAmount&quot;));</span>
+<span class="nc" id="L395">			mapDifferentialMetric.put (&quot;CumulativeCouponAmount&quot;, pmsSecond.r1 (&quot;CumulativeCouponAmount&quot;) -</span>
+<span class="nc" id="L396">				pmsFirst.r1 (&quot;CumulativeCouponAmount&quot;));</span>
 
-<span class="nc" id="L386">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF&quot;, pmsSecond.r1 (&quot;CumulativeCouponDCF&quot;) -</span>
-<span class="nc" id="L387">				pmsFirst.r1 (&quot;CumulativeCouponDCF&quot;));</span>
+<span class="nc" id="L398">			mapDifferentialMetric.put (&quot;CumulativeCouponDCF&quot;, pmsSecond.r1 (&quot;CumulativeCouponDCF&quot;) -</span>
+<span class="nc" id="L399">				pmsFirst.r1 (&quot;CumulativeCouponDCF&quot;));</span>
 
-<span class="nc" id="L389">			mapDifferentialMetric.put (&quot;EffectiveFixedCouponRate&quot;, dblFixedCumulativeCouponAmount /</span>
+<span class="nc" id="L401">			mapDifferentialMetric.put (&quot;EffectiveFixedCouponRate&quot;, dblFixedCumulativeCouponAmount /</span>
 				dblFixedCumulativeCouponDCF);
 
-<span class="nc" id="L392">			mapDifferentialMetric.put (&quot;EffectiveFloatCouponRate&quot;, dblFloatCumulativeCouponAmount /</span>
+<span class="nc" id="L404">			mapDifferentialMetric.put (&quot;EffectiveFloatCouponRate&quot;, dblFloatCumulativeCouponAmount /</span>
 				dblFloatCumulativeCouponDCF);
 
-<span class="nc" id="L395">			mapDifferentialMetric.put (&quot;FixedAccrualDCF1M&quot;,</span>
-<span class="nc" id="L396">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate1M,</span>
-					strFixedAccrualDayCount, false, null, strCalendar));
-
-<span class="nc" id="L399">			mapDifferentialMetric.put (&quot;FixedAccrualDCF3M&quot;,</span>
-<span class="nc" id="L400">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate3M,</span>
-					strFixedAccrualDayCount, false, null, strCalendar));
-
-<span class="nc" id="L403">			mapDifferentialMetric.put (&quot;FixedCumulativeCouponAmount&quot;, dblFixedCumulativeCouponAmount);</span>
-
-<span class="nc" id="L405">			mapDifferentialMetric.put (&quot;FixedCumulativeCouponDCF&quot;, dblFixedCumulativeCouponDCF);</span>
-
-<span class="nc" id="L407">			mapDifferentialMetric.put (&quot;FloatAccrualDCF1M&quot;,</span>
+<span class="nc" id="L407">			mapDifferentialMetric.put (&quot;FixedAccrualDCF1M&quot;,</span>
 <span class="nc" id="L408">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate1M,</span>
-					strFloatAccrualDayCount, false, null, strCalendar));
+					strFixedAccrualDayCount, false, null, strCalendar));
 
-<span class="nc" id="L411">			mapDifferentialMetric.put (&quot;FloatAccrualDCF3M&quot;,</span>
+<span class="nc" id="L411">			mapDifferentialMetric.put (&quot;FixedAccrualDCF3M&quot;,</span>
 <span class="nc" id="L412">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate3M,</span>
+					strFixedAccrualDayCount, false, null, strCalendar));
+
+<span class="nc" id="L415">			mapDifferentialMetric.put (&quot;FixedCumulativeCouponAmount&quot;, dblFixedCumulativeCouponAmount);</span>
+
+<span class="nc" id="L417">			mapDifferentialMetric.put (&quot;FixedCumulativeCouponDCF&quot;, dblFixedCumulativeCouponDCF);</span>
+
+<span class="nc" id="L419">			mapDifferentialMetric.put (&quot;FloatAccrualDCF1M&quot;,</span>
+<span class="nc" id="L420">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate1M,</span>
 					strFloatAccrualDayCount, false, null, strCalendar));
 
-<span class="nc" id="L415">			mapDifferentialMetric.put (&quot;FloatCumulativeCouponAmount&quot;, dblFloatCumulativeCouponAmount);</span>
+<span class="nc" id="L423">			mapDifferentialMetric.put (&quot;FloatAccrualDCF3M&quot;,</span>
+<span class="nc" id="L424">				org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iDate3M,</span>
+					strFloatAccrualDayCount, false, null, strCalendar));
 
-<span class="nc" id="L417">			mapDifferentialMetric.put (&quot;FloatCumulativeCouponDCF&quot;, dblFloatCumulativeCouponDCF);</span>
+<span class="nc" id="L427">			mapDifferentialMetric.put (&quot;FloatCumulativeCouponAmount&quot;, dblFloatCumulativeCouponAmount);</span>
 
-<span class="nc" id="L419">			return mapDifferentialMetric;</span>
-<span class="nc" id="L420">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L421">			e.printStackTrace();</span>
+<span class="nc" id="L429">			mapDifferentialMetric.put (&quot;FloatCumulativeCouponDCF&quot;, dblFloatCumulativeCouponDCF);</span>
+
+<span class="nc" id="L431">			return mapDifferentialMetric;</span>
+<span class="nc" id="L432">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L433">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L424">		return null;</span>
+<span class="nc" id="L436">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

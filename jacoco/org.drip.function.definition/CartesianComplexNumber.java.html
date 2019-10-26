@@ -6,6 +6,7 @@ package org.drip.function.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.function.definition;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,10 +86,10 @@ package org.drip.function.definition;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier&quot;&gt;Specific Fourier Transform Functionality - Rotation Counter, Phase Adjuster&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Function Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/definition&quot;&gt;Function Implementation Ancillary Support Objects&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -86,8 +98,8 @@ package org.drip.function.definition;
 
 public class CartesianComplexNumber
 {
-<span class="fc" id="L89">	private double _real = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _imaginary = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _real = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private double _imaginary = java.lang.Double.NaN;</span>
 
 	/**
 	 * Add the 2 Complex Numbers
@@ -102,24 +114,24 @@ public class CartesianComplexNumber
 		final CartesianComplexNumber complexNumber1,
 		final CartesianComplexNumber complexNumber2)
 	{
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
 		{
-<span class="nc" id="L107">			return null;</span>
+<span class="nc" id="L119">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L112">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L113">				complexNumber1.real() + complexNumber2.real(),</span>
-<span class="fc" id="L114">				complexNumber1.imaginary() + complexNumber2.imaginary()</span>
+<span class="fc" id="L124">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L125">				complexNumber1.real() + complexNumber2.real(),</span>
+<span class="fc" id="L126">				complexNumber1.imaginary() + complexNumber2.imaginary()</span>
 			);
 		}
-<span class="nc" id="L117">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L129">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L119">			e.printStackTrace();</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L122">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	/**
@@ -135,24 +147,24 @@ public class CartesianComplexNumber
 		final CartesianComplexNumber complexNumber,
 		final double scale)
 	{
-<span class="pc bpc" id="L138" title="2 of 4 branches missed.">		if (null == complexNumber || !org.drip.numerical.common.NumberUtil.IsValid (scale))</span>
+<span class="pc bpc" id="L150" title="2 of 4 branches missed.">		if (null == complexNumber || !org.drip.numerical.common.NumberUtil.IsValid (scale))</span>
 		{
-<span class="nc" id="L140">			return null;</span>
+<span class="nc" id="L152">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L145">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L146">				scale * complexNumber.real(),</span>
-<span class="fc" id="L147">				scale * complexNumber.imaginary()</span>
+<span class="fc" id="L157">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L158">				scale * complexNumber.real(),</span>
+<span class="fc" id="L159">				scale * complexNumber.imaginary()</span>
 			);
 		}
-<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L167">		return null;</span>
 	}
 
 	/**
@@ -168,23 +180,23 @@ public class CartesianComplexNumber
 		final CartesianComplexNumber complexNumber1,
 		final CartesianComplexNumber complexNumber2)
 	{
-<span class="pc bpc" id="L171" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
+<span class="pc bpc" id="L183" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
 		{
-<span class="nc" id="L173">			return null;</span>
+<span class="nc" id="L185">			return null;</span>
 		}
 
 		try {
-<span class="fc" id="L177">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L178">				complexNumber1.real() - complexNumber2.real(),</span>
-<span class="fc" id="L179">				complexNumber1.imaginary() - complexNumber2.imaginary()</span>
+<span class="fc" id="L189">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L190">				complexNumber1.real() - complexNumber2.real(),</span>
+<span class="fc" id="L191">				complexNumber1.imaginary() - complexNumber2.imaginary()</span>
 			);
 		}
-<span class="nc" id="L182">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L194">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L184">			e.printStackTrace();</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L187">		return null;</span>
+<span class="nc" id="L199">		return null;</span>
 	}
 
 	/**
@@ -200,32 +212,32 @@ public class CartesianComplexNumber
 		final CartesianComplexNumber complexNumber1,
 		final CartesianComplexNumber complexNumber2)
 	{
-<span class="pc bpc" id="L203" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
+<span class="pc bpc" id="L215" title="2 of 4 branches missed.">		if (null == complexNumber1 || null == complexNumber2)</span>
 		{
-<span class="nc" id="L205">			return null;</span>
+<span class="nc" id="L217">			return null;</span>
 		}
 
-<span class="fc" id="L208">		double real1 = complexNumber1.real();</span>
+<span class="fc" id="L220">		double real1 = complexNumber1.real();</span>
 
-<span class="fc" id="L210">		double real2 = complexNumber2.real();</span>
+<span class="fc" id="L222">		double real2 = complexNumber2.real();</span>
 
-<span class="fc" id="L212">		double imaginary1 = complexNumber1.imaginary();</span>
+<span class="fc" id="L224">		double imaginary1 = complexNumber1.imaginary();</span>
 
-<span class="fc" id="L214">		double imaginary2 = complexNumber2.imaginary();</span>
+<span class="fc" id="L226">		double imaginary2 = complexNumber2.imaginary();</span>
 
 		try
 		{
-<span class="fc" id="L218">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L230">			return new CartesianComplexNumber (</span>
 				real1 * real2 - imaginary1 * imaginary2,
 				real1 * imaginary2 + real2 * imaginary1
 			);
 		}
-<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L235">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L225">			e.printStackTrace();</span>
+<span class="nc" id="L237">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L228">		return null;</span>
+<span class="nc" id="L240">		return null;</span>
 	}
 
 	/**
@@ -241,41 +253,41 @@ public class CartesianComplexNumber
 		final CartesianComplexNumber numerator,
 		final CartesianComplexNumber denominator)
 	{
-<span class="pc bpc" id="L244" title="2 of 4 branches missed.">		if (null == numerator || null == denominator)</span>
+<span class="pc bpc" id="L256" title="2 of 4 branches missed.">		if (null == numerator || null == denominator)</span>
 		{
-<span class="nc" id="L246">			return null;</span>
+<span class="nc" id="L258">			return null;</span>
 		}
 
-<span class="fc" id="L249">		double numeratorReal = numerator.real();</span>
+<span class="fc" id="L261">		double numeratorReal = numerator.real();</span>
 
-<span class="fc" id="L251">		double denominatorReal = denominator.real();</span>
+<span class="fc" id="L263">		double denominatorReal = denominator.real();</span>
 
-<span class="fc" id="L253">		double numeratorImaginary = numerator.imaginary();</span>
+<span class="fc" id="L265">		double numeratorImaginary = numerator.imaginary();</span>
 
-<span class="fc" id="L255">		double denominatorImaginary = denominator.imaginary();</span>
+<span class="fc" id="L267">		double denominatorImaginary = denominator.imaginary();</span>
 
-<span class="pc bpc" id="L257" title="1 of 4 branches missed.">		if (0. == denominatorReal &amp;&amp; 0. == denominatorImaginary)</span>
+<span class="pc bpc" id="L269" title="1 of 4 branches missed.">		if (0. == denominatorReal &amp;&amp; 0. == denominatorImaginary)</span>
 		{
-<span class="nc" id="L259">			return null;</span>
+<span class="nc" id="L271">			return null;</span>
 		}
 
-<span class="fc" id="L262">		double inverseDenominatorModulus = 1. / denominator.modulus();</span>
+<span class="fc" id="L274">		double inverseDenominatorModulus = 1. / denominator.modulus();</span>
 
 		try
 		{
-<span class="fc" id="L266">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L278">			return new CartesianComplexNumber (</span>
 				(numeratorReal * denominatorReal + numeratorImaginary * denominatorImaginary) *
 					inverseDenominatorModulus,
 				(denominatorReal * numeratorImaginary - numeratorReal * denominatorImaginary) *
 					inverseDenominatorModulus
 			);
 		}
-<span class="nc" id="L273">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L285">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L275">			e.printStackTrace();</span>
+<span class="nc" id="L287">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L278">		return null;</span>
+<span class="nc" id="L290">		return null;</span>
 	}
 
 	/**
@@ -289,45 +301,45 @@ public class CartesianComplexNumber
 	public static final CartesianComplexNumber Square (
 		final CartesianComplexNumber complexNumber)
 	{
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
 		{
-<span class="nc" id="L294">			return null;</span>
+<span class="nc" id="L306">			return null;</span>
 		}
 
-<span class="fc" id="L297">		double modulus = complexNumber.modulus();</span>
+<span class="fc" id="L309">		double modulus = complexNumber.modulus();</span>
 
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		if (0. == modulus)</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">		if (0. == modulus)</span>
 		{
 			try
 			{
-<span class="nc" id="L303">				return new CartesianComplexNumber (</span>
+<span class="nc" id="L315">				return new CartesianComplexNumber (</span>
 					0.,
 					0.
 				);
 			}
-<span class="nc" id="L308">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L320">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L310">				e.printStackTrace();</span>
+<span class="nc" id="L322">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L313">			return null;</span>
+<span class="nc" id="L325">			return null;</span>
 		}
 
-<span class="fc" id="L316">		double argument = 2. * complexNumber.argument();</span>
+<span class="fc" id="L328">		double argument = 2. * complexNumber.argument();</span>
 
 		try
 		{
-<span class="fc" id="L320">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L321">				modulus * java.lang.Math.cos (argument),</span>
-<span class="fc" id="L322">				modulus * java.lang.Math.sin (argument)</span>
+<span class="fc" id="L332">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L333">				modulus * java.lang.Math.cos (argument),</span>
+<span class="fc" id="L334">				modulus * java.lang.Math.sin (argument)</span>
 			);
 		}
-<span class="nc" id="L325">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L337">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L327">			e.printStackTrace();</span>
+<span class="nc" id="L339">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L330">		return null;</span>
+<span class="nc" id="L342">		return null;</span>
 	}
 
 	/**
@@ -341,45 +353,45 @@ public class CartesianComplexNumber
 	public static final CartesianComplexNumber SquareRoot (
 		final CartesianComplexNumber complexNumber)
 	{
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
 		{
-<span class="nc" id="L346">			return null;</span>
+<span class="nc" id="L358">			return null;</span>
 		}
 
-<span class="fc" id="L349">		double modulus = java.lang.Math.sqrt (complexNumber.modulus());</span>
+<span class="fc" id="L361">		double modulus = java.lang.Math.sqrt (complexNumber.modulus());</span>
 
-<span class="pc bpc" id="L351" title="1 of 2 branches missed.">		if (0. == modulus)</span>
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">		if (0. == modulus)</span>
 		{
 			try
 			{
-<span class="nc" id="L355">				return new CartesianComplexNumber (</span>
+<span class="nc" id="L367">				return new CartesianComplexNumber (</span>
 					0.,
 					0.
 				);
 			}
-<span class="nc" id="L360">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L372">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L362">				e.printStackTrace();</span>
+<span class="nc" id="L374">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L365">			return null;</span>
+<span class="nc" id="L377">			return null;</span>
 		}
 
-<span class="fc" id="L368">		double argument = 0.5 * complexNumber.argument();</span>
+<span class="fc" id="L380">		double argument = 0.5 * complexNumber.argument();</span>
 
 		try
 		{
-<span class="fc" id="L372">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L373">				modulus * java.lang.Math.cos (argument),</span>
-<span class="fc" id="L374">				modulus * java.lang.Math.sin (argument)</span>
+<span class="fc" id="L384">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L385">				modulus * java.lang.Math.cos (argument),</span>
+<span class="fc" id="L386">				modulus * java.lang.Math.sin (argument)</span>
 			);
 		}
-<span class="nc" id="L377">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L389">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L379">			e.printStackTrace();</span>
+<span class="nc" id="L391">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L382">		return null;</span>
+<span class="nc" id="L394">		return null;</span>
 	}
 
 	/**
@@ -393,28 +405,28 @@ public class CartesianComplexNumber
 	public static final CartesianComplexNumber Exponentiate (
 		final CartesianComplexNumber complexNumber)
 	{
-<span class="pc bpc" id="L396" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+<span class="pc bpc" id="L408" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
 		{
-<span class="nc" id="L398">			return null;</span>
+<span class="nc" id="L410">			return null;</span>
 		}
 
-<span class="fc" id="L401">		double argument = complexNumber.imaginary();</span>
+<span class="fc" id="L413">		double argument = complexNumber.imaginary();</span>
 
-<span class="fc" id="L403">		double modulus = java.lang.Math.exp (complexNumber.real());</span>
+<span class="fc" id="L415">		double modulus = java.lang.Math.exp (complexNumber.real());</span>
 
 		try
 		{
-<span class="fc" id="L407">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L408">				modulus * java.lang.Math.cos (argument),</span>
-<span class="fc" id="L409">				modulus * java.lang.Math.sin (argument)</span>
+<span class="fc" id="L419">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L420">				modulus * java.lang.Math.cos (argument),</span>
+<span class="fc" id="L421">				modulus * java.lang.Math.sin (argument)</span>
 			);
 		}
-<span class="nc" id="L412">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L424">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L414">			e.printStackTrace();</span>
+<span class="nc" id="L426">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L417">		return null;</span>
+<span class="nc" id="L429">		return null;</span>
 	}
 
 	/**
@@ -428,31 +440,31 @@ public class CartesianComplexNumber
 	public static final CartesianComplexNumber Logarithm (
 		final CartesianComplexNumber complexNumber)
 	{
-<span class="pc bpc" id="L431" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
+<span class="pc bpc" id="L443" title="1 of 2 branches missed.">		if (null == complexNumber)</span>
 		{
-<span class="nc" id="L433">			return null;</span>
+<span class="nc" id="L445">			return null;</span>
 		}
 
-<span class="fc" id="L436">		double modulus = complexNumber.modulus();</span>
+<span class="fc" id="L448">		double modulus = complexNumber.modulus();</span>
 
-<span class="pc bpc" id="L438" title="1 of 2 branches missed.">		if (0. == modulus)</span>
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">		if (0. == modulus)</span>
 		{
-<span class="nc" id="L440">			return null;</span>
+<span class="nc" id="L452">			return null;</span>
 		}
 
 		try
 		{
-<span class="fc" id="L445">			return new CartesianComplexNumber (</span>
-<span class="fc" id="L446">				0.5 * java.lang.Math.log (modulus),</span>
-<span class="fc" id="L447">				complexNumber.argument()</span>
+<span class="fc" id="L457">			return new CartesianComplexNumber (</span>
+<span class="fc" id="L458">				0.5 * java.lang.Math.log (modulus),</span>
+<span class="fc" id="L459">				complexNumber.argument()</span>
 			);
 		}
-<span class="nc" id="L450">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L462">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L452">			e.printStackTrace();</span>
+<span class="nc" id="L464">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L455">		return null;</span>
+<span class="nc" id="L467">		return null;</span>
 	}
 
 	/**
@@ -470,19 +482,19 @@ public class CartesianComplexNumber
 	{
 		try
 		{
-<span class="nc bnc" id="L473" title="All 2 branches missed.">			return !org.drip.numerical.common.NumberUtil.IsValid (r) ||</span>
-<span class="nc bnc" id="L474" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (theta) ? null :</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">			return !org.drip.numerical.common.NumberUtil.IsValid (r) ||</span>
+<span class="nc bnc" id="L486" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (theta) ? null :</span>
 				new CartesianComplexNumber (
-<span class="nc" id="L476">					r * java.lang.Math.cos (theta),</span>
-<span class="nc" id="L477">					r * java.lang.Math.sin (theta)</span>
+<span class="nc" id="L488">					r * java.lang.Math.cos (theta),</span>
+<span class="nc" id="L489">					r * java.lang.Math.sin (theta)</span>
 				);
 		}
-<span class="nc" id="L480">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L492">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L482">			e.printStackTrace();</span>
+<span class="nc" id="L494">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L485">		return null;</span>
+<span class="nc" id="L497">		return null;</span>
 	}
 
 	/**
@@ -498,13 +510,13 @@ public class CartesianComplexNumber
 		final double real,
 		final double imaginary)
 		throws java.lang.Exception
-<span class="fc" id="L501">	{</span>
-<span class="pc bpc" id="L502" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_real = real) ||</span>
-<span class="pc bpc" id="L503" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_imaginary = imaginary))</span>
+<span class="fc" id="L513">	{</span>
+<span class="pc bpc" id="L514" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_real = real) ||</span>
+<span class="pc bpc" id="L515" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_imaginary = imaginary))</span>
 		{
-<span class="nc" id="L505">			throw new java.lang.Exception (&quot;CartesianComplexNumber Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L517">			throw new java.lang.Exception (&quot;CartesianComplexNumber Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L507">	}</span>
+<span class="fc" id="L519">	}</span>
 
 	/**
 	 * Retrieve the Real Part
@@ -514,7 +526,7 @@ public class CartesianComplexNumber
 
 	public double real()
 	{
-<span class="fc" id="L517">		return _real;</span>
+<span class="fc" id="L529">		return _real;</span>
 	}
 
 	/**
@@ -525,7 +537,7 @@ public class CartesianComplexNumber
 
 	public double imaginary()
 	{
-<span class="fc" id="L528">		return _imaginary;</span>
+<span class="fc" id="L540">		return _imaginary;</span>
 	}
 
 	/**
@@ -536,7 +548,7 @@ public class CartesianComplexNumber
 
 	public double modulus()
 	{
-<span class="fc" id="L539">		return _real * _real + _imaginary * _imaginary;</span>
+<span class="fc" id="L551">		return _real * _real + _imaginary * _imaginary;</span>
 	}
 
 	/**
@@ -547,7 +559,7 @@ public class CartesianComplexNumber
 
 	public double abs()
 	{
-<span class="fc" id="L550">		return java.lang.Math.sqrt (modulus());</span>
+<span class="fc" id="L562">		return java.lang.Math.sqrt (modulus());</span>
 	}
 
 	/**
@@ -558,7 +570,7 @@ public class CartesianComplexNumber
 
 	public double argument()
 	{
-<span class="pc bpc" id="L561" title="3 of 4 branches missed.">		return 0. == _real &amp;&amp; 0. == _imaginary ? 0. : java.lang.Math.atan (_imaginary / _real);</span>
+<span class="pc bpc" id="L573" title="3 of 4 branches missed.">		return 0. == _real &amp;&amp; 0. == _imaginary ? 0. : java.lang.Math.atan (_imaginary / _real);</span>
 	}
 
 	/**
@@ -569,7 +581,7 @@ public class CartesianComplexNumber
 
 	public java.lang.String display()
 	{
-<span class="nc" id="L572">		return &quot;\t[&quot; + _real + &quot;, &quot; + _imaginary + &quot;]&quot;;</span>
+<span class="nc" id="L584">		return &quot;\t[&quot; + _real + &quot;, &quot; + _imaginary + &quot;]&quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

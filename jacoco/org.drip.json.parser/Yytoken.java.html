@@ -6,44 +6,56 @@ package org.drip.json.parser;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.json.parser;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;RFC-4627 Compliant JSON Encoder/Decoder (Parser)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;RFC4627 Compliant JSON Message Parser&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Fang Yidong
@@ -92,43 +104,43 @@ public class Yytoken {
     public static final int TYPE_COLON=6;
     public static final int TYPE_EOF=-1;//end of file
     
-<span class="fc" id="L95">    public int type=0;</span>
-<span class="fc" id="L96">    public Object value=null;</span>
+<span class="fc" id="L107">    public int type=0;</span>
+<span class="fc" id="L108">    public Object value=null;</span>
     
-<span class="fc" id="L98">    public Yytoken(int type,Object value){</span>
-<span class="fc" id="L99">            this.type=type;</span>
-<span class="fc" id="L100">            this.value=value;</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L110">    public Yytoken(int type,Object value){</span>
+<span class="fc" id="L111">            this.type=type;</span>
+<span class="fc" id="L112">            this.value=value;</span>
+<span class="fc" id="L113">    }</span>
     
     public String toString(){
-<span class="fc" id="L104">            StringBuffer sb = new StringBuffer();</span>
-<span class="pc bpc" id="L105" title="8 of 9 branches missed.">            switch(type){</span>
+<span class="fc" id="L116">            StringBuffer sb = new StringBuffer();</span>
+<span class="pc bpc" id="L117" title="8 of 9 branches missed.">            switch(type){</span>
             case TYPE_VALUE:
-<span class="nc" id="L107">                    sb.append(&quot;VALUE(&quot;).append(value).append(&quot;)&quot;);</span>
-<span class="nc" id="L108">                    break;</span>
-            case TYPE_LEFT_BRACE:
-<span class="nc" id="L110">                    sb.append(&quot;LEFT BRACE({)&quot;);</span>
-<span class="nc" id="L111">                    break;</span>
-            case TYPE_RIGHT_BRACE:
-<span class="fc" id="L113">                    sb.append(&quot;RIGHT BRACE(})&quot;);</span>
-<span class="fc" id="L114">                    break;</span>
-            case TYPE_LEFT_SQUARE:
-<span class="nc" id="L116">                    sb.append(&quot;LEFT SQUARE([)&quot;);</span>
-<span class="nc" id="L117">                    break;</span>
-            case TYPE_RIGHT_SQUARE:
-<span class="nc" id="L119">                    sb.append(&quot;RIGHT SQUARE(])&quot;);</span>
+<span class="nc" id="L119">                    sb.append(&quot;VALUE(&quot;).append(value).append(&quot;)&quot;);</span>
 <span class="nc" id="L120">                    break;</span>
-            case TYPE_COMMA:
-<span class="nc" id="L122">                    sb.append(&quot;COMMA(,)&quot;);</span>
+            case TYPE_LEFT_BRACE:
+<span class="nc" id="L122">                    sb.append(&quot;LEFT BRACE({)&quot;);</span>
 <span class="nc" id="L123">                    break;</span>
+            case TYPE_RIGHT_BRACE:
+<span class="fc" id="L125">                    sb.append(&quot;RIGHT BRACE(})&quot;);</span>
+<span class="fc" id="L126">                    break;</span>
+            case TYPE_LEFT_SQUARE:
+<span class="nc" id="L128">                    sb.append(&quot;LEFT SQUARE([)&quot;);</span>
+<span class="nc" id="L129">                    break;</span>
+            case TYPE_RIGHT_SQUARE:
+<span class="nc" id="L131">                    sb.append(&quot;RIGHT SQUARE(])&quot;);</span>
+<span class="nc" id="L132">                    break;</span>
+            case TYPE_COMMA:
+<span class="nc" id="L134">                    sb.append(&quot;COMMA(,)&quot;);</span>
+<span class="nc" id="L135">                    break;</span>
             case TYPE_COLON:
-<span class="nc" id="L125">                    sb.append(&quot;COLON(:)&quot;);</span>
-<span class="nc" id="L126">                    break;</span>
+<span class="nc" id="L137">                    sb.append(&quot;COLON(:)&quot;);</span>
+<span class="nc" id="L138">                    break;</span>
             case TYPE_EOF:
-<span class="nc" id="L128">                    sb.append(&quot;END OF FILE&quot;);</span>
+<span class="nc" id="L140">                    sb.append(&quot;END OF FILE&quot;);</span>
                     break;
             }
-<span class="fc" id="L131">            return sb.toString();</span>
+<span class="fc" id="L143">            return sb.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

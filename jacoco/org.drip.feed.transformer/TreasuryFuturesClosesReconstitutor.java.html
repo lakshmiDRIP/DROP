@@ -6,38 +6,49 @@ package org.drip.feed.transformer;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -73,16 +84,16 @@ package org.drip.feed.transformer;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Load, Transform, and compute Target Metrics across Feeds&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Market Data Reconstitutive Feed Transformer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class TreasuryFuturesClosesReconstitutor {</span>
+<span class="nc" id="L96">public class TreasuryFuturesClosesReconstitutor {</span>
 
 	/**
 	 * Regularize the Treasury Feed Closes
@@ -109,72 +120,72 @@ package org.drip.feed.transformer;
 		final int iMaturityDateIndex,
 		final int iExpiryProxyIndex)
 	{
-<span class="nc" id="L112">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strClosesLocation,</span>
+<span class="nc" id="L123">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strClosesLocation,</span>
 			true);
 
-<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (null == csvGrid) return false;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (null == csvGrid) return false;</span>
 
-<span class="nc" id="L117">		org.drip.analytics.date.JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (iSpotDateIndex);</span>
+<span class="nc" id="L128">		org.drip.analytics.date.JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (iSpotDateIndex);</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == adtSpot) return false;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (null == adtSpot) return false;</span>
 
-<span class="nc" id="L121">		int iNumClose = adtSpot.length;</span>
-<span class="nc" id="L122">		org.drip.analytics.date.JulianDate[] adtExpiry = new org.drip.analytics.date.JulianDate[iNumClose];</span>
+<span class="nc" id="L132">		int iNumClose = adtSpot.length;</span>
+<span class="nc" id="L133">		org.drip.analytics.date.JulianDate[] adtExpiry = new org.drip.analytics.date.JulianDate[iNumClose];</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
 
-<span class="nc" id="L126">		double[] adblConversionFactor = csvGrid.doubleArrayAtColumn (iConversionFactorIndex);</span>
+<span class="nc" id="L137">		double[] adblConversionFactor = csvGrid.doubleArrayAtColumn (iConversionFactorIndex);</span>
 
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == adblConversionFactor || iNumClose != adblConversionFactor.length) return false;</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == adblConversionFactor || iNumClose != adblConversionFactor.length) return false;</span>
 
-<span class="nc" id="L130">		double[] adblCleanPrice = csvGrid.doubleArrayAtColumn (iCleanPriceIndex, 0.01);</span>
+<span class="nc" id="L141">		double[] adblCleanPrice = csvGrid.doubleArrayAtColumn (iCleanPriceIndex, 0.01);</span>
 
-<span class="nc bnc" id="L132" title="All 4 branches missed.">		if (null == adblCleanPrice || iNumClose != adblCleanPrice.length) return false;</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		if (null == adblCleanPrice || iNumClose != adblCleanPrice.length) return false;</span>
 
-<span class="nc" id="L134">		double[] adblCoupon = csvGrid.doubleArrayAtColumn (iCTDCouponIndex, 0.01);</span>
+<span class="nc" id="L145">		double[] adblCoupon = csvGrid.doubleArrayAtColumn (iCTDCouponIndex, 0.01);</span>
 
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == adblCoupon || iNumClose != adblCoupon.length) return false;</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">		if (null == adblCoupon || iNumClose != adblCoupon.length) return false;</span>
 
-<span class="nc" id="L138">		org.drip.analytics.date.JulianDate[] adtEffective = csvGrid.dateArrayAtColumn (iEffectiveDateIndex);</span>
+<span class="nc" id="L149">		org.drip.analytics.date.JulianDate[] adtEffective = csvGrid.dateArrayAtColumn (iEffectiveDateIndex);</span>
 
-<span class="nc bnc" id="L140" title="All 4 branches missed.">		if (null == adtEffective || iNumClose != adtEffective.length) return false;</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">		if (null == adtEffective || iNumClose != adtEffective.length) return false;</span>
 
-<span class="nc" id="L142">		org.drip.analytics.date.JulianDate[] adtMaturity = csvGrid.dateArrayAtColumn (iMaturityDateIndex);</span>
+<span class="nc" id="L153">		org.drip.analytics.date.JulianDate[] adtMaturity = csvGrid.dateArrayAtColumn (iMaturityDateIndex);</span>
 
-<span class="nc bnc" id="L144" title="All 4 branches missed.">		if (null == adtMaturity || iNumClose != adtMaturity.length) return false;</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">		if (null == adtMaturity || iNumClose != adtMaturity.length) return false;</span>
 
-<span class="nc" id="L146">		org.drip.analytics.date.JulianDate[] adtExpiryProxy = csvGrid.dateArrayAtColumn (iExpiryProxyIndex);</span>
+<span class="nc" id="L157">		org.drip.analytics.date.JulianDate[] adtExpiryProxy = csvGrid.dateArrayAtColumn (iExpiryProxyIndex);</span>
 
-<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == adtExpiryProxy || iNumClose != adtExpiryProxy.length) return false;</span>
+<span class="nc bnc" id="L159" title="All 4 branches missed.">		if (null == adtExpiryProxy || iNumClose != adtExpiryProxy.length) return false;</span>
 
 		try {
-<span class="nc bnc" id="L151" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumClose; ++i) {</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">				if (null == adtExpiryProxy[i]) return false;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">			for (int i = 0; i &lt; iNumClose; ++i) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">				if (null == adtExpiryProxy[i]) return false;</span>
 
-<span class="nc" id="L154">				int iExpiryProxyDate = adtExpiryProxy[i].julian();</span>
+<span class="nc" id="L165">				int iExpiryProxyDate = adtExpiryProxy[i].julian();</span>
 
-<span class="nc" id="L156">				int iMonth = org.drip.analytics.date.DateUtil.Month (iExpiryProxyDate);</span>
+<span class="nc" id="L167">				int iMonth = org.drip.analytics.date.DateUtil.Month (iExpiryProxyDate);</span>
 
-<span class="nc" id="L158">				int iYear = 2000 + org.drip.analytics.date.DateUtil.Date (iExpiryProxyDate);</span>
+<span class="nc" id="L169">				int iYear = 2000 + org.drip.analytics.date.DateUtil.Date (iExpiryProxyDate);</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">				if (null == (adtExpiry[i] = org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
-<span class="nc" id="L161">					org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear))))</span>
-<span class="nc" id="L162">					return false;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">				if (null == (adtExpiry[i] = org.drip.analytics.date.DateUtil.CreateFromYMD (iYear, iMonth,</span>
+<span class="nc" id="L172">					org.drip.analytics.date.DateUtil.DaysInMonth (iMonth, iYear))))</span>
+<span class="nc" id="L173">					return false;</span>
 			}
-<span class="nc" id="L164">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="nc" id="L175">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L176">			e.printStackTrace();</span>
 
-<span class="nc" id="L167">			return false;</span>
-<span class="nc" id="L168">		}</span>
+<span class="nc" id="L178">			return false;</span>
+<span class="nc" id="L179">		}</span>
 
-<span class="nc" id="L170">		System.out.println</span>
-<span class="nc" id="L171">			(&quot;CloseDate,ConversionFactor,CTDPrice,CTDCoupon,CTDEffective,CTDMaturity,FuturesExpiry&quot;);</span>
+<span class="nc" id="L181">		System.out.println</span>
+<span class="nc" id="L182">			(&quot;CloseDate,ConversionFactor,CTDPrice,CTDCoupon,CTDEffective,CTDMaturity,FuturesExpiry&quot;);</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
-<span class="nc" id="L174">			System.out.println (adtSpot[i] + &quot;,&quot; + adblConversionFactor[i] + &quot;,&quot; + adblCleanPrice[i] + &quot;,&quot; +</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
+<span class="nc" id="L185">			System.out.println (adtSpot[i] + &quot;,&quot; + adblConversionFactor[i] + &quot;,&quot; + adblCleanPrice[i] + &quot;,&quot; +</span>
 				adblCoupon[i] + &quot;,&quot; + adtEffective[i] + &quot;,&quot; + adtMaturity[i] + &quot;,&quot; + adtExpiry[i]);
 
-<span class="nc" id="L177">		return true;</span>
+<span class="nc" id="L188">		return true;</span>
 	}
 
 	/**
@@ -188,7 +199,7 @@ package org.drip.feed.transformer;
 	public static final boolean USTRegularizeCloses (
 		final java.lang.String strClosesLocation)
 	{
-<span class="nc" id="L191">		return RegularizeCloses (strClosesLocation, 0, 1, 4, 9, 10, 8, 13);</span>
+<span class="nc" id="L202">		return RegularizeCloses (strClosesLocation, 0, 1, 4, 9, 10, 8, 13);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

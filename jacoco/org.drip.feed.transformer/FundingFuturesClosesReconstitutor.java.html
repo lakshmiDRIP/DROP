@@ -6,38 +6,49 @@ package org.drip.feed.transformer;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, valuation adjustment, and portfolio construction within and across fixed income,
- *  	credit, commodity, equity, FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
  *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
  * 	- Numerical Optimizer
  * 	- Spline Builder
- * 	- Algorithm Support
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
@@ -73,16 +84,16 @@ package org.drip.feed.transformer;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Feed&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Transformer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/README.md&quot;&gt;Load, Transform, and compute Target Metrics across Feeds&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/feed/transformer/README.md&quot;&gt;Market Data Reconstitutive Feed Transformer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class FundingFuturesClosesReconstitutor {</span>
+<span class="nc" id="L96">public class FundingFuturesClosesReconstitutor {</span>
 
 	/**
 	 * Regularize the Funding Futures Feed Closes
@@ -101,39 +112,39 @@ package org.drip.feed.transformer;
 		final int iLastPriceIndex,
 		final int iFuturesExpiryDateIndex)
 	{
-<span class="nc" id="L104">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strClosesLocation,</span>
+<span class="nc" id="L115">		org.drip.feed.loader.CSVGrid csvGrid = org.drip.feed.loader.CSVParser.StringGrid (strClosesLocation,</span>
 			true);
 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == csvGrid) return false;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == csvGrid) return false;</span>
 
-<span class="nc" id="L109">		org.drip.analytics.date.JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (iSpotDateIndex);</span>
+<span class="nc" id="L120">		org.drip.analytics.date.JulianDate[] adtSpot = csvGrid.dateArrayAtColumn (iSpotDateIndex);</span>
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (null == adtSpot) return false;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (null == adtSpot) return false;</span>
 
-<span class="nc" id="L113">		int iNumClose = adtSpot.length;</span>
-<span class="nc" id="L114">		double[] adblForwardRate = new double[iNumClose];</span>
+<span class="nc" id="L124">		int iNumClose = adtSpot.length;</span>
+<span class="nc" id="L125">		double[] adblForwardRate = new double[iNumClose];</span>
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (0 == iNumClose) return false;</span>
 
-<span class="nc" id="L118">		double[] adblLastPrice = csvGrid.doubleArrayAtColumn (iLastPriceIndex);</span>
+<span class="nc" id="L129">		double[] adblLastPrice = csvGrid.doubleArrayAtColumn (iLastPriceIndex);</span>
 
-<span class="nc bnc" id="L120" title="All 4 branches missed.">		if (null == adblLastPrice || iNumClose != adblLastPrice.length) return false;</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">		if (null == adblLastPrice || iNumClose != adblLastPrice.length) return false;</span>
 
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
-<span class="nc" id="L123">			adblForwardRate[i] = 0.01 * (100. - adblLastPrice[i]);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
+<span class="nc" id="L134">			adblForwardRate[i] = 0.01 * (100. - adblLastPrice[i]);</span>
 
-<span class="nc" id="L125">		org.drip.analytics.date.JulianDate[] adtFuturesExpiry = csvGrid.dateArrayAtColumn</span>
-<span class="nc" id="L126">			(iFuturesExpiryDateIndex);</span>
+<span class="nc" id="L136">		org.drip.analytics.date.JulianDate[] adtFuturesExpiry = csvGrid.dateArrayAtColumn</span>
+<span class="nc" id="L137">			(iFuturesExpiryDateIndex);</span>
 
-<span class="nc bnc" id="L128" title="All 4 branches missed.">		if (null == adtFuturesExpiry || iNumClose != adtFuturesExpiry.length) return false;</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (null == adtFuturesExpiry || iNumClose != adtFuturesExpiry.length) return false;</span>
 
-<span class="nc" id="L130">		System.out.println (&quot;CloseDate,Price,ForwardRate,FuturesExpiry&quot;);</span>
+<span class="nc" id="L141">		System.out.println (&quot;CloseDate,Price,ForwardRate,FuturesExpiry&quot;);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
-<span class="nc" id="L133">			System.out.println (adtSpot[i] + &quot;,&quot; + adblLastPrice[i] + &quot;,&quot; + adblForwardRate[i] + &quot;,&quot; +</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumClose; ++i)</span>
+<span class="nc" id="L144">			System.out.println (adtSpot[i] + &quot;,&quot; + adblLastPrice[i] + &quot;,&quot; + adblForwardRate[i] + &quot;,&quot; +</span>
 				adtFuturesExpiry[i]);
 
-<span class="nc" id="L136">		return true;</span>
+<span class="nc" id="L147">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

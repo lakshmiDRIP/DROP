@@ -6,44 +6,56 @@ package org.drip.json.parser;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,16 +84,16 @@ package org.drip.json.parser;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;JSON&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;Parser&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json&quot;&gt;RFC-4627 Compliant JSON Encoder/Decoder (Parser)&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser&quot;&gt;RFC4627 Compliant JSON Message Parser&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class Converter {</span>
+<span class="nc" id="L96">public class Converter {</span>
 
 	/**
 	 * Convert the JSON Entry to a String
@@ -96,11 +108,11 @@ package org.drip.json.parser;
 		final org.drip.json.simple.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
-<span class="pc bpc" id="L99" title="1 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
 
-<span class="fc" id="L101">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L113">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L103" title="2 of 4 branches missed.">		return null == objEntry || !(objEntry instanceof java.lang.String) ? null : (java.lang.String)</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">		return null == objEntry || !(objEntry instanceof java.lang.String) ? null : (java.lang.String)</span>
 			objEntry;
 	}
 
@@ -117,28 +129,28 @@ package org.drip.json.parser;
 		final org.drip.json.simple.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
-<span class="pc bpc" id="L120" title="1 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
+<span class="pc bpc" id="L132" title="1 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
 
-<span class="fc" id="L122">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L134">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
 
-<span class="fc" id="L126">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
+<span class="fc" id="L138">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
 
-<span class="fc" id="L128">		int iNumElement = jsonArray.size();</span>
+<span class="fc" id="L140">		int iNumElement = jsonArray.size();</span>
 
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (0 == iNumElement) return null;</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		if (0 == iNumElement) return null;</span>
 
-<span class="fc" id="L132">		java.lang.String[] astr = new java.lang.String[iNumElement];</span>
+<span class="fc" id="L144">		java.lang.String[] astr = new java.lang.String[iNumElement];</span>
 
-<span class="fc bfc" id="L134" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
-<span class="fc" id="L135">			java.lang.Object objElement = jsonArray.get (i);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
+<span class="fc" id="L147">			java.lang.Object objElement = jsonArray.get (i);</span>
 
-<span class="pc bpc" id="L137" title="2 of 4 branches missed.">			astr[i] = null == objElement || !(objElement instanceof java.lang.String) ? null :</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">			astr[i] = null == objElement || !(objElement instanceof java.lang.String) ? null :</span>
 				(java.lang.String) objElement;
 		}
 
-<span class="fc" id="L141">		return astr;</span>
+<span class="fc" id="L153">		return astr;</span>
 	}
 
 	/**
@@ -154,7 +166,7 @@ package org.drip.json.parser;
 		final org.drip.json.simple.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
-<span class="fc" id="L157">		return org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (StringEntry (json, strEntryKey));</span>
+<span class="fc" id="L169">		return org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (StringEntry (json, strEntryKey));</span>
 	}
 
 	/**
@@ -170,29 +182,29 @@ package org.drip.json.parser;
 		final org.drip.json.simple.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
-<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
+<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
 
-<span class="nc" id="L175">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="nc" id="L187">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="nc bnc" id="L177" title="All 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
+<span class="nc bnc" id="L189" title="All 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
 
-<span class="nc" id="L179">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
+<span class="nc" id="L191">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
 
-<span class="nc" id="L181">		int iNumElement = jsonArray.size();</span>
+<span class="nc" id="L193">		int iNumElement = jsonArray.size();</span>
 
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
 
-<span class="nc" id="L185">		org.drip.analytics.date.JulianDate[] adt = new org.drip.analytics.date.JulianDate[iNumElement];</span>
+<span class="nc" id="L197">		org.drip.analytics.date.JulianDate[] adt = new org.drip.analytics.date.JulianDate[iNumElement];</span>
 
-<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
-<span class="nc" id="L188">			java.lang.Object objElement = jsonArray.get (i);</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
+<span class="nc" id="L200">			java.lang.Object objElement = jsonArray.get (i);</span>
 
-<span class="nc bnc" id="L190" title="All 4 branches missed.">			if (null == objElement || !(objElement instanceof java.lang.String) || null == (adt[i] =</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">				org.drip.analytics.date.DateUtil.CreateFromMDY ((java.lang.String) objElement, &quot;/&quot;)))</span>
-<span class="nc" id="L192">				return null;</span>
+<span class="nc bnc" id="L202" title="All 4 branches missed.">			if (null == objElement || !(objElement instanceof java.lang.String) || null == (adt[i] =</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">				org.drip.analytics.date.DateUtil.CreateFromMDY ((java.lang.String) objElement, &quot;/&quot;)))</span>
+<span class="nc" id="L204">				return null;</span>
 		}
 
-<span class="nc" id="L195">		return adt;</span>
+<span class="nc" id="L207">		return adt;</span>
 	}
 
 	/**
@@ -211,14 +223,14 @@ package org.drip.json.parser;
 		final java.lang.String strEntryKey)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L214" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey))</span>
-<span class="nc" id="L215">			throw new java.lang.Exception (&quot;Converter::DoubleEntry =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey))</span>
+<span class="nc" id="L227">			throw new java.lang.Exception (&quot;Converter::DoubleEntry =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L217">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L229">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		if (null == objEntry) throw new java.lang.Exception (&quot;Converter::DoubleEntry =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (null == objEntry) throw new java.lang.Exception (&quot;Converter::DoubleEntry =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L221">		return java.lang.Double.parseDouble (objEntry.toString().trim());</span>
+<span class="fc" id="L233">		return java.lang.Double.parseDouble (objEntry.toString().trim());</span>
 	}
 
 	/**
@@ -234,35 +246,35 @@ package org.drip.json.parser;
 		final org.drip.json.simple.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
-<span class="pc bpc" id="L237" title="1 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
+<span class="pc bpc" id="L249" title="1 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
 
-<span class="fc" id="L239">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L251">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L241" title="2 of 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
+<span class="pc bpc" id="L253" title="2 of 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
 
-<span class="fc" id="L243">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
+<span class="fc" id="L255">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
 
-<span class="fc" id="L245">		int iNumElement = jsonArray.size();</span>
+<span class="fc" id="L257">		int iNumElement = jsonArray.size();</span>
 
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">		if (0 == iNumElement) return null;</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">		if (0 == iNumElement) return null;</span>
 
-<span class="fc" id="L249">		double[] adbl = new double[iNumElement];</span>
+<span class="fc" id="L261">		double[] adbl = new double[iNumElement];</span>
 
-<span class="fc bfc" id="L251" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
-<span class="fc" id="L252">			java.lang.Object objElement = jsonArray.get (i);</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
+<span class="fc" id="L264">			java.lang.Object objElement = jsonArray.get (i);</span>
 
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">			if (null == objElement) return null;</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">			if (null == objElement) return null;</span>
 
 			try {
-<span class="fc" id="L257">				adbl[i] = java.lang.Double.parseDouble (objElement.toString().trim());</span>
-<span class="nc" id="L258">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L259">				e.printStackTrace();</span>
+<span class="fc" id="L269">				adbl[i] = java.lang.Double.parseDouble (objElement.toString().trim());</span>
+<span class="nc" id="L270">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L271">				e.printStackTrace();</span>
 
-<span class="nc" id="L261">				return null;</span>
-<span class="fc" id="L262">			}</span>
+<span class="nc" id="L273">				return null;</span>
+<span class="fc" id="L274">			}</span>
 		}
 
-<span class="fc" id="L265">		return adbl;</span>
+<span class="fc" id="L277">		return adbl;</span>
 	}
 
 	/**
@@ -278,50 +290,50 @@ package org.drip.json.parser;
 		final org.drip.json.simple.JSONObject json,
 		final java.lang.String strEntryKey)
 	{
-<span class="pc bpc" id="L281" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
+<span class="pc bpc" id="L293" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey)) return null;</span>
 
-<span class="fc" id="L283">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L295">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L285" title="2 of 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
+<span class="pc bpc" id="L297" title="2 of 4 branches missed.">		if (null == objEntry || !(objEntry instanceof org.drip.json.simple.JSONArray)) return null;</span>
 
-<span class="fc" id="L287">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
+<span class="fc" id="L299">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objEntry;</span>
 
-<span class="fc" id="L289">		int iNumOuterElement = jsonArray.size();</span>
+<span class="fc" id="L301">		int iNumOuterElement = jsonArray.size();</span>
 
-<span class="pc bpc" id="L291" title="1 of 2 branches missed.">		if (0 == iNumOuterElement) return null;</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		if (0 == iNumOuterElement) return null;</span>
 
-<span class="fc" id="L293">		double[][] aadbl = new double[iNumOuterElement][];</span>
+<span class="fc" id="L305">		double[][] aadbl = new double[iNumOuterElement][];</span>
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOuterElement; ++i) {</span>
-<span class="fc" id="L296">			java.lang.Object objOuterElement = jsonArray.get (i);</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumOuterElement; ++i) {</span>
+<span class="fc" id="L308">			java.lang.Object objOuterElement = jsonArray.get (i);</span>
 
-<span class="pc bpc" id="L298" title="2 of 4 branches missed.">			if (null == objOuterElement || !(objOuterElement instanceof org.drip.json.simple.JSONArray))</span>
-<span class="nc" id="L299">				return null;</span>
+<span class="pc bpc" id="L310" title="2 of 4 branches missed.">			if (null == objOuterElement || !(objOuterElement instanceof org.drip.json.simple.JSONArray))</span>
+<span class="nc" id="L311">				return null;</span>
 
-<span class="fc" id="L301">			org.drip.json.simple.JSONArray jsonOuterArray = (org.drip.json.simple.JSONArray) objOuterElement;</span>
+<span class="fc" id="L313">			org.drip.json.simple.JSONArray jsonOuterArray = (org.drip.json.simple.JSONArray) objOuterElement;</span>
 
-<span class="fc" id="L303">			int iNumInnerElement = jsonOuterArray.size();</span>
+<span class="fc" id="L315">			int iNumInnerElement = jsonOuterArray.size();</span>
 
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">			if (0 == iNumInnerElement) return null;</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">			if (0 == iNumInnerElement) return null;</span>
 
-<span class="fc" id="L307">			aadbl[i] = new double[iNumInnerElement];</span>
+<span class="fc" id="L319">			aadbl[i] = new double[iNumInnerElement];</span>
 
 			try {
-<span class="fc bfc" id="L310" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumInnerElement; ++j) {</span>
-<span class="fc" id="L311">					java.lang.Object objInnerElement = jsonOuterArray.get (j);</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">				for (int j = 0; j &lt; iNumInnerElement; ++j) {</span>
+<span class="fc" id="L323">					java.lang.Object objInnerElement = jsonOuterArray.get (j);</span>
 
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">					if (null == objInnerElement) return null;</span>
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">					if (null == objInnerElement) return null;</span>
 
-<span class="fc" id="L315">					aadbl[i][j] = java.lang.Double.parseDouble (objInnerElement.toString().trim());</span>
+<span class="fc" id="L327">					aadbl[i][j] = java.lang.Double.parseDouble (objInnerElement.toString().trim());</span>
 				}
-<span class="nc" id="L317">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L318">				e.printStackTrace();</span>
+<span class="nc" id="L329">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L330">				e.printStackTrace();</span>
 
-<span class="nc" id="L320">				return null;</span>
-<span class="fc" id="L321">			}</span>
+<span class="nc" id="L332">				return null;</span>
+<span class="fc" id="L333">			}</span>
 		}
 
-<span class="fc" id="L324">		return aadbl;</span>
+<span class="fc" id="L336">		return aadbl;</span>
 	}
 
 	/**
@@ -340,14 +352,14 @@ package org.drip.json.parser;
 		final java.lang.String strEntryKey)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L343" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey))</span>
-<span class="nc" id="L344">			throw new java.lang.Exception (&quot;Converter::IntegerEntry =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L355" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey))</span>
+<span class="nc" id="L356">			throw new java.lang.Exception (&quot;Converter::IntegerEntry =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L346">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L358">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L348" title="1 of 2 branches missed.">		if (null == objEntry) throw new java.lang.Exception (&quot;Converter::IntegerEntry =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">		if (null == objEntry) throw new java.lang.Exception (&quot;Converter::IntegerEntry =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L350">		return java.lang.Integer.parseInt (objEntry.toString().trim());</span>
+<span class="fc" id="L362">		return java.lang.Integer.parseInt (objEntry.toString().trim());</span>
 	}
 
 	/**
@@ -361,25 +373,25 @@ package org.drip.json.parser;
 	public static final int[] IntegerArrayEntry (
 		final java.lang.Object objJSON)
 	{
-<span class="nc bnc" id="L364" title="All 4 branches missed.">		if (null == objJSON || !(objJSON instanceof org.drip.json.simple.JSONArray)) return null;</span>
+<span class="nc bnc" id="L376" title="All 4 branches missed.">		if (null == objJSON || !(objJSON instanceof org.drip.json.simple.JSONArray)) return null;</span>
 
-<span class="nc" id="L366">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objJSON;</span>
+<span class="nc" id="L378">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objJSON;</span>
 
-<span class="nc" id="L368">		int iNumElement = jsonArray.size();</span>
+<span class="nc" id="L380">		int iNumElement = jsonArray.size();</span>
 
-<span class="nc bnc" id="L370" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
 
-<span class="nc" id="L372">		int[] ai = new int[iNumElement];</span>
+<span class="nc" id="L384">		int[] ai = new int[iNumElement];</span>
 
-<span class="nc bnc" id="L374" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
-<span class="nc" id="L375">			java.lang.Object json = jsonArray.get (i);</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
+<span class="nc" id="L387">			java.lang.Object json = jsonArray.get (i);</span>
 
-<span class="nc bnc" id="L377" title="All 2 branches missed.">			if (null == json) return null;</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">			if (null == json) return null;</span>
 
-<span class="nc" id="L379">			ai[i] = java.lang.Integer.parseInt (json.toString().trim());</span>
+<span class="nc" id="L391">			ai[i] = java.lang.Integer.parseInt (json.toString().trim());</span>
 		}
 
-<span class="nc" id="L382">		return ai;</span>
+<span class="nc" id="L394">		return ai;</span>
 	}
 
 	/**
@@ -398,14 +410,14 @@ package org.drip.json.parser;
 		final java.lang.String strEntryKey)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L401" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey))</span>
-<span class="nc" id="L402">			throw new java.lang.Exception (&quot;Converter::BooleanEntry =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L413" title="2 of 4 branches missed.">		if (null == json || !json.containsKey (strEntryKey))</span>
+<span class="nc" id="L414">			throw new java.lang.Exception (&quot;Converter::BooleanEntry =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L404">		java.lang.Object objEntry = json.get (strEntryKey);</span>
+<span class="fc" id="L416">		java.lang.Object objEntry = json.get (strEntryKey);</span>
 
-<span class="pc bpc" id="L406" title="1 of 2 branches missed.">		if (null == objEntry) throw new java.lang.Exception (&quot;Converter::BooleanEntry =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L418" title="1 of 2 branches missed.">		if (null == objEntry) throw new java.lang.Exception (&quot;Converter::BooleanEntry =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L408">		return java.lang.Boolean.parseBoolean (objEntry.toString().trim());</span>
+<span class="fc" id="L420">		return java.lang.Boolean.parseBoolean (objEntry.toString().trim());</span>
 	}
 
 	/**
@@ -419,25 +431,25 @@ package org.drip.json.parser;
 	public static final boolean[] BooleanArrayEntry (
 		final java.lang.Object objJSON)
 	{
-<span class="nc bnc" id="L422" title="All 4 branches missed.">		if (null == objJSON || !(objJSON instanceof org.drip.json.simple.JSONArray)) return null;</span>
+<span class="nc bnc" id="L434" title="All 4 branches missed.">		if (null == objJSON || !(objJSON instanceof org.drip.json.simple.JSONArray)) return null;</span>
 
-<span class="nc" id="L424">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objJSON;</span>
+<span class="nc" id="L436">		org.drip.json.simple.JSONArray jsonArray = (org.drip.json.simple.JSONArray) objJSON;</span>
 
-<span class="nc" id="L426">		int iNumElement = jsonArray.size();</span>
+<span class="nc" id="L438">		int iNumElement = jsonArray.size();</span>
 
-<span class="nc bnc" id="L428" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">		if (0 == iNumElement) return null;</span>
 
-<span class="nc" id="L430">		boolean[] ab = new boolean[iNumElement];</span>
+<span class="nc" id="L442">		boolean[] ab = new boolean[iNumElement];</span>
 
-<span class="nc bnc" id="L432" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
-<span class="nc" id="L433">			java.lang.Object json = jsonArray.get (i);</span>
+<span class="nc bnc" id="L444" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumElement; ++i) {</span>
+<span class="nc" id="L445">			java.lang.Object json = jsonArray.get (i);</span>
 
-<span class="nc bnc" id="L435" title="All 2 branches missed.">			if (null == json) return null;</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">			if (null == json) return null;</span>
 
-<span class="nc" id="L437">			ab[i] = java.lang.Boolean.parseBoolean (json.toString().trim());</span>
+<span class="nc" id="L449">			ab[i] = java.lang.Boolean.parseBoolean (json.toString().trim());</span>
 		}
 
-<span class="nc" id="L440">		return ab;</span>
+<span class="nc" id="L452">		return ab;</span>
 	}
 
 	/**
@@ -451,14 +463,14 @@ package org.drip.json.parser;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONArray Array (
 		final java.lang.String[] astr)
 	{
-<span class="pc bpc" id="L454" title="2 of 4 branches missed.">		if (null == astr || 0 == astr.length) return null;</span>
+<span class="pc bpc" id="L466" title="2 of 4 branches missed.">		if (null == astr || 0 == astr.length) return null;</span>
 
-<span class="fc" id="L456">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L468">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L458" title="All 2 branches covered.">		for (java.lang.String str : astr)</span>
-<span class="fc" id="L459">			jsonArray.add (str);</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">		for (java.lang.String str : astr)</span>
+<span class="fc" id="L471">			jsonArray.add (str);</span>
 
-<span class="fc" id="L461">		return jsonArray;</span>
+<span class="fc" id="L473">		return jsonArray;</span>
 	}
 
 	/**
@@ -472,14 +484,14 @@ package org.drip.json.parser;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONArray Array (
 		final int[] ai)
 	{
-<span class="nc bnc" id="L475" title="All 4 branches missed.">		if (null == ai || 0 == ai.length) return null;</span>
+<span class="nc bnc" id="L487" title="All 4 branches missed.">		if (null == ai || 0 == ai.length) return null;</span>
 
-<span class="nc" id="L477">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
+<span class="nc" id="L489">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="nc bnc" id="L479" title="All 2 branches missed.">		for (int i : ai)</span>
-<span class="nc" id="L480">			jsonArray.add (i);</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">		for (int i : ai)</span>
+<span class="nc" id="L492">			jsonArray.add (i);</span>
 
-<span class="nc" id="L482">		return jsonArray;</span>
+<span class="nc" id="L494">		return jsonArray;</span>
 	}
 
 	/**
@@ -493,14 +505,14 @@ package org.drip.json.parser;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONArray Array (
 		final double[] adbl)
 	{
-<span class="pc bpc" id="L496" title="2 of 4 branches missed.">		if (null == adbl || 0 == adbl.length) return null;</span>
+<span class="pc bpc" id="L508" title="2 of 4 branches missed.">		if (null == adbl || 0 == adbl.length) return null;</span>
 
-<span class="fc" id="L498">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L510">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L500" title="All 2 branches covered.">		for (double dbl : adbl)</span>
-<span class="fc" id="L501">			jsonArray.add (dbl);</span>
+<span class="fc bfc" id="L512" title="All 2 branches covered.">		for (double dbl : adbl)</span>
+<span class="fc" id="L513">			jsonArray.add (dbl);</span>
 
-<span class="fc" id="L503">		return jsonArray;</span>
+<span class="fc" id="L515">		return jsonArray;</span>
 	}
 
 	/**
@@ -514,14 +526,14 @@ package org.drip.json.parser;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONArray Array (
 		final double[][] aadbl)
 	{
-<span class="pc bpc" id="L517" title="2 of 4 branches missed.">		if (null == aadbl || 0 == aadbl.length) return null;</span>
+<span class="pc bpc" id="L529" title="2 of 4 branches missed.">		if (null == aadbl || 0 == aadbl.length) return null;</span>
 
-<span class="fc" id="L519">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L531">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L521" title="All 2 branches covered.">		for (double[] adbl : aadbl)</span>
-<span class="fc" id="L522">			jsonArray.add (Array (adbl));</span>
+<span class="fc bfc" id="L533" title="All 2 branches covered.">		for (double[] adbl : aadbl)</span>
+<span class="fc" id="L534">			jsonArray.add (Array (adbl));</span>
 
-<span class="fc" id="L524">		return jsonArray;</span>
+<span class="fc" id="L536">		return jsonArray;</span>
 	}
 
 	/**
@@ -535,14 +547,14 @@ package org.drip.json.parser;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONArray Array (
 		final boolean[] ab)
 	{
-<span class="nc bnc" id="L538" title="All 4 branches missed.">		if (null == ab || 0 == ab.length) return null;</span>
+<span class="nc bnc" id="L550" title="All 4 branches missed.">		if (null == ab || 0 == ab.length) return null;</span>
 
-<span class="nc" id="L540">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
+<span class="nc" id="L552">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="nc bnc" id="L542" title="All 2 branches missed.">		for (boolean b : ab)</span>
-<span class="nc" id="L543">			jsonArray.add (b);</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">		for (boolean b : ab)</span>
+<span class="nc" id="L555">			jsonArray.add (b);</span>
 
-<span class="nc" id="L545">		return jsonArray;</span>
+<span class="nc" id="L557">		return jsonArray;</span>
 	}
 
 	/**
@@ -556,14 +568,14 @@ package org.drip.json.parser;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final org.drip.json.simple.JSONArray Array (
 		final org.drip.analytics.date.JulianDate[] adt)
 	{
-<span class="nc bnc" id="L559" title="All 4 branches missed.">		if (null == adt || 0 == adt.length) return null;</span>
+<span class="nc bnc" id="L571" title="All 4 branches missed.">		if (null == adt || 0 == adt.length) return null;</span>
 
-<span class="nc" id="L561">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
+<span class="nc" id="L573">		org.drip.json.simple.JSONArray jsonArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="nc bnc" id="L563" title="All 2 branches missed.">		for (org.drip.analytics.date.JulianDate dt : adt)</span>
-<span class="nc" id="L564">			jsonArray.add (dt);</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">		for (org.drip.analytics.date.JulianDate dt : adt)</span>
+<span class="nc" id="L576">			jsonArray.add (dt);</span>
 
-<span class="nc" id="L566">		return jsonArray;</span>
+<span class="nc" id="L578">		return jsonArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

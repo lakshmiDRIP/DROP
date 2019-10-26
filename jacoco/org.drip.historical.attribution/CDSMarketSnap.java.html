@@ -6,44 +6,56 @@ package org.drip.historical.attribution;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.historical.attribution;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/README.md&quot;&gt;Historical&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/attribution/README.md&quot;&gt;Attribution&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/README.md&quot;&gt;Historical State Processing Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/historical/attribution/README.md&quot;&gt;Position Market Change Components Attribution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -97,8 +109,8 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 		final double dblMarketValue)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L100">		super (dtSnap, dblMarketValue);</span>
-<span class="nc" id="L101">	}</span>
+<span class="nc" id="L112">		super (dtSnap, dblMarketValue);</span>
+<span class="nc" id="L113">	}</span>
 
 	/**
 	 * Set the Fair Premium and Position Sensitivity
@@ -115,7 +127,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 		final double dblFairPremiumSensitivity,
 		final double dblFairPremiumRollDown)
 	{
-<span class="nc" id="L118">		return addManifestMeasureSnap (&quot;FairPremium&quot;, dblFairPremium, dblFairPremiumSensitivity,</span>
+<span class="nc" id="L130">		return addManifestMeasureSnap (&quot;FairPremium&quot;, dblFairPremium, dblFairPremiumSensitivity,</span>
 			dblFairPremiumRollDown);
 	}
 
@@ -130,7 +142,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setEffectiveDate (
 		final org.drip.analytics.date.JulianDate dtEffective)
 	{
-<span class="nc" id="L133">		return setDate (&quot;EffectiveDate&quot;, dtEffective);</span>
+<span class="nc" id="L145">		return setDate (&quot;EffectiveDate&quot;, dtEffective);</span>
 	}
 
 	/**
@@ -141,7 +153,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 
 	public org.drip.analytics.date.JulianDate effectiveDate()
 	{
-<span class="nc" id="L144">		return date (&quot;EffectiveDate&quot;);</span>
+<span class="nc" id="L156">		return date (&quot;EffectiveDate&quot;);</span>
 	}
 
 	/**
@@ -155,7 +167,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setMaturityDate (
 		final org.drip.analytics.date.JulianDate dtMaturity)
 	{
-<span class="nc" id="L158">		return setDate (&quot;MaturityDate&quot;, dtMaturity);</span>
+<span class="nc" id="L170">		return setDate (&quot;MaturityDate&quot;, dtMaturity);</span>
 	}
 
 	/**
@@ -166,7 +178,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 
 	public org.drip.analytics.date.JulianDate maturityDate()
 	{
-<span class="nc" id="L169">		return date (&quot;MaturityDate&quot;);</span>
+<span class="nc" id="L181">		return date (&quot;MaturityDate&quot;);</span>
 	}
 
 	/**
@@ -180,7 +192,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setInitialFairPremium (
 		final double dblInitialFairPremium)
 	{
-<span class="nc" id="L183">		return setR1 (&quot;InitialFairPremium&quot;, dblInitialFairPremium);</span>
+<span class="nc" id="L195">		return setR1 (&quot;InitialFairPremium&quot;, dblInitialFairPremium);</span>
 	}
 
 	/**
@@ -194,7 +206,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double initialFairPremium()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L197">		return r1 (&quot;InitialFairPremium&quot;);</span>
+<span class="nc" id="L209">		return r1 (&quot;InitialFairPremium&quot;);</span>
 	}
 
 	/**
@@ -208,7 +220,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setCurrentFairPremium (
 		final double dblCurrentFairPremium)
 	{
-<span class="nc" id="L211">		return setR1 (&quot;CurrentFairPremium&quot;, dblCurrentFairPremium);</span>
+<span class="nc" id="L223">		return setR1 (&quot;CurrentFairPremium&quot;, dblCurrentFairPremium);</span>
 	}
 
 	/**
@@ -222,7 +234,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double currentFairPremium()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L225">		return r1 (&quot;CurrentFairPremium&quot;);</span>
+<span class="nc" id="L237">		return r1 (&quot;CurrentFairPremium&quot;);</span>
 	}
 
 	/**
@@ -236,7 +248,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setFixedCoupon (
 		final double dblFixedCoupon)
 	{
-<span class="nc" id="L239">		return setR1 (&quot;FixedCoupon&quot;, dblFixedCoupon);</span>
+<span class="nc" id="L251">		return setR1 (&quot;FixedCoupon&quot;, dblFixedCoupon);</span>
 	}
 
 	/**
@@ -250,7 +262,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double fixedCoupon()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L253">		return r1 (&quot;FixedCoupon&quot;);</span>
+<span class="nc" id="L265">		return r1 (&quot;FixedCoupon&quot;);</span>
 	}
 
 	/**
@@ -264,7 +276,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setCleanDV01 (
 		final double dblCleanDV01)
 	{
-<span class="nc" id="L267">		return setR1 (&quot;CleanDV01&quot;, dblCleanDV01);</span>
+<span class="nc" id="L279">		return setR1 (&quot;CleanDV01&quot;, dblCleanDV01);</span>
 	}
 
 	/**
@@ -278,7 +290,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double cleanDV01()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L281">		return r1 (&quot;CleanDV01&quot;);</span>
+<span class="nc" id="L293">		return r1 (&quot;CleanDV01&quot;);</span>
 	}
 
 	/**
@@ -292,7 +304,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setRollDownFairPremium (
 		final double dblRollDownFairPremium)
 	{
-<span class="nc" id="L295">		return setR1 (&quot;RollDownFairPremium&quot;, dblRollDownFairPremium);</span>
+<span class="nc" id="L307">		return setR1 (&quot;RollDownFairPremium&quot;, dblRollDownFairPremium);</span>
 	}
 
 	/**
@@ -306,7 +318,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double rollDownFairPremium()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L309">		return r1 (&quot;RollDownFairPremium&quot;);</span>
+<span class="nc" id="L321">		return r1 (&quot;RollDownFairPremium&quot;);</span>
 	}
 
 	/**
@@ -320,7 +332,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setAccrued (
 		final double dblAccrued)
 	{
-<span class="nc" id="L323">		return setR1 (&quot;Accrued&quot;, dblAccrued);</span>
+<span class="nc" id="L335">		return setR1 (&quot;Accrued&quot;, dblAccrued);</span>
 	}
 
 	/**
@@ -334,7 +346,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double accrued()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L337">		return r1 (&quot;Accrued&quot;);</span>
+<span class="nc" id="L349">		return r1 (&quot;Accrued&quot;);</span>
 	}
 
 	/**
@@ -348,7 +360,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setCumulativeCouponAmount (
 		final double dblCumulativeCouponAmount)
 	{
-<span class="nc" id="L351">		return setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponAmount);</span>
+<span class="nc" id="L363">		return setR1 (&quot;CumulativeCouponAmount&quot;, dblCumulativeCouponAmount);</span>
 	}
 
 	/**
@@ -362,7 +374,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double cumulativeCouponAmount()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L365">		return r1 (&quot;CumulativeCouponAmount&quot;);</span>
+<span class="nc" id="L377">		return r1 (&quot;CumulativeCouponAmount&quot;);</span>
 	}
 
 	/**
@@ -376,7 +388,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setCreditLabel (
 		final java.lang.String strCreditLabel)
 	{
-<span class="nc" id="L379">		return setC1 (&quot;CreditLabel&quot;, strCreditLabel);</span>
+<span class="nc" id="L391">		return setC1 (&quot;CreditLabel&quot;, strCreditLabel);</span>
 	}
 
 	/**
@@ -387,7 +399,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 
 	public java.lang.String creditLabel()
 	{
-<span class="nc" id="L390">		return c1 (&quot;CreditLabel&quot;);</span>
+<span class="nc" id="L402">		return c1 (&quot;CreditLabel&quot;);</span>
 	}
 
 	/**
@@ -401,7 +413,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setRecoveryRate (
 		final double dblRecoveryRate)
 	{
-<span class="nc" id="L404">		return setR1 (&quot;RecoveryRate&quot;, dblRecoveryRate);</span>
+<span class="nc" id="L416">		return setR1 (&quot;RecoveryRate&quot;, dblRecoveryRate);</span>
 	}
 
 	/**
@@ -415,7 +427,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double recoveryRate()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L418">		return r1 (&quot;RecoveryRate&quot;);</span>
+<span class="nc" id="L430">		return r1 (&quot;RecoveryRate&quot;);</span>
 	}
 
 	/**
@@ -429,7 +441,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setCouponPV (
 		final double dblCouponPV)
 	{
-<span class="nc" id="L432">		return setR1 (&quot;CouponPV&quot;, dblCouponPV);</span>
+<span class="nc" id="L444">		return setR1 (&quot;CouponPV&quot;, dblCouponPV);</span>
 	}
 
 	/**
@@ -443,7 +455,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double couponPV()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L446">		return r1 (&quot;CouponPV&quot;);</span>
+<span class="nc" id="L458">		return r1 (&quot;CouponPV&quot;);</span>
 	}
 
 	/**
@@ -457,7 +469,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public boolean setLossPV (
 		final double dblLossPV)
 	{
-<span class="nc" id="L460">		return setR1 (&quot;LossPV&quot;, dblLossPV);</span>
+<span class="nc" id="L472">		return setR1 (&quot;LossPV&quot;, dblLossPV);</span>
 	}
 
 	/**
@@ -471,7 +483,7 @@ public class CDSMarketSnap extends org.drip.historical.attribution.PositionMarke
 	public double lossPV()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L474">		return r1 (&quot;LossPV&quot;);</span>
+<span class="nc" id="L486">		return r1 (&quot;LossPV&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
