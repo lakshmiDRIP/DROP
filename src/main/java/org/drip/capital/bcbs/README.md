@@ -50,8 +50,6 @@ DROP Capital BCBS Package implements BCBS and Jurisdictional Capital Ratios.
 
  * European Banking Agency (2013): Implementing Basel III in Europe: CRD IV Package https://eba.europa.eu/regulation-and-policy/implementing-basel-iii-europe
 
- * Federal Reserve (2014): Liquidity Coverage Ratio – Liquidity Risk Measurements, Standards, and Monitoring
-
  * Wikipedia (2018): Basel III https://en.wikipedia.org/wiki/Basel_III
 
 
