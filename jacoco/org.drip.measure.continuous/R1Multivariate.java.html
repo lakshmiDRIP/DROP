@@ -6,44 +6,56 @@ package org.drip.measure.continuous;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,25 +83,25 @@ package org.drip.measure.continuous;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous&quot;&gt;Continuous&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Continuous Random Measure&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class R1Multivariate {
-<span class="fc" id="L84">	private org.drip.measure.continuous.MultivariateMeta _meta = null;</span>
+<span class="fc" id="L96">	private org.drip.measure.continuous.MultivariateMeta _meta = null;</span>
 
 	protected R1Multivariate (
 		final org.drip.measure.continuous.MultivariateMeta meta)
 		throws java.lang.Exception
-<span class="fc" id="L89">	{</span>
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (null == (_meta = meta))</span>
-<span class="nc" id="L91">			throw new java.lang.Exception (&quot;R1Multivariate Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L92">	}</span>
+<span class="fc" id="L101">	{</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == (_meta = meta))</span>
+<span class="nc" id="L103">			throw new java.lang.Exception (&quot;R1Multivariate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L104">	}</span>
 
 	/**
 	 * Retrieve the Multivariate Meta Instance
@@ -99,7 +111,7 @@ public abstract class R1Multivariate {
 
 	public org.drip.measure.continuous.MultivariateMeta meta()
 	{
-<span class="fc" id="L102">		return _meta;</span>
+<span class="fc" id="L114">		return _meta;</span>
 	}
 
 	/**
@@ -110,14 +122,14 @@ public abstract class R1Multivariate {
 
 	public double[] leftEdge()
 	{
-<span class="nc" id="L113">		int iNumVariate = _meta.numVariable();</span>
+<span class="nc" id="L125">		int iNumVariate = _meta.numVariable();</span>
 
-<span class="nc" id="L115">		double[] adblLeftEdge = new double[iNumVariate];</span>
+<span class="nc" id="L127">		double[] adblLeftEdge = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L118">			adblLeftEdge[i] = java.lang.Double.MIN_NORMAL;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L130">			adblLeftEdge[i] = java.lang.Double.MIN_NORMAL;</span>
 
-<span class="nc" id="L120">		return adblLeftEdge;</span>
+<span class="nc" id="L132">		return adblLeftEdge;</span>
 	}
 
 	/**
@@ -128,14 +140,14 @@ public abstract class R1Multivariate {
 
 	public double[] rightEdge()
 	{
-<span class="nc" id="L131">		int iNumVariate = _meta.numVariable();</span>
+<span class="nc" id="L143">		int iNumVariate = _meta.numVariable();</span>
 
-<span class="nc" id="L133">		double[] adblRightEdge = new double[iNumVariate];</span>
+<span class="nc" id="L145">		double[] adblRightEdge = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
-<span class="nc" id="L136">			adblRightEdge[i] = java.lang.Double.MAX_VALUE;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i)</span>
+<span class="nc" id="L148">			adblRightEdge[i] = java.lang.Double.MAX_VALUE;</span>
 
-<span class="nc" id="L138">		return adblRightEdge;</span>
+<span class="nc" id="L150">		return adblRightEdge;</span>
 	}
 
 	/**
@@ -160,17 +172,17 @@ public abstract class R1Multivariate {
 
 	public org.drip.function.definition.RdToR1 densityRdToR1()
 	{
-<span class="nc" id="L163">		return new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L175">		return new org.drip.function.definition.RdToR1 (null) {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L166">				return _meta.numVariable();</span>
+<span class="nc" id="L178">				return _meta.numVariable();</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L173">				return density (adblVariate);</span>
+<span class="nc" id="L185">				return density (adblVariate);</span>
 			}
 		};
 	}
@@ -189,7 +201,7 @@ public abstract class R1Multivariate {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L192">		return densityRdToR1().integrate (leftEdge(), adblVariate);</span>
+<span class="nc" id="L204">		return densityRdToR1().integrate (leftEdge(), adblVariate);</span>
 	}
 
 	/**
@@ -208,7 +220,7 @@ public abstract class R1Multivariate {
 		final double[] adblVariateRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L211">		return densityRdToR1().integrate (adblVariateLeft, adblVariateRight);</span>
+<span class="nc" id="L223">		return densityRdToR1().integrate (adblVariateLeft, adblVariateRight);</span>
 	}
 
 	/**
@@ -225,22 +237,22 @@ public abstract class R1Multivariate {
 		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (null == funcRdToR1)</span>
-<span class="nc" id="L229">			throw new java.lang.Exception (&quot;R1Multivariate::expectation =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (null == funcRdToR1)</span>
+<span class="nc" id="L241">			throw new java.lang.Exception (&quot;R1Multivariate::expectation =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L231">		return new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L243">		return new org.drip.function.definition.RdToR1 (null) {</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L234">				return _meta.numVariable();</span>
+<span class="nc" id="L246">				return _meta.numVariable();</span>
 			}
 
 			@Override public double evaluate (
 				final double[] adblVariate)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L241">				return density (adblVariate) * funcRdToR1.evaluate (adblVariate);</span>
+<span class="nc" id="L253">				return density (adblVariate) * funcRdToR1.evaluate (adblVariate);</span>
 			}
-<span class="nc" id="L243">		}.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L255">		}.integrate (leftEdge(), rightEdge());</span>
 	}
 
 	/**
@@ -251,35 +263,35 @@ public abstract class R1Multivariate {
 
 	public double[] mean()
 	{
-<span class="nc" id="L254">		int iNumVariate = _meta.numVariable();</span>
+<span class="nc" id="L266">		int iNumVariate = _meta.numVariable();</span>
 
-<span class="nc" id="L256">		double[] adblMean = new double[iNumVariate];</span>
+<span class="nc" id="L268">		double[] adblMean = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L258" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc" id="L259">			final int iVariate = i;</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L271">			final int iVariate = i;</span>
 
 			try {
-<span class="nc" id="L262">				adblMean[i] = expectation (new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L274">				adblMean[i] = expectation (new org.drip.function.definition.RdToR1 (null) {</span>
 					@Override public int dimension()
 					{
-<span class="nc" id="L265">						return _meta.numVariable();</span>
+<span class="nc" id="L277">						return _meta.numVariable();</span>
 					}
 
 					@Override public double evaluate (
 						final double[] adblVariate)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L272">						return density (adblVariate) * adblVariate[iVariate];</span>
+<span class="nc" id="L284">						return density (adblVariate) * adblVariate[iVariate];</span>
 					}
 				});
-<span class="nc" id="L275">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L276">				e.printStackTrace();</span>
+<span class="nc" id="L287">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L288">				e.printStackTrace();</span>
 
-<span class="nc" id="L278">				return null;</span>
-<span class="nc" id="L279">			}</span>
+<span class="nc" id="L290">				return null;</span>
+<span class="nc" id="L291">			}</span>
 		}
 
-<span class="nc" id="L282">		return adblMean;</span>
+<span class="nc" id="L294">		return adblMean;</span>
 	}
 
 	/**
@@ -290,45 +302,45 @@ public abstract class R1Multivariate {
 
 	public double[] variance()
 	{
-<span class="nc" id="L293">		final double[] adblMean = mean();</span>
+<span class="nc" id="L305">		final double[] adblMean = mean();</span>
 
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		if (null == adblMean) return null;</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (null == adblMean) return null;</span>
 
-<span class="nc" id="L297">		final int iNumVariate = adblMean.length;</span>
-<span class="nc" id="L298">		double[] adblVariance = new double[iNumVariate];</span>
+<span class="nc" id="L309">		final int iNumVariate = adblMean.length;</span>
+<span class="nc" id="L310">		double[] adblVariance = new double[iNumVariate];</span>
 
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc" id="L301">			final int iVariate = i;</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L313">			final int iVariate = i;</span>
 
 			try {
-<span class="nc" id="L304">				adblVariance[i] = expectation (new org.drip.function.definition.RdToR1 (null) {</span>
+<span class="nc" id="L316">				adblVariance[i] = expectation (new org.drip.function.definition.RdToR1 (null) {</span>
 					@Override public int dimension()
 					{
-<span class="nc" id="L307">						return _meta.numVariable();</span>
+<span class="nc" id="L319">						return _meta.numVariable();</span>
 					}
 
 					@Override public double evaluate (
 						final double[] adblVariate)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L314">						double dblSecondMoment = 0.;</span>
+<span class="nc" id="L326">						double dblSecondMoment = 0.;</span>
 
-<span class="nc bnc" id="L316" title="All 2 branches missed.">						for (int i = 0; i &lt; iNumVariate; ++i) {</span>
-<span class="nc" id="L317">							double dblOffset = adblVariate[iVariate] - adblMean[iVariate];</span>
-<span class="nc" id="L318">							dblSecondMoment = dblSecondMoment + dblOffset * dblOffset;</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">						for (int i = 0; i &lt; iNumVariate; ++i) {</span>
+<span class="nc" id="L329">							double dblOffset = adblVariate[iVariate] - adblMean[iVariate];</span>
+<span class="nc" id="L330">							dblSecondMoment = dblSecondMoment + dblOffset * dblOffset;</span>
 						}
 
-<span class="nc" id="L321">						return density (adblVariate) * dblSecondMoment;</span>
+<span class="nc" id="L333">						return density (adblVariate) * dblSecondMoment;</span>
 					}
 				});
-<span class="nc" id="L324">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L325">				e.printStackTrace();</span>
+<span class="nc" id="L336">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L337">				e.printStackTrace();</span>
 
-<span class="nc" id="L327">				return null;</span>
-<span class="nc" id="L328">			}</span>
+<span class="nc" id="L339">				return null;</span>
+<span class="nc" id="L340">			}</span>
 		}
 
-<span class="nc" id="L331">		return adblVariance;</span>
+<span class="nc" id="L343">		return adblVariance;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

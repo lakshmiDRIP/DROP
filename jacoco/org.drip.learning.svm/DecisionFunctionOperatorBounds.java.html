@@ -6,45 +6,57 @@ package org.drip.learning.svm;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -99,20 +111,20 @@ package org.drip.learning.svm;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/svm&quot;&gt;SVM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Agnostic Learning Bounds under Empirical Loss Minimization Schemes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/svm&quot;&gt;Kernel SVM Decision Function Operator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class DecisionFunctionOperatorBounds {
-<span class="nc" id="L112">	private int _iFeatureSpaceDimension = -1;</span>
-<span class="nc" id="L113">	private double _dblInverseMarginNormBound = java.lang.Double.NaN;</span>
-<span class="nc" id="L114">	private double _dblFeatureSpaceMaureyConstant = java.lang.Double.NaN;</span>
-<span class="nc" id="L115">	private org.drip.learning.kernel.DiagonalScalingOperator _dsoFactorizer = null;</span>
+<span class="nc" id="L124">	private int _iFeatureSpaceDimension = -1;</span>
+<span class="nc" id="L125">	private double _dblInverseMarginNormBound = java.lang.Double.NaN;</span>
+<span class="nc" id="L126">	private double _dblFeatureSpaceMaureyConstant = java.lang.Double.NaN;</span>
+<span class="nc" id="L127">	private org.drip.learning.kernel.DiagonalScalingOperator _dsoFactorizer = null;</span>
 
 	/**
 	 * DecisionFunctionOperatorBounds Constructor
@@ -131,14 +143,14 @@ public class DecisionFunctionOperatorBounds {
 		final double dblFeatureSpaceMaureyConstant,
 		final int iFeatureSpaceDimension)
 		throws java.lang.Exception
-<span class="nc" id="L134">	{</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (null == (_dsoFactorizer = dsoFactorizer) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">			(_dblInverseMarginNormBound = dblInverseMarginNormBound) ||</span>
-<span class="nc bnc" id="L137" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblFeatureSpaceMaureyConstant =</span>
+<span class="nc" id="L146">	{</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (null == (_dsoFactorizer = dsoFactorizer) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			(_dblInverseMarginNormBound = dblInverseMarginNormBound) ||</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblFeatureSpaceMaureyConstant =</span>
 					dblFeatureSpaceMaureyConstant) || 0 &gt;= (_iFeatureSpaceDimension =
 						iFeatureSpaceDimension))
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;DecisionFunctionOperatorBounds ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L141">	}</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;DecisionFunctionOperatorBounds ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L153">	}</span>
 
 	/**
 	 * Retrieve the Factorizing Diagonal Scaling Operator Instance
@@ -148,7 +160,7 @@ public class DecisionFunctionOperatorBounds {
 
 	public org.drip.learning.kernel.DiagonalScalingOperator factorizingOperator()
 	{
-<span class="nc" id="L151">		return _dsoFactorizer;</span>
+<span class="nc" id="L163">		return _dsoFactorizer;</span>
 	}
 
 	/**
@@ -159,7 +171,7 @@ public class DecisionFunctionOperatorBounds {
 
 	public double inverseMarginNormBound()
 	{
-<span class="nc" id="L162">		return _dblInverseMarginNormBound;</span>
+<span class="nc" id="L174">		return _dblInverseMarginNormBound;</span>
 	}
 
 	/**
@@ -170,7 +182,7 @@ public class DecisionFunctionOperatorBounds {
 
 	public double featureSpaceMaureyConstant()
 	{
-<span class="nc" id="L173">		return _dblFeatureSpaceMaureyConstant;</span>
+<span class="nc" id="L185">		return _dblFeatureSpaceMaureyConstant;</span>
 	}
 
 	/**
@@ -181,7 +193,7 @@ public class DecisionFunctionOperatorBounds {
 
 	public double featureSpaceDimension()
 	{
-<span class="nc" id="L184">		return _iFeatureSpaceDimension;</span>
+<span class="nc" id="L196">		return _iFeatureSpaceDimension;</span>
 	}
 
 	/**
@@ -198,13 +210,13 @@ public class DecisionFunctionOperatorBounds {
 		final int iFeatureSpaceEntropyNumber)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (0 &gt;= iFeatureSpaceEntropyNumber)</span>
-<span class="nc" id="L202">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (0 &gt;= iFeatureSpaceEntropyNumber)</span>
+<span class="nc" id="L214">			throw new java.lang.Exception</span>
 				(&quot;DecisionFunctionOperatorBounds::featureSpaceMaureyBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L205">		return java.lang.Math.sqrt (1. / (iFeatureSpaceEntropyNumber * java.lang.Math.sqrt</span>
-<span class="nc" id="L206">			(java.lang.Math.log (1. + (((double) _iFeatureSpaceDimension) / java.lang.Math.log</span>
-<span class="nc" id="L207">				(iFeatureSpaceEntropyNumber))))));</span>
+<span class="nc" id="L217">		return java.lang.Math.sqrt (1. / (iFeatureSpaceEntropyNumber * java.lang.Math.sqrt</span>
+<span class="nc" id="L218">			(java.lang.Math.log (1. + (((double) _iFeatureSpaceDimension) / java.lang.Math.log</span>
+<span class="nc" id="L219">				(iFeatureSpaceEntropyNumber))))));</span>
 	}
 
 	/**
@@ -223,8 +235,8 @@ public class DecisionFunctionOperatorBounds {
 		final int iFeatureSpaceEntropyNumber)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L226">		return _dblInverseMarginNormBound * _dsoFactorizer.entropyNumberUpperBound() *</span>
-<span class="nc" id="L227">			featureSpaceMaureyBound (iFeatureSpaceEntropyNumber);</span>
+<span class="nc" id="L238">		return _dblInverseMarginNormBound * _dsoFactorizer.entropyNumberUpperBound() *</span>
+<span class="nc" id="L239">			featureSpaceMaureyBound (iFeatureSpaceEntropyNumber);</span>
 	}
 
 	/**
@@ -242,8 +254,8 @@ public class DecisionFunctionOperatorBounds {
 		final int iFeatureSpaceEntropyNumber)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L245">		return _dblInverseMarginNormBound * _dsoFactorizer.norm() * featureSpaceMaureyBound</span>
-<span class="nc" id="L246">			(iFeatureSpaceEntropyNumber);</span>
+<span class="nc" id="L257">		return _dblInverseMarginNormBound * _dsoFactorizer.norm() * featureSpaceMaureyBound</span>
+<span class="nc" id="L258">			(iFeatureSpaceEntropyNumber);</span>
 	}
 
 	/**
@@ -258,7 +270,7 @@ public class DecisionFunctionOperatorBounds {
 	public double productFeatureOperatorNorm()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L261">		return _dblInverseMarginNormBound * _dsoFactorizer.norm();</span>
+<span class="nc" id="L273">		return _dblInverseMarginNormBound * _dsoFactorizer.norm();</span>
 	}
 
 	/**
@@ -273,7 +285,7 @@ public class DecisionFunctionOperatorBounds {
 	public double featureNormOperatorEntropy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L276">		return _dblInverseMarginNormBound * _dsoFactorizer.entropyNumberUpperBound();</span>
+<span class="nc" id="L288">		return _dblInverseMarginNormBound * _dsoFactorizer.entropyNumberUpperBound();</span>
 	}
 
 	/**
@@ -292,24 +304,24 @@ public class DecisionFunctionOperatorBounds {
 		final int iFeatureSpaceEntropyNumber)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L295">		double dblFactorizerNorm = _dsoFactorizer.norm();</span>
+<span class="nc" id="L307">		double dblFactorizerNorm = _dsoFactorizer.norm();</span>
 
-<span class="nc" id="L297">		double dblFactorizerEntropyUpperBound = _dsoFactorizer.entropyNumberUpperBound();</span>
+<span class="nc" id="L309">		double dblFactorizerEntropyUpperBound = _dsoFactorizer.entropyNumberUpperBound();</span>
 
-<span class="nc" id="L299">		double dblFeatureSpaceMaureyBound = featureSpaceMaureyBound (iFeatureSpaceEntropyNumber);</span>
+<span class="nc" id="L311">		double dblFeatureSpaceMaureyBound = featureSpaceMaureyBound (iFeatureSpaceEntropyNumber);</span>
 
-<span class="nc" id="L301">		double dblProductFeatureOperatorNorm = _dblInverseMarginNormBound * dblFactorizerNorm;</span>
-<span class="nc" id="L302">		double dblFeatureMaureyOperatorNorm = dblProductFeatureOperatorNorm * dblFeatureSpaceMaureyBound;</span>
-<span class="nc" id="L303">		double dblFeatureNormOperatorEntropy = _dblInverseMarginNormBound * dblFactorizerEntropyUpperBound;</span>
-<span class="nc" id="L304">		double dblInfimumUpperBound = dblFeatureNormOperatorEntropy * dblFeatureSpaceMaureyBound;</span>
+<span class="nc" id="L313">		double dblProductFeatureOperatorNorm = _dblInverseMarginNormBound * dblFactorizerNorm;</span>
+<span class="nc" id="L314">		double dblFeatureMaureyOperatorNorm = dblProductFeatureOperatorNorm * dblFeatureSpaceMaureyBound;</span>
+<span class="nc" id="L315">		double dblFeatureNormOperatorEntropy = _dblInverseMarginNormBound * dblFactorizerEntropyUpperBound;</span>
+<span class="nc" id="L316">		double dblInfimumUpperBound = dblFeatureNormOperatorEntropy * dblFeatureSpaceMaureyBound;</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		if (dblInfimumUpperBound &gt; dblFeatureMaureyOperatorNorm)</span>
-<span class="nc" id="L307">			dblInfimumUpperBound = dblFeatureMaureyOperatorNorm;</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		if (dblInfimumUpperBound &gt; dblFeatureMaureyOperatorNorm)</span>
+<span class="nc" id="L319">			dblInfimumUpperBound = dblFeatureMaureyOperatorNorm;</span>
 
-<span class="nc bnc" id="L309" title="All 2 branches missed.">		if (dblInfimumUpperBound &gt; dblProductFeatureOperatorNorm)</span>
-<span class="nc" id="L310">			dblInfimumUpperBound = dblProductFeatureOperatorNorm;</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (dblInfimumUpperBound &gt; dblProductFeatureOperatorNorm)</span>
+<span class="nc" id="L322">			dblInfimumUpperBound = dblProductFeatureOperatorNorm;</span>
 
-<span class="nc bnc" id="L312" title="All 2 branches missed.">		return dblInfimumUpperBound &gt; dblFeatureNormOperatorEntropy ? dblInfimumUpperBound :</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">		return dblInfimumUpperBound &gt; dblFeatureNormOperatorEntropy ? dblInfimumUpperBound :</span>
 			dblFeatureNormOperatorEntropy;
 	}
 }

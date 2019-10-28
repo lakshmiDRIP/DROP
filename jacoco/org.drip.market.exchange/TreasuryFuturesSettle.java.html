@@ -6,45 +6,58 @@ package org.drip.market.exchange;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +86,10 @@ package org.drip.market.exchange;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/exchange&quot;&gt;Exchange&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/exchange&quot;&gt;Deliverable Swap, STIR, Treasury Futures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -115,16 +128,16 @@ public class TreasuryFuturesSettle {
 
 	public static final int QUOTE_REFERENCE_INDEX_AUD_BOND_FUTURES_STYLE = 3;
 
-<span class="fc" id="L118">	private int _iSettleType = -1;</span>
-<span class="fc" id="L119">	private int _iSettleQuoteStyle = -1;</span>
-<span class="fc" id="L120">	private int[] _aiDeliveryMonth = null;</span>
-<span class="fc" id="L121">	private int _iExpiryLastTradingLag = -1;</span>
-<span class="fc" id="L122">	private boolean _bWildCardOption = false;</span>
-<span class="fc" id="L123">	private int _iExpiryFirstDeliveryLag = -1;</span>
-<span class="fc" id="L124">	private int _iExpiryFinalDeliveryLag = -1;</span>
-<span class="fc" id="L125">	private int _iExpiryDeliveryNoticeLag = -1;</span>
-<span class="fc" id="L126">	private double _dblReferenceCouponCurrent = java.lang.Double.NaN;</span>
-<span class="fc" id="L127">	private double _dblReferenceCouponOriginal = java.lang.Double.NaN;</span>
+<span class="fc" id="L131">	private int _iSettleType = -1;</span>
+<span class="fc" id="L132">	private int _iSettleQuoteStyle = -1;</span>
+<span class="fc" id="L133">	private int[] _aiDeliveryMonth = null;</span>
+<span class="fc" id="L134">	private int _iExpiryLastTradingLag = -1;</span>
+<span class="fc" id="L135">	private boolean _bWildCardOption = false;</span>
+<span class="fc" id="L136">	private int _iExpiryFirstDeliveryLag = -1;</span>
+<span class="fc" id="L137">	private int _iExpiryFinalDeliveryLag = -1;</span>
+<span class="fc" id="L138">	private int _iExpiryDeliveryNoticeLag = -1;</span>
+<span class="fc" id="L139">	private double _dblReferenceCouponCurrent = java.lang.Double.NaN;</span>
+<span class="fc" id="L140">	private double _dblReferenceCouponOriginal = java.lang.Double.NaN;</span>
 
 	/**
 	 * TreasuryFuturesSettle Constructor
@@ -155,22 +168,22 @@ public class TreasuryFuturesSettle {
 		final double dblReferenceCouponOriginal,
 		final int[] aiDeliveryMonth)
 		throws java.lang.Exception
-<span class="fc" id="L158">	{</span>
-<span class="pc bpc" id="L159" title="2 of 4 branches missed.">		if ((_iExpiryFinalDeliveryLag = iExpiryFinalDeliveryLag) &lt; (_iExpiryFirstDeliveryLag =</span>
+<span class="fc" id="L171">	{</span>
+<span class="pc bpc" id="L172" title="2 of 4 branches missed.">		if ((_iExpiryFinalDeliveryLag = iExpiryFinalDeliveryLag) &lt; (_iExpiryFirstDeliveryLag =</span>
 			iExpiryFirstDeliveryLag) || _iExpiryFirstDeliveryLag &lt; 0)
-<span class="nc" id="L161">			throw new java.lang.Exception (&quot;TreasuryFuturesSettle ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L174">			throw new java.lang.Exception (&quot;TreasuryFuturesSettle ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L163">		_iSettleType = iSettleType;</span>
-<span class="fc" id="L164">		_aiDeliveryMonth = aiDeliveryMonth;</span>
-<span class="fc" id="L165">		_bWildCardOption = bWildCardOption;</span>
-<span class="fc" id="L166">		_iSettleQuoteStyle = iSettleQuoteStyle;</span>
-<span class="fc" id="L167">		_iExpiryLastTradingLag = iExpiryLastTradingLag;</span>
-<span class="fc" id="L168">		_iExpiryFirstDeliveryLag = iExpiryFirstDeliveryLag;</span>
-<span class="fc" id="L169">		_iExpiryFinalDeliveryLag = iExpiryFinalDeliveryLag;</span>
-<span class="fc" id="L170">		_iExpiryDeliveryNoticeLag = iExpiryDeliveryNoticeLag;</span>
-<span class="fc" id="L171">		_dblReferenceCouponCurrent = dblReferenceCouponCurrent;</span>
-<span class="fc" id="L172">		_dblReferenceCouponOriginal = dblReferenceCouponOriginal;</span>
-<span class="fc" id="L173">	}</span>
+<span class="fc" id="L176">		_iSettleType = iSettleType;</span>
+<span class="fc" id="L177">		_aiDeliveryMonth = aiDeliveryMonth;</span>
+<span class="fc" id="L178">		_bWildCardOption = bWildCardOption;</span>
+<span class="fc" id="L179">		_iSettleQuoteStyle = iSettleQuoteStyle;</span>
+<span class="fc" id="L180">		_iExpiryLastTradingLag = iExpiryLastTradingLag;</span>
+<span class="fc" id="L181">		_iExpiryFirstDeliveryLag = iExpiryFirstDeliveryLag;</span>
+<span class="fc" id="L182">		_iExpiryFinalDeliveryLag = iExpiryFinalDeliveryLag;</span>
+<span class="fc" id="L183">		_iExpiryDeliveryNoticeLag = iExpiryDeliveryNoticeLag;</span>
+<span class="fc" id="L184">		_dblReferenceCouponCurrent = dblReferenceCouponCurrent;</span>
+<span class="fc" id="L185">		_dblReferenceCouponOriginal = dblReferenceCouponOriginal;</span>
+<span class="fc" id="L186">	}</span>
 
 	/**
 	 * Retrieve the Lag Between the Expiry and the First Delivery Dates
@@ -180,7 +193,7 @@ public class TreasuryFuturesSettle {
 
 	public int expiryFirstDeliveryLag()
 	{
-<span class="fc" id="L183">		return _iExpiryFirstDeliveryLag;</span>
+<span class="fc" id="L196">		return _iExpiryFirstDeliveryLag;</span>
 	}
 
 	/**
@@ -191,7 +204,7 @@ public class TreasuryFuturesSettle {
 
 	public int expiryFinalDeliveryLag()
 	{
-<span class="fc" id="L194">		return _iExpiryFinalDeliveryLag;</span>
+<span class="fc" id="L207">		return _iExpiryFinalDeliveryLag;</span>
 	}
 
 	/**
@@ -202,7 +215,7 @@ public class TreasuryFuturesSettle {
 
 	public int expiryDeliveryNoticeLag()
 	{
-<span class="fc" id="L205">		return _iExpiryDeliveryNoticeLag;</span>
+<span class="fc" id="L218">		return _iExpiryDeliveryNoticeLag;</span>
 	}
 
 	/**
@@ -213,7 +226,7 @@ public class TreasuryFuturesSettle {
 
 	public int expiryLastTradingLag()
 	{
-<span class="fc" id="L216">		return _iExpiryLastTradingLag;</span>
+<span class="fc" id="L229">		return _iExpiryLastTradingLag;</span>
 	}
 
 	/**
@@ -224,7 +237,7 @@ public class TreasuryFuturesSettle {
 
 	public int settleType()
 	{
-<span class="nc" id="L227">		return _iSettleType;</span>
+<span class="nc" id="L240">		return _iSettleType;</span>
 	}
 
 	/**
@@ -235,7 +248,7 @@ public class TreasuryFuturesSettle {
 
 	public int settleQuoteStyle()
 	{
-<span class="nc" id="L238">		return _iSettleQuoteStyle;</span>
+<span class="nc" id="L251">		return _iSettleQuoteStyle;</span>
 	}
 
 	/**
@@ -246,7 +259,7 @@ public class TreasuryFuturesSettle {
 
 	public boolean wildCardOption()
 	{
-<span class="nc" id="L249">		return _bWildCardOption;</span>
+<span class="nc" id="L262">		return _bWildCardOption;</span>
 	}
 
 	/**
@@ -257,7 +270,7 @@ public class TreasuryFuturesSettle {
 
 	public double currentReferenceYield()
 	{
-<span class="fc" id="L260">		return _dblReferenceCouponCurrent;</span>
+<span class="fc" id="L273">		return _dblReferenceCouponCurrent;</span>
 	}
 
 	/**
@@ -268,7 +281,7 @@ public class TreasuryFuturesSettle {
 
 	public double originalReferenceCoupon()
 	{
-<span class="nc" id="L271">		return _dblReferenceCouponOriginal;</span>
+<span class="nc" id="L284">		return _dblReferenceCouponOriginal;</span>
 	}
 
 	/**
@@ -279,28 +292,28 @@ public class TreasuryFuturesSettle {
 
 	public int[] deliveryMonths()
 	{
-<span class="fc" id="L282">		return _aiDeliveryMonth;</span>
+<span class="fc" id="L295">		return _aiDeliveryMonth;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L287">		java.lang.String strDeliveryMonths = &quot;&quot;;</span>
-<span class="pc bpc" id="L288" title="1 of 2 branches missed.">		int iNumDeliveryMonth = null == _aiDeliveryMonth ? 0 : _aiDeliveryMonth.length;</span>
+<span class="fc" id="L300">		java.lang.String strDeliveryMonths = &quot;&quot;;</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		int iNumDeliveryMonth = null == _aiDeliveryMonth ? 0 : _aiDeliveryMonth.length;</span>
 
-<span class="pc bpc" id="L290" title="1 of 2 branches missed.">		if (0 != iNumDeliveryMonth) {</span>
-<span class="fc bfc" id="L291" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumDeliveryMonth; ++i) {</span>
-<span class="fc bfc" id="L292" title="All 2 branches covered.">				if (0 == i)</span>
-<span class="fc" id="L293">					strDeliveryMonths += &quot; | Delivery Months: {&quot;;</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		if (0 != iNumDeliveryMonth) {</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumDeliveryMonth; ++i) {</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">				if (0 == i)</span>
+<span class="fc" id="L306">					strDeliveryMonths += &quot; | Delivery Months: {&quot;;</span>
 				else
-<span class="fc" id="L295">					strDeliveryMonths += &quot;,&quot;;</span>
+<span class="fc" id="L308">					strDeliveryMonths += &quot;,&quot;;</span>
 
-<span class="fc" id="L297">				strDeliveryMonths += org.drip.analytics.date.DateUtil.MonthChar (_aiDeliveryMonth[i]);</span>
+<span class="fc" id="L310">				strDeliveryMonths += org.drip.analytics.date.DateUtil.MonthChar (_aiDeliveryMonth[i]);</span>
 			}
 
-<span class="fc" id="L300">			strDeliveryMonths += &quot;}&quot;;</span>
+<span class="fc" id="L313">			strDeliveryMonths += &quot;}&quot;;</span>
 		}
 
-<span class="fc" id="L303">		return &quot;[Futures Settle =&gt; Expiry To First Delivery Lag: &quot; + _iExpiryFirstDeliveryLag +</span>
+<span class="fc" id="L316">		return &quot;[Futures Settle =&gt; Expiry To First Delivery Lag: &quot; + _iExpiryFirstDeliveryLag +</span>
 			&quot; | Expiry To Final Delivery Lag: &quot; + _iExpiryFinalDeliveryLag +
 				&quot; | Expiry To Delivery Notice Lag: &quot; + _iExpiryDeliveryNoticeLag +
 					&quot; | Expiry To Last Trading Lag: &quot; + _iExpiryLastTradingLag + &quot; | Settlement Type:  &quot; +

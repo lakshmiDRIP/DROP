@@ -6,43 +6,55 @@ package org.drip.measure.crng;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,20 +83,20 @@ package org.drip.measure.crng;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng&quot;&gt;Continuous Random Number Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng&quot;&gt;Continuous Random Number Stream Generator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNumberGenerator {
-<span class="fc" id="L84">	private long _lA = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L85">	private long _lB = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L86">	private long _lM = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L87">	private org.drip.measure.crng.RecursiveGenerator _rg = null;</span>
+<span class="fc" id="L96">	private long _lA = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L97">	private long _lB = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L98">	private long _lM = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L99">	private org.drip.measure.crng.RecursiveGenerator _rg = null;</span>
 
 	/**
 	 * Construct an Instance of LinearCongruentialGenerator with the MRG of Type MRG32k3a
@@ -102,13 +114,13 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 		final long lM)
 	{
 		try {
-<span class="nc" id="L105">			return new LinearCongruentialGenerator (lA, lB, lM,</span>
-<span class="nc" id="L106">				org.drip.measure.crng.MultipleRecursiveGeneratorLEcuyer.MRG32k3a());</span>
-<span class="nc" id="L107">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L108">			e.printStackTrace();</span>
+<span class="nc" id="L117">			return new LinearCongruentialGenerator (lA, lB, lM,</span>
+<span class="nc" id="L118">				org.drip.measure.crng.MultipleRecursiveGeneratorLEcuyer.MRG32k3a());</span>
+<span class="nc" id="L119">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L120">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L111">		return null;</span>
+<span class="nc" id="L123">		return null;</span>
 	}
 
 	/**
@@ -122,18 +134,18 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 	public static final LinearCongruentialGenerator NumericalRecipes (
 		final org.drip.measure.crng.RecursiveGenerator rg)
 	{
-<span class="fc" id="L125">		long l2Power32 = 1;</span>
+<span class="fc" id="L137">		long l2Power32 = 1;</span>
 
-<span class="fc bfc" id="L127" title="All 2 branches covered.">		for (int i = 0; i &lt; 32; ++i)</span>
-<span class="fc" id="L128">			l2Power32 *= 2;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for (int i = 0; i &lt; 32; ++i)</span>
+<span class="fc" id="L140">			l2Power32 *= 2;</span>
 
 		try {
-<span class="fc" id="L131">			return new LinearCongruentialGenerator (1664525L, 1013904223L, l2Power32, rg);</span>
-<span class="nc" id="L132">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L133">			e.printStackTrace();</span>
+<span class="fc" id="L143">			return new LinearCongruentialGenerator (1664525L, 1013904223L, l2Power32, rg);</span>
+<span class="nc" id="L144">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L136">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	/**
@@ -153,11 +165,11 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 		final long lM,
 		final org.drip.measure.crng.RecursiveGenerator rg)
 		throws java.lang.Exception
-<span class="fc" id="L156">	{</span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_lA = lA) || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="pc bpc" id="L158" title="3 of 6 branches missed.">			(_lB = lB) || !org.drip.numerical.common.NumberUtil.IsValid (_lM = lM) || null == (_rg = rg))</span>
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;LinearCongruentialGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L160">	}</span>
+<span class="fc" id="L168">	{</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_lA = lA) || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="pc bpc" id="L170" title="3 of 6 branches missed.">			(_lB = lB) || !org.drip.numerical.common.NumberUtil.IsValid (_lM = lM) || null == (_rg = rg))</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;LinearCongruentialGenerator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L172">	}</span>
 
 	/**
 	 * Retrieve A
@@ -167,7 +179,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long a()
 	{
-<span class="nc" id="L170">		return _lA;</span>
+<span class="nc" id="L182">		return _lA;</span>
 	}
 
 	/**
@@ -178,7 +190,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long b()
 	{
-<span class="nc" id="L181">		return _lB;</span>
+<span class="nc" id="L193">		return _lB;</span>
 	}
 
 	/**
@@ -189,7 +201,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long m()
 	{
-<span class="nc" id="L192">		return _lM;</span>
+<span class="nc" id="L204">		return _lM;</span>
 	}
 
 	/**
@@ -200,7 +212,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public org.drip.measure.crng.RecursiveGenerator recursiveGenerator()
 	{
-<span class="nc" id="L203">		return _rg;</span>
+<span class="nc" id="L215">		return _rg;</span>
 	}
 
 	/**
@@ -211,7 +223,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long nextLong()
 	{
-<span class="fc" id="L214">		return (_lA * _rg.next() + _lB) % _lM;</span>
+<span class="fc" id="L226">		return (_lA * _rg.next() + _lB) % _lM;</span>
 	}
 
 	/**
@@ -222,12 +234,12 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public double nextDouble()
 	{
-<span class="fc" id="L225">		return ((double) nextLong()) / ((double) _lM);</span>
+<span class="fc" id="L237">		return ((double) nextLong()) / ((double) _lM);</span>
 	}
 
 	@Override public double nextDouble01()
 	{
-<span class="fc" id="L230">		return 0.5 * (1. + nextDouble());</span>
+<span class="fc" id="L242">		return 0.5 * (1. + nextDouble());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

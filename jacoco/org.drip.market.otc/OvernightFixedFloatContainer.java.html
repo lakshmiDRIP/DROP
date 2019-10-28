@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,18 +85,18 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class OvernightFixedFloatContainer {</span>
+<span class="nc" id="L97">public class OvernightFixedFloatContainer {</span>
 	private static java.util.Map&lt;java.lang.String, org.drip.market.otc.FixedFloatSwapConvention&gt;
-<span class="fc" id="L87">		_mapFundConvention = null;</span>
+<span class="fc" id="L99">		_mapFundConvention = null;</span>
 
 	/**
 	 * Initialize the Fix-Float Conventions Container with the pre-set Fix-Float Contracts
@@ -95,106 +107,106 @@ package org.drip.market.otc;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L98" title="All 2 branches covered.">		if (null != _mapFundConvention) return true;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		if (null != _mapFundConvention) return true;</span>
 
-<span class="fc" id="L100">		_mapFundConvention = new java.util.TreeMap&lt;java.lang.String,</span>
+<span class="fc" id="L112">		_mapFundConvention = new java.util.TreeMap&lt;java.lang.String,</span>
 			org.drip.market.otc.FixedFloatSwapConvention&gt;();
 
 		try {
-<span class="fc" id="L104">			_mapFundConvention.put (&quot;AUD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L116">			_mapFundConvention.put (&quot;AUD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;AUD&quot;, &quot;Act/365&quot;, &quot;AUD&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention
 							(org.drip.state.identifier.ForwardLabel.Create
-<span class="fc" id="L109">								(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction</span>
-<span class="fc" id="L110">									(&quot;AUD&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
+<span class="fc" id="L121">								(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction</span>
+<span class="fc" id="L122">									(&quot;AUD&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
 
-<span class="fc" id="L112">			_mapFundConvention.put (&quot;CAD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L124">			_mapFundConvention.put (&quot;CAD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;CAD&quot;, &quot;Act/365&quot;, &quot;CAD&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L116">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L128">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L118">									(&quot;CAD&quot;), &quot;ON&quot;), &quot;ON&quot;), 0));</span>
+<span class="fc" id="L130">									(&quot;CAD&quot;), &quot;ON&quot;), &quot;ON&quot;), 0));</span>
 
-<span class="fc" id="L120">			_mapFundConvention.put (&quot;CHF&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L132">			_mapFundConvention.put (&quot;CHF&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;CHF&quot;, &quot;Act/360&quot;, &quot;CHF&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L124">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L136">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L126">									(&quot;CHF&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
+<span class="fc" id="L138">									(&quot;CHF&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
 
-<span class="fc" id="L128">			_mapFundConvention.put (&quot;EUR&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L140">			_mapFundConvention.put (&quot;EUR&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;EUR&quot;, &quot;Act/360&quot;, &quot;EUR&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L132">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L144">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L134">									(&quot;EUR&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
+<span class="fc" id="L146">									(&quot;EUR&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
 
-<span class="fc" id="L136">			_mapFundConvention.put (&quot;GBP&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L148">			_mapFundConvention.put (&quot;GBP&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;GBP&quot;, &quot;Act/365&quot;, &quot;GBP&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L140">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L152">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L142">									(&quot;GBP&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
+<span class="fc" id="L154">									(&quot;GBP&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
 
-<span class="fc" id="L144">			_mapFundConvention.put (&quot;INR&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L156">			_mapFundConvention.put (&quot;INR&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;INR&quot;, &quot;Act/365&quot;, &quot;INR&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L148">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L160">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L150">									(&quot;INR&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
+<span class="fc" id="L162">									(&quot;INR&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
 
-<span class="fc" id="L152">			_mapFundConvention.put (&quot;JPY&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L164">			_mapFundConvention.put (&quot;JPY&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;JPY&quot;, &quot;Act/365&quot;, &quot;JPY&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L156">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L168">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L158">									(&quot;JPY&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
+<span class="fc" id="L170">									(&quot;JPY&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
 
-<span class="fc" id="L160">			_mapFundConvention.put (&quot;NZD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L172">			_mapFundConvention.put (&quot;NZD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;NZD&quot;, &quot;Act/365&quot;, &quot;NZD&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention
 							(org.drip.state.identifier.ForwardLabel.Create
-<span class="fc" id="L165">								(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction</span>
-<span class="fc" id="L166">									(&quot;NZD&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
+<span class="fc" id="L177">								(org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction</span>
+<span class="fc" id="L178">									(&quot;NZD&quot;), &quot;ON&quot;), &quot;ON&quot;), 1));</span>
 
-<span class="fc" id="L168">			_mapFundConvention.put (&quot;SEK&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L180">			_mapFundConvention.put (&quot;SEK&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;SEK&quot;, &quot;Act/360&quot;, &quot;SEK&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L172">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L184">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L174">									(&quot;SEK&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
+<span class="fc" id="L186">									(&quot;SEK&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
 
-<span class="fc" id="L176">			_mapFundConvention.put (&quot;SGD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L188">			_mapFundConvention.put (&quot;SGD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;SGD&quot;, &quot;Act/365&quot;, &quot;SGD&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L180">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L192">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L182">									(&quot;SGD&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
+<span class="fc" id="L194">									(&quot;SGD&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
 
-<span class="fc" id="L184">			_mapFundConvention.put (&quot;USD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
+<span class="fc" id="L196">			_mapFundConvention.put (&quot;USD&quot;, new org.drip.market.otc.FixedFloatSwapConvention (new</span>
 				org.drip.market.otc.FixedStreamConvention (&quot;USD&quot;, &quot;Act/360&quot;, &quot;USD&quot;, &quot;1Y&quot;, &quot;1Y&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC),
 						new org.drip.market.otc.FloatStreamConvention (
-<span class="fc" id="L188">							org.drip.state.identifier.ForwardLabel.Create (</span>
+<span class="fc" id="L200">							org.drip.state.identifier.ForwardLabel.Create (</span>
 								org.drip.market.definition.OvernightIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L190">									(&quot;USD&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
-<span class="nc" id="L191">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L192">			e.printStackTrace();</span>
+<span class="fc" id="L202">									(&quot;USD&quot;), &quot;ON&quot;), &quot;ON&quot;), 2));</span>
+<span class="nc" id="L203">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L204">			e.printStackTrace();</span>
 
-<span class="nc" id="L194">			return false;</span>
-<span class="fc" id="L195">		}</span>
+<span class="nc" id="L206">			return false;</span>
+<span class="fc" id="L207">		}</span>
 
-<span class="fc" id="L197">		return true;</span>
+<span class="fc" id="L209">		return true;</span>
 	}
 
 	/**
@@ -208,9 +220,9 @@ package org.drip.market.otc;
 	public static final org.drip.market.otc.FixedFloatSwapConvention FundConventionFromJurisdiction (
 		final java.lang.String strJurisdictionName)
 	{
-<span class="pc bpc" id="L211" title="2 of 4 branches missed.">		return null == strJurisdictionName || strJurisdictionName.isEmpty() ||</span>
-<span class="fc bfc" id="L212" title="All 2 branches covered.">			!_mapFundConvention.containsKey (strJurisdictionName) ? null : _mapFundConvention.get</span>
-<span class="fc" id="L213">				(strJurisdictionName);</span>
+<span class="pc bpc" id="L223" title="2 of 4 branches missed.">		return null == strJurisdictionName || strJurisdictionName.isEmpty() ||</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">			!_mapFundConvention.containsKey (strJurisdictionName) ? null : _mapFundConvention.get</span>
+<span class="fc" id="L225">				(strJurisdictionName);</span>
 	}
 
 	/**
@@ -226,28 +238,28 @@ package org.drip.market.otc;
 		final java.lang.String strJurisdictionName,
 		final java.lang.String strMaturityTenor)
 	{
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		org.drip.market.otc.FixedFloatSwapConvention ffscFund = null == strJurisdictionName ||</span>
-<span class="pc bpc" id="L230" title="2 of 4 branches missed.">			strJurisdictionName.isEmpty() || !_mapFundConvention.containsKey (strJurisdictionName) ? null :</span>
-<span class="fc" id="L231">				_mapFundConvention.get (strJurisdictionName);</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">		org.drip.market.otc.FixedFloatSwapConvention ffscFund = null == strJurisdictionName ||</span>
+<span class="pc bpc" id="L242" title="2 of 4 branches missed.">			strJurisdictionName.isEmpty() || !_mapFundConvention.containsKey (strJurisdictionName) ? null :</span>
+<span class="fc" id="L243">				_mapFundConvention.get (strJurisdictionName);</span>
 
-<span class="pc bpc" id="L233" title="1 of 2 branches missed.">		if (null == ffscFund) return null;</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		if (null == ffscFund) return null;</span>
 
-<span class="fc" id="L235">		org.drip.market.otc.FloatStreamConvention fundFloatConvention = ffscFund.floatStreamConvention();</span>
+<span class="fc" id="L247">		org.drip.market.otc.FloatStreamConvention fundFloatConvention = ffscFund.floatStreamConvention();</span>
 
 		try {
-<span class="fc" id="L238">			org.drip.market.otc.FloatStreamConvention overnightFloatConvention = new</span>
-<span class="fc" id="L239">				org.drip.market.otc.FloatStreamConvention (fundFloatConvention.floaterIndex(),</span>
+<span class="fc" id="L250">			org.drip.market.otc.FloatStreamConvention overnightFloatConvention = new</span>
+<span class="fc" id="L251">				org.drip.market.otc.FloatStreamConvention (fundFloatConvention.floaterIndex(),</span>
 					org.drip.analytics.support.Helper.LEFT_TENOR_LESSER ==
-<span class="fc bfc" id="L241" title="All 2 branches covered.">						org.drip.analytics.support.Helper.TenorCompare (strMaturityTenor, &quot;1Y&quot;) ?</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">						org.drip.analytics.support.Helper.TenorCompare (strMaturityTenor, &quot;1Y&quot;) ?</span>
 							strMaturityTenor : &quot;1Y&quot;);
 
-<span class="fc" id="L244">			return new org.drip.market.otc.FixedFloatSwapConvention (ffscFund.fixedStreamConvention(),</span>
-<span class="fc" id="L245">				overnightFloatConvention, ffscFund.spotLag());</span>
-<span class="nc" id="L246">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L247">			e.printStackTrace();</span>
+<span class="fc" id="L256">			return new org.drip.market.otc.FixedFloatSwapConvention (ffscFund.fixedStreamConvention(),</span>
+<span class="fc" id="L257">				overnightFloatConvention, ffscFund.spotLag());</span>
+<span class="nc" id="L258">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L259">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L250">		return null;</span>
+<span class="nc" id="L262">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

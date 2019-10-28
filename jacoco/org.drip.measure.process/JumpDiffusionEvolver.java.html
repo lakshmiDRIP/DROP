@@ -6,43 +6,55 @@ package org.drip.measure.process;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,17 +83,17 @@ package org.drip.measure.process;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/process&quot;&gt;Process&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/process&quot;&gt;Jump Diffusion Evolver Process Variants&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvolver {
-<span class="fc" id="L84">	private org.drip.measure.dynamics.HazardJumpEvaluator _heie = null;</span>
+<span class="fc" id="L96">	private org.drip.measure.dynamics.HazardJumpEvaluator _heie = null;</span>
 
 	/**
 	 * JumpDiffusionEvolver Constructor
@@ -97,11 +109,11 @@ public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvol
 		final org.drip.measure.dynamics.HazardJumpEvaluator heie)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L100">		super (de);</span>
+<span class="fc" id="L112">		super (de);</span>
 
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		if (null == (_heie = heie))</span>
-<span class="nc" id="L103">			throw new java.lang.Exception (&quot;JumpDiffusionEvolver Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L104">	}</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (null == (_heie = heie))</span>
+<span class="nc" id="L115">			throw new java.lang.Exception (&quot;JumpDiffusionEvolver Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L116">	}</span>
 
 	/**
 	 * Retrieve the Hazard Point Event Indicator Instance
@@ -111,7 +123,7 @@ public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvol
 
 	public org.drip.measure.dynamics.HazardJumpEvaluator eventIndicationEvaluator()
 	{
-<span class="nc" id="L114">		return _heie;</span>
+<span class="nc" id="L126">		return _heie;</span>
 	}
 
 	@Override public org.drip.measure.realization.JumpDiffusionEdge increment (
@@ -119,50 +131,50 @@ public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvol
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit ur,
 		final double dblTimeIncrement)
 	{
-<span class="pc bpc" id="L122" title="3 of 6 branches missed.">		if (null == jdv || null == ur || !org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement))</span>
-<span class="nc" id="L123">			return null;</span>
+<span class="pc bpc" id="L134" title="3 of 6 branches missed.">		if (null == jdv || null == ur || !org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement))</span>
+<span class="nc" id="L135">			return null;</span>
 
-<span class="fc" id="L125">		double dblPreviousValue = jdv.value();</span>
+<span class="fc" id="L137">		double dblPreviousValue = jdv.value();</span>
 
 		try {
-<span class="fc bfc" id="L128" title="All 2 branches covered.">			if (jdv.jumpOccurred())</span>
-<span class="fc" id="L129">				return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, 0., 0., new</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			if (jdv.jumpOccurred())</span>
+<span class="fc" id="L141">				return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, 0., 0., new</span>
 					org.drip.measure.realization.StochasticEdgeJump (false, 0., 0., dblPreviousValue), ur);
-<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L132">			e.printStackTrace();</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 
-<span class="nc" id="L134">			return null;</span>
-<span class="fc" id="L135">		}</span>
+<span class="nc" id="L146">			return null;</span>
+<span class="fc" id="L147">		}</span>
 
-<span class="fc" id="L137">		double dblHazardRate = _heie.hazardRate();</span>
+<span class="fc" id="L149">		double dblHazardRate = _heie.hazardRate();</span>
 
-<span class="fc" id="L139">		org.drip.measure.dynamics.DiffusionEvaluator de = evaluator();</span>
+<span class="fc" id="L151">		org.drip.measure.dynamics.DiffusionEvaluator de = evaluator();</span>
 
-<span class="fc" id="L141">		double dblLevelHazardIntegral = dblHazardRate * dblTimeIncrement;</span>
+<span class="fc" id="L153">		double dblLevelHazardIntegral = dblHazardRate * dblTimeIncrement;</span>
 
-<span class="fc" id="L143">		boolean bEventOccurred = java.lang.Math.exp (-1. * (jdv.cumulativeHazardIntegral() +</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">			dblLevelHazardIntegral)) &lt;= ur.jump();</span>
+<span class="fc" id="L155">		boolean bEventOccurred = java.lang.Math.exp (-1. * (jdv.cumulativeHazardIntegral() +</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">			dblLevelHazardIntegral)) &lt;= ur.jump();</span>
 
 		try {
-<span class="fc" id="L147">			org.drip.measure.realization.StochasticEdgeJump sej = new</span>
+<span class="fc" id="L159">			org.drip.measure.realization.StochasticEdgeJump sej = new</span>
 				org.drip.measure.realization.StochasticEdgeJump (bEventOccurred, dblHazardRate,
-<span class="fc" id="L149">					dblLevelHazardIntegral, _heie.magnitudeEvaluator().value (jdv));</span>
+<span class="fc" id="L161">					dblLevelHazardIntegral, _heie.magnitudeEvaluator().value (jdv));</span>
 
-<span class="fc bfc" id="L151" title="All 2 branches covered.">			if (bEventOccurred)</span>
-<span class="fc" id="L152">				return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, 0., 0.,</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">			if (bEventOccurred)</span>
+<span class="fc" id="L164">				return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, 0., 0.,</span>
 					sej, ur);
 
-<span class="fc" id="L155">			org.drip.measure.dynamics.LocalEvaluator leVolatility = de.volatility();</span>
+<span class="fc" id="L167">			org.drip.measure.dynamics.LocalEvaluator leVolatility = de.volatility();</span>
 
-<span class="fc" id="L157">			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue,</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">				de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : leVolatility.value</span>
-<span class="fc" id="L159">					(jdv) * ur.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs (dblTimeIncrement)),</span>
+<span class="fc" id="L169">			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue,</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">				de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : leVolatility.value</span>
+<span class="fc" id="L171">					(jdv) * ur.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs (dblTimeIncrement)),</span>
 						sej, ur);
-<span class="nc" id="L161">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L162">			e.printStackTrace();</span>
+<span class="nc" id="L173">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L174">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L165">		return null;</span>
+<span class="nc" id="L177">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

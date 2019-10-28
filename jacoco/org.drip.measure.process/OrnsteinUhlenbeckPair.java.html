@@ -6,44 +6,56 @@ package org.drip.measure.process;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,19 +108,19 @@ package org.drip.measure.process;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/process&quot;&gt;Process&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/process&quot;&gt;Jump Diffusion Evolver Process Variants&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinUhlenbeck {
-<span class="nc" id="L109">	private double _dblCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck _deouDerived = null;</span>
-<span class="nc" id="L111">	private org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck _deouReference = null;</span>
+<span class="nc" id="L121">	private double _dblCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck _deouDerived = null;</span>
+<span class="nc" id="L123">	private org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck _deouReference = null;</span>
 
 	/**
 	 * OrnsteinUhlenbeckPair Constructor
@@ -125,12 +137,12 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 		final org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck deouDerived,
 		final double dblCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L128">	{</span>
-<span class="nc bnc" id="L129" title="All 4 branches missed.">		if (null == (_deouReference = deouReference) || null == (_deouDerived = deouDerived) ||</span>
-<span class="nc bnc" id="L130" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || _dblCorrelation &lt;</span>
+<span class="nc" id="L140">	{</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (null == (_deouReference = deouReference) || null == (_deouDerived = deouDerived) ||</span>
+<span class="nc bnc" id="L142" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCorrelation = dblCorrelation) || _dblCorrelation &lt;</span>
 				-1. || _dblCorrelation &gt; 1.)
-<span class="nc" id="L132">			throw new java.lang.Exception (&quot;OrnsteinUhlenbeckPair Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L133">	}</span>
+<span class="nc" id="L144">			throw new java.lang.Exception (&quot;OrnsteinUhlenbeckPair Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Reference R^1 Ornstein-Uhlenbeck Evaluator
@@ -140,7 +152,7 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 
 	public org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck reference()
 	{
-<span class="nc" id="L143">		return _deouReference;</span>
+<span class="nc" id="L155">		return _deouReference;</span>
 	}
 
 	/**
@@ -151,7 +163,7 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 
 	public org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck derived()
 	{
-<span class="nc" id="L154">		return _deouDerived;</span>
+<span class="nc" id="L166">		return _deouDerived;</span>
 	}
 
 	/**
@@ -162,7 +174,7 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 
 	public double correlation()
 	{
-<span class="nc" id="L165">		return _dblCorrelation;</span>
+<span class="nc" id="L177">		return _dblCorrelation;</span>
 	}
 
 	/**
@@ -181,22 +193,22 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 		final double[] adblDiffusionPair,
 		final double dblTimeIncrement)
 	{
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (null == adblVariatePair || 2 != adblVariatePair.length ||</span>
-<span class="nc bnc" id="L185" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (adblVariatePair) || null == adblDiffusionPair || 2 !=</span>
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				adblDiffusionPair.length || !org.drip.numerical.common.NumberUtil.IsValid (adblDiffusionPair) ||</span>
-<span class="nc bnc" id="L187" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement) || 0. &gt;= dblTimeIncrement)</span>
-<span class="nc" id="L188">			return null;</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (null == adblVariatePair || 2 != adblVariatePair.length ||</span>
+<span class="nc bnc" id="L197" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (adblVariatePair) || null == adblDiffusionPair || 2 !=</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">				adblDiffusionPair.length || !org.drip.numerical.common.NumberUtil.IsValid (adblDiffusionPair) ||</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeIncrement) || 0. &gt;= dblTimeIncrement)</span>
+<span class="nc" id="L200">			return null;</span>
 
-<span class="nc" id="L190">		double dblRelaxationTime0 = _deouReference.relaxationTime();</span>
+<span class="nc" id="L202">		double dblRelaxationTime0 = _deouReference.relaxationTime();</span>
 
-<span class="nc" id="L192">		double dblRelaxationTime1 = _deouDerived.relaxationTime();</span>
+<span class="nc" id="L204">		double dblRelaxationTime1 = _deouDerived.relaxationTime();</span>
 
 		try {
-<span class="nc" id="L195">			return new org.drip.measure.realization.JumpDiffusionEdge[] {</span>
-<span class="nc" id="L196">				org.drip.measure.realization.JumpDiffusionEdge.Standard (</span>
+<span class="nc" id="L207">			return new org.drip.measure.realization.JumpDiffusionEdge[] {</span>
+<span class="nc" id="L208">				org.drip.measure.realization.JumpDiffusionEdge.Standard (</span>
 					adblVariatePair[0],
 					-1. * adblVariatePair[0] / dblRelaxationTime0 * dblTimeIncrement,
-<span class="nc" id="L199">					_deouReference.burstiness() * adblDiffusionPair[0] * java.lang.Math.sqrt (dblTimeIncrement / dblRelaxationTime0),</span>
+<span class="nc" id="L211">					_deouReference.burstiness() * adblDiffusionPair[0] * java.lang.Math.sqrt (dblTimeIncrement / dblRelaxationTime0),</span>
 					null,
 					new org.drip.measure.realization.JumpDiffusionEdgeUnit (
 						dblTimeIncrement,
@@ -204,10 +216,10 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 						0.
 					)
 				),
-<span class="nc" id="L207">				org.drip.measure.realization.JumpDiffusionEdge.Standard (</span>
+<span class="nc" id="L219">				org.drip.measure.realization.JumpDiffusionEdge.Standard (</span>
 					adblVariatePair[1],
 					-1. * adblVariatePair[1] / dblRelaxationTime1 * dblTimeIncrement,
-<span class="nc" id="L210">					_deouDerived.burstiness() * adblDiffusionPair[1] * java.lang.Math.sqrt (dblTimeIncrement / dblRelaxationTime1),</span>
+<span class="nc" id="L222">					_deouDerived.burstiness() * adblDiffusionPair[1] * java.lang.Math.sqrt (dblTimeIncrement / dblRelaxationTime1),</span>
 					null,
 					new org.drip.measure.realization.JumpDiffusionEdgeUnit (
 						dblTimeIncrement,
@@ -216,11 +228,11 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 					)
 				)
 			};
-<span class="nc" id="L219">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L220">			e.printStackTrace();</span>
+<span class="nc" id="L231">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L232">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L223">		return null;</span>
+<span class="nc" id="L235">		return null;</span>
 	}
 
 	/**
@@ -239,31 +251,31 @@ public class OrnsteinUhlenbeckPair implements org.drip.measure.process.OrnsteinU
 		final double dblTimeIncrement)
 	{
 		try {
-<span class="nc" id="L242">			double dblFirstWeiner = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+<span class="nc" id="L254">			double dblFirstWeiner = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
 
-<span class="nc" id="L244">			return increment (adblVariatePair, new double[] {dblFirstWeiner, dblFirstWeiner * _dblCorrelation</span>
-<span class="nc" id="L245">				+ org.drip.measure.gaussian.NormalQuadrature.Random() * java.lang.Math.sqrt (1. -</span>
+<span class="nc" id="L256">			return increment (adblVariatePair, new double[] {dblFirstWeiner, dblFirstWeiner * _dblCorrelation</span>
+<span class="nc" id="L257">				+ org.drip.measure.gaussian.NormalQuadrature.Random() * java.lang.Math.sqrt (1. -</span>
 					_dblCorrelation * _dblCorrelation)}, dblTimeIncrement);
-<span class="nc" id="L247">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L248">			e.printStackTrace();</span>
+<span class="nc" id="L259">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L260">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L251">		return null;</span>
+<span class="nc" id="L263">		return null;</span>
 	}
 
 	@Override public double referenceRelaxationTime()
 	{
-<span class="nc" id="L256">		return _deouReference.relaxationTime();</span>
+<span class="nc" id="L268">		return _deouReference.relaxationTime();</span>
 	}
 
 	@Override public double referenceBurstiness()
 	{
-<span class="nc" id="L261">		return _deouReference.burstiness();</span>
+<span class="nc" id="L273">		return _deouReference.burstiness();</span>
 	}
 
 	@Override public double referenceMeanReversionLevel()
 	{
-<span class="nc" id="L266">		return _deouReference.meanReversionLevel();</span>
+<span class="nc" id="L278">		return _deouReference.meanReversionLevel();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

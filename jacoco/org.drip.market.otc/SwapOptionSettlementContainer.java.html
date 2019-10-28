@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,17 +85,17 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class SwapOptionSettlementContainer {</span>
-<span class="fc" id="L86">	private static java.util.Map&lt;java.lang.String, org.drip.market.otc.SwapOptionSettlement&gt; _mapConvention =</span>
+<span class="nc" id="L97">public class SwapOptionSettlementContainer {</span>
+<span class="fc" id="L98">	private static java.util.Map&lt;java.lang.String, org.drip.market.otc.SwapOptionSettlement&gt; _mapConvention =</span>
 		null;
 
 	/**
@@ -96,51 +108,51 @@ package org.drip.market.otc;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L99" title="All 2 branches covered.">		if (null != _mapConvention) return true;</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		if (null != _mapConvention) return true;</span>
 
-<span class="fc" id="L101">		_mapConvention = new java.util.TreeMap&lt;java.lang.String, org.drip.market.otc.SwapOptionSettlement&gt;();</span>
+<span class="fc" id="L113">		_mapConvention = new java.util.TreeMap&lt;java.lang.String, org.drip.market.otc.SwapOptionSettlement&gt;();</span>
 
 		try {
-<span class="fc" id="L104">			_mapConvention.put (&quot;AUD&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L116">			_mapConvention.put (&quot;AUD&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_PHYSICAL_DELIVERY, 0));
 
-<span class="fc" id="L107">			_mapConvention.put (&quot;CHF&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L119">			_mapConvention.put (&quot;CHF&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR));
 
-<span class="fc" id="L111">			_mapConvention.put (&quot;DKK&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L123">			_mapConvention.put (&quot;DKK&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR));
 
-<span class="fc" id="L115">			_mapConvention.put (&quot;EUR&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L127">			_mapConvention.put (&quot;EUR&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR));
 
-<span class="fc" id="L119">			_mapConvention.put (&quot;GBP&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L131">			_mapConvention.put (&quot;GBP&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR));
 
-<span class="fc" id="L123">			_mapConvention.put (&quot;JPY&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L135">			_mapConvention.put (&quot;JPY&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_PHYSICAL_DELIVERY, 0));
 
-<span class="fc" id="L126">			_mapConvention.put (&quot;NOK&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L138">			_mapConvention.put (&quot;NOK&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR));
 
-<span class="fc" id="L130">			_mapConvention.put (&quot;USD&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L142">			_mapConvention.put (&quot;USD&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_EXACT_CURVE));
 
-<span class="fc" id="L134">			_mapConvention.put (&quot;SEK&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
+<span class="fc" id="L146">			_mapConvention.put (&quot;SEK&quot;, new org.drip.market.otc.SwapOptionSettlement</span>
 				(org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_TYPE_CASH_SETTLED,
 					org.drip.market.otc.SwapOptionSettlement.SETTLEMENT_QUOTE_IRR));
-<span class="nc" id="L137">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L149">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L150">			e.printStackTrace();</span>
 
-<span class="nc" id="L140">			return false;</span>
-<span class="fc" id="L141">		}</span>
+<span class="nc" id="L152">			return false;</span>
+<span class="fc" id="L153">		}</span>
 
-<span class="fc" id="L143">		return true;</span>
+<span class="fc" id="L155">		return true;</span>
 	}
 
 	/**
@@ -154,8 +166,8 @@ package org.drip.market.otc;
 	public static final org.drip.market.otc.SwapOptionSettlement ConventionFromJurisdiction (
 		final java.lang.String strJurisdictionName)
 	{
-<span class="pc bpc" id="L157" title="2 of 4 branches missed.">		return null == strJurisdictionName || strJurisdictionName.isEmpty() || !_mapConvention.containsKey</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">			(strJurisdictionName) ? null : _mapConvention.get (strJurisdictionName);</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">		return null == strJurisdictionName || strJurisdictionName.isEmpty() || !_mapConvention.containsKey</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			(strJurisdictionName) ? null : _mapConvention.get (strJurisdictionName);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.measure.discrete;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,16 +108,16 @@ package org.drip.measure.discrete;
  * 
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete&quot;&gt;Discrete&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete&quot;&gt;Antithetic, Quadratically Re-sampled, De-biased Distribution&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L108">public class SequenceGenerator</span>
+<span class="nc" id="L120">public class SequenceGenerator</span>
 {
 
 	/**
@@ -119,14 +131,14 @@ package org.drip.measure.discrete;
 	public static final double[] Uniform (
 		final int iCount)
 	{
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L124">		double[] adblRandom = new double[iCount];</span>
+<span class="fc" id="L136">		double[] adblRandom = new double[iCount];</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i)</span>
-<span class="fc" id="L127">			adblRandom[i] = java.lang.Math.random();</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i)</span>
+<span class="fc" id="L139">			adblRandom[i] = java.lang.Math.random();</span>
 
-<span class="fc" id="L129">		return adblRandom;</span>
+<span class="fc" id="L141">		return adblRandom;</span>
 	}
 
 	/**
@@ -140,21 +152,21 @@ package org.drip.measure.discrete;
 	public static final double[] Gaussian (
 		final int iCount)
 	{
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L145">		double[] adblRandom = new double[iCount];</span>
+<span class="fc" id="L157">		double[] adblRandom = new double[iCount];</span>
 
-<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">		for (int i = 0; i &lt; iCount; ++i) {</span>
 			try {
-<span class="fc" id="L149">				adblRandom[i] = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
-<span class="nc" id="L150">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L151">				e.printStackTrace();</span>
+<span class="fc" id="L161">				adblRandom[i] = org.drip.measure.gaussian.NormalQuadrature.Random();</span>
+<span class="nc" id="L162">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L163">				e.printStackTrace();</span>
 
-<span class="nc" id="L153">				return null;</span>
-<span class="fc" id="L154">			}</span>
+<span class="nc" id="L165">				return null;</span>
+<span class="fc" id="L166">			}</span>
 		}
 
-<span class="fc" id="L157">		return adblRandom;</span>
+<span class="fc" id="L169">		return adblRandom;</span>
 	}
 
 	/**
@@ -168,24 +180,24 @@ package org.drip.measure.discrete;
 	public static final double[] LogNormal (
 		final int iCount)
 	{
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="nc" id="L173">		double[] adblRandom = new double[iCount];</span>
+<span class="nc" id="L185">		double[] adblRandom = new double[iCount];</span>
 
-<span class="nc" id="L175">		double dblNormalizer = 1. / java.lang.Math.sqrt (java.lang.Math.E);</span>
+<span class="nc" id="L187">		double dblNormalizer = 1. / java.lang.Math.sqrt (java.lang.Math.E);</span>
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (int i = 0; i &lt; iCount; ++i) {</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">		for (int i = 0; i &lt; iCount; ++i) {</span>
 			try {
-<span class="nc" id="L179">				adblRandom[i] = java.lang.Math.exp (org.drip.measure.gaussian.NormalQuadrature.Random()) *</span>
+<span class="nc" id="L191">				adblRandom[i] = java.lang.Math.exp (org.drip.measure.gaussian.NormalQuadrature.Random()) *</span>
 					dblNormalizer;
-<span class="nc" id="L181">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L182">				e.printStackTrace();</span>
+<span class="nc" id="L193">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L194">				e.printStackTrace();</span>
 
-<span class="nc" id="L184">				return null;</span>
-<span class="nc" id="L185">			}</span>
+<span class="nc" id="L196">				return null;</span>
+<span class="nc" id="L197">			}</span>
 		}
 
-<span class="nc" id="L188">		return adblRandom;</span>
+<span class="nc" id="L200">		return adblRandom;</span>
 	}
 
 	/**
@@ -201,34 +213,34 @@ package org.drip.measure.discrete;
 		final int iCount,
 		final double[][] aadblCorrelation)
 	{
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">		if (0 &gt;= iCount) return null;</span>
 
-<span class="fc" id="L206">		double[][] aadblCholesky = org.drip.numerical.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
-<span class="fc" id="L207">			(aadblCorrelation);</span>
+<span class="fc" id="L218">		double[][] aadblCholesky = org.drip.numerical.linearalgebra.Matrix.CholeskyBanachiewiczFactorization</span>
+<span class="fc" id="L219">			(aadblCorrelation);</span>
 
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">		if (null == aadblCholesky) return null;</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">		if (null == aadblCholesky) return null;</span>
 
-<span class="fc" id="L211">		int iDimension = aadblCholesky.length;</span>
-<span class="fc" id="L212">		double[][] aadblRandom = new double[iCount][];</span>
+<span class="fc" id="L223">		int iDimension = aadblCholesky.length;</span>
+<span class="fc" id="L224">		double[][] aadblRandom = new double[iCount][];</span>
 
-<span class="fc bfc" id="L214" title="All 2 branches covered.">		for (int k = 0; k &lt; iCount; ++k) {</span>
-<span class="fc" id="L215">			double[] adblUncorrelatedRandom = Gaussian (iDimension);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">		for (int k = 0; k &lt; iCount; ++k) {</span>
+<span class="fc" id="L227">			double[] adblUncorrelatedRandom = Gaussian (iDimension);</span>
 
-<span class="pc bpc" id="L217" title="2 of 4 branches missed.">			if (null == adblUncorrelatedRandom || iDimension != adblUncorrelatedRandom.length) return null;</span>
+<span class="pc bpc" id="L229" title="2 of 4 branches missed.">			if (null == adblUncorrelatedRandom || iDimension != adblUncorrelatedRandom.length) return null;</span>
 
-<span class="fc" id="L219">			double[] adblCorrelatedRandom = new double[iDimension];</span>
+<span class="fc" id="L231">			double[] adblCorrelatedRandom = new double[iDimension];</span>
 
-<span class="fc bfc" id="L221" title="All 2 branches covered.">			for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="fc" id="L222">				adblCorrelatedRandom[i] = 0.;</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">			for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="fc" id="L234">				adblCorrelatedRandom[i] = 0.;</span>
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">				for (int j = 0; j &lt; iDimension; ++j)</span>
-<span class="fc" id="L225">					adblCorrelatedRandom[i] += aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">				for (int j = 0; j &lt; iDimension; ++j)</span>
+<span class="fc" id="L237">					adblCorrelatedRandom[i] += aadblCholesky[i][j] * adblUncorrelatedRandom[j];</span>
 			}
 
-<span class="fc" id="L228">			aadblRandom[k] = adblCorrelatedRandom;</span>
+<span class="fc" id="L240">			aadblRandom[k] = adblCorrelatedRandom;</span>
 		}
 
-<span class="fc" id="L231">		return aadblRandom;</span>
+<span class="fc" id="L243">		return aadblRandom;</span>
 	}
 
 	/**
@@ -244,39 +256,39 @@ package org.drip.measure.discrete;
 		final int count,
 		final int degreesOfFreedom)
 	{
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (0 &gt;= degreesOfFreedom)</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">		if (0 &gt;= degreesOfFreedom)</span>
 		{
-<span class="nc" id="L249">			return null;</span>
+<span class="nc" id="L261">			return null;</span>
 		}
 
-<span class="nc" id="L252">		double[] chiSquaredArray = new double[count];</span>
+<span class="nc" id="L264">		double[] chiSquaredArray = new double[count];</span>
 
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L256">			double sumOfStandardNormalSquares = 0.;</span>
+<span class="nc" id="L268">			double sumOfStandardNormalSquares = 0.;</span>
 
-<span class="nc bnc" id="L258" title="All 2 branches missed.">			for (int drawIndex = 0; drawIndex &lt; degreesOfFreedom; ++drawIndex)</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">			for (int drawIndex = 0; drawIndex &lt; degreesOfFreedom; ++drawIndex)</span>
 			{
 				try
 				{
 					double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-<span class="nc" id="L263">						(java.lang.Math.random());</span>
+<span class="nc" id="L275">						(java.lang.Math.random());</span>
 
-<span class="nc" id="L265">					sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
+<span class="nc" id="L277">					sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
 						randomStandardNormal * randomStandardNormal;
 				}
-<span class="nc" id="L268">				catch (java.lang.Exception e)</span>
+<span class="nc" id="L280">				catch (java.lang.Exception e)</span>
 				{
-<span class="nc" id="L270">					e.printStackTrace();</span>
+<span class="nc" id="L282">					e.printStackTrace();</span>
 
-<span class="nc" id="L272">					return null;</span>
-<span class="nc" id="L273">				}</span>
+<span class="nc" id="L284">					return null;</span>
+<span class="nc" id="L285">				}</span>
 			}
 
-<span class="nc" id="L276">			chiSquaredArray[index] = sumOfStandardNormalSquares;</span>
+<span class="nc" id="L288">			chiSquaredArray[index] = sumOfStandardNormalSquares;</span>
 		}
 
-<span class="nc" id="L279">		return chiSquaredArray;</span>
+<span class="nc" id="L291">		return chiSquaredArray;</span>
 	}
 
 	/**
@@ -294,29 +306,29 @@ package org.drip.measure.discrete;
 		final int degreesOfFreedom,
 		final double scale)
 	{
-<span class="nc bnc" id="L297" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (scale) || 0. &gt;= scale)</span>
+<span class="nc bnc" id="L309" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (scale) || 0. &gt;= scale)</span>
 		{
-<span class="nc" id="L299">			return null;</span>
+<span class="nc" id="L311">			return null;</span>
 		}
 
-<span class="nc" id="L302">		double[] chiSquaredArray =  ChiSquared (</span>
+<span class="nc" id="L314">		double[] chiSquaredArray =  ChiSquared (</span>
 			count,
 			degreesOfFreedom
 		);
 
-<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
 		{
-<span class="nc" id="L309">			return null;</span>
+<span class="nc" id="L321">			return null;</span>
 		}
 
-<span class="nc" id="L312">		double[] scaledGammaArray = new double[count];</span>
+<span class="nc" id="L324">		double[] scaledGammaArray = new double[count];</span>
 
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L316">			scaledGammaArray[index] = scale * chiSquaredArray[index];</span>
+<span class="nc" id="L328">			scaledGammaArray[index] = scale * chiSquaredArray[index];</span>
 		}
 
-<span class="nc" id="L319">		return scaledGammaArray;</span>
+<span class="nc" id="L331">		return scaledGammaArray;</span>
 	}
 
 	/**
@@ -332,24 +344,24 @@ package org.drip.measure.discrete;
 		final int count,
 		final int degreesOfFreedom)
 	{
-<span class="nc" id="L335">		double[] chiSquaredArray =  ChiSquared (</span>
+<span class="nc" id="L347">		double[] chiSquaredArray =  ChiSquared (</span>
 			count,
 			degreesOfFreedom
 		);
 
-<span class="nc bnc" id="L340" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
 		{
-<span class="nc" id="L342">			return null;</span>
+<span class="nc" id="L354">			return null;</span>
 		}
 
-<span class="nc" id="L345">		double[] chiArray = new double[count];</span>
+<span class="nc" id="L357">		double[] chiArray = new double[count];</span>
 
-<span class="nc bnc" id="L347" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L349">			chiArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
+<span class="nc" id="L361">			chiArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
 		}
 
-<span class="nc" id="L352">		return chiArray;</span>
+<span class="nc" id="L364">		return chiArray;</span>
 	}
 
 	/**
@@ -363,24 +375,24 @@ package org.drip.measure.discrete;
 	public static final double[] UnitScaleRayleigh (
 		final int count)
 	{
-<span class="nc" id="L366">		double[] chiSquaredArray =  ChiSquared (</span>
+<span class="nc" id="L378">		double[] chiSquaredArray =  ChiSquared (</span>
 			count,
 			2
 		);
 
-<span class="nc bnc" id="L371" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
 		{
-<span class="nc" id="L373">			return null;</span>
+<span class="nc" id="L385">			return null;</span>
 		}
 
-<span class="nc" id="L376">		double[] unitScaleRayleighArray = new double[count];</span>
+<span class="nc" id="L388">		double[] unitScaleRayleighArray = new double[count];</span>
 
-<span class="nc bnc" id="L378" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L380">			unitScaleRayleighArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
+<span class="nc" id="L392">			unitScaleRayleighArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
 		}
 
-<span class="nc" id="L383">		return unitScaleRayleighArray;</span>
+<span class="nc" id="L395">		return unitScaleRayleighArray;</span>
 	}
 
 	/**
@@ -394,24 +406,24 @@ package org.drip.measure.discrete;
 	public static final double[] UnitScaleMaxwell (
 		final int count)
 	{
-<span class="nc" id="L397">		double[] chiSquaredArray =  ChiSquared (</span>
+<span class="nc" id="L409">		double[] chiSquaredArray =  ChiSquared (</span>
 			count,
 			3
 		);
 
-<span class="nc bnc" id="L402" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
 		{
-<span class="nc" id="L404">			return null;</span>
+<span class="nc" id="L416">			return null;</span>
 		}
 
-<span class="nc" id="L407">		double[] unitScaleMaxwellArray = new double[count];</span>
+<span class="nc" id="L419">		double[] unitScaleMaxwellArray = new double[count];</span>
 
-<span class="nc bnc" id="L409" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L411">			unitScaleMaxwellArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
+<span class="nc" id="L423">			unitScaleMaxwellArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);</span>
 		}
 
-<span class="nc" id="L414">		return unitScaleMaxwellArray;</span>
+<span class="nc" id="L426">		return unitScaleMaxwellArray;</span>
 	}
 
 	/**
@@ -427,24 +439,24 @@ package org.drip.measure.discrete;
 		final int count,
 		final int degreesOfFreedom)
 	{
-<span class="nc" id="L430">		double[] chiSquaredArray =  ChiSquared (</span>
+<span class="nc" id="L442">		double[] chiSquaredArray =  ChiSquared (</span>
 			count,
 			degreesOfFreedom
 		);
 
-<span class="nc bnc" id="L435" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">		if (null == chiSquaredArray)</span>
 		{
-<span class="nc" id="L437">			return null;</span>
+<span class="nc" id="L449">			return null;</span>
 		}
 
-<span class="nc" id="L440">		double[] inverseChiSquaredArray = new double[count];</span>
+<span class="nc" id="L452">		double[] inverseChiSquaredArray = new double[count];</span>
 
-<span class="nc bnc" id="L442" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L444">			inverseChiSquaredArray[index] = 1. / chiSquaredArray[index];</span>
+<span class="nc" id="L456">			inverseChiSquaredArray[index] = 1. / chiSquaredArray[index];</span>
 		}
 
-<span class="nc" id="L447">		return inverseChiSquaredArray;</span>
+<span class="nc" id="L459">		return inverseChiSquaredArray;</span>
 	}
 
 	/**
@@ -462,29 +474,29 @@ package org.drip.measure.discrete;
 		final int degreesOfFreedom1,
 		final int degreesOfFreedom2)
 	{
-<span class="nc" id="L465">		double[] chiSquaredArray1 = ChiSquared (</span>
+<span class="nc" id="L477">		double[] chiSquaredArray1 = ChiSquared (</span>
 			count,
 			degreesOfFreedom1
 		);
 
-<span class="nc" id="L470">		double[] chiSquaredArray2 = ChiSquared (</span>
+<span class="nc" id="L482">		double[] chiSquaredArray2 = ChiSquared (</span>
 			count,
 			degreesOfFreedom2
 		);
 
-<span class="nc bnc" id="L475" title="All 4 branches missed.">		if (null == chiSquaredArray1 || null == chiSquaredArray2)</span>
+<span class="nc bnc" id="L487" title="All 4 branches missed.">		if (null == chiSquaredArray1 || null == chiSquaredArray2)</span>
 		{
-<span class="nc" id="L477">			return null;</span>
+<span class="nc" id="L489">			return null;</span>
 		}
 
-<span class="nc" id="L480">		double[] betaArray = new double[count];</span>
+<span class="nc" id="L492">		double[] betaArray = new double[count];</span>
 
-<span class="nc bnc" id="L482" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L484">			betaArray[index] = chiSquaredArray1[index] / (chiSquaredArray1[index] + chiSquaredArray2[index]);</span>
+<span class="nc" id="L496">			betaArray[index] = chiSquaredArray1[index] / (chiSquaredArray1[index] + chiSquaredArray2[index]);</span>
 		}
 
-<span class="nc" id="L487">		return betaArray;</span>
+<span class="nc" id="L499">		return betaArray;</span>
 	}
 
 	/**
@@ -502,30 +514,30 @@ package org.drip.measure.discrete;
 		final int degreesOfFreedom1,
 		final int degreesOfFreedom2)
 	{
-<span class="nc" id="L505">		double[] chiSquaredArray1 = ChiSquared (</span>
+<span class="nc" id="L517">		double[] chiSquaredArray1 = ChiSquared (</span>
 			count,
 			degreesOfFreedom1
 		);
 
-<span class="nc" id="L510">		double[] chiSquaredArray2 = ChiSquared (</span>
+<span class="nc" id="L522">		double[] chiSquaredArray2 = ChiSquared (</span>
 			count,
 			degreesOfFreedom2
 		);
 
-<span class="nc bnc" id="L515" title="All 4 branches missed.">		if (null == chiSquaredArray1 || null == chiSquaredArray2)</span>
+<span class="nc bnc" id="L527" title="All 4 branches missed.">		if (null == chiSquaredArray1 || null == chiSquaredArray2)</span>
 		{
-<span class="nc" id="L517">			return null;</span>
+<span class="nc" id="L529">			return null;</span>
 		}
 
-<span class="nc" id="L520">		double[] fArray = new double[count];</span>
+<span class="nc" id="L532">		double[] fArray = new double[count];</span>
 
-<span class="nc bnc" id="L522" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L524">			fArray[index] = (chiSquaredArray1[index] * degreesOfFreedom2) /</span>
+<span class="nc" id="L536">			fArray[index] = (chiSquaredArray1[index] * degreesOfFreedom2) /</span>
 				(chiSquaredArray2[index] * degreesOfFreedom1);
 		}
 
-<span class="nc" id="L528">		return fArray;</span>
+<span class="nc" id="L540">		return fArray;</span>
 	}
 
 	/**
@@ -541,53 +553,53 @@ package org.drip.measure.discrete;
 		final int count,
 		final double[][] covarianceMatrix)
 	{
-<span class="nc" id="L544">		double[] rankReducedChiSquare = new double[count];</span>
-<span class="nc" id="L545">		org.drip.measure.gaussian.Covariance covariance = null;</span>
+<span class="nc" id="L556">		double[] rankReducedChiSquare = new double[count];</span>
+<span class="nc" id="L557">		org.drip.measure.gaussian.Covariance covariance = null;</span>
 
 		try
 		{
-<span class="nc" id="L549">			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
+<span class="nc" id="L561">			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
 		}
-<span class="nc" id="L551">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L563">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L553">			e.printStackTrace();</span>
+<span class="nc" id="L565">			e.printStackTrace();</span>
 
-<span class="nc" id="L555">			return null;</span>
-<span class="nc" id="L556">		}</span>
+<span class="nc" id="L567">			return null;</span>
+<span class="nc" id="L568">		}</span>
 
-<span class="nc" id="L558">		double[][] gaussianJointArray = GaussianJoint (</span>
+<span class="nc" id="L570">		double[][] gaussianJointArray = GaussianJoint (</span>
 			count,
-<span class="nc" id="L560">			covariance.correlationMatrix()</span>
+<span class="nc" id="L572">			covariance.correlationMatrix()</span>
 		);
 
-<span class="nc bnc" id="L563" title="All 2 branches missed.">		if (null == gaussianJointArray)</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">		if (null == gaussianJointArray)</span>
 		{
-<span class="nc" id="L565">			return null;</span>
+<span class="nc" id="L577">			return null;</span>
 		}
 
-<span class="nc" id="L568">		double[][] precisionMatrix = covariance.precisionMatrix();</span>
+<span class="nc" id="L580">		double[][] precisionMatrix = covariance.precisionMatrix();</span>
 
-<span class="nc bnc" id="L570" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L582" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
 			try
 			{
-<span class="nc" id="L574">				rankReducedChiSquare[index] = org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+<span class="nc" id="L586">				rankReducedChiSquare[index] = org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
 					gaussianJointArray[index],
-<span class="nc" id="L576">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="nc" id="L588">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
 						precisionMatrix,
 						gaussianJointArray[index]
 					)
 				);
 			}
-<span class="nc" id="L582">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L594">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L584">				e.printStackTrace();</span>
+<span class="nc" id="L596">				e.printStackTrace();</span>
 
-<span class="nc" id="L586">				return null;</span>
-<span class="nc" id="L587">			}</span>
+<span class="nc" id="L598">				return null;</span>
+<span class="nc" id="L599">			}</span>
 		}
 
-<span class="nc" id="L590">		return rankReducedChiSquare;</span>
+<span class="nc" id="L602">		return rankReducedChiSquare;</span>
 	}
 
 
@@ -606,70 +618,70 @@ package org.drip.measure.discrete;
 		final double[][] covarianceMatrix,
 		final double[] weightArray)
 	{
-<span class="nc bnc" id="L609" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.NormalizedPositive (weightArray))</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.NormalizedPositive (weightArray))</span>
 		{
-<span class="nc" id="L611">			return null;</span>
+<span class="nc" id="L623">			return null;</span>
 		}
 
-<span class="nc" id="L614">		int pillaiVectorSize = weightArray.length;</span>
-<span class="nc" id="L615">		double[] pillaiSpecialChiSquare = new double[count];</span>
-<span class="nc" id="L616">		org.drip.measure.gaussian.Covariance covariance = null;</span>
+<span class="nc" id="L626">		int pillaiVectorSize = weightArray.length;</span>
+<span class="nc" id="L627">		double[] pillaiSpecialChiSquare = new double[count];</span>
+<span class="nc" id="L628">		org.drip.measure.gaussian.Covariance covariance = null;</span>
 
 		try
 		{
-<span class="nc" id="L620">			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
+<span class="nc" id="L632">			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
 		}
-<span class="nc" id="L622">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L634">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L624">			e.printStackTrace();</span>
+<span class="nc" id="L636">			e.printStackTrace();</span>
 
-<span class="nc" id="L626">			return null;</span>
-<span class="nc" id="L627">		}</span>
+<span class="nc" id="L638">			return null;</span>
+<span class="nc" id="L639">		}</span>
 
-<span class="nc bnc" id="L629" title="All 2 branches missed.">		if (pillaiVectorSize != covarianceMatrix.length)</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">		if (pillaiVectorSize != covarianceMatrix.length)</span>
 		{
-<span class="nc" id="L631">			return null;</span>
+<span class="nc" id="L643">			return null;</span>
 		}
 
-<span class="nc" id="L634">		double[][] gaussianJointArray = GaussianJoint (</span>
+<span class="nc" id="L646">		double[][] gaussianJointArray = GaussianJoint (</span>
 			count,
-<span class="nc" id="L636">			covariance.correlationMatrix()</span>
+<span class="nc" id="L648">			covariance.correlationMatrix()</span>
 		);
 
-<span class="nc bnc" id="L639" title="All 2 branches missed.">		if (null == gaussianJointArray)</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">		if (null == gaussianJointArray)</span>
 		{
-<span class="nc" id="L641">			return null;</span>
+<span class="nc" id="L653">			return null;</span>
 		}
 
-<span class="nc bnc" id="L644" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
+<span class="nc bnc" id="L656" title="All 2 branches missed.">		for (int index = 0; index &lt; count; ++index)</span>
 		{
-<span class="nc" id="L646">			double[] pillaiVector = new double[pillaiVectorSize];</span>
+<span class="nc" id="L658">			double[] pillaiVector = new double[pillaiVectorSize];</span>
 
-<span class="nc bnc" id="L648" title="All 2 branches missed.">			for (int pillaiVectorIndex = 0; pillaiVectorIndex &lt; pillaiVectorSize; ++pillaiVectorIndex)</span>
+<span class="nc bnc" id="L660" title="All 2 branches missed.">			for (int pillaiVectorIndex = 0; pillaiVectorIndex &lt; pillaiVectorSize; ++pillaiVectorIndex)</span>
 			{
-<span class="nc" id="L650">				pillaiVector[pillaiVectorIndex] = weightArray[pillaiVectorIndex] /</span>
+<span class="nc" id="L662">				pillaiVector[pillaiVectorIndex] = weightArray[pillaiVectorIndex] /</span>
 					gaussianJointArray[index][pillaiVectorIndex];
 			}
 
 			try
 			{
-<span class="nc" id="L656">				pillaiSpecialChiSquare[index] = 1. / org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
+<span class="nc" id="L668">				pillaiSpecialChiSquare[index] = 1. / org.drip.numerical.linearalgebra.Matrix.DotProduct (</span>
 					pillaiVector,
-<span class="nc" id="L658">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="nc" id="L670">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
 						covarianceMatrix,
 						pillaiVector
 					)
 				);
 			}
-<span class="nc" id="L664">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L676">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L666">				e.printStackTrace();</span>
+<span class="nc" id="L678">				e.printStackTrace();</span>
 
-<span class="nc" id="L668">				return null;</span>
-<span class="nc" id="L669">			}</span>
+<span class="nc" id="L680">				return null;</span>
+<span class="nc" id="L681">			}</span>
 		}
 
-<span class="nc" id="L672">		return pillaiSpecialChiSquare;</span>
+<span class="nc" id="L684">		return pillaiSpecialChiSquare;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

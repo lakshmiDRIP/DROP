@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,23 +84,23 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class FloatFloatSwapConvention {
-<span class="fc" id="L85">	private int _iSpotLag = -1;</span>
-<span class="fc" id="L86">	private boolean _bIsComponentPair = false;</span>
-<span class="fc" id="L87">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="fc" id="L88">	private boolean _bBasisOnDerivedStream = true;</span>
-<span class="fc" id="L89">	private boolean _bBasisOnDerivedComponent = true;</span>
-<span class="fc" id="L90">	private java.lang.String _strReferenceTenor = &quot;&quot;;</span>
-<span class="fc" id="L91">	private boolean _bIsDerivedCompoundedToReference = true;</span>
+<span class="fc" id="L97">	private int _iSpotLag = -1;</span>
+<span class="fc" id="L98">	private boolean _bIsComponentPair = false;</span>
+<span class="fc" id="L99">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L100">	private boolean _bBasisOnDerivedStream = true;</span>
+<span class="fc" id="L101">	private boolean _bBasisOnDerivedComponent = true;</span>
+<span class="fc" id="L102">	private java.lang.String _strReferenceTenor = &quot;&quot;;</span>
+<span class="fc" id="L103">	private boolean _bIsDerivedCompoundedToReference = true;</span>
 
 	private org.drip.product.rates.FixFloatComponent fixFloatComponent (
 		final org.drip.analytics.date.JulianDate dtEffective,
@@ -98,57 +110,57 @@ public class FloatFloatSwapConvention {
 		final double dblBasis,
 		final double dblNotional)
 	{
-<span class="fc" id="L101">		org.drip.market.otc.FixedFloatSwapConvention ffConv =</span>
-<span class="fc" id="L102">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (_strCurrency);</span>
+<span class="fc" id="L113">		org.drip.market.otc.FixedFloatSwapConvention ffConv =</span>
+<span class="fc" id="L114">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (_strCurrency);</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == ffConv) return null;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == ffConv) return null;</span>
 
-<span class="fc" id="L106">		org.drip.market.otc.FixedStreamConvention fixedConv = ffConv.fixedStreamConvention();</span>
+<span class="fc" id="L118">		org.drip.market.otc.FixedStreamConvention fixedConv = ffConv.fixedStreamConvention();</span>
 
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		org.drip.product.rates.Stream streamFixed = fixedConv.createStream (dtEffective, strMaturityTenor,</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		org.drip.product.rates.Stream streamFixed = fixedConv.createStream (dtEffective, strMaturityTenor,</span>
 			dblFixedCoupon + (_bBasisOnDerivedStream ? 0. : dblBasis), dblNotional);
 
-<span class="fc" id="L111">		org.drip.state.identifier.ForwardLabel forwardLabel = org.drip.state.identifier.ForwardLabel.Create</span>
-<span class="fc" id="L112">			(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency),</span>
+<span class="fc" id="L123">		org.drip.state.identifier.ForwardLabel forwardLabel = org.drip.state.identifier.ForwardLabel.Create</span>
+<span class="fc" id="L124">			(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency),</span>
 				strFloaterTenor);
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		java.lang.String strFloaterTenorComposite = _bIsDerivedCompoundedToReference ?</span>
-<span class="pc" id="L116">			fixedConv.compositePeriodTenor() : strFloaterTenor;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		java.lang.String strFloaterTenorComposite = _bIsDerivedCompoundedToReference ?</span>
+<span class="pc" id="L128">			fixedConv.compositePeriodTenor() : strFloaterTenor;</span>
 
 		try {
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strFloaterTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
 						forwardLabel,
 							org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 								_bBasisOnDerivedStream ? dblBasis : 0.);
 
-<span class="fc" id="L126">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L138">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting
-<span class="fc" id="L128">					(org.drip.analytics.support.Helper.TenorToFreq (strFloaterTenorComposite),</span>
+<span class="fc" id="L140">					(org.drip.analytics.support.Helper.TenorToFreq (strFloaterTenorComposite),</span>
 						strFloaterTenorComposite, _strCurrency, null, -1. * dblNotional, null, null, null,
 							null);
 
-<span class="fc" id="L132">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate =</span>
-<span class="fc" id="L133">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc" id="L144">			java.util.List&lt;java.lang.Integer&gt; lsEdgeDate =</span>
+<span class="fc" id="L145">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 					strFloaterTenorComposite, strMaturityTenor, null);
 
-<span class="fc" id="L136">			org.drip.product.rates.Stream streamFloater = new org.drip.product.rates.Stream</span>
-<span class="fc" id="L137">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsEdgeDate, cps,</span>
+<span class="fc" id="L148">			org.drip.product.rates.Stream streamFloater = new org.drip.product.rates.Stream</span>
+<span class="fc" id="L149">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsEdgeDate, cps,</span>
 					cfus));
 
-<span class="fc" id="L140">			org.drip.product.rates.FixFloatComponent ffc = new org.drip.product.rates.FixFloatComponent</span>
+<span class="fc" id="L152">			org.drip.product.rates.FixFloatComponent ffc = new org.drip.product.rates.FixFloatComponent</span>
 				(streamFixed, streamFloater, null);
 
-<span class="fc" id="L143">			ffc.setPrimaryCode (&quot;IRS::&quot; + ffc.forwardLabel().get (&quot;DERIVED&quot;).fullyQualifiedName() + &quot;.&quot; +</span>
+<span class="fc" id="L155">			ffc.setPrimaryCode (&quot;IRS::&quot; + ffc.forwardLabel().get (&quot;DERIVED&quot;).fullyQualifiedName() + &quot;.&quot; +</span>
 				strMaturityTenor);
 
-<span class="fc" id="L146">			return ffc;</span>
-<span class="nc" id="L147">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">			e.printStackTrace();</span>
+<span class="fc" id="L158">			return ffc;</span>
+<span class="nc" id="L159">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L160">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L151">		return null;</span>
+<span class="nc" id="L163">		return null;</span>
 	}
 
 	/**
@@ -174,16 +186,16 @@ public class FloatFloatSwapConvention {
 		final boolean bIsComponentPair,
 		final int iSpotLag)
 		throws java.lang.Exception
-<span class="fc" id="L177">	{</span>
-<span class="pc bpc" id="L178" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strReferenceTenor =</span>
-<span class="pc bpc" id="L179" title="2 of 4 branches missed.">			strReferenceTenor) || _strReferenceTenor.isEmpty() || 0 &gt; (_iSpotLag = iSpotLag))</span>
-<span class="nc" id="L180">			throw new java.lang.Exception (&quot;FloatFloatSwapConvention ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L189">	{</span>
+<span class="pc bpc" id="L190" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strReferenceTenor =</span>
+<span class="pc bpc" id="L191" title="2 of 4 branches missed.">			strReferenceTenor) || _strReferenceTenor.isEmpty() || 0 &gt; (_iSpotLag = iSpotLag))</span>
+<span class="nc" id="L192">			throw new java.lang.Exception (&quot;FloatFloatSwapConvention ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L182">		_bIsComponentPair = bIsComponentPair;</span>
-<span class="fc" id="L183">		_bBasisOnDerivedStream = bBasisOnDerivedStream;</span>
-<span class="fc" id="L184">		_bBasisOnDerivedComponent = bBasisOnDerivedComponent;</span>
-<span class="fc" id="L185">		_bIsDerivedCompoundedToReference = bIsDerivedCompoundedToReference;</span>
-<span class="fc" id="L186">	}</span>
+<span class="fc" id="L194">		_bIsComponentPair = bIsComponentPair;</span>
+<span class="fc" id="L195">		_bBasisOnDerivedStream = bBasisOnDerivedStream;</span>
+<span class="fc" id="L196">		_bBasisOnDerivedComponent = bBasisOnDerivedComponent;</span>
+<span class="fc" id="L197">		_bIsDerivedCompoundedToReference = bIsDerivedCompoundedToReference;</span>
+<span class="fc" id="L198">	}</span>
 
 	/**
 	 * Retrieve the Currency
@@ -193,7 +205,7 @@ public class FloatFloatSwapConvention {
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L196">		return _strCurrency;</span>
+<span class="nc" id="L208">		return _strCurrency;</span>
 	}
 
 	/**
@@ -204,7 +216,7 @@ public class FloatFloatSwapConvention {
 
 	public java.lang.String referenceTenor()
 	{
-<span class="fc" id="L207">		return _strReferenceTenor;</span>
+<span class="fc" id="L219">		return _strReferenceTenor;</span>
 	}
 
 	/**
@@ -215,7 +227,7 @@ public class FloatFloatSwapConvention {
 
 	public boolean basisOnDerivedStream()
 	{
-<span class="fc" id="L218">		return _bBasisOnDerivedStream;</span>
+<span class="fc" id="L230">		return _bBasisOnDerivedStream;</span>
 	}
 
 	/**
@@ -227,7 +239,7 @@ public class FloatFloatSwapConvention {
 
 	public boolean basisOnDerivedComponent()
 	{
-<span class="fc" id="L230">		return _bBasisOnDerivedComponent;</span>
+<span class="fc" id="L242">		return _bBasisOnDerivedComponent;</span>
 	}
 
 	/**
@@ -239,7 +251,7 @@ public class FloatFloatSwapConvention {
 
 	public boolean derivedCompoundedToReference()
 	{
-<span class="fc" id="L242">		return _bIsDerivedCompoundedToReference;</span>
+<span class="fc" id="L254">		return _bIsDerivedCompoundedToReference;</span>
 	}
 
 	/**
@@ -250,7 +262,7 @@ public class FloatFloatSwapConvention {
 
 	public boolean componentPair()
 	{
-<span class="fc" id="L253">		return _bIsComponentPair;</span>
+<span class="fc" id="L265">		return _bIsComponentPair;</span>
 	}
 
 	/**
@@ -261,7 +273,7 @@ public class FloatFloatSwapConvention {
 
 	public int spotLag()
 	{
-<span class="fc" id="L264">		return _iSpotLag;</span>
+<span class="fc" id="L276">		return _iSpotLag;</span>
 	}
 
 	/**
@@ -283,76 +295,76 @@ public class FloatFloatSwapConvention {
 		final double dblBasis,
 		final double dblNotional)
 	{
-<span class="pc bpc" id="L286" title="1 of 4 branches missed.">		if (_bIsComponentPair || null == dtSpot) return null;</span>
+<span class="pc bpc" id="L298" title="1 of 4 branches missed.">		if (_bIsComponentPair || null == dtSpot) return null;</span>
 
-<span class="fc" id="L288">		org.drip.state.identifier.ForwardLabel forwardLabelReference =</span>
+<span class="fc" id="L300">		org.drip.state.identifier.ForwardLabel forwardLabelReference =</span>
 			org.drip.state.identifier.ForwardLabel.Create
-<span class="fc" id="L290">				(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency),</span>
+<span class="fc" id="L302">				(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency),</span>
 					_strReferenceTenor);
 
-<span class="pc bpc" id="L293" title="1 of 2 branches missed.">		if (null == forwardLabelReference) return null;</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		if (null == forwardLabelReference) return null;</span>
 
-<span class="fc" id="L295">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (_iSpotLag,</span>
-<span class="fc" id="L296">			forwardLabelReference.floaterIndex().calendar());</span>
+<span class="fc" id="L307">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (_iSpotLag,</span>
+<span class="fc" id="L308">			forwardLabelReference.floaterIndex().calendar());</span>
 
-<span class="fc" id="L298">		org.drip.state.identifier.ForwardLabel forwardLabelDerived =</span>
+<span class="fc" id="L310">		org.drip.state.identifier.ForwardLabel forwardLabelDerived =</span>
 			org.drip.state.identifier.ForwardLabel.Create
-<span class="fc" id="L300">				(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency),</span>
+<span class="fc" id="L312">				(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency),</span>
 					strDerivedTenor);
 
-<span class="pc bpc" id="L303" title="1 of 2 branches missed.">		if (null == forwardLabelDerived) return null;</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">		if (null == forwardLabelDerived) return null;</span>
 
-<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		java.lang.String strDerivedTenorComposite = _bIsDerivedCompoundedToReference ? _strReferenceTenor :</span>
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">		java.lang.String strDerivedTenorComposite = _bIsDerivedCompoundedToReference ? _strReferenceTenor :</span>
 			strDerivedTenor;
 
 		try {
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfusReference = new</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfusReference = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (_strReferenceTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
 						forwardLabelReference,
 							org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 								!_bBasisOnDerivedStream ? dblBasis : 0.);
 
-<span class="fc" id="L316">			org.drip.param.period.CompositePeriodSetting cpsReference = new</span>
+<span class="fc" id="L328">			org.drip.param.period.CompositePeriodSetting cpsReference = new</span>
 				org.drip.param.period.CompositePeriodSetting
-<span class="fc" id="L318">					(org.drip.analytics.support.Helper.TenorToFreq (_strReferenceTenor),</span>
+<span class="fc" id="L330">					(org.drip.analytics.support.Helper.TenorToFreq (_strReferenceTenor),</span>
 						_strReferenceTenor, _strCurrency, null, dblNotional, null, null, null, null);
 
-<span class="fc" id="L321">			java.util.List&lt;java.lang.Integer&gt; lsReferenceEdgeDate =</span>
-<span class="fc" id="L322">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc" id="L333">			java.util.List&lt;java.lang.Integer&gt; lsReferenceEdgeDate =</span>
+<span class="fc" id="L334">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 					_strReferenceTenor, strMaturityTenor, null);
 
-<span class="fc" id="L325">			org.drip.product.rates.Stream streamReference = new org.drip.product.rates.Stream</span>
+<span class="fc" id="L337">			org.drip.product.rates.Stream streamReference = new org.drip.product.rates.Stream</span>
 				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L327">					(lsReferenceEdgeDate, cpsReference, cfusReference));</span>
+<span class="fc" id="L339">					(lsReferenceEdgeDate, cpsReference, cfusReference));</span>
 
-<span class="pc bpc" id="L329" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfusDerived = new</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfusDerived = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strDerivedTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
 						forwardLabelDerived,
 							org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 								_bBasisOnDerivedStream ? dblBasis : 0.);
 
-<span class="fc" id="L336">			org.drip.param.period.CompositePeriodSetting cpsDerived = new</span>
+<span class="fc" id="L348">			org.drip.param.period.CompositePeriodSetting cpsDerived = new</span>
 				org.drip.param.period.CompositePeriodSetting
-<span class="fc" id="L338">					(org.drip.analytics.support.Helper.TenorToFreq (strDerivedTenorComposite),</span>
+<span class="fc" id="L350">					(org.drip.analytics.support.Helper.TenorToFreq (strDerivedTenorComposite),</span>
 						strDerivedTenorComposite, _strCurrency, null, -1. * dblNotional, null, null, null,
 							null);
 
-<span class="fc" id="L342">			java.util.List&lt;java.lang.Integer&gt; lsDerivedEdgeDate =</span>
-<span class="fc" id="L343">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc" id="L354">			java.util.List&lt;java.lang.Integer&gt; lsDerivedEdgeDate =</span>
+<span class="fc" id="L355">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 					strDerivedTenor, strMaturityTenor, null);
 
-<span class="fc" id="L346">			org.drip.product.rates.Stream streamDerived = new org.drip.product.rates.Stream</span>
-<span class="fc" id="L347">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsDerivedEdgeDate,</span>
+<span class="fc" id="L358">			org.drip.product.rates.Stream streamDerived = new org.drip.product.rates.Stream</span>
+<span class="fc" id="L359">				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (lsDerivedEdgeDate,</span>
 					cpsDerived, cfusDerived));
 
-<span class="fc" id="L350">			return new org.drip.product.rates.FloatFloatComponent (streamReference, streamDerived, null);</span>
-<span class="nc" id="L351">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L352">			e.printStackTrace();</span>
+<span class="fc" id="L362">			return new org.drip.product.rates.FloatFloatComponent (streamReference, streamDerived, null);</span>
+<span class="nc" id="L363">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L364">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L355">		return null;</span>
+<span class="nc" id="L367">		return null;</span>
 	}
 
 	/**
@@ -378,32 +390,32 @@ public class FloatFloatSwapConvention {
 		final double dblBasis,
 		final double dblNotional)
 	{
-<span class="pc bpc" id="L381" title="2 of 4 branches missed.">		if (!_bIsComponentPair || null == dtSpot) return null;</span>
+<span class="pc bpc" id="L393" title="2 of 4 branches missed.">		if (!_bIsComponentPair || null == dtSpot) return null;</span>
 
-<span class="fc" id="L383">		org.drip.market.definition.IBORIndex floaterIndex =</span>
-<span class="fc" id="L384">			org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency);</span>
+<span class="fc" id="L395">		org.drip.market.definition.IBORIndex floaterIndex =</span>
+<span class="fc" id="L396">			org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (_strCurrency);</span>
 
-<span class="pc bpc" id="L386" title="1 of 2 branches missed.">		if (null == floaterIndex) return null;</span>
+<span class="pc bpc" id="L398" title="1 of 2 branches missed.">		if (null == floaterIndex) return null;</span>
 
-<span class="fc" id="L388">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (_iSpotLag,</span>
-<span class="fc" id="L389">			floaterIndex.calendar());</span>
+<span class="fc" id="L400">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (_iSpotLag,</span>
+<span class="fc" id="L401">			floaterIndex.calendar());</span>
 
-<span class="pc bpc" id="L391" title="1 of 2 branches missed.">		org.drip.product.rates.FixFloatComponent ffcReference = fixFloatComponent (dtEffective,</span>
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">		org.drip.product.rates.FixFloatComponent ffcReference = fixFloatComponent (dtEffective,</span>
 			_strReferenceTenor, strMaturityTenor, dblReferenceFixedCoupon, !_bBasisOnDerivedComponent ?
 				dblBasis : 0., dblNotional);
 
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">		org.drip.product.rates.FixFloatComponent ffcDerived = fixFloatComponent (dtEffective,</span>
+<span class="pc bpc" id="L407" title="1 of 2 branches missed.">		org.drip.product.rates.FixFloatComponent ffcDerived = fixFloatComponent (dtEffective,</span>
 			strDerivedTenor, strMaturityTenor, dblDerivedFixedCoupon, _bBasisOnDerivedComponent ? dblBasis :
 				0., -1. * dblNotional);
 
 		try {
-<span class="fc" id="L400">			return new org.drip.product.fx.ComponentPair (_strCurrency + &quot;::&quot; + _strReferenceTenor + &quot;/&quot; +</span>
+<span class="fc" id="L412">			return new org.drip.product.fx.ComponentPair (_strCurrency + &quot;::&quot; + _strReferenceTenor + &quot;/&quot; +</span>
 				strDerivedTenor + &quot;_&quot; + strMaturityTenor, ffcReference, ffcDerived, null);
-<span class="nc" id="L402">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L403">			e.printStackTrace();</span>
+<span class="nc" id="L414">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L415">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L406">		return null;</span>
+<span class="nc" id="L418">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

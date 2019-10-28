@@ -6,41 +6,53 @@ package org.drip.measure.chisquare;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -70,17 +82,34 @@ package org.drip.measure.chisquare;
  * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Backstrom, T., and J. Fischer (2018): Fast Randomization for Distributed Low Bit-rate Coding of
+ * 				Speech and Audio &lt;i&gt;IEEE/ACM Transactions on Audio, Speech, and Language Processing&lt;/i&gt; &lt;b&gt;26
+ * 				(1)&lt;/b&gt; 19-30
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
  * 			Chi-Squared Distribution (2019): Chi-Squared Function
  * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1994): &lt;i&gt;Continuous Univariate Distributions
+ * 				2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Chi-Squared Distribution
+ * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md&quot;&gt;Chi-Square Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -88,10 +117,10 @@ package org.drip.measure.chisquare;
 
 public class R1UnivariateCLTProxy extends org.drip.measure.continuous.R1Univariate
 {
-<span class="nc" id="L91">	private int _degreesOfFreedom = -1;</span>
+<span class="nc" id="L120">	private int _degreesOfFreedom = -1;</span>
 
-<span class="nc" id="L93">	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal =</span>
-<span class="nc" id="L94">		org.drip.measure.gaussian.R1UnivariateNormal.Standard();</span>
+<span class="nc" id="L122">	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal =</span>
+<span class="nc" id="L123">		org.drip.measure.gaussian.R1UnivariateNormal.Standard();</span>
 
 	/**
 	 * R1UnivariateCLTProxy Constructor
@@ -104,12 +133,12 @@ public class R1UnivariateCLTProxy extends org.drip.measure.continuous.R1Univaria
 	public R1UnivariateCLTProxy (
 		final int degreesOfFreedom)
 		throws java.lang.Exception
-<span class="nc" id="L107">	{</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (0 &gt;= (_degreesOfFreedom = degreesOfFreedom))</span>
+<span class="nc" id="L136">	{</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (0 &gt;= (_degreesOfFreedom = degreesOfFreedom))</span>
 		{
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;R1UnivariateCLTProxy Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;R1UnivariateCLTProxy Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L112">	}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Degrees of Freedom
@@ -119,14 +148,14 @@ public class R1UnivariateCLTProxy extends org.drip.measure.continuous.R1Univaria
 
 	public int degreesOfFreedom()
 	{
-<span class="nc" id="L122">		return _degreesOfFreedom;</span>
+<span class="nc" id="L151">		return _degreesOfFreedom;</span>
 	}
 
 	@Override public double[] support()
 	{
-<span class="nc" id="L127">		return new double[]</span>
+<span class="nc" id="L156">		return new double[]</span>
 		{
-<span class="nc" id="L129">			-1. * java.lang.Math.sqrt (0.5 * _degreesOfFreedom),</span>
+<span class="nc" id="L158">			-1. * java.lang.Math.sqrt (0.5 * _degreesOfFreedom),</span>
 			java.lang.Double.POSITIVE_INFINITY
 		};
 	}
@@ -135,84 +164,84 @@ public class R1UnivariateCLTProxy extends org.drip.measure.continuous.R1Univaria
 		final double t)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L138">		return _r1UnivariateNormal.density (t);</span>
+<span class="nc" id="L167">		return _r1UnivariateNormal.density (t);</span>
 	}
 
 	@Override public double cumulative (
 		final double t)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L145">		return _r1UnivariateNormal.cumulative (t);</span>
+<span class="nc" id="L174">		return _r1UnivariateNormal.cumulative (t);</span>
 	}
 
 	@Override public double mean()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L151">		return 0.;</span>
+<span class="nc" id="L180">		return 0.;</span>
 	}
 
 	@Override public double median()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L157">		return 0.;</span>
+<span class="nc" id="L186">		return 0.;</span>
 	}
 
 	@Override public double mode()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L163">		return 0.;</span>
+<span class="nc" id="L192">		return 0.;</span>
 	}
 
 	@Override public double variance()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L169">		return 1.;</span>
+<span class="nc" id="L198">		return 1.;</span>
 	}
 
 	@Override public double skewness()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L175">		return java.lang.Math.sqrt (8. / _degreesOfFreedom);</span>
+<span class="nc" id="L204">		return java.lang.Math.sqrt (8. / _degreesOfFreedom);</span>
 	}
 
 	@Override public double excessKurtosis()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L181">		return 12. / _degreesOfFreedom;</span>
+<span class="nc" id="L210">		return 12. / _degreesOfFreedom;</span>
 	}
 
 	@Override public double differentialEntropy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L187">		return _r1UnivariateNormal.differentialEntropy();</span>
+<span class="nc" id="L216">		return _r1UnivariateNormal.differentialEntropy();</span>
 	}
 
 	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
 	{
-<span class="nc" id="L192">		return _r1UnivariateNormal.momentGeneratingFunction();</span>
+<span class="nc" id="L221">		return _r1UnivariateNormal.momentGeneratingFunction();</span>
 	}
 
 	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
 	{
-<span class="nc" id="L197">		return _r1UnivariateNormal.probabilityGeneratingFunction();</span>
+<span class="nc" id="L226">		return _r1UnivariateNormal.probabilityGeneratingFunction();</span>
 	}
 
 	@Override public double random()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L203">		double sumOfStandardNormalSquares = 0.;</span>
+<span class="nc" id="L232">		double sumOfStandardNormalSquares = 0.;</span>
 
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; _degreesOfFreedom; ++drawIndex)</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; _degreesOfFreedom; ++drawIndex)</span>
 		{
 			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-<span class="nc" id="L208">				(java.lang.Math.random());</span>
+<span class="nc" id="L237">				(java.lang.Math.random());</span>
 
-<span class="nc" id="L210">			sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
+<span class="nc" id="L239">			sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
 				randomStandardNormal * randomStandardNormal;
 		}
 
-<span class="nc" id="L214">		return (sumOfStandardNormalSquares - _degreesOfFreedom) /</span>
-<span class="nc" id="L215">			java.lang.Math.sqrt (2. * _degreesOfFreedom);</span>
+<span class="nc" id="L243">		return (sumOfStandardNormalSquares - _degreesOfFreedom) /</span>
+<span class="nc" id="L244">			java.lang.Math.sqrt (2. * _degreesOfFreedom);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

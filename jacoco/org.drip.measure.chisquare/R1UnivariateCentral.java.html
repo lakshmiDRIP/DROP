@@ -6,41 +6,53 @@ package org.drip.measure.chisquare;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -70,17 +82,34 @@ package org.drip.measure.chisquare;
  * &lt;br&gt;&lt;br&gt;
  * 	&lt;ul&gt;
  * 		&lt;li&gt;
+ * 			Abramowitz, M., and I. A. Stegun (2007): &lt;i&gt;Handbook of Mathematics Functions&lt;/i&gt; &lt;b&gt;Dover Book
+ * 				on Mathematics&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Backstrom, T., and J. Fischer (2018): Fast Randomization for Distributed Low Bit-rate Coding of
+ * 				Speech and Audio &lt;i&gt;IEEE/ACM Transactions on Audio, Speech, and Language Processing&lt;/i&gt; &lt;b&gt;26
+ * 				(1)&lt;/b&gt; 19-30
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
  * 			Chi-Squared Distribution (2019): Chi-Squared Function
  * 				https://en.wikipedia.org/wiki/Chi-squared_distribution
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			Johnson, N. L., S. Kotz, and N. Balakrishnan (1994): &lt;i&gt;Continuous Univariate Distributions
+ * 				2&lt;sup&gt;nd&lt;/sup&gt; Edition&lt;/i&gt; &lt;b&gt;John Wiley and Sons&lt;/b&gt;
+ * 		&lt;/li&gt;
+ * 		&lt;li&gt;
+ * 			National Institute of Standards and Technology (2019): Chi-Squared Distribution
+ * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
  * 		&lt;/li&gt;
  * 	&lt;/ul&gt;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md&quot;&gt;Chi-Square Distribution Implementation/Properties&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -88,12 +117,12 @@ package org.drip.measure.chisquare;
 
 public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariate
 {
-<span class="nc" id="L91">	private int _degreesOfFreedom = -1;</span>
-<span class="nc" id="L92">	private double _cdfScaler = java.lang.Double.NaN;</span>
-<span class="nc" id="L93">	private double _normalizer = java.lang.Double.NaN;</span>
-<span class="nc" id="L94">	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;</span>
-<span class="nc" id="L95">	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;</span>
-<span class="nc" id="L96">	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;</span>
+<span class="nc" id="L120">	private int _degreesOfFreedom = -1;</span>
+<span class="nc" id="L121">	private double _cdfScaler = java.lang.Double.NaN;</span>
+<span class="nc" id="L122">	private double _normalizer = java.lang.Double.NaN;</span>
+<span class="nc" id="L123">	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;</span>
+<span class="nc" id="L124">	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;</span>
+<span class="nc" id="L125">	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;</span>
 
 	/**
 	 * Generate a Consolidated Chi-squared Distribution from Independent Component Distributions
@@ -106,39 +135,39 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public static final R1UnivariateCentral FromIndependentChiSquared (
 		final org.drip.measure.chisquare.R1UnivariateCentral[] chiSquaredDistributionArray)
 	{
-<span class="nc bnc" id="L109" title="All 4 branches missed.">		if (null == chiSquaredDistributionArray || 0 == chiSquaredDistributionArray.length)</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		if (null == chiSquaredDistributionArray || 0 == chiSquaredDistributionArray.length)</span>
 		{
-<span class="nc" id="L111">			return null;</span>
+<span class="nc" id="L140">			return null;</span>
 		}
 
-<span class="nc" id="L114">		int degreesOfFreedom = 0;</span>
+<span class="nc" id="L143">		int degreesOfFreedom = 0;</span>
 
 		for (org.drip.measure.chisquare.R1UnivariateCentral chiSquaredDistribution :
-<span class="nc bnc" id="L117" title="All 2 branches missed.">			chiSquaredDistributionArray)</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			chiSquaredDistributionArray)</span>
 		{
-<span class="nc bnc" id="L119" title="All 2 branches missed.">			if (null == chiSquaredDistribution)</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			if (null == chiSquaredDistribution)</span>
 			{
-<span class="nc" id="L121">				return null;</span>
+<span class="nc" id="L150">				return null;</span>
 			}
 
-<span class="nc" id="L124">			degreesOfFreedom = degreesOfFreedom + chiSquaredDistribution.degreesOfFreedom();</span>
+<span class="nc" id="L153">			degreesOfFreedom = degreesOfFreedom + chiSquaredDistribution.degreesOfFreedom();</span>
 		}
 
 		try
 		{
-<span class="nc" id="L129">			return new R1UnivariateCentral (</span>
+<span class="nc" id="L158">			return new R1UnivariateCentral (</span>
 				degreesOfFreedom,
-<span class="nc" id="L131">				chiSquaredDistributionArray[0].gammaEstimator(),</span>
-<span class="nc" id="L132">				chiSquaredDistributionArray[0].digammaEstimator(),</span>
-<span class="nc" id="L133">				chiSquaredDistributionArray[0].lowerIncompleteGammaEstimator()</span>
+<span class="nc" id="L160">				chiSquaredDistributionArray[0].gammaEstimator(),</span>
+<span class="nc" id="L161">				chiSquaredDistributionArray[0].digammaEstimator(),</span>
+<span class="nc" id="L162">				chiSquaredDistributionArray[0].lowerIncompleteGammaEstimator()</span>
 			);
 		}
-<span class="nc" id="L136">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L165">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L138">			e.printStackTrace();</span>
+<span class="nc" id="L167">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L141">		return null;</span>
+<span class="nc" id="L170">		return null;</span>
 	}
 
 	/**
@@ -158,22 +187,22 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 		final org.drip.function.definition.R1ToR1 digammaEstimator,
 		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
 		throws java.lang.Exception
-<span class="nc" id="L161">	{</span>
-<span class="nc bnc" id="L162" title="All 8 branches missed.">		if (0 &gt;= (_degreesOfFreedom = degreesOfFreedom) ||</span>
+<span class="nc" id="L190">	{</span>
+<span class="nc bnc" id="L191" title="All 8 branches missed.">		if (0 &gt;= (_degreesOfFreedom = degreesOfFreedom) ||</span>
 			null == (_gammaEstimator = gammaEstimator) ||
 			null == (_digammaEstimator = digammaEstimator) ||
 			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator))
 		{
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;R1UnivariateCentral Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L196">			throw new java.lang.Exception (&quot;R1UnivariateCentral Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L170">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
+<span class="nc" id="L199">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
 
-<span class="nc" id="L172">		_normalizer = (_cdfScaler = 1. / _gammaEstimator.evaluate (halfDOF)) * java.lang.Math.pow (</span>
+<span class="nc" id="L201">		_normalizer = (_cdfScaler = 1. / _gammaEstimator.evaluate (halfDOF)) * java.lang.Math.pow (</span>
 			2.,
 			-1. * halfDOF
 		);
-<span class="nc" id="L176">	}</span>
+<span class="nc" id="L205">	}</span>
 
 	/**
 	 * Retrieve the Degrees of Freedom
@@ -183,7 +212,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public int degreesOfFreedom()
 	{
-<span class="nc" id="L186">		return _degreesOfFreedom;</span>
+<span class="nc" id="L215">		return _degreesOfFreedom;</span>
 	}
 
 	/**
@@ -194,7 +223,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public org.drip.function.definition.R1ToR1 gammaEstimator()
 	{
-<span class="nc" id="L197">		return _gammaEstimator;</span>
+<span class="nc" id="L226">		return _gammaEstimator;</span>
 	}
 
 	/**
@@ -205,7 +234,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public org.drip.function.definition.R1ToR1 digammaEstimator()
 	{
-<span class="nc" id="L208">		return _digammaEstimator;</span>
+<span class="nc" id="L237">		return _digammaEstimator;</span>
 	}
 
 	/**
@@ -216,12 +245,12 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator()
 	{
-<span class="nc" id="L219">		return _lowerIncompleteGammaEstimator;</span>
+<span class="nc" id="L248">		return _lowerIncompleteGammaEstimator;</span>
 	}
 
 	@Override public double[] support()
 	{
-<span class="nc" id="L224">		return new double[]</span>
+<span class="nc" id="L253">		return new double[]</span>
 		{
 			0.,
 			java.lang.Double.POSITIVE_INFINITY
@@ -232,27 +261,27 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 		final double t)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (!supported (t))</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (!supported (t))</span>
 		{
-<span class="nc" id="L237">			throw new java.lang.Exception (&quot;R1UnivariateCentral::density =&gt; Variate not in Range&quot;);</span>
+<span class="nc" id="L266">			throw new java.lang.Exception (&quot;R1UnivariateCentral::density =&gt; Variate not in Range&quot;);</span>
 		}
 
-<span class="nc" id="L240">		return _normalizer * java.lang.Math.pow (</span>
+<span class="nc" id="L269">		return _normalizer * java.lang.Math.pow (</span>
 			t,
 			0.5 * _degreesOfFreedom - 1.
-<span class="nc" id="L243">		) * java.lang.Math.exp (-0.5 * t);</span>
+<span class="nc" id="L272">		) * java.lang.Math.exp (-0.5 * t);</span>
 	}
 
 	@Override public double cumulative (
 		final double t)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (!supported (t))</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		if (!supported (t))</span>
 		{
-<span class="nc" id="L252">			throw new java.lang.Exception (&quot;R1UnivariateCentral::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L281">			throw new java.lang.Exception (&quot;R1UnivariateCentral::cumulative =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L255">		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (</span>
+<span class="nc" id="L284">		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (</span>
 			0.5 * _degreesOfFreedom,
 			0.5 * t
 		);
@@ -261,22 +290,22 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	@Override public double mean()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L264">		return _degreesOfFreedom;</span>
+<span class="nc" id="L293">		return _degreesOfFreedom;</span>
 	}
 
 	@Override public double median()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L270">		double oneMinus_twoOver_9dof__ = 1. - (2. / (9. * _degreesOfFreedom));</span>
+<span class="nc" id="L299">		double oneMinus_twoOver_9dof__ = 1. - (2. / (9. * _degreesOfFreedom));</span>
 
-<span class="nc" id="L272">		return _degreesOfFreedom * oneMinus_twoOver_9dof__ * oneMinus_twoOver_9dof__ *</span>
+<span class="nc" id="L301">		return _degreesOfFreedom * oneMinus_twoOver_9dof__ * oneMinus_twoOver_9dof__ *</span>
 			oneMinus_twoOver_9dof__;
 	}
 
 	@Override public double mode()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L279">		return java.lang.Math.max (</span>
+<span class="nc" id="L308">		return java.lang.Math.max (</span>
 			_degreesOfFreedom - 2.,
 			0.
 		);
@@ -285,47 +314,47 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	@Override public double variance()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L288">		return 2. * _degreesOfFreedom;</span>
+<span class="nc" id="L317">		return 2. * _degreesOfFreedom;</span>
 	}
 
 	@Override public double skewness()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L294">		return java.lang.Math.sqrt (8. / _degreesOfFreedom);</span>
+<span class="nc" id="L323">		return java.lang.Math.sqrt (8. / _degreesOfFreedom);</span>
 	}
 
 	@Override public double excessKurtosis()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L300">		return 12. / _degreesOfFreedom;</span>
+<span class="nc" id="L329">		return 12. / _degreesOfFreedom;</span>
 	}
 
 	@Override public double differentialEntropy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L306">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
+<span class="nc" id="L335">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
 
-<span class="nc" id="L308">		return halfDOF + java.lang.Math.log (2. * _gammaEstimator.evaluate (halfDOF)) +</span>
-<span class="nc" id="L309">			(1. - halfDOF) * _digammaEstimator.evaluate (halfDOF);</span>
+<span class="nc" id="L337">		return halfDOF + java.lang.Math.log (2. * _gammaEstimator.evaluate (halfDOF)) +</span>
+<span class="nc" id="L338">			(1. - halfDOF) * _digammaEstimator.evaluate (halfDOF);</span>
 	}
 
 	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
 	{
-<span class="nc" id="L314">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L315">		{</span>
+<span class="nc" id="L343">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L344">		{</span>
 			@Override public double evaluate (
 				final double t)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L320" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (t) || t &gt; 0.5)</span>
+<span class="nc bnc" id="L349" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (t) || t &gt; 0.5)</span>
 				{
-<span class="nc" id="L322">					throw new java.lang.Exception</span>
+<span class="nc" id="L351">					throw new java.lang.Exception</span>
 						(&quot;R1UnivariateCentral::momentGeneratingFunction::evaluate =&gt; Invalid Input&quot;);
 				}
 
-<span class="nc" id="L326">				return java.lang.Math.pow (</span>
+<span class="nc" id="L355">				return java.lang.Math.pow (</span>
 					1. - 2. * t,
-<span class="nc" id="L328">					-0.5 * _degreesOfFreedom</span>
+<span class="nc" id="L357">					-0.5 * _degreesOfFreedom</span>
 				);
 			}
 		};
@@ -333,22 +362,22 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
 	{
-<span class="nc" id="L336">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L337">		{</span>
+<span class="nc" id="L365">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L366">		{</span>
 			@Override public double evaluate (
 				final double t)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L342" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (t) ||</span>
-<span class="nc bnc" id="L343" title="All 2 branches missed.">					t &lt;= 0. || t &gt; java.lang.Math.sqrt (java.lang.Math.E))</span>
+<span class="nc bnc" id="L371" title="All 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (t) ||</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">					t &lt;= 0. || t &gt; java.lang.Math.sqrt (java.lang.Math.E))</span>
 				{
-<span class="nc" id="L345">					throw new java.lang.Exception</span>
+<span class="nc" id="L374">					throw new java.lang.Exception</span>
 						(&quot;R1UnivariateCentral::probabilityGeneratingFunction::evaluate =&gt; Invalid Input&quot;);
 				}
 
-<span class="nc" id="L349">				return java.lang.Math.pow (</span>
-<span class="nc" id="L350">					1. - 2. * java.lang.Math.log (t),</span>
-<span class="nc" id="L351">					-0.5 * _degreesOfFreedom</span>
+<span class="nc" id="L378">				return java.lang.Math.pow (</span>
+<span class="nc" id="L379">					1. - 2. * java.lang.Math.log (t),</span>
+<span class="nc" id="L380">					-0.5 * _degreesOfFreedom</span>
 				);
 			}
 		};
@@ -357,18 +386,18 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	@Override public double random()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L360">		double sumOfStandardNormalSquares = 0.;</span>
+<span class="nc" id="L389">		double sumOfStandardNormalSquares = 0.;</span>
 
-<span class="nc bnc" id="L362" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; _degreesOfFreedom; ++drawIndex)</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">		for (int drawIndex = 0; drawIndex &lt; _degreesOfFreedom; ++drawIndex)</span>
 		{
 			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-<span class="nc" id="L365">				(java.lang.Math.random());</span>
+<span class="nc" id="L394">				(java.lang.Math.random());</span>
 
-<span class="nc" id="L367">			sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
+<span class="nc" id="L396">			sumOfStandardNormalSquares = sumOfStandardNormalSquares +</span>
 				randomStandardNormal * randomStandardNormal;
 		}
 
-<span class="nc" id="L371">		return sumOfStandardNormalSquares;</span>
+<span class="nc" id="L400">		return sumOfStandardNormalSquares;</span>
 	}
 
 	/**
@@ -379,7 +408,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public double normalizer()
 	{
-<span class="nc" id="L382">		return _normalizer;</span>
+<span class="nc" id="L411">		return _normalizer;</span>
 	}
 
 	/**
@@ -390,7 +419,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public double cdfScaler()
 	{
-<span class="nc" id="L393">		return _cdfScaler;</span>
+<span class="nc" id="L422">		return _cdfScaler;</span>
 	}
 
 	/**
@@ -407,24 +436,24 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L410" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x)</span>
+<span class="nc bnc" id="L439" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt;= x)</span>
 		{
-<span class="nc" id="L412">			throw new java.lang.Exception (&quot;R1UnivariateCentral::chernoffBound =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L441">			throw new java.lang.Exception (&quot;R1UnivariateCentral::chernoffBound =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L415">		double z = x / _degreesOfFreedom;</span>
+<span class="nc" id="L444">		double z = x / _degreesOfFreedom;</span>
 
-<span class="nc bnc" id="L417" title="All 2 branches missed.">		if (1. == z)</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">		if (1. == z)</span>
 		{
-<span class="nc" id="L419">			throw new java.lang.Exception (&quot;R1UnivariateCentral::chernoffBound =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L448">			throw new java.lang.Exception (&quot;R1UnivariateCentral::chernoffBound =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L422">		double _zExponent_OneMinusZ__powerHalfDegreesOfFreedom = java.lang.Math.pow (</span>
-<span class="nc" id="L423">			z * java.lang.Math.exp (1. - z),</span>
+<span class="nc" id="L451">		double _zExponent_OneMinusZ__powerHalfDegreesOfFreedom = java.lang.Math.pow (</span>
+<span class="nc" id="L452">			z * java.lang.Math.exp (1. - z),</span>
 			0.5 * _degreesOfFreedom
 		);
 
-<span class="nc bnc" id="L427" title="All 2 branches missed.">		return 1. &gt; z ? _zExponent_OneMinusZ__powerHalfDegreesOfFreedom : 1. -</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">		return 1. &gt; z ? _zExponent_OneMinusZ__powerHalfDegreesOfFreedom : 1. -</span>
 			_zExponent_OneMinusZ__powerHalfDegreesOfFreedom;
 	}
 
@@ -442,17 +471,17 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 		final int m)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L445" title="All 2 branches missed.">		if (0 &gt; m)</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">		if (0 &gt; m)</span>
 		{
-<span class="nc" id="L447">			throw new java.lang.Exception (&quot;R1UnivariateCentral::nonCentralMoment =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L476">			throw new java.lang.Exception (&quot;R1UnivariateCentral::nonCentralMoment =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L450">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
+<span class="nc" id="L479">		double halfDOF = 0.5 * _degreesOfFreedom;</span>
 
-<span class="nc" id="L452">		return java.lang.Math.pow (</span>
+<span class="nc" id="L481">		return java.lang.Math.pow (</span>
 			2.,
 			m
-<span class="nc" id="L455">		) * _gammaEstimator.evaluate (m + halfDOF) / _gammaEstimator.evaluate (halfDOF);</span>
+<span class="nc" id="L484">		) * _gammaEstimator.evaluate (m + halfDOF) / _gammaEstimator.evaluate (halfDOF);</span>
 	}
 
 	/**
@@ -469,15 +498,15 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 		final int n)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L472" title="All 2 branches missed.">		if (0 &gt; n)</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">		if (0 &gt; n)</span>
 		{
-<span class="nc" id="L474">			throw new java.lang.Exception (&quot;R1UnivariateCentral::cumulant =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L503">			throw new java.lang.Exception (&quot;R1UnivariateCentral::cumulant =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L477">		return _degreesOfFreedom * java.lang.Math.pow (</span>
+<span class="nc" id="L506">		return _degreesOfFreedom * java.lang.Math.pow (</span>
 			2.,
 			n - 1.
-<span class="nc" id="L480">		) * _gammaEstimator.evaluate (n);</span>
+<span class="nc" id="L509">		) * _gammaEstimator.evaluate (n);</span>
 	}
 
 	/**
@@ -490,17 +519,17 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	{
 		try
 		{
-<span class="nc" id="L493">			return new org.drip.measure.gaussian.R1UnivariateNormal (</span>
+<span class="nc" id="L522">			return new org.drip.measure.gaussian.R1UnivariateNormal (</span>
 				_degreesOfFreedom,
 				2. * _degreesOfFreedom
 			);
 		}
-<span class="nc" id="L498">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L527">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L500">			e.printStackTrace();</span>
+<span class="nc" id="L529">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L503">		return null;</span>
+<span class="nc" id="L532">		return null;</span>
 	}
 
 	/**
@@ -511,7 +540,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 
 	public boolean validCLTProxy()
 	{
-<span class="nc bnc" id="L514" title="All 2 branches missed.">		return 50. &lt;= _degreesOfFreedom;</span>
+<span class="nc bnc" id="L543" title="All 2 branches missed.">		return 50. &lt;= _degreesOfFreedom;</span>
 	}
 
 	/**
@@ -525,7 +554,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomLogProxy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L528">		return java.lang.Math.log (_degreesOfFreedom);</span>
+<span class="nc" id="L557">		return java.lang.Math.log (_degreesOfFreedom);</span>
 	}
 
 	/**
@@ -539,7 +568,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomCLTProxy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L542">		return (random() - _degreesOfFreedom) / java.lang.Math.sqrt (2. * _degreesOfFreedom);</span>
+<span class="nc" id="L571">		return (random() - _degreesOfFreedom) / java.lang.Math.sqrt (2. * _degreesOfFreedom);</span>
 	}
 
 	/**
@@ -553,7 +582,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomFisherProxy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L556">		return java.lang.Math.sqrt (2. * random());</span>
+<span class="nc" id="L585">		return java.lang.Math.sqrt (2. * random());</span>
 	}
 
 	/**
@@ -567,8 +596,8 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomWilsonHilferty()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L570">		return java.lang.Math.pow (</span>
-<span class="nc" id="L571">			random() / _degreesOfFreedom,</span>
+<span class="nc" id="L599">		return java.lang.Math.pow (</span>
+<span class="nc" id="L600">			random() / _degreesOfFreedom,</span>
 			1. / 3.
 		);
 	}
@@ -587,12 +616,12 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 		final double c)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L590" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (c) || 0. &gt;= c)</span>
+<span class="nc bnc" id="L619" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (c) || 0. &gt;= c)</span>
 		{
-<span class="nc" id="L592">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomGamma =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L621">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomGamma =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L595">		return random() * c;</span>
+<span class="nc" id="L624">		return random() * c;</span>
 	}
 
 	/**
@@ -606,7 +635,7 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomChi()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L609">		return java.lang.Math.sqrt (random());</span>
+<span class="nc" id="L638">		return java.lang.Math.sqrt (random());</span>
 	}
 
 	/**
@@ -620,12 +649,12 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomExponentialHalf()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L623" title="All 2 branches missed.">		if (2. != _degreesOfFreedom)</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">		if (2. != _degreesOfFreedom)</span>
 		{
-<span class="nc" id="L625">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomExponentialHalf =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L654">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomExponentialHalf =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L628">		return random();</span>
+<span class="nc" id="L657">		return random();</span>
 	}
 
 	/**
@@ -639,12 +668,12 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomRayleigh1()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L642" title="All 2 branches missed.">		if (2. != _degreesOfFreedom)</span>
+<span class="nc bnc" id="L671" title="All 2 branches missed.">		if (2. != _degreesOfFreedom)</span>
 		{
-<span class="nc" id="L644">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomRayleigh1 =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L673">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomRayleigh1 =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L647">		return random();</span>
+<span class="nc" id="L676">		return random();</span>
 	}
 
 	/**
@@ -658,12 +687,12 @@ public class R1UnivariateCentral extends org.drip.measure.continuous.R1Univariat
 	public double randomMaxwell1()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L661" title="All 2 branches missed.">		if (3. != _degreesOfFreedom)</span>
+<span class="nc bnc" id="L690" title="All 2 branches missed.">		if (3. != _degreesOfFreedom)</span>
 		{
-<span class="nc" id="L663">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomMaxwell1 =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L692">			throw new java.lang.Exception (&quot;R1UnivariateCentral::randomMaxwell1 =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L666">		return random();</span>
+<span class="nc" id="L695">		return random();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

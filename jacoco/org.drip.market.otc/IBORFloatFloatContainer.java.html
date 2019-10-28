@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,18 +85,18 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class IBORFloatFloatContainer {</span>
+<span class="nc" id="L97">public class IBORFloatFloatContainer {</span>
 	private static java.util.Map&lt;java.lang.String, org.drip.market.otc.FloatFloatSwapConvention&gt;
-<span class="fc" id="L87">		_mapConvention = null;</span>
+<span class="fc" id="L99">		_mapConvention = null;</span>
 
 	/**
 	 * Initialize the Float-Float Conventions Container with the pre-set Float-Float Contracts
@@ -95,69 +107,69 @@ package org.drip.market.otc;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L98" title="All 2 branches covered.">		if (null != _mapConvention) return true;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">		if (null != _mapConvention) return true;</span>
 
-<span class="fc" id="L100">		_mapConvention = new java.util.TreeMap&lt;java.lang.String,</span>
+<span class="fc" id="L112">		_mapConvention = new java.util.TreeMap&lt;java.lang.String,</span>
 			org.drip.market.otc.FloatFloatSwapConvention&gt;();
 
 		try {
-<span class="fc" id="L104">			_mapConvention.put (&quot;AUD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;AUD&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L116">			_mapConvention.put (&quot;AUD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;AUD&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 1));
 
-<span class="fc" id="L107">			_mapConvention.put (&quot;CAD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;CAD&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L119">			_mapConvention.put (&quot;CAD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;CAD&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 0));
 
-<span class="fc" id="L110">			_mapConvention.put (&quot;CHF&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;CHF&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L122">			_mapConvention.put (&quot;CHF&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;CHF&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L113">			_mapConvention.put (&quot;CNY&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;CNY&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L125">			_mapConvention.put (&quot;CNY&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;CNY&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L116">			_mapConvention.put (&quot;DKK&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;DKK&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L128">			_mapConvention.put (&quot;DKK&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;DKK&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L119">			_mapConvention.put (&quot;EUR&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;EUR&quot;, &quot;6M&quot;, false,</span>
+<span class="fc" id="L131">			_mapConvention.put (&quot;EUR&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;EUR&quot;, &quot;6M&quot;, false,</span>
 				true, false, true, 2));
 
-<span class="fc" id="L122">			_mapConvention.put (&quot;GBP&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;GBP&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L134">			_mapConvention.put (&quot;GBP&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;GBP&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 0));
 
-<span class="fc" id="L125">			_mapConvention.put (&quot;HKD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;HKD&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L137">			_mapConvention.put (&quot;HKD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;HKD&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 0));
 
-<span class="fc" id="L128">			_mapConvention.put (&quot;INR&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;INR&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L140">			_mapConvention.put (&quot;INR&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;INR&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L131">			_mapConvention.put (&quot;JPY&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;JPY&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L143">			_mapConvention.put (&quot;JPY&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;JPY&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L134">			_mapConvention.put (&quot;NOK&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;NOK&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L146">			_mapConvention.put (&quot;NOK&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;NOK&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L137">			_mapConvention.put (&quot;NZD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;NZD&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L149">			_mapConvention.put (&quot;NZD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;NZD&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 0));
 
-<span class="fc" id="L140">			_mapConvention.put (&quot;PLN&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;PLN&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L152">			_mapConvention.put (&quot;PLN&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;PLN&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L143">			_mapConvention.put (&quot;SEK&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;SEK&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L155">			_mapConvention.put (&quot;SEK&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;SEK&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L146">			_mapConvention.put (&quot;SGD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;SGD&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L158">			_mapConvention.put (&quot;SGD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;SGD&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L149">			_mapConvention.put (&quot;USD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;USD&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L161">			_mapConvention.put (&quot;USD&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;USD&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 2));
 
-<span class="fc" id="L152">			_mapConvention.put (&quot;ZAR&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;ZAR&quot;, &quot;6M&quot;, true,</span>
+<span class="fc" id="L164">			_mapConvention.put (&quot;ZAR&quot;, new org.drip.market.otc.FloatFloatSwapConvention (&quot;ZAR&quot;, &quot;6M&quot;, true,</span>
 				false, true, false, 0));
-<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="nc" id="L166">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L167">			e.printStackTrace();</span>
 
-<span class="nc" id="L157">			return false;</span>
-<span class="fc" id="L158">		}</span>
+<span class="nc" id="L169">			return false;</span>
+<span class="fc" id="L170">		}</span>
 
-<span class="fc" id="L160">		return true;</span>
+<span class="fc" id="L172">		return true;</span>
 	}
 
 	/**
@@ -171,8 +183,8 @@ package org.drip.market.otc;
 	public static final org.drip.market.otc.FloatFloatSwapConvention ConventionFromJurisdiction (
 		final java.lang.String strCurrency)
 	{
-<span class="pc bpc" id="L174" title="3 of 6 branches missed.">		return null == strCurrency || strCurrency.isEmpty() || !_mapConvention.containsKey (strCurrency) ?</span>
-<span class="fc" id="L175">			null : _mapConvention.get (strCurrency);</span>
+<span class="pc bpc" id="L186" title="3 of 6 branches missed.">		return null == strCurrency || strCurrency.isEmpty() || !_mapConvention.containsKey (strCurrency) ?</span>
+<span class="fc" id="L187">			null : _mapConvention.get (strCurrency);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

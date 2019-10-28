@@ -6,45 +6,57 @@ package org.drip.learning.rxtor1;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -106,17 +118,17 @@ package org.drip.learning.rxtor1;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Learning&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning&quot;&gt;Agnostic Learning Bounds under Empirical Loss Minimization Schemes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/learning/rxtor1&quot;&gt;Statistical Learning Empirical Loss Penalizer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
-<span class="nc" id="L119">	private double _dblLossExponent = java.lang.Double.NaN;</span>
+<span class="nc" id="L131">	private double _dblLossExponent = java.lang.Double.NaN;</span>
 
 	/**
 	 * LpLossLearner Constructor
@@ -136,12 +148,12 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 		final double dblLossExponent)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L139">		super (funcClassRxToR1, cdpb, regularizerFunc);</span>
+<span class="nc" id="L151">		super (funcClassRxToR1, cdpb, regularizerFunc);</span>
 
-<span class="nc bnc" id="L141" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLossExponent = dblLossExponent) || 1. &gt;</span>
+<span class="nc bnc" id="L153" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLossExponent = dblLossExponent) || 1. &gt;</span>
 			_dblLossExponent)
-<span class="nc" id="L143">			throw new java.lang.Exception (&quot;LpLossLearner ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L144">	}</span>
+<span class="nc" id="L155">			throw new java.lang.Exception (&quot;LpLossLearner ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Loss Exponent
@@ -151,7 +163,7 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 
 	public double lossExponent()
 	{
-<span class="nc" id="L154">		return _dblLossExponent;</span>
+<span class="nc" id="L166">		return _dblLossExponent;</span>
 	}
 
 	/**
@@ -162,10 +174,10 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 
 	public double lipschitzSlope()
 	{
-<span class="nc" id="L165">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
-<span class="nc" id="L166">			functionClass().inputMetricVectorSpace();</span>
+<span class="nc" id="L177">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput =</span>
+<span class="nc" id="L178">			functionClass().inputMetricVectorSpace();</span>
 
-<span class="nc" id="L168">		return java.lang.Math.pow (gmvsInput.rightEdge() - gmvsInput.leftEdge(), _dblLossExponent - 1.);</span>
+<span class="nc" id="L180">		return java.lang.Math.pow (gmvsInput.rightEdge() - gmvsInput.leftEdge(), _dblLossExponent - 1.);</span>
 	}
 
 	@Override public double lossSampleCoveringNumber (
@@ -174,19 +186,19 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L177" title="All 6 branches missed.">		if (null == gvvi || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon)</span>
-<span class="nc" id="L178">			throw new java.lang.Exception (&quot;LpLossLearner::lossSampleCoveringNumber =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L189" title="All 6 branches missed.">		if (null == gvvi || !org.drip.numerical.common.NumberUtil.IsValid (dblEpsilon) || 0. &gt;= dblEpsilon)</span>
+<span class="nc" id="L190">			throw new java.lang.Exception (&quot;LpLossLearner::lossSampleCoveringNumber =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L180">		double dblLipschitzCover = dblEpsilon / lipschitzSlope();</span>
+<span class="nc" id="L192">		double dblLipschitzCover = dblEpsilon / lipschitzSlope();</span>
 
-<span class="nc" id="L182">		org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1 = functionClass();</span>
+<span class="nc" id="L194">		org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1 = functionClass();</span>
 
-<span class="nc" id="L184">		org.drip.learning.bound.LipschitzCoveringNumberBound llcn = new</span>
+<span class="nc" id="L196">		org.drip.learning.bound.LipschitzCoveringNumberBound llcn = new</span>
 			org.drip.learning.bound.LipschitzCoveringNumberBound
-<span class="nc" id="L186">				(funcClassRxToR1.sampleSupremumCoveringNumber (gvvi, dblLipschitzCover),</span>
-<span class="nc" id="L187">					funcClassRxToR1.sampleCoveringNumber (gvvi, gvvi.sampleSize() * dblLipschitzCover));</span>
+<span class="nc" id="L198">				(funcClassRxToR1.sampleSupremumCoveringNumber (gvvi, dblLipschitzCover),</span>
+<span class="nc" id="L199">					funcClassRxToR1.sampleCoveringNumber (gvvi, gvvi.sampleSize() * dblLipschitzCover));</span>
 
-<span class="nc bnc" id="L189" title="All 2 branches missed.">		return bSupremum ? llcn.supremumUpperBound() : llcn.lpUpperBound();</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		return bSupremum ? llcn.supremumUpperBound() : llcn.lpUpperBound();</span>
 	}
 
 	@Override public double empiricalLoss (
@@ -195,26 +207,26 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L198" title="All 10 branches missed.">		if (null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof</span>
+<span class="nc bnc" id="L210" title="All 10 branches missed.">		if (null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof</span>
 			org.drip.spaces.instance.ValidatedR1) || null == gvviY || !(gvviY instanceof
 				org.drip.spaces.instance.ValidatedR1))
-<span class="nc" id="L201">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L203">		double[] adblX = ((org.drip.spaces.instance.ValidatedR1) gvviX).instance();</span>
+<span class="nc" id="L215">		double[] adblX = ((org.drip.spaces.instance.ValidatedR1) gvviX).instance();</span>
 
-<span class="nc" id="L205">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
+<span class="nc" id="L217">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
 
-<span class="nc" id="L207">		double dblEmpiricalLoss = 0.;</span>
-<span class="nc" id="L208">		int iNumSample = adblX.length;</span>
+<span class="nc" id="L219">		double dblEmpiricalLoss = 0.;</span>
+<span class="nc" id="L220">		int iNumSample = adblX.length;</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
-<span class="nc" id="L211">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
+<span class="nc" id="L223">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L214">			dblEmpiricalLoss += java.lang.Math.pow (java.lang.Math.abs (funcLearnerR1ToR1.evaluate (adblX[i])</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="nc" id="L226">			dblEmpiricalLoss += java.lang.Math.pow (java.lang.Math.abs (funcLearnerR1ToR1.evaluate (adblX[i])</span>
 				- adblY[i]), _dblLossExponent);
 
-<span class="nc" id="L217">		return dblEmpiricalLoss / _dblLossExponent;</span>
+<span class="nc" id="L229">		return dblEmpiricalLoss / _dblLossExponent;</span>
 	}
 
 	@Override public double empiricalLoss (
@@ -223,26 +235,26 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L226" title="All 10 branches missed.">		if (null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof</span>
+<span class="nc bnc" id="L238" title="All 10 branches missed.">		if (null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof</span>
 			org.drip.spaces.instance.ValidatedRd) || null == gvviY || !(gvviY instanceof
 				org.drip.spaces.instance.ValidatedR1))
-<span class="nc" id="L229">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L241">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L231">		double[][] aadblX = ((org.drip.spaces.instance.ValidatedRd) gvviX).instance();</span>
+<span class="nc" id="L243">		double[][] aadblX = ((org.drip.spaces.instance.ValidatedRd) gvviX).instance();</span>
 
-<span class="nc" id="L233">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
+<span class="nc" id="L245">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
 
-<span class="nc" id="L235">		double dblEmpiricalLoss = 0.;</span>
-<span class="nc" id="L236">		int iNumSample = aadblX.length;</span>
+<span class="nc" id="L247">		double dblEmpiricalLoss = 0.;</span>
+<span class="nc" id="L248">		int iNumSample = aadblX.length;</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
-<span class="nc" id="L239">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
+<span class="nc" id="L251">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalLoss =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
-<span class="nc" id="L242">			dblEmpiricalLoss += java.lang.Math.pow (java.lang.Math.abs (funcLearnerRdToR1.evaluate</span>
-<span class="nc" id="L243">				(aadblX[i]) - adblY[i]), _dblLossExponent);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i)</span>
+<span class="nc" id="L254">			dblEmpiricalLoss += java.lang.Math.pow (java.lang.Math.abs (funcLearnerRdToR1.evaluate</span>
+<span class="nc" id="L255">				(aadblX[i]) - adblY[i]), _dblLossExponent);</span>
 
-<span class="nc" id="L245">		return dblEmpiricalLoss / _dblLossExponent;</span>
+<span class="nc" id="L257">		return dblEmpiricalLoss / _dblLossExponent;</span>
 	}
 
 	@Override public double empiricalRisk (
@@ -252,32 +264,32 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L255" title="All 12 branches missed.">		if (null == distR1R1 || null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof</span>
+<span class="nc bnc" id="L267" title="All 12 branches missed.">		if (null == distR1R1 || null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof</span>
 			org.drip.spaces.instance.ValidatedR1) || null == gvviY || !(gvviY instanceof
 				org.drip.spaces.instance.ValidatedR1))
-<span class="nc" id="L258">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L270">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L260">		double[] adblX = ((org.drip.spaces.instance.ValidatedR1) gvviX).instance();</span>
+<span class="nc" id="L272">		double[] adblX = ((org.drip.spaces.instance.ValidatedR1) gvviX).instance();</span>
 
-<span class="nc" id="L262">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
+<span class="nc" id="L274">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
 
-<span class="nc" id="L264">		double dblNormalizer = 0.;</span>
-<span class="nc" id="L265">		double dblEmpiricalLoss = 0.;</span>
-<span class="nc" id="L266">		int iNumSample = adblX.length;</span>
+<span class="nc" id="L276">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L277">		double dblEmpiricalLoss = 0.;</span>
+<span class="nc" id="L278">		int iNumSample = adblX.length;</span>
 
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
-<span class="nc" id="L269">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
+<span class="nc" id="L281">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L271" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L272">			double dblDensity = distR1R1.density (adblX[i], adblY[i]);</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L284">			double dblDensity = distR1R1.density (adblX[i], adblY[i]);</span>
 
-<span class="nc" id="L274">			dblNormalizer += dblDensity;</span>
+<span class="nc" id="L286">			dblNormalizer += dblDensity;</span>
 
-<span class="nc" id="L276">			dblEmpiricalLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L277">				(funcLearnerR1ToR1.evaluate (adblX[i]) - adblY[i]), _dblLossExponent);</span>
+<span class="nc" id="L288">			dblEmpiricalLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L289">				(funcLearnerR1ToR1.evaluate (adblX[i]) - adblY[i]), _dblLossExponent);</span>
 		}
 
-<span class="nc" id="L280">		return dblEmpiricalLoss / _dblLossExponent / dblNormalizer;</span>
+<span class="nc" id="L292">		return dblEmpiricalLoss / _dblLossExponent / dblNormalizer;</span>
 	}
 
 	@Override public double empiricalRisk (
@@ -287,32 +299,32 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L290" title="All 12 branches missed.">		if (null == distRdR1 || null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof</span>
+<span class="nc bnc" id="L302" title="All 12 branches missed.">		if (null == distRdR1 || null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof</span>
 			org.drip.spaces.instance.ValidatedRd) || null == gvviY || !(gvviY instanceof
 				org.drip.spaces.instance.ValidatedR1))
-<span class="nc" id="L293">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L305">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L295">		double[][] aadblX = ((org.drip.spaces.instance.ValidatedRd) gvviX).instance();</span>
+<span class="nc" id="L307">		double[][] aadblX = ((org.drip.spaces.instance.ValidatedRd) gvviX).instance();</span>
 
-<span class="nc" id="L297">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
+<span class="nc" id="L309">		double[] adblY = ((org.drip.spaces.instance.ValidatedR1) gvviY).instance();</span>
 
-<span class="nc" id="L299">		double dblNormalizer = 0.;</span>
-<span class="nc" id="L300">		double dblEmpiricalLoss = 0.;</span>
-<span class="nc" id="L301">		int iNumSample = aadblX.length;</span>
+<span class="nc" id="L311">		double dblNormalizer = 0.;</span>
+<span class="nc" id="L312">		double dblEmpiricalLoss = 0.;</span>
+<span class="nc" id="L313">		int iNumSample = aadblX.length;</span>
 
-<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
-<span class="nc" id="L304">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		if (iNumSample != adblY.length)</span>
+<span class="nc" id="L316">			throw new java.lang.Exception (&quot;LpLossLearner::empiricalRisk =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L307">			double dblDensity = distRdR1.density (aadblX[i], adblY[i]);</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L319">			double dblDensity = distRdR1.density (aadblX[i], adblY[i]);</span>
 
-<span class="nc" id="L309">			dblNormalizer += dblDensity;</span>
+<span class="nc" id="L321">			dblNormalizer += dblDensity;</span>
 
-<span class="nc" id="L311">			dblEmpiricalLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L312">				(funcLearnerRdToR1.evaluate (aadblX[i]) - adblY[i]), _dblLossExponent);</span>
+<span class="nc" id="L323">			dblEmpiricalLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L324">				(funcLearnerRdToR1.evaluate (aadblX[i]) - adblY[i]), _dblLossExponent);</span>
 		}
 
-<span class="nc" id="L315">		return dblEmpiricalLoss / _dblLossExponent / dblNormalizer;</span>
+<span class="nc" id="L327">		return dblEmpiricalLoss / _dblLossExponent / dblNormalizer;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

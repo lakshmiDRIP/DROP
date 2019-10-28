@@ -6,45 +6,57 @@ package org.drip.market.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,18 +84,18 @@ package org.drip.market.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/definition&quot;&gt;Definition&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/definition&quot;&gt;IBOR, FX, Overnight Index Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class FXSettingContainer {</span>
-<span class="fc" id="L85">	private static java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _mapCurrencyOrder = null;</span>
-<span class="fc" id="L86">	private static java.util.Map&lt;java.lang.String, org.drip.product.params.CurrencyPair&gt; _mapCurrencyPair =</span>
+<span class="nc" id="L96">public class FXSettingContainer {</span>
+<span class="fc" id="L97">	private static java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _mapCurrencyOrder = null;</span>
+<span class="fc" id="L98">	private static java.util.Map&lt;java.lang.String, org.drip.product.params.CurrencyPair&gt; _mapCurrencyPair =</span>
 		null;
 
 	private static final void SetUpCurrencyPair (
@@ -91,10 +103,10 @@ package org.drip.market.definition;
 		final java.lang.String strCurrency2,
 		final org.drip.product.params.CurrencyPair cp)
 	{
-<span class="fc" id="L94">		_mapCurrencyPair.put (strCurrency1 + strCurrency2, cp);</span>
+<span class="fc" id="L106">		_mapCurrencyPair.put (strCurrency1 + strCurrency2, cp);</span>
 		
-<span class="fc" id="L96">		_mapCurrencyPair.put (strCurrency2 + strCurrency1, cp);</span>
-<span class="fc" id="L97">	}</span>
+<span class="fc" id="L108">		_mapCurrencyPair.put (strCurrency2 + strCurrency1, cp);</span>
+<span class="fc" id="L109">	}</span>
 
 	/**
 	 * Initialize the FXSettingContainer
@@ -104,98 +116,98 @@ package org.drip.market.definition;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		if (null != _mapCurrencyOrder) return true;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		if (null != _mapCurrencyOrder) return true;</span>
 
-<span class="fc" id="L109">		_mapCurrencyOrder = new java.util.TreeMap&lt;java.lang.String, java.lang.Integer&gt;();</span>
+<span class="fc" id="L121">		_mapCurrencyOrder = new java.util.TreeMap&lt;java.lang.String, java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L111">		_mapCurrencyPair = new java.util.TreeMap&lt;java.lang.String, org.drip.product.params.CurrencyPair&gt;();</span>
+<span class="fc" id="L123">		_mapCurrencyPair = new java.util.TreeMap&lt;java.lang.String, org.drip.product.params.CurrencyPair&gt;();</span>
 
-<span class="fc" id="L113">		_mapCurrencyOrder.put (&quot;EUR&quot;, 1);</span>
+<span class="fc" id="L125">		_mapCurrencyOrder.put (&quot;EUR&quot;, 1);</span>
 
-<span class="fc" id="L115">		_mapCurrencyOrder.put (&quot;GBP&quot;, 2);</span>
+<span class="fc" id="L127">		_mapCurrencyOrder.put (&quot;GBP&quot;, 2);</span>
 
-<span class="fc" id="L117">		_mapCurrencyOrder.put (&quot;AUD&quot;, 3);</span>
+<span class="fc" id="L129">		_mapCurrencyOrder.put (&quot;AUD&quot;, 3);</span>
 
-<span class="fc" id="L119">		_mapCurrencyOrder.put (&quot;NZD&quot;, 4);</span>
+<span class="fc" id="L131">		_mapCurrencyOrder.put (&quot;NZD&quot;, 4);</span>
 
-<span class="fc" id="L121">		_mapCurrencyOrder.put (&quot;USD&quot;, 5);</span>
+<span class="fc" id="L133">		_mapCurrencyOrder.put (&quot;USD&quot;, 5);</span>
 
-<span class="fc" id="L123">		_mapCurrencyOrder.put (&quot;CAD&quot;, 6);</span>
+<span class="fc" id="L135">		_mapCurrencyOrder.put (&quot;CAD&quot;, 6);</span>
 
-<span class="fc" id="L125">		_mapCurrencyOrder.put (&quot;CHF&quot;, 7);</span>
+<span class="fc" id="L137">		_mapCurrencyOrder.put (&quot;CHF&quot;, 7);</span>
 
-<span class="fc" id="L127">		_mapCurrencyOrder.put (&quot;JPY&quot;, 8);</span>
+<span class="fc" id="L139">		_mapCurrencyOrder.put (&quot;JPY&quot;, 8);</span>
 
 		try {
-<span class="fc" id="L130">			SetUpCurrencyPair (&quot;AUD&quot;, &quot;EUR&quot;, new org.drip.product.params.CurrencyPair (&quot;AUD&quot;, &quot;EUR&quot;, &quot;EUR&quot;,</span>
+<span class="fc" id="L142">			SetUpCurrencyPair (&quot;AUD&quot;, &quot;EUR&quot;, new org.drip.product.params.CurrencyPair (&quot;AUD&quot;, &quot;EUR&quot;, &quot;EUR&quot;,</span>
 				10000.));
 
-<span class="fc" id="L133">			SetUpCurrencyPair (&quot;AUD&quot;, &quot;USD&quot;, new org.drip.product.params.CurrencyPair (&quot;AUD&quot;, &quot;USD&quot;, &quot;USD&quot;,</span>
+<span class="fc" id="L145">			SetUpCurrencyPair (&quot;AUD&quot;, &quot;USD&quot;, new org.drip.product.params.CurrencyPair (&quot;AUD&quot;, &quot;USD&quot;, &quot;USD&quot;,</span>
 				10000.));
 
-<span class="fc" id="L136">			SetUpCurrencyPair (&quot;EUR&quot;, &quot;GBP&quot;, new org.drip.product.params.CurrencyPair (&quot;EUR&quot;, &quot;GBP&quot;, &quot;GBP&quot;,</span>
+<span class="fc" id="L148">			SetUpCurrencyPair (&quot;EUR&quot;, &quot;GBP&quot;, new org.drip.product.params.CurrencyPair (&quot;EUR&quot;, &quot;GBP&quot;, &quot;GBP&quot;,</span>
 				10000.));
 
-<span class="fc" id="L139">			SetUpCurrencyPair (&quot;EUR&quot;, &quot;JPY&quot;, new org.drip.product.params.CurrencyPair (&quot;EUR&quot;, &quot;JPY&quot;, &quot;JPY&quot;,</span>
+<span class="fc" id="L151">			SetUpCurrencyPair (&quot;EUR&quot;, &quot;JPY&quot;, new org.drip.product.params.CurrencyPair (&quot;EUR&quot;, &quot;JPY&quot;, &quot;JPY&quot;,</span>
 				100.));
 
-<span class="fc" id="L142">			SetUpCurrencyPair (&quot;EUR&quot;, &quot;USD&quot;, new org.drip.product.params.CurrencyPair (&quot;EUR&quot;, &quot;USD&quot;, &quot;USD&quot;,</span>
+<span class="fc" id="L154">			SetUpCurrencyPair (&quot;EUR&quot;, &quot;USD&quot;, new org.drip.product.params.CurrencyPair (&quot;EUR&quot;, &quot;USD&quot;, &quot;USD&quot;,</span>
 				10000.));
 
-<span class="fc" id="L145">			SetUpCurrencyPair (&quot;GBP&quot;, &quot;JPY&quot;, new org.drip.product.params.CurrencyPair (&quot;GBP&quot;, &quot;JPY&quot;, &quot;JPY&quot;,</span>
+<span class="fc" id="L157">			SetUpCurrencyPair (&quot;GBP&quot;, &quot;JPY&quot;, new org.drip.product.params.CurrencyPair (&quot;GBP&quot;, &quot;JPY&quot;, &quot;JPY&quot;,</span>
 				100.));
 
-<span class="fc" id="L148">			SetUpCurrencyPair (&quot;GBP&quot;, &quot;USD&quot;, new org.drip.product.params.CurrencyPair (&quot;GBP&quot;, &quot;USD&quot;, &quot;USD&quot;,</span>
+<span class="fc" id="L160">			SetUpCurrencyPair (&quot;GBP&quot;, &quot;USD&quot;, new org.drip.product.params.CurrencyPair (&quot;GBP&quot;, &quot;USD&quot;, &quot;USD&quot;,</span>
 				10000.));
 
-<span class="fc" id="L151">			SetUpCurrencyPair (&quot;USD&quot;, &quot;BRL&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;BRL&quot;, &quot;BRL&quot;,</span>
+<span class="fc" id="L163">			SetUpCurrencyPair (&quot;USD&quot;, &quot;BRL&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;BRL&quot;, &quot;BRL&quot;,</span>
 				10000.));
 
-<span class="fc" id="L154">			SetUpCurrencyPair (&quot;USD&quot;, &quot;CAD&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;CAD&quot;, &quot;CAD&quot;,</span>
+<span class="fc" id="L166">			SetUpCurrencyPair (&quot;USD&quot;, &quot;CAD&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;CAD&quot;, &quot;CAD&quot;,</span>
 				10000.));
 
-<span class="fc" id="L157">			SetUpCurrencyPair (&quot;USD&quot;, &quot;CHF&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;CHF&quot;, &quot;CHF&quot;,</span>
+<span class="fc" id="L169">			SetUpCurrencyPair (&quot;USD&quot;, &quot;CHF&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;CHF&quot;, &quot;CHF&quot;,</span>
 				10000.));
 
-<span class="fc" id="L160">			SetUpCurrencyPair (&quot;USD&quot;, &quot;CNY&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;CNY&quot;, &quot;CNY&quot;,</span>
+<span class="fc" id="L172">			SetUpCurrencyPair (&quot;USD&quot;, &quot;CNY&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;CNY&quot;, &quot;CNY&quot;,</span>
 				1.));
 
-<span class="fc" id="L163">			SetUpCurrencyPair (&quot;USD&quot;, &quot;EGP&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;EGP&quot;, &quot;EGP&quot;,</span>
+<span class="fc" id="L175">			SetUpCurrencyPair (&quot;USD&quot;, &quot;EGP&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;EGP&quot;, &quot;EGP&quot;,</span>
 				10000.));
 
-<span class="fc" id="L166">			SetUpCurrencyPair (&quot;USD&quot;, &quot;HUF&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;HUF&quot;, &quot;HUF&quot;,</span>
+<span class="fc" id="L178">			SetUpCurrencyPair (&quot;USD&quot;, &quot;HUF&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;HUF&quot;, &quot;HUF&quot;,</span>
 				100.));
 
-<span class="fc" id="L169">			SetUpCurrencyPair (&quot;USD&quot;, &quot;INR&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;INR&quot;, &quot;INR&quot;,</span>
+<span class="fc" id="L181">			SetUpCurrencyPair (&quot;USD&quot;, &quot;INR&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;INR&quot;, &quot;INR&quot;,</span>
 				100.));
 
-<span class="fc" id="L172">			SetUpCurrencyPair (&quot;USD&quot;, &quot;JPY&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;JPY&quot;, &quot;JPY&quot;,</span>
+<span class="fc" id="L184">			SetUpCurrencyPair (&quot;USD&quot;, &quot;JPY&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;JPY&quot;, &quot;JPY&quot;,</span>
 				100.));
 
-<span class="fc" id="L175">			SetUpCurrencyPair (&quot;USD&quot;, &quot;KRW&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;KRW&quot;, &quot;KRW&quot;,</span>
+<span class="fc" id="L187">			SetUpCurrencyPair (&quot;USD&quot;, &quot;KRW&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;KRW&quot;, &quot;KRW&quot;,</span>
 				1.));
 
-<span class="fc" id="L178">			SetUpCurrencyPair (&quot;USD&quot;, &quot;MXN&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;MXN&quot;, &quot;MXN&quot;,</span>
+<span class="fc" id="L190">			SetUpCurrencyPair (&quot;USD&quot;, &quot;MXN&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;MXN&quot;, &quot;MXN&quot;,</span>
 				10000.));
 
-<span class="fc" id="L181">			SetUpCurrencyPair (&quot;USD&quot;, &quot;PLN&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;PLN&quot;, &quot;PLN&quot;,</span>
+<span class="fc" id="L193">			SetUpCurrencyPair (&quot;USD&quot;, &quot;PLN&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;PLN&quot;, &quot;PLN&quot;,</span>
 				100.));
 
-<span class="fc" id="L184">			SetUpCurrencyPair (&quot;USD&quot;, &quot;TRY&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;TRY&quot;, &quot;TRY&quot;,</span>
+<span class="fc" id="L196">			SetUpCurrencyPair (&quot;USD&quot;, &quot;TRY&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;TRY&quot;, &quot;TRY&quot;,</span>
 				100.));
 
-<span class="fc" id="L187">			SetUpCurrencyPair (&quot;USD&quot;, &quot;TWD&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;TWD&quot;, &quot;TWD&quot;,</span>
+<span class="fc" id="L199">			SetUpCurrencyPair (&quot;USD&quot;, &quot;TWD&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;TWD&quot;, &quot;TWD&quot;,</span>
 				1.));
 
-<span class="fc" id="L190">			SetUpCurrencyPair (&quot;USD&quot;, &quot;ZAR&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;ZAR&quot;, &quot;ZAR&quot;,</span>
+<span class="fc" id="L202">			SetUpCurrencyPair (&quot;USD&quot;, &quot;ZAR&quot;, new org.drip.product.params.CurrencyPair (&quot;USD&quot;, &quot;ZAR&quot;, &quot;ZAR&quot;,</span>
 				10000.));
 
-<span class="fc" id="L193">			return true;</span>
-<span class="nc" id="L194">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">			e.printStackTrace();</span>
+<span class="fc" id="L205">			return true;</span>
+<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L207">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L198">		return false;</span>
+<span class="nc" id="L210">		return false;</span>
 	}
 
 	/**
@@ -212,10 +224,10 @@ package org.drip.market.definition;
 		final java.lang.String strCurrency)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L215" title="2 of 4 branches missed.">		if (null == strCurrency || strCurrency.isEmpty())</span>
-<span class="nc" id="L216">			throw new java.lang.Exception (&quot;FXSettingsContainer::CurrencyOrder =&gt; Invalid Input&quot;);</span>
+<span class="pc bpc" id="L227" title="2 of 4 branches missed.">		if (null == strCurrency || strCurrency.isEmpty())</span>
+<span class="nc" id="L228">			throw new java.lang.Exception (&quot;FXSettingsContainer::CurrencyOrder =&gt; Invalid Input&quot;);</span>
 
-<span class="fc bfc" id="L218" title="All 2 branches covered.">		return _mapCurrencyOrder.containsKey (strCurrency) ? _mapCurrencyOrder.get (strCurrency) : 0;</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">		return _mapCurrencyOrder.containsKey (strCurrency) ? _mapCurrencyOrder.get (strCurrency) : 0;</span>
 	}
 
 	/**
@@ -231,13 +243,13 @@ package org.drip.market.definition;
 		final java.lang.String strCurrency1,
 		final java.lang.String strCurrency2)
 	{
-<span class="pc bpc" id="L234" title="4 of 8 branches missed.">		if (null == strCurrency1 || strCurrency1.isEmpty() || null == strCurrency2 || strCurrency2.isEmpty())</span>
-<span class="nc" id="L235">			return null;</span>
+<span class="pc bpc" id="L246" title="4 of 8 branches missed.">		if (null == strCurrency1 || strCurrency1.isEmpty() || null == strCurrency2 || strCurrency2.isEmpty())</span>
+<span class="nc" id="L247">			return null;</span>
 
-<span class="fc" id="L237">		java.lang.String strCurrencyPairCode = strCurrency1 + strCurrency2;</span>
+<span class="fc" id="L249">		java.lang.String strCurrencyPairCode = strCurrency1 + strCurrency2;</span>
 
-<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		return _mapCurrencyPair.containsKey (strCurrencyPairCode) ? _mapCurrencyPair.get</span>
-<span class="pc" id="L240">			(strCurrencyPairCode) : null;</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">		return _mapCurrencyPair.containsKey (strCurrencyPairCode) ? _mapCurrencyPair.get</span>
+<span class="pc" id="L252">			(strCurrencyPairCode) : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

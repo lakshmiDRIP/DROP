@@ -6,43 +6,55 @@ package org.drip.measure.bridge;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,23 +83,23 @@ package org.drip.measure.bridge;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge&quot;&gt;Bridge&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge&quot;&gt;Broken Date Brownian Bridge Interpolator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge.BrokenDateInterpolator {
-<span class="fc" id="L84">	private double _dblT1 = java.lang.Double.NaN;</span>
-<span class="fc" id="L85">	private double _dblT2 = java.lang.Double.NaN;</span>
-<span class="fc" id="L86">	private double _dblT3 = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _dblV1 = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private double _dblV2 = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblV3 = java.lang.Double.NaN;</span>
-<span class="fc" id="L90">	private double _dblBrownianBridgeFactor = java.lang.Double.NaN;</span>
+<span class="fc" id="L96">	private double _dblT1 = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double _dblT2 = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _dblT3 = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblV1 = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private double _dblV2 = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _dblV3 = java.lang.Double.NaN;</span>
+<span class="fc" id="L102">	private double _dblBrownianBridgeFactor = java.lang.Double.NaN;</span>
 
 	/**
 	 * BrokenDateInterpolatorBrownian3P Constructor
@@ -110,23 +122,23 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 		final double dblV2,
 		final double dblV3)
 		throws java.lang.Exception
-<span class="fc" id="L113">	{</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblT1 = dblT1) ||</span>
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblT2 = dblT2) ||</span>
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblT3 = dblT3) ||</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblV1 = dblV1) ||</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblV2 = dblV2) ||</span>
-<span class="pc bpc" id="L119" title="3 of 6 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 &gt;= _dblT2 ||</span>
+<span class="fc" id="L125">	{</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblT1 = dblT1) ||</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblT2 = dblT2) ||</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblT3 = dblT3) ||</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (_dblV1 = dblV1) ||</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (_dblV2 = dblV2) ||</span>
+<span class="pc bpc" id="L131" title="3 of 6 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 &gt;= _dblT2 ||</span>
 								_dblT2 &gt;= _dblT3)
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;BrokenDateInterpolatorBrownian3P Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;BrokenDateInterpolatorBrownian3P Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L123">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
-<span class="fc" id="L124">		double dblT3MinusT2 = _dblT3 - _dblT2;</span>
-<span class="fc" id="L125">		double dblT2MinusT1 = _dblT2 - _dblT1;</span>
+<span class="fc" id="L135">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
+<span class="fc" id="L136">		double dblT3MinusT2 = _dblT3 - _dblT2;</span>
+<span class="fc" id="L137">		double dblT2MinusT1 = _dblT2 - _dblT1;</span>
 
-<span class="fc" id="L127">		_dblBrownianBridgeFactor = java.lang.Math.sqrt (dblT3MinusT1 / (dblT3MinusT2 * dblT2MinusT1)) *</span>
+<span class="fc" id="L139">		_dblBrownianBridgeFactor = java.lang.Math.sqrt (dblT3MinusT1 / (dblT3MinusT2 * dblT2MinusT1)) *</span>
 			(_dblV2 - (dblT3MinusT2 * _dblV1 / dblT3MinusT1) - (dblT2MinusT1 * _dblV3 / dblT3MinusT1));
-<span class="fc" id="L129">	}</span>
+<span class="fc" id="L141">	}</span>
 
 	/**
 	 * Retrieve T1
@@ -136,7 +148,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double t1()
 	{
-<span class="nc" id="L139">		return _dblT1;</span>
+<span class="nc" id="L151">		return _dblT1;</span>
 	}
 
 	/**
@@ -147,7 +159,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double t2()
 	{
-<span class="nc" id="L150">		return _dblT2;</span>
+<span class="nc" id="L162">		return _dblT2;</span>
 	}
 
 	/**
@@ -158,7 +170,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double t3()
 	{
-<span class="nc" id="L161">		return _dblT3;</span>
+<span class="nc" id="L173">		return _dblT3;</span>
 	}
 
 	/**
@@ -169,7 +181,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double v1()
 	{
-<span class="nc" id="L172">		return _dblV1;</span>
+<span class="nc" id="L184">		return _dblV1;</span>
 	}
 
 	/**
@@ -180,7 +192,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double v2()
 	{
-<span class="nc" id="L183">		return _dblV2;</span>
+<span class="nc" id="L195">		return _dblV2;</span>
 	}
 
 	/**
@@ -191,7 +203,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double v3()
 	{
-<span class="nc" id="L194">		return _dblV3;</span>
+<span class="nc" id="L206">		return _dblV3;</span>
 	}
 
 	/**
@@ -202,23 +214,23 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double brownianBridgeFactor()
 	{
-<span class="nc" id="L205">		return _dblBrownianBridgeFactor;</span>
+<span class="nc" id="L217">		return _dblBrownianBridgeFactor;</span>
 	}
 
 	@Override public double interpolate (
 		final double dblT)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L212" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT) || dblT &lt; _dblT1 || dblT &gt; _dblT3)</span>
-<span class="nc" id="L213">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L224" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT) || dblT &lt; _dblT1 || dblT &gt; _dblT3)</span>
+<span class="nc" id="L225">			throw new java.lang.Exception</span>
 				(&quot;BrokenDateInterpolatorBrownian3P::interpolate =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L216">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
-<span class="fc" id="L217">		double dblT3MinusT = _dblT3 - dblT;</span>
-<span class="fc" id="L218">		double dblTMinusT1 = dblT - _dblT1;</span>
+<span class="fc" id="L228">		double dblT3MinusT1 = _dblT3 - _dblT1;</span>
+<span class="fc" id="L229">		double dblT3MinusT = _dblT3 - dblT;</span>
+<span class="fc" id="L230">		double dblTMinusT1 = dblT - _dblT1;</span>
 
-<span class="fc" id="L220">		return (dblT3MinusT * _dblV1 / dblT3MinusT1) + (dblTMinusT1 * _dblV3 / dblT3MinusT1) +</span>
-<span class="fc" id="L221">			_dblBrownianBridgeFactor * java.lang.Math.sqrt (dblT3MinusT * dblTMinusT1 / dblT3MinusT1);</span>
+<span class="fc" id="L232">		return (dblT3MinusT * _dblV1 / dblT3MinusT1) + (dblTMinusT1 * _dblV3 / dblT3MinusT1) +</span>
+<span class="fc" id="L233">			_dblBrownianBridgeFactor * java.lang.Math.sqrt (dblT3MinusT * dblTMinusT1 / dblT3MinusT1);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

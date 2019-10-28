@@ -6,6 +6,7 @@ package org.drip.measure.continuous;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.measure.continuous;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,16 +87,16 @@ package org.drip.measure.continuous;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous&quot;&gt;Continuous&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Continuous Random Measure&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L87">public abstract class R1Univariate {</span>
+<span class="fc" id="L99">public abstract class R1Univariate {</span>
 
 	/**
 	 * Lay out the Support of the PDF Range
@@ -105,14 +117,14 @@ package org.drip.measure.continuous;
 	public boolean supported (
 		final double x)
 	{
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (java.lang.Double.isNaN (x))</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (java.lang.Double.isNaN (x))</span>
 		{
-<span class="nc" id="L110">			return false;</span>
+<span class="nc" id="L122">			return false;</span>
 		}
 
-<span class="nc" id="L113">		double[] range = support();</span>
+<span class="nc" id="L125">		double[] range = support();</span>
 
-<span class="nc bnc" id="L115" title="All 4 branches missed.">		return range[0] &lt;= x &amp;&amp; x &lt;= range[1];</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">		return range[0] &lt;= x &amp;&amp; x &lt;= range[1];</span>
 	}
 
 	/**
@@ -159,7 +171,7 @@ package org.drip.measure.continuous;
 		final double dblXRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L162">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+<span class="nc" id="L174">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
 	}
 
 	/**
@@ -176,32 +188,32 @@ package org.drip.measure.continuous;
 		final double p)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L179" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt; p || 1. &lt; p)</span>
+<span class="nc bnc" id="L191" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. &gt; p || 1. &lt; p)</span>
 		{
-<span class="nc" id="L181">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L193">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L184">		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =</span>
+<span class="nc" id="L196">		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =</span>
 			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
 				0.,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L188">				{</span>
+<span class="nc" id="L200">				{</span>
 					@Override public double evaluate (
 						final double u)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L193">						return cumulative (u) - p;</span>
+<span class="nc" id="L205">						return cumulative (u) - p;</span>
 					}
 				},
 				true
-<span class="nc" id="L197">			).findRoot();</span>
+<span class="nc" id="L209">			).findRoot();</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (null == fixedPointFinderOutput)</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (null == fixedPointFinderOutput)</span>
 		{
-<span class="nc" id="L201">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Cannot find Root&quot;);</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Cannot find Root&quot;);</span>
 		}
 
-<span class="nc" id="L204">		return fixedPointFinderOutput.getRoot();</span>
+<span class="nc" id="L216">		return fixedPointFinderOutput.getRoot();</span>
 	}
 
 	/**
@@ -226,7 +238,7 @@ package org.drip.measure.continuous;
 	public double median()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L229">		return invCumulative (0.50);</span>
+<span class="nc" id="L241">		return invCumulative (0.50);</span>
 	}
 
 	/**
@@ -240,41 +252,41 @@ package org.drip.measure.continuous;
 	public double mode()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L243">		final org.drip.function.definition.R1ToR1 densityFunction =</span>
+<span class="nc" id="L255">		final org.drip.function.definition.R1ToR1 densityFunction =</span>
 			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L245">		{</span>
+<span class="nc" id="L257">		{</span>
 			@Override public double evaluate (
 				final double u)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L250">				return density (u);</span>
+<span class="nc" id="L262">				return density (u);</span>
 			}
 		};
 
-<span class="nc" id="L254">		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =</span>
+<span class="nc" id="L266">		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =</span>
 			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
 				0.,
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L258">				{</span>
+<span class="nc" id="L270">				{</span>
 					@Override public double evaluate (
 						final double u)
 						throws java.lang.Exception
 					{
-<span class="nc" id="L263">						return densityFunction.derivative (</span>
+<span class="nc" id="L275">						return densityFunction.derivative (</span>
 							u,
 							1
 						);
 					}
 				},
 				true
-<span class="nc" id="L270">			).findRoot();</span>
+<span class="nc" id="L282">			).findRoot();</span>
 
-<span class="nc bnc" id="L272" title="All 2 branches missed.">		if (null == fixedPointFinderOutput)</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		if (null == fixedPointFinderOutput)</span>
 		{
-<span class="nc" id="L274">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Cannot find Root&quot;);</span>
+<span class="nc" id="L286">			throw new java.lang.Exception (&quot;R1Univariate::invCumulative =&gt; Cannot find Root&quot;);</span>
 		}
 
-<span class="nc" id="L277">		return fixedPointFinderOutput.getRoot();</span>
+<span class="nc" id="L289">		return fixedPointFinderOutput.getRoot();</span>
 	}
 
 	/**
@@ -299,7 +311,7 @@ package org.drip.measure.continuous;
 	public double skewness()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L302">		throw new java.lang.Exception (&quot;R1Univariate::skewness =&gt; Not implemented&quot;);</span>
+<span class="nc" id="L314">		throw new java.lang.Exception (&quot;R1Univariate::skewness =&gt; Not implemented&quot;);</span>
 	}
 
 	/**
@@ -313,7 +325,7 @@ package org.drip.measure.continuous;
 	public double excessKurtosis()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L316">		throw new java.lang.Exception (&quot;R1Univariate::excessKurtosis =&gt; Not implemented&quot;);</span>
+<span class="nc" id="L328">		throw new java.lang.Exception (&quot;R1Univariate::excessKurtosis =&gt; Not implemented&quot;);</span>
 	}
 
 	/**
@@ -327,19 +339,19 @@ package org.drip.measure.continuous;
 	public double differentialEntropy()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L330">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L342">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 			0.,
 			10000
-<span class="nc" id="L333">		).integrate (</span>
+<span class="nc" id="L345">		).integrate (</span>
 			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L335">			{</span>
+<span class="nc" id="L347">			{</span>
 				@Override public double evaluate (
 					final double t)
 					throws java.lang.Exception
 				{
-<span class="nc" id="L340">					double density = density (t);</span>
+<span class="nc" id="L352">					double density = density (t);</span>
 
-<span class="nc" id="L342">					return density * java.lang.Math.log (density);</span>
+<span class="nc" id="L354">					return density * java.lang.Math.log (density);</span>
 				}
 			}
 		);
@@ -353,7 +365,7 @@ package org.drip.measure.continuous;
 
 	public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
 	{
-<span class="nc" id="L356">		return null;</span>
+<span class="nc" id="L368">		return null;</span>
 	}
 
 	/**
@@ -364,7 +376,7 @@ package org.drip.measure.continuous;
 
 	public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
 	{
-<span class="nc" id="L367">		return null;</span>
+<span class="nc" id="L379">		return null;</span>
 	}
 
 	/**
@@ -378,7 +390,7 @@ package org.drip.measure.continuous;
 	public double random()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L381">		return invCumulative (java.lang.Math.random());</span>
+<span class="nc" id="L393">		return invCumulative (java.lang.Math.random());</span>
 	}
 
 	/**
@@ -392,28 +404,28 @@ package org.drip.measure.continuous;
 	public double[] randomArray (
 		final int arrayCount)
 	{
-<span class="nc bnc" id="L395" title="All 2 branches missed.">		if (0 &gt;= arrayCount)</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">		if (0 &gt;= arrayCount)</span>
 		{
-<span class="nc" id="L397">			return null;</span>
+<span class="nc" id="L409">			return null;</span>
 		}
 
-<span class="nc" id="L400">		double[] randomArray = new double[arrayCount];</span>
+<span class="nc" id="L412">		double[] randomArray = new double[arrayCount];</span>
 
-<span class="nc bnc" id="L402" title="All 2 branches missed.">		for (int index = 0; index &lt; arrayCount; ++index)</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">		for (int index = 0; index &lt; arrayCount; ++index)</span>
 		{
 			try
 			{
-<span class="nc" id="L406">				randomArray[index] = random();</span>
+<span class="nc" id="L418">				randomArray[index] = random();</span>
 			}
-<span class="nc" id="L408">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L420">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L410">				e.printStackTrace();</span>
+<span class="nc" id="L422">				e.printStackTrace();</span>
 
-<span class="nc" id="L412">				return null;</span>
-<span class="nc" id="L413">			}</span>
+<span class="nc" id="L424">				return null;</span>
+<span class="nc" id="L425">			}</span>
 		}
 
-<span class="nc" id="L416">		return randomArray;</span>
+<span class="nc" id="L428">		return randomArray;</span>
 	}
 
 	/**
@@ -426,17 +438,17 @@ package org.drip.measure.continuous;
 	{
 		try
 		{
-<span class="nc" id="L429">			return new org.drip.measure.statistics.PopulationCentralMeasures (</span>
-<span class="nc" id="L430">				mean(),</span>
-<span class="nc" id="L431">				variance()</span>
+<span class="nc" id="L441">			return new org.drip.measure.statistics.PopulationCentralMeasures (</span>
+<span class="nc" id="L442">				mean(),</span>
+<span class="nc" id="L443">				variance()</span>
 			);
 		}
-<span class="nc" id="L434">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L446">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L436">			e.printStackTrace();</span>
+<span class="nc" id="L448">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L439">		return null;</span>
+<span class="nc" id="L451">		return null;</span>
 	}
 
 	/**
@@ -447,7 +459,7 @@ package org.drip.measure.continuous;
 
 	public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L450">		return null;</span>
+<span class="nc" id="L462">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

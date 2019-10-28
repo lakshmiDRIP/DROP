@@ -6,43 +6,55 @@ package org.drip.measure.crng;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,28 +84,28 @@ package org.drip.measure.crng;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng&quot;&gt;Continuous Random Number Generator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng&quot;&gt;Continuous Random Number Stream Generator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.RecursiveGenerator {
-<span class="fc" id="L85">	private long _lM1 = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L86">	private long _lM2 = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L87">	private long _lA12 = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L88">	private long _lA13 = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L89">	private long _lA21 = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L90">	private long _lA23 = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L91">	private long _lY1Prev = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L92">	private long _lY2Prev = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L93">	private long _lY1PrevPrev = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L94">	private long _lY2PrevPrev = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L95">	private long _lY1PrevPrevPrev = java.lang.Long.MIN_VALUE;</span>
-<span class="fc" id="L96">	private long _lY2PrevPrevPrev = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L97">	private long _lM1 = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L98">	private long _lM2 = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L99">	private long _lA12 = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L100">	private long _lA13 = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L101">	private long _lA21 = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L102">	private long _lA23 = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L103">	private long _lY1Prev = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L104">	private long _lY2Prev = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L105">	private long _lY1PrevPrev = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L106">	private long _lY2PrevPrev = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L107">	private long _lY1PrevPrevPrev = java.lang.Long.MIN_VALUE;</span>
+<span class="fc" id="L108">	private long _lY2PrevPrevPrev = java.lang.Long.MIN_VALUE;</span>
 
 	/**
 	 * Generate the MRG32k3a Variant of the L'Ecuyer's Multiple Recursive Generator
@@ -103,19 +115,19 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public static final MultipleRecursiveGeneratorLEcuyer MRG32k3a()
 	{
-<span class="fc" id="L106">		long l2Power32 = 1;</span>
+<span class="fc" id="L118">		long l2Power32 = 1;</span>
 
-<span class="fc bfc" id="L108" title="All 2 branches covered.">		for (int i = 0; i &lt; 32; ++i)</span>
-<span class="fc" id="L109">			l2Power32 *= 2;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">		for (int i = 0; i &lt; 32; ++i)</span>
+<span class="fc" id="L121">			l2Power32 *= 2;</span>
 
 		try {
-<span class="fc" id="L112">			return new MultipleRecursiveGeneratorLEcuyer (</span>
-<span class="fc" id="L113">				System.nanoTime(),</span>
-<span class="fc" id="L114">				System.nanoTime(),</span>
-<span class="fc" id="L115">				System.nanoTime(),</span>
-<span class="fc" id="L116">				System.nanoTime(),</span>
-<span class="fc" id="L117">				System.nanoTime(),</span>
-<span class="fc" id="L118">				System.nanoTime(),</span>
+<span class="fc" id="L124">			return new MultipleRecursiveGeneratorLEcuyer (</span>
+<span class="fc" id="L125">				System.nanoTime(),</span>
+<span class="fc" id="L126">				System.nanoTime(),</span>
+<span class="fc" id="L127">				System.nanoTime(),</span>
+<span class="fc" id="L128">				System.nanoTime(),</span>
+<span class="fc" id="L129">				System.nanoTime(),</span>
+<span class="fc" id="L130">				System.nanoTime(),</span>
 				1403580,
 				-810728,
 				 527612,
@@ -123,11 +135,11 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 				l2Power32 - 209,
 				l2Power32 - 22853
 			);
-<span class="nc" id="L126">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L127">			e.printStackTrace();</span>
+<span class="nc" id="L138">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L139">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L130">		return null;</span>
+<span class="nc" id="L142">		return null;</span>
 	}
 
 	/**
@@ -163,22 +175,22 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 		final long lM1,
 		final long lM2)
 		throws java.lang.Exception
-<span class="fc" id="L166">	{</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_lY1Prev = lY1Prev) ||</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrev = lY1PrevPrev) ||</span>
-<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrevPrev = lY1PrevPrevPrev) ||</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY2Prev = lY2Prev) ||</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrev = lY2PrevPrev) ||</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrevPrev = lY2PrevPrevPrev) ||</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA12 = lA12) ||</span>
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA13 = lA13) ||</span>
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA21 = lA21) ||</span>
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA23 = lA23) ||</span>
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lM1 = lM1) ||</span>
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lM2 = lM2))</span>
-<span class="nc" id="L179">			throw new java.lang.Exception</span>
+<span class="fc" id="L178">	{</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_lY1Prev = lY1Prev) ||</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrev = lY1PrevPrev) ||</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrevPrev = lY1PrevPrevPrev) ||</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY2Prev = lY2Prev) ||</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrev = lY2PrevPrev) ||</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrevPrev = lY2PrevPrevPrev) ||</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA12 = lA12) ||</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA13 = lA13) ||</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA21 = lA21) ||</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lA23 = lA23) ||</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lM1 = lM1) ||</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_lM2 = lM2))</span>
+<span class="nc" id="L191">			throw new java.lang.Exception</span>
 				(&quot;MultipleRecursiveGeneratorLEcuyer Constructor =&gt; Invalid Inputs&quot;);
-<span class="fc" id="L181">	}</span>
+<span class="fc" id="L193">	}</span>
 
 	/**
 	 * Retrieve M1
@@ -188,7 +200,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long m1()
 	{
-<span class="nc" id="L191">		return _lM1;</span>
+<span class="nc" id="L203">		return _lM1;</span>
 	}
 
 	/**
@@ -199,7 +211,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long m2()
 	{
-<span class="nc" id="L202">		return _lM2;</span>
+<span class="nc" id="L214">		return _lM2;</span>
 	}
 
 	/**
@@ -210,7 +222,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a12()
 	{
-<span class="nc" id="L213">		return _lA12;</span>
+<span class="nc" id="L225">		return _lA12;</span>
 	}
 
 	/**
@@ -221,7 +233,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a13()
 	{
-<span class="nc" id="L224">		return _lA13;</span>
+<span class="nc" id="L236">		return _lA13;</span>
 	}
 
 	/**
@@ -232,7 +244,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a21()
 	{
-<span class="nc" id="L235">		return _lA21;</span>
+<span class="nc" id="L247">		return _lA21;</span>
 	}
 
 	/**
@@ -243,7 +255,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a23()
 	{
-<span class="nc" id="L246">		return _lA23;</span>
+<span class="nc" id="L258">		return _lA23;</span>
 	}
 
 	/**
@@ -254,7 +266,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y1Prev()
 	{
-<span class="nc" id="L257">		return _lY1Prev;</span>
+<span class="nc" id="L269">		return _lY1Prev;</span>
 	}
 
 	/**
@@ -265,7 +277,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y1PrevPrev()
 	{
-<span class="nc" id="L268">		return _lY1PrevPrev;</span>
+<span class="nc" id="L280">		return _lY1PrevPrev;</span>
 	}
 
 	/**
@@ -276,7 +288,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y1PrevPrevPrev()
 	{
-<span class="nc" id="L279">		return _lY1PrevPrevPrev;</span>
+<span class="nc" id="L291">		return _lY1PrevPrevPrev;</span>
 	}
 
 	/**
@@ -287,7 +299,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y2Prev()
 	{
-<span class="nc" id="L290">		return _lY2Prev;</span>
+<span class="nc" id="L302">		return _lY2Prev;</span>
 	}
 
 	/**
@@ -298,7 +310,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y2PrevPrev()
 	{
-<span class="nc" id="L301">		return _lY2PrevPrev;</span>
+<span class="nc" id="L313">		return _lY2PrevPrev;</span>
 	}
 
 	/**
@@ -309,20 +321,20 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y2PrevPrevPrev()
 	{
-<span class="nc" id="L312">		return _lY2PrevPrevPrev;</span>
+<span class="nc" id="L324">		return _lY2PrevPrevPrev;</span>
 	}
 
 	@Override public long next()
 	{
-<span class="fc" id="L317">		long lY1 = (_lA12 * _lY1PrevPrev + _lA13 * _lY1PrevPrevPrev) % _lM1;</span>
-<span class="fc" id="L318">		long lY2 = (_lA21 * _lY2Prev     + _lA23 * _lY2PrevPrevPrev) % _lM2;</span>
-<span class="fc" id="L319">		_lY2PrevPrevPrev = _lY2PrevPrev;</span>
-<span class="fc" id="L320">		_lY1PrevPrevPrev = _lY1PrevPrev;</span>
-<span class="fc" id="L321">		_lY2PrevPrev = _lY2Prev;</span>
-<span class="fc" id="L322">		_lY1PrevPrev = _lY1Prev;</span>
-<span class="fc" id="L323">		_lY2Prev = lY2;</span>
-<span class="fc" id="L324">		_lY1Prev = lY1;</span>
-<span class="fc" id="L325">		return lY1 + lY2;</span>
+<span class="fc" id="L329">		long lY1 = (_lA12 * _lY1PrevPrev + _lA13 * _lY1PrevPrevPrev) % _lM1;</span>
+<span class="fc" id="L330">		long lY2 = (_lA21 * _lY2Prev     + _lA23 * _lY2PrevPrevPrev) % _lM2;</span>
+<span class="fc" id="L331">		_lY2PrevPrevPrev = _lY2PrevPrev;</span>
+<span class="fc" id="L332">		_lY1PrevPrevPrev = _lY1PrevPrev;</span>
+<span class="fc" id="L333">		_lY2PrevPrev = _lY2Prev;</span>
+<span class="fc" id="L334">		_lY1PrevPrev = _lY1Prev;</span>
+<span class="fc" id="L335">		_lY2Prev = lY2;</span>
+<span class="fc" id="L336">		_lY1Prev = lY1;</span>
+<span class="fc" id="L337">		return lY1 + lY2;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.market.exchange;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,21 +85,21 @@ package org.drip.market.exchange;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/exchange&quot;&gt;Exchange&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/exchange&quot;&gt;Deliverable Swap, STIR, Treasury Futures&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class TreasuryFuturesOptionConvention {
-<span class="fc" id="L86">	private boolean _bPremiumType = false;</span>
-<span class="fc" id="L87">	private java.lang.String[] _astrCode = null;</span>
-<span class="fc" id="L88">	private double _dblNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private java.lang.String _strTreasuryFuturesIndex = &quot;&quot;;</span>
-<span class="fc" id="L90">	private org.drip.product.params.LastTradingDateSetting[] _aLTDS = null;</span>
+<span class="fc" id="L98">	private boolean _bPremiumType = false;</span>
+<span class="fc" id="L99">	private java.lang.String[] _astrCode = null;</span>
+<span class="fc" id="L100">	private double _dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private java.lang.String _strTreasuryFuturesIndex = &quot;&quot;;</span>
+<span class="fc" id="L102">	private org.drip.product.params.LastTradingDateSetting[] _aLTDS = null;</span>
 
 	/**
 	 * TreasuryFuturesOptionConvention Constructor
@@ -108,29 +120,29 @@ public class TreasuryFuturesOptionConvention {
 		final boolean bPremiumType,
 		final org.drip.product.params.LastTradingDateSetting[] aLTDS)
 		throws java.lang.Exception
-<span class="fc" id="L111">	{</span>
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">		if (null == (_astrCode = astrCode) || null == (_strTreasuryFuturesIndex = strTreasuryFuturesIndex) ||</span>
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional) || null == (_aLTDS =</span>
+<span class="fc" id="L123">	{</span>
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (null == (_astrCode = astrCode) || null == (_strTreasuryFuturesIndex = strTreasuryFuturesIndex) ||</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblNotional = dblNotional) || null == (_aLTDS =</span>
 				aLTDS))
-<span class="nc" id="L115">			throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
+<span class="nc" id="L127">			throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc" id="L117">		_bPremiumType = bPremiumType;</span>
-<span class="fc" id="L118">		int iNumLTDS = _aLTDS.length;</span>
-<span class="fc" id="L119">		int iNumCode = _astrCode.length;</span>
+<span class="fc" id="L129">		_bPremiumType = bPremiumType;</span>
+<span class="fc" id="L130">		int iNumLTDS = _aLTDS.length;</span>
+<span class="fc" id="L131">		int iNumCode = _astrCode.length;</span>
 
-<span class="pc bpc" id="L121" title="2 of 4 branches missed.">		if (0 == iNumLTDS || 0 == iNumCode)</span>
-<span class="nc" id="L122">			throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
+<span class="pc bpc" id="L133" title="2 of 4 branches missed.">		if (0 == iNumLTDS || 0 == iNumCode)</span>
+<span class="nc" id="L134">			throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
 
-<span class="fc bfc" id="L124" title="All 2 branches covered.">		for (java.lang.String strCode : _astrCode) {</span>
-<span class="pc bpc" id="L125" title="2 of 4 branches missed.">			if (null == strCode || strCode.isEmpty())</span>
-<span class="nc" id="L126">				throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (java.lang.String strCode : _astrCode) {</span>
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">			if (null == strCode || strCode.isEmpty())</span>
+<span class="nc" id="L138">				throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
 		}
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (org.drip.product.params.LastTradingDateSetting ltds : _aLTDS) {</span>
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			if (null == ltds)</span>
-<span class="nc" id="L131">				throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (org.drip.product.params.LastTradingDateSetting ltds : _aLTDS) {</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">			if (null == ltds)</span>
+<span class="nc" id="L143">				throw new java.lang.Exception (&quot;TreasuryFuturesOptionConvention ctr: Invalid Inputs!&quot;);</span>
 		}
-<span class="fc" id="L133">	}</span>
+<span class="fc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Array of the Exchange Codes
@@ -140,7 +152,7 @@ public class TreasuryFuturesOptionConvention {
 
 	public java.lang.String[] codes()
 	{
-<span class="nc" id="L143">		return _astrCode;</span>
+<span class="nc" id="L155">		return _astrCode;</span>
 	}
 
 	/**
@@ -151,7 +163,7 @@ public class TreasuryFuturesOptionConvention {
 
 	public org.drip.product.params.LastTradingDateSetting[] ltds()
 	{
-<span class="nc" id="L154">		return _aLTDS;</span>
+<span class="nc" id="L166">		return _aLTDS;</span>
 	}
 
 	/**
@@ -162,7 +174,7 @@ public class TreasuryFuturesOptionConvention {
 
 	public java.lang.String FuturesIndex()
 	{
-<span class="nc" id="L165">		return _strTreasuryFuturesIndex;</span>
+<span class="nc" id="L177">		return _strTreasuryFuturesIndex;</span>
 	}
 
 	/**
@@ -173,7 +185,7 @@ public class TreasuryFuturesOptionConvention {
 
 	public double notional()
 	{
-<span class="nc" id="L176">		return _dblNotional;</span>
+<span class="nc" id="L188">		return _dblNotional;</span>
 	}
 
 	/**
@@ -184,29 +196,29 @@ public class TreasuryFuturesOptionConvention {
 
 	public boolean premiumType()
 	{
-<span class="nc" id="L187">		return _bPremiumType;</span>
+<span class="nc" id="L199">		return _bPremiumType;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		java.lang.String strDump = &quot;TreasuryFuturesIndex: &quot; + _strTreasuryFuturesIndex + &quot; | Premium Type: &quot;</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		java.lang.String strDump = &quot;TreasuryFuturesIndex: &quot; + _strTreasuryFuturesIndex + &quot; | Premium Type: &quot;</span>
 			+ (_bPremiumType ? &quot;PREMIUM&quot; : &quot;MARGIN &quot;);
 
-<span class="fc bfc" id="L195" title="All 2 branches covered.">		for (int i = 0; i &lt; _astrCode.length; ++i) {</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			if (0 == i)</span>
-<span class="fc" id="L197">				strDump += &quot; | CODES =&gt; {&quot;;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		for (int i = 0; i &lt; _astrCode.length; ++i) {</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">			if (0 == i)</span>
+<span class="fc" id="L209">				strDump += &quot; | CODES =&gt; {&quot;;</span>
 			else
-<span class="fc" id="L199">				strDump += &quot;, &quot;;</span>
+<span class="fc" id="L211">				strDump += &quot;, &quot;;</span>
 
-<span class="fc" id="L201">			strDump += _astrCode[i];</span>
+<span class="fc" id="L213">			strDump += _astrCode[i];</span>
 
-<span class="fc bfc" id="L203" title="All 2 branches covered.">			if (_astrCode.length - 1 == i) strDump += &quot;}&quot;;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">			if (_astrCode.length - 1 == i) strDump += &quot;}&quot;;</span>
 		}
 
-<span class="fc bfc" id="L206" title="All 2 branches covered.">		for (int i = 0; i &lt; _aLTDS.length; ++i)</span>
-<span class="fc" id="L207">			strDump += &quot;\n\t&quot; + _aLTDS[i];</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">		for (int i = 0; i &lt; _aLTDS.length; ++i)</span>
+<span class="fc" id="L219">			strDump += &quot;\n\t&quot; + _aLTDS[i];</span>
 
-<span class="fc" id="L209">		return strDump;</span>
+<span class="fc" id="L221">		return strDump;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

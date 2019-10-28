@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -107,8 +119,8 @@ public class SwapOptionSettlement {
 
 	public static final int SETTLEMENT_QUOTE_EXACT_CURVE = 2;
 
-<span class="fc" id="L110">	private int _iSettlementType = -1;</span>
-<span class="fc" id="L111">	private int _iSettlementQuote = -1;</span>
+<span class="fc" id="L122">	private int _iSettlementType = -1;</span>
+<span class="fc" id="L123">	private int _iSettlementQuote = -1;</span>
 
 	/**
 	 * SwapOptionSettlement Constructor
@@ -123,15 +135,15 @@ public class SwapOptionSettlement {
 		final int iSettlementType,
 		final int iSettlementQuote)
 		throws java.lang.Exception
-<span class="fc" id="L126">	{</span>
-<span class="pc bpc" id="L127" title="1 of 4 branches missed.">		if (SETTLEMENT_TYPE_CASH_SETTLED != (_iSettlementType = iSettlementType) &amp;&amp;</span>
+<span class="fc" id="L138">	{</span>
+<span class="pc bpc" id="L139" title="1 of 4 branches missed.">		if (SETTLEMENT_TYPE_CASH_SETTLED != (_iSettlementType = iSettlementType) &amp;&amp;</span>
 			SETTLEMENT_TYPE_PHYSICAL_DELIVERY != _iSettlementType)
-<span class="nc" id="L129">			throw new java.lang.Exception (&quot;SwapOptionSettlement ctr: Invalid Settlement Type&quot;);</span>
+<span class="nc" id="L141">			throw new java.lang.Exception (&quot;SwapOptionSettlement ctr: Invalid Settlement Type&quot;);</span>
 
-<span class="pc bpc" id="L131" title="1 of 6 branches missed.">		if (SETTLEMENT_TYPE_CASH_SETTLED == _iSettlementType &amp;&amp; SETTLEMENT_QUOTE_IRR != (_iSettlementQuote =</span>
+<span class="pc bpc" id="L143" title="1 of 6 branches missed.">		if (SETTLEMENT_TYPE_CASH_SETTLED == _iSettlementType &amp;&amp; SETTLEMENT_QUOTE_IRR != (_iSettlementQuote =</span>
 			iSettlementQuote) &amp;&amp; SETTLEMENT_QUOTE_EXACT_CURVE != _iSettlementQuote)
-<span class="nc" id="L133">			throw new java.lang.Exception (&quot;SwapOptionSettlement ctr: Invalid Settlement Quote&quot;);</span>
-<span class="fc" id="L134">	}</span>
+<span class="nc" id="L145">			throw new java.lang.Exception (&quot;SwapOptionSettlement ctr: Invalid Settlement Quote&quot;);</span>
+<span class="fc" id="L146">	}</span>
 
 	/**
 	 * Retrieve the Settlement Type
@@ -141,7 +153,7 @@ public class SwapOptionSettlement {
 
 	public int settlementType()
 	{
-<span class="fc" id="L144">		return _iSettlementType;</span>
+<span class="fc" id="L156">		return _iSettlementType;</span>
 	}
 
 	/**
@@ -152,14 +164,14 @@ public class SwapOptionSettlement {
 
 	public int settlementQuote()
 	{
-<span class="fc" id="L155">		return _iSettlementQuote;</span>
+<span class="fc" id="L167">		return _iSettlementQuote;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc bfc" id="L160" title="All 2 branches covered.">		if (SETTLEMENT_TYPE_PHYSICAL_DELIVERY == _iSettlementType) return &quot;PHYSICAL DELIVERY&quot;;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		if (SETTLEMENT_TYPE_PHYSICAL_DELIVERY == _iSettlementType) return &quot;PHYSICAL DELIVERY&quot;;</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">		return &quot;CASH SETTLED | &quot; + (SETTLEMENT_QUOTE_IRR == _iSettlementQuote ? &quot;INTERNAL RATE OF RETURN&quot; :</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">		return &quot;CASH SETTLED | &quot; + (SETTLEMENT_QUOTE_IRR == _iSettlementQuote ? &quot;INTERNAL RATE OF RETURN&quot; :</span>
 			&quot;EXACT CURVE&quot;);
 	}
 }

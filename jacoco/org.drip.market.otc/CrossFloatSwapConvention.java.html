@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,21 +85,21 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CrossFloatSwapConvention {
-<span class="fc" id="L86">	private int _iSpotLag = -1;</span>
-<span class="fc" id="L87">	private int _iFixingType = -1;</span>
-<span class="fc" id="L88">	private boolean _bFXMTM = false;</span>
-<span class="fc" id="L89">	private org.drip.market.otc.CrossFloatStreamConvention _crossStreamDerived = null;</span>
-<span class="fc" id="L90">	private org.drip.market.otc.CrossFloatStreamConvention _crossStreamReference = null;</span>
+<span class="fc" id="L98">	private int _iSpotLag = -1;</span>
+<span class="fc" id="L99">	private int _iFixingType = -1;</span>
+<span class="fc" id="L100">	private boolean _bFXMTM = false;</span>
+<span class="fc" id="L101">	private org.drip.market.otc.CrossFloatStreamConvention _crossStreamDerived = null;</span>
+<span class="fc" id="L102">	private org.drip.market.otc.CrossFloatStreamConvention _crossStreamReference = null;</span>
 
 	private org.drip.product.rates.Stream floatingStream (
 		final org.drip.analytics.date.JulianDate dtEffective,
@@ -97,40 +109,40 @@ public class CrossFloatSwapConvention {
 		final double dblBasis,
 		final double dblNotional)
 	{
-<span class="fc" id="L100">		java.lang.String strFloaterTenor = cfsc.tenor();</span>
+<span class="fc" id="L112">		java.lang.String strFloaterTenor = cfsc.tenor();</span>
 
-<span class="fc" id="L102">		org.drip.state.identifier.ForwardLabel forwardLabel = org.drip.state.identifier.ForwardLabel.Create</span>
-<span class="fc" id="L103">			(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (cfsc.currency()),</span>
+<span class="fc" id="L114">		org.drip.state.identifier.ForwardLabel forwardLabel = org.drip.state.identifier.ForwardLabel.Create</span>
+<span class="fc" id="L115">			(org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction (cfsc.currency()),</span>
 				strFloaterTenor);
 
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
 
 		try {
-<span class="fc" id="L109">			org.drip.param.period.ComposableFloatingUnitSetting cfusReference = new</span>
+<span class="fc" id="L121">			org.drip.param.period.ComposableFloatingUnitSetting cfusReference = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strFloaterTenor,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
 						forwardLabel,
 							org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-<span class="fc bfc" id="L114" title="All 2 branches covered.">								cfsc.applySpread() ? dblBasis : 0.);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">								cfsc.applySpread() ? dblBasis : 0.);</span>
 
-<span class="fc" id="L116">			org.drip.param.period.CompositePeriodSetting cpsReference = new</span>
+<span class="fc" id="L128">			org.drip.param.period.CompositePeriodSetting cpsReference = new</span>
 				org.drip.param.period.CompositePeriodSetting
-<span class="fc" id="L118">					(org.drip.analytics.support.Helper.TenorToFreq (strFloaterTenor),</span>
-<span class="fc" id="L119">						strFloaterTenor, _crossStreamReference.currency(), null, dblNotional, null, null,</span>
+<span class="fc" id="L130">					(org.drip.analytics.support.Helper.TenorToFreq (strFloaterTenor),</span>
+<span class="fc" id="L131">						strFloaterTenor, _crossStreamReference.currency(), null, dblNotional, null, null,</span>
 							fxFixingSetting, null);
 
-<span class="fc" id="L122">			java.util.List&lt;java.lang.Integer&gt; lsReferenceEdgeDate =</span>
-<span class="fc" id="L123">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
+<span class="fc" id="L134">			java.util.List&lt;java.lang.Integer&gt; lsReferenceEdgeDate =</span>
+<span class="fc" id="L135">				org.drip.analytics.support.CompositePeriodBuilder.RegularEdgeDates (dtEffective,</span>
 					strFloaterTenor, strMaturityTenor, null);
 
-<span class="fc" id="L126">			return new org.drip.product.rates.Stream</span>
+<span class="fc" id="L138">			return new org.drip.product.rates.Stream</span>
 				(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L128">					(lsReferenceEdgeDate, cpsReference, cfusReference));</span>
-<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L130">			e.printStackTrace();</span>
+<span class="fc" id="L140">					(lsReferenceEdgeDate, cpsReference, cfusReference));</span>
+<span class="nc" id="L141">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L142">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L133">		return null;</span>
+<span class="nc" id="L145">		return null;</span>
 	}
 
 	/**
@@ -152,14 +164,14 @@ public class CrossFloatSwapConvention {
 		final boolean bFXMTM,
 		final int iSpotLag)
 		throws java.lang.Exception
-<span class="fc" id="L155">	{</span>
-<span class="pc bpc" id="L156" title="2 of 4 branches missed.">		if (null == (_crossStreamReference = crossStreamReference) || null == (_crossStreamDerived =</span>
-<span class="pc bpc" id="L157" title="2 of 4 branches missed.">			crossStreamDerived) || !org.drip.param.period.FixingSetting.ValidateType (_iFixingType =</span>
+<span class="fc" id="L167">	{</span>
+<span class="pc bpc" id="L168" title="2 of 4 branches missed.">		if (null == (_crossStreamReference = crossStreamReference) || null == (_crossStreamDerived =</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">			crossStreamDerived) || !org.drip.param.period.FixingSetting.ValidateType (_iFixingType =</span>
 				iFixingType) || 0 &gt; (_iSpotLag = iSpotLag))
-<span class="nc" id="L159">			throw new java.lang.Exception (&quot;CrossFloatSwapConvention ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L171">			throw new java.lang.Exception (&quot;CrossFloatSwapConvention ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L161">		_bFXMTM = bFXMTM;</span>
-<span class="fc" id="L162">	}</span>
+<span class="fc" id="L173">		_bFXMTM = bFXMTM;</span>
+<span class="fc" id="L174">	}</span>
 
 	/**
 	 * Retrieve the Reference Convention
@@ -169,7 +181,7 @@ public class CrossFloatSwapConvention {
 
 	public org.drip.market.otc.CrossFloatStreamConvention referenceConvention()
 	{
-<span class="nc" id="L172">		return _crossStreamReference;</span>
+<span class="nc" id="L184">		return _crossStreamReference;</span>
 	}
 
 	/**
@@ -180,7 +192,7 @@ public class CrossFloatSwapConvention {
 
 	public org.drip.market.otc.CrossFloatStreamConvention derivedConvention()
 	{
-<span class="nc" id="L183">		return _crossStreamDerived;</span>
+<span class="nc" id="L195">		return _crossStreamDerived;</span>
 	}
 
 	/**
@@ -191,7 +203,7 @@ public class CrossFloatSwapConvention {
 
 	public int fixingType()
 	{
-<span class="nc" id="L194">		return _iFixingType;</span>
+<span class="nc" id="L206">		return _iFixingType;</span>
 	}
 
 	/**
@@ -202,7 +214,7 @@ public class CrossFloatSwapConvention {
 
 	public int spotLag()
 	{
-<span class="nc" id="L205">		return _iSpotLag;</span>
+<span class="nc" id="L217">		return _iSpotLag;</span>
 	}
 
 	/**
@@ -213,7 +225,7 @@ public class CrossFloatSwapConvention {
 
 	public boolean isFXMTM()
 	{
-<span class="nc" id="L216">		return _bFXMTM;</span>
+<span class="nc" id="L228">		return _bFXMTM;</span>
 	}
 
 	/**
@@ -235,32 +247,32 @@ public class CrossFloatSwapConvention {
 		final double dblReferenceNotional,
 		final double dblDerivedNotional)
 	{
-<span class="pc bpc" id="L238" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">		if (null == dtSpot) return null;</span>
 
-<span class="fc" id="L240">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (_iSpotLag,</span>
+<span class="fc" id="L252">		org.drip.analytics.date.JulianDate dtEffective = dtSpot.addBusDays (_iSpotLag,</span>
 			org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L242">				(_crossStreamReference.currency()).calendar() + &quot;,&quot; +</span>
+<span class="fc" id="L254">				(_crossStreamReference.currency()).calendar() + &quot;,&quot; +</span>
 					org.drip.market.definition.IBORIndexContainer.IndexFromJurisdiction
-<span class="fc" id="L244">						(_crossStreamDerived.currency()).calendar());</span>
+<span class="fc" id="L256">						(_crossStreamDerived.currency()).calendar());</span>
 
 		try {
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">			org.drip.param.period.FixingSetting fxFixingSetting = _bFXMTM ? null : new</span>
-<span class="fc" id="L248">				org.drip.param.period.FixingSetting (_iFixingType, null, dtEffective.julian());</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">			org.drip.param.period.FixingSetting fxFixingSetting = _bFXMTM ? null : new</span>
+<span class="fc" id="L260">				org.drip.param.period.FixingSetting (_iFixingType, null, dtEffective.julian());</span>
 
-<span class="fc" id="L250">			return new org.drip.product.rates.FloatFloatComponent (floatingStream (dtEffective,</span>
+<span class="fc" id="L262">			return new org.drip.product.rates.FloatFloatComponent (floatingStream (dtEffective,</span>
 				_crossStreamReference, fxFixingSetting, strMaturityTenor, dblBasis, dblReferenceNotional),
-<span class="fc" id="L252">					floatingStream (dtEffective, _crossStreamDerived, fxFixingSetting, strMaturityTenor,</span>
+<span class="fc" id="L264">					floatingStream (dtEffective, _crossStreamDerived, fxFixingSetting, strMaturityTenor,</span>
 						dblBasis, dblDerivedNotional), null);
-<span class="nc" id="L254">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L255">			e.printStackTrace();</span>
+<span class="nc" id="L266">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L267">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L258">		return null;</span>
+<span class="nc" id="L270">		return null;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L263">		return _crossStreamReference + &quot; &quot; + _crossStreamDerived + &quot; &quot; + _iFixingType + &quot; &quot; + _iSpotLag + &quot; &quot;</span>
+<span class="fc" id="L275">		return _crossStreamReference + &quot; &quot; + _crossStreamDerived + &quot; &quot; + _iFixingType + &quot; &quot; + _iSpotLag + &quot; &quot;</span>
 			+ _bFXMTM;
 	}
 }

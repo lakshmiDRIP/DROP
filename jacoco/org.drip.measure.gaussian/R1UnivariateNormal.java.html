@@ -6,6 +6,7 @@ package org.drip.measure.gaussian;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.measure.gaussian;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,18 +87,18 @@ package org.drip.measure.gaussian;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian&quot;&gt;Gaussian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;d&lt;/sup&gt; Covariant Gaussian Quadrature&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate {
-<span class="fc" id="L88">	private double _dblMean = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _dblSigma = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private double _dblMean = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _dblSigma = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a N (0, 1) distribution
@@ -97,12 +109,12 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 	public static final org.drip.measure.gaussian.R1UnivariateNormal Standard()
 	{
 		try {
-<span class="fc" id="L100">			return new R1UnivariateNormal (0., 1.);</span>
-<span class="nc" id="L101">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L102">			e.printStackTrace();</span>
+<span class="fc" id="L112">			return new R1UnivariateNormal (0., 1.);</span>
+<span class="nc" id="L113">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L114">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L105">		return null;</span>
+<span class="nc" id="L117">		return null;</span>
 	}
 
 	/**
@@ -118,11 +130,11 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblMean,
 		final double dblSigma)
 		throws java.lang.Exception
-<span class="fc" id="L121">	{</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMean = dblMean) ||</span>
-<span class="pc bpc" id="L123" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) || 0. &gt; _dblSigma)</span>
-<span class="nc" id="L124">			throw new java.lang.Exception (&quot;R1UnivariateNormal Constructor: Invalid Inputs&quot;);</span>
-<span class="fc" id="L125">	}</span>
+<span class="fc" id="L133">	{</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMean = dblMean) ||</span>
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) || 0. &gt; _dblSigma)</span>
+<span class="nc" id="L136">			throw new java.lang.Exception (&quot;R1UnivariateNormal Constructor: Invalid Inputs&quot;);</span>
+<span class="fc" id="L137">	}</span>
 
 	/**
 	 * Retrieve the Sigma
@@ -132,12 +144,12 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 
 	public double sigma()
 	{
-<span class="nc" id="L135">	    return _dblSigma;</span>
+<span class="nc" id="L147">	    return _dblSigma;</span>
 	}
 
 	@Override public double[] support()
 	{
-<span class="nc" id="L140">		return new double[]</span>
+<span class="nc" id="L152">		return new double[]</span>
 		{
 			java.lang.Double.NEGATIVE_INFINITY,
 			java.lang.Double.POSITIVE_INFINITY
@@ -148,12 +160,12 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L152">			throw new java.lang.Exception (&quot;R1UnivariateNormal::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L164">			throw new java.lang.Exception (&quot;R1UnivariateNormal::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX &gt;= _dblMean ? 1. : 0.;</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX &gt;= _dblMean ? 1. : 0.;</span>
 
-<span class="nc" id="L156">		return org.drip.measure.gaussian.NormalQuadrature.CDF ((dblX - _dblMean) / _dblSigma);</span>
+<span class="nc" id="L168">		return org.drip.measure.gaussian.NormalQuadrature.CDF ((dblX - _dblMean) / _dblSigma);</span>
 	}
 
 	@Override public double incremental (
@@ -161,70 +173,70 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblXRight)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L164">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
+<span class="nc" id="L176">		return cumulative (dblXRight) - cumulative (dblXLeft);</span>
 	}
 
 	@Override public double invCumulative (
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L171" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)</span>
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;R1UnivariateNormal::invCumulative =&gt; Cannot calculate&quot;);</span>
+<span class="pc bpc" id="L183" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;R1UnivariateNormal::invCumulative =&gt; Cannot calculate&quot;);</span>
 
-<span class="fc" id="L174">	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;</span>
+<span class="fc" id="L186">	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;</span>
 	}
 
 	@Override public double density (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L182">			throw new java.lang.Exception (&quot;R1UnivariateNormal::density =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;R1UnivariateNormal::density =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX == _dblMean ? 1. : 0.;</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (0. == _dblSigma) return dblX == _dblMean ? 1. : 0.;</span>
 
-<span class="nc" id="L186">		double dblMeanShift = (dblX - _dblMean) / _dblSigma;</span>
+<span class="nc" id="L198">		double dblMeanShift = (dblX - _dblMean) / _dblSigma;</span>
 
-<span class="nc" id="L188">		return java.lang.Math.exp (-0.5 * dblMeanShift * dblMeanShift);</span>
+<span class="nc" id="L200">		return java.lang.Math.exp (-0.5 * dblMeanShift * dblMeanShift);</span>
 	}
 
 	@Override public double mean()
 	{
-<span class="fc" id="L193">	    return _dblMean;</span>
+<span class="fc" id="L205">	    return _dblMean;</span>
 	}
 
 	@Override public double median()
 	{
-<span class="nc" id="L198">	    return _dblMean;</span>
+<span class="nc" id="L210">	    return _dblMean;</span>
 	}
 
 	@Override public double mode()
 	{
-<span class="nc" id="L203">	    return _dblMean;</span>
+<span class="nc" id="L215">	    return _dblMean;</span>
 	}
 
 	@Override public double variance()
 	{
-<span class="fc" id="L208">	    return _dblSigma * _dblSigma;</span>
+<span class="fc" id="L220">	    return _dblSigma * _dblSigma;</span>
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L213">		return null;</span>
+<span class="nc" id="L225">		return null;</span>
 	}
 
 	@Override public double random()
 	{
 		try
 		{
-<span class="nc" id="L220">			return invCumulative (java.lang.Math.random());</span>
+<span class="nc" id="L232">			return invCumulative (java.lang.Math.random());</span>
 		}
-<span class="nc" id="L222">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L234">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L224">			e.printStackTrace();</span>
+<span class="nc" id="L236">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L227">		return java.lang.Double.NaN;</span>
+<span class="nc" id="L239">		return java.lang.Double.NaN;</span>
 	}
 
 	/**
@@ -241,12 +253,12 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L245">			throw new java.lang.Exception (&quot;R1UnivariateNormal::errorFunction =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L257">			throw new java.lang.Exception (&quot;R1UnivariateNormal::errorFunction =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L247">		double dblWidth = java.lang.Math.abs (dblX);</span>
+<span class="nc" id="L259">		double dblWidth = java.lang.Math.abs (dblX);</span>
 
-<span class="nc" id="L249">		return cumulative (_dblMean + dblWidth) - cumulative (_dblMean - dblWidth);</span>
+<span class="nc" id="L261">		return cumulative (_dblMean + dblWidth) - cumulative (_dblMean - dblWidth);</span>
 	}
 
 	/**
@@ -263,7 +275,7 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblWidth)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L266">		return errorFunction (dblWidth);</span>
+<span class="nc" id="L278">		return errorFunction (dblWidth);</span>
 	}
 
 	/**
@@ -280,11 +292,11 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate
 		final double dblConfidence)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L283" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblConfidence) || 0. &gt;= dblConfidence || 1. &lt;=</span>
+<span class="pc bpc" id="L295" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblConfidence) || 0. &gt;= dblConfidence || 1. &lt;=</span>
 			dblConfidence)
-<span class="nc" id="L285">			throw new java.lang.Exception (&quot;R1UnivariateNormal::confidenceInterval =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L297">			throw new java.lang.Exception (&quot;R1UnivariateNormal::confidenceInterval =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L287">		return invCumulative (0.5 * (1. + dblConfidence));</span>
+<span class="fc" id="L299">		return invCumulative (0.5 * (1. + dblConfidence));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

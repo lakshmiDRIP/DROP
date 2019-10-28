@@ -6,44 +6,56 @@ package org.drip.measure.lebesgue;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,19 +84,19 @@ package org.drip.measure.lebesgue;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/lebesgue&quot;&gt;Lebesgue&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/lebesgue&quot;&gt;Uniform Piece-wise Lebesgue Measure&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
-<span class="fc" id="L85">	private double[] _adblPredictorOrdinate = null;</span>
-<span class="fc" id="L86">	private double[] _adblPiecewiseDensitySlope = null;</span>
-<span class="fc" id="L87">	private double _dblDensityDisplacement = java.lang.Double.NaN;</span>
+<span class="fc" id="L97">	private double[] _adblPredictorOrdinate = null;</span>
+<span class="fc" id="L98">	private double[] _adblPiecewiseDensitySlope = null;</span>
+<span class="fc" id="L99">	private double _dblDensityDisplacement = java.lang.Double.NaN;</span>
 
 	/**
 	 * Calibrate an R1PiecewiseDisplaced Lebesgue Instance
@@ -105,70 +117,70 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double[] adblCumulativeProbability,
 		final double dblMean)
 	{
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||</span>
-<span class="pc bpc" id="L109" title="4 of 8 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftPredictorOrdinateEdge) ||</span>
+<span class="pc bpc" id="L121" title="4 of 8 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRightPredictorOrdinateEdge) ||</span>
 				dblLeftPredictorOrdinateEdge &gt;= dblRightPredictorOrdinateEdge || null ==
 					adblPredictorOrdinate || null == adblCumulativeProbability ||
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblMean))</span>
-<span class="nc" id="L113">			return null;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblMean))</span>
+<span class="nc" id="L125">			return null;</span>
 
-<span class="fc" id="L115">		int iNumSegment = adblPredictorOrdinate.length + 1;</span>
-<span class="fc" id="L116">		double[][] aadblM = new double[iNumSegment + 1][iNumSegment + 1];</span>
-<span class="fc" id="L117">		double[] adblSecondDegreeIntegral = new double[iNumSegment];</span>
-<span class="fc" id="L118">		double[] adblSlope = new double[iNumSegment];</span>
-<span class="fc" id="L119">		double[] adblY = new double[iNumSegment + 1];</span>
-<span class="fc" id="L120">		adblY[iNumSegment] = dblMean;</span>
-<span class="fc" id="L121">		aadblM[iNumSegment][iNumSegment] = 0.5 * (dblRightPredictorOrdinateEdge *</span>
+<span class="fc" id="L127">		int iNumSegment = adblPredictorOrdinate.length + 1;</span>
+<span class="fc" id="L128">		double[][] aadblM = new double[iNumSegment + 1][iNumSegment + 1];</span>
+<span class="fc" id="L129">		double[] adblSecondDegreeIntegral = new double[iNumSegment];</span>
+<span class="fc" id="L130">		double[] adblSlope = new double[iNumSegment];</span>
+<span class="fc" id="L131">		double[] adblY = new double[iNumSegment + 1];</span>
+<span class="fc" id="L132">		adblY[iNumSegment] = dblMean;</span>
+<span class="fc" id="L133">		aadblM[iNumSegment][iNumSegment] = 0.5 * (dblRightPredictorOrdinateEdge *</span>
 			dblRightPredictorOrdinateEdge - dblLeftPredictorOrdinateEdge * dblLeftPredictorOrdinateEdge);
 
-<span class="pc bpc" id="L124" title="2 of 4 branches missed.">		if (1 == iNumSegment || iNumSegment - 1 != adblCumulativeProbability.length) return null;</span>
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		if (1 == iNumSegment || iNumSegment - 1 != adblCumulativeProbability.length) return null;</span>
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">			adblY[i] = i == iNumSegment - 1 ? 1. : adblCumulativeProbability[i];</span>
-<span class="fc bfc" id="L128" title="All 2 branches covered.">			double dblSegmentLeft = 0 == i ? dblLeftPredictorOrdinateEdge : adblPredictorOrdinate[i - 1];</span>
-<span class="fc bfc" id="L129" title="All 2 branches covered.">			double dblSegmentRight = iNumSegment - 1 == i ? dblRightPredictorOrdinateEdge :</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">			adblY[i] = i == iNumSegment - 1 ? 1. : adblCumulativeProbability[i];</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">			double dblSegmentLeft = 0 == i ? dblLeftPredictorOrdinateEdge : adblPredictorOrdinate[i - 1];</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">			double dblSegmentRight = iNumSegment - 1 == i ? dblRightPredictorOrdinateEdge :</span>
 				adblPredictorOrdinate[i];
-<span class="fc" id="L131">			adblSecondDegreeIntegral[i] = 0.5 * (dblSegmentRight * dblSegmentRight - dblSegmentLeft *</span>
+<span class="fc" id="L143">			adblSecondDegreeIntegral[i] = 0.5 * (dblSegmentRight * dblSegmentRight - dblSegmentLeft *</span>
 				dblSegmentLeft);
-<span class="fc" id="L133">			aadblM[i][iNumSegment] = dblSegmentRight - dblLeftPredictorOrdinateEdge;</span>
-<span class="fc" id="L134">			aadblM[iNumSegment][i] = (dblSegmentRight * dblSegmentRight * dblSegmentRight - dblSegmentLeft *</span>
+<span class="fc" id="L145">			aadblM[i][iNumSegment] = dblSegmentRight - dblLeftPredictorOrdinateEdge;</span>
+<span class="fc" id="L146">			aadblM[iNumSegment][i] = (dblSegmentRight * dblSegmentRight * dblSegmentRight - dblSegmentLeft *</span>
 				dblSegmentLeft * dblSegmentLeft) / 6.;
 
-<span class="pc bpc" id="L137" title="2 of 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSegmentLeft) || dblSegmentLeft &lt;</span>
+<span class="pc bpc" id="L149" title="2 of 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSegmentLeft) || dblSegmentLeft &lt;</span>
 				dblLeftPredictorOrdinateEdge)
-<span class="nc" id="L139">				return null;</span>
+<span class="nc" id="L151">				return null;</span>
 
-<span class="pc bpc" id="L141" title="3 of 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSegmentRight) || dblSegmentRight &lt;=</span>
+<span class="pc bpc" id="L153" title="3 of 6 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblSegmentRight) || dblSegmentRight &lt;=</span>
 				dblSegmentLeft || dblSegmentRight &gt; dblRightPredictorOrdinateEdge)
-<span class="nc" id="L143">				return null;</span>
+<span class="nc" id="L155">				return null;</span>
 		}
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
-<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int k = 0; k &lt; iNumSegment; ++k)</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">				aadblM[i][k] = k &gt; i ? 0. : adblSecondDegreeIntegral[k];</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">			for (int k = 0; k &lt; iNumSegment; ++k)</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">				aadblM[i][k] = k &gt; i ? 0. : adblSecondDegreeIntegral[k];</span>
 		}
 
-<span class="fc" id="L151">		org.drip.numerical.linearalgebra.LinearizationOutput lo =</span>
-<span class="fc" id="L152">			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblY);</span>
+<span class="fc" id="L163">		org.drip.numerical.linearalgebra.LinearizationOutput lo =</span>
+<span class="fc" id="L164">			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblY);</span>
 
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (null == lo) return null;</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">		if (null == lo) return null;</span>
 
-<span class="fc" id="L156">		double[] adblSlopeDisplacement = lo.getTransformedRHS();</span>
+<span class="fc" id="L168">		double[] adblSlopeDisplacement = lo.getTransformedRHS();</span>
 
-<span class="pc bpc" id="L158" title="2 of 4 branches missed.">		if (null == adblSlopeDisplacement || adblSlopeDisplacement.length != iNumSegment + 1) return null;</span>
+<span class="pc bpc" id="L170" title="2 of 4 branches missed.">		if (null == adblSlopeDisplacement || adblSlopeDisplacement.length != iNumSegment + 1) return null;</span>
 
-<span class="fc bfc" id="L160" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
-<span class="fc" id="L161">			adblSlope[i] = adblSlopeDisplacement[i];</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumSegment; ++i)</span>
+<span class="fc" id="L173">			adblSlope[i] = adblSlopeDisplacement[i];</span>
 
 		try {
-<span class="fc" id="L164">			return new R1PiecewiseDisplaced (dblLeftPredictorOrdinateEdge,</span>
+<span class="fc" id="L176">			return new R1PiecewiseDisplaced (dblLeftPredictorOrdinateEdge,</span>
 				dblRightPredictorOrdinateEdge, adblPredictorOrdinate, adblSlope,
 					adblSlopeDisplacement[iNumSegment]);
-<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L179">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L180">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L183">		return null;</span>
 	}
 
 	/**
@@ -191,18 +203,18 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblDensityDisplacement)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L194">		super (dblLeftPredictorOrdinateEdge, dblRightPredictorOrdinateEdge);</span>
+<span class="fc" id="L206">		super (dblLeftPredictorOrdinateEdge, dblRightPredictorOrdinateEdge);</span>
 
-<span class="pc bpc" id="L196" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblPiecewiseDensitySlope =</span>
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">			adblPiecewiseDensitySlope) || !org.drip.numerical.common.NumberUtil.IsValid (_dblDensityDisplacement</span>
+<span class="pc bpc" id="L208" title="2 of 4 branches missed.">		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate) || null == (_adblPiecewiseDensitySlope =</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">			adblPiecewiseDensitySlope) || !org.drip.numerical.common.NumberUtil.IsValid (_dblDensityDisplacement</span>
 				= dblDensityDisplacement))
-<span class="nc" id="L199">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced Constructor: Invalid Inputs&quot;);</span>
+<span class="nc" id="L211">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced Constructor: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L201">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
+<span class="fc" id="L213">		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;</span>
 
-<span class="pc bpc" id="L203" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || iNumPredictorOrdinate + 1 != _adblPiecewiseDensitySlope.length)</span>
-<span class="nc" id="L204">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced Constructor: Invalid Inputs&quot;);</span>
-<span class="fc" id="L205">	}</span>
+<span class="pc bpc" id="L215" title="2 of 4 branches missed.">		if (0 == iNumPredictorOrdinate || iNumPredictorOrdinate + 1 != _adblPiecewiseDensitySlope.length)</span>
+<span class="nc" id="L216">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced Constructor: Invalid Inputs&quot;);</span>
+<span class="fc" id="L217">	}</span>
 
 	/**
 	 * Retrieve the Array of Predictor Ordinates
@@ -212,7 +224,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 
 	public double[] predictorOrdinates()
 	{
-<span class="nc" id="L215">		return _adblPredictorOrdinate;</span>
+<span class="nc" id="L227">		return _adblPredictorOrdinate;</span>
 	}
 
 	/**
@@ -223,7 +235,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 
 	public double[] piecewiseDensitySlopes()
 	{
-<span class="fc" id="L226">		return _adblPiecewiseDensitySlope;</span>
+<span class="fc" id="L238">		return _adblPiecewiseDensitySlope;</span>
 	}
 
 	/**
@@ -234,45 +246,45 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 
 	public double densityDisplacement()
 	{
-<span class="fc" id="L237">		return _dblDensityDisplacement;</span>
+<span class="fc" id="L249">		return _dblDensityDisplacement;</span>
 	}
 
 	@Override public double cumulative (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L245">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::cumulative =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L257">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::cumulative =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L247">		double dblLeftEdge = leftEdge();</span>
+<span class="fc" id="L259">		double dblLeftEdge = leftEdge();</span>
 
-<span class="fc" id="L249">		double dblRightEdge = rightEdge();</span>
+<span class="fc" id="L261">		double dblRightEdge = rightEdge();</span>
 
-<span class="fc bfc" id="L251" title="All 2 branches covered.">		if (dblX &lt;= dblLeftEdge) return 0.;</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		if (dblX &lt;= dblLeftEdge) return 0.;</span>
 
-<span class="fc bfc" id="L253" title="All 2 branches covered.">		if (dblX &gt;= dblRightEdge) return 1.;</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">		if (dblX &gt;= dblRightEdge) return 1.;</span>
 
-<span class="fc" id="L255">		int iSegmentIndex = 0;</span>
-<span class="fc" id="L256">		double dblSegmentLeft = dblLeftEdge;</span>
-<span class="fc" id="L257">		double dblCumulativeProbability = 0.;</span>
-<span class="fc" id="L258">		int iMaxSegmentIndex = _adblPiecewiseDensitySlope.length - 1;</span>
+<span class="fc" id="L267">		int iSegmentIndex = 0;</span>
+<span class="fc" id="L268">		double dblSegmentLeft = dblLeftEdge;</span>
+<span class="fc" id="L269">		double dblCumulativeProbability = 0.;</span>
+<span class="fc" id="L270">		int iMaxSegmentIndex = _adblPiecewiseDensitySlope.length - 1;</span>
 
-<span class="fc bfc" id="L260" title="All 2 branches covered.">		while (iSegmentIndex &lt; iMaxSegmentIndex) {</span>
-<span class="fc" id="L261">			double dblSegmentRight = _adblPredictorOrdinate[iSegmentIndex];</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		while (iSegmentIndex &lt; iMaxSegmentIndex) {</span>
+<span class="fc" id="L273">			double dblSegmentRight = _adblPredictorOrdinate[iSegmentIndex];</span>
 
-<span class="pc bpc" id="L263" title="1 of 4 branches missed.">			if (dblX &gt;= dblSegmentLeft &amp;&amp; dblX &lt;= dblSegmentRight)</span>
-<span class="fc" id="L264">				return dblCumulativeProbability + 0.5 * _adblPiecewiseDensitySlope[iSegmentIndex] * (dblX *</span>
+<span class="pc bpc" id="L275" title="1 of 4 branches missed.">			if (dblX &gt;= dblSegmentLeft &amp;&amp; dblX &lt;= dblSegmentRight)</span>
+<span class="fc" id="L276">				return dblCumulativeProbability + 0.5 * _adblPiecewiseDensitySlope[iSegmentIndex] * (dblX *</span>
 					dblX - dblSegmentLeft * dblSegmentLeft) + _dblDensityDisplacement * (dblX -
 						dblSegmentLeft);
 
-<span class="fc" id="L268">			dblCumulativeProbability += (0.5 * _adblPiecewiseDensitySlope[iSegmentIndex] * (dblSegmentRight *</span>
+<span class="fc" id="L280">			dblCumulativeProbability += (0.5 * _adblPiecewiseDensitySlope[iSegmentIndex] * (dblSegmentRight *</span>
 				dblSegmentRight - dblSegmentLeft * dblSegmentLeft) + _dblDensityDisplacement *
 					(dblSegmentRight - dblSegmentLeft));
-<span class="fc" id="L271">			dblSegmentLeft = dblSegmentRight;</span>
-<span class="fc" id="L272">			++iSegmentIndex;</span>
-<span class="fc" id="L273">		}</span>
+<span class="fc" id="L283">			dblSegmentLeft = dblSegmentRight;</span>
+<span class="fc" id="L284">			++iSegmentIndex;</span>
+<span class="fc" id="L285">		}</span>
 
-<span class="fc" id="L275">		return dblCumulativeProbability + 0.5 * _adblPiecewiseDensitySlope[iMaxSegmentIndex] * (dblX * dblX -</span>
+<span class="fc" id="L287">		return dblCumulativeProbability + 0.5 * _adblPiecewiseDensitySlope[iMaxSegmentIndex] * (dblX * dblX -</span>
 			_adblPredictorOrdinate[iMaxSegmentIndex - 1] * _adblPredictorOrdinate[iMaxSegmentIndex - 1]) +
 				_dblDensityDisplacement * (dblX - _adblPredictorOrdinate[iMaxSegmentIndex - 1]);
 	}
@@ -281,76 +293,76 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		final double dblY)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L284" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
-<span class="nc" id="L285">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::invCumulative =&gt; Invalid inputs&quot;);</span>
+<span class="pc bpc" id="L296" title="3 of 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY &lt; 0. || dblY &gt; 1.)</span>
+<span class="nc" id="L297">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::invCumulative =&gt; Invalid inputs&quot;);</span>
 
-<span class="fc" id="L287">		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new</span>
-<span class="fc" id="L288">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="fc" id="L299">		org.drip.function.definition.R1ToR1 r1ToR1CumulativeProbability = new</span>
+<span class="fc" id="L300">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L293">				return cumulative (dblX);</span>
+<span class="fc" id="L305">				return cumulative (dblX);</span>
 			}
 		};
 
-<span class="fc" id="L297">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
+<span class="fc" id="L309">		org.drip.function.r1tor1solver.FixedPointFinderOutput fpfo = new</span>
 			org.drip.function.r1tor1solver.FixedPointFinderBracketing (dblY, r1ToR1CumulativeProbability,
 				null, org.drip.function.r1tor1solver.VariateIteratorPrimitive.BISECTION, true).findRoot
-<span class="fc" id="L300">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (leftEdge(),</span>
-<span class="fc" id="L301">						rightEdge()));</span>
+<span class="fc" id="L312">					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (leftEdge(),</span>
+<span class="fc" id="L313">						rightEdge()));</span>
 
-<span class="pc bpc" id="L303" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
-<span class="nc" id="L304">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::invCumulative =&gt; No roots&quot;);</span>
+<span class="pc bpc" id="L315" title="2 of 4 branches missed.">		if (null == fpfo || !fpfo.containsRoot())</span>
+<span class="nc" id="L316">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::invCumulative =&gt; No roots&quot;);</span>
 
-<span class="fc" id="L306">		return fpfo.getRoot();</span>
+<span class="fc" id="L318">		return fpfo.getRoot();</span>
 	}
 
 	@Override public double density (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L313" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L314">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::density =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L326">			throw new java.lang.Exception (&quot;R1PiecewiseDisplaced::density =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L316" title="All 4 branches missed.">		if (dblX &lt;= leftEdge() || dblX &gt;= rightEdge()) return 0.;</span>
+<span class="nc bnc" id="L328" title="All 4 branches missed.">		if (dblX &lt;= leftEdge() || dblX &gt;= rightEdge()) return 0.;</span>
 
-<span class="nc" id="L318">		int iSegmentIndex = 0;</span>
-<span class="nc" id="L319">		int iMaxSegmentIndex = _adblPiecewiseDensitySlope.length - 1;</span>
+<span class="nc" id="L330">		int iSegmentIndex = 0;</span>
+<span class="nc" id="L331">		int iMaxSegmentIndex = _adblPiecewiseDensitySlope.length - 1;</span>
 
-<span class="nc bnc" id="L321" title="All 2 branches missed.">		while (iSegmentIndex &lt; iMaxSegmentIndex) {</span>
-<span class="nc bnc" id="L322" title="All 4 branches missed.">			if (dblX &gt;= _adblPredictorOrdinate[iSegmentIndex] &amp;&amp; dblX &lt;=</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">		while (iSegmentIndex &lt; iMaxSegmentIndex) {</span>
+<span class="nc bnc" id="L334" title="All 4 branches missed.">			if (dblX &gt;= _adblPredictorOrdinate[iSegmentIndex] &amp;&amp; dblX &lt;=</span>
 				_adblPredictorOrdinate[iSegmentIndex + 1])
-<span class="nc" id="L324">				break;</span>
+<span class="nc" id="L336">				break;</span>
 
-<span class="nc" id="L326">			++iSegmentIndex;</span>
+<span class="nc" id="L338">			++iSegmentIndex;</span>
 		}
 
-<span class="nc" id="L329">		return _adblPiecewiseDensitySlope[iSegmentIndex] * dblX + _dblDensityDisplacement;</span>
+<span class="nc" id="L341">		return _adblPiecewiseDensitySlope[iSegmentIndex] * dblX + _dblDensityDisplacement;</span>
 	}
 
 	@Override public org.drip.numerical.common.Array2D histogram()
 	{
-<span class="nc" id="L334">		double dblLeftEdge = leftEdge();</span>
+<span class="nc" id="L346">		double dblLeftEdge = leftEdge();</span>
 
-<span class="nc" id="L336">		double[] adblX = new double[GRID_WIDTH];</span>
-<span class="nc" id="L337">		double[] adblY = new double[GRID_WIDTH];</span>
+<span class="nc" id="L348">		double[] adblX = new double[GRID_WIDTH];</span>
+<span class="nc" id="L349">		double[] adblY = new double[GRID_WIDTH];</span>
 
-<span class="nc" id="L339">		double dblWidth = (rightEdge() - dblLeftEdge) / GRID_WIDTH;</span>
+<span class="nc" id="L351">		double dblWidth = (rightEdge() - dblLeftEdge) / GRID_WIDTH;</span>
 
-<span class="nc bnc" id="L341" title="All 2 branches missed.">		for (int i = 0; i &lt; GRID_WIDTH; ++i) {</span>
-<span class="nc" id="L342">			adblX[i] = dblLeftEdge + (i + 1) * dblWidth;</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">		for (int i = 0; i &lt; GRID_WIDTH; ++i) {</span>
+<span class="nc" id="L354">			adblX[i] = dblLeftEdge + (i + 1) * dblWidth;</span>
 
 			try {
-<span class="nc" id="L345">				adblY[i] = incremental (adblX[i] - dblWidth, adblX[i]);</span>
-<span class="nc" id="L346">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L347">				e.printStackTrace();</span>
+<span class="nc" id="L357">				adblY[i] = incremental (adblX[i] - dblWidth, adblX[i]);</span>
+<span class="nc" id="L358">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L359">				e.printStackTrace();</span>
 
-<span class="nc" id="L349">				return null;</span>
-<span class="nc" id="L350">			}</span>
+<span class="nc" id="L361">				return null;</span>
+<span class="nc" id="L362">			}</span>
 		}
 
-<span class="nc" id="L353">		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);</span>
+<span class="nc" id="L365">		return org.drip.numerical.common.Array2D.FromArray (adblX, adblY);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.market.otc;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,19 +85,19 @@ package org.drip.market.otc;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Market&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market&quot;&gt;Static Market Fields - the Definitions, the OTC/Exchange Traded Products, and Treasury Settings&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/market/otc&quot;&gt;OTC Dual Stream Option Container&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class CrossFloatStreamConvention {
-<span class="fc" id="L86">	private boolean _bApplySpread = false;</span>
-<span class="fc" id="L87">	private java.lang.String _strTenor = &quot;&quot;;</span>
-<span class="fc" id="L88">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="fc" id="L98">	private boolean _bApplySpread = false;</span>
+<span class="fc" id="L99">	private java.lang.String _strTenor = &quot;&quot;;</span>
+<span class="fc" id="L100">	private java.lang.String _strCurrency = &quot;&quot;;</span>
 
 	/**
 	 * CrossFloatStreamConvention Constructor
@@ -102,13 +114,13 @@ public class CrossFloatStreamConvention {
 		final java.lang.String strTenor,
 		final boolean bApplySpread)
 		throws java.lang.Exception
-<span class="fc" id="L105">	{</span>
-<span class="pc bpc" id="L106" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strTenor = strTenor)</span>
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">			|| _strTenor.isEmpty())</span>
-<span class="nc" id="L108">			throw new java.lang.Exception (&quot;CrossFloatStreamConvention ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L117">	{</span>
+<span class="pc bpc" id="L118" title="3 of 6 branches missed.">		if (null == (_strCurrency = strCurrency) || _strCurrency.isEmpty() || null == (_strTenor = strTenor)</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">			|| _strTenor.isEmpty())</span>
+<span class="nc" id="L120">			throw new java.lang.Exception (&quot;CrossFloatStreamConvention ctr: Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L110">		_bApplySpread = bApplySpread;</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L122">		_bApplySpread = bApplySpread;</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the Currency
@@ -118,7 +130,7 @@ public class CrossFloatStreamConvention {
 
 	public java.lang.String currency()
 	{
-<span class="fc" id="L121">		return _strCurrency;</span>
+<span class="fc" id="L133">		return _strCurrency;</span>
 	}
 
 	/**
@@ -129,7 +141,7 @@ public class CrossFloatStreamConvention {
 
 	public java.lang.String tenor()
 	{
-<span class="fc" id="L132">		return _strTenor;</span>
+<span class="fc" id="L144">		return _strTenor;</span>
 	}
 
 	/**
@@ -140,12 +152,12 @@ public class CrossFloatStreamConvention {
 
 	public boolean applySpread()
 	{
-<span class="fc" id="L143">		return _bApplySpread;</span>
+<span class="fc" id="L155">		return _bApplySpread;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="fc" id="L148">		return &quot;[&quot; + _strCurrency + &quot; | &quot; + _strTenor + &quot; | &quot; + _bApplySpread + &quot;]&quot;;</span>
+<span class="fc" id="L160">		return &quot;[&quot; + _strCurrency + &quot; | &quot; + _strTenor + &quot; | &quot; + _bApplySpread + &quot;]&quot;;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
