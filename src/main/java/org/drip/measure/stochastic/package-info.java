@@ -1,6 +1,6 @@
 
 /**
- * R^1 R^1 To R^1 Process
+ * R<sup>1</sup> R<sup>1</sup> To R<sup>1</sup> Process
  *
  * @author Lakshmi Krishnamurthy
  */

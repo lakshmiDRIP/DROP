@@ -1,6 +1,6 @@
 
 /**
- * R^1 R^d Thin Thick Moments
+ * R<sup>1</sup> R<sup>d</sup> Thin Thick Moments
  *
  * @author Lakshmi Krishnamurthy
  */

@@ -1,6 +1,6 @@
 
 /**
- * R^1 R^d Continuous Random Measure
+ * R<sup>1</sup> R<sup>d</sup> Continuous Random Measure
  *
  * @author Lakshmi Krishnamurthy
  */

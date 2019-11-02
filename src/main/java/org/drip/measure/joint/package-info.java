@@ -1,6 +1,6 @@
 
 /**
- * R^d Vertex Edge Realization Evolution
+ * R<sup>d</sup> Vertex Edge Realization Evolution
  *
  * @author Lakshmi Krishnamurthy
  */
