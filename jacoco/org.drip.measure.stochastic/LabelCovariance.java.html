@@ -6,41 +6,53 @@ package org.drip.measure.stochastic;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,10 +107,10 @@ package org.drip.measure.stochastic;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic&quot;&gt;Stochastics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Process&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -106,9 +118,9 @@ package org.drip.measure.stochastic;
 
 public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelation
 {
-<span class="nc" id="L109">	private double[] _meanArray = null;</span>
-<span class="nc" id="L110">	private double[] _volatilityArray = null;</span>
-<span class="nc" id="L111">	private org.drip.measure.gaussian.Covariance _covariance = null;</span>
+<span class="nc" id="L121">	private double[] _meanArray = null;</span>
+<span class="nc" id="L122">	private double[] _volatilityArray = null;</span>
+<span class="nc" id="L123">	private org.drip.measure.gaussian.Covariance _covariance = null;</span>
 
 	/**
 	 * LabelCovariance Constructor
@@ -128,45 +140,45 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 		final double[][] correlationMatrix)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L131">		super (</span>
+<span class="nc" id="L143">		super (</span>
 			labelList,
 			correlationMatrix
 		);
 
-<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == (_meanArray = meanArray) ||</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		if (null == (_meanArray = meanArray) ||</span>
 			null == (_volatilityArray = volatilityArray))
 		{
-<span class="nc" id="L139">			throw new java.lang.Exception (&quot;LabelCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L151">			throw new java.lang.Exception (&quot;LabelCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L142">		int variateCount = correlationMatrix.length;</span>
-<span class="nc" id="L143">		double[][] covarianceMatrix = new double[variateCount][variateCount];</span>
+<span class="nc" id="L154">		int variateCount = correlationMatrix.length;</span>
+<span class="nc" id="L155">		double[][] covarianceMatrix = new double[variateCount][variateCount];</span>
 
-<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (variateCount != _meanArray.length ||</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (variateCount != _meanArray.length ||</span>
 			variateCount != _volatilityArray.length)
 		{
-<span class="nc" id="L148">			throw new java.lang.Exception (&quot;LabelCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;LabelCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int variateIndexI = 0; variateIndexI &lt; variateCount; ++variateIndexI)</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int variateIndexI = 0; variateIndexI &lt; variateCount; ++variateIndexI)</span>
 		{
-<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||</span>
-<span class="nc bnc" id="L154" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||</span>
 				0. &gt; _volatilityArray[variateIndexI])
 			{
-<span class="nc" id="L157">				throw new java.lang.Exception (&quot;LabelCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L169">				throw new java.lang.Exception (&quot;LabelCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">			for (int variateIndexJ = 0; variateIndexJ &lt; variateCount; ++variateIndexJ)</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">			for (int variateIndexJ = 0; variateIndexJ &lt; variateCount; ++variateIndexJ)</span>
 			{
-<span class="nc" id="L162">				covarianceMatrix[variateIndexI][variateIndexJ] =</span>
+<span class="nc" id="L174">				covarianceMatrix[variateIndexI][variateIndexJ] =</span>
 					correlationMatrix[variateIndexI][variateIndexJ] * _volatilityArray[variateIndexI] *
 					_volatilityArray[variateIndexJ];
 			}
 		}
 
-<span class="nc" id="L168">		_covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
-<span class="nc" id="L169">	}</span>
+<span class="nc" id="L180">		_covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);</span>
+<span class="nc" id="L181">	}</span>
 
 	/**
 	 * Retrieve the Array of Variate Means
@@ -176,7 +188,7 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 
 	public double[] meanArray()
 	{
-<span class="nc" id="L179">		return _meanArray;</span>
+<span class="nc" id="L191">		return _meanArray;</span>
 	}
 
 	/**
@@ -187,7 +199,7 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 
 	public double[] volatilityArray()
 	{
-<span class="nc" id="L190">		return _volatilityArray;</span>
+<span class="nc" id="L202">		return _volatilityArray;</span>
 	}
 
 	/**
@@ -198,7 +210,7 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 
 	public double[][] correlationMatrix()
 	{
-<span class="nc" id="L201">		return _matrix;</span>
+<span class="nc" id="L213">		return _matrix;</span>
 	}
 
 	/**
@@ -209,7 +221,7 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 
 	public double[][] covarianceMatrix()
 	{
-<span class="nc" id="L212">		return _covariance.covarianceMatrix();</span>
+<span class="nc" id="L224">		return _covariance.covarianceMatrix();</span>
 	}
 
 	/**
@@ -220,7 +232,7 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 
 	public double[][] precisionMatrix()
 	{
-<span class="nc" id="L223">		return _covariance.precisionMatrix();</span>
+<span class="nc" id="L235">		return _covariance.precisionMatrix();</span>
 	}
 
 	/**
@@ -237,12 +249,12 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 		final java.lang.String label)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L240" title="All 4 branches missed.">		if (null == label || !_labelList.contains (label))</span>
+<span class="nc bnc" id="L252" title="All 4 branches missed.">		if (null == label || !_labelList.contains (label))</span>
 		{
-<span class="nc" id="L242">			throw new java.lang.Exception (&quot;LabelCovariance::mean =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L254">			throw new java.lang.Exception (&quot;LabelCovariance::mean =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L245">		return _meanArray[_labelIndexMap.get (label)];</span>
+<span class="nc" id="L257">		return _meanArray[_labelIndexMap.get (label)];</span>
 	}
 
 	/**
@@ -259,12 +271,12 @@ public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelatio
 		final java.lang.String label)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L262" title="All 4 branches missed.">		if (null == label || !_labelList.contains (label))</span>
+<span class="nc bnc" id="L274" title="All 4 branches missed.">		if (null == label || !_labelList.contains (label))</span>
 		{
-<span class="nc" id="L264">			throw new java.lang.Exception (&quot;LabelCovariance::volatility =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L276">			throw new java.lang.Exception (&quot;LabelCovariance::volatility =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L267">		return _volatilityArray[_labelIndexMap.get (label)];</span>
+<span class="nc" id="L279">		return _volatilityArray[_labelIndexMap.get (label)];</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

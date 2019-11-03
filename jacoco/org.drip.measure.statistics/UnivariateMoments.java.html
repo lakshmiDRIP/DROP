@@ -6,44 +6,56 @@ package org.drip.measure.statistics;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,21 +84,21 @@ package org.drip.measure.statistics;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics&quot;&gt;Statistics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;d&lt;/sup&gt; Thin Thick Moments&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class UnivariateMoments {
-<span class="nc" id="L85">	private int _iNumSample = 0;</span>
-<span class="nc" id="L86">	private java.lang.String _strName = &quot;&quot;;</span>
-<span class="nc" id="L87">	private double _dblMean = java.lang.Double.NaN;</span>
-<span class="nc" id="L88">	private double _dblVariance = java.lang.Double.NaN;</span>
-<span class="nc" id="L89">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _mapMoment = null;</span>
+<span class="nc" id="L97">	private int _iNumSample = 0;</span>
+<span class="nc" id="L98">	private java.lang.String _strName = &quot;&quot;;</span>
+<span class="nc" id="L99">	private double _dblMean = java.lang.Double.NaN;</span>
+<span class="nc" id="L100">	private double _dblVariance = java.lang.Double.NaN;</span>
+<span class="nc" id="L101">	private java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; _mapMoment = null;</span>
 
 	/**
 	 * Construct a UnivariateMoments Instance for the specified Series
@@ -103,48 +115,48 @@ public class UnivariateMoments {
 		final double[] adblEntry,
 		final int[] aiMoment)
 	{
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		if (null == adblEntry) return null;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		if (null == adblEntry) return null;</span>
 
-<span class="nc" id="L108">		double dblMean = 0.;</span>
-<span class="nc" id="L109">		double dblVariance = 0.;</span>
-<span class="nc" id="L110">		int iNumSample = adblEntry.length;</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		int iNumMoment = null == aiMoment ? 0 : aiMoment.length;</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		double[] adblMoment = 0 == iNumMoment ? null : new double[iNumMoment];</span>
+<span class="nc" id="L120">		double dblMean = 0.;</span>
+<span class="nc" id="L121">		double dblVariance = 0.;</span>
+<span class="nc" id="L122">		int iNumSample = adblEntry.length;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		int iNumMoment = null == aiMoment ? 0 : aiMoment.length;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		double[] adblMoment = 0 == iNumMoment ? null : new double[iNumMoment];</span>
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapMoment = 0 == iNumMoment ? null : new</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapMoment = 0 == iNumMoment ? null : new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc bnc" id="L117" title="All 2 branches missed.">		if (0 == iNumSample) return null;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (0 == iNumSample) return null;</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblEntry[i])) return null;</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblEntry[i])) return null;</span>
 
-<span class="nc" id="L122">			dblMean += adblEntry[i];</span>
+<span class="nc" id="L134">			dblMean += adblEntry[i];</span>
 		}
 
-<span class="nc" id="L125">		dblMean /= iNumSample;</span>
+<span class="nc" id="L137">		dblMean /= iNumSample;</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMoment; ++j)</span>
-<span class="nc" id="L128">			adblMoment[j] = 0.;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMoment; ++j)</span>
+<span class="nc" id="L140">			adblMoment[j] = 0.;</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
-<span class="nc" id="L131">			double dblError = dblMean - adblEntry[i];</span>
-<span class="nc" id="L132">			dblVariance += (dblError * dblError);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumSample; ++i) {</span>
+<span class="nc" id="L143">			double dblError = dblMean - adblEntry[i];</span>
+<span class="nc" id="L144">			dblVariance += (dblError * dblError);</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumMoment; ++j)</span>
-<span class="nc" id="L135">				adblMoment[j] = adblMoment[j] + java.lang.Math.pow (dblError, aiMoment[j]);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			for (int j = 0; j &lt; iNumMoment; ++j)</span>
+<span class="nc" id="L147">				adblMoment[j] = adblMoment[j] + java.lang.Math.pow (dblError, aiMoment[j]);</span>
 		}
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMoment; ++j)</span>
-<span class="nc" id="L139">			mapMoment.put (aiMoment[j], adblMoment[j]);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumMoment; ++j)</span>
+<span class="nc" id="L151">			mapMoment.put (aiMoment[j], adblMoment[j]);</span>
 
 		try {
-<span class="nc" id="L142">			return new UnivariateMoments (strName, dblMean, dblVariance / iNumSample, iNumSample, mapMoment);</span>
-<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L144">			e.printStackTrace();</span>
+<span class="nc" id="L154">			return new UnivariateMoments (strName, dblMean, dblVariance / iNumSample, iNumSample, mapMoment);</span>
+<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L147">		return null;</span>
+<span class="nc" id="L159">		return null;</span>
 	}
 
 	/**
@@ -160,7 +172,7 @@ public class UnivariateMoments {
 		final java.lang.String strName,
 		final double[] adblEntry)
 	{
-<span class="nc" id="L163">		return Standard (strName, adblEntry, null);</span>
+<span class="nc" id="L175">		return Standard (strName, adblEntry, null);</span>
 	}
 
 	protected UnivariateMoments (
@@ -170,14 +182,14 @@ public class UnivariateMoments {
 		final int iNumSample,
 		final java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; mapMoment)
 		throws java.lang.Exception
-<span class="nc" id="L173">	{</span>
-<span class="nc bnc" id="L174" title="All 4 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
-<span class="nc bnc" id="L175" title="All 6 branches missed.">			(_dblMean = dblMean) || !org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance) ||</span>
+<span class="nc" id="L185">	{</span>
+<span class="nc bnc" id="L186" title="All 4 branches missed.">		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid</span>
+<span class="nc bnc" id="L187" title="All 6 branches missed.">			(_dblMean = dblMean) || !org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance) ||</span>
 				0 &gt;= (_iNumSample = iNumSample))
-<span class="nc" id="L177">			throw new java.lang.Exception (&quot;UnivariateMetrics Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L189">			throw new java.lang.Exception (&quot;UnivariateMetrics Constructor =&gt; Invalid Inputs!&quot;);</span>
 
-<span class="nc" id="L179">		_mapMoment = mapMoment;</span>
-<span class="nc" id="L180">	}</span>
+<span class="nc" id="L191">		_mapMoment = mapMoment;</span>
+<span class="nc" id="L192">	}</span>
 
 	/**
 	 * Retrieve the Series Name
@@ -187,7 +199,7 @@ public class UnivariateMoments {
 
 	public java.lang.String name()
 	{
-<span class="nc" id="L190">		return _strName;</span>
+<span class="nc" id="L202">		return _strName;</span>
 	}
 
 	/**
@@ -198,7 +210,7 @@ public class UnivariateMoments {
 
 	public int numSample()
 	{
-<span class="nc" id="L201">		return _iNumSample;</span>
+<span class="nc" id="L213">		return _iNumSample;</span>
 	}
 
 	/**
@@ -209,7 +221,7 @@ public class UnivariateMoments {
 
 	public double mean()
 	{
-<span class="nc" id="L212">		return _dblMean;</span>
+<span class="nc" id="L224">		return _dblMean;</span>
 	}
 
 	/**
@@ -220,7 +232,7 @@ public class UnivariateMoments {
 
 	public double variance()
 	{
-<span class="nc" id="L223">		return _dblVariance;</span>
+<span class="nc" id="L235">		return _dblVariance;</span>
 	}
 
 	/**
@@ -231,7 +243,7 @@ public class UnivariateMoments {
 
 	public double stdDev()
 	{
-<span class="nc" id="L234">		return java.lang.Math.sqrt (_dblVariance);</span>
+<span class="nc" id="L246">		return java.lang.Math.sqrt (_dblVariance);</span>
 	}
 
 	/**
@@ -242,7 +254,7 @@ public class UnivariateMoments {
 
 	public double stdError()
 	{
-<span class="nc" id="L245">		return java.lang.Math.sqrt (_dblVariance);</span>
+<span class="nc" id="L257">		return java.lang.Math.sqrt (_dblVariance);</span>
 	}
 
 	/**
@@ -253,7 +265,7 @@ public class UnivariateMoments {
 
 	public java.util.Map&lt;java.lang.Integer, java.lang.Double&gt; momentMap()
 	{
-<span class="nc" id="L256">		return _mapMoment;</span>
+<span class="nc" id="L268">		return _mapMoment;</span>
 	}
 
 	/**
@@ -270,12 +282,12 @@ public class UnivariateMoments {
 		final double hypothesisPivot)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (hypothesisPivot))</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (hypothesisPivot))</span>
 		{
-<span class="nc" id="L275">			throw new java.lang.Exception (&quot;UnivariateMetrics::tStatistic =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L287">			throw new java.lang.Exception (&quot;UnivariateMetrics::tStatistic =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L278">		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance);</span>
+<span class="nc" id="L290">		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance);</span>
 	}
 
 	/**
@@ -290,7 +302,7 @@ public class UnivariateMoments {
 	public double tStatistic()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L293">		return _dblMean / java.lang.Math.sqrt (_dblVariance);</span>
+<span class="nc" id="L305">		return _dblMean / java.lang.Math.sqrt (_dblVariance);</span>
 	}
 
 	/**
@@ -307,12 +319,12 @@ public class UnivariateMoments {
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 		{
-<span class="nc" id="L312">			throw new java.lang.Exception (&quot;UnivariateMetrics::standardErrorOffset =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L324">			throw new java.lang.Exception (&quot;UnivariateMetrics::standardErrorOffset =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L315">		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance);</span>
+<span class="nc" id="L327">		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance);</span>
 	}
 
 	/**
@@ -323,7 +335,7 @@ public class UnivariateMoments {
 
 	public int degreesOfFreedom()
 	{
-<span class="nc" id="L326">		return _iNumSample - 1;</span>
+<span class="nc" id="L338">		return _iNumSample - 1;</span>
 	}
 
 	/**
@@ -334,7 +346,7 @@ public class UnivariateMoments {
 
 	public double predictiveConfidenceLevel()
 	{
-<span class="nc" id="L337">		return java.lang.Math.sqrt (_dblVariance * (1. + 1. / (1. + _iNumSample)));</span>
+<span class="nc" id="L349">		return java.lang.Math.sqrt (_dblVariance * (1. + 1. / (1. + _iNumSample)));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

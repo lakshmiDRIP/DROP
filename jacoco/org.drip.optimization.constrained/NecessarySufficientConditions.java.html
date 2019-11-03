@@ -6,44 +6,56 @@ package org.drip.optimization.constrained;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -97,25 +109,25 @@ package org.drip.optimization.constrained;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization&quot;&gt;Optimization&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained&quot;&gt;Constrained&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md&quot;&gt;Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md&quot;&gt;KKT Fritz-John Constrained Optimizer&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class NecessarySufficientConditions {
-<span class="fc" id="L110">	private double[] _adblVariate = null;</span>
-<span class="fc" id="L111">	private boolean _bCheckForMinima = false;</span>
-<span class="fc" id="L112">	private org.drip.optimization.constrained.FritzJohnMultipliers _fjm = null;</span>
-<span class="fc" id="L113">	private org.drip.optimization.necessary.ConditionQualifierFONC _cqFONC = null;</span>
-<span class="fc" id="L114">	private org.drip.optimization.necessary.ConditionQualifierSOSC _cqSOSC = null;</span>
-<span class="fc" id="L115">	private org.drip.optimization.necessary.ConditionQualifierDualFeasibility _cqDualFeasibility = null;</span>
-<span class="fc" id="L116">	private org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility _cqPrimalFeasibility =</span>
+<span class="fc" id="L122">	private double[] _adblVariate = null;</span>
+<span class="fc" id="L123">	private boolean _bCheckForMinima = false;</span>
+<span class="fc" id="L124">	private org.drip.optimization.constrained.FritzJohnMultipliers _fjm = null;</span>
+<span class="fc" id="L125">	private org.drip.optimization.necessary.ConditionQualifierFONC _cqFONC = null;</span>
+<span class="fc" id="L126">	private org.drip.optimization.necessary.ConditionQualifierSOSC _cqSOSC = null;</span>
+<span class="fc" id="L127">	private org.drip.optimization.necessary.ConditionQualifierDualFeasibility _cqDualFeasibility = null;</span>
+<span class="fc" id="L128">	private org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility _cqPrimalFeasibility =</span>
 		null;
-<span class="fc" id="L118">	private org.drip.optimization.necessary.ConditionQualifierComplementarySlackness</span>
+<span class="fc" id="L130">	private org.drip.optimization.necessary.ConditionQualifierComplementarySlackness</span>
 		_cqComplementarySlackness = null;
 
 	/**
@@ -144,7 +156,7 @@ public class NecessarySufficientConditions {
 		final boolean bSOSCValidity)
 	{
 		try {
-<span class="fc" id="L147">			return new NecessarySufficientConditions (adblVariate, fjm, bCheckForMinima, new</span>
+<span class="fc" id="L159">			return new NecessarySufficientConditions (adblVariate, fjm, bCheckForMinima, new</span>
 				org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility
 					(bPrimalFeasibilityValidity), new
 						org.drip.optimization.necessary.ConditionQualifierDualFeasibility
@@ -155,11 +167,11 @@ public class NecessarySufficientConditions {
 											(bFONCValidity), new
 												org.drip.optimization.necessary.ConditionQualifierSOSC
 													(bSOSCValidity));
-<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L159">			e.printStackTrace();</span>
+<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L162">		return null;</span>
+<span class="nc" id="L174">		return null;</span>
 	}
 
 	/**
@@ -188,15 +200,15 @@ public class NecessarySufficientConditions {
 		final org.drip.optimization.necessary.ConditionQualifierFONC cqFONC,
 		final org.drip.optimization.necessary.ConditionQualifierSOSC cqSOSC)
 		throws java.lang.Exception
-<span class="fc" id="L191">	{</span>
-<span class="pc bpc" id="L192" title="8 of 16 branches missed.">		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length || null == (_fjm = fjm) || null</span>
+<span class="fc" id="L203">	{</span>
+<span class="pc bpc" id="L204" title="8 of 16 branches missed.">		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length || null == (_fjm = fjm) || null</span>
 			== (_cqPrimalFeasibility = cqPrimalFeasibility) || null == (_cqDualFeasibility =
 				cqDualFeasibility) || null == (_cqComplementarySlackness = cqComplementarySlackness) || null
 					== (_cqFONC = cqFONC) || null == (_cqSOSC = cqSOSC))
-<span class="nc" id="L196">			throw new java.lang.Exception (&quot;NecessarySufficientConditions Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L208">			throw new java.lang.Exception (&quot;NecessarySufficientConditions Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L198">		_bCheckForMinima = bCheckForMinima;</span>
-<span class="fc" id="L199">	}</span>
+<span class="fc" id="L210">		_bCheckForMinima = bCheckForMinima;</span>
+<span class="fc" id="L211">	}</span>
 
 	/**
 	 * Retrieve the Candidate Variate Array
@@ -206,7 +218,7 @@ public class NecessarySufficientConditions {
 
 	public double[] variate()
 	{
-<span class="nc" id="L209">		return _adblVariate;</span>
+<span class="nc" id="L221">		return _adblVariate;</span>
 	}
 
 	/**
@@ -217,7 +229,7 @@ public class NecessarySufficientConditions {
 
 	public org.drip.optimization.constrained.FritzJohnMultipliers fritzJohnMultipliers()
 	{
-<span class="nc" id="L220">		return _fjm;</span>
+<span class="nc" id="L232">		return _fjm;</span>
 	}
 
 	/**
@@ -228,7 +240,7 @@ public class NecessarySufficientConditions {
 
 	public boolean checkFroMinima()
 	{
-<span class="nc" id="L231">		return _bCheckForMinima;</span>
+<span class="nc" id="L243">		return _bCheckForMinima;</span>
 	}
 
 	/**
@@ -239,7 +251,7 @@ public class NecessarySufficientConditions {
 
 	public org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility primalFeasibility()
 	{
-<span class="nc" id="L242">		return _cqPrimalFeasibility;</span>
+<span class="nc" id="L254">		return _cqPrimalFeasibility;</span>
 	}
 
 	/**
@@ -250,7 +262,7 @@ public class NecessarySufficientConditions {
 
 	public org.drip.optimization.necessary.ConditionQualifierDualFeasibility dualFeasibility()
 	{
-<span class="nc" id="L253">		return _cqDualFeasibility;</span>
+<span class="nc" id="L265">		return _cqDualFeasibility;</span>
 	}
 
 	/**
@@ -262,7 +274,7 @@ public class NecessarySufficientConditions {
 	public org.drip.optimization.necessary.ConditionQualifierComplementarySlackness
 		complementarySlackness()
 	{
-<span class="nc" id="L265">		return _cqComplementarySlackness;</span>
+<span class="nc" id="L277">		return _cqComplementarySlackness;</span>
 	}
 
 	/**
@@ -273,7 +285,7 @@ public class NecessarySufficientConditions {
 
 	public org.drip.optimization.necessary.ConditionQualifierFONC fonc()
 	{
-<span class="nc" id="L276">		return _cqFONC;</span>
+<span class="nc" id="L288">		return _cqFONC;</span>
 	}
 
 	/**
@@ -284,7 +296,7 @@ public class NecessarySufficientConditions {
 
 	public org.drip.optimization.necessary.ConditionQualifierSOSC sosc()
 	{
-<span class="nc" id="L287">		return _cqSOSC;</span>
+<span class="nc" id="L299">		return _cqSOSC;</span>
 	}
 
 	/**
@@ -295,8 +307,8 @@ public class NecessarySufficientConditions {
 
 	public boolean valid()
 	{
-<span class="nc bnc" id="L298" title="All 4 branches missed.">		return _cqPrimalFeasibility.valid() &amp;&amp; _cqDualFeasibility.valid() &amp;&amp;</span>
-<span class="nc bnc" id="L299" title="All 6 branches missed.">			_cqComplementarySlackness.valid() &amp;&amp; _cqFONC.valid() &amp;&amp; _cqSOSC.valid();</span>
+<span class="nc bnc" id="L310" title="All 4 branches missed.">		return _cqPrimalFeasibility.valid() &amp;&amp; _cqDualFeasibility.valid() &amp;&amp;</span>
+<span class="nc bnc" id="L311" title="All 6 branches missed.">			_cqComplementarySlackness.valid() &amp;&amp; _cqFONC.valid() &amp;&amp; _cqSOSC.valid();</span>
 	}
 
 	/**
@@ -307,9 +319,9 @@ public class NecessarySufficientConditions {
 
 	public java.lang.String[] conditionOrder()
 	{
-<span class="fc" id="L310">		return new java.lang.String[] {&quot;ZERO ORDER: &quot; + _cqPrimalFeasibility.display() + &quot; &gt;&gt; &quot; +</span>
-<span class="fc" id="L311">			_cqDualFeasibility.display() + &quot; &gt;&gt; &quot; + _cqComplementarySlackness.display(), &quot;FIRST ORDER: &quot; +</span>
-<span class="fc" id="L312">				_cqFONC.display(), &quot;SECOND ORDER: &quot; + _cqSOSC.display()};</span>
+<span class="fc" id="L322">		return new java.lang.String[] {&quot;ZERO ORDER: &quot; + _cqPrimalFeasibility.display() + &quot; &gt;&gt; &quot; +</span>
+<span class="fc" id="L323">			_cqDualFeasibility.display() + &quot; &gt;&gt; &quot; + _cqComplementarySlackness.display(), &quot;FIRST ORDER: &quot; +</span>
+<span class="fc" id="L324">				_cqFONC.display(), &quot;SECOND ORDER: &quot; + _cqSOSC.display()};</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.numerical.differentiation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.numerical.differentiation;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,9 +110,9 @@ package org.drip.numerical.differentiation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/differentiation&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Numerical Differentiation&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
@@ -109,8 +121,8 @@ package org.drip.numerical.differentiation;
  */
 
 public class WengertJacobian {
-<span class="fc" id="L112">	private double[] _adblWengert = null;</span>
-<span class="fc" id="L113">	private double[][] _aadblDWengertDParameter = null;</span>
+<span class="fc" id="L124">	private double[] _adblWengert = null;</span>
+<span class="fc" id="L125">	private double[][] _aadblDWengertDParameter = null;</span>
 
 	/**
 	 * WengertJacobian constructor
@@ -125,19 +137,19 @@ public class WengertJacobian {
 		final int iNumWengerts,
 		final int iNumParameters)
 		throws java.lang.Exception
-<span class="fc" id="L128">	{</span>
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">		if (0 &gt;= iNumWengerts || 0 &gt;= iNumParameters)</span>
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;WengertJacobian constructor: Invalid inputs&quot;);</span>
+<span class="fc" id="L140">	{</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">		if (0 &gt;= iNumWengerts || 0 &gt;= iNumParameters)</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;WengertJacobian constructor: Invalid inputs&quot;);</span>
 
-<span class="fc" id="L132">		_adblWengert = new double[iNumWengerts];</span>
-<span class="fc" id="L133">		_aadblDWengertDParameter = new double[iNumWengerts][iNumParameters];</span>
+<span class="fc" id="L144">		_adblWengert = new double[iNumWengerts];</span>
+<span class="fc" id="L145">		_aadblDWengertDParameter = new double[iNumWengerts][iNumParameters];</span>
 
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="fc" id="L137">				++iParameterIndex)</span>
-<span class="fc" id="L138">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] = 0.;</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="fc" id="L149">				++iParameterIndex)</span>
+<span class="fc" id="L150">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] = 0.;</span>
 		}
-<span class="fc" id="L140">	}</span>
+<span class="fc" id="L152">	}</span>
 
 	/**
 	 * Retrieve the number of Wengert Variables
@@ -147,7 +159,7 @@ public class WengertJacobian {
 
 	public int numWengerts()
 	{
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		return null == _adblWengert ? 0 : _adblWengert.length;</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		return null == _adblWengert ? 0 : _adblWengert.length;</span>
 	}
 
 	/**
@@ -158,7 +170,7 @@ public class WengertJacobian {
 
 	public int numParameters()
 	{
-<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		return (null == _aadblDWengertDParameter || null == _aadblDWengertDParameter[0]) ? 0 :</span>
+<span class="pc bpc" id="L173" title="2 of 4 branches missed.">		return (null == _aadblDWengertDParameter || null == _aadblDWengertDParameter[0]) ? 0 :</span>
 			_aadblDWengertDParameter[0].length;
 	}
 
@@ -175,12 +187,12 @@ public class WengertJacobian {
 		final int iWengertIndex,
 		final double dblWengert)
 	{
-<span class="pc bpc" id="L178" title="2 of 4 branches missed.">		if (0 &gt; iWengertIndex || iWengertIndex &gt;= _adblWengert.length ||</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblWengert))</span>
-<span class="nc" id="L180">			return false;</span>
+<span class="pc bpc" id="L190" title="2 of 4 branches missed.">		if (0 &gt; iWengertIndex || iWengertIndex &gt;= _adblWengert.length ||</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblWengert))</span>
+<span class="nc" id="L192">			return false;</span>
 
-<span class="fc" id="L182">		_adblWengert[iWengertIndex] = dblWengert;</span>
-<span class="fc" id="L183">		return true;</span>
+<span class="fc" id="L194">		_adblWengert[iWengertIndex] = dblWengert;</span>
+<span class="fc" id="L195">		return true;</span>
 	}
 
 	/**
@@ -197,10 +209,10 @@ public class WengertJacobian {
 		final int iIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L200" title="All 4 branches missed.">		if (0 &gt; iIndex || iIndex &gt;= _adblWengert.length)</span>
-<span class="nc" id="L201">			throw new java.lang.Exception (&quot;WengertJacobian::wengert =&gt; Invalid Wengert Variable Index!&quot;);</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (0 &gt; iIndex || iIndex &gt;= _adblWengert.length)</span>
+<span class="nc" id="L213">			throw new java.lang.Exception (&quot;WengertJacobian::wengert =&gt; Invalid Wengert Variable Index!&quot;);</span>
 
-<span class="nc" id="L203">		return _adblWengert[iIndex];</span>
+<span class="nc" id="L215">		return _adblWengert[iIndex];</span>
 	}
 
 	/**
@@ -218,13 +230,13 @@ public class WengertJacobian {
 		final int iParameterIndex,
 		final double dblDWengertDParameter)
 	{
-<span class="pc bpc" id="L221" title="4 of 8 branches missed.">		if (0 &gt; iParameterIndex || iParameterIndex &gt;= _aadblDWengertDParameter[0].length || 0 &gt; iWengertIndex</span>
+<span class="pc bpc" id="L233" title="4 of 8 branches missed.">		if (0 &gt; iParameterIndex || iParameterIndex &gt;= _aadblDWengertDParameter[0].length || 0 &gt; iWengertIndex</span>
 			|| iWengertIndex &gt;= _adblWengert.length || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">				(dblDWengertDParameter))</span>
-<span class="nc" id="L224">			return false;</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">				(dblDWengertDParameter))</span>
+<span class="nc" id="L236">			return false;</span>
 
-<span class="fc" id="L226">		_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += dblDWengertDParameter;</span>
-<span class="fc" id="L227">		return true;</span>
+<span class="fc" id="L238">		_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += dblDWengertDParameter;</span>
+<span class="fc" id="L239">		return true;</span>
 	}
 
 	/**
@@ -240,7 +252,7 @@ public class WengertJacobian {
 		final int iWengertIndex,
 		final int iParameterIndex)
 	{
-<span class="fc" id="L243">		return _aadblDWengertDParameter[iWengertIndex][iParameterIndex];</span>
+<span class="fc" id="L255">		return _aadblDWengertDParameter[iWengertIndex][iParameterIndex];</span>
 	}
 
 	/**
@@ -254,16 +266,16 @@ public class WengertJacobian {
 	public boolean cumulativeMerge (
 		final org.drip.numerical.differentiation.WengertJacobian wjOther)
 	{
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (null == wjOther) return false;</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">		if (null == wjOther) return false;</span>
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="nc bnc" id="L260" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="nc" id="L261">				++iParameterIndex)</span>
-<span class="nc" id="L262">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
-<span class="nc" id="L263">					(iWengertIndex, iParameterIndex);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="nc" id="L273">				++iParameterIndex)</span>
+<span class="nc" id="L274">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
+<span class="nc" id="L275">					(iWengertIndex, iParameterIndex);</span>
 		}
 
-<span class="nc" id="L266">		return true;</span>
+<span class="nc" id="L278">		return true;</span>
 	}
 
 	/**
@@ -279,16 +291,16 @@ public class WengertJacobian {
 		final org.drip.numerical.differentiation.WengertJacobian wjOther,
 		final double dblWeight)
 	{
-<span class="nc bnc" id="L282" title="All 4 branches missed.">		if (null == wjOther || !org.drip.numerical.common.NumberUtil.IsValid (dblWeight)) return false;</span>
+<span class="nc bnc" id="L294" title="All 4 branches missed.">		if (null == wjOther || !org.drip.numerical.common.NumberUtil.IsValid (dblWeight)) return false;</span>
 
-<span class="nc bnc" id="L284" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="nc bnc" id="L285" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="nc" id="L286">				++iParameterIndex)</span>
-<span class="nc" id="L287">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
-<span class="nc" id="L288">					(iWengertIndex, iParameterIndex) * dblWeight;</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="nc" id="L298">				++iParameterIndex)</span>
+<span class="nc" id="L299">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] += wjOther.firstDerivative</span>
+<span class="nc" id="L300">					(iWengertIndex, iParameterIndex) * dblWeight;</span>
 		}
 
-<span class="nc" id="L291">		return true;</span>
+<span class="nc" id="L303">		return true;</span>
 	}
 
 	/**
@@ -302,15 +314,15 @@ public class WengertJacobian {
 	public boolean scale (
 		final double dblScale)
 	{
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (0 &gt;= dblScale) return false;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (0 &gt;= dblScale) return false;</span>
 
-<span class="nc bnc" id="L307" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="nc bnc" id="L308" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="nc" id="L309">				++iParameterIndex)</span>
-<span class="nc" id="L310">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] *= dblScale;</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="nc" id="L321">				++iParameterIndex)</span>
+<span class="nc" id="L322">				_aadblDWengertDParameter[iWengertIndex][iParameterIndex] *= dblScale;</span>
 		}
 
-<span class="nc" id="L313">		return true;</span>
+<span class="nc" id="L325">		return true;</span>
 	}
 
 	/**
@@ -321,25 +333,25 @@ public class WengertJacobian {
 
 	public java.lang.String displayString()
 	{
-<span class="fc" id="L324">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="fc" id="L336">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="fc bfc" id="L326" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
-<span class="fc" id="L327">			java.lang.StringBuffer sbDWengertDParameter = new java.lang.StringBuffer();</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">		for (int iWengertIndex = 0; iWengertIndex &lt; _aadblDWengertDParameter.length; ++iWengertIndex) {</span>
+<span class="fc" id="L339">			java.lang.StringBuffer sbDWengertDParameter = new java.lang.StringBuffer();</span>
 
-<span class="fc" id="L329">			sbDWengertDParameter.append (&quot;Wengert{&quot; + iWengertIndex + &quot;} =&gt; [&quot;);</span>
+<span class="fc" id="L341">			sbDWengertDParameter.append (&quot;Wengert{&quot; + iWengertIndex + &quot;} =&gt; [&quot;);</span>
 
-<span class="fc bfc" id="L331" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
-<span class="fc" id="L332">				++iParameterIndex) {</span>
-<span class="fc bfc" id="L333" title="All 2 branches covered.">				if (0 != iParameterIndex) sbDWengertDParameter.append (&quot;, &quot;);</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">			for (int iParameterIndex = 0; iParameterIndex &lt; _aadblDWengertDParameter[0].length;</span>
+<span class="fc" id="L344">				++iParameterIndex) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">				if (0 != iParameterIndex) sbDWengertDParameter.append (&quot;, &quot;);</span>
 
-<span class="fc" id="L335">				sbDWengertDParameter.append (org.drip.numerical.common.FormatUtil.FormatDouble</span>
-<span class="fc" id="L336">					(_aadblDWengertDParameter[iWengertIndex][iParameterIndex], 1, 3, 1.));</span>
+<span class="fc" id="L347">				sbDWengertDParameter.append (org.drip.numerical.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L348">					(_aadblDWengertDParameter[iWengertIndex][iParameterIndex], 1, 3, 1.));</span>
 			}
 
-<span class="fc" id="L339">			sb.append (sbDWengertDParameter).append (&quot;]\n&quot;);</span>
+<span class="fc" id="L351">			sb.append (sbDWengertDParameter).append (&quot;]\n&quot;);</span>
 		}
 
-<span class="fc" id="L342">		return sb.toString();</span>
+<span class="fc" id="L354">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

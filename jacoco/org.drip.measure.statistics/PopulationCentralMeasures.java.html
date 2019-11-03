@@ -6,44 +6,56 @@ package org.drip.measure.statistics;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.measure.statistics;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics&quot;&gt;Statistics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;d&lt;/sup&gt; Thin Thick Moments&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -83,8 +95,8 @@ package org.drip.measure.statistics;
 
 public class PopulationCentralMeasures
 {
-<span class="nc" id="L86">	private double _mean = java.lang.Double.NaN;</span>
-<span class="nc" id="L87">	private double _variance = java.lang.Double.NaN;</span>
+<span class="nc" id="L98">	private double _mean = java.lang.Double.NaN;</span>
+<span class="nc" id="L99">	private double _variance = java.lang.Double.NaN;</span>
 
 	/**
 	 * PopulationCentralMeasures Constructor
@@ -99,13 +111,13 @@ public class PopulationCentralMeasures
 		final double mean,
 		final double variance)
 		throws java.lang.Exception
-<span class="nc" id="L102">	{</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_mean = mean) ||</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_variance = variance))</span>
+<span class="nc" id="L114">	{</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_mean = mean) ||</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_variance = variance))</span>
 		{
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;PopulationCentralMeasures Constructor =&gt; Invalid Inputsx&quot;);</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;PopulationCentralMeasures Constructor =&gt; Invalid Inputsx&quot;);</span>
 		}
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L120">	}</span>
 
 	/**
 	 * Retrieve the Population Mean
@@ -115,7 +127,7 @@ public class PopulationCentralMeasures
 
 	public double mean()
 	{
-<span class="nc" id="L118">		return _mean;</span>
+<span class="nc" id="L130">		return _mean;</span>
 	}
 
 	/**
@@ -126,7 +138,7 @@ public class PopulationCentralMeasures
 
 	public double variance()
 	{
-<span class="nc" id="L129">		return _variance;</span>
+<span class="nc" id="L141">		return _variance;</span>
 	}
 
 	/**
@@ -143,12 +155,12 @@ public class PopulationCentralMeasures
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 		{
-<span class="nc" id="L148">			throw new java.lang.Exception (&quot;PopulationCentralMeasures::zScore =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L160">			throw new java.lang.Exception (&quot;PopulationCentralMeasures::zScore =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L151">		return (_mean - x) / java.lang.Math.sqrt (_variance);</span>
+<span class="nc" id="L163">		return (_mean - x) / java.lang.Math.sqrt (_variance);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

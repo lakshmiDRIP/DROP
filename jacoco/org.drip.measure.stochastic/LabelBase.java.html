@@ -6,41 +6,53 @@ package org.drip.measure.stochastic;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,10 +106,10 @@ package org.drip.measure.stochastic;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic&quot;&gt;Stochastics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;1&lt;/sup&gt; To R&lt;sup&gt;1&lt;/sup&gt; Process&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
@@ -105,9 +117,9 @@ package org.drip.measure.stochastic;
 
 public class LabelBase
 {
-<span class="fc" id="L108">	protected java.util.List&lt;java.lang.String&gt; _labelList = null;</span>
+<span class="fc" id="L120">	protected java.util.List&lt;java.lang.String&gt; _labelList = null;</span>
 
-<span class="fc" id="L110">	protected java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _labelIndexMap = new</span>
+<span class="fc" id="L122">	protected java.util.Map&lt;java.lang.String, java.lang.Integer&gt; _labelIndexMap = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Integer&gt;();
 
 	/**
@@ -121,27 +133,27 @@ public class LabelBase
 	public LabelBase (
 		final java.util.List&lt;java.lang.String&gt; labelList)
 		throws java.lang.Exception
-<span class="fc" id="L124">	{</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		if (null == (_labelList = labelList))</span>
+<span class="fc" id="L136">	{</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		if (null == (_labelList = labelList))</span>
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;LabelBase Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;LabelBase Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L130">		int labelCount = _labelList.size();</span>
+<span class="fc" id="L142">		int labelCount = _labelList.size();</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (0 == labelCount)</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (0 == labelCount)</span>
 		{
-<span class="nc" id="L134">			throw new java.lang.Exception (&quot;LabelBase Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L146">			throw new java.lang.Exception (&quot;LabelBase Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc bfc" id="L137" title="All 2 branches covered.">		for (int labelIndex = 0; labelIndex &lt; labelCount; ++labelIndex)</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		for (int labelIndex = 0; labelIndex &lt; labelCount; ++labelIndex)</span>
 		{
-<span class="fc" id="L139">			_labelIndexMap.put (</span>
-<span class="fc" id="L140">				_labelList.get (labelIndex),</span>
-<span class="fc" id="L141">				labelIndex</span>
+<span class="fc" id="L151">			_labelIndexMap.put (</span>
+<span class="fc" id="L152">				_labelList.get (labelIndex),</span>
+<span class="fc" id="L153">				labelIndex</span>
 			);
 		}
-<span class="fc" id="L144">	}</span>
+<span class="fc" id="L156">	}</span>
 
 	/**
 	 * Retrieve the Label List
@@ -151,7 +163,7 @@ public class LabelBase
 
 	public java.util.List&lt;java.lang.String&gt; labelList()
 	{
-<span class="nc" id="L154">		return _labelList;</span>
+<span class="nc" id="L166">		return _labelList;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

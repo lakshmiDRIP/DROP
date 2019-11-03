@@ -6,41 +6,53 @@ package org.drip.numerical.estimation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,9 +105,9 @@ package org.drip.numerical.estimation;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md&quot;&gt;Function Numerical Estimates/Corrections/Bounds&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
@@ -110,8 +122,8 @@ public abstract class R2ToR1Estimator implements org.drip.function.definition.R2
 	 */
 
 	public R2ToR1Estimator()
-<span class="nc" id="L113">	{</span>
-<span class="nc" id="L114">	}</span>
+<span class="nc" id="L125">	{</span>
+<span class="nc" id="L126">	}</span>
 
 	/**
 	 * Estimate a Bounded Numerical Approximation of the Function Value
@@ -128,19 +140,19 @@ public abstract class R2ToR1Estimator implements org.drip.function.definition.R2
 	{
 		try
 		{
-<span class="nc" id="L131">			return org.drip.numerical.estimation.R1Estimate.BaselineOnly (</span>
-<span class="nc" id="L132">				evaluate (</span>
+<span class="nc" id="L143">			return org.drip.numerical.estimation.R1Estimate.BaselineOnly (</span>
+<span class="nc" id="L144">				evaluate (</span>
 					x,
 					y
 				)
 			);
 		}
-<span class="nc" id="L138">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L140">			e.printStackTrace();</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L143">		return null;</span>
+<span class="nc" id="L155">		return null;</span>
 	}
 
 	/**
@@ -160,21 +172,21 @@ public abstract class R2ToR1Estimator implements org.drip.function.definition.R2
 		final java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap,
 		final org.drip.numerical.estimation.R1ToR1Series r1ToR1SeriesGenerator)
 	{
-<span class="nc" id="L163">		org.drip.numerical.estimation.R1Estimate r1NumericalEstimate = boundedEstimate (</span>
+<span class="nc" id="L175">		org.drip.numerical.estimation.R1Estimate r1NumericalEstimate = boundedEstimate (</span>
 			x,
 			y
 		);
 
-<span class="nc bnc" id="L168" title="All 4 branches missed.">		if (null == r1NumericalEstimate ||</span>
-<span class="nc bnc" id="L169" title="All 4 branches missed.">			null == termWeightMap || 0 == termWeightMap.size() ||</span>
+<span class="nc bnc" id="L180" title="All 4 branches missed.">		if (null == r1NumericalEstimate ||</span>
+<span class="nc bnc" id="L181" title="All 4 branches missed.">			null == termWeightMap || 0 == termWeightMap.size() ||</span>
 			null == r1ToR1SeriesGenerator)
 		{
-<span class="nc" id="L172">			return r1NumericalEstimate;</span>
+<span class="nc" id="L184">			return r1NumericalEstimate;</span>
 		}
 
-<span class="nc bnc" id="L175" title="All 2 branches missed.">		return r1NumericalEstimate.addOrderedSeriesMap (</span>
-<span class="nc" id="L176">			r1ToR1SeriesGenerator.generate (</span>
-<span class="nc" id="L177">				r1NumericalEstimate.baseline(),</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		return r1NumericalEstimate.addOrderedSeriesMap (</span>
+<span class="nc" id="L188">			r1ToR1SeriesGenerator.generate (</span>
+<span class="nc" id="L189">				r1NumericalEstimate.baseline(),</span>
 				x
 			)
 		) ? r1NumericalEstimate : null;
@@ -193,7 +205,7 @@ public abstract class R2ToR1Estimator implements org.drip.function.definition.R2
 		final double x,
 		final double y)
 	{
-<span class="nc" id="L196">		return seriesEstimate (</span>
+<span class="nc" id="L208">		return seriesEstimate (</span>
 			x,
 			y,
 			null,

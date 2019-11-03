@@ -6,44 +6,56 @@ package org.drip.measure.realization;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,21 +108,21 @@ package org.drip.measure.realization;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;Measure&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization&quot;&gt;Realization&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure&quot;&gt;R&lt;sup&gt;d&lt;/sup&gt; Continuous/Discrete Probability Measures&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization&quot;&gt;Stochastic Jump Diffusion Vertex Edge&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class JumpDiffusionEdge {
-<span class="fc" id="L109">	private double _dblStart = java.lang.Double.NaN;</span>
-<span class="fc" id="L110">	private double _dblDeterministic = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private org.drip.measure.realization.StochasticEdgeJump _sej = null;</span>
-<span class="fc" id="L112">	private org.drip.measure.realization.JumpDiffusionEdgeUnit _jdeu = null;</span>
-<span class="fc" id="L113">	private org.drip.measure.realization.StochasticEdgeDiffusion _sed = null;</span>
+<span class="fc" id="L121">	private double _dblStart = java.lang.Double.NaN;</span>
+<span class="fc" id="L122">	private double _dblDeterministic = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private org.drip.measure.realization.StochasticEdgeJump _sej = null;</span>
+<span class="fc" id="L124">	private org.drip.measure.realization.JumpDiffusionEdgeUnit _jdeu = null;</span>
+<span class="fc" id="L125">	private org.drip.measure.realization.StochasticEdgeDiffusion _sed = null;</span>
 
 	/**
 	 * Construct the Standard JumpDiffusionEdge Instance
@@ -142,17 +154,17 @@ public class JumpDiffusionEdge {
 		final double dblUnitJump)
 	{
 		try {
-<span class="nc" id="L145">			return new JumpDiffusionEdge (dblStart, dblDeterministic, new</span>
+<span class="nc" id="L157">			return new JumpDiffusionEdge (dblStart, dblDeterministic, new</span>
 				org.drip.measure.realization.StochasticEdgeDiffusion (dblDiffusionStochastic), new
 					org.drip.measure.realization.StochasticEdgeJump (bJumpOccurred, dblHazardRate,
 						dblHazardIntegral, dblJumpTarget), new
 							org.drip.measure.realization.JumpDiffusionEdgeUnit (dblTimeIncrement,
 								dblUnitDiffusion, dblUnitJump));
-<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L163">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L167">		return null;</span>
 	}
 
 	/**
@@ -175,13 +187,13 @@ public class JumpDiffusionEdge {
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu)
 	{
 		try {
-<span class="fc" id="L178">			return new JumpDiffusionEdge (dblStart, dblDeterministic, new</span>
+<span class="fc" id="L190">			return new JumpDiffusionEdge (dblStart, dblDeterministic, new</span>
 				org.drip.measure.realization.StochasticEdgeDiffusion (dblDiffusionStochastic), sej, jdeu);
-<span class="nc" id="L180">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L181">			e.printStackTrace();</span>
+<span class="nc" id="L192">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L193">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L184">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	/**
@@ -203,15 +215,15 @@ public class JumpDiffusionEdge {
 		final org.drip.measure.realization.StochasticEdgeJump sej,
 		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu)
 		throws java.lang.Exception
-<span class="fc" id="L206">	{</span>
-<span class="fc" id="L207">		_sed = sed;</span>
-<span class="fc" id="L208">		_sej = sej;</span>
+<span class="fc" id="L218">	{</span>
+<span class="fc" id="L219">		_sed = sed;</span>
+<span class="fc" id="L220">		_sej = sej;</span>
 
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStart = dblStart) ||</span>
-<span class="pc bpc" id="L211" title="5 of 8 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblDeterministic = dblDeterministic) || (null == _sed</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStart = dblStart) ||</span>
+<span class="pc bpc" id="L223" title="5 of 8 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblDeterministic = dblDeterministic) || (null == _sed</span>
 				&amp;&amp; null == _sej) || null == (_jdeu = jdeu))
-<span class="nc" id="L213">			throw new java.lang.Exception (&quot;JumpDiffusionEdge Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L214">	}</span>
+<span class="nc" id="L225">			throw new java.lang.Exception (&quot;JumpDiffusionEdge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L226">	}</span>
 
 	/**
 	 * Retrieve the Edge Time Increment
@@ -221,7 +233,7 @@ public class JumpDiffusionEdge {
 
 	public double timeIncrement()
 	{
-<span class="nc" id="L224">		return _jdeu.timeIncrement();</span>
+<span class="nc" id="L236">		return _jdeu.timeIncrement();</span>
 	}
 
 	/**
@@ -232,7 +244,7 @@ public class JumpDiffusionEdge {
 
 	public double start()
 	{
-<span class="fc" id="L235">		return _dblStart;</span>
+<span class="fc" id="L247">		return _dblStart;</span>
 	}
 
 	/**
@@ -243,7 +255,7 @@ public class JumpDiffusionEdge {
 
 	public double deterministic()
 	{
-<span class="fc" id="L246">		return _dblDeterministic;</span>
+<span class="fc" id="L258">		return _dblDeterministic;</span>
 	}
 
 	/**
@@ -254,7 +266,7 @@ public class JumpDiffusionEdge {
 
 	public double diffusionStochastic()
 	{
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">		return null == _sed ? 0. : _sed.change();</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		return null == _sed ? 0. : _sed.change();</span>
 	}
 
 	/**
@@ -265,7 +277,7 @@ public class JumpDiffusionEdge {
 
 	public double diffusionWander()
 	{
-<span class="fc" id="L268">		return _jdeu.diffusion();</span>
+<span class="fc" id="L280">		return _jdeu.diffusion();</span>
 	}
 
 	/**
@@ -276,7 +288,7 @@ public class JumpDiffusionEdge {
 
 	public double jumpStochastic()
 	{
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		return null == _sej ? 0. : _sej.target();</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">		return null == _sej ? 0. : _sej.target();</span>
 	}
 
 	/**
@@ -287,7 +299,7 @@ public class JumpDiffusionEdge {
 
 	public double jumpWander()
 	{
-<span class="nc" id="L290">		return _jdeu.jump();</span>
+<span class="nc" id="L302">		return _jdeu.jump();</span>
 	}
 
 	/**
@@ -298,8 +310,8 @@ public class JumpDiffusionEdge {
 
 	public double finish()
 	{
-<span class="fc bfc" id="L301" title="All 4 branches covered.">		return null == _sej || !_sej.jumpOccurred() ? _dblStart + _dblDeterministic + diffusionStochastic() :</span>
-<span class="fc" id="L302">			_sej.target();</span>
+<span class="fc bfc" id="L313" title="All 4 branches covered.">		return null == _sej || !_sej.jumpOccurred() ? _dblStart + _dblDeterministic + diffusionStochastic() :</span>
+<span class="fc" id="L314">			_sej.target();</span>
 	}
 
 	/**
@@ -310,7 +322,7 @@ public class JumpDiffusionEdge {
 
 	public double grossChange()
 	{
-<span class="nc" id="L313">		return finish() - _dblStart;</span>
+<span class="nc" id="L325">		return finish() - _dblStart;</span>
 	}
 
 	/**
@@ -321,7 +333,7 @@ public class JumpDiffusionEdge {
 
 	public org.drip.measure.realization.StochasticEdgeDiffusion stochasticDiffusionEdge()
 	{
-<span class="nc" id="L324">		return _sed;</span>
+<span class="nc" id="L336">		return _sed;</span>
 	}
 
 	/**
@@ -332,7 +344,7 @@ public class JumpDiffusionEdge {
 
 	public org.drip.measure.realization.StochasticEdgeJump stochasticJumpEdge()
 	{
-<span class="fc" id="L335">		return _sej;</span>
+<span class="fc" id="L347">		return _sej;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

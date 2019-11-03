@@ -6,6 +6,7 @@ package org.drip.numerical.common;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.numerical.common;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -98,9 +110,9 @@ package org.drip.numerical.common;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common&quot;&gt;Primitives/Array Manipulate Format Display Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
@@ -108,7 +120,7 @@ package org.drip.numerical.common;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L111">public class CollectionUtil {</span>
+<span class="nc" id="L123">public class CollectionUtil {</span>
 
 	/**
 	 * Prefix the keys in the input map, and return them in a new map
@@ -123,18 +135,18 @@ package org.drip.numerical.common;
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapIn,
 		final java.lang.String strPrefix)
 	{
-<span class="pc bpc" id="L126" title="4 of 8 branches missed.">		if (null == mapIn || null == mapIn.entrySet() || null == strPrefix || strPrefix.isEmpty())</span>
-<span class="nc" id="L127">			return null;</span>
+<span class="pc bpc" id="L138" title="4 of 8 branches missed.">		if (null == mapIn || null == mapIn.entrySet() || null == strPrefix || strPrefix.isEmpty())</span>
+<span class="nc" id="L139">			return null;</span>
 
-<span class="fc" id="L129">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOut = new</span>
+<span class="fc" id="L141">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOut = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapIn.entrySet()) {</span>
-<span class="pc bpc" id="L133" title="2 of 4 branches missed.">			if (null != me.getKey() &amp;&amp; !me.getKey().isEmpty())</span>
-<span class="fc" id="L134">				mapOut.put (strPrefix + me.getKey(), me.getValue());</span>
-<span class="fc" id="L135">		}</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapIn.entrySet()) {</span>
+<span class="pc bpc" id="L145" title="2 of 4 branches missed.">			if (null != me.getKey() &amp;&amp; !me.getKey().isEmpty())</span>
+<span class="fc" id="L146">				mapOut.put (strPrefix + me.getKey(), me.getValue());</span>
+<span class="fc" id="L147">		}</span>
 
-<span class="fc" id="L137">		return mapOut;</span>
+<span class="fc" id="L149">		return mapOut;</span>
 	}
 
 	/**
@@ -150,22 +162,22 @@ package org.drip.numerical.common;
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map1,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2)
 	{
-<span class="nc bnc" id="L153" title="All 4 branches missed.">		if (null == map1 &amp;&amp; null == map2) return null;</span>
+<span class="nc bnc" id="L165" title="All 4 branches missed.">		if (null == map1 &amp;&amp; null == map2) return null;</span>
 
-<span class="nc bnc" id="L155" title="All 4 branches missed.">		if (null == map1 &amp;&amp; null != map2) return map2;</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">		if (null == map1 &amp;&amp; null != map2) return map2;</span>
 
-<span class="nc bnc" id="L157" title="All 4 branches missed.">		if (null != map1 &amp;&amp; null == map2) return map1;</span>
+<span class="nc bnc" id="L169" title="All 4 branches missed.">		if (null != map1 &amp;&amp; null == map2) return map1;</span>
 
-<span class="nc" id="L159">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOut = new</span>
+<span class="nc" id="L171">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapOut = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : map1.entrySet())</span>
-<span class="nc" id="L163">			mapOut.put (me.getKey(), me.getValue());</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : map1.entrySet())</span>
+<span class="nc" id="L175">			mapOut.put (me.getKey(), me.getValue());</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : map2.entrySet())</span>
-<span class="nc" id="L166">			mapOut.put (me.getKey(), me.getValue());</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : map2.entrySet())</span>
+<span class="nc" id="L178">			mapOut.put (me.getKey(), me.getValue());</span>
 
-<span class="nc" id="L168">		return mapOut;</span>
+<span class="nc" id="L180">		return mapOut;</span>
 	}
 
 	/**
@@ -181,14 +193,14 @@ package org.drip.numerical.common;
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMain,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapToAdd)
 	{
-<span class="pc bpc" id="L184" title="3 of 6 branches missed.">		if (null == mapMain || null == mapMain.entrySet() || null == mapToAdd || null ==</span>
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">			mapToAdd.entrySet())</span>
-<span class="nc" id="L186">			return false;</span>
+<span class="pc bpc" id="L196" title="3 of 6 branches missed.">		if (null == mapMain || null == mapMain.entrySet() || null == mapToAdd || null ==</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">			mapToAdd.entrySet())</span>
+<span class="nc" id="L198">			return false;</span>
 
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapToAdd.entrySet())</span>
-<span class="fc" id="L189">			mapMain.put (me.getKey(), me.getValue());</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapToAdd.entrySet())</span>
+<span class="fc" id="L201">			mapMain.put (me.getKey(), me.getValue());</span>
 
-<span class="fc" id="L191">		return true;</span>
+<span class="fc" id="L203">		return true;</span>
 	}
 
 	/**
@@ -206,26 +218,26 @@ package org.drip.numerical.common;
 		final java.lang.String strKVDelimiter,
 		final java.lang.String strRecordDelimiter)
 	{
-<span class="nc bnc" id="L209" title="All 8 branches missed.">		if (null == map2DSD || 0 == map2DSD.size() || null == map2DSD.entrySet() || null == strKVDelimiter ||</span>
-<span class="nc bnc" id="L210" title="All 6 branches missed.">			strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
-<span class="nc" id="L211">			return &quot;&quot;;</span>
+<span class="nc bnc" id="L221" title="All 8 branches missed.">		if (null == map2DSD || 0 == map2DSD.size() || null == map2DSD.entrySet() || null == strKVDelimiter ||</span>
+<span class="nc bnc" id="L222" title="All 6 branches missed.">			strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
+<span class="nc" id="L223">			return &quot;&quot;;</span>
 
-<span class="nc" id="L213">		boolean bFirstEntry = true;</span>
+<span class="nc" id="L225">		boolean bFirstEntry = true;</span>
 
-<span class="nc" id="L215">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L227">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : map2DSD.entrySet()) {</span>
-<span class="nc bnc" id="L218" title="All 6 branches missed.">			if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : map2DSD.entrySet()) {</span>
+<span class="nc bnc" id="L230" title="All 6 branches missed.">			if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (bFirstEntry)</span>
-<span class="nc" id="L221">				bFirstEntry = false;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">			if (bFirstEntry)</span>
+<span class="nc" id="L233">				bFirstEntry = false;</span>
 			else
-<span class="nc" id="L223">				sb.append (strRecordDelimiter);</span>
+<span class="nc" id="L235">				sb.append (strRecordDelimiter);</span>
 
-<span class="nc" id="L225">			sb.append (me.getKey() + strKVDelimiter + me.getValue());</span>
-<span class="nc" id="L226">		}</span>
+<span class="nc" id="L237">			sb.append (me.getKey() + strKVDelimiter + me.getValue());</span>
+<span class="nc" id="L238">		}</span>
 
-<span class="nc" id="L228">		return sb.toString();</span>
+<span class="nc" id="L240">		return sb.toString();</span>
 	}
 
 	/**
@@ -247,34 +259,34 @@ package org.drip.numerical.common;
 		final java.lang.String strKVDelimiter,
 		final java.lang.String strRecordDelimiter)
 	{
-<span class="nc bnc" id="L250" title="All 8 branches missed.">		if (null == map3DSD || 0 == map3DSD.size() || null == map3DSD.entrySet() || null ==</span>
-<span class="nc bnc" id="L251" title="All 4 branches missed.">			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||</span>
-<span class="nc bnc" id="L252" title="All 6 branches missed.">				strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
-<span class="nc" id="L253">			return null;</span>
+<span class="nc bnc" id="L262" title="All 8 branches missed.">		if (null == map3DSD || 0 == map3DSD.size() || null == map3DSD.entrySet() || null ==</span>
+<span class="nc bnc" id="L263" title="All 4 branches missed.">			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||</span>
+<span class="nc bnc" id="L264" title="All 6 branches missed.">				strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
+<span class="nc" id="L265">			return null;</span>
 
-<span class="nc" id="L255">		boolean bFirstEntry = true;</span>
+<span class="nc" id="L267">		boolean bFirstEntry = true;</span>
 
-<span class="nc" id="L257">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L269">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String,
-<span class="nc bnc" id="L260" title="All 2 branches missed.">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt; meOut : map3DSD.entrySet()) {</span>
-<span class="nc bnc" id="L261" title="All 6 branches missed.">			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet()) continue;</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt; meOut : map3DSD.entrySet()) {</span>
+<span class="nc bnc" id="L273" title="All 6 branches missed.">			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet()) continue;</span>
 
-<span class="nc bnc" id="L263" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meIn : meOut.getValue().entrySet())</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; meIn : meOut.getValue().entrySet())</span>
 			{
-<span class="nc bnc" id="L265" title="All 6 branches missed.">				if (null == meIn || null == meIn.getKey() || meIn.getKey().isEmpty()) continue;</span>
+<span class="nc bnc" id="L277" title="All 6 branches missed.">				if (null == meIn || null == meIn.getKey() || meIn.getKey().isEmpty()) continue;</span>
 
-<span class="nc bnc" id="L267" title="All 2 branches missed.">				if (bFirstEntry)</span>
-<span class="nc" id="L268">					bFirstEntry = false;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">				if (bFirstEntry)</span>
+<span class="nc" id="L280">					bFirstEntry = false;</span>
 				else
-<span class="nc" id="L270">					sb.append (strRecordDelimiter);</span>
+<span class="nc" id="L282">					sb.append (strRecordDelimiter);</span>
 
-<span class="nc" id="L272">				sb.append (meOut.getKey() + strMultiLevelKeyDelimiter + meIn.getKey() + strKVDelimiter +</span>
-<span class="nc" id="L273">					meIn.getValue());</span>
-<span class="nc" id="L274">			}</span>
-<span class="nc" id="L275">		}</span>
+<span class="nc" id="L284">				sb.append (meOut.getKey() + strMultiLevelKeyDelimiter + meIn.getKey() + strKVDelimiter +</span>
+<span class="nc" id="L285">					meIn.getValue());</span>
+<span class="nc" id="L286">			}</span>
+<span class="nc" id="L287">		}</span>
 
-<span class="nc" id="L277">		return sb.toString();</span>
+<span class="nc" id="L289">		return sb.toString();</span>
 	}
 
 	/**
@@ -296,44 +308,44 @@ package org.drip.numerical.common;
 		final java.lang.String strKVDelimiter,
 		final java.lang.String strRecordDelimiter)
 	{
-<span class="nc bnc" id="L299" title="All 8 branches missed.">		if (null == map4DSD || 0 == map4DSD.size() || null == map4DSD.entrySet() || null ==</span>
-<span class="nc bnc" id="L300" title="All 4 branches missed.">			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||</span>
-<span class="nc bnc" id="L301" title="All 6 branches missed.">				strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
-<span class="nc" id="L302">			return null;</span>
+<span class="nc bnc" id="L311" title="All 8 branches missed.">		if (null == map4DSD || 0 == map4DSD.size() || null == map4DSD.entrySet() || null ==</span>
+<span class="nc bnc" id="L312" title="All 4 branches missed.">			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||</span>
+<span class="nc bnc" id="L313" title="All 6 branches missed.">				strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
+<span class="nc" id="L314">			return null;</span>
 
-<span class="nc" id="L304">		boolean bFirstEntry = true;</span>
+<span class="nc" id="L316">		boolean bFirstEntry = true;</span>
 
-<span class="nc" id="L306">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L318">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String,org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
-<span class="nc bnc" id="L309" title="All 2 branches missed.">			meOut : map4DSD.entrySet()) {</span>
-<span class="nc bnc" id="L310" title="All 6 branches missed.">			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet() || null ==</span>
-<span class="nc bnc" id="L311" title="All 4 branches missed.">				meOut.getKey() || meOut.getKey().isEmpty())</span>
-<span class="nc" id="L312">				continue;</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			meOut : map4DSD.entrySet()) {</span>
+<span class="nc bnc" id="L322" title="All 6 branches missed.">			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet() || null ==</span>
+<span class="nc bnc" id="L323" title="All 4 branches missed.">				meOut.getKey() || meOut.getKey().isEmpty())</span>
+<span class="nc" id="L324">				continue;</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String,
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt; meIn :
-<span class="nc bnc" id="L316" title="All 2 branches missed.">					meOut.getValue().entrySet()) {</span>
-<span class="nc bnc" id="L317" title="All 6 branches missed.">				if (null == meIn || null == meIn.getValue() || null == meIn.getValue().entrySet() || null ==</span>
-<span class="nc bnc" id="L318" title="All 4 branches missed.">					meIn.getKey() || meIn.getKey().isEmpty())</span>
-<span class="nc" id="L319">					continue;</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">					meOut.getValue().entrySet()) {</span>
+<span class="nc bnc" id="L329" title="All 6 branches missed.">				if (null == meIn || null == meIn.getValue() || null == meIn.getValue().entrySet() || null ==</span>
+<span class="nc bnc" id="L330" title="All 4 branches missed.">					meIn.getKey() || meIn.getKey().isEmpty())</span>
+<span class="nc" id="L331">					continue;</span>
 
-<span class="nc bnc" id="L321" title="All 2 branches missed.">				for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : meIn.getValue().entrySet())</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">				for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : meIn.getValue().entrySet())</span>
 				{
-<span class="nc bnc" id="L323" title="All 6 branches missed.">					if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;</span>
+<span class="nc bnc" id="L335" title="All 6 branches missed.">					if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;</span>
 
-<span class="nc bnc" id="L325" title="All 2 branches missed.">					if (bFirstEntry)</span>
-<span class="nc" id="L326">						bFirstEntry = false;</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">					if (bFirstEntry)</span>
+<span class="nc" id="L338">						bFirstEntry = false;</span>
 					else
-<span class="nc" id="L328">						sb.append (strRecordDelimiter);</span>
+<span class="nc" id="L340">						sb.append (strRecordDelimiter);</span>
 
-<span class="nc" id="L330">					sb.append (meOut.getKey() + strMultiLevelKeyDelimiter + meIn.getKey() +</span>
-<span class="nc" id="L331">						strMultiLevelKeyDelimiter + me.getKey() + strKVDelimiter + me.getValue());</span>
-<span class="nc" id="L332">				}</span>
-<span class="nc" id="L333">			}</span>
-<span class="nc" id="L334">		}</span>
+<span class="nc" id="L342">					sb.append (meOut.getKey() + strMultiLevelKeyDelimiter + meIn.getKey() +</span>
+<span class="nc" id="L343">						strMultiLevelKeyDelimiter + me.getKey() + strKVDelimiter + me.getValue());</span>
+<span class="nc" id="L344">				}</span>
+<span class="nc" id="L345">			}</span>
+<span class="nc" id="L346">		}</span>
 
-<span class="nc" id="L336">		return sb.toString();</span>
+<span class="nc" id="L348">		return sb.toString();</span>
 	}
 
 	/**
@@ -356,39 +368,39 @@ package org.drip.numerical.common;
 			final boolean bSkipNullValue,
 			final java.lang.String strNULLString)
 	{
-<span class="nc bnc" id="L359" title="All 8 branches missed.">		if (null == str2DMap || str2DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||</span>
-<span class="nc bnc" id="L360" title="All 8 branches missed.">			strNULLString.equalsIgnoreCase (str2DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()</span>
-<span class="nc bnc" id="L361" title="All 2 branches missed.">				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
-<span class="nc" id="L362">			return null;</span>
+<span class="nc bnc" id="L371" title="All 8 branches missed.">		if (null == str2DMap || str2DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||</span>
+<span class="nc bnc" id="L372" title="All 8 branches missed.">			strNULLString.equalsIgnoreCase (str2DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
+<span class="nc" id="L374">			return null;</span>
 
-<span class="nc" id="L364">		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str2DMap,</span>
+<span class="nc" id="L376">		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str2DMap,</span>
 			strRecordDelimiter);
 
-<span class="nc bnc" id="L367" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
+<span class="nc bnc" id="L379" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
 
-<span class="nc" id="L369">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2D = new</span>
+<span class="nc" id="L381">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2D = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="nc bnc" id="L372" title="All 2 branches missed.">		for (int i = 0; i &lt; astrRecord.length; ++i) {</span>
-<span class="nc bnc" id="L373" title="All 4 branches missed.">			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase</span>
-<span class="nc bnc" id="L374" title="All 2 branches missed.">				(astrRecord[i]))</span>
-<span class="nc" id="L375">				continue;</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		for (int i = 0; i &lt; astrRecord.length; ++i) {</span>
+<span class="nc bnc" id="L385" title="All 4 branches missed.">			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">				(astrRecord[i]))</span>
+<span class="nc" id="L387">				continue;</span>
 
-<span class="nc" id="L377">			java.lang.String[] astrKVPair = org.drip.numerical.common.StringUtil.Split (astrRecord[i],</span>
+<span class="nc" id="L389">			java.lang.String[] astrKVPair = org.drip.numerical.common.StringUtil.Split (astrRecord[i],</span>
 				strKVDelimiter);
 			
-<span class="nc bnc" id="L380" title="All 6 branches missed.">			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||</span>
-<span class="nc bnc" id="L381" title="All 8 branches missed.">				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue</span>
-<span class="nc bnc" id="L382" title="All 2 branches missed.">					&amp;&amp; (null == astrKVPair[1] || astrKVPair[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
-<span class="nc bnc" id="L383" title="All 2 branches missed.">						(astrKVPair[1]))))</span>
-<span class="nc" id="L384">				continue;</span>
+<span class="nc bnc" id="L392" title="All 6 branches missed.">			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||</span>
+<span class="nc bnc" id="L393" title="All 8 branches missed.">				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">					&amp;&amp; (null == astrKVPair[1] || astrKVPair[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">						(astrKVPair[1]))))</span>
+<span class="nc" id="L396">				continue;</span>
 
-<span class="nc" id="L386">			map2D.put (astrKVPair[0], java.lang.Double.parseDouble (astrKVPair[1]));</span>
+<span class="nc" id="L398">			map2D.put (astrKVPair[0], java.lang.Double.parseDouble (astrKVPair[1]));</span>
 		}
 
-<span class="nc bnc" id="L389" title="All 2 branches missed.">		if (0 == map2D.size()) return null;</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (0 == map2D.size()) return null;</span>
 
-<span class="nc" id="L391">		return map2D;</span>
+<span class="nc" id="L403">		return map2D;</span>
 	}
 
 	/**
@@ -414,53 +426,53 @@ package org.drip.numerical.common;
 				final boolean bSkipNullValue,
 				final java.lang.String strNULLString)
 	{
-<span class="nc bnc" id="L417" title="All 8 branches missed.">		if (null == str3DMap || str3DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||</span>
-<span class="nc bnc" id="L418" title="All 8 branches missed.">			strNULLString.equalsIgnoreCase (str3DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()</span>
-<span class="nc bnc" id="L419" title="All 2 branches missed.">				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
-<span class="nc" id="L420">			return null;</span>
+<span class="nc bnc" id="L429" title="All 8 branches missed.">		if (null == str3DMap || str3DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||</span>
+<span class="nc bnc" id="L430" title="All 8 branches missed.">			strNULLString.equalsIgnoreCase (str3DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
+<span class="nc" id="L432">			return null;</span>
 
-<span class="nc" id="L422">		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str3DMap, strRecordDelimiter);</span>
+<span class="nc" id="L434">		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str3DMap, strRecordDelimiter);</span>
 
-<span class="nc bnc" id="L424" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
+<span class="nc bnc" id="L436" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="nc" id="L427">			map3D = new</span>
+<span class="nc" id="L439">			map3D = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
 
-<span class="nc bnc" id="L430" title="All 2 branches missed.">		for (int i = 0; i &lt; astrRecord.length; ++i) {</span>
-<span class="nc bnc" id="L431" title="All 4 branches missed.">			if (null == astrRecord[i] || astrRecord[i].isEmpty()) continue;</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">		for (int i = 0; i &lt; astrRecord.length; ++i) {</span>
+<span class="nc bnc" id="L443" title="All 4 branches missed.">			if (null == astrRecord[i] || astrRecord[i].isEmpty()) continue;</span>
 
-<span class="nc" id="L433">			java.lang.String[] astrKVPair = org.drip.numerical.common.StringUtil.Split (astrRecord[i], strKVDelimiter);</span>
+<span class="nc" id="L445">			java.lang.String[] astrKVPair = org.drip.numerical.common.StringUtil.Split (astrRecord[i], strKVDelimiter);</span>
 			
-<span class="nc bnc" id="L435" title="All 6 branches missed.">			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||</span>
-<span class="nc bnc" id="L436" title="All 8 branches missed.">				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue</span>
-<span class="nc bnc" id="L437" title="All 2 branches missed.">					&amp;&amp; (null == astrKVPair[1] || astrKVPair[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
-<span class="nc bnc" id="L438" title="All 2 branches missed.">						(astrKVPair[1]))))</span>
-<span class="nc" id="L439">				continue;</span>
+<span class="nc bnc" id="L447" title="All 6 branches missed.">			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||</span>
+<span class="nc bnc" id="L448" title="All 8 branches missed.">				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">					&amp;&amp; (null == astrKVPair[1] || astrKVPair[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">						(astrKVPair[1]))))</span>
+<span class="nc" id="L451">				continue;</span>
 
-<span class="nc" id="L441">			java.lang.String[] astrKeySet = org.drip.numerical.common.StringUtil.Split (astrKVPair[0],</span>
+<span class="nc" id="L453">			java.lang.String[] astrKeySet = org.drip.numerical.common.StringUtil.Split (astrKVPair[0],</span>
 				strMultiLevelKeyDelimiter);
 			
-<span class="nc bnc" id="L444" title="All 6 branches missed.">			if (null == astrKeySet || 2 != astrKeySet.length || null == astrKeySet[0] ||</span>
-<span class="nc bnc" id="L445" title="All 6 branches missed.">				astrKeySet[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKeySet[0]) || null ==</span>
-<span class="nc bnc" id="L446" title="All 2 branches missed.">					astrKeySet[1] || astrKeySet[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
-<span class="nc bnc" id="L447" title="All 2 branches missed.">						(astrKeySet[1]))</span>
-<span class="nc" id="L448">				continue;</span>
+<span class="nc bnc" id="L456" title="All 6 branches missed.">			if (null == astrKeySet || 2 != astrKeySet.length || null == astrKeySet[0] ||</span>
+<span class="nc bnc" id="L457" title="All 6 branches missed.">				astrKeySet[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKeySet[0]) || null ==</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">					astrKeySet[1] || astrKeySet[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">						(astrKeySet[1]))</span>
+<span class="nc" id="L460">				continue;</span>
 
-<span class="nc" id="L450">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2D = map3D.get</span>
-<span class="nc" id="L451">				(astrKeySet[0]);</span>
+<span class="nc" id="L462">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2D = map3D.get</span>
+<span class="nc" id="L463">				(astrKeySet[0]);</span>
 
-<span class="nc bnc" id="L453" title="All 2 branches missed.">			if (null == map2D)</span>
-<span class="nc" id="L454">				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">			if (null == map2D)</span>
+<span class="nc" id="L466">				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L456">			map2D.put (astrKeySet[1], java.lang.Double.parseDouble (astrKVPair[1]));</span>
+<span class="nc" id="L468">			map2D.put (astrKeySet[1], java.lang.Double.parseDouble (astrKVPair[1]));</span>
 
-<span class="nc" id="L458">			map3D.put (astrKeySet[0], map2D);</span>
+<span class="nc" id="L470">			map3D.put (astrKeySet[0], map2D);</span>
 		}
 
-<span class="nc bnc" id="L461" title="All 2 branches missed.">		if (0 == map3D.size()) return null;</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">		if (0 == map3D.size()) return null;</span>
 
-<span class="nc" id="L463">		return map3D;</span>
+<span class="nc" id="L475">		return map3D;</span>
 	}
 
 	/**
@@ -486,66 +498,66 @@ package org.drip.numerical.common;
 				final boolean bSkipNullValue,
 				final java.lang.String strNULLString)
 	{
-<span class="nc bnc" id="L489" title="All 8 branches missed.">		if (null == str4DMap || str4DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||</span>
-<span class="nc bnc" id="L490" title="All 8 branches missed.">			strNULLString.equalsIgnoreCase (str4DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()</span>
-<span class="nc bnc" id="L491" title="All 2 branches missed.">				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
-<span class="nc" id="L492">			return null;</span>
+<span class="nc bnc" id="L501" title="All 8 branches missed.">		if (null == str4DMap || str4DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||</span>
+<span class="nc bnc" id="L502" title="All 8 branches missed.">			strNULLString.equalsIgnoreCase (str4DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())</span>
+<span class="nc" id="L504">			return null;</span>
 
-<span class="nc" id="L494">		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str4DMap, strRecordDelimiter);</span>
+<span class="nc" id="L506">		java.lang.String[] astrRecord = org.drip.numerical.common.StringUtil.Split (str4DMap, strRecordDelimiter);</span>
 
-<span class="nc bnc" id="L496" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
+<span class="nc bnc" id="L508" title="All 4 branches missed.">		if (null == astrRecord || 0 == astrRecord.length) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;
-<span class="nc" id="L499">			map4D = new</span>
+<span class="nc" id="L511">			map4D = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;&gt;();
 
-<span class="nc bnc" id="L502" title="All 2 branches missed.">		for (int i = 0; i &lt; astrRecord.length; ++i) {</span>
-<span class="nc bnc" id="L503" title="All 4 branches missed.">			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase</span>
-<span class="nc bnc" id="L504" title="All 2 branches missed.">				(astrRecord[i]))</span>
-<span class="nc" id="L505">				continue;</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">		for (int i = 0; i &lt; astrRecord.length; ++i) {</span>
+<span class="nc bnc" id="L515" title="All 4 branches missed.">			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase</span>
+<span class="nc bnc" id="L516" title="All 2 branches missed.">				(astrRecord[i]))</span>
+<span class="nc" id="L517">				continue;</span>
 
-<span class="nc" id="L507">			java.lang.String[] astrKVPairOut = org.drip.numerical.common.StringUtil.Split (astrRecord[i],</span>
+<span class="nc" id="L519">			java.lang.String[] astrKVPairOut = org.drip.numerical.common.StringUtil.Split (astrRecord[i],</span>
 				strKVDelimiter);
 			
-<span class="nc bnc" id="L510" title="All 6 branches missed.">			if (null == astrKVPairOut || 2 != astrKVPairOut.length || null == astrKVPairOut[0] ||</span>
-<span class="nc bnc" id="L511" title="All 8 branches missed.">				astrKVPairOut[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPairOut[0]) ||</span>
-<span class="nc bnc" id="L512" title="All 2 branches missed.">					(bSkipNullValue &amp;&amp; (null == astrKVPairOut[1] || astrKVPairOut[1].isEmpty() ||</span>
-<span class="nc bnc" id="L513" title="All 2 branches missed.">						strNULLString.equalsIgnoreCase (astrKVPairOut[1]))))</span>
-<span class="nc" id="L514">				continue;</span>
+<span class="nc bnc" id="L522" title="All 6 branches missed.">			if (null == astrKVPairOut || 2 != astrKVPairOut.length || null == astrKVPairOut[0] ||</span>
+<span class="nc bnc" id="L523" title="All 8 branches missed.">				astrKVPairOut[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPairOut[0]) ||</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">					(bSkipNullValue &amp;&amp; (null == astrKVPairOut[1] || astrKVPairOut[1].isEmpty() ||</span>
+<span class="nc bnc" id="L525" title="All 2 branches missed.">						strNULLString.equalsIgnoreCase (astrKVPairOut[1]))))</span>
+<span class="nc" id="L526">				continue;</span>
 
-<span class="nc" id="L516">			java.lang.String[] astrKeySet = org.drip.numerical.common.StringUtil.Split (astrKVPairOut[0],</span>
+<span class="nc" id="L528">			java.lang.String[] astrKeySet = org.drip.numerical.common.StringUtil.Split (astrKVPairOut[0],</span>
 				strMultiLevelKeyDelimiter);
 			
-<span class="nc bnc" id="L519" title="All 6 branches missed.">			if (null == astrKeySet || 3 != astrKeySet.length || null == astrKeySet[0] ||</span>
-<span class="nc bnc" id="L520" title="All 6 branches missed.">				astrKeySet[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKeySet[0]) || null ==</span>
-<span class="nc bnc" id="L521" title="All 2 branches missed.">					astrKeySet[1] || astrKeySet[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
-<span class="nc bnc" id="L522" title="All 6 branches missed.">						(astrKeySet[1]) || null == astrKeySet[2] || astrKeySet[2].isEmpty() ||</span>
-<span class="nc bnc" id="L523" title="All 2 branches missed.">							strNULLString.equalsIgnoreCase (astrKeySet[2]))</span>
-<span class="nc" id="L524">				continue;</span>
+<span class="nc bnc" id="L531" title="All 6 branches missed.">			if (null == astrKeySet || 3 != astrKeySet.length || null == astrKeySet[0] ||</span>
+<span class="nc bnc" id="L532" title="All 6 branches missed.">				astrKeySet[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKeySet[0]) || null ==</span>
+<span class="nc bnc" id="L533" title="All 2 branches missed.">					astrKeySet[1] || astrKeySet[1].isEmpty() || strNULLString.equalsIgnoreCase</span>
+<span class="nc bnc" id="L534" title="All 6 branches missed.">						(astrKeySet[1]) || null == astrKeySet[2] || astrKeySet[2].isEmpty() ||</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">							strNULLString.equalsIgnoreCase (astrKeySet[2]))</span>
+<span class="nc" id="L536">				continue;</span>
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;
-<span class="nc" id="L527">				map3D = map4D.get (astrKeySet[0]);</span>
+<span class="nc" id="L539">				map3D = map4D.get (astrKeySet[0]);</span>
 
-<span class="nc bnc" id="L529" title="All 2 branches missed.">			if (null == map3D)</span>
-<span class="nc" id="L530">				map3D = new</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">			if (null == map3D)</span>
+<span class="nc" id="L542">				map3D = new</span>
 					org.drip.analytics.support.CaseInsensitiveTreeMap&lt;org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;&gt;();
 
-<span class="nc" id="L533">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2D = map3D.get</span>
-<span class="nc" id="L534">				(astrKeySet[1]);</span>
+<span class="nc" id="L545">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; map2D = map3D.get</span>
+<span class="nc" id="L546">				(astrKeySet[1]);</span>
 
-<span class="nc bnc" id="L536" title="All 2 branches missed.">			if (null == map2D)</span>
-<span class="nc" id="L537">				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();</span>
+<span class="nc bnc" id="L548" title="All 2 branches missed.">			if (null == map2D)</span>
+<span class="nc" id="L549">				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L539">			map2D.put (astrKeySet[2], java.lang.Double.parseDouble (astrKVPairOut[1]));</span>
+<span class="nc" id="L551">			map2D.put (astrKeySet[2], java.lang.Double.parseDouble (astrKVPairOut[1]));</span>
 
-<span class="nc" id="L541">			map3D.put (astrKeySet[1], map2D);</span>
+<span class="nc" id="L553">			map3D.put (astrKeySet[1], map2D);</span>
 
-<span class="nc" id="L543">			map4D.put (astrKeySet[0], map3D);</span>
+<span class="nc" id="L555">			map4D.put (astrKeySet[0], map3D);</span>
 		}
 
-<span class="nc bnc" id="L546" title="All 2 branches missed.">		if (0 == map4D.size()) return null;</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">		if (0 == map4D.size()) return null;</span>
 
-<span class="nc" id="L548">		return map4D;</span>
+<span class="nc" id="L560">		return map4D;</span>
 	}
 
 	/**
@@ -561,14 +573,14 @@ package org.drip.numerical.common;
 		final int iNumDerivs,
 		final double dblSlope)
 	{
-<span class="pc bpc" id="L564" title="1 of 4 branches missed.">		if (0 &gt;= iNumDerivs || !org.drip.numerical.common.NumberUtil.IsValid (dblSlope)) return null;</span>
+<span class="pc bpc" id="L576" title="1 of 4 branches missed.">		if (0 &gt;= iNumDerivs || !org.drip.numerical.common.NumberUtil.IsValid (dblSlope)) return null;</span>
 
-<span class="fc" id="L566">		double[] adblDeriv = new double[iNumDerivs];</span>
+<span class="fc" id="L578">		double[] adblDeriv = new double[iNumDerivs];</span>
 
-<span class="fc bfc" id="L568" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDerivs; ++i)</span>
-<span class="fc bfc" id="L569" title="All 2 branches covered.">			adblDeriv[i] = (0 == i) ? dblSlope : 0.;</span>
+<span class="fc bfc" id="L580" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumDerivs; ++i)</span>
+<span class="fc bfc" id="L581" title="All 2 branches covered.">			adblDeriv[i] = (0 == i) ? dblSlope : 0.;</span>
 
-<span class="fc" id="L571">		return adblDeriv;</span>
+<span class="fc" id="L583">		return adblDeriv;</span>
 	}
 
 	/**
@@ -582,42 +594,42 @@ package org.drip.numerical.common;
 	public static final org.drip.numerical.differentiation.WengertJacobian AppendWengert (
 		final java.util.List&lt;org.drip.numerical.differentiation.WengertJacobian&gt; lsWJ)
 	{
-<span class="pc bpc" id="L585" title="2 of 4 branches missed.">		if (null == lsWJ || 0 == lsWJ.size()) return null;</span>
+<span class="pc bpc" id="L597" title="2 of 4 branches missed.">		if (null == lsWJ || 0 == lsWJ.size()) return null;</span>
 
-<span class="fc" id="L587">		int iNumQuote = 0;</span>
-<span class="fc" id="L588">		int iQuoteCursor = 0;</span>
-<span class="fc" id="L589">		org.drip.numerical.differentiation.WengertJacobian wjCombined = null;</span>
+<span class="fc" id="L599">		int iNumQuote = 0;</span>
+<span class="fc" id="L600">		int iQuoteCursor = 0;</span>
+<span class="fc" id="L601">		org.drip.numerical.differentiation.WengertJacobian wjCombined = null;</span>
 
-<span class="fc bfc" id="L591" title="All 2 branches covered.">		for (org.drip.numerical.differentiation.WengertJacobian wj : lsWJ)</span>
-<span class="pc bpc" id="L592" title="1 of 2 branches missed.">			if (null != wj) iNumQuote += wj.numParameters();</span>
+<span class="fc bfc" id="L603" title="All 2 branches covered.">		for (org.drip.numerical.differentiation.WengertJacobian wj : lsWJ)</span>
+<span class="pc bpc" id="L604" title="1 of 2 branches missed.">			if (null != wj) iNumQuote += wj.numParameters();</span>
 
 		try {
-<span class="fc" id="L595">			wjCombined = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);</span>
-<span class="nc" id="L596">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L597">			e.printStackTrace();</span>
+<span class="fc" id="L607">			wjCombined = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);</span>
+<span class="nc" id="L608">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L609">			e.printStackTrace();</span>
 
-<span class="nc" id="L599">			return null;</span>
-<span class="fc" id="L600">		}</span>
+<span class="nc" id="L611">			return null;</span>
+<span class="fc" id="L612">		}</span>
 
-<span class="fc bfc" id="L602" title="All 2 branches covered.">		for (org.drip.numerical.differentiation.WengertJacobian wj : lsWJ) {</span>
-<span class="pc bpc" id="L603" title="1 of 2 branches missed.">			if (null == wj) continue;</span>
+<span class="fc bfc" id="L614" title="All 2 branches covered.">		for (org.drip.numerical.differentiation.WengertJacobian wj : lsWJ) {</span>
+<span class="pc bpc" id="L615" title="1 of 2 branches missed.">			if (null == wj) continue;</span>
 
-<span class="fc" id="L605">			int iNumParams = wj.numParameters();</span>
+<span class="fc" id="L617">			int iNumParams = wj.numParameters();</span>
 
-<span class="fc bfc" id="L607" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumParams; ++i) {</span>
+<span class="fc bfc" id="L619" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumParams; ++i) {</span>
 				try {
-<span class="pc bpc" id="L609" title="1 of 2 branches missed.">					if (!wjCombined.accumulatePartialFirstDerivative (0, iQuoteCursor++, wj.firstDerivative</span>
-<span class="fc" id="L610">						(0, i)))</span>
-<span class="nc" id="L611">						return null;</span>
-<span class="nc" id="L612">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L613">					e.printStackTrace();</span>
+<span class="pc bpc" id="L621" title="1 of 2 branches missed.">					if (!wjCombined.accumulatePartialFirstDerivative (0, iQuoteCursor++, wj.firstDerivative</span>
+<span class="fc" id="L622">						(0, i)))</span>
+<span class="nc" id="L623">						return null;</span>
+<span class="nc" id="L624">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L625">					e.printStackTrace();</span>
 
-<span class="nc" id="L615">					return null;</span>
-<span class="fc" id="L616">				}</span>
+<span class="nc" id="L627">					return null;</span>
+<span class="fc" id="L628">				}</span>
 			}
-<span class="fc" id="L618">		}</span>
+<span class="fc" id="L630">		}</span>
 
-<span class="fc" id="L620">		return wjCombined;</span>
+<span class="fc" id="L632">		return wjCombined;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

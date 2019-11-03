@@ -6,6 +6,7 @@ package org.drip.numerical.common;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.numerical.common;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -76,9 +88,9 @@ package org.drip.numerical.common;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common&quot;&gt;Primitives/Array Manipulate Format Display Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
@@ -86,7 +98,7 @@ package org.drip.numerical.common;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L89">public class FormatUtil {</span>
+<span class="nc" id="L101">public class FormatUtil {</span>
 
 	/**
 	 * Pre-pad a single digit integer with zeros
@@ -99,9 +111,9 @@ package org.drip.numerical.common;
 	public static final java.lang.String PrePad (
 		final int i)
 	{
-<span class="nc bnc" id="L102" title="All 2 branches missed.">		if (i &gt; 9) return &quot;&quot; + i;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (i &gt; 9) return &quot;&quot; + i;</span>
 
-<span class="nc" id="L104">		return &quot;0&quot; + i;</span>
+<span class="nc" id="L116">		return &quot;0&quot; + i;</span>
 	}
 
 	/**
@@ -124,23 +136,23 @@ package org.drip.numerical.common;
 		final double dblMultiplier,
 		final boolean bLeadingSpaceForPositive)
 	{
-<span class="fc" id="L127">		java.lang.String strFormat = &quot;#&quot;;</span>
-<span class="fc" id="L128">		java.lang.String strLeading = &quot;&quot;;</span>
-<span class="fc" id="L129">		double dblAdjustedValue = dblMultiplier * dblValue;</span>
+<span class="fc" id="L139">		java.lang.String strFormat = &quot;#&quot;;</span>
+<span class="fc" id="L140">		java.lang.String strLeading = &quot;&quot;;</span>
+<span class="fc" id="L141">		double dblAdjustedValue = dblMultiplier * dblValue;</span>
 
-<span class="fc bfc" id="L131" title="All 4 branches covered.">		if (0 &lt;= dblAdjustedValue &amp;&amp; bLeadingSpaceForPositive) strLeading = &quot; &quot;;</span>
+<span class="fc bfc" id="L143" title="All 4 branches covered.">		if (0 &lt;= dblAdjustedValue &amp;&amp; bLeadingSpaceForPositive) strLeading = &quot; &quot;;</span>
 
-<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumLeft; ++i)</span>
-<span class="fc" id="L134">			strFormat += &quot;0&quot;;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumLeft; ++i)</span>
+<span class="fc" id="L146">			strFormat += &quot;0&quot;;</span>
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">		if (0 != iNumRight) {</span>
-<span class="fc" id="L137">			strFormat += &quot;.&quot;;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">		if (0 != iNumRight) {</span>
+<span class="fc" id="L149">			strFormat += &quot;.&quot;;</span>
 
-<span class="fc bfc" id="L139" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumRight; ++i)</span>
-<span class="fc" id="L140">				strFormat += &quot;0&quot;;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumRight; ++i)</span>
+<span class="fc" id="L152">				strFormat += &quot;0&quot;;</span>
 		}
 
-<span class="fc" id="L143">		return strLeading + new java.text.DecimalFormat (strFormat).format (dblAdjustedValue);</span>
+<span class="fc" id="L155">		return strLeading + new java.text.DecimalFormat (strFormat).format (dblAdjustedValue);</span>
 	}
 
 	/**
@@ -160,7 +172,7 @@ package org.drip.numerical.common;
 		final int iNumRight,
 		final double dblMultiplier)
 	{
-<span class="fc" id="L163">		return FormatDouble (dblValue, iNumLeft, iNumRight, dblMultiplier, true);</span>
+<span class="fc" id="L175">		return FormatDouble (dblValue, iNumLeft, iNumRight, dblMultiplier, true);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,41 +6,53 @@ package org.drip.numerical.integration;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,16 +104,16 @@ package org.drip.numerical.integration;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;d&lt;/sup&gt; Numerical Integration Schemes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class GaussLegendreQuadratureGenerator</span>
+<span class="nc" id="L116">public class GaussLegendreQuadratureGenerator</span>
 {
 
 	/**
@@ -117,9 +129,9 @@ package org.drip.numerical.integration;
 	{
 		try
 		{
-<span class="nc" id="L120">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
+<span class="nc" id="L132">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
 				abscissaTransformer,
-<span class="nc" id="L122">				org.drip.numerical.common.Array2D.FromArray (</span>
+<span class="nc" id="L134">				org.drip.numerical.common.Array2D.FromArray (</span>
 					new double[]
 					{
 						0.000000000000000,
@@ -131,12 +143,12 @@ package org.drip.numerical.integration;
 				)
 			);
 		}
-<span class="nc" id="L134">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L146">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L136">			e.printStackTrace();</span>
+<span class="nc" id="L148">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L139">		return null;</span>
+<span class="nc" id="L151">		return null;</span>
 	}
 
 	/**
@@ -150,13 +162,13 @@ package org.drip.numerical.integration;
 	public static final org.drip.numerical.integration.QuadratureEstimator TwoPoint (
 		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
-<span class="nc" id="L153">		double sqrt_1Over3_ = java.lang.Math.sqrt (1. / 3.);</span>
+<span class="nc" id="L165">		double sqrt_1Over3_ = java.lang.Math.sqrt (1. / 3.);</span>
 
 		try
 		{
-<span class="nc" id="L157">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
+<span class="nc" id="L169">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
 				abscissaTransformer,
-<span class="nc" id="L159">				org.drip.numerical.common.Array2D.FromArray (</span>
+<span class="nc" id="L171">				org.drip.numerical.common.Array2D.FromArray (</span>
 					new double[]
 					{
 						-sqrt_1Over3_,
@@ -170,12 +182,12 @@ package org.drip.numerical.integration;
 				)
 			);
 		}
-<span class="nc" id="L173">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L185">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L175">			e.printStackTrace();</span>
+<span class="nc" id="L187">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L178">		return null;</span>
+<span class="nc" id="L190">		return null;</span>
 	}
 
 	/**
@@ -189,13 +201,13 @@ package org.drip.numerical.integration;
 	public static final org.drip.numerical.integration.QuadratureEstimator ThreePoint (
 		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
-<span class="nc" id="L192">		double sqrt_3Over5_ = java.lang.Math.sqrt (3. / 5.);</span>
+<span class="nc" id="L204">		double sqrt_3Over5_ = java.lang.Math.sqrt (3. / 5.);</span>
 
 		try
 		{
-<span class="nc" id="L196">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
+<span class="nc" id="L208">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
 				abscissaTransformer,
-<span class="nc" id="L198">				org.drip.numerical.common.Array2D.FromArray (</span>
+<span class="nc" id="L210">				org.drip.numerical.common.Array2D.FromArray (</span>
 					new double[]
 					{
 						-sqrt_3Over5_,
@@ -211,12 +223,12 @@ package org.drip.numerical.integration;
 				)
 			);
 		}
-<span class="nc" id="L214">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L226">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L219">		return null;</span>
+<span class="nc" id="L231">		return null;</span>
 	}
 
 	/**
@@ -230,23 +242,23 @@ package org.drip.numerical.integration;
 	public static final org.drip.numerical.integration.QuadratureEstimator FourPoint (
 		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
-<span class="nc" id="L233">		double sqrt_30_Over36 = java.lang.Math.sqrt (30.) / 36.;</span>
+<span class="nc" id="L245">		double sqrt_30_Over36 = java.lang.Math.sqrt (30.) / 36.;</span>
 
-<span class="nc" id="L235">		double nearWeight = 0.5 + sqrt_30_Over36;</span>
-<span class="nc" id="L236">		double farWeight = 0.5 - sqrt_30_Over36;</span>
-<span class="nc" id="L237">		double threeOver7 = 3. / 7.;</span>
+<span class="nc" id="L247">		double nearWeight = 0.5 + sqrt_30_Over36;</span>
+<span class="nc" id="L248">		double farWeight = 0.5 - sqrt_30_Over36;</span>
+<span class="nc" id="L249">		double threeOver7 = 3. / 7.;</span>
 
-<span class="nc" id="L239">		double twoOver7Sqrt_6Over5_ = 2. / 7. * java.lang.Math.sqrt (6. / 5.);</span>
+<span class="nc" id="L251">		double twoOver7Sqrt_6Over5_ = 2. / 7. * java.lang.Math.sqrt (6. / 5.);</span>
 
-<span class="nc" id="L241">		double farNode = java.lang.Math.sqrt (threeOver7 + twoOver7Sqrt_6Over5_);</span>
+<span class="nc" id="L253">		double farNode = java.lang.Math.sqrt (threeOver7 + twoOver7Sqrt_6Over5_);</span>
 
-<span class="nc" id="L243">		double nearNode = java.lang.Math.sqrt (threeOver7 - twoOver7Sqrt_6Over5_);</span>
+<span class="nc" id="L255">		double nearNode = java.lang.Math.sqrt (threeOver7 - twoOver7Sqrt_6Over5_);</span>
 
 		try
 		{
-<span class="nc" id="L247">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
+<span class="nc" id="L259">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
 				abscissaTransformer,
-<span class="nc" id="L249">				org.drip.numerical.common.Array2D.FromArray (</span>
+<span class="nc" id="L261">				org.drip.numerical.common.Array2D.FromArray (</span>
 					new double[]
 					{
 						-farNode,
@@ -264,12 +276,12 @@ package org.drip.numerical.integration;
 				)
 			);
 		}
-<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L279">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L269">			e.printStackTrace();</span>
+<span class="nc" id="L281">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L272">		return null;</span>
+<span class="nc" id="L284">		return null;</span>
 	}
 
 	/**
@@ -283,22 +295,22 @@ package org.drip.numerical.integration;
 	public static final org.drip.numerical.integration.QuadratureEstimator FivePoint (
 		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
 	{
-<span class="nc" id="L286">		double thirteenSqrt_70_ = 13. * java.lang.Math.sqrt (70.);</span>
+<span class="nc" id="L298">		double thirteenSqrt_70_ = 13. * java.lang.Math.sqrt (70.);</span>
 
-<span class="nc" id="L288">		double nearWeight = (322. + thirteenSqrt_70_) / 900.;</span>
-<span class="nc" id="L289">		double farWeight = (322. - thirteenSqrt_70_) / 900.;</span>
+<span class="nc" id="L300">		double nearWeight = (322. + thirteenSqrt_70_) / 900.;</span>
+<span class="nc" id="L301">		double farWeight = (322. - thirteenSqrt_70_) / 900.;</span>
 
-<span class="nc" id="L291">		double twoSqrt_10Over7_ = 2. * java.lang.Math.sqrt (10. / 7.);</span>
+<span class="nc" id="L303">		double twoSqrt_10Over7_ = 2. * java.lang.Math.sqrt (10. / 7.);</span>
 
-<span class="nc" id="L293">		double farNode = java.lang.Math.sqrt (5. + twoSqrt_10Over7_) / 3.;</span>
+<span class="nc" id="L305">		double farNode = java.lang.Math.sqrt (5. + twoSqrt_10Over7_) / 3.;</span>
 
-<span class="nc" id="L295">		double nearNode = java.lang.Math.sqrt (5. - twoSqrt_10Over7_) / 3.;</span>
+<span class="nc" id="L307">		double nearNode = java.lang.Math.sqrt (5. - twoSqrt_10Over7_) / 3.;</span>
 
 		try
 		{
-<span class="nc" id="L299">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
+<span class="nc" id="L311">			return new org.drip.numerical.integration.QuadratureEstimator (</span>
 				abscissaTransformer,
-<span class="nc" id="L301">				org.drip.numerical.common.Array2D.FromArray (</span>
+<span class="nc" id="L313">				org.drip.numerical.common.Array2D.FromArray (</span>
 					new double[]
 					{
 						-farNode,
@@ -318,12 +330,12 @@ package org.drip.numerical.integration;
 				)
 			);
 		}
-<span class="nc" id="L321">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L333">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L323">			e.printStackTrace();</span>
+<span class="nc" id="L335">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L326">		return null;</span>
+<span class="nc" id="L338">		return null;</span>
 	}
 
 	/**
@@ -339,8 +351,8 @@ package org.drip.numerical.integration;
 		final double left,
 		final double right)
 	{
-<span class="nc" id="L342">		return OnePoint (</span>
-<span class="nc" id="L343">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
+<span class="nc" id="L354">		return OnePoint (</span>
+<span class="nc" id="L355">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
 				left,
 				right
 			)
@@ -360,8 +372,8 @@ package org.drip.numerical.integration;
 		final double left,
 		final double right)
 	{
-<span class="nc" id="L363">		return TwoPoint (</span>
-<span class="nc" id="L364">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
+<span class="nc" id="L375">		return TwoPoint (</span>
+<span class="nc" id="L376">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
 				left,
 				right
 			)
@@ -381,8 +393,8 @@ package org.drip.numerical.integration;
 		final double left,
 		final double right)
 	{
-<span class="nc" id="L384">		return ThreePoint (</span>
-<span class="nc" id="L385">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
+<span class="nc" id="L396">		return ThreePoint (</span>
+<span class="nc" id="L397">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
 				left,
 				right
 			)
@@ -402,8 +414,8 @@ package org.drip.numerical.integration;
 		final double left,
 		final double right)
 	{
-<span class="nc" id="L405">		return FourPoint (</span>
-<span class="nc" id="L406">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
+<span class="nc" id="L417">		return FourPoint (</span>
+<span class="nc" id="L418">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
 				left,
 				right
 			)
@@ -423,8 +435,8 @@ package org.drip.numerical.integration;
 		final double left,
 		final double right)
 	{
-<span class="nc" id="L426">		return FivePoint (</span>
-<span class="nc" id="L427">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
+<span class="nc" id="L438">		return FivePoint (</span>
+<span class="nc" id="L439">			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (</span>
 				left,
 				right
 			)

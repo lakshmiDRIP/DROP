@@ -6,41 +6,53 @@ package org.drip.numerical.quadrature;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,16 +104,16 @@ package org.drip.numerical.quadrature;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/quadrature/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; Gaussian Integration Quadrature Schemes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class WeightFunctionBuilder</span>
+<span class="nc" id="L116">public class WeightFunctionBuilder</span>
 {
 
 	/**
@@ -112,13 +124,13 @@ package org.drip.numerical.quadrature;
 
 	public static final org.drip.function.definition.R1ToR1 Legendre()
 	{
-<span class="nc" id="L115">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L116">		{</span>
+<span class="nc" id="L127">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L128">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L121">				return 1.;</span>
+<span class="nc" id="L133">				return 1.;</span>
 			}
 		};
 	}
@@ -136,30 +148,30 @@ package org.drip.numerical.quadrature;
 		final double alpha,
 		final double beta)
 	{
-<span class="nc bnc" id="L139" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) || -1. &gt;= alpha || -1. &gt;= beta)</span>
+<span class="nc bnc" id="L151" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) || -1. &gt;= alpha || -1. &gt;= beta)</span>
 		{
-<span class="nc" id="L141">			return null;</span>
+<span class="nc" id="L153">			return null;</span>
 		}
 
-<span class="nc" id="L144">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L145">		{</span>
+<span class="nc" id="L156">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L157">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L150" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 				{
-<span class="nc" id="L152">					throw new java.lang.Exception</span>
+<span class="nc" id="L164">					throw new java.lang.Exception</span>
 						(&quot;WeightFunctionBuilder::Jacobi::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L156">				return java.lang.Math.pow (</span>
+<span class="nc" id="L168">				return java.lang.Math.pow (</span>
 					1. - x,
 					alpha
-<span class="nc" id="L159">				) * java.lang.Math.pow (</span>
+<span class="nc" id="L171">				) * java.lang.Math.pow (</span>
 					1. + x,
 					beta
-<span class="nc" id="L162">				) * java.lang.Math.exp (-1. * x);</span>
+<span class="nc" id="L174">				) * java.lang.Math.exp (-1. * x);</span>
 			}
 		};
 	}
@@ -172,19 +184,19 @@ package org.drip.numerical.quadrature;
 
 	public static final org.drip.function.definition.R1ToR1 ChebyshevFirstKind()
 	{
-<span class="nc" id="L175">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L176">		{</span>
+<span class="nc" id="L187">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L188">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L181" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 				{
-<span class="nc" id="L183">					throw new java.lang.Exception</span>
+<span class="nc" id="L195">					throw new java.lang.Exception</span>
 						(&quot;WeightFunctionBuilder::ChebyshevFirstKind::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L187">				return 1. / java.lang.Math.sqrt (1. - x * x);</span>
+<span class="nc" id="L199">				return 1. / java.lang.Math.sqrt (1. - x * x);</span>
 			}
 		};
 	}
@@ -197,19 +209,19 @@ package org.drip.numerical.quadrature;
 
 	public static final org.drip.function.definition.R1ToR1 ChebyshevSecondKind()
 	{
-<span class="nc" id="L200">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L201">		{</span>
+<span class="nc" id="L212">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L213">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L206" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 				{
-<span class="nc" id="L208">					throw new java.lang.Exception</span>
+<span class="nc" id="L220">					throw new java.lang.Exception</span>
 						(&quot;WeightFunctionBuilder::ChebyshevSecondKind::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L212">				return java.lang.Math.sqrt (1. - x * x);</span>
+<span class="nc" id="L224">				return java.lang.Math.sqrt (1. - x * x);</span>
 			}
 		};
 	}
@@ -222,19 +234,19 @@ package org.drip.numerical.quadrature;
 
 	public static final org.drip.function.definition.R1ToR1 Laguerre()
 	{
-<span class="nc" id="L225">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L226">		{</span>
+<span class="nc" id="L237">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L238">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L231" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 				{
-<span class="nc" id="L233">					throw new java.lang.Exception</span>
+<span class="nc" id="L245">					throw new java.lang.Exception</span>
 						(&quot;WeightFunctionBuilder::Laguerre::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L237">				return java.lang.Math.exp (-1. * x);</span>
+<span class="nc" id="L249">				return java.lang.Math.exp (-1. * x);</span>
 			}
 		};
 	}
@@ -250,27 +262,27 @@ package org.drip.numerical.quadrature;
 	public static final org.drip.function.definition.R1ToR1 GeneralizedLaguerre (
 		final double alpha)
 	{
-<span class="nc bnc" id="L253" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) || -1. &gt;= alpha)</span>
+<span class="nc bnc" id="L265" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) || -1. &gt;= alpha)</span>
 		{
-<span class="nc" id="L255">			return null;</span>
+<span class="nc" id="L267">			return null;</span>
 		}
 
-<span class="nc" id="L258">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L259">		{</span>
+<span class="nc" id="L270">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L271">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L264" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 				{
-<span class="nc" id="L266">					throw new java.lang.Exception</span>
+<span class="nc" id="L278">					throw new java.lang.Exception</span>
 						(&quot;WeightFunctionBuilder::GeneralizedLaguerre::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L270">				return java.lang.Math.pow (</span>
+<span class="nc" id="L282">				return java.lang.Math.pow (</span>
 					x,
 					alpha
-<span class="nc" id="L273">				) * java.lang.Math.exp (-1. * x);</span>
+<span class="nc" id="L285">				) * java.lang.Math.exp (-1. * x);</span>
 			}
 		};
 	}
@@ -283,19 +295,19 @@ package org.drip.numerical.quadrature;
 
 	public static final org.drip.function.definition.R1ToR1 Hermite()
 	{
-<span class="nc" id="L286">		return new org.drip.function.definition.R1ToR1 (null)</span>
-<span class="nc" id="L287">		{</span>
+<span class="nc" id="L298">		return new org.drip.function.definition.R1ToR1 (null)</span>
+<span class="nc" id="L299">		{</span>
 			@Override public double evaluate (
 				final double x)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L292" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (x))</span>
 				{
-<span class="nc" id="L294">					throw new java.lang.Exception</span>
+<span class="nc" id="L306">					throw new java.lang.Exception</span>
 						(&quot;WeightFunctionBuilder::Hermite::evaluate =&gt; Invalid Inputs&quot;);
 				}
 
-<span class="nc" id="L298">				return java.lang.Math.exp (-1. * x * x);</span>
+<span class="nc" id="L310">				return java.lang.Math.exp (-1. * x * x);</span>
 			}
 		};
 	}

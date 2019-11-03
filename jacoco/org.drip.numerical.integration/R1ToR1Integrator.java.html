@@ -6,6 +6,7 @@ package org.drip.numerical.integration;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.numerical.integration;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,9 +106,9 @@ package org.drip.numerical.integration;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; R&lt;sup&gt;d&lt;/sup&gt; Numerical Integration Schemes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
@@ -104,7 +116,7 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L107">public class R1ToR1Integrator {</span>
+<span class="nc" id="L119">public class R1ToR1Integrator {</span>
 	private final static int NUM_QUAD = 10000;
 
 	/**
@@ -125,28 +137,28 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L128" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
-<span class="pc bpc" id="L129" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
-<span class="nc" id="L130">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LinearQuadrature =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L140" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L142">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LinearQuadrature =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
 
-<span class="fc" id="L134">		double dblWidth = (dblRight - dblLeft) / NUM_QUAD;</span>
-<span class="fc" id="L135">		double dblX = dblLeft + dblWidth;</span>
-<span class="fc" id="L136">		double dblAUArea = 0.;</span>
+<span class="fc" id="L146">		double dblWidth = (dblRight - dblLeft) / NUM_QUAD;</span>
+<span class="fc" id="L147">		double dblX = dblLeft + dblWidth;</span>
+<span class="fc" id="L148">		double dblAUArea = 0.;</span>
 
-<span class="fc bfc" id="L138" title="All 2 branches covered.">		while (dblX &lt;= dblRight) {</span>
-<span class="fc" id="L139">			double dblY = funcR1ToR1.evaluate (dblX - 0.5 * dblWidth);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		while (dblX &lt;= dblRight) {</span>
+<span class="fc" id="L151">			double dblY = funcR1ToR1.evaluate (dblX - 0.5 * dblWidth);</span>
 
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeft))</span>
-<span class="nc" id="L142">				throw new java.lang.Exception</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeft))</span>
+<span class="nc" id="L154">				throw new java.lang.Exception</span>
 					(&quot;R1ToR1Integrator::LinearQuadrature =&gt; Cannot calculate an intermediate Y&quot;);
 
-<span class="fc" id="L145">			dblAUArea += dblY * dblWidth;</span>
-<span class="fc" id="L146">			dblX += dblWidth;</span>
-<span class="fc" id="L147">		}</span>
+<span class="fc" id="L157">			dblAUArea += dblY * dblWidth;</span>
+<span class="fc" id="L158">			dblX += dblWidth;</span>
+<span class="fc" id="L159">		}</span>
 
-<span class="fc" id="L149">		return dblAUArea;</span>
+<span class="fc" id="L161">		return dblAUArea;</span>
 	}
 
 	/**
@@ -167,19 +179,19 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L170" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
-<span class="pc bpc" id="L171" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
-<span class="nc" id="L172">			throw new java.lang.Exception (&quot;R1ToR1Integrator::MidPoint =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L182" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L183" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L184">			throw new java.lang.Exception (&quot;R1ToR1Integrator::MidPoint =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
 
-<span class="fc" id="L176">		double dblYMid = funcR1ToR1.evaluate (0.5 * (dblLeft + dblRight));</span>
+<span class="fc" id="L188">		double dblYMid = funcR1ToR1.evaluate (0.5 * (dblLeft + dblRight));</span>
 
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYMid))</span>
-<span class="nc" id="L179">			throw new java.lang.Exception (&quot;R1ToR1Integrator::MidPoint =&gt; Cannot calculate Y at &quot; + 0.5 *</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYMid))</span>
+<span class="nc" id="L191">			throw new java.lang.Exception (&quot;R1ToR1Integrator::MidPoint =&gt; Cannot calculate Y at &quot; + 0.5 *</span>
 				(dblLeft + dblRight));
 
-<span class="fc" id="L182">		return (dblRight - dblLeft) * dblYMid;</span>
+<span class="fc" id="L194">		return (dblRight - dblLeft) * dblYMid;</span>
 	}
 
 	/**
@@ -200,25 +212,25 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L203" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
-<span class="pc bpc" id="L204" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
-<span class="nc" id="L205">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L215" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L216" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L217">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
 
-<span class="fc" id="L209">		double dblYLeft = funcR1ToR1.evaluate (dblLeft);</span>
+<span class="fc" id="L221">		double dblYLeft = funcR1ToR1.evaluate (dblLeft);</span>
 
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYLeft))</span>
-<span class="nc" id="L212">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Cannot calculate Y at &quot; +</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYLeft))</span>
+<span class="nc" id="L224">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Cannot calculate Y at &quot; +</span>
 				dblLeft);
 
-<span class="fc" id="L215">		double dblYRight = funcR1ToR1.evaluate (dblRight);</span>
+<span class="fc" id="L227">		double dblYRight = funcR1ToR1.evaluate (dblRight);</span>
 
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYLeft))</span>
-<span class="nc" id="L218">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Cannot calculate Y at &quot; +</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYLeft))</span>
+<span class="nc" id="L230">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Trapezoidal =&gt; Cannot calculate Y at &quot; +</span>
 				dblRight);
 
-<span class="fc" id="L221">		return 0.5 * (dblRight - dblLeft) * (dblYLeft + dblYRight);</span>
+<span class="fc" id="L233">		return 0.5 * (dblRight - dblLeft) * (dblYLeft + dblYRight);</span>
 	}
 
 	/**
@@ -239,30 +251,30 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L242" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
-<span class="pc bpc" id="L243" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
-<span class="nc" id="L244">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L254" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L255" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L256">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L246" title="All 2 branches covered.">		if (dblLeft == dblRight) return 0.;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		if (dblLeft == dblRight) return 0.;</span>
 
-<span class="fc" id="L248">		double dblYLeft = funcR1ToR1.evaluate (dblLeft);</span>
+<span class="fc" id="L260">		double dblYLeft = funcR1ToR1.evaluate (dblLeft);</span>
 
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYLeft))</span>
-<span class="nc" id="L251">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblLeft);</span>
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYLeft))</span>
+<span class="nc" id="L263">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblLeft);</span>
 
-<span class="fc" id="L253">		double dblXMid = 0.5 * (dblLeft + dblRight);</span>
+<span class="fc" id="L265">		double dblXMid = 0.5 * (dblLeft + dblRight);</span>
 
-<span class="fc" id="L255">		double dblYMid = funcR1ToR1.evaluate (dblXMid);</span>
+<span class="fc" id="L267">		double dblYMid = funcR1ToR1.evaluate (dblXMid);</span>
 
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYMid))</span>
-<span class="nc" id="L258">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblXMid);</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYMid))</span>
+<span class="nc" id="L270">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblXMid);</span>
 
-<span class="fc" id="L260">		double dblYRight = funcR1ToR1.evaluate (dblRight);</span>
+<span class="fc" id="L272">		double dblYRight = funcR1ToR1.evaluate (dblRight);</span>
 
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYRight))</span>
-<span class="nc" id="L263">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblRight);</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblYRight))</span>
+<span class="nc" id="L275">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson =&gt; Cannot calculate Y at &quot; + dblRight);</span>
 
-<span class="fc" id="L265">		return (dblRight - dblLeft) / 6. * (dblYLeft + 4. * dblYMid + dblYRight);</span>
+<span class="fc" id="L277">		return (dblRight - dblLeft) / 6. * (dblYLeft + 4. * dblYMid + dblYRight);</span>
 	}
 
 	/**
@@ -283,39 +295,39 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L286" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
-<span class="pc bpc" id="L287" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
-<span class="nc" id="L288">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L298" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L299" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L300">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L290" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		if (dblLeft == dblRight) return 0.;</span>
 
-<span class="fc" id="L292">		double dblY0 = funcR1ToR1.evaluate (dblLeft);</span>
+<span class="fc" id="L304">		double dblY0 = funcR1ToR1.evaluate (dblLeft);</span>
 
-<span class="pc bpc" id="L294" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY0))</span>
-<span class="nc" id="L295">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; +</span>
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY0))</span>
+<span class="nc" id="L307">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; +</span>
 				dblLeft);
 
-<span class="fc" id="L298">		double dblX1 = (2. * dblLeft + dblRight) / 3.;</span>
+<span class="fc" id="L310">		double dblX1 = (2. * dblLeft + dblRight) / 3.;</span>
 
-<span class="fc" id="L300">		double dblY1 = funcR1ToR1.evaluate (dblX1);</span>
+<span class="fc" id="L312">		double dblY1 = funcR1ToR1.evaluate (dblX1);</span>
 
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY1))</span>
-<span class="nc" id="L303">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; + dblX1);</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY1))</span>
+<span class="nc" id="L315">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; + dblX1);</span>
 
-<span class="fc" id="L305">		double dblX2 = (dblLeft + 2. * dblRight) / 3.;</span>
+<span class="fc" id="L317">		double dblX2 = (dblLeft + 2. * dblRight) / 3.;</span>
 
-<span class="fc" id="L307">		double dblY2 = funcR1ToR1.evaluate (dblX2);</span>
+<span class="fc" id="L319">		double dblY2 = funcR1ToR1.evaluate (dblX2);</span>
 
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY2))</span>
-<span class="nc" id="L310">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; + dblX2);</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY2))</span>
+<span class="nc" id="L322">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; + dblX2);</span>
 
-<span class="fc" id="L312">		double dblY3 = funcR1ToR1.evaluate (dblRight);</span>
+<span class="fc" id="L324">		double dblY3 = funcR1ToR1.evaluate (dblRight);</span>
 
-<span class="pc bpc" id="L314" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
-<span class="nc" id="L315">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; +</span>
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L327">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Simpson38 =&gt; Cannot calculate Y at &quot; +</span>
 				dblRight);
 
-<span class="fc" id="L318">		return (dblRight - dblLeft) * (0.125 * dblY0 + 0.375 * dblY1 + 0.375 * dblY2 + 0.125 * dblY3);</span>
+<span class="fc" id="L330">		return (dblRight - dblLeft) * (0.125 * dblY0 + 0.375 * dblY1 + 0.375 * dblY2 + 0.125 * dblY3);</span>
 	}
 
 	/**
@@ -336,44 +348,44 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L339" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
-<span class="pc bpc" id="L340" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
-<span class="nc" id="L341">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L351" title="2 of 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft) ||</span>
+<span class="pc bpc" id="L352" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblRight) || dblLeft &gt; dblRight)</span>
+<span class="nc" id="L353">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L343" title="All 2 branches covered.">		if (dblLeft == dblRight) return 0.;</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">		if (dblLeft == dblRight) return 0.;</span>
 
-<span class="fc" id="L345">		double dblY0 = funcR1ToR1.evaluate (dblLeft);</span>
+<span class="fc" id="L357">		double dblY0 = funcR1ToR1.evaluate (dblLeft);</span>
 
-<span class="pc bpc" id="L347" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY0))</span>
-<span class="nc" id="L348">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblLeft);</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY0))</span>
+<span class="nc" id="L360">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblLeft);</span>
 
-<span class="fc" id="L350">		double dblX1 = 0.25 * dblLeft + 0.75 * dblRight;</span>
+<span class="fc" id="L362">		double dblX1 = 0.25 * dblLeft + 0.75 * dblRight;</span>
 
-<span class="fc" id="L352">		double dblY1 = funcR1ToR1.evaluate (dblX1);</span>
+<span class="fc" id="L364">		double dblY1 = funcR1ToR1.evaluate (dblX1);</span>
 
-<span class="pc bpc" id="L354" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY1))</span>
-<span class="nc" id="L355">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX1);</span>
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY1))</span>
+<span class="nc" id="L367">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX1);</span>
 
-<span class="fc" id="L357">		double dblX2 = 0.5 * (dblLeft + dblRight);</span>
+<span class="fc" id="L369">		double dblX2 = 0.5 * (dblLeft + dblRight);</span>
 
-<span class="fc" id="L359">		double dblY2 = funcR1ToR1.evaluate (dblX2);</span>
+<span class="fc" id="L371">		double dblY2 = funcR1ToR1.evaluate (dblX2);</span>
 
-<span class="pc bpc" id="L361" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY2))</span>
-<span class="nc" id="L362">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX2);</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY2))</span>
+<span class="nc" id="L374">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX2);</span>
 
-<span class="fc" id="L364">		double dblX3 = 0.75 * dblLeft + 0.25 * dblRight;</span>
+<span class="fc" id="L376">		double dblX3 = 0.75 * dblLeft + 0.25 * dblRight;</span>
 
-<span class="fc" id="L366">		double dblY3 = funcR1ToR1.evaluate (dblX3);</span>
+<span class="fc" id="L378">		double dblY3 = funcR1ToR1.evaluate (dblX3);</span>
 
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
-<span class="nc" id="L369">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX3);</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY3))</span>
+<span class="nc" id="L381">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblX3);</span>
 
-<span class="fc" id="L371">		double dblY4 = funcR1ToR1.evaluate (dblRight);</span>
+<span class="fc" id="L383">		double dblY4 = funcR1ToR1.evaluate (dblRight);</span>
 
-<span class="pc bpc" id="L373" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY4))</span>
-<span class="nc" id="L374">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblRight);</span>
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY4))</span>
+<span class="nc" id="L386">			throw new java.lang.Exception (&quot;R1ToR1Integrator::Boole =&gt; Cannot calculate Y at &quot; + dblRight);</span>
 
-<span class="fc" id="L376">		return (dblRight - dblLeft) / 90 * (7 * dblY0 + 32 * dblY1 + 12 * dblY2 + 32 * dblY3 + 7 * dblY4);</span>
+<span class="fc" id="L388">		return (dblRight - dblLeft) / 90 * (7 * dblY0 + 32 * dblY1 + 12 * dblY2 + 32 * dblY3 + 7 * dblY4);</span>
 	}
 
 	/**
@@ -390,28 +402,28 @@ package org.drip.numerical.integration;
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L393" title="All 2 branches missed.">		if (null == funcR1ToR1)</span>
-<span class="nc" id="L394">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LeftInfiniteRightInfinite =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">		if (null == funcR1ToR1)</span>
+<span class="nc" id="L406">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LeftInfiniteRightInfinite =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L396">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
-<span class="nc" id="L397">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L408">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
+<span class="nc" id="L409">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L402" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L403">					throw new java.lang.Exception</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L415">					throw new java.lang.Exception</span>
 						(&quot;IntegratorR1ToR1::LeftInfiniteRightInfinite =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L406">				double dblX2 = dblX * dblX;</span>
-<span class="nc" id="L407">				double dblXTransform = 1. / (1. - dblX2);</span>
+<span class="nc" id="L418">				double dblX2 = dblX * dblX;</span>
+<span class="nc" id="L419">				double dblXTransform = 1. / (1. - dblX2);</span>
 
-<span class="nc" id="L409">				return (1. + dblX2) / (dblXTransform * dblXTransform) * funcR1ToR1.evaluate (dblX /</span>
+<span class="nc" id="L421">				return (1. + dblX2) / (dblXTransform * dblXTransform) * funcR1ToR1.evaluate (dblX /</span>
 					dblXTransform);
 			}
 		};
 
-<span class="nc" id="L414">		return auTransformed.integrate (-1., +1.);</span>
+<span class="nc" id="L426">		return auTransformed.integrate (-1., +1.);</span>
 	}
 
 	/**
@@ -430,23 +442,23 @@ package org.drip.numerical.integration;
 		final double dblRight)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L433" title="All 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblRight))</span>
-<span class="nc" id="L434">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LeftInfinite =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L445" title="All 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblRight))</span>
+<span class="nc" id="L446">			throw new java.lang.Exception (&quot;R1ToR1Integrator::LeftInfinite =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L436">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
-<span class="nc" id="L437">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L448">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
+<span class="nc" id="L449">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L442" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L443">					throw new java.lang.Exception (&quot;IntegratorR1ToR1::LeftInfinite =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L455">					throw new java.lang.Exception (&quot;IntegratorR1ToR1::LeftInfinite =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L445">				return (funcR1ToR1.evaluate (dblRight - ((1. - dblX) / dblX))) / (dblX * dblX);</span>
+<span class="nc" id="L457">				return (funcR1ToR1.evaluate (dblRight - ((1. - dblX) / dblX))) / (dblX * dblX);</span>
 			}
 		};
 
-<span class="nc" id="L449">		return auTransformed.integrate (0., +1.);</span>
+<span class="nc" id="L461">		return auTransformed.integrate (0., +1.);</span>
 	}
 
 	/**
@@ -465,26 +477,26 @@ package org.drip.numerical.integration;
 		final double dblLeft)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L468" title="All 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft))</span>
-<span class="nc" id="L469">			throw new java.lang.Exception (&quot;R1ToR1Integrator::RightInfinite =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L480" title="All 4 branches missed.">		if (null == funcR1ToR1 || !org.drip.numerical.common.NumberUtil.IsValid (dblLeft))</span>
+<span class="nc" id="L481">			throw new java.lang.Exception (&quot;R1ToR1Integrator::RightInfinite =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L471">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
-<span class="nc" id="L472">			org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L483">		org.drip.function.definition.R1ToR1 auTransformed = new</span>
+<span class="nc" id="L484">			org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L477" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
-<span class="nc" id="L478">					throw new java.lang.Exception (&quot;R1ToR1Integrator::RightInfinite =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L489" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))</span>
+<span class="nc" id="L490">					throw new java.lang.Exception (&quot;R1ToR1Integrator::RightInfinite =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L480">				double dblXInversion = 1. - dblX;</span>
+<span class="nc" id="L492">				double dblXInversion = 1. - dblX;</span>
 
-<span class="nc" id="L482">				return (funcR1ToR1.evaluate (dblLeft + (dblX / dblXInversion))) / (dblXInversion *</span>
+<span class="nc" id="L494">				return (funcR1ToR1.evaluate (dblLeft + (dblX / dblXInversion))) / (dblXInversion *</span>
 					dblXInversion);
 			}
 		};
 
-<span class="nc" id="L487">		return auTransformed.integrate (0., +1.);</span>
+<span class="nc" id="L499">		return auTransformed.integrate (0., +1.);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

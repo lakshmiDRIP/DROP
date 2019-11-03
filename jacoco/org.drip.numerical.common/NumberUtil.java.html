@@ -6,6 +6,7 @@ package org.drip.numerical.common;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.numerical.common;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,9 +103,9 @@ package org.drip.numerical.common;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/common&quot;&gt;Primitives/Array Manipulate Format Display Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
@@ -101,7 +113,7 @@ package org.drip.numerical.common;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L104">public class NumberUtil {</span>
+<span class="nc" id="L116">public class NumberUtil {</span>
 	private static final double DEFAULT_ABSOLUTE_TOLERANCE = 1.0e-03;
 	private static final double DEFAULT_RELATIVE_TOLERANCE = 1.0e-03;
 
@@ -116,7 +128,7 @@ package org.drip.numerical.common;
 	public static final boolean IsValid (
 		final long l)
 	{
-<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		return java.lang.Long.MIN_VALUE != l &amp;&amp; java.lang.Long.MAX_VALUE != l;</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		return java.lang.Long.MIN_VALUE != l &amp;&amp; java.lang.Long.MAX_VALUE != l;</span>
 	}
 
 	/**
@@ -130,13 +142,13 @@ package org.drip.numerical.common;
 	public static final boolean IsValid (
 		final long[] al)
 	{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (null == al) return true;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (null == al) return true;</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">		for (int i = 0; i &lt; al.length; ++i) {</span>
-<span class="nc bnc" id="L136" title="All 2 branches missed.">			if (!IsValid (al[i])) return false;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		for (int i = 0; i &lt; al.length; ++i) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			if (!IsValid (al[i])) return false;</span>
 		}
 
-<span class="nc" id="L139">		return true;</span>
+<span class="nc" id="L151">		return true;</span>
 	}
 
 	/**
@@ -150,7 +162,7 @@ package org.drip.numerical.common;
 	public static final boolean IsValid (
 		final double dbl)
 	{
-<span class="pc bpc" id="L153" title="1 of 4 branches missed.">		return !java.lang.Double.isNaN (dbl) &amp;&amp; !java.lang.Double.isInfinite (dbl);</span>
+<span class="pc bpc" id="L165" title="1 of 4 branches missed.">		return !java.lang.Double.isNaN (dbl) &amp;&amp; !java.lang.Double.isInfinite (dbl);</span>
 	}
 
 	/**
@@ -164,13 +176,13 @@ package org.drip.numerical.common;
 	public static final boolean IsValid (
 		final double[] adbl)
 	{
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (null == adbl) return true;</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (null == adbl) return true;</span>
 
-<span class="fc bfc" id="L169" title="All 2 branches covered.">		for (int i = 0; i &lt; adbl.length; ++i) {</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">			if (!IsValid (adbl[i])) return false;</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">		for (int i = 0; i &lt; adbl.length; ++i) {</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">			if (!IsValid (adbl[i])) return false;</span>
 		}
 
-<span class="fc" id="L173">		return true;</span>
+<span class="fc" id="L185">		return true;</span>
 	}
 
 	/**
@@ -190,17 +202,17 @@ package org.drip.numerical.common;
 		final double dblAbsoluteTolerance,
 		final double dblRelativeTolerance)
 	{
-<span class="fc bfc" id="L193" title="All 4 branches covered.">		if (!IsValid (dbl1) || !IsValid (dbl2)) return false;</span>
+<span class="fc bfc" id="L205" title="All 4 branches covered.">		if (!IsValid (dbl1) || !IsValid (dbl2)) return false;</span>
 
-<span class="fc bfc" id="L195" title="All 2 branches covered.">		if (dblAbsoluteTolerance &gt;= java.lang.Math.abs (dbl1)) {</span>
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (dblAbsoluteTolerance &gt;= java.lang.Math.abs (dbl2)) return true;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		if (dblAbsoluteTolerance &gt;= java.lang.Math.abs (dbl1)) {</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">			if (dblAbsoluteTolerance &gt;= java.lang.Math.abs (dbl2)) return true;</span>
 
-<span class="nc" id="L198">			return false;</span>
+<span class="nc" id="L210">			return false;</span>
 		}
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">		if (dblRelativeTolerance &gt;= java.lang.Math.abs ((dbl2 - dbl1) / dbl1)) return true;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		if (dblRelativeTolerance &gt;= java.lang.Math.abs ((dbl2 - dbl1) / dbl1)) return true;</span>
 
-<span class="fc" id="L203">		return false;</span>
+<span class="fc" id="L215">		return false;</span>
 	}
 
 	/**
@@ -216,7 +228,7 @@ package org.drip.numerical.common;
 		final double dbl1,
 		final double dbl2)
 	{
-<span class="fc" id="L219">		return WithinTolerance (dbl1, dbl2, DEFAULT_ABSOLUTE_TOLERANCE, DEFAULT_RELATIVE_TOLERANCE);</span>
+<span class="fc" id="L231">		return WithinTolerance (dbl1, dbl2, DEFAULT_ABSOLUTE_TOLERANCE, DEFAULT_RELATIVE_TOLERANCE);</span>
 	}
 
 	/**
@@ -230,12 +242,12 @@ package org.drip.numerical.common;
 	public static final int Factorial (
 		final int n)
 	{
-<span class="fc" id="L233">		int iNFact = 1;</span>
+<span class="fc" id="L245">		int iNFact = 1;</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		for (int i = 1; i &lt;= n; ++i)</span>
-<span class="fc" id="L236">			iNFact *= i;</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">		for (int i = 1; i &lt;= n; ++i)</span>
+<span class="fc" id="L248">			iNFact *= i;</span>
 
-<span class="fc" id="L238">		return iNFact;</span>
+<span class="fc" id="L250">		return iNFact;</span>
 	}
 
 	/**
@@ -251,10 +263,10 @@ package org.drip.numerical.common;
 		final int n,
 		final int k)
 	{
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">		int iK = n &lt; k ? n : k;</span>
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">		int iN = n &gt; k ? n : k;</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">		int iK = n &lt; k ? n : k;</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">		int iN = n &gt; k ? n : k;</span>
 
-<span class="fc" id="L257">		return Factorial (iN) / Factorial (iK);</span>
+<span class="fc" id="L269">		return Factorial (iN) / Factorial (iK);</span>
 	}
 
 	/**
@@ -270,10 +282,10 @@ package org.drip.numerical.common;
 		final int n,
 		final int k)
 	{
-<span class="pc bpc" id="L273" title="1 of 2 branches missed.">		int iK = n &lt; k ? n : k;</span>
-<span class="fc bfc" id="L274" title="All 2 branches covered.">		int iN = n &gt; k ? n : k;</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">		int iK = n &lt; k ? n : k;</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">		int iN = n &gt; k ? n : k;</span>
 
-<span class="fc" id="L276">		return Factorial (iN) / Factorial (iK) / Factorial (iN - iK);</span>
+<span class="fc" id="L288">		return Factorial (iN) / Factorial (iK) / Factorial (iN - iK);</span>
 	}
 
 	/**
@@ -294,11 +306,11 @@ package org.drip.numerical.common;
 		final double dblCeiling)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L297" title="4 of 8 branches missed.">		if (!IsValid (dblX) || !IsValid (dblFloor)|| !IsValid (dblCeiling) || dblFloor &gt; dblCeiling)</span>
-<span class="nc" id="L298">			throw new java.lang.Exception (&quot;NumberUtil::Bound =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L309" title="4 of 8 branches missed.">		if (!IsValid (dblX) || !IsValid (dblFloor)|| !IsValid (dblCeiling) || dblFloor &gt; dblCeiling)</span>
+<span class="nc" id="L310">			throw new java.lang.Exception (&quot;NumberUtil::Bound =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">		double dblBound = dblX &lt; dblFloor ? dblFloor : dblX;</span>
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		return dblBound &gt; dblCeiling ? dblCeiling : dblBound;</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">		double dblBound = dblX &lt; dblFloor ? dblFloor : dblX;</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">		return dblBound &gt; dblCeiling ? dblCeiling : dblBound;</span>
 	}
 
 	/**
@@ -315,15 +327,15 @@ package org.drip.numerical.common;
 		final double[] adbl)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L318" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::Minimum =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::Minimum =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L320">		double dblMinimum = adbl[0];</span>
-<span class="fc" id="L321">		int iNumElement = adbl.length;</span>
+<span class="fc" id="L332">		double dblMinimum = adbl[0];</span>
+<span class="fc" id="L333">		int iNumElement = adbl.length;</span>
 
-<span class="fc bfc" id="L323" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i)</span>
-<span class="fc bfc" id="L324" title="All 2 branches covered.">			dblMinimum = dblMinimum &lt; adbl[i] ? dblMinimum : adbl[i];</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i)</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">			dblMinimum = dblMinimum &lt; adbl[i] ? dblMinimum : adbl[i];</span>
 
-<span class="fc" id="L326">		return dblMinimum;</span>
+<span class="fc" id="L338">		return dblMinimum;</span>
 	}
 
 	/**
@@ -340,15 +352,15 @@ package org.drip.numerical.common;
 		final double[] adbl)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L343" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::Maximum =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::Maximum =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L345">		double dblMaximum = adbl[0];</span>
-<span class="fc" id="L346">		int iNumElement = adbl.length;</span>
+<span class="fc" id="L357">		double dblMaximum = adbl[0];</span>
+<span class="fc" id="L358">		int iNumElement = adbl.length;</span>
 
-<span class="fc bfc" id="L348" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i)</span>
-<span class="fc bfc" id="L349" title="All 2 branches covered.">			dblMaximum = dblMaximum &gt; adbl[i] ? dblMaximum : adbl[i];</span>
+<span class="fc bfc" id="L360" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i)</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">			dblMaximum = dblMaximum &gt; adbl[i] ? dblMaximum : adbl[i];</span>
 
-<span class="fc" id="L351">		return dblMaximum;</span>
+<span class="fc" id="L363">		return dblMaximum;</span>
 	}
 
 	/**
@@ -365,17 +377,17 @@ package org.drip.numerical.common;
 		final double[] adbl)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::SameSign =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (!IsValid (adbl)) throw new java.lang.Exception (&quot;NumberUtil::SameSign =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L370" title="All 2 branches covered.">		if (adbl[0] &lt;= 0.) return false;</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">		if (adbl[0] &lt;= 0.) return false;</span>
 
-<span class="fc" id="L372">		int iNumElement = adbl.length;</span>
+<span class="fc" id="L384">		int iNumElement = adbl.length;</span>
 
-<span class="fc bfc" id="L374" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i) {</span>
-<span class="fc bfc" id="L375" title="All 2 branches covered.">			if (adbl[0] * adbl[i] &lt;= 0.) return false;</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (int i = 1; i &lt; iNumElement; ++i) {</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">			if (adbl[0] * adbl[i] &lt;= 0.) return false;</span>
 		}
 
-<span class="fc" id="L378">		return true;</span>
+<span class="fc" id="L390">		return true;</span>
 	}
 
 	/**
@@ -393,17 +405,17 @@ package org.drip.numerical.common;
 		final double[] adblA,
 		final boolean bBailOnNaN)
 	{
-<span class="nc bnc" id="L396" title="All 4 branches missed.">		if (null == adblA || 0 == adblA.length) return false;</span>
+<span class="nc bnc" id="L408" title="All 4 branches missed.">		if (null == adblA || 0 == adblA.length) return false;</span>
 
-<span class="nc" id="L398">		int iSize = adblA.length;</span>
+<span class="nc" id="L410">		int iSize = adblA.length;</span>
 
-<span class="nc bnc" id="L400" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L401" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) &amp;&amp; bBailOnNaN) return false;</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L413" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) &amp;&amp; bBailOnNaN) return false;</span>
 
-<span class="nc" id="L403">			System.out.println (strName + &quot;[&quot; + i + &quot;] = &quot; + adblA[i]);</span>
+<span class="nc" id="L415">			System.out.println (strName + &quot;[&quot; + i + &quot;] = &quot; + adblA[i]);</span>
 		}
 
-<span class="nc" id="L406">		return true;</span>
+<span class="nc" id="L418">		return true;</span>
 	}
 
 	/**
@@ -423,18 +435,18 @@ package org.drip.numerical.common;
 		final int iNumDecimal,
 		final boolean bBailOnNaN)
 	{
-<span class="pc bpc" id="L426" title="2 of 4 branches missed.">		if (null == adblA || 0 == adblA.length) return false;</span>
+<span class="pc bpc" id="L438" title="2 of 4 branches missed.">		if (null == adblA || 0 == adblA.length) return false;</span>
 
-<span class="fc" id="L428">		int iSize = adblA.length;</span>
+<span class="fc" id="L440">		int iSize = adblA.length;</span>
 
-<span class="fc bfc" id="L430" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="pc bpc" id="L431" title="3 of 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) &amp;&amp; bBailOnNaN) return false;</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="pc bpc" id="L443" title="3 of 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) &amp;&amp; bBailOnNaN) return false;</span>
 
-<span class="fc" id="L433">			System.out.println (strName + &quot;[&quot; + i + &quot;] = &quot; + org.drip.numerical.common.FormatUtil.FormatDouble</span>
-<span class="fc" id="L434">				(adblA[i], 1, iNumDecimal, 1.));</span>
+<span class="fc" id="L445">			System.out.println (strName + &quot;[&quot; + i + &quot;] = &quot; + org.drip.numerical.common.FormatUtil.FormatDouble</span>
+<span class="fc" id="L446">				(adblA[i], 1, iNumDecimal, 1.));</span>
 		}
 
-<span class="fc" id="L437">		return true;</span>
+<span class="fc" id="L449">		return true;</span>
 	}
 
 	/**
@@ -452,26 +464,26 @@ package org.drip.numerical.common;
 		final double[][] aadblA,
 		final boolean bBailOnNaN)
 	{
-<span class="pc bpc" id="L455" title="1 of 2 branches missed.">		if (null == aadblA) return false;</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">		if (null == aadblA) return false;</span>
 
-<span class="fc" id="L457">		int iRowSize = aadblA.length;</span>
+<span class="fc" id="L469">		int iRowSize = aadblA.length;</span>
 
-<span class="pc bpc" id="L459" title="2 of 4 branches missed.">		if (0 == iRowSize || null == aadblA[0]) return false;</span>
+<span class="pc bpc" id="L471" title="2 of 4 branches missed.">		if (0 == iRowSize || null == aadblA[0]) return false;</span>
 
-<span class="fc" id="L461">		int iColSize = aadblA[0].length;</span>
+<span class="fc" id="L473">		int iColSize = aadblA[0].length;</span>
 
-<span class="pc bpc" id="L463" title="1 of 2 branches missed.">		if (0 == iColSize) return false;</span>
+<span class="pc bpc" id="L475" title="1 of 2 branches missed.">		if (0 == iColSize) return false;</span>
 
-<span class="fc bfc" id="L465" title="All 2 branches covered.">		for (int i = 0; i &lt; iRowSize; ++i) {</span>
-<span class="fc bfc" id="L466" title="All 2 branches covered.">			for (int j = 0; j &lt; iColSize; ++j) {</span>
-<span class="pc bpc" id="L467" title="3 of 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[i][j]) &amp;&amp; bBailOnNaN) return false;</span>
+<span class="fc bfc" id="L477" title="All 2 branches covered.">		for (int i = 0; i &lt; iRowSize; ++i) {</span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">			for (int j = 0; j &lt; iColSize; ++j) {</span>
+<span class="pc bpc" id="L479" title="3 of 4 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[i][j]) &amp;&amp; bBailOnNaN) return false;</span>
 
-<span class="fc" id="L469">				System.out.println (strName + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
-<span class="fc" id="L470">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblA[i][j], 1, 6, 1.));</span>
+<span class="fc" id="L481">				System.out.println (strName + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
+<span class="fc" id="L482">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblA[i][j], 1, 6, 1.));</span>
 			}
 		}
 
-<span class="fc" id="L474">		return true;</span>
+<span class="fc" id="L486">		return true;</span>
 	}
 
 	/**
@@ -493,26 +505,26 @@ package org.drip.numerical.common;
 		final double[][] aadblRight,
 		final boolean bBailOnNaN)
 	{
-<span class="nc bnc" id="L496" title="All 4 branches missed.">		if (null == aadblLeft || null == aadblRight) return false;</span>
+<span class="nc bnc" id="L508" title="All 4 branches missed.">		if (null == aadblLeft || null == aadblRight) return false;</span>
 
-<span class="nc" id="L498">		int iSize = aadblLeft.length;</span>
+<span class="nc" id="L510">		int iSize = aadblLeft.length;</span>
 
-<span class="nc bnc" id="L500" title="All 4 branches missed.">		if (0 == iSize || iSize != aadblRight.length) return false;</span>
+<span class="nc bnc" id="L512" title="All 4 branches missed.">		if (0 == iSize || iSize != aadblRight.length) return false;</span>
 
-<span class="nc bnc" id="L502" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="nc bnc" id="L503" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
-<span class="nc bnc" id="L504" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
-<span class="nc bnc" id="L505" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (aadblRight[i][j]) &amp;&amp; bBailOnNaN)</span>
-<span class="nc" id="L506">					return false;</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="nc bnc" id="L515" title="All 2 branches missed.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="nc bnc" id="L516" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
+<span class="nc bnc" id="L517" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (aadblRight[i][j]) &amp;&amp; bBailOnNaN)</span>
+<span class="nc" id="L518">					return false;</span>
 
-<span class="nc" id="L508">				System.out.println (strLeftLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
-<span class="nc" id="L509">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblLeft[i][j], 1, 6, 1.) + &quot;  |  &quot; +</span>
+<span class="nc" id="L520">				System.out.println (strLeftLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
+<span class="nc" id="L521">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblLeft[i][j], 1, 6, 1.) + &quot;  |  &quot; +</span>
 						strRightLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +
-<span class="nc" id="L511">							org.drip.numerical.common.FormatUtil.FormatDouble (aadblRight[i][j], 1, 6, 1.));</span>
+<span class="nc" id="L523">							org.drip.numerical.common.FormatUtil.FormatDouble (aadblRight[i][j], 1, 6, 1.));</span>
 			}
 		}
 
-<span class="nc" id="L515">		return true;</span>
+<span class="nc" id="L527">		return true;</span>
 	}
 
 	/**
@@ -538,30 +550,30 @@ package org.drip.numerical.common;
 		final double[][] aadblRight,
 		final boolean bBailOnNaN)
 	{
-<span class="pc bpc" id="L541" title="3 of 6 branches missed.">		if (null == aadblLeft || null == aadblMiddle || null == aadblRight) return false;</span>
+<span class="pc bpc" id="L553" title="3 of 6 branches missed.">		if (null == aadblLeft || null == aadblMiddle || null == aadblRight) return false;</span>
 
-<span class="fc" id="L543">		int iSize = aadblLeft.length;</span>
+<span class="fc" id="L555">		int iSize = aadblLeft.length;</span>
 
-<span class="pc bpc" id="L545" title="3 of 6 branches missed.">		if (0 == iSize || iSize != aadblMiddle.length || iSize != aadblRight.length) return false;</span>
+<span class="pc bpc" id="L557" title="3 of 6 branches missed.">		if (0 == iSize || iSize != aadblMiddle.length || iSize != aadblRight.length) return false;</span>
 
-<span class="fc bfc" id="L547" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc bfc" id="L548" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
-<span class="pc bpc" id="L549" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
-<span class="nc bnc" id="L550" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
-<span class="nc bnc" id="L551" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (aadblRight[i][j]) &amp;&amp; bBailOnNaN)</span>
-<span class="nc" id="L552">					return false;</span>
+<span class="fc bfc" id="L559" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc bfc" id="L560" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j) {</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
+<span class="nc bnc" id="L562" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (aadblLeft[i][j]) &amp;&amp;</span>
+<span class="nc bnc" id="L563" title="All 4 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (aadblRight[i][j]) &amp;&amp; bBailOnNaN)</span>
+<span class="nc" id="L564">					return false;</span>
 
-<span class="fc" id="L554">				System.out.println (strLeftLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
-<span class="fc" id="L555">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblLeft[i][j], 1, 6, 1.) + &quot;  |  &quot; +</span>
+<span class="fc" id="L566">				System.out.println (strLeftLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +</span>
+<span class="fc" id="L567">					org.drip.numerical.common.FormatUtil.FormatDouble (aadblLeft[i][j], 1, 6, 1.) + &quot;  |  &quot; +</span>
 						strMiddleLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +
-<span class="fc" id="L557">							org.drip.numerical.common.FormatUtil.FormatDouble (aadblMiddle[i][j], 1, 6, 1.) +</span>
+<span class="fc" id="L569">							org.drip.numerical.common.FormatUtil.FormatDouble (aadblMiddle[i][j], 1, 6, 1.) +</span>
 								&quot;  |  &quot; + strRightLabel + &quot;[&quot; + i + &quot;][&quot; + j + &quot;] = &quot; +
-<span class="fc" id="L559">									org.drip.numerical.common.FormatUtil.FormatDouble (aadblRight[i][j], 1, 6,</span>
+<span class="fc" id="L571">									org.drip.numerical.common.FormatUtil.FormatDouble (aadblRight[i][j], 1, 6,</span>
 										1.));
 			}
 		}
 
-<span class="fc" id="L564">		return true;</span>
+<span class="fc" id="L576">		return true;</span>
 	}
 
 	/**
@@ -577,20 +589,20 @@ package org.drip.numerical.common;
 		final java.lang.String strName,
 		final double[][] aadblA)
 	{
-<span class="pc bpc" id="L580" title="2 of 4 branches missed.">		if (null == aadblA || 0 == aadblA.length) return false;</span>
+<span class="pc bpc" id="L592" title="2 of 4 branches missed.">		if (null == aadblA || 0 == aadblA.length) return false;</span>
 
-<span class="fc" id="L582">		int iSize = aadblA.length;</span>
+<span class="fc" id="L594">		int iSize = aadblA.length;</span>
 
-<span class="fc bfc" id="L584" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
-<span class="fc" id="L585">			java.lang.String strDump = strName  + &quot; =&gt; &quot;;</span>
+<span class="fc bfc" id="L596" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i) {</span>
+<span class="fc" id="L597">			java.lang.String strDump = strName  + &quot; =&gt; &quot;;</span>
 
-<span class="fc bfc" id="L587" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
-<span class="fc" id="L588">				strDump += org.drip.numerical.common.FormatUtil.FormatDouble (aadblA[i][j], 1, 6, 1.) + &quot; |&quot;;</span>
+<span class="fc bfc" id="L599" title="All 2 branches covered.">			for (int j = 0; j &lt; iSize; ++j)</span>
+<span class="fc" id="L600">				strDump += org.drip.numerical.common.FormatUtil.FormatDouble (aadblA[i][j], 1, 6, 1.) + &quot; |&quot;;</span>
 
-<span class="fc" id="L590">			System.out.println (strDump);</span>
+<span class="fc" id="L602">			System.out.println (strDump);</span>
 		}
 
-<span class="fc" id="L593">		return true;</span>
+<span class="fc" id="L605">		return true;</span>
 	}
 
 	/**
@@ -607,19 +619,19 @@ package org.drip.numerical.common;
 		final int n)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L610" title="All 2 branches missed.">		if (-1 &gt;= n)</span>
+<span class="nc bnc" id="L622" title="All 2 branches missed.">		if (-1 &gt;= n)</span>
 		{
-<span class="nc" id="L612">			throw new java.lang.Exception (&quot;NumberUtil::HalfDownShiftedFactorial =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L624">			throw new java.lang.Exception (&quot;NumberUtil::HalfDownShiftedFactorial =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L615">		double halfDownShiftedFactorial = java.lang.Math.sqrt (java.lang.Math.PI);</span>
+<span class="nc" id="L627">		double halfDownShiftedFactorial = java.lang.Math.sqrt (java.lang.Math.PI);</span>
 
-<span class="nc bnc" id="L617" title="All 2 branches missed.">		for (double index = 1; index &lt; n; ++index)</span>
+<span class="nc bnc" id="L629" title="All 2 branches missed.">		for (double index = 1; index &lt; n; ++index)</span>
 		{
-<span class="nc" id="L619">			halfDownShiftedFactorial = halfDownShiftedFactorial * (index + 0.5);</span>
+<span class="nc" id="L631">			halfDownShiftedFactorial = halfDownShiftedFactorial * (index + 0.5);</span>
 		}
 
-<span class="nc" id="L622">		return halfDownShiftedFactorial;</span>
+<span class="nc" id="L634">		return halfDownShiftedFactorial;</span>
 	}
 
 	/**
@@ -636,19 +648,19 @@ package org.drip.numerical.common;
 		final int n)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L639" title="All 2 branches missed.">		if (-1 &gt;= n)</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">		if (-1 &gt;= n)</span>
 		{
-<span class="nc" id="L641">			throw new java.lang.Exception (&quot;NumberUtil::DoubleFactorial =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L653">			throw new java.lang.Exception (&quot;NumberUtil::DoubleFactorial =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L644">		double doubleFactorial = 1.;</span>
+<span class="nc" id="L656">		double doubleFactorial = 1.;</span>
 
-<span class="nc bnc" id="L646" title="All 2 branches missed.">		for (int index = 1; index &lt;= n; ++index)</span>
+<span class="nc bnc" id="L658" title="All 2 branches missed.">		for (int index = 1; index &lt;= n; ++index)</span>
 		{
-<span class="nc" id="L648">			doubleFactorial = doubleFactorial * (2. * n - 1.);</span>
+<span class="nc" id="L660">			doubleFactorial = doubleFactorial * (2. * n - 1.);</span>
 		}
 
-<span class="nc" id="L651">		return doubleFactorial;</span>
+<span class="nc" id="L663">		return doubleFactorial;</span>
 	}
 
 	/**
@@ -667,24 +679,24 @@ package org.drip.numerical.common;
 		final int k)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L670" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 &gt; k)</span>
+<span class="nc bnc" id="L682" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 &gt; k)</span>
 		{
-<span class="nc" id="L672">			throw new java.lang.Exception (&quot;NumberUtil::RisingPochhammerSymbol =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L684">			throw new java.lang.Exception (&quot;NumberUtil::RisingPochhammerSymbol =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L675" title="All 2 branches missed.">		if (0 == k)</span>
+<span class="nc bnc" id="L687" title="All 2 branches missed.">		if (0 == k)</span>
 		{
-<span class="nc" id="L677">			return 1.;</span>
+<span class="nc" id="L689">			return 1.;</span>
 		}
 
-<span class="nc" id="L680">		double pochhammerSymbol = s;</span>
+<span class="nc" id="L692">		double pochhammerSymbol = s;</span>
 
-<span class="nc bnc" id="L682" title="All 2 branches missed.">		for (int index = 1; index &lt; k; ++index)</span>
+<span class="nc bnc" id="L694" title="All 2 branches missed.">		for (int index = 1; index &lt; k; ++index)</span>
 		{
-<span class="nc" id="L684">			pochhammerSymbol = pochhammerSymbol * (s + index);</span>
+<span class="nc" id="L696">			pochhammerSymbol = pochhammerSymbol * (s + index);</span>
 		}
 
-<span class="nc" id="L687">		return pochhammerSymbol;</span>
+<span class="nc" id="L699">		return pochhammerSymbol;</span>
 	}
 
 	/**
@@ -703,19 +715,19 @@ package org.drip.numerical.common;
 		final int k)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L706" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 &gt; k)</span>
+<span class="nc bnc" id="L718" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0 &gt; k)</span>
 		{
-<span class="nc" id="L708">			throw new java.lang.Exception (&quot;NumberUtil::PochhammerSymbol =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L720">			throw new java.lang.Exception (&quot;NumberUtil::PochhammerSymbol =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L711">		double pochhammerSymbol = s;</span>
+<span class="nc" id="L723">		double pochhammerSymbol = s;</span>
 
-<span class="nc bnc" id="L713" title="All 2 branches missed.">		for (int index = 1; index &lt; k; ++index)</span>
+<span class="nc bnc" id="L725" title="All 2 branches missed.">		for (int index = 1; index &lt; k; ++index)</span>
 		{
-<span class="nc" id="L715">			pochhammerSymbol = pochhammerSymbol * (s + index);</span>
+<span class="nc" id="L727">			pochhammerSymbol = pochhammerSymbol * (s + index);</span>
 		}
 
-<span class="nc" id="L718">		return pochhammerSymbol;</span>
+<span class="nc" id="L730">		return pochhammerSymbol;</span>
 	}
 
 	/**
@@ -732,14 +744,14 @@ package org.drip.numerical.common;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L735" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L747" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 		{
-<span class="nc" id="L737">			throw new java.lang.Exception (&quot;NumberUtil::IsInteger =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L749">			throw new java.lang.Exception (&quot;NumberUtil::IsInteger =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L740">		double absoluteZ = java.lang.Math.abs (z);</span>
+<span class="nc" id="L752">		double absoluteZ = java.lang.Math.abs (z);</span>
 
-<span class="nc bnc" id="L742" title="All 2 branches missed.">		return 0. == absoluteZ - (int) absoluteZ;</span>
+<span class="nc bnc" id="L754" title="All 2 branches missed.">		return 0. == absoluteZ - (int) absoluteZ;</span>
 	}
 
 	/**
@@ -756,7 +768,7 @@ package org.drip.numerical.common;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L759" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &gt; 0.;</span>
+<span class="nc bnc" id="L771" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &gt; 0.;</span>
 	}
 
 	/**
@@ -773,7 +785,7 @@ package org.drip.numerical.common;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L776" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &lt;= 0.;</span>
+<span class="nc bnc" id="L788" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &lt;= 0.;</span>
 	}
 
 	/**
@@ -790,7 +802,7 @@ package org.drip.numerical.common;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L793" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &lt; 0.;</span>
+<span class="nc bnc" id="L805" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &lt; 0.;</span>
 	}
 
 	/**
@@ -807,7 +819,7 @@ package org.drip.numerical.common;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L810" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &gt;= 0.;</span>
+<span class="nc bnc" id="L822" title="All 4 branches missed.">		return IsInteger (z) &amp;&amp; z &gt;= 0.;</span>
 	}
 
 	/**
@@ -824,12 +836,12 @@ package org.drip.numerical.common;
 		final double z)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L827" title="All 2 branches missed.">		if (!IsValid (z))</span>
+<span class="nc bnc" id="L839" title="All 2 branches missed.">		if (!IsValid (z))</span>
 		{
-<span class="nc" id="L829">			throw new java.lang.Exception (&quot;NumberUtil::Sign =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L841">			throw new java.lang.Exception (&quot;NumberUtil::Sign =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L832" title="All 2 branches missed.">		return 0. == z ? 1. : java.lang.Math.abs (z) / z;</span>
+<span class="nc bnc" id="L844" title="All 2 branches missed.">		return 0. == z ? 1. : java.lang.Math.abs (z) / z;</span>
 	}
 
 	/**
@@ -843,30 +855,30 @@ package org.drip.numerical.common;
 	public static final boolean NormalizedPositive (
 		final double[] array)
 	{
-<span class="nc bnc" id="L846" title="All 2 branches missed.">		if (null == array)</span>
+<span class="nc bnc" id="L858" title="All 2 branches missed.">		if (null == array)</span>
 		{
-<span class="nc" id="L848">			return false;</span>
+<span class="nc" id="L860">			return false;</span>
 		}
 
-<span class="nc" id="L851">		double sum = 0.;</span>
-<span class="nc" id="L852">		int size = array.length;</span>
+<span class="nc" id="L863">		double sum = 0.;</span>
+<span class="nc" id="L864">		int size = array.length;</span>
 
-<span class="nc bnc" id="L854" title="All 2 branches missed.">		if (0 == size)</span>
+<span class="nc bnc" id="L866" title="All 2 branches missed.">		if (0 == size)</span>
 		{
-<span class="nc" id="L856">			return false;</span>
+<span class="nc" id="L868">			return false;</span>
 		}
 
-<span class="nc bnc" id="L859" title="All 2 branches missed.">		for (int index = 0; index &lt; size; ++index)</span>
+<span class="nc bnc" id="L871" title="All 2 branches missed.">		for (int index = 0; index &lt; size; ++index)</span>
 		{
-<span class="nc bnc" id="L861" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (array[index]) || 0. &gt;= array[index])</span>
+<span class="nc bnc" id="L873" title="All 4 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (array[index]) || 0. &gt;= array[index])</span>
 			{
-<span class="nc" id="L863">				return false;</span>
+<span class="nc" id="L875">				return false;</span>
 			}
 
-<span class="nc" id="L866">			sum = sum + array[index];</span>
+<span class="nc" id="L878">			sum = sum + array[index];</span>
 		}
 
-<span class="nc bnc" id="L869" title="All 2 branches missed.">		return 1. == sum;</span>
+<span class="nc bnc" id="L881" title="All 2 branches missed.">		return 1. == sum;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

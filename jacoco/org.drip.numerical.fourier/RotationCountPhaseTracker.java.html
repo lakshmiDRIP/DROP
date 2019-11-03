@@ -6,6 +6,7 @@ package org.drip.numerical.fourier;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.numerical.fourier;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -75,10 +87,10 @@ package org.drip.numerical.fourier;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical&quot;&gt;Numerical Analysis&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier&quot;&gt;Specific Fourier Transform Functionality - Rotation Counter, Phase Adjuster&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md&quot;&gt;Numerical Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md&quot;&gt;Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/fourier/README.md&quot;&gt;Specific Fourier Transform Functionality - Rotation Counter, Phase Adjuster&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -105,17 +117,17 @@ public class RotationCountPhaseTracker {
 
 	public static final int APPLY_FORWARD = 2;
 
-<span class="fc" id="L108">	private int _iRotationDirection = APPLY_NONE;</span>
-<span class="fc" id="L109">	private double _dblPreviousPhase = java.lang.Double.NaN;</span>
+<span class="fc" id="L120">	private int _iRotationDirection = APPLY_NONE;</span>
+<span class="fc" id="L121">	private double _dblPreviousPhase = java.lang.Double.NaN;</span>
 
 	/**
 	 * Empty RotationCountPhaseTracker constructor - Initialize to &quot;NO ROTATION COUNT&quot;
 	 */
 
 	public RotationCountPhaseTracker()
-<span class="fc" id="L116">	{</span>
-<span class="fc" id="L117">		_iRotationDirection = APPLY_NONE;</span>
-<span class="fc" id="L118">	}</span>
+<span class="fc" id="L128">	{</span>
+<span class="fc" id="L129">		_iRotationDirection = APPLY_NONE;</span>
+<span class="fc" id="L130">	}</span>
 
 	/**
 	 * Set the Direction on which the rotation count is to be applied
@@ -128,8 +140,8 @@ public class RotationCountPhaseTracker {
 	public boolean setDirection (
 		final int iRotationDirection)
 	{
-<span class="fc" id="L131">		_iRotationDirection = iRotationDirection;</span>
-<span class="fc" id="L132">		return true;</span>
+<span class="fc" id="L143">		_iRotationDirection = iRotationDirection;</span>
+<span class="fc" id="L144">		return true;</span>
 	}
 
 	/**
@@ -140,7 +152,7 @@ public class RotationCountPhaseTracker {
 
 	public int getDirection()
 	{
-<span class="nc" id="L143">		return _iRotationDirection;</span>
+<span class="nc" id="L155">		return _iRotationDirection;</span>
 	}
 
 	/**
@@ -154,10 +166,10 @@ public class RotationCountPhaseTracker {
 	public boolean setPreviousPhase (
 		final double dblPreviousPhase)
 	{
-<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPreviousPhase)) return false;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPreviousPhase)) return false;</span>
 
-<span class="nc" id="L159">		_dblPreviousPhase = dblPreviousPhase;</span>
-<span class="nc" id="L160">		return true;</span>
+<span class="nc" id="L171">		_dblPreviousPhase = dblPreviousPhase;</span>
+<span class="nc" id="L172">		return true;</span>
 	}
 
 	/**
@@ -168,7 +180,7 @@ public class RotationCountPhaseTracker {
 
 	public double getPreviousPhase()
 	{
-<span class="fc" id="L171">		return _dblPreviousPhase;</span>
+<span class="fc" id="L183">		return _dblPreviousPhase;</span>
 	}
 
 	/**
@@ -188,23 +200,23 @@ public class RotationCountPhaseTracker {
 		final boolean bApply)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCurrentPhase))</span>
-<span class="nc" id="L192">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCurrentPhase))</span>
+<span class="nc" id="L204">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L194">		double dblUpdatedPhase = dblCurrentPhase;</span>
+<span class="fc" id="L206">		double dblUpdatedPhase = dblCurrentPhase;</span>
 
-<span class="fc bfc" id="L196" title="All 2 branches covered.">		if (APPLY_FORWARD == _iRotationDirection) {</span>
-<span class="fc bfc" id="L197" title="All 2 branches covered.">			while (dblUpdatedPhase &lt; _dblPreviousPhase)</span>
-<span class="fc" id="L198">				dblUpdatedPhase += 2. * java.lang.Math.PI;</span>
-<span class="pc bpc" id="L199" title="1 of 2 branches missed.">		} else if (APPLY_BACKWARD == _iRotationDirection) {</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">			while (dblUpdatedPhase &gt; _dblPreviousPhase)</span>
-<span class="nc" id="L201">				dblUpdatedPhase -= 2. * java.lang.Math.PI;</span>
-<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		} else if (APPLY_NONE != _iRotationDirection)</span>
-<span class="nc" id="L203">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid State&quot;);</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		if (APPLY_FORWARD == _iRotationDirection) {</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">			while (dblUpdatedPhase &lt; _dblPreviousPhase)</span>
+<span class="fc" id="L210">				dblUpdatedPhase += 2. * java.lang.Math.PI;</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		} else if (APPLY_BACKWARD == _iRotationDirection) {</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">			while (dblUpdatedPhase &gt; _dblPreviousPhase)</span>
+<span class="nc" id="L213">				dblUpdatedPhase -= 2. * java.lang.Math.PI;</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">		} else if (APPLY_NONE != _iRotationDirection)</span>
+<span class="nc" id="L215">			throw new java.lang.Exception (&quot;RotationCountPhaseTracker::updateAndApply =&gt; Invalid State&quot;);</span>
 
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (bApply) _dblPreviousPhase = dblUpdatedPhase;</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (bApply) _dblPreviousPhase = dblUpdatedPhase;</span>
 
-<span class="fc" id="L207">		return dblUpdatedPhase;</span>
+<span class="fc" id="L219">		return dblUpdatedPhase;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
