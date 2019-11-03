@@ -29,7 +29,7 @@ DROP Measure implements R<sup>d</sup> Continuous/Discrete Probability Measures.
  DROP Measure Dynamics implements Jump Diffusion Evolution Evaluator Variants.
 
  * [***Gaussian***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian)
- DROP Measure Gaussian implements R<sup>1/sup> R<sup>d</sup> Covariant Gaussian Quadrature.
+ DROP Measure Gaussian implements R<sup>1</sup> R<sup>d</sup> Covariant Gaussian Quadrature.
 
  * [***Joint***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/joint)
  DROP Measure Joint implements R<sup>d</sup> Vertex Edge Realization Evolution.
