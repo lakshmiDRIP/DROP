@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,9 +84,9 @@ package org.drip.portfolioconstruction.allocator;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator&quot;&gt;Allocator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/README.md&quot;&gt;MVO Based Portfolio Allocation Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -82,10 +94,10 @@ package org.drip.portfolioconstruction.allocator;
 
 public class PortfolioConstructionParameters
 {
-<span class="fc" id="L85">	private java.lang.String[] _assetIDArray = null;</span>
-<span class="fc" id="L86">	private org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings _customRiskUtilitySettings =</span>
+<span class="fc" id="L97">	private java.lang.String[] _assetIDArray = null;</span>
+<span class="fc" id="L98">	private org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings _customRiskUtilitySettings =</span>
 		null;
-<span class="fc" id="L88">	private org.drip.portfolioconstruction.allocator.EqualityConstraintSettings</span>
+<span class="fc" id="L100">	private org.drip.portfolioconstruction.allocator.EqualityConstraintSettings</span>
 		_equalityConstraintSettings = null;
 
 	/**
@@ -103,14 +115,14 @@ public class PortfolioConstructionParameters
 		final org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings,
 		final org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings)
 		throws java.lang.Exception
-<span class="fc" id="L106">	{</span>
-<span class="pc bpc" id="L107" title="4 of 8 branches missed.">		if (null == (_assetIDArray = assetIDArray) || 0 == _assetIDArray.length ||</span>
+<span class="fc" id="L118">	{</span>
+<span class="pc bpc" id="L119" title="4 of 8 branches missed.">		if (null == (_assetIDArray = assetIDArray) || 0 == _assetIDArray.length ||</span>
 			null == (_customRiskUtilitySettings = customRiskUtilitySettings) ||
 			null == (_equalityConstraintSettings = equalityConstraintSettings))
 		{
-<span class="nc" id="L111">			throw new java.lang.Exception (&quot;PortfolioConstructionParameters Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L123">			throw new java.lang.Exception (&quot;PortfolioConstructionParameters Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L125">	}</span>
 
 	/**
 	 * Retrieve the Asset ID Array
@@ -120,7 +132,7 @@ public class PortfolioConstructionParameters
 
 	public java.lang.String[] assetIDArray()
 	{
-<span class="fc" id="L123">		return _assetIDArray;</span>
+<span class="fc" id="L135">		return _assetIDArray;</span>
 	}
 
 	/**
@@ -131,7 +143,7 @@ public class PortfolioConstructionParameters
 
 	public org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings customRiskUtilitySettings()
 	{
-<span class="fc" id="L134">		return _customRiskUtilitySettings;</span>
+<span class="fc" id="L146">		return _customRiskUtilitySettings;</span>
 	}
 
 	/**
@@ -142,7 +154,7 @@ public class PortfolioConstructionParameters
 
 	public org.drip.portfolioconstruction.allocator.EqualityConstraintSettings equalityConstraintSettings()
 	{
-<span class="fc" id="L145">		return _equalityConstraintSettings;</span>
+<span class="fc" id="L157">		return _equalityConstraintSettings;</span>
 	}
 
 	/**
@@ -155,17 +167,17 @@ public class PortfolioConstructionParameters
 	{
 		try
 		{
-<span class="fc" id="L158">			return new org.drip.function.rdtor1.AffineMultivariate (</span>
-<span class="fc" id="L159">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Unitary (_assetIDArray.length),</span>
+<span class="fc" id="L170">			return new org.drip.function.rdtor1.AffineMultivariate (</span>
+<span class="fc" id="L171">				org.drip.function.rdtor1.ObjectiveConstraintVariateSet.Unitary (_assetIDArray.length),</span>
 				-1.
 			);
 		}
-<span class="nc" id="L163">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L175">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L165">			e.printStackTrace();</span>
+<span class="nc" id="L177">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L168">		return null;</span>
+<span class="nc" id="L180">		return null;</span>
 	}
 
 	/**
@@ -180,40 +192,40 @@ public class PortfolioConstructionParameters
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (null == assetUniverseStatisticalProperties)</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">		if (null == assetUniverseStatisticalProperties)</span>
 		{
-<span class="nc" id="L185">			return null;</span>
+<span class="nc" id="L197">			return null;</span>
 		}
 
-<span class="fc" id="L188">		int assetCount = _assetIDArray.length;</span>
-<span class="fc" id="L189">		double[] assetReturnsArray = new double[assetCount];</span>
+<span class="fc" id="L200">		int assetCount = _assetIDArray.length;</span>
+<span class="fc" id="L201">		double[] assetReturnsArray = new double[assetCount];</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="fc" id="L193">			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =</span>
-<span class="fc" id="L194">				assetUniverseStatisticalProperties.assetStatisticalProperties (_assetIDArray[assetIndex]);</span>
+<span class="fc" id="L205">			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =</span>
+<span class="fc" id="L206">				assetUniverseStatisticalProperties.assetStatisticalProperties (_assetIDArray[assetIndex]);</span>
 
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">			if (null == assetStatisticalProperties)</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">			if (null == assetStatisticalProperties)</span>
 			{
-<span class="nc" id="L198">				return null;</span>
+<span class="nc" id="L210">				return null;</span>
 			}
 
-<span class="fc" id="L201">			assetReturnsArray[assetIndex] = assetStatisticalProperties.expectedReturn();</span>
+<span class="fc" id="L213">			assetReturnsArray[assetIndex] = assetStatisticalProperties.expectedReturn();</span>
 		}
 
 		try
 		{
-<span class="fc" id="L206">			return new org.drip.function.rdtor1.AffineMultivariate (</span>
+<span class="fc" id="L218">			return new org.drip.function.rdtor1.AffineMultivariate (</span>
 				assetReturnsArray,
-<span class="fc" id="L208">				-1. * _equalityConstraintSettings.returnsConstraint()</span>
+<span class="fc" id="L220">				-1. * _equalityConstraintSettings.returnsConstraint()</span>
 			);
 		}
-<span class="nc" id="L211">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L223">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L213">			e.printStackTrace();</span>
+<span class="nc" id="L225">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L216">		return null;</span>
+<span class="nc" id="L228">		return null;</span>
 	}
 
 	/**
@@ -230,51 +242,51 @@ public class PortfolioConstructionParameters
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
-<span class="fc" id="L233">		int constraintType = _equalityConstraintSettings.constraintType();</span>
+<span class="fc" id="L245">		int constraintType = _equalityConstraintSettings.constraintType();</span>
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.NO_CONSTRAINT ==</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">		if (org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.NO_CONSTRAINT ==</span>
 			constraintType)
 		{
-<span class="fc" id="L238">			return null;</span>
+<span class="fc" id="L250">			return null;</span>
 		}
 
-<span class="fc" id="L241">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; rdToR1ConstraintList = new</span>
+<span class="fc" id="L253">		java.util.List&lt;org.drip.function.definition.RdToR1&gt; rdToR1ConstraintList = new</span>
 			java.util.ArrayList&lt;org.drip.function.definition.RdToR1&gt;();
 
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">		if (0 !=</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">		if (0 !=</span>
 			(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
 			&amp; constraintType))
 		{
-<span class="fc" id="L248">			rdToR1ConstraintList.add (fullyInvestedConstraint());</span>
+<span class="fc" id="L260">			rdToR1ConstraintList.add (fullyInvestedConstraint());</span>
 		}
 
-<span class="fc bfc" id="L251" title="All 2 branches covered.">		if (0 !=</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		if (0 !=</span>
 			(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT
 			&amp; constraintType))
 		{
-<span class="fc" id="L255">			org.drip.function.definition.RdToR1 rdToR1ReturnsConstraint = returnsConstraint (</span>
+<span class="fc" id="L267">			org.drip.function.definition.RdToR1 rdToR1ReturnsConstraint = returnsConstraint (</span>
 				assetUniverseStatisticalProperties
 			);
 
-<span class="pc bpc" id="L259" title="1 of 2 branches missed.">			if (null == rdToR1ReturnsConstraint)</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">			if (null == rdToR1ReturnsConstraint)</span>
 			{
-<span class="nc" id="L261">				return null;</span>
+<span class="nc" id="L273">				return null;</span>
 			}
 
-<span class="fc" id="L264">			rdToR1ConstraintList.add (rdToR1ReturnsConstraint);</span>
+<span class="fc" id="L276">			rdToR1ConstraintList.add (rdToR1ReturnsConstraint);</span>
 		}
 
-<span class="fc" id="L267">		int constraintCount = rdToR1ConstraintList.size();</span>
+<span class="fc" id="L279">		int constraintCount = rdToR1ConstraintList.size();</span>
 
-<span class="fc" id="L269">		org.drip.function.definition.RdToR1[] equalityConstraintArray =</span>
+<span class="fc" id="L281">		org.drip.function.definition.RdToR1[] equalityConstraintArray =</span>
 			new org.drip.function.definition.RdToR1[constraintCount];
 
-<span class="fc bfc" id="L272" title="All 2 branches covered.">		for (int constraintIndex = 0; constraintIndex &lt; constraintCount; ++constraintIndex)</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		for (int constraintIndex = 0; constraintIndex &lt; constraintCount; ++constraintIndex)</span>
 		{
-<span class="fc" id="L274">			equalityConstraintArray[constraintIndex] = rdToR1ConstraintList.get (constraintIndex);</span>
+<span class="fc" id="L286">			equalityConstraintArray[constraintIndex] = rdToR1ConstraintList.get (constraintIndex);</span>
 		}
 
-<span class="fc" id="L277">		return equalityConstraintArray;</span>
+<span class="fc" id="L289">		return equalityConstraintArray;</span>
 	}
 
 	/**
@@ -285,9 +297,9 @@ public class PortfolioConstructionParameters
 
 	public double[] equalityConstraintRHS()
 	{
-<span class="nc" id="L288">		double returnsConstraint = _equalityConstraintSettings.returnsConstraint();</span>
+<span class="nc" id="L300">		double returnsConstraint = _equalityConstraintSettings.returnsConstraint();</span>
 
-<span class="nc bnc" id="L290" title="All 2 branches missed.">		return org.drip.numerical.common.NumberUtil.IsValid (returnsConstraint) ? new double[] {</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		return org.drip.numerical.common.NumberUtil.IsValid (returnsConstraint) ? new double[] {</span>
 			1.,
 			returnsConstraint
 		} : new double[] {

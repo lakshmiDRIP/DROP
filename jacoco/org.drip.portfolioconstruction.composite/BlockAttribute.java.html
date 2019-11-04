@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.composite;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,9 +83,9 @@ package org.drip.portfolioconstruction.composite;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/composite&quot;&gt;Composite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/composite/README.md&quot;&gt;Portfolio Construction Component Groups Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -81,7 +93,7 @@ package org.drip.portfolioconstruction.composite;
 
 public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 {
-<span class="nc" id="L84">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _attributeMap =</span>
+<span class="nc" id="L96">	private org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; _attributeMap =</span>
 		new org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
 	/**
@@ -100,12 +112,12 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 		final java.lang.String description)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L103">		super (</span>
+<span class="nc" id="L115">		super (</span>
 			name,
 			id,
 			description
 		);
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L120">	}</span>
 
 	/**
 	 * Add an Asset's Attribute
@@ -120,18 +132,18 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 		final java.lang.String assetID,
 		final double attribute)
 	{
-<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == assetID || assetID.isEmpty() ||</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (attribute))</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (null == assetID || assetID.isEmpty() ||</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (attribute))</span>
 		{
-<span class="nc" id="L126">			return false;</span>
+<span class="nc" id="L138">			return false;</span>
 		}
 
-<span class="nc" id="L129">		_attributeMap.put (</span>
+<span class="nc" id="L141">		_attributeMap.put (</span>
 			assetID,
-<span class="nc" id="L131">			attribute</span>
+<span class="nc" id="L143">			attribute</span>
 		);
 
-<span class="nc" id="L134">		return true;</span>
+<span class="nc" id="L146">		return true;</span>
 	}
 
 	/**
@@ -145,7 +157,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 	public boolean contains (
 		final java.lang.String assetID)
 	{
-<span class="nc bnc" id="L148" title="All 4 branches missed.">		return null != assetID &amp;&amp; !_attributeMap.containsKey (assetID);</span>
+<span class="nc bnc" id="L160" title="All 4 branches missed.">		return null != assetID &amp;&amp; !_attributeMap.containsKey (assetID);</span>
 	}
 
 	/**
@@ -162,12 +174,12 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 		final java.lang.String assetID)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L165" title="All 6 branches missed.">		if (null == assetID || assetID.isEmpty() || !_attributeMap.containsKey (assetID))</span>
+<span class="nc bnc" id="L177" title="All 6 branches missed.">		if (null == assetID || assetID.isEmpty() || !_attributeMap.containsKey (assetID))</span>
 		{
-<span class="nc" id="L167">			throw new java.lang.Exception (&quot;BlockAttribute::attribute =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L179">			throw new java.lang.Exception (&quot;BlockAttribute::attribute =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L170">		return _attributeMap.get (assetID);</span>
+<span class="nc" id="L182">		return _attributeMap.get (assetID);</span>
 	}
 
 	/**
@@ -178,7 +190,7 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; attribute()
 	{
-<span class="nc" id="L181">		return _attributeMap;</span>
+<span class="nc" id="L193">		return _attributeMap;</span>
 	}
 
 	/**
@@ -192,49 +204,49 @@ public class BlockAttribute extends org.drip.portfolioconstruction.core.Block
 	public double[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdings)
 	{
-<span class="nc bnc" id="L195" title="All 2 branches missed.">		if (null == holdings)</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (null == holdings)</span>
 		{
-<span class="nc" id="L197">			return null;</span>
+<span class="nc" id="L209">			return null;</span>
 		}
 
-<span class="nc" id="L200">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdings.assetIDSet();</span>
+<span class="nc" id="L212">		java.util.Set&lt;java.lang.String&gt; assetIDSet = holdings.assetIDSet();</span>
 
-<span class="nc" id="L202">		java.util.List&lt;java.lang.Double&gt; attributeValueList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L214">		java.util.List&lt;java.lang.Double&gt; attributeValueList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc bnc" id="L204" title="All 2 branches missed.">		for (java.lang.String assetID : assetIDSet)</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		for (java.lang.String assetID : assetIDSet)</span>
 		{
 			try
 			{
-<span class="nc" id="L208">				attributeValueList.add (</span>
-<span class="nc" id="L209">					value (</span>
+<span class="nc" id="L220">				attributeValueList.add (</span>
+<span class="nc" id="L221">					value (</span>
 						assetID
 					)
 				);
 			}
-<span class="nc" id="L214">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L226">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L216">				e.printStackTrace();</span>
+<span class="nc" id="L228">				e.printStackTrace();</span>
 
-<span class="nc" id="L218">				return null;</span>
-<span class="nc" id="L219">			}</span>
-<span class="nc" id="L220">		}</span>
+<span class="nc" id="L230">				return null;</span>
+<span class="nc" id="L231">			}</span>
+<span class="nc" id="L232">		}</span>
 
-<span class="nc" id="L222">		int assetCount = assetIDSet.size();</span>
+<span class="nc" id="L234">		int assetCount = assetIDSet.size();</span>
 
-<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (attributeValueList.size() != assetCount)</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (attributeValueList.size() != assetCount)</span>
 		{
-<span class="nc" id="L226">			return null;</span>
+<span class="nc" id="L238">			return null;</span>
 		}
 
-<span class="nc" id="L229">		int assetIndex = 0;</span>
-<span class="nc" id="L230">		double[] assetAttributeValueArray = new double[assetCount];</span>
+<span class="nc" id="L241">		int assetIndex = 0;</span>
+<span class="nc" id="L242">		double[] assetAttributeValueArray = new double[assetCount];</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (double assetAttributeValue : attributeValueList)</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (double assetAttributeValue : attributeValueList)</span>
 		{
-<span class="nc" id="L234">			assetAttributeValueArray[assetIndex++] = assetAttributeValue;</span>
-<span class="nc" id="L235">		}</span>
+<span class="nc" id="L246">			assetAttributeValueArray[assetIndex++] = assetAttributeValue;</span>
+<span class="nc" id="L247">		}</span>
 
-<span class="nc" id="L237">		return assetAttributeValueArray;</span>
+<span class="nc" id="L249">		return assetAttributeValueArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

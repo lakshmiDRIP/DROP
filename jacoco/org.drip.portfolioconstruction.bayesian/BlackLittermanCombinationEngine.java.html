@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -86,9 +98,9 @@ package org.drip.portfolioconstruction.bayesian;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian/README.md&quot;&gt;Black Litterman Bayesian Portfolio Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -96,36 +108,36 @@ package org.drip.portfolioconstruction.bayesian;
 
 public class BlackLittermanCombinationEngine
 {
-<span class="fc" id="L99">	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _projectionSpecification = null;</span>
-<span class="fc" id="L100">	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _priorControlSpecification =</span>
+<span class="fc" id="L111">	private org.drip.portfolioconstruction.bayesian.ProjectionSpecification _projectionSpecification = null;</span>
+<span class="fc" id="L112">	private org.drip.portfolioconstruction.bayesian.PriorControlSpecification _priorControlSpecification =</span>
 		null;
-<span class="fc" id="L102">	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput</span>
+<span class="fc" id="L114">	private org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput</span>
 		_forwardReverseOptimizationOutputUnadjusted = null;
 
 	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution
 		scopingProjectionVariateDistribution()
 	{
-<span class="fc" id="L108">		double[][] assetExcessReturnsCovarianceMatrix =</span>
-<span class="fc" id="L109">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
+<span class="fc" id="L120">		double[][] assetExcessReturnsCovarianceMatrix =</span>
+<span class="fc" id="L121">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
 
-<span class="fc" id="L111">		double[] priorExpectedAssetReturnsArray =</span>
-<span class="fc" id="L112">			_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray();</span>
+<span class="fc" id="L123">		double[] priorExpectedAssetReturnsArray =</span>
+<span class="fc" id="L124">			_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray();</span>
 
-<span class="fc" id="L114">		int assetCount = assetExcessReturnsCovarianceMatrix.length;</span>
-<span class="fc" id="L115">		double[][] priorCovarianceMatrix = new double[assetCount][assetCount];</span>
+<span class="fc" id="L126">		int assetCount = assetExcessReturnsCovarianceMatrix.length;</span>
+<span class="fc" id="L127">		double[][] priorCovarianceMatrix = new double[assetCount][assetCount];</span>
 
-<span class="fc" id="L117">		double riskFreeRate = _priorControlSpecification.riskFreeRate();</span>
+<span class="fc" id="L129">		double riskFreeRate = _priorControlSpecification.riskFreeRate();</span>
 
-<span class="fc" id="L119">		double tau = _priorControlSpecification.tau();</span>
+<span class="fc" id="L131">		double tau = _priorControlSpecification.tau();</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">		for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">		for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
 		{
-<span class="fc" id="L123">			priorExpectedAssetReturnsArray[assetIndexI] = priorExpectedAssetReturnsArray[assetIndexI] +</span>
+<span class="fc" id="L135">			priorExpectedAssetReturnsArray[assetIndexI] = priorExpectedAssetReturnsArray[assetIndexI] +</span>
 				riskFreeRate;
 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">			for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
 			{
-<span class="fc" id="L128">				priorCovarianceMatrix[assetIndexI][assetIndexJ] =</span>
+<span class="fc" id="L140">				priorCovarianceMatrix[assetIndexI][assetIndexJ] =</span>
 					assetExcessReturnsCovarianceMatrix[assetIndexI][assetIndexJ] * tau;
 			}
 		}
@@ -133,51 +145,51 @@ public class BlackLittermanCombinationEngine
 		try
 		{
 			org.drip.measure.bayesian.ScopingProjectionVariateDistribution
-<span class="fc" id="L136">				scopingProjectionVariateDistribution =</span>
+<span class="fc" id="L148">				scopingProjectionVariateDistribution =</span>
 					new org.drip.measure.bayesian.ScopingProjectionVariateDistribution (
-<span class="fc" id="L138">						org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
-<span class="fc" id="L139">							_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta(),</span>
+<span class="fc" id="L150">						org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L151">							_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta(),</span>
 							priorExpectedAssetReturnsArray,
 							priorCovarianceMatrix
 						)
 					);
 
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">			return scopingProjectionVariateDistribution.addProjectionDistributionLoading (</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			return scopingProjectionVariateDistribution.addProjectionDistributionLoading (</span>
 				&quot;VIEW&quot;,
 				new org.drip.measure.bayesian.ProjectionDistributionLoading (
-<span class="fc" id="L148">					_projectionSpecification.excessReturnsDistribution(),</span>
-<span class="fc" id="L149">					_projectionSpecification.assetSpaceLoadingMatrix()</span>
+<span class="fc" id="L160">					_projectionSpecification.excessReturnsDistribution(),</span>
+<span class="fc" id="L161">					_projectionSpecification.assetSpaceLoadingMatrix()</span>
 				)
 			) ? scopingProjectionVariateDistribution : null;
 		}
-<span class="nc" id="L153">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L165">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L155">			e.printStackTrace();</span>
+<span class="nc" id="L167">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L158">		return null;</span>
+<span class="nc" id="L170">		return null;</span>
 	}
 
 	private double[] allocationTiltArray (
 		final org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
 			forwardReverseOptimizationOutputAdjusted)
 	{
-<span class="fc" id="L165">		double[] adjustedWeightArray =</span>
-<span class="fc" id="L166">			forwardReverseOptimizationOutputAdjusted.optimalPortfolio().weightArray();</span>
+<span class="fc" id="L177">		double[] adjustedWeightArray =</span>
+<span class="fc" id="L178">			forwardReverseOptimizationOutputAdjusted.optimalPortfolio().weightArray();</span>
 
-<span class="fc" id="L168">		double[] unAdjustedWeightArray =</span>
-<span class="fc" id="L169">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray();</span>
+<span class="fc" id="L180">		double[] unAdjustedWeightArray =</span>
+<span class="fc" id="L181">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray();</span>
 
-<span class="fc" id="L171">		int assetCount = unAdjustedWeightArray.length;</span>
-<span class="fc" id="L172">		double[] allocationTiltArray = new double[assetCount];</span>
+<span class="fc" id="L183">		int assetCount = unAdjustedWeightArray.length;</span>
+<span class="fc" id="L184">		double[] allocationTiltArray = new double[assetCount];</span>
 
-<span class="fc bfc" id="L174" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="fc" id="L176">			allocationTiltArray[assetIndex] = adjustedWeightArray[assetIndex] -</span>
+<span class="fc" id="L188">			allocationTiltArray[assetIndex] = adjustedWeightArray[assetIndex] -</span>
 				unAdjustedWeightArray[assetIndex];
 		}
 
-<span class="fc" id="L180">		return allocationTiltArray;</span>
+<span class="fc" id="L192">		return allocationTiltArray;</span>
 	}
 
 	/**
@@ -197,15 +209,15 @@ public class BlackLittermanCombinationEngine
 		final org.drip.portfolioconstruction.bayesian.PriorControlSpecification priorControlSpecification,
 		final org.drip.portfolioconstruction.bayesian.ProjectionSpecification projectionSpecification)
 		throws java.lang.Exception
-<span class="fc" id="L200">	{</span>
-<span class="pc bpc" id="L201" title="3 of 6 branches missed.">		if (null == (_forwardReverseOptimizationOutputUnadjusted =</span>
+<span class="fc" id="L212">	{</span>
+<span class="pc bpc" id="L213" title="3 of 6 branches missed.">		if (null == (_forwardReverseOptimizationOutputUnadjusted =</span>
 				forwardReverseOptimizationOutputUnadjusted) ||
 			null == (_priorControlSpecification = priorControlSpecification) ||
 			null == (_projectionSpecification = projectionSpecification))
 		{
-<span class="nc" id="L206">			throw new java.lang.Exception (&quot;BlackLittermanCombinationEngine Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L218">			throw new java.lang.Exception (&quot;BlackLittermanCombinationEngine Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L208">	}</span>
+<span class="fc" id="L220">	}</span>
 
 	/**
 	 * Conduct a Black Litterman Run using a Theil-like Mixed Model Estimator for 0% Confidence in the
@@ -216,48 +228,48 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput noConfidenceRun()
 	{
-<span class="nc" id="L219">		double tau = _priorControlSpecification.tau();</span>
+<span class="nc" id="L231">		double tau = _priorControlSpecification.tau();</span>
 
-<span class="nc" id="L221">		double[][] assetExcessReturnsCovarianceMatrix =</span>
-<span class="nc" id="L222">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
+<span class="nc" id="L233">		double[][] assetExcessReturnsCovarianceMatrix =</span>
+<span class="nc" id="L234">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
 
-<span class="nc" id="L224">		int assetCount = assetExcessReturnsCovarianceMatrix.length;</span>
-<span class="nc" id="L225">		double[][] assetBayesianExcessReturnsCovarianceMatrix = new double[assetCount][assetCount];</span>
+<span class="nc" id="L236">		int assetCount = assetExcessReturnsCovarianceMatrix.length;</span>
+<span class="nc" id="L237">		double[][] assetBayesianExcessReturnsCovarianceMatrix = new double[assetCount][assetCount];</span>
 
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		for (int i = 0; i &lt; assetCount; ++i)</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">		for (int i = 0; i &lt; assetCount; ++i)</span>
 		{
-<span class="nc bnc" id="L229" title="All 2 branches missed.">			for (int j = 0; j &lt; assetCount; ++j)</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			for (int j = 0; j &lt; assetCount; ++j)</span>
 			{
-<span class="nc" id="L231">				assetBayesianExcessReturnsCovarianceMatrix[i][j] = assetExcessReturnsCovarianceMatrix[i][j] *</span>
+<span class="nc" id="L243">				assetBayesianExcessReturnsCovarianceMatrix[i][j] = assetExcessReturnsCovarianceMatrix[i][j] *</span>
 					tau;
 			}
 		}
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
-<span class="nc" id="L237">			forwardReverseOptimizationOutputAdjusted =</span>
-<span class="nc" id="L238">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
-<span class="nc" id="L239">					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().names(),</span>
-<span class="nc" id="L240">					_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray(),</span>
+<span class="nc" id="L249">			forwardReverseOptimizationOutputAdjusted =</span>
+<span class="nc" id="L250">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="nc" id="L251">					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().names(),</span>
+<span class="nc" id="L252">					_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray(),</span>
 					assetBayesianExcessReturnsCovarianceMatrix,
-<span class="nc" id="L242">					_forwardReverseOptimizationOutputUnadjusted.riskAversion()</span>
+<span class="nc" id="L254">					_forwardReverseOptimizationOutputUnadjusted.riskAversion()</span>
 				);
 
 		try
 		{
-<span class="nc bnc" id="L247" title="All 2 branches missed.">			return null == forwardReverseOptimizationOutputAdjusted ? null :</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">			return null == forwardReverseOptimizationOutputAdjusted ? null :</span>
 				new org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (
 					forwardReverseOptimizationOutputAdjusted,
-<span class="nc" id="L250">					allocationTiltArray (</span>
+<span class="nc" id="L262">					allocationTiltArray (</span>
 						forwardReverseOptimizationOutputAdjusted
 					)
 				);
 		}
-<span class="nc" id="L255">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L257">			e.printStackTrace();</span>
+<span class="nc" id="L269">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L260">		return null;</span>
+<span class="nc" id="L272">		return null;</span>
 	}
 
 	/**
@@ -269,70 +281,70 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceRun()
 	{
-<span class="fc" id="L272">		double[][] assetExcessReturnsCovarianceMatrix =</span>
-<span class="fc" id="L273">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
+<span class="fc" id="L284">		double[][] assetExcessReturnsCovarianceMatrix =</span>
+<span class="fc" id="L285">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
 
-<span class="fc" id="L275">		org.drip.measure.continuous.MultivariateMeta portfolioMeta =</span>
-<span class="fc" id="L276">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();</span>
+<span class="fc" id="L287">		org.drip.measure.continuous.MultivariateMeta portfolioMeta =</span>
+<span class="fc" id="L288">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();</span>
 
-<span class="fc" id="L278">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
-<span class="fc" id="L279">			scopingProjectionVariateDistribution();</span>
+<span class="fc" id="L290">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
+<span class="fc" id="L291">			scopingProjectionVariateDistribution();</span>
 
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
+<span class="pc bpc" id="L293" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
 		{
-<span class="nc" id="L283">			return null;</span>
+<span class="nc" id="L295">			return null;</span>
 		}
 
-<span class="fc" id="L286">		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =</span>
-<span class="fc" id="L287">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (</span>
+<span class="fc" id="L298">		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =</span>
+<span class="fc" id="L299">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (</span>
 				scopingProjectionVariateDistribution,
 				&quot;VIEW&quot;,
-<span class="fc" id="L290">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L302">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
 					portfolioMeta,
-<span class="fc" id="L292">					scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
+<span class="fc" id="L304">					scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
 					assetExcessReturnsCovarianceMatrix
 				)
 			);
 
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (null == jointPosteriorMetrics)</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">		if (null == jointPosteriorMetrics)</span>
 		{
-<span class="nc" id="L299">			return null;</span>
+<span class="nc" id="L311">			return null;</span>
 		}
 
-<span class="fc" id="L302">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jointPosteriorMetrics.posterior();</span>
+<span class="fc" id="L314">		org.drip.measure.continuous.R1Multivariate r1mPosterior = jointPosteriorMetrics.posterior();</span>
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
-<span class="fc" id="L305">			forwardReverseOptimizationOutputAdjusted =</span>
-<span class="fc" id="L306">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
-<span class="fc" id="L307">					portfolioMeta.names(),</span>
-<span class="fc" id="L308">					r1mPosterior.mean(),</span>
-<span class="fc bfc" id="L309" title="All 2 branches covered.">					_priorControlSpecification.useAlternateReferenceModel() ?</span>
+<span class="fc" id="L317">			forwardReverseOptimizationOutputAdjusted =</span>
+<span class="fc" id="L318">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L319">					portfolioMeta.names(),</span>
+<span class="fc" id="L320">					r1mPosterior.mean(),</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">					_priorControlSpecification.useAlternateReferenceModel() ?</span>
 						assetExcessReturnsCovarianceMatrix :
 						((org.drip.measure.gaussian.R1MultivariateNormal)
-<span class="fc" id="L312">							r1mPosterior).covariance().covarianceMatrix(),</span>
-<span class="fc" id="L313">					_forwardReverseOptimizationOutputUnadjusted.riskAversion()</span>
+<span class="fc" id="L324">							r1mPosterior).covariance().covarianceMatrix(),</span>
+<span class="fc" id="L325">					_forwardReverseOptimizationOutputUnadjusted.riskAversion()</span>
 				);
 
-<span class="pc bpc" id="L316" title="1 of 2 branches missed.">		if (null == forwardReverseOptimizationOutputAdjusted)</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">		if (null == forwardReverseOptimizationOutputAdjusted)</span>
 		{
-<span class="nc" id="L318">			return null;</span>
+<span class="nc" id="L330">			return null;</span>
 		}
 
 		try {
-<span class="fc" id="L322">			return new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput (</span>
+<span class="fc" id="L334">			return new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput (</span>
 				forwardReverseOptimizationOutputAdjusted,
-<span class="fc" id="L324">				allocationTiltArray (</span>
+<span class="fc" id="L336">				allocationTiltArray (</span>
 					forwardReverseOptimizationOutputAdjusted
 				),
 				jointPosteriorMetrics
 			);
 		}
-<span class="nc" id="L330">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L342">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L332">			e.printStackTrace();</span>
+<span class="nc" id="L344">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L335">		return null;</span>
+<span class="nc" id="L347">		return null;</span>
 	}
 
 	/**
@@ -344,33 +356,33 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
 	{
-<span class="fc" id="L347">		org.drip.measure.continuous.MultivariateMeta portfolioMeta =</span>
-<span class="fc" id="L348">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();</span>
+<span class="fc" id="L359">		org.drip.measure.continuous.MultivariateMeta portfolioMeta =</span>
+<span class="fc" id="L360">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();</span>
 
-<span class="fc" id="L350">		double[][] assetExcessReturnsCovarianceMatrix =</span>
-<span class="fc" id="L351">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
+<span class="fc" id="L362">		double[][] assetExcessReturnsCovarianceMatrix =</span>
+<span class="fc" id="L363">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
 
-<span class="fc" id="L353">		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();</span>
+<span class="fc" id="L365">		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();</span>
 
-<span class="fc" id="L355">		java.lang.String[] assetIDArray = portfolioMeta.names();</span>
+<span class="fc" id="L367">		java.lang.String[] assetIDArray = portfolioMeta.names();</span>
 
-<span class="fc" id="L357">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
-<span class="fc" id="L358">			scopingProjectionVariateDistribution();</span>
+<span class="fc" id="L369">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
+<span class="fc" id="L370">			scopingProjectionVariateDistribution();</span>
 
-<span class="pc bpc" id="L360" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
+<span class="pc bpc" id="L372" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
 		{
-<span class="nc" id="L362">			return null;</span>
+<span class="nc" id="L374">			return null;</span>
 		}
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
-<span class="fc" id="L366">			forwardReverseOptimizationOutputAdjusted = null;</span>
+<span class="fc" id="L378">			forwardReverseOptimizationOutputAdjusted = null;</span>
 
-<span class="pc bpc" id="L368" title="1 of 2 branches missed.">		if (_priorControlSpecification.useAlternateReferenceModel())</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">		if (_priorControlSpecification.useAlternateReferenceModel())</span>
 		{
-<span class="fc" id="L370">			forwardReverseOptimizationOutputAdjusted =</span>
-<span class="fc" id="L371">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L382">			forwardReverseOptimizationOutputAdjusted =</span>
+<span class="fc" id="L383">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
 					assetIDArray,
-<span class="fc" id="L373">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (</span>
+<span class="fc" id="L385">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (</span>
 						scopingProjectionVariateDistribution,
 						&quot;VIEW&quot;
 					),
@@ -380,21 +392,21 @@ public class BlackLittermanCombinationEngine
 		}
 		else
 		{
-<span class="nc" id="L383">			org.drip.measure.gaussian.R1MultivariateNormal combinedDistribution =</span>
-<span class="nc" id="L384">				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution (</span>
+<span class="nc" id="L395">			org.drip.measure.gaussian.R1MultivariateNormal combinedDistribution =</span>
+<span class="nc" id="L396">				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution (</span>
 					scopingProjectionVariateDistribution,
 					&quot;VIEW&quot;,
-<span class="nc" id="L387">					org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
+<span class="nc" id="L399">					org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
 						portfolioMeta,
-<span class="nc" id="L389">						scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
+<span class="nc" id="L401">						scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
 						assetExcessReturnsCovarianceMatrix
 					)
 				);
 
-<span class="nc bnc" id="L394" title="All 2 branches missed.">			forwardReverseOptimizationOutputAdjusted = null == combinedDistribution ? null :</span>
-<span class="nc" id="L395">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">			forwardReverseOptimizationOutputAdjusted = null == combinedDistribution ? null :</span>
+<span class="nc" id="L407">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
 					assetIDArray,
-<span class="nc" id="L397">					combinedDistribution.mean(),</span>
+<span class="nc" id="L409">					combinedDistribution.mean(),</span>
 					assetExcessReturnsCovarianceMatrix,
 					riskAversion
 				);
@@ -402,20 +414,20 @@ public class BlackLittermanCombinationEngine
 
 		try
 		{
-<span class="pc bpc" id="L405" title="1 of 2 branches missed.">			return null == forwardReverseOptimizationOutputAdjusted ? null :</span>
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">			return null == forwardReverseOptimizationOutputAdjusted ? null :</span>
 				new org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (
 					forwardReverseOptimizationOutputAdjusted,
-<span class="fc" id="L408">					allocationTiltArray (</span>
+<span class="fc" id="L420">					allocationTiltArray (</span>
 						forwardReverseOptimizationOutputAdjusted
 					)
 				);
 		}
-<span class="nc" id="L413">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L425">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L415">			e.printStackTrace();</span>
+<span class="nc" id="L427">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L418">		return null;</span>
+<span class="nc" id="L430">		return null;</span>
 	}
 
 	/**
@@ -426,71 +438,71 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput impliedConfidenceRun()
 	{
-<span class="fc" id="L429">		double[][] assetExcessReturnsCovarianceMatrix =</span>
-<span class="fc" id="L430">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
+<span class="fc" id="L441">		double[][] assetExcessReturnsCovarianceMatrix =</span>
+<span class="fc" id="L442">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
 
-<span class="fc" id="L432">		org.drip.portfolioconstruction.asset.Portfolio unadjustedPortfolio =</span>
-<span class="fc" id="L433">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio();</span>
+<span class="fc" id="L444">		org.drip.portfolioconstruction.asset.Portfolio unadjustedPortfolio =</span>
+<span class="fc" id="L445">			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio();</span>
 
-<span class="fc" id="L435">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
-<span class="fc" id="L436">			scopingProjectionVariateDistribution();</span>
+<span class="fc" id="L447">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
+<span class="fc" id="L448">			scopingProjectionVariateDistribution();</span>
 
-<span class="fc" id="L438">		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();</span>
+<span class="fc" id="L450">		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();</span>
 
-<span class="fc" id="L440">		org.drip.measure.continuous.MultivariateMeta portfolioMeta = unadjustedPortfolio.meta();</span>
+<span class="fc" id="L452">		org.drip.measure.continuous.MultivariateMeta portfolioMeta = unadjustedPortfolio.meta();</span>
 
-<span class="fc" id="L442">		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();</span>
+<span class="fc" id="L454">		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();</span>
 
-<span class="fc" id="L444">		java.lang.String[] assetIDArray = portfolioMeta.names();</span>
+<span class="fc" id="L456">		java.lang.String[] assetIDArray = portfolioMeta.names();</span>
 
-<span class="pc bpc" id="L446" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
+<span class="pc bpc" id="L458" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
 		{
-<span class="nc" id="L448">			return null;</span>
+<span class="nc" id="L460">			return null;</span>
 		}
 
-<span class="fc" id="L451">		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =</span>
-<span class="fc" id="L452">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (</span>
+<span class="fc" id="L463">		org.drip.measure.bayesian.JointPosteriorMetrics jointPosteriorMetrics =</span>
+<span class="fc" id="L464">			org.drip.measure.bayesian.TheilMixedEstimationModel.GenerateComposite (</span>
 				scopingProjectionVariateDistribution,
 				&quot;VIEW&quot;,
-<span class="fc" id="L455">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L467">				org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
 					portfolioMeta,
-<span class="fc" id="L457">					scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
+<span class="fc" id="L469">					scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
 					assetExcessReturnsCovarianceMatrix
 				)
 			);
 
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">		if (null == jointPosteriorMetrics)</span>
+<span class="pc bpc" id="L474" title="1 of 2 branches missed.">		if (null == jointPosteriorMetrics)</span>
 		{
-<span class="nc" id="L464">			return null;</span>
+<span class="nc" id="L476">			return null;</span>
 		}
 
-<span class="fc" id="L467">		org.drip.measure.continuous.R1Multivariate posteriorDistribution = jointPosteriorMetrics.posterior();</span>
+<span class="fc" id="L479">		org.drip.measure.continuous.R1Multivariate posteriorDistribution = jointPosteriorMetrics.posterior();</span>
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
-<span class="fc" id="L470">			forwardReverseOptimizationOutputCustomConfidence =</span>
-<span class="fc" id="L471">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L482">			forwardReverseOptimizationOutputCustomConfidence =</span>
+<span class="fc" id="L483">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
 					assetIDArray,
-<span class="pc bpc" id="L473" title="1 of 2 branches missed.">					posteriorDistribution.mean(),</span>
+<span class="pc bpc" id="L485" title="1 of 2 branches missed.">					posteriorDistribution.mean(),</span>
 					useAlternateReferenceModel ? assetExcessReturnsCovarianceMatrix :
 						((org.drip.measure.gaussian.R1MultivariateNormal)
-<span class="pc" id="L476">							posteriorDistribution).covariance().covarianceMatrix(),</span>
+<span class="pc" id="L488">							posteriorDistribution).covariance().covarianceMatrix(),</span>
 					riskAversion
 				);
 
-<span class="pc bpc" id="L480" title="1 of 2 branches missed.">		if (null == forwardReverseOptimizationOutputCustomConfidence)</span>
+<span class="pc bpc" id="L492" title="1 of 2 branches missed.">		if (null == forwardReverseOptimizationOutputCustomConfidence)</span>
 		{
-<span class="nc" id="L482">			return null;</span>
+<span class="nc" id="L494">			return null;</span>
 		}
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput
-<span class="fc" id="L486">			forwardReverseOptimizationOutputFullConfidence = null;</span>
+<span class="fc" id="L498">			forwardReverseOptimizationOutputFullConfidence = null;</span>
 
-<span class="pc bpc" id="L488" title="1 of 2 branches missed.">		if (useAlternateReferenceModel)</span>
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">		if (useAlternateReferenceModel)</span>
 		{
-<span class="fc" id="L490">			forwardReverseOptimizationOutputFullConfidence =</span>
-<span class="fc" id="L491">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="fc" id="L502">			forwardReverseOptimizationOutputFullConfidence =</span>
+<span class="fc" id="L503">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
 					assetIDArray,
-<span class="fc" id="L493">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (</span>
+<span class="fc" id="L505">					org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingMean (</span>
 						scopingProjectionVariateDistribution,
 						&quot;VIEW&quot;
 					),
@@ -500,21 +512,21 @@ public class BlackLittermanCombinationEngine
 		}
 		else
 		{
-<span class="nc" id="L503">			org.drip.measure.gaussian.R1MultivariateNormal combinedDistribution =</span>
-<span class="nc" id="L504">				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution (</span>
+<span class="nc" id="L515">			org.drip.measure.gaussian.R1MultivariateNormal combinedDistribution =</span>
+<span class="nc" id="L516">				org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionInducedScopingDistribution (</span>
 					scopingProjectionVariateDistribution,
 					&quot;VIEW&quot;,
-<span class="nc" id="L507">					org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
+<span class="nc" id="L519">					org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
 						portfolioMeta,
-<span class="nc" id="L509">						scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
+<span class="nc" id="L521">						scopingProjectionVariateDistribution.scopingDistribution().mean(),</span>
 						assetExcessReturnsCovarianceMatrix
 					)
 				);
 
-<span class="nc bnc" id="L514" title="All 2 branches missed.">			forwardReverseOptimizationOutputFullConfidence = null == combinedDistribution ? null :</span>
-<span class="nc" id="L515">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">			forwardReverseOptimizationOutputFullConfidence = null == combinedDistribution ? null :</span>
+<span class="nc" id="L527">				org.drip.portfolioconstruction.allocator.ForwardReverseOptimizationOutput.Forward (</span>
 					assetIDArray,
-<span class="nc" id="L517">					combinedDistribution.mean(),</span>
+<span class="nc" id="L529">					combinedDistribution.mean(),</span>
 					assetExcessReturnsCovarianceMatrix,
 					riskAversion
 				);
@@ -522,28 +534,28 @@ public class BlackLittermanCombinationEngine
 
 		try
 		{
-<span class="fc" id="L525">			return new org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput (</span>
-<span class="fc" id="L526">				unadjustedPortfolio.weightArray(),</span>
+<span class="fc" id="L537">			return new org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput (</span>
+<span class="fc" id="L538">				unadjustedPortfolio.weightArray(),</span>
 				new org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput (
 					forwardReverseOptimizationOutputCustomConfidence,
-<span class="fc" id="L529">					allocationTiltArray (</span>
+<span class="fc" id="L541">					allocationTiltArray (</span>
 						forwardReverseOptimizationOutputCustomConfidence
 					),
 					jointPosteriorMetrics
 				), new org.drip.portfolioconstruction.bayesian.BlackLittermanOutput (
 					forwardReverseOptimizationOutputFullConfidence,
-<span class="fc" id="L535">					allocationTiltArray (</span>
+<span class="fc" id="L547">					allocationTiltArray (</span>
 						forwardReverseOptimizationOutputFullConfidence
 					)
 				)
 			);
 		}
-<span class="nc" id="L541">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L553">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L543">			e.printStackTrace();</span>
+<span class="nc" id="L555">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L546">		return null;</span>
+<span class="nc" id="L558">		return null;</span>
 	}
 
 	/**
@@ -554,76 +566,76 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution()
 	{
-<span class="fc" id="L557">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
-<span class="fc" id="L558">			scopingProjectionVariateDistribution();</span>
+<span class="fc" id="L569">		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =</span>
+<span class="fc" id="L570">			scopingProjectionVariateDistribution();</span>
 
-<span class="pc bpc" id="L560" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
+<span class="pc bpc" id="L572" title="1 of 2 branches missed.">		if (null == scopingProjectionVariateDistribution)</span>
 		{
-<span class="nc" id="L562">			return null;</span>
+<span class="nc" id="L574">			return null;</span>
 		}
 
-<span class="fc" id="L565">		double[] intraViewComponentArray =</span>
-<span class="fc" id="L566">			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (</span>
+<span class="fc" id="L577">		double[] intraViewComponentArray =</span>
+<span class="fc" id="L578">			org.drip.measure.bayesian.TheilMixedEstimationModel.ProjectionPrecisionMeanProduct (</span>
 				scopingProjectionVariateDistribution,
 				&quot;VIEW&quot;
 			);
 
-<span class="pc bpc" id="L571" title="1 of 2 branches missed.">		if (null == intraViewComponentArray)</span>
+<span class="pc bpc" id="L583" title="1 of 2 branches missed.">		if (null == intraViewComponentArray)</span>
 		{
-<span class="nc" id="L573">			return null;</span>
+<span class="nc" id="L585">			return null;</span>
 		}
 
-<span class="fc" id="L576">		double tau = _priorControlSpecification.tau();</span>
+<span class="fc" id="L588">		double tau = _priorControlSpecification.tau();</span>
 
-<span class="fc" id="L578">		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();</span>
+<span class="fc" id="L590">		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();</span>
 
-<span class="fc" id="L580">		double[][] assetSpaceLoadingMatrix = _projectionSpecification.assetSpaceLoadingMatrix();</span>
+<span class="fc" id="L592">		double[][] assetSpaceLoadingMatrix = _projectionSpecification.assetSpaceLoadingMatrix();</span>
 
-<span class="fc" id="L582">		double[][] assetExcessReturnsCovarianceMatrix =</span>
-<span class="fc" id="L583">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
+<span class="fc" id="L594">		double[][] assetExcessReturnsCovarianceMatrix =</span>
+<span class="fc" id="L595">			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();</span>
 
-<span class="fc" id="L585">		double projectionConfidenceScaler = 1. / tau;</span>
-<span class="fc" id="L586">		int viewCount = intraViewComponentArray.length;</span>
-<span class="fc" id="L587">		double assetConfidenceScaler = 1. / (1. + tau);</span>
-<span class="fc" id="L588">		int assetCount = assetExcessReturnsCovarianceMatrix.length;</span>
-<span class="fc" id="L589">		double[][] compositeConfidenceCovarianceMatrix = new double[viewCount][viewCount];</span>
+<span class="fc" id="L597">		double projectionConfidenceScaler = 1. / tau;</span>
+<span class="fc" id="L598">		int viewCount = intraViewComponentArray.length;</span>
+<span class="fc" id="L599">		double assetConfidenceScaler = 1. / (1. + tau);</span>
+<span class="fc" id="L600">		int assetCount = assetExcessReturnsCovarianceMatrix.length;</span>
+<span class="fc" id="L601">		double[][] compositeConfidenceCovarianceMatrix = new double[viewCount][viewCount];</span>
 
-<span class="fc bfc" id="L591" title="All 2 branches covered.">		for (int viewIndex = 0; viewIndex &lt; viewCount; ++viewIndex)</span>
+<span class="fc bfc" id="L603" title="All 2 branches covered.">		for (int viewIndex = 0; viewIndex &lt; viewCount; ++viewIndex)</span>
 		{
-<span class="fc" id="L593">			intraViewComponentArray[viewIndex] = intraViewComponentArray[viewIndex] * tau / riskAversion;</span>
+<span class="fc" id="L605">			intraViewComponentArray[viewIndex] = intraViewComponentArray[viewIndex] * tau / riskAversion;</span>
 		}
 
-<span class="fc" id="L596">		double[][] projectionSpaceAssetLoadingsMatrix = org.drip.numerical.linearalgebra.Matrix.Product (</span>
-<span class="fc" id="L597">			org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L608">		double[][] projectionSpaceAssetLoadingsMatrix = org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L609">			org.drip.numerical.linearalgebra.Matrix.Product (</span>
 				assetSpaceLoadingMatrix,
 				assetExcessReturnsCovarianceMatrix
 			),
-<span class="fc" id="L601">			org.drip.numerical.linearalgebra.Matrix.Transpose (</span>
+<span class="fc" id="L613">			org.drip.numerical.linearalgebra.Matrix.Transpose (</span>
 				assetSpaceLoadingMatrix
 			)
 		);
 
-<span class="pc bpc" id="L606" title="1 of 2 branches missed.">		if (null == projectionSpaceAssetLoadingsMatrix)</span>
+<span class="pc bpc" id="L618" title="1 of 2 branches missed.">		if (null == projectionSpaceAssetLoadingsMatrix)</span>
 		{
-<span class="nc" id="L608">			return null;</span>
+<span class="nc" id="L620">			return null;</span>
 		}
 
-<span class="fc" id="L611">		double[][] projectionCovarianceMatrix =</span>
-<span class="fc" id="L612">			_projectionSpecification.excessReturnsDistribution().covariance().covarianceMatrix();</span>
+<span class="fc" id="L623">		double[][] projectionCovarianceMatrix =</span>
+<span class="fc" id="L624">			_projectionSpecification.excessReturnsDistribution().covariance().covarianceMatrix();</span>
 
-<span class="fc bfc" id="L614" title="All 2 branches covered.">		for (int viewIndexI = 0; viewIndexI &lt; viewCount; ++viewIndexI)</span>
+<span class="fc bfc" id="L626" title="All 2 branches covered.">		for (int viewIndexI = 0; viewIndexI &lt; viewCount; ++viewIndexI)</span>
 		{
-<span class="fc bfc" id="L616" title="All 2 branches covered.">			for (int viewIndexJ = 0; viewIndexJ &lt; viewCount; ++viewIndexJ)</span>
+<span class="fc bfc" id="L628" title="All 2 branches covered.">			for (int viewIndexJ = 0; viewIndexJ &lt; viewCount; ++viewIndexJ)</span>
 			{
-<span class="fc" id="L618">				compositeConfidenceCovarianceMatrix[viewIndexI][viewIndexJ] =</span>
+<span class="fc" id="L630">				compositeConfidenceCovarianceMatrix[viewIndexI][viewIndexJ] =</span>
 					projectionCovarianceMatrix[viewIndexI][viewIndexJ] * projectionConfidenceScaler +
 					projectionSpaceAssetLoadingsMatrix[viewIndexI][viewIndexJ] * assetConfidenceScaler;
 			}
 		}
 
-<span class="fc" id="L624">		double[][] compositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.Matrix.Product (</span>
-<span class="fc" id="L625">			org.drip.numerical.linearalgebra.Matrix.Product (</span>
-<span class="fc" id="L626">				org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (</span>
+<span class="fc" id="L636">		double[][] compositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L637">			org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L638">				org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (</span>
 					compositeConfidenceCovarianceMatrix
 				),
 				assetSpaceLoadingMatrix
@@ -631,32 +643,32 @@ public class BlackLittermanCombinationEngine
 			assetExcessReturnsCovarianceMatrix
 		);
 
-<span class="pc bpc" id="L634" title="1 of 2 branches missed.">		if (null == compositePrecisionProjectionScoping)</span>
+<span class="pc bpc" id="L646" title="1 of 2 branches missed.">		if (null == compositePrecisionProjectionScoping)</span>
 		{
-<span class="nc" id="L636">			return null;</span>
+<span class="nc" id="L648">			return null;</span>
 		}
 
-<span class="fc bfc" id="L639" title="All 2 branches covered.">		for (int viewIndexI = 0; viewIndexI &lt; viewCount; ++viewIndexI)</span>
+<span class="fc bfc" id="L651" title="All 2 branches covered.">		for (int viewIndexI = 0; viewIndexI &lt; viewCount; ++viewIndexI)</span>
 		{
-<span class="fc bfc" id="L641" title="All 2 branches covered.">			for (int viewIndexJ = 0; viewIndexJ &lt; assetCount; ++viewIndexJ)</span>
+<span class="fc bfc" id="L653" title="All 2 branches covered.">			for (int viewIndexJ = 0; viewIndexJ &lt; assetCount; ++viewIndexJ)</span>
 			{
-<span class="fc" id="L643">				compositePrecisionProjectionScoping[viewIndexI][viewIndexJ] = -1. * assetConfidenceScaler *</span>
+<span class="fc" id="L655">				compositePrecisionProjectionScoping[viewIndexI][viewIndexJ] = -1. * assetConfidenceScaler *</span>
 					compositePrecisionProjectionScoping[viewIndexI][viewIndexJ];
 			}
 		}
 
 		try
 		{
-<span class="fc" id="L650">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (</span>
+<span class="fc" id="L662">			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (</span>
 				intraViewComponentArray,
-<span class="fc" id="L652">				org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L664">				org.drip.numerical.linearalgebra.Matrix.Product (</span>
 					compositePrecisionProjectionScoping,
-<span class="fc" id="L654">					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray()</span>
+<span class="fc" id="L666">					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray()</span>
 				),
-<span class="fc" id="L656">				org.drip.numerical.linearalgebra.Matrix.Product (</span>
-<span class="fc" id="L657">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L668">				org.drip.numerical.linearalgebra.Matrix.Product (</span>
+<span class="fc" id="L669">					org.drip.numerical.linearalgebra.Matrix.Product (</span>
 						compositePrecisionProjectionScoping,
-<span class="fc" id="L659">						org.drip.numerical.linearalgebra.Matrix.Transpose (</span>
+<span class="fc" id="L671">						org.drip.numerical.linearalgebra.Matrix.Transpose (</span>
 							assetSpaceLoadingMatrix
 						)
 					),
@@ -665,12 +677,12 @@ public class BlackLittermanCombinationEngine
 				compositeConfidenceCovarianceMatrix
 			);
 		}
-<span class="nc" id="L668">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L680">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L670">			e.printStackTrace();</span>
+<span class="nc" id="L682">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L673">		return null;</span>
+<span class="nc" id="L685">		return null;</span>
 	}
 
 	/**
@@ -684,44 +696,44 @@ public class BlackLittermanCombinationEngine
 	public double[][] userConfidenceProjectionTitMatrix (
 		final double[] userSpecifiedProjectionConfidenceArray)
 	{
-<span class="pc bpc" id="L687" title="1 of 2 branches missed.">		if (null == userSpecifiedProjectionConfidenceArray)</span>
+<span class="pc bpc" id="L699" title="1 of 2 branches missed.">		if (null == userSpecifiedProjectionConfidenceArray)</span>
 		{
-<span class="nc" id="L689">			return null;</span>
+<span class="nc" id="L701">			return null;</span>
 		}
 
-<span class="fc" id="L692">		double[][] assetSpaceLoadingMatrix = _projectionSpecification.assetSpaceLoadingMatrix();</span>
+<span class="fc" id="L704">		double[][] assetSpaceLoadingMatrix = _projectionSpecification.assetSpaceLoadingMatrix();</span>
 
-<span class="fc" id="L694">		int assetCount = assetSpaceLoadingMatrix[0].length;</span>
-<span class="fc" id="L695">		int projectionCount = assetSpaceLoadingMatrix.length;</span>
-<span class="fc" id="L696">		double[][] userConfidenceProjectionTitMatrix = new double[projectionCount][assetCount];</span>
+<span class="fc" id="L706">		int assetCount = assetSpaceLoadingMatrix[0].length;</span>
+<span class="fc" id="L707">		int projectionCount = assetSpaceLoadingMatrix.length;</span>
+<span class="fc" id="L708">		double[][] userConfidenceProjectionTitMatrix = new double[projectionCount][assetCount];</span>
 
-<span class="pc bpc" id="L698" title="1 of 2 branches missed.">		if (projectionCount != userSpecifiedProjectionConfidenceArray.length)</span>
+<span class="pc bpc" id="L710" title="1 of 2 branches missed.">		if (projectionCount != userSpecifiedProjectionConfidenceArray.length)</span>
 		{
-<span class="nc" id="L700">			return null;</span>
+<span class="nc" id="L712">			return null;</span>
 		}
 
-<span class="fc" id="L703">		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput =</span>
-<span class="fc" id="L704">			fullConfidenceRun();</span>
+<span class="fc" id="L715">		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput =</span>
+<span class="fc" id="L716">			fullConfidenceRun();</span>
 
-<span class="pc bpc" id="L706" title="1 of 2 branches missed.">		if (null == fullConfidenceOutput)</span>
+<span class="pc bpc" id="L718" title="1 of 2 branches missed.">		if (null == fullConfidenceOutput)</span>
 		{
-<span class="nc" id="L708">			return null;</span>
+<span class="nc" id="L720">			return null;</span>
 		}
 
-<span class="fc" id="L711">		double[] fullConfidenceWeightsDeviationArray = fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
+<span class="fc" id="L723">		double[] fullConfidenceWeightsDeviationArray = fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
 
-<span class="fc bfc" id="L713" title="All 2 branches covered.">		for (int projectionIndex = 0; projectionIndex &lt; projectionCount; ++projectionIndex)</span>
+<span class="fc bfc" id="L725" title="All 2 branches covered.">		for (int projectionIndex = 0; projectionIndex &lt; projectionCount; ++projectionIndex)</span>
 		{
-<span class="fc bfc" id="L715" title="All 2 branches covered.">			for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L727" title="All 2 branches covered.">			for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 			{
-<span class="fc" id="L717">				userConfidenceProjectionTitMatrix[projectionIndex][assetIndex] =</span>
+<span class="fc" id="L729">				userConfidenceProjectionTitMatrix[projectionIndex][assetIndex] =</span>
 					fullConfidenceWeightsDeviationArray[assetIndex] *
 					assetSpaceLoadingMatrix[projectionIndex][assetIndex] *
 					userSpecifiedProjectionConfidenceArray[projectionIndex];
 			}
 		}
 
-<span class="fc" id="L724">		return userConfidenceProjectionTitMatrix;</span>
+<span class="fc" id="L736">		return userConfidenceProjectionTitMatrix;</span>
 	}
 
 	/**
@@ -742,25 +754,25 @@ public class BlackLittermanCombinationEngine
 		final double projectionVariance)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L745" title="1 of 2 branches missed.">		if (null == userConfidenceProjectionTiltArray ||</span>
-<span class="pc bpc" id="L746" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="pc bpc" id="L757" title="1 of 2 branches missed.">		if (null == userConfidenceProjectionTiltArray ||</span>
+<span class="pc bpc" id="L758" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (</span>
 				projectionVariance
 			))
 		{
-<span class="nc" id="L750">			throw new java.lang.Exception</span>
+<span class="nc" id="L762">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatchSquared =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc" id="L754">		org.drip.measure.gaussian.R1MultivariateNormal totalExcessReturnsDistribution =</span>
-<span class="fc" id="L755">			_projectionSpecification.excessReturnsDistribution();</span>
+<span class="fc" id="L766">		org.drip.measure.gaussian.R1MultivariateNormal totalExcessReturnsDistribution =</span>
+<span class="fc" id="L767">			_projectionSpecification.excessReturnsDistribution();</span>
 
-<span class="fc" id="L757">		org.drip.measure.gaussian.R1MultivariateNormal projectionDistribution =</span>
-<span class="fc" id="L758">			org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
+<span class="fc" id="L769">		org.drip.measure.gaussian.R1MultivariateNormal projectionDistribution =</span>
+<span class="fc" id="L770">			org.drip.measure.gaussian.R1MultivariateNormal.Standard (</span>
 				new java.lang.String[] {
-<span class="fc" id="L760">					totalExcessReturnsDistribution.meta().names()[projectionIndex]</span>
+<span class="fc" id="L772">					totalExcessReturnsDistribution.meta().names()[projectionIndex]</span>
 				},
 				new double[] {
-<span class="fc" id="L763">					totalExcessReturnsDistribution.mean()[projectionIndex]</span>
+<span class="fc" id="L775">					totalExcessReturnsDistribution.mean()[projectionIndex]</span>
 				},
 				new double[][]
 				{
@@ -770,13 +782,13 @@ public class BlackLittermanCombinationEngine
 				}
 			);
 
-<span class="pc bpc" id="L773" title="1 of 2 branches missed.">		if (null == projectionDistribution)</span>
+<span class="pc bpc" id="L785" title="1 of 2 branches missed.">		if (null == projectionDistribution)</span>
 		{
-<span class="nc" id="L775">			throw new java.lang.Exception</span>
+<span class="nc" id="L787">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatchSquared =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc" id="L779">		BlackLittermanCombinationEngine projectionEngine =</span>
+<span class="fc" id="L791">		BlackLittermanCombinationEngine projectionEngine =</span>
 			new BlackLittermanCombinationEngine (
 				_forwardReverseOptimizationOutputUnadjusted,
 				_priorControlSpecification,
@@ -784,47 +796,47 @@ public class BlackLittermanCombinationEngine
 					projectionDistribution,
 					new double[][]
 					{
-<span class="fc" id="L787">						_projectionSpecification.assetSpaceLoadingMatrix()[projectionIndex]</span>
+<span class="fc" id="L799">						_projectionSpecification.assetSpaceLoadingMatrix()[projectionIndex]</span>
 					}
 				)
 			);
 
-<span class="fc" id="L792">		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceOuput =</span>
-<span class="fc" id="L793">			projectionEngine.customConfidenceRun();</span>
+<span class="fc" id="L804">		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceOuput =</span>
+<span class="fc" id="L805">			projectionEngine.customConfidenceRun();</span>
 
-<span class="pc bpc" id="L795" title="1 of 2 branches missed.">		if (null == customConfidenceOuput)</span>
+<span class="pc bpc" id="L807" title="1 of 2 branches missed.">		if (null == customConfidenceOuput)</span>
 		{
-<span class="nc" id="L797">			throw new java.lang.Exception</span>
+<span class="nc" id="L809">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatchSquared =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc" id="L801">		double[] posteriorTiltArray = customConfidenceOuput.allocationAdjustmentTiltArray();</span>
+<span class="fc" id="L813">		double[] posteriorTiltArray = customConfidenceOuput.allocationAdjustmentTiltArray();</span>
 
-<span class="fc" id="L803">		int assetCount = posteriorTiltArray.length;</span>
-<span class="fc" id="L804">		double tiltMismatchSquared = 0.;</span>
+<span class="fc" id="L815">		int assetCount = posteriorTiltArray.length;</span>
+<span class="fc" id="L816">		double tiltMismatchSquared = 0.;</span>
 
-<span class="pc bpc" id="L806" title="1 of 2 branches missed.">		if (assetCount != userConfidenceProjectionTiltArray.length)</span>
+<span class="pc bpc" id="L818" title="1 of 2 branches missed.">		if (assetCount != userConfidenceProjectionTiltArray.length)</span>
 		{
-<span class="nc" id="L808">			throw new java.lang.Exception</span>
+<span class="nc" id="L820">			throw new java.lang.Exception</span>
 				(&quot;BlackLittermanCombinationEngine::tiltMismatchSquared =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="fc bfc" id="L812" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L824" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="pc bpc" id="L814" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="pc bpc" id="L826" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
 				userConfidenceProjectionTiltArray[assetIndex]
 			))
 			{
-<span class="nc" id="L818">				throw new java.lang.Exception</span>
+<span class="nc" id="L830">				throw new java.lang.Exception</span>
 					(&quot;BlackLittermanCombinationEngine::tiltMismatchSquared =&gt; Invalid Inputs&quot;);
 			}
 
-<span class="fc" id="L822">			double dblAssetTiltGap = posteriorTiltArray[assetIndex] -</span>
+<span class="fc" id="L834">			double dblAssetTiltGap = posteriorTiltArray[assetIndex] -</span>
 				userConfidenceProjectionTiltArray[assetIndex];
-<span class="fc" id="L824">			tiltMismatchSquared = tiltMismatchSquared + dblAssetTiltGap * dblAssetTiltGap;</span>
+<span class="fc" id="L836">			tiltMismatchSquared = tiltMismatchSquared + dblAssetTiltGap * dblAssetTiltGap;</span>
 		}
 
-<span class="fc" id="L827">		return tiltMismatchSquared;</span>
+<span class="fc" id="L839">		return tiltMismatchSquared;</span>
 	}
 
 	/**
@@ -842,16 +854,16 @@ public class BlackLittermanCombinationEngine
 		final int projectionIndex,
 		final boolean generateDerivative)
 	{
-<span class="fc" id="L845">		final org.drip.function.definition.R1ToR1 tiltDepartureFunction =</span>
+<span class="fc" id="L857">		final org.drip.function.definition.R1ToR1 tiltDepartureFunction =</span>
 			new org.drip.function.definition.R1ToR1 (
 				null
 			)
-<span class="fc" id="L849">		{</span>
+<span class="fc" id="L861">		{</span>
 			@Override public double evaluate (
 				final double projectionVariance)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L854">				return tiltMismatchSquared (</span>
+<span class="fc" id="L866">				return tiltMismatchSquared (</span>
 					userConfidenceProjectionTiltArray,
 					projectionIndex,
 					projectionVariance
@@ -859,20 +871,20 @@ public class BlackLittermanCombinationEngine
 			}
 		};
 
-<span class="fc bfc" id="L862" title="All 2 branches covered.">		if (!generateDerivative)</span>
+<span class="fc bfc" id="L874" title="All 2 branches covered.">		if (!generateDerivative)</span>
 		{
-<span class="fc" id="L864">			return tiltDepartureFunction;</span>
+<span class="fc" id="L876">			return tiltDepartureFunction;</span>
 		}
 
-<span class="fc" id="L867">		return new org.drip.function.definition.R1ToR1 (</span>
+<span class="fc" id="L879">		return new org.drip.function.definition.R1ToR1 (</span>
 			null
 		)
-<span class="fc" id="L870">		{</span>
+<span class="fc" id="L882">		{</span>
 			@Override public double evaluate (
 				final double projectionVariance)
 				throws java.lang.Exception
 			{
-<span class="fc" id="L875">				return tiltDepartureFunction.derivative (</span>
+<span class="fc" id="L887">				return tiltDepartureFunction.derivative (</span>
 					projectionVariance,
 					1
 				);

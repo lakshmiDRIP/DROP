@@ -6,6 +6,7 @@ package org.drip.param.quote;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.param.quote;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -77,29 +89,29 @@ package org.drip.param.quote;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote&quot;&gt;Quote&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/README.md&quot;&gt;Product Cash Flow, Valuation, Market, Pricing, and Quoting Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/README.md&quot;&gt;Multi-sided Multi-Measure Ticks Quotes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ProductTick {
-<span class="nc" id="L90">	private boolean _bIsMark = false;</span>
-<span class="nc" id="L91">	private java.lang.String _strSource = &quot;&quot;;</span>
-<span class="nc" id="L92">	private java.lang.String _strProductID = &quot;&quot;;</span>
-<span class="nc" id="L93">	private java.lang.String _strCounterParty = &quot;&quot;;</span>
-<span class="nc" id="L94">	private org.drip.param.definition.ProductQuote _pq = null;</span>
+<span class="nc" id="L102">	private boolean _bIsMark = false;</span>
+<span class="nc" id="L103">	private java.lang.String _strSource = &quot;&quot;;</span>
+<span class="nc" id="L104">	private java.lang.String _strProductID = &quot;&quot;;</span>
+<span class="nc" id="L105">	private java.lang.String _strCounterParty = &quot;&quot;;</span>
+<span class="nc" id="L106">	private org.drip.param.definition.ProductQuote _pq = null;</span>
 
 	/**
 	 * Empty ProductTick constructor
 	 */
 
 	public ProductTick()
-<span class="nc" id="L101">	{</span>
-<span class="nc" id="L102">	}</span>
+<span class="nc" id="L113">	{</span>
+<span class="nc" id="L114">	}</span>
 
 	/**
 	 * ProductTick constructor
@@ -120,14 +132,14 @@ public class ProductTick {
 		final java.lang.String strSource,
 		final boolean bIsMark)
 		throws java.lang.Exception
-<span class="nc" id="L123">	{</span>
-<span class="nc bnc" id="L124" title="All 6 branches missed.">		if (null == (_strProductID = strProductID) || _strProductID.isEmpty() || null == (_pq = pq))</span>
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ProductTick ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L135">	{</span>
+<span class="nc bnc" id="L136" title="All 6 branches missed.">		if (null == (_strProductID = strProductID) || _strProductID.isEmpty() || null == (_pq = pq))</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;ProductTick ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L127">		_bIsMark = bIsMark;</span>
-<span class="nc" id="L128">		_strSource = strSource;</span>
-<span class="nc" id="L129">		_strCounterParty = strCounterParty;</span>
-<span class="nc" id="L130">	}</span>
+<span class="nc" id="L139">		_bIsMark = bIsMark;</span>
+<span class="nc" id="L140">		_strSource = strSource;</span>
+<span class="nc" id="L141">		_strCounterParty = strCounterParty;</span>
+<span class="nc" id="L142">	}</span>
 
 	/**
 	 * Retrieve the Product ID
@@ -137,7 +149,7 @@ public class ProductTick {
 
 	public java.lang.String productID()
 	{
-<span class="nc" id="L140">		return _strProductID;</span>
+<span class="nc" id="L152">		return _strProductID;</span>
 	}
 
 	/**
@@ -148,7 +160,7 @@ public class ProductTick {
 
 	public org.drip.param.definition.ProductQuote productQuote()
 	{
-<span class="nc" id="L151">		return _pq;</span>
+<span class="nc" id="L163">		return _pq;</span>
 	}
 
 	/**
@@ -159,7 +171,7 @@ public class ProductTick {
 
 	public java.lang.String source()
 	{
-<span class="nc" id="L162">		return _strSource;</span>
+<span class="nc" id="L174">		return _strSource;</span>
 	}
 
 	/**
@@ -170,7 +182,7 @@ public class ProductTick {
 
 	public java.lang.String counterParty()
 	{
-<span class="nc" id="L173">		return _strCounterParty;</span>
+<span class="nc" id="L185">		return _strCounterParty;</span>
 	}
 
 	/**
@@ -181,7 +193,7 @@ public class ProductTick {
 
 	public boolean isMark()
 	{
-<span class="nc" id="L184">		return _bIsMark;</span>
+<span class="nc" id="L196">		return _bIsMark;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

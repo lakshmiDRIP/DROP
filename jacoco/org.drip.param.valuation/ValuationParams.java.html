@@ -6,6 +6,7 @@ package org.drip.param.valuation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.param.valuation;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,19 +90,19 @@ package org.drip.param.valuation;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/valuation&quot;&gt;valuation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/README.md&quot;&gt;Product Cash Flow, Valuation, Market, Pricing, and Quoting Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/valuation&quot;&gt;Valuation Settlement and Valuation Customization Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ValuationParams {
-<span class="fc" id="L91">	private java.lang.String _strCalendar = &quot;&quot;;</span>
-<span class="fc" id="L92">	private int _iValueDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L93">	private int _iCashPayDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L103">	private java.lang.String _strCalendar = &quot;&quot;;</span>
+<span class="fc" id="L104">	private int _iValueDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L105">	private int _iCashPayDate = java.lang.Integer.MIN_VALUE;</span>
 
 	/**
 	 * Create the valuation parameters object instance from the valuation date, the cash settle lag, and the
@@ -111,14 +123,14 @@ public class ValuationParams {
 		final int iAdjustMode)
 	{
 		try {
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			return null == dtValue ? null : new ValuationParams (dtValue, new</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			return null == dtValue ? null : new ValuationParams (dtValue, new</span>
 				org.drip.analytics.date.JulianDate (org.drip.analytics.daycount.Convention.Adjust
-<span class="fc" id="L116">					(dtValue.addDays (iCashSettleLag).julian(), strCalendar, iAdjustMode)), strCalendar);</span>
-<span class="nc" id="L117">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L118">			e.printStackTrace();</span>
+<span class="fc" id="L128">					(dtValue.addDays (iCashSettleLag).julian(), strCalendar, iAdjustMode)), strCalendar);</span>
+<span class="nc" id="L129">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L130">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L121">		return null;</span>
+<span class="nc" id="L133">		return null;</span>
 	}
 
 	/**
@@ -132,15 +144,15 @@ public class ValuationParams {
 	public static final ValuationParams Spot (
 		final int iDate)
 	{
-<span class="fc" id="L135">		org.drip.analytics.date.JulianDate dtValue = new org.drip.analytics.date.JulianDate (iDate);</span>
+<span class="fc" id="L147">		org.drip.analytics.date.JulianDate dtValue = new org.drip.analytics.date.JulianDate (iDate);</span>
 
 		try {
-<span class="fc" id="L138">			return new ValuationParams (dtValue, dtValue, &quot;&quot;);</span>
-<span class="nc" id="L139">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L140">			e.printStackTrace();</span>
+<span class="fc" id="L150">			return new ValuationParams (dtValue, dtValue, &quot;&quot;);</span>
+<span class="nc" id="L151">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L152">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L143">		return null;</span>
+<span class="nc" id="L155">		return null;</span>
 	}
 
 	/**
@@ -156,7 +168,7 @@ public class ValuationParams {
 		final org.drip.analytics.date.JulianDate dtValue,
 		final java.lang.String strCalendar)
 	{
-<span class="nc" id="L159">		return Spot (dtValue, 2, strCalendar, org.drip.analytics.daycount.Convention.DATE_ROLL_FOLLOWING);</span>
+<span class="nc" id="L171">		return Spot (dtValue, 2, strCalendar, org.drip.analytics.daycount.Convention.DATE_ROLL_FOLLOWING);</span>
 	}
 
 	/**
@@ -174,16 +186,16 @@ public class ValuationParams {
 		final org.drip.analytics.date.JulianDate dtCashPay,
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
-<span class="fc" id="L177">	{</span>
-<span class="pc bpc" id="L178" title="2 of 4 branches missed.">		if (null == dtValue || null ==  dtCashPay)</span>
-<span class="nc" id="L179">			throw new java.lang.Exception (&quot;ValuationParams ctr: Invalid settle/Cash pay into Val Params!&quot;);</span>
+<span class="fc" id="L189">	{</span>
+<span class="pc bpc" id="L190" title="2 of 4 branches missed.">		if (null == dtValue || null ==  dtCashPay)</span>
+<span class="nc" id="L191">			throw new java.lang.Exception (&quot;ValuationParams ctr: Invalid settle/Cash pay into Val Params!&quot;);</span>
 
-<span class="fc" id="L181">		_iValueDate = dtValue.julian();</span>
+<span class="fc" id="L193">		_iValueDate = dtValue.julian();</span>
 
-<span class="fc" id="L183">		_iCashPayDate = dtCashPay.julian();</span>
+<span class="fc" id="L195">		_iCashPayDate = dtCashPay.julian();</span>
 
-<span class="fc" id="L185">		_strCalendar = strCalendar;</span>
-<span class="fc" id="L186">	}</span>
+<span class="fc" id="L197">		_strCalendar = strCalendar;</span>
+<span class="fc" id="L198">	}</span>
 
 	/**
 	 * Retrieve the Valuation Date
@@ -193,7 +205,7 @@ public class ValuationParams {
 
 	public int valueDate()
 	{
-<span class="fc" id="L196">		return _iValueDate;</span>
+<span class="fc" id="L208">		return _iValueDate;</span>
 	}
 
 	/**
@@ -204,7 +216,7 @@ public class ValuationParams {
 
 	public int cashPayDate()
 	{
-<span class="fc" id="L207">		return _iCashPayDate;</span>
+<span class="fc" id="L219">		return _iCashPayDate;</span>
 	}
 
 	/**
@@ -215,7 +227,7 @@ public class ValuationParams {
 
 	public java.lang.String calendar()
 	{
-<span class="nc" id="L218">		return _strCalendar;</span>
+<span class="nc" id="L230">		return _strCalendar;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

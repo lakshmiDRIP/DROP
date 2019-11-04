@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,9 +85,9 @@ package org.drip.portfolioconstruction.allocator;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator&quot;&gt;Allocator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/README.md&quot;&gt;MVO Based Portfolio Allocation Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -83,8 +95,8 @@ package org.drip.portfolioconstruction.allocator;
 
 public class CustomRiskUtilitySettings
 {
-<span class="fc" id="L86">	private double _riskAversion = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _riskTolerance = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _riskAversion = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _riskTolerance = java.lang.Double.NaN;</span>
 
 	/**
 	 * The Variance Minimizer CustomRiskUtilitySettings Instance
@@ -96,17 +108,17 @@ public class CustomRiskUtilitySettings
 	{
 		try
 		{
-<span class="fc" id="L99">			return new CustomRiskUtilitySettings (</span>
+<span class="fc" id="L111">			return new CustomRiskUtilitySettings (</span>
 				1.,
 				0.
 			);
 		}
-<span class="nc" id="L104">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L116">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L106">			e.printStackTrace();</span>
+<span class="nc" id="L118">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L109">		return null;</span>
+<span class="nc" id="L121">		return null;</span>
 	}
 
 	/**
@@ -122,17 +134,17 @@ public class CustomRiskUtilitySettings
 	{
 		try
 		{
-<span class="fc" id="L125">			return new CustomRiskUtilitySettings (</span>
+<span class="fc" id="L137">			return new CustomRiskUtilitySettings (</span>
 				1.,
 				riskTolerance
 			);
 		}
-<span class="nc" id="L130">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L142">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L132">			e.printStackTrace();</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L135">		return null;</span>
+<span class="nc" id="L147">		return null;</span>
 	}
 
 	/**
@@ -148,17 +160,17 @@ public class CustomRiskUtilitySettings
 	{
 		try
 		{
-<span class="fc" id="L151">			return new CustomRiskUtilitySettings (</span>
+<span class="fc" id="L163">			return new CustomRiskUtilitySettings (</span>
 				riskAversion,
 				1.
 			);
 		}
-<span class="nc" id="L156">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L168">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L158">			e.printStackTrace();</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L161">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 
 	/**
@@ -174,14 +186,14 @@ public class CustomRiskUtilitySettings
 		final double riskAversion,
 		final double riskTolerance)
 		throws java.lang.Exception
-<span class="fc" id="L177">	{</span>
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskAversion = riskAversion) ||</span>
-<span class="pc bpc" id="L179" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_riskTolerance = riskTolerance) ||</span>
+<span class="fc" id="L189">	{</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskAversion = riskAversion) ||</span>
+<span class="pc bpc" id="L191" title="2 of 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_riskTolerance = riskTolerance) ||</span>
 				0. &gt; _riskTolerance)
 		{
-<span class="nc" id="L182">			throw new java.lang.Exception (&quot;CustomRiskUtilitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L194">			throw new java.lang.Exception (&quot;CustomRiskUtilitySettings Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L184">	}</span>
+<span class="fc" id="L196">	}</span>
 
 	/**
 	 * Retrieve the Risk Aversion Factor
@@ -191,7 +203,7 @@ public class CustomRiskUtilitySettings
 
 	public double riskAversion()
 	{
-<span class="nc" id="L194">		return _riskAversion;</span>
+<span class="nc" id="L206">		return _riskAversion;</span>
 	}
 
 	/**
@@ -202,7 +214,7 @@ public class CustomRiskUtilitySettings
 
 	public double riskTolerance()
 	{
-<span class="nc" id="L205">		return _riskTolerance;</span>
+<span class="nc" id="L217">		return _riskTolerance;</span>
 	}
 
 	/**
@@ -219,74 +231,74 @@ public class CustomRiskUtilitySettings
 		final org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties
 			assetUniverseStatisticalProperties)
 	{
-<span class="pc bpc" id="L222" title="2 of 4 branches missed.">		if (null == assetIDArray || null == assetUniverseStatisticalProperties)</span>
+<span class="pc bpc" id="L234" title="2 of 4 branches missed.">		if (null == assetIDArray || null == assetUniverseStatisticalProperties)</span>
 		{
-<span class="nc" id="L224">			return null;</span>
+<span class="nc" id="L236">			return null;</span>
 		}
 
-<span class="fc" id="L227">		int assetCount = assetIDArray.length;</span>
-<span class="fc" id="L228">		double[] expectedReturnsArray = new double[assetCount];</span>
-<span class="fc" id="L229">		double[][] covarianceMatrix = new double[assetCount][assetCount];</span>
-<span class="fc" id="L230">		org.drip.portfolioconstruction.params.AssetStatisticalProperties[] assetStatisticalPropertiesArray =</span>
+<span class="fc" id="L239">		int assetCount = assetIDArray.length;</span>
+<span class="fc" id="L240">		double[] expectedReturnsArray = new double[assetCount];</span>
+<span class="fc" id="L241">		double[][] covarianceMatrix = new double[assetCount][assetCount];</span>
+<span class="fc" id="L242">		org.drip.portfolioconstruction.params.AssetStatisticalProperties[] assetStatisticalPropertiesArray =</span>
 			new org.drip.portfolioconstruction.params.AssetStatisticalProperties[assetCount];
 
-<span class="pc bpc" id="L233" title="1 of 2 branches missed.">		if (0 == assetCount)</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">		if (0 == assetCount)</span>
 		{
-<span class="nc" id="L235">			return null;</span>
+<span class="nc" id="L247">			return null;</span>
 		}
 
-<span class="fc bfc" id="L238" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="fc" id="L240">			if (null == (assetStatisticalPropertiesArray[assetIndex] =</span>
-<span class="pc bpc" id="L241" title="1 of 2 branches missed.">				assetUniverseStatisticalProperties.assetStatisticalProperties (assetIDArray[assetIndex])))</span>
+<span class="fc" id="L252">			if (null == (assetStatisticalPropertiesArray[assetIndex] =</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">				assetUniverseStatisticalProperties.assetStatisticalProperties (assetIDArray[assetIndex])))</span>
 			{
-<span class="nc" id="L243">				return null;</span>
+<span class="nc" id="L255">				return null;</span>
 			}
 
-<span class="fc" id="L246">			expectedReturnsArray[assetIndex] = assetStatisticalPropertiesArray[assetIndex].expectedReturn();</span>
+<span class="fc" id="L258">			expectedReturnsArray[assetIndex] = assetStatisticalPropertiesArray[assetIndex].expectedReturn();</span>
 		}
 
-<span class="fc bfc" id="L249" title="All 2 branches covered.">		for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		for (int assetIndexI = 0; assetIndexI &lt; assetCount; ++assetIndexI)</span>
 		{
-<span class="fc" id="L251">			double dblVarianceI = assetStatisticalPropertiesArray[assetIndexI].variance();</span>
+<span class="fc" id="L263">			double dblVarianceI = assetStatisticalPropertiesArray[assetIndexI].variance();</span>
 
-<span class="fc bfc" id="L253" title="All 2 branches covered.">			for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">			for (int assetIndexJ = 0; assetIndexJ &lt; assetCount; ++assetIndexJ)</span>
 			{
 				try
 				{
-<span class="fc bfc" id="L257" title="All 2 branches covered.">					covarianceMatrix[assetIndexI][assetIndexJ] = java.lang.Math.sqrt (</span>
-<span class="fc" id="L258">						dblVarianceI * assetStatisticalPropertiesArray[assetIndexJ].variance()</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">					covarianceMatrix[assetIndexI][assetIndexJ] = java.lang.Math.sqrt (</span>
+<span class="fc" id="L270">						dblVarianceI * assetStatisticalPropertiesArray[assetIndexJ].variance()</span>
 					) * (
-<span class="fc" id="L260">						assetIndexI == assetIndexJ ? 1. : assetUniverseStatisticalProperties.correlation (</span>
+<span class="fc" id="L272">						assetIndexI == assetIndexJ ? 1. : assetUniverseStatisticalProperties.correlation (</span>
 							assetIDArray[assetIndexI], assetIDArray[assetIndexJ]
 						)
 					);
 				}
-<span class="nc" id="L265">				catch (java.lang.Exception e)</span>
+<span class="nc" id="L277">				catch (java.lang.Exception e)</span>
 				{
-<span class="nc" id="L267">					e.printStackTrace();</span>
+<span class="nc" id="L279">					e.printStackTrace();</span>
 
-<span class="nc" id="L269">					return null;</span>
-<span class="fc" id="L270">				}</span>
+<span class="nc" id="L281">					return null;</span>
+<span class="fc" id="L282">				}</span>
 			}
 		}
 
 		try
 		{
-<span class="fc" id="L276">			return new org.drip.function.rdtor1.RiskObjectiveUtilityMultivariate (</span>
+<span class="fc" id="L288">			return new org.drip.function.rdtor1.RiskObjectiveUtilityMultivariate (</span>
 				covarianceMatrix,
 				expectedReturnsArray,
 				_riskAversion,
 				_riskTolerance,
-<span class="fc" id="L281">				assetUniverseStatisticalProperties.riskFreeRate()</span>
+<span class="fc" id="L293">				assetUniverseStatisticalProperties.riskFreeRate()</span>
 			);
 		}
-<span class="nc" id="L284">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L296">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L286">			e.printStackTrace();</span>
+<span class="nc" id="L298">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L289">		return null;</span>
+<span class="nc" id="L301">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

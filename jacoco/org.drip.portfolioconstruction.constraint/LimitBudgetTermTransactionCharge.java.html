@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.constraint;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,9 +84,9 @@ package org.drip.portfolioconstruction.constraint;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint&quot;&gt;Constraint&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/constraint/README.md&quot;&gt; Portfolio Construction Constraint Term Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,8 +96,8 @@ package org.drip.portfolioconstruction.constraint;
 public class LimitBudgetTermTransactionCharge
 	extends org.drip.portfolioconstruction.constraint.LimitBudgetTerm
 {
-<span class="nc" id="L87">	private double[] _initialHoldingsArray = null;</span>
-<span class="nc" id="L88">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;</span>
+<span class="nc" id="L99">	private double[] _initialHoldingsArray = null;</span>
+<span class="nc" id="L100">	private org.drip.portfolioconstruction.cost.TransactionCharge[] _transactionChargeArray = null;</span>
 
 	/**
 	 * LimitBudgetTermTransactionCharge Constructor
@@ -111,7 +123,7 @@ public class LimitBudgetTermTransactionCharge
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L114">		super (</span>
+<span class="nc" id="L126">		super (</span>
 			name,
 			&quot;CT_AFTER_TRANSACTION_CHARGE_BUDGET&quot;,
 			&quot;Constrains the After Transaction Charge Allocation Budget&quot;,
@@ -121,30 +133,30 @@ public class LimitBudgetTermTransactionCharge
 			priceArray
 		);
 
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length ||</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length ||</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_initialHoldingsArray))</span>
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L130">		int assetCount = _initialHoldingsArray.length;</span>
+<span class="nc" id="L142">		int assetCount = _initialHoldingsArray.length;</span>
 
-<span class="nc bnc" id="L132" title="All 6 branches missed.">		if (null == (_transactionChargeArray = transactionChargeArray) ||</span>
+<span class="nc bnc" id="L144" title="All 6 branches missed.">		if (null == (_transactionChargeArray = transactionChargeArray) ||</span>
 			assetCount != _transactionChargeArray.length ||
 			assetCount != priceArray.length)
 		{
-<span class="nc" id="L136">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L148">			throw new java.lang.Exception (&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (null == _transactionChargeArray[assetIndex])</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			if (null == _transactionChargeArray[assetIndex])</span>
 			{
-<span class="nc" id="L143">				throw new java.lang.Exception</span>
+<span class="nc" id="L155">				throw new java.lang.Exception</span>
 					(&quot;LimitBudgetTermTransactionCharge Constructor =&gt; Invalid Inputs&quot;);
 			}
 		}
-<span class="nc" id="L147">	}</span>
+<span class="nc" id="L159">	}</span>
 
 	/**
 	 * Retrieve the Array of Transaction Charges
@@ -154,48 +166,48 @@ public class LimitBudgetTermTransactionCharge
 
 	public org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray()
 	{
-<span class="nc" id="L157">		return _transactionChargeArray;</span>
+<span class="nc" id="L169">		return _transactionChargeArray;</span>
 	}
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L162">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L163">		{</span>
+<span class="nc" id="L174">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L175">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L166">				return priceArray().length;</span>
+<span class="nc" id="L178">				return priceArray().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] finalHoldingsArray)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L173">				double[] priceArray = priceArray();</span>
+<span class="nc" id="L185">				double[] priceArray = priceArray();</span>
 
-<span class="nc" id="L175">				double limitBudgetTransactionCharge = 0.;</span>
-<span class="nc" id="L176">				int assetCount = priceArray.length;</span>
+<span class="nc" id="L187">				double limitBudgetTransactionCharge = 0.;</span>
+<span class="nc" id="L188">				int assetCount = priceArray.length;</span>
 
-<span class="nc bnc" id="L178" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
-<span class="nc bnc" id="L179" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">				if (null == finalHoldingsArray ||</span>
+<span class="nc bnc" id="L191" title="All 4 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (finalHoldingsArray) ||</span>
 					finalHoldingsArray.length != assetCount)
 				{
-<span class="nc" id="L182">					throw new java.lang.Exception</span>
+<span class="nc" id="L194">					throw new java.lang.Exception</span>
 						(&quot;LimitBudgetTermTransactionCharge::rdToR1::evaluate =&gt; Invalid Variate Dimension&quot;);
 				}
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">				for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 				{
-<span class="nc" id="L188">					limitBudgetTransactionCharge += (</span>
+<span class="nc" id="L200">					limitBudgetTransactionCharge += (</span>
 						priceArray[assetIndex] * (
-<span class="nc" id="L190">							finalHoldingsArray[assetIndex] - _initialHoldingsArray[assetIndex]</span>
-<span class="nc" id="L191">						) - _transactionChargeArray[assetIndex].estimate (</span>
-<span class="nc" id="L192">							_initialHoldingsArray[assetIndex],</span>
+<span class="nc" id="L202">							finalHoldingsArray[assetIndex] - _initialHoldingsArray[assetIndex]</span>
+<span class="nc" id="L203">						) - _transactionChargeArray[assetIndex].estimate (</span>
+<span class="nc" id="L204">							_initialHoldingsArray[assetIndex],</span>
 							finalHoldingsArray[assetIndex]
 						)
 					);
 				}
 
-<span class="nc" id="L198">				return limitBudgetTransactionCharge;</span>
+<span class="nc" id="L210">				return limitBudgetTransactionCharge;</span>
 			}
 		};
 	}

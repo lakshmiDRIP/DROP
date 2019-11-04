@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -85,9 +97,9 @@ package org.drip.portfolioconstruction.bayesian;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian/README.md&quot;&gt;Black Litterman Bayesian Portfolio Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -95,9 +107,9 @@ package org.drip.portfolioconstruction.bayesian;
 
 public class ProjectionImpliedConfidenceOutput
 {
-<span class="fc" id="L98">	private double[] _unadjustedWeightArray = null;</span>
-<span class="fc" id="L99">	private org.drip.portfolioconstruction.bayesian.BlackLittermanOutput _fullConfidenceOutput = null;</span>
-<span class="fc" id="L100">	private org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput</span>
+<span class="fc" id="L110">	private double[] _unadjustedWeightArray = null;</span>
+<span class="fc" id="L111">	private org.drip.portfolioconstruction.bayesian.BlackLittermanOutput _fullConfidenceOutput = null;</span>
+<span class="fc" id="L112">	private org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput</span>
 		_customConfidenceOutput = null;
 
 	/**
@@ -116,15 +128,15 @@ public class ProjectionImpliedConfidenceOutput
 			customConfidenceOutput,
 		final org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="4 of 8 branches missed.">		if (null == (_unadjustedWeightArray = unadjustedWeightArray) || 0 == _unadjustedWeightArray.length ||</span>
+<span class="fc" id="L131">	{</span>
+<span class="pc bpc" id="L132" title="4 of 8 branches missed.">		if (null == (_unadjustedWeightArray = unadjustedWeightArray) || 0 == _unadjustedWeightArray.length ||</span>
 			null == (_customConfidenceOutput = customConfidenceOutput) ||
 			null == (_fullConfidenceOutput = fullConfidenceOutput))
 		{
-<span class="nc" id="L124">			throw new java.lang.Exception</span>
+<span class="nc" id="L136">			throw new java.lang.Exception</span>
 				(&quot;ProjectionImpliedConfidenceOutput Constructor =&gt; Invalid Inputs&quot;);
 		}
-<span class="fc" id="L127">	}</span>
+<span class="fc" id="L139">	}</span>
 
 	/**
 	 * Retrieve the Array of the Unadjusted Equilibrium Weights
@@ -134,7 +146,7 @@ public class ProjectionImpliedConfidenceOutput
 
 	public double[] unadjustedWeightArray()
 	{
-<span class="nc" id="L137">		return _unadjustedWeightArray;</span>
+<span class="nc" id="L149">		return _unadjustedWeightArray;</span>
 	}
 
 	/**
@@ -146,7 +158,7 @@ public class ProjectionImpliedConfidenceOutput
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput
 		customConfidenceOutput()
 	{
-<span class="fc" id="L149">		return _customConfidenceOutput;</span>
+<span class="fc" id="L161">		return _customConfidenceOutput;</span>
 	}
 
 	/**
@@ -157,7 +169,7 @@ public class ProjectionImpliedConfidenceOutput
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput()
 	{
-<span class="fc" id="L160">		return _fullConfidenceOutput;</span>
+<span class="fc" id="L172">		return _fullConfidenceOutput;</span>
 	}
 
 	/**
@@ -168,7 +180,7 @@ public class ProjectionImpliedConfidenceOutput
 
 	public double[] customProjectionConfidenceDeviation()
 	{
-<span class="fc" id="L171">		return _customConfidenceOutput.allocationAdjustmentTiltArray();</span>
+<span class="fc" id="L183">		return _customConfidenceOutput.allocationAdjustmentTiltArray();</span>
 	}
 
 	/**
@@ -179,7 +191,7 @@ public class ProjectionImpliedConfidenceOutput
 
 	public double[] customProjectionConfidenceWeight()
 	{
-<span class="fc" id="L182">		return _customConfidenceOutput.adjustedOptimizationOutput().optimalPortfolio().weightArray();</span>
+<span class="fc" id="L194">		return _customConfidenceOutput.adjustedOptimizationOutput().optimalPortfolio().weightArray();</span>
 	}
 
 	/**
@@ -190,7 +202,7 @@ public class ProjectionImpliedConfidenceOutput
 
 	public double[] fullProjectionConfidenceDeviation()
 	{
-<span class="fc" id="L193">		return _fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
+<span class="fc" id="L205">		return _fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
 	}
 
 	/**
@@ -201,7 +213,7 @@ public class ProjectionImpliedConfidenceOutput
 
 	public double[] fullProjectionConfidenceWeight()
 	{
-<span class="fc" id="L204">		return _fullConfidenceOutput.adjustedOptimizationOutput().optimalPortfolio().weightArray();</span>
+<span class="fc" id="L216">		return _fullConfidenceOutput.adjustedOptimizationOutput().optimalPortfolio().weightArray();</span>
 	}
 
 	/**
@@ -212,22 +224,22 @@ public class ProjectionImpliedConfidenceOutput
 
 	public double[] impliedConfidenceLevelArray()
 	{
-<span class="fc" id="L215">		int assetCount = _unadjustedWeightArray.length;</span>
-<span class="fc" id="L216">		double[] impliedConfidenceLevelArray = new double[assetCount];</span>
+<span class="fc" id="L227">		int assetCount = _unadjustedWeightArray.length;</span>
+<span class="fc" id="L228">		double[] impliedConfidenceLevelArray = new double[assetCount];</span>
 
-<span class="fc" id="L218">		double[] fullProjectionConfidenceDeviationArray =</span>
-<span class="fc" id="L219">			_fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
+<span class="fc" id="L230">		double[] fullProjectionConfidenceDeviationArray =</span>
+<span class="fc" id="L231">			_fullConfidenceOutput.allocationAdjustmentTiltArray();</span>
 
-<span class="fc" id="L221">		double[] customProjectionConfidenceDeviationArray =</span>
-<span class="fc" id="L222">			_customConfidenceOutput.allocationAdjustmentTiltArray();</span>
+<span class="fc" id="L233">		double[] customProjectionConfidenceDeviationArray =</span>
+<span class="fc" id="L234">			_customConfidenceOutput.allocationAdjustmentTiltArray();</span>
 
-<span class="fc bfc" id="L224" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">		for (int assetIndex = 0; assetIndex &lt; assetCount; ++assetIndex)</span>
 		{
-<span class="fc" id="L226">			impliedConfidenceLevelArray[assetIndex] = customProjectionConfidenceDeviationArray[assetIndex] /</span>
+<span class="fc" id="L238">			impliedConfidenceLevelArray[assetIndex] = customProjectionConfidenceDeviationArray[assetIndex] /</span>
 				fullProjectionConfidenceDeviationArray[assetIndex];
 		}
 
-<span class="fc" id="L230">		return impliedConfidenceLevelArray;</span>
+<span class="fc" id="L242">		return impliedConfidenceLevelArray;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

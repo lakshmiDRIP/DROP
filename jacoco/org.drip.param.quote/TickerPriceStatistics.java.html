@@ -6,41 +6,53 @@ package org.drip.param.quote;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -68,10 +80,10 @@ package org.drip.param.quote;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param&quot;&gt;Param&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote&quot;&gt;Quote&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/README.md&quot;&gt;Product Cash Flow, Valuation, Market, Pricing, and Quoting Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/param/quote/README.md&quot;&gt;Multi-sided Multi-Measure Ticks Quotes&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -79,10 +91,10 @@ package org.drip.param.quote;
 
 public class TickerPriceStatistics
 {
-<span class="nc" id="L82">	private int _count = 0;</span>
-<span class="nc" id="L83">	private double _maximum = java.lang.Double.NaN;</span>
-<span class="nc" id="L84">	private double _minimum = java.lang.Double.NaN;</span>
-<span class="nc" id="L85">	private double _aggregate = java.lang.Double.NaN;</span>
+<span class="nc" id="L94">	private int _count = 0;</span>
+<span class="nc" id="L95">	private double _maximum = java.lang.Double.NaN;</span>
+<span class="nc" id="L96">	private double _minimum = java.lang.Double.NaN;</span>
+<span class="nc" id="L97">	private double _aggregate = java.lang.Double.NaN;</span>
 
 	/**
 	 * TickerPriceStatistics Constructor
@@ -95,17 +107,17 @@ public class TickerPriceStatistics
 	public TickerPriceStatistics (
 		final double price)
 		throws java.lang.Exception
-<span class="nc" id="L98">	{</span>
-<span class="nc bnc" id="L99" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (price) || 0. &gt;= price)</span>
+<span class="nc" id="L110">	{</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (price) || 0. &gt;= price)</span>
 		{
-<span class="nc" id="L101">			throw new java.lang.Exception (&quot;TickerPriceStatistics Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L113">			throw new java.lang.Exception (&quot;TickerPriceStatistics Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L104">		_count = 1;</span>
-<span class="nc" id="L105">		_minimum = price;</span>
-<span class="nc" id="L106">		_maximum = price;</span>
-<span class="nc" id="L107">		_aggregate = price;</span>
-<span class="nc" id="L108">	}</span>
+<span class="nc" id="L116">		_count = 1;</span>
+<span class="nc" id="L117">		_minimum = price;</span>
+<span class="nc" id="L118">		_maximum = price;</span>
+<span class="nc" id="L119">		_aggregate = price;</span>
+<span class="nc" id="L120">	}</span>
 
 	/**
 	 * Retrieve the Ticker Instance Count
@@ -115,7 +127,7 @@ public class TickerPriceStatistics
 
 	public int count()
 	{
-<span class="nc" id="L118">		return _count;</span>
+<span class="nc" id="L130">		return _count;</span>
 	}
 
 	/**
@@ -126,7 +138,7 @@ public class TickerPriceStatistics
 
 	public double minimum()
 	{
-<span class="nc" id="L129">		return _minimum;</span>
+<span class="nc" id="L141">		return _minimum;</span>
 	}
 
 	/**
@@ -137,7 +149,7 @@ public class TickerPriceStatistics
 
 	public double maximum()
 	{
-<span class="nc" id="L140">		return _maximum;</span>
+<span class="nc" id="L152">		return _maximum;</span>
 	}
 
 	/**
@@ -148,7 +160,7 @@ public class TickerPriceStatistics
 
 	public double aggregate()
 	{
-<span class="nc" id="L151">		return _aggregate;</span>
+<span class="nc" id="L163">		return _aggregate;</span>
 	}
 
 	/**
@@ -159,7 +171,7 @@ public class TickerPriceStatistics
 
 	public double average()
 	{
-<span class="nc" id="L162">		return _aggregate / _count;</span>
+<span class="nc" id="L174">		return _aggregate / _count;</span>
 	}
 
 	/**
@@ -173,29 +185,29 @@ public class TickerPriceStatistics
 	public boolean addInstance (
 		final double price)
 	{
-<span class="nc bnc" id="L176" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (price) || 0. &gt;= price)</span>
+<span class="nc bnc" id="L188" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (price) || 0. &gt;= price)</span>
 		{
-<span class="nc" id="L178">			return false;</span>
+<span class="nc" id="L190">			return false;</span>
 		}
 
-<span class="nc" id="L181">		++_count;</span>
-<span class="nc" id="L182">		_aggregate += price;</span>
+<span class="nc" id="L193">		++_count;</span>
+<span class="nc" id="L194">		_aggregate += price;</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (_minimum &gt; price)</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (_minimum &gt; price)</span>
 		{
-<span class="nc" id="L186">			_minimum = price;</span>
+<span class="nc" id="L198">			_minimum = price;</span>
 		}
-<span class="nc bnc" id="L188" title="All 2 branches missed.">		else if (_maximum &lt; price)</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">		else if (_maximum &lt; price)</span>
 		{
-<span class="nc" id="L190">			_maximum = price;</span>
+<span class="nc" id="L202">			_maximum = price;</span>
 		}
 
-<span class="nc" id="L193">		return true;</span>
+<span class="nc" id="L205">		return true;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L198">		return &quot;&quot; + _maximum + &quot; &quot; + _minimum + &quot; &quot; + average();</span>
+<span class="nc" id="L210">		return &quot;&quot; + _maximum + &quot; &quot; + _minimum + &quot; &quot; + average();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

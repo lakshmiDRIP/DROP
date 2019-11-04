@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.bayesian;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -80,15 +92,15 @@ package org.drip.portfolioconstruction.bayesian;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian&quot;&gt;Bayesian&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/bayesian/README.md&quot;&gt;Black Litterman Bayesian Portfolio Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class MeucciViewUncertaintyParameterization</span>
+<span class="nc" id="L103">public class MeucciViewUncertaintyParameterization</span>
 {
 
 	/**
@@ -104,54 +116,54 @@ package org.drip.portfolioconstruction.bayesian;
 		final double[][] scopingCovarianceMatrix,
 		final double alphaArray)
 	{
-<span class="nc bnc" id="L107" title="All 4 branches missed.">		if (null == scopingCovarianceMatrix || !org.drip.numerical.common.NumberUtil.IsValid (alphaArray))</span>
+<span class="nc bnc" id="L119" title="All 4 branches missed.">		if (null == scopingCovarianceMatrix || !org.drip.numerical.common.NumberUtil.IsValid (alphaArray))</span>
 		{
-<span class="nc" id="L109">			return null;</span>
+<span class="nc" id="L121">			return null;</span>
 		}
 
-<span class="nc" id="L112">		int scopingEntityCount = scopingCovarianceMatrix.length;</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		double[][] projectionCovarianceMatrix = 0 == scopingEntityCount ?</span>
+<span class="nc" id="L124">		int scopingEntityCount = scopingCovarianceMatrix.length;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		double[][] projectionCovarianceMatrix = 0 == scopingEntityCount ?</span>
 			null : new double[scopingEntityCount][scopingEntityCount];
 
-<span class="nc bnc" id="L116" title="All 2 branches missed.">		if (0 == scopingEntityCount)</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (0 == scopingEntityCount)</span>
 		{
-<span class="nc" id="L118">			return null;</span>
+<span class="nc" id="L130">			return null;</span>
 		}
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">		for (int scopingEntityIndexI = 0; scopingEntityIndexI &lt; scopingEntityCount; ++scopingEntityIndexI)</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		for (int scopingEntityIndexI = 0; scopingEntityIndexI &lt; scopingEntityCount; ++scopingEntityIndexI)</span>
 		{
-<span class="nc bnc" id="L123" title="All 4 branches missed.">			if (null == scopingCovarianceMatrix[scopingEntityIndexI] ||</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">			if (null == scopingCovarianceMatrix[scopingEntityIndexI] ||</span>
 				scopingEntityCount != scopingCovarianceMatrix[scopingEntityIndexI].length)
 			{
-<span class="nc" id="L126">				return null;</span>
+<span class="nc" id="L138">				return null;</span>
 			}
 
-<span class="nc" id="L129">			for (int scopingEntityIndexJ = 0;</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">				scopingEntityIndexJ &lt; scopingEntityCount;</span>
-<span class="nc" id="L131">				++scopingEntityIndexJ)</span>
+<span class="nc" id="L141">			for (int scopingEntityIndexJ = 0;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">				scopingEntityIndexJ &lt; scopingEntityCount;</span>
+<span class="nc" id="L143">				++scopingEntityIndexJ)</span>
 			{
-<span class="nc bnc" id="L133" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				if (!org.drip.numerical.common.NumberUtil.IsValid (</span>
 					scopingCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ]
 				))
 				{
-<span class="nc" id="L137">					return null;</span>
+<span class="nc" id="L149">					return null;</span>
 				}
 
-<span class="nc" id="L140">				projectionCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ] = alphaArray *</span>
+<span class="nc" id="L152">				projectionCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ] = alphaArray *</span>
 					scopingCovarianceMatrix[scopingEntityIndexI][scopingEntityIndexJ];
 			}
 		}
 
 		try
 		{
-<span class="nc" id="L147">			return new org.drip.measure.gaussian.Covariance (projectionCovarianceMatrix);</span>
+<span class="nc" id="L159">			return new org.drip.measure.gaussian.Covariance (projectionCovarianceMatrix);</span>
 		}
-<span class="nc" id="L149">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L161">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L151">			e.printStackTrace();</span>
+<span class="nc" id="L163">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L154">		return null;</span>
+<span class="nc" id="L166">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

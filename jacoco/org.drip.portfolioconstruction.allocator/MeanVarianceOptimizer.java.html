@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.allocator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,15 +84,15 @@ package org.drip.portfolioconstruction.allocator;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator&quot;&gt;Allocator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/allocator/README.md&quot;&gt;MVO Based Portfolio Allocation Construction&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="fc" id="L83">public abstract class MeanVarianceOptimizer</span>
+<span class="fc" id="L95">public abstract class MeanVarianceOptimizer</span>
 {
 
 	protected abstract org.drip.portfolioconstruction.allocator.PortfolioConstructionParameters
@@ -153,65 +165,65 @@ package org.drip.portfolioconstruction.allocator;
 			assetUniverseStatisticalProperties,
 		final int frontierSampleUnits)
 	{
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (0 &gt;= frontierSampleUnits)</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (0 &gt;= frontierSampleUnits)</span>
 		{
-<span class="nc" id="L158">			return null;</span>
+<span class="nc" id="L170">			return null;</span>
 		}
 
-<span class="fc" id="L161">		org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceOptimizationOutput =</span>
-<span class="fc" id="L162">			globalMinimumVarianceAllocate (</span>
+<span class="fc" id="L173">		org.drip.portfolioconstruction.allocator.OptimizationOutput globalMinimumVarianceOptimizationOutput =</span>
+<span class="fc" id="L174">			globalMinimumVarianceAllocate (</span>
 				portfolioConstructionParameters,
 				assetUniverseStatisticalProperties
 			);
 
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (null == globalMinimumVarianceOptimizationOutput)</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (null == globalMinimumVarianceOptimizationOutput)</span>
 		{
-<span class="nc" id="L169">			return null;</span>
+<span class="nc" id="L181">			return null;</span>
 		}
 
-<span class="fc" id="L172">		org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsOptimizationOutput</span>
-<span class="fc" id="L173">			= longOnlyMaximumReturnsAllocate (</span>
+<span class="fc" id="L184">		org.drip.portfolioconstruction.allocator.OptimizationOutput longOnlyMaximumReturnsOptimizationOutput</span>
+<span class="fc" id="L185">			= longOnlyMaximumReturnsAllocate (</span>
 				portfolioConstructionParameters,
 				assetUniverseStatisticalProperties
 			);
 
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (null == longOnlyMaximumReturnsOptimizationOutput)</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (null == longOnlyMaximumReturnsOptimizationOutput)</span>
 		{
-<span class="nc" id="L180">			return null;</span>
+<span class="nc" id="L192">			return null;</span>
 		}
 
-<span class="fc" id="L183">		double globalMinimumVarianceReturns =</span>
-<span class="fc" id="L184">			globalMinimumVarianceOptimizationOutput.optimalMetrics().excessReturnsMean();</span>
+<span class="fc" id="L195">		double globalMinimumVarianceReturns =</span>
+<span class="fc" id="L196">			globalMinimumVarianceOptimizationOutput.optimalMetrics().excessReturnsMean();</span>
 
-<span class="fc" id="L186">		double longOnlyMaximumReturns =</span>
-<span class="fc" id="L187">			longOnlyMaximumReturnsOptimizationOutput.optimalMetrics().excessReturnsMean();</span>
+<span class="fc" id="L198">		double longOnlyMaximumReturns =</span>
+<span class="fc" id="L199">			longOnlyMaximumReturnsOptimizationOutput.optimalMetrics().excessReturnsMean();</span>
 
-<span class="fc" id="L189">		double returnsConstraintGridWidth = (longOnlyMaximumReturns - globalMinimumVarianceReturns) /</span>
+<span class="fc" id="L201">		double returnsConstraintGridWidth = (longOnlyMaximumReturns - globalMinimumVarianceReturns) /</span>
 			frontierSampleUnits;
-<span class="fc" id="L191">		double returnsConstraint = globalMinimumVarianceReturns + returnsConstraintGridWidth;</span>
-<span class="fc" id="L192">		org.drip.portfolioconstruction.mpt.MarkovitzBullet markovitzBullet = null;</span>
+<span class="fc" id="L203">		double returnsConstraint = globalMinimumVarianceReturns + returnsConstraintGridWidth;</span>
+<span class="fc" id="L204">		org.drip.portfolioconstruction.mpt.MarkovitzBullet markovitzBullet = null;</span>
 
 		try
 		{
-<span class="fc" id="L196">			markovitzBullet = new org.drip.portfolioconstruction.mpt.MarkovitzBullet (</span>
+<span class="fc" id="L208">			markovitzBullet = new org.drip.portfolioconstruction.mpt.MarkovitzBullet (</span>
 				globalMinimumVarianceOptimizationOutput,
 				longOnlyMaximumReturnsOptimizationOutput
 			);
 		}
-<span class="nc" id="L201">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L213">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L203">			e.printStackTrace();</span>
+<span class="nc" id="L215">			e.printStackTrace();</span>
 
-<span class="nc" id="L205">			return null;</span>
-<span class="fc" id="L206">		}</span>
+<span class="nc" id="L217">			return null;</span>
+<span class="fc" id="L218">		}</span>
 
-<span class="fc bfc" id="L208" title="All 2 branches covered.">		while (returnsConstraint &lt;= longOnlyMaximumReturns)</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		while (returnsConstraint &lt;= longOnlyMaximumReturns)</span>
 		{
 			try
 			{
-<span class="fc" id="L212">				markovitzBullet.addOptimalPortfolio (</span>
-<span class="fc" id="L213">					allocate (</span>
-<span class="fc" id="L214">						constrainedPCP (</span>
+<span class="fc" id="L224">				markovitzBullet.addOptimalPortfolio (</span>
+<span class="fc" id="L225">					allocate (</span>
+<span class="fc" id="L226">						constrainedPCP (</span>
 							portfolioConstructionParameters,
 							returnsConstraint
 						),
@@ -219,17 +231,17 @@ package org.drip.portfolioconstruction.allocator;
 					)
 				);
 			}
-<span class="nc" id="L222">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L234">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L224">				e.printStackTrace();</span>
+<span class="nc" id="L236">				e.printStackTrace();</span>
 
-<span class="nc" id="L226">				return null;</span>
-<span class="fc" id="L227">			}</span>
+<span class="nc" id="L238">				return null;</span>
+<span class="fc" id="L239">			}</span>
 
-<span class="fc" id="L229">			returnsConstraint += returnsConstraintGridWidth;</span>
+<span class="fc" id="L241">			returnsConstraint += returnsConstraintGridWidth;</span>
 		}
 
-<span class="fc" id="L232">		return markovitzBullet;</span>
+<span class="fc" id="L244">		return markovitzBullet;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,44 +6,56 @@ package org.drip.portfolioconstruction.alm;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,9 +85,9 @@ package org.drip.portfolioconstruction.alm;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/alm&quot;&gt;ALM&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ALMAnalyticsLibrary.md&quot;&gt;Asset Liability Management Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/alm/README.md&quot;&gt;Sharpe-Tint Asset Liability Manager&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -83,10 +95,10 @@ package org.drip.portfolioconstruction.alm;
 
 public class DiscountRate
 {
-<span class="fc" id="L86">	private double _yield = java.lang.Double.NaN;</span>
-<span class="fc" id="L87">	private double _basicConsumptionSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private double _workingAgeIncomeSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L89">	private double _pensionBenefitsIncomeSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private double _yield = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _basicConsumptionSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private double _workingAgeIncomeSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L101">	private double _pensionBenefitsIncomeSpread = java.lang.Double.NaN;</span>
 
 	/**
 	 * DiscountRate Constructor
@@ -105,18 +117,18 @@ public class DiscountRate
 		final double pensionBenefitsIncomeSpread,
 		final double basicConsumptionSpread)
 		throws java.lang.Exception
-<span class="fc" id="L108">	{</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_yield = yield) ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncomeSpread =</span>
+<span class="fc" id="L120">	{</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_yield = yield) ||</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_workingAgeIncomeSpread =</span>
 				workingAgeIncomeSpread) ||
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumptionSpread =</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_basicConsumptionSpread =</span>
 				basicConsumptionSpread) ||
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefitsIncomeSpread =</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_pensionBenefitsIncomeSpread =</span>
 				pensionBenefitsIncomeSpread))
 		{
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;DiscountRate Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;DiscountRate Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="fc" id="L119">	}</span>
+<span class="fc" id="L131">	}</span>
 
 	/**
 	 * Retrieve the Base Discounting Yield
@@ -126,7 +138,7 @@ public class DiscountRate
 
 	public double yield()
 	{
-<span class="nc" id="L129">		return _yield;</span>
+<span class="nc" id="L141">		return _yield;</span>
 	}
 
 	/**
@@ -137,7 +149,7 @@ public class DiscountRate
 
 	public double workingAgeIncomeSpread()
 	{
-<span class="nc" id="L140">		return _workingAgeIncomeSpread;</span>
+<span class="nc" id="L152">		return _workingAgeIncomeSpread;</span>
 	}
 
 	/**
@@ -148,7 +160,7 @@ public class DiscountRate
 
 	public double workingAgeIncomeRate()
 	{
-<span class="nc" id="L151">		return _yield + _workingAgeIncomeSpread;</span>
+<span class="nc" id="L163">		return _yield + _workingAgeIncomeSpread;</span>
 	}
 
 	/**
@@ -165,12 +177,12 @@ public class DiscountRate
 		final double dblHorizon)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))</span>
 		{
-<span class="nc" id="L170">			throw new java.lang.Exception (&quot;DiscountRate::workingAgeIncomeDF =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L182">			throw new java.lang.Exception (&quot;DiscountRate::workingAgeIncomeDF =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L173">		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _workingAgeIncomeSpread));</span>
+<span class="fc" id="L185">		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _workingAgeIncomeSpread));</span>
 	}
 
 	/**
@@ -181,7 +193,7 @@ public class DiscountRate
 
 	public double pensionBenefitsIncomeSpread()
 	{
-<span class="nc" id="L184">		return _pensionBenefitsIncomeSpread;</span>
+<span class="nc" id="L196">		return _pensionBenefitsIncomeSpread;</span>
 	}
 
 	/**
@@ -192,7 +204,7 @@ public class DiscountRate
 
 	public double pensionBenefitsIncomeRate()
 	{
-<span class="nc" id="L195">		return _yield + _pensionBenefitsIncomeSpread;</span>
+<span class="nc" id="L207">		return _yield + _pensionBenefitsIncomeSpread;</span>
 	}
 
 	/**
@@ -209,12 +221,12 @@ public class DiscountRate
 		final double dblHorizon)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))</span>
 		{
-<span class="nc" id="L214">			throw new java.lang.Exception (&quot;DiscountRate::pensionBenefitsIncomeDF =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L226">			throw new java.lang.Exception (&quot;DiscountRate::pensionBenefitsIncomeDF =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L217">		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _pensionBenefitsIncomeSpread));</span>
+<span class="fc" id="L229">		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _pensionBenefitsIncomeSpread));</span>
 	}
 
 	/**
@@ -225,7 +237,7 @@ public class DiscountRate
 
 	public double basicConsumptionSpread()
 	{
-<span class="nc" id="L228">		return _basicConsumptionSpread;</span>
+<span class="nc" id="L240">		return _basicConsumptionSpread;</span>
 	}
 
 	/**
@@ -236,7 +248,7 @@ public class DiscountRate
 
 	public double basicConsumptionRate()
 	{
-<span class="nc" id="L239">		return _yield + _basicConsumptionSpread;</span>
+<span class="nc" id="L251">		return _yield + _basicConsumptionSpread;</span>
 	}
 
 	/**
@@ -253,12 +265,12 @@ public class DiscountRate
 		final double dblHorizon)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L256" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblHorizon))</span>
 		{
-<span class="nc" id="L258">			throw new java.lang.Exception (&quot;DiscountRate::basicConsumptionDF =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L270">			throw new java.lang.Exception (&quot;DiscountRate::basicConsumptionDF =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="fc" id="L261">		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _basicConsumptionSpread));</span>
+<span class="fc" id="L273">		return java.lang.Math.exp (-1. * dblHorizon * (_yield + _basicConsumptionSpread));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
