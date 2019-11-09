@@ -122,7 +122,9 @@ public class RebalancerAnalytics
 			null == (_objectiveTermRealizationMap = objectiveTermRealizationMap) ||
 			null == (_constraintRealizationMap = constraintRealizationMap))
 		{
-			throw new java.lang.Exception ("RebalancerAnalytics Constructor => Invalid Inputs!");
+			throw new java.lang.Exception (
+				"RebalancerAnalytics Constructor => Invalid Inputs!"
+			);
 		}
 
 		_portfolioMetrics = portfolioMetrics;

@@ -101,9 +101,14 @@ public class ObjectiveTermUnit
 		throws java.lang.Exception
 	{
 		if (null == (_objectiveTerm = objectiveTerm) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_weight = weight))
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_weight = weight
+			)
+		)
 		{
-			throw new java.lang.Exception ("ObjectiveTermUnit Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ObjectiveTermUnit Constructor => Invalid Inputs"
+			);
 		}
 
 		_isActive = true;

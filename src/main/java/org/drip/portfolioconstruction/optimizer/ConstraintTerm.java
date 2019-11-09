@@ -109,11 +109,18 @@ public abstract class ConstraintTerm
 		);
 
 		if (null == (_scope = scope) ||
-			null == (_unit = unit) ||
-			(!org.drip.numerical.common.NumberUtil.IsValid (_minimum = minimum) &&
-			!org.drip.numerical.common.NumberUtil.IsValid (_maximum = maximum)))
+			null == (_unit = unit) || (
+				!org.drip.numerical.common.NumberUtil.IsValid (
+					_minimum = minimum
+				) && !org.drip.numerical.common.NumberUtil.IsValid (
+					_maximum = maximum
+				)
+			)
+		)
 		{
-			throw new java.lang.Exception ("ConstraintTerm Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ConstraintTerm Constructor => Invalid Inputs"
+			);
 		}
 	}
 

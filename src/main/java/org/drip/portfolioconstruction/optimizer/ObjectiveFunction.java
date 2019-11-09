@@ -94,7 +94,9 @@ public class ObjectiveFunction
 
 	public ObjectiveFunction()
 	{
-		super (null);
+		super (
+			null
+		);
 	}
 
 	/**
@@ -108,12 +110,16 @@ public class ObjectiveFunction
 	public boolean addObjectiveTermUnit (
 		final org.drip.portfolioconstruction.optimizer.ObjectiveTermUnit objectiveTermUnit)
 	{
-		if (null == objectiveTermUnit || _objectiveTermUnitList.contains (objectiveTermUnit))
+		if (null == objectiveTermUnit || _objectiveTermUnitList.contains (
+			objectiveTermUnit
+		))
 		{
 			return false;
 		}
 
-		_objectiveTermUnitList.add (objectiveTermUnit);
+		_objectiveTermUnitList.add (
+			objectiveTermUnit
+		);
 
 		return true;
 	}
@@ -135,7 +141,7 @@ public class ObjectiveFunction
 	}
 
 	@Override public double evaluate (
-		final double[] adblVariate)
+		final double[] variateArray)
 		throws java.lang.Exception
 	{
 		double value = 0.;
@@ -146,7 +152,7 @@ public class ObjectiveFunction
 			if (objectiveTermUnit.isActive())
 			{
 				value += objectiveTermUnit.weight() * objectiveTermUnit.objectiveTerm().rdtoR1().evaluate (
-					adblVariate
+					variateArray
 				);
 			}
 		}
@@ -155,9 +161,9 @@ public class ObjectiveFunction
 	}
 
 	@Override public double derivative (
-		final double[] adblVariate,
-		final int iVariateIndex,
-		final int iOrder)
+		final double[] variateArray,
+		final int variateIndex,
+		final int order)
 		throws java.lang.Exception
 	{
 		double derivative = 0.;
@@ -169,9 +175,9 @@ public class ObjectiveFunction
 			{
 				derivative += objectiveTermUnit.weight() *
 					objectiveTermUnit.objectiveTerm().rdtoR1().derivative (
-						adblVariate,
-						iVariateIndex,
-						iOrder
+						variateArray,
+						variateIndex,
+						order
 					);
 			}
 		}

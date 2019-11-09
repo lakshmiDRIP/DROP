@@ -119,7 +119,9 @@ public class Unit
 			QUANTITY != _denomination &&
 			CURRENCY != _denomination)
 		{
-			throw new java.lang.Exception ("Unit Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"Unit Constructor => Invalid Inputs"
+			);
 		}
 	}
 

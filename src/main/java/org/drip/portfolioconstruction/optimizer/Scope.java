@@ -118,7 +118,11 @@ public class Scope
 		if (ASSET != (_level = level) &&
 			SELECTION != _level &&
 			PORTFOLIO != _level)
-			throw new java.lang.Exception ("Scope Constructor => Invalid Inputs");
+		{
+			throw new java.lang.Exception (
+				"Scope Constructor => Invalid Inputs"
+			);
+		}
 	}
 
 	/**

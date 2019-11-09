@@ -104,7 +104,9 @@ public class ConstraintHierarchy
 		int constraintCount = constraintTermArray.length;
 		int[] constraintOrderArray = new int[constraintCount];
 
-		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
 		{
 			constraintOrderArray[constraintIndex] = 0;
 		}
@@ -139,25 +141,36 @@ public class ConstraintHierarchy
 		throws java.lang.Exception
 	{
 		if ((null == (_constraintTermArray = constraintTermArray) &&
-				null != (_constraintOrderArray = constraintOrderArray)) &&
-			(null != (_constraintTermArray = constraintTermArray) &&
-				null == (_constraintOrderArray = constraintOrderArray)))
+				null != (_constraintOrderArray = constraintOrderArray)
+			) && (
+				null != (_constraintTermArray = constraintTermArray) &&
+				null == (_constraintOrderArray = constraintOrderArray)
+			)
+		)
 		{
-			throw new java.lang.Exception ("ConstraintHierarchy Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ConstraintHierarchy Constructor => Invalid Inputs"
+			);
 		}
 
 		int constraintCount = _constraintTermArray.length;
 
 		if (constraintCount != _constraintOrderArray.length)
 		{
-			throw new java.lang.Exception ("ConstraintHierarchy Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ConstraintHierarchy Constructor => Invalid Inputs"
+			);
 		}
 
-		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
 		{
 			if (null == _constraintTermArray[constraintIndex])
 			{
-				throw new java.lang.Exception ("ConstraintHierarchy Constructor => Invalid Inputs");
+				throw new java.lang.Exception (
+					"ConstraintHierarchy Constructor => Invalid Inputs"
+				);
 			}
 		}
 	}
@@ -179,7 +192,7 @@ public class ConstraintHierarchy
 	 * @return The Array of Constraint Terms
 	 */
 
-	public org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraints()
+	public org.drip.portfolioconstruction.optimizer.ConstraintTerm[] constraintTermArray()
 	{
 		return _constraintTermArray;
 	}
@@ -199,7 +212,9 @@ public class ConstraintHierarchy
 
 		int constraintCount = _constraintTermArray.length;
 
-		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex)
+		for (int constraintIndex = 0;
+			constraintIndex < constraintCount;
+			++constraintIndex)
 		{
 			if (0 != _constraintOrderArray[constraintIndex])
 			{

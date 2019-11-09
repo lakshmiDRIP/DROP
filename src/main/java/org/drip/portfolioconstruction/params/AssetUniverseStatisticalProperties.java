@@ -177,10 +177,13 @@ public class AssetUniverseStatisticalProperties
 		final double riskFreeRate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_riskFreeRate = riskFreeRate))
+		if (!org.drip.numerical.common.NumberUtil.IsValid (
+			_riskFreeRate = riskFreeRate
+		))
 		{
-			throw new java.lang.Exception
-				("AssetUniverseStatisticalProperties Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"AssetUniverseStatisticalProperties Constructor => Invalid Inputs"
+			);
 		}
 	}
 
@@ -225,8 +228,10 @@ public class AssetUniverseStatisticalProperties
 	{
 		if (null == id1 || id1.isEmpty() ||
 			null == id2 || id2.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (correlation) ||
-				1. < correlation || -1. > correlation)
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				correlation
+			) || 1. < correlation || -1. > correlation
+		)
 		{
 			return false;
 		}
@@ -266,8 +271,11 @@ public class AssetUniverseStatisticalProperties
 	public org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties (
 		final java.lang.String id)
 	{
-		return null == id || id.isEmpty() || !_assetUniverseStatisticalPropertiesMap.containsKey (id) ? null
-			: _assetUniverseStatisticalPropertiesMap.get (id);
+		return null == id || id.isEmpty() || !_assetUniverseStatisticalPropertiesMap.containsKey (
+			id
+		) ? null : _assetUniverseStatisticalPropertiesMap.get (
+			id
+		);
 	}
 
 	/**
@@ -289,24 +297,32 @@ public class AssetUniverseStatisticalProperties
 		if (null == id1 || id1.isEmpty() ||
 			null == id2 || id2.isEmpty())
 		{
-			throw new java.lang.Exception
-				("AssetUniverseStatisticalProperties::correlation => Invalid Inputs");
+			throw new java.lang.Exception (
+				"AssetUniverseStatisticalProperties::correlation => Invalid Inputs"
+			);
 		}
 
-		if (id1.equalsIgnoreCase (id2))
+		if (id1.equalsIgnoreCase (
+			id2
+		))
 		{
 			return 1.;
 		}
 
 		java.lang.String strCorrelationSlot = id1 + "@#" + id2;
 
-		if (!_correlationMap.containsKey (strCorrelationSlot))
+		if (!_correlationMap.containsKey (
+			strCorrelationSlot
+		))
 		{
-			throw new java.lang.Exception
-				("AssetUniverseStatisticalProperties::correlation => Invalid Inputs");
+			throw new java.lang.Exception (
+				"AssetUniverseStatisticalProperties::correlation => Invalid Inputs"
+			);
 		}
 
-		return _correlationMap.get (strCorrelationSlot);
+		return _correlationMap.get (
+			strCorrelationSlot
+		);
 	}
 
 	/**
@@ -333,17 +349,21 @@ public class AssetUniverseStatisticalProperties
 			return null;
 		}
 
-		for (int i = 0; i < assetCount; ++i)
+		for (int assetIndex = 0;
+			assetIndex < assetCount;
+			++assetIndex)
 		{
 			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalProperties =
-				assetStatisticalProperties (idArray[i]);
+				assetStatisticalProperties (
+					idArray[assetIndex]
+				);
 
 			if (null == assetStatisticalProperties)
 			{
 				return null;
 			}
 
-			expectedReturnsArray[i] = assetStatisticalProperties.expectedReturn();
+			expectedReturnsArray[assetIndex] = assetStatisticalProperties.expectedReturn();
 		}
 
 		return expectedReturnsArray;
@@ -373,7 +393,9 @@ public class AssetUniverseStatisticalProperties
 			return null;
 		}
 
-		for (int assetIndexI = 0; assetIndexI < assetCount; ++assetIndexI)
+		for (int assetIndexI = 0;
+			assetIndexI < assetCount;
+			++assetIndexI)
 		{
 			org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesI =
 				assetStatisticalProperties (idArray[assetIndexI]);
@@ -385,10 +407,14 @@ public class AssetUniverseStatisticalProperties
 
 			double dblVarianceI = assetStatisticalPropertiesI.variance();
 
-			for (int assetIndexJ = 0; assetIndexJ < assetCount; ++assetIndexJ)
+			for (int assetIndexJ = 0;
+				assetIndexJ < assetCount;
+				++assetIndexJ)
 			{
 				org.drip.portfolioconstruction.params.AssetStatisticalProperties assetStatisticalPropertiesJ
-					= assetStatisticalProperties (idArray[assetIndexJ]);
+					= assetStatisticalProperties (
+						idArray[assetIndexJ]
+					);
 
 				if (null == assetStatisticalPropertiesJ)
 				{

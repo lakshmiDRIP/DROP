@@ -102,7 +102,9 @@ public abstract class ObjectiveTerm
 
 		if (null == (_initialHoldingsArray = initialHoldingsArray) || 0 == _initialHoldingsArray.length)
 		{
-			throw new java.lang.Exception ("ObjectiveTerm Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"ObjectiveTerm Constructor => Invalid Inputs"
+			);
 		}
 	}
 

@@ -128,7 +128,9 @@ public class Strategy
 
 		if (null == (_objectiveFunction = objectiveFunction))
 		{
-			throw new java.lang.Exception ("Strategy Construtor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"Strategy Construtor => Invalid Inputs"
+			);
 		}
 	}
 

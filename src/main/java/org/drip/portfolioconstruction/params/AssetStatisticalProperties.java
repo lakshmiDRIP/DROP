@@ -108,10 +108,16 @@ public class AssetStatisticalProperties
 	{
 		if (null == (_name = name) || _name.isEmpty() ||
 			null == (_id = id) || _id.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_expectedReturn = expectedReturn) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_variance = variance))
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_expectedReturn = expectedReturn
+			) || !org.drip.numerical.common.NumberUtil.IsValid (
+				_variance = variance
+			)
+		)
 		{
-			throw new java.lang.Exception ("AssetStatisticalProperties Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"AssetStatisticalProperties Constructor => Invalid Inputs"
+			);
 		}
 	}
 

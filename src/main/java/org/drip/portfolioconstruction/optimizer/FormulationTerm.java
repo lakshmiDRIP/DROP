@@ -101,7 +101,9 @@ public abstract class FormulationTerm
 
 		if (null == (_category = category) || _category.isEmpty())
 		{
-			throw new java.lang.Exception ("FormulationTerm Constructor => Invalid Inputs");
+			throw new java.lang.Exception (
+				"FormulationTerm Constructor => Invalid Inputs"
+			);
 		}
 	}
 
