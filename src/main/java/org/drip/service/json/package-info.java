@@ -1,6 +1,6 @@
 
 /**
- * JSON Based Valuation Request Processor
+ * JSON Based Valuation Request Service
  *
  * @author Lakshmi Krishnamurthy
  */

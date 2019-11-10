@@ -51,22 +51,6 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on Mathematics</b>
 
- * Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
-
- * Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
-
- * Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
-
- * National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical Functions https://dlmf.nist.gov/5.11
-
- * Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n! https://arxiv.org/abs/1003.2907 <b>arXiv</b>
-
- * Toth V. T. (2016): Programmable Calculators – The Gamma Function http://www.rskey.org/CMS/index.php/the-library/11
-
- * Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge University Press</b> New York
-
- * Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
-
 
 ## DROP Specifications
 
