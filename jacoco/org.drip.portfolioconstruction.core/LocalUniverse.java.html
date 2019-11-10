@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.core;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,9 +83,9 @@ package org.drip.portfolioconstruction.core;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/core/README.md&quot;&gt;Core Portfolio Construction Component Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,7 +94,7 @@ package org.drip.portfolioconstruction.core;
 
 public class LocalUniverse
 {
-<span class="nc" id="L85">	private java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.core.Asset&gt; _assetMap =</span>
+<span class="nc" id="L97">	private java.util.Map&lt;java.lang.String, org.drip.portfolioconstruction.core.Asset&gt; _assetMap =</span>
 		new org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.portfolioconstruction.core.Asset&gt;();
 
 	/**
@@ -90,8 +102,8 @@ public class LocalUniverse
 	 */
 
 	public LocalUniverse()
-<span class="nc" id="L93">	{</span>
-<span class="nc" id="L94">	}</span>
+<span class="nc" id="L105">	{</span>
+<span class="nc" id="L106">	}</span>
 
 	/**
 	 * Add an Asset to the Local Universe
@@ -104,17 +116,17 @@ public class LocalUniverse
 	public boolean add (
 		final org.drip.portfolioconstruction.core.Asset asset)
 	{
-<span class="nc bnc" id="L107" title="All 2 branches missed.">		if (null == asset)</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == asset)</span>
 		{
-<span class="nc" id="L109">			return false;</span>
+<span class="nc" id="L121">			return false;</span>
 		}
 
-<span class="nc" id="L112">		_assetMap.put (</span>
-<span class="nc" id="L113">			asset.id(),</span>
+<span class="nc" id="L124">		_assetMap.put (</span>
+<span class="nc" id="L125">			asset.id(),</span>
 			asset
 		);
 
-<span class="nc" id="L117">		return true;</span>
+<span class="nc" id="L129">		return true;</span>
 	}
 
 	/**
@@ -128,7 +140,9 @@ public class LocalUniverse
 	public boolean contains (
 		final org.drip.portfolioconstruction.core.Asset asset)
 	{
-<span class="nc bnc" id="L131" title="All 4 branches missed.">		return null != asset &amp;&amp; _assetMap.containsKey (asset.id());</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">		return null != asset &amp;&amp; _assetMap.containsKey (</span>
+<span class="nc" id="L144">			asset.id()</span>
+		);
 	}
 
 	/**
@@ -142,7 +156,9 @@ public class LocalUniverse
 	public boolean contains (
 		final java.lang.String id)
 	{
-<span class="nc bnc" id="L145" title="All 6 branches missed.">		return null != id &amp;&amp; !id.isEmpty() &amp;&amp; _assetMap.containsKey (id);</span>
+<span class="nc bnc" id="L159" title="All 6 branches missed.">		return null != id &amp;&amp; !id.isEmpty() &amp;&amp; _assetMap.containsKey (</span>
+			id
+		);
 	}
 
 	/**
@@ -153,7 +169,7 @@ public class LocalUniverse
 
 	public java.util.Set&lt;java.lang.String&gt; idSet()
 	{
-<span class="nc" id="L156">		return _assetMap.keySet();</span>
+<span class="nc" id="L172">		return _assetMap.keySet();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

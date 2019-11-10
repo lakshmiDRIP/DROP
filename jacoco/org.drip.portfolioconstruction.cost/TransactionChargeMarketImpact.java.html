@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.cost;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,9 +83,9 @@ package org.drip.portfolioconstruction.cost;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/cost&quot;&gt;Cost&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/cost/README.md&quot;&gt;Transaction Charge Objective Term Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,8 +94,8 @@ package org.drip.portfolioconstruction.cost;
 
 public class TransactionChargeMarketImpact extends org.drip.portfolioconstruction.cost.TransactionCharge
 {
-<span class="nc" id="L85">	private double _exponent = java.lang.Double.NaN;</span>
-<span class="nc" id="L86">	private double _coefficient = java.lang.Double.NaN;</span>
+<span class="nc" id="L97">	private double _exponent = java.lang.Double.NaN;</span>
+<span class="nc" id="L98">	private double _coefficient = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construction of the Two-Third's Power Law TransactionChargeMarketImpact Instance
@@ -104,7 +116,7 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 	{
 		try
 		{
-<span class="nc" id="L107">			return new TransactionChargeMarketImpact (</span>
+<span class="nc" id="L119">			return new TransactionChargeMarketImpact (</span>
 				name,
 				id,
 				description,
@@ -112,12 +124,12 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 				2. / 3.
 			);
 		}
-<span class="nc" id="L115">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L127">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L117">			e.printStackTrace();</span>
+<span class="nc" id="L129">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L120">		return null;</span>
+<span class="nc" id="L132">		return null;</span>
 	}
 
 	/**
@@ -139,7 +151,7 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 	{
 		try
 		{
-<span class="nc" id="L142">			return new TransactionChargeMarketImpact (</span>
+<span class="nc" id="L154">			return new TransactionChargeMarketImpact (</span>
 				name,
 				id,
 				description,
@@ -147,12 +159,12 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 				3. / 5.
 			);
 		}
-<span class="nc" id="L150">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L162">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L152">			e.printStackTrace();</span>
+<span class="nc" id="L164">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L155">		return null;</span>
+<span class="nc" id="L167">		return null;</span>
 	}
 
 	/**
@@ -175,20 +187,20 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 		final double exponent)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L178">		super (</span>
+<span class="nc" id="L190">		super (</span>
 			name,
 			id,
 			description
 		);
 
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_coefficient = coefficient) ||</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_coefficient = coefficient) ||</span>
 				0. &gt; _coefficient ||
-<span class="nc bnc" id="L186" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_exponent = exponent) || 0. &gt; _exponent)</span>
+<span class="nc bnc" id="L198" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_exponent = exponent) || 0. &gt; _exponent)</span>
 		{
-<span class="nc" id="L188">			throw new java.lang.Exception</span>
+<span class="nc" id="L200">			throw new java.lang.Exception</span>
 				(&quot;TransactionChargeMarketImpact Constuctor =&gt; Invalid Linear Charge&quot;);
 		}
-<span class="nc" id="L191">	}</span>
+<span class="nc" id="L203">	}</span>
 
 	/**
 	 * Retrieve the Transaction Charge Coefficient
@@ -198,7 +210,7 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 
 	public double coefficient()
 	{
-<span class="nc" id="L201">		return _coefficient;</span>
+<span class="nc" id="L213">		return _coefficient;</span>
 	}
 
 	/**
@@ -209,7 +221,7 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 
 	public double exponent()
 	{
-<span class="nc" id="L212">		return _exponent;</span>
+<span class="nc" id="L224">		return _exponent;</span>
 	}
 
 	@Override public double estimate (
@@ -217,14 +229,14 @@ public class TransactionChargeMarketImpact extends org.drip.portfolioconstructio
 		final double finalSize)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (initialSize) ||</span>
-<span class="nc bnc" id="L221" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (finalSize))</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (initialSize) ||</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (finalSize))</span>
 		{
-<span class="nc" id="L223">			throw new java.lang.Exception (&quot;TransactionChargeMarketImpact::estimate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L235">			throw new java.lang.Exception (&quot;TransactionChargeMarketImpact::estimate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L226">		return _coefficient * java.lang.Math.pow (</span>
-<span class="nc" id="L227">			java.lang.Math.abs (</span>
+<span class="nc" id="L238">		return _coefficient * java.lang.Math.pow (</span>
+<span class="nc" id="L239">			java.lang.Math.abs (</span>
 				finalSize - initialSize
 			),
 			_exponent

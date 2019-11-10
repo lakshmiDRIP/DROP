@@ -6,43 +6,55 @@ package org.drip.product.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -70,17 +82,17 @@ package org.drip.product.creator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator/README.md&quot;&gt;Streams and Products Construction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L83">public class StreamBuilder {</span>
+<span class="nc" id="L95">public class StreamBuilder {</span>
 
 	/**
 	 * Generate the Fixed Stream Off of the specified Parameters
@@ -118,31 +130,31 @@ package org.drip.product.creator;
 			final java.lang.String strCurrency,
 			final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains (&quot;EOM&quot;);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		boolean bCouponEOMAdj = null == strCouponDC ? false : strCouponDC.toUpperCase().contains (&quot;EOM&quot;);</span>
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		int iCouponDCIndex = null == strCouponDC ? -1 : strCouponDC.indexOf (&quot; NON&quot;);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">		int iCouponDCIndex = null == strCouponDC ? -1 : strCouponDC.indexOf (&quot; NON&quot;);</span>
 
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">		java.lang.String strCouponDCAdj = -1 != iCouponDCIndex ? strCouponDC.substring (0, iCouponDCIndex) :</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">		java.lang.String strCouponDCAdj = -1 != iCouponDCIndex ? strCouponDC.substring (0, iCouponDCIndex) :</span>
 			strCouponDC;
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		boolean bAccrualEOMAdj = null == strAccrualDC ? false : strAccrualDC.toUpperCase().contains (&quot;EOM&quot;);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		boolean bAccrualEOMAdj = null == strAccrualDC ? false : strAccrualDC.toUpperCase().contains (&quot;EOM&quot;);</span>
 
-<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		int iAccrualDCIndex = null == strAccrualDC ? -1 : strAccrualDC.indexOf (&quot; NON&quot;);</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">		int iAccrualDCIndex = null == strAccrualDC ? -1 : strAccrualDC.indexOf (&quot; NON&quot;);</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		java.lang.String strAccrualDCAdj = -1 != iAccrualDCIndex ? strAccrualDC.substring (0,</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">		java.lang.String strAccrualDCAdj = -1 != iAccrualDCIndex ? strAccrualDC.substring (0,</span>
 			iAccrualDCIndex) : strAccrualDC;
 
-<span class="fc" id="L135">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L147">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iFirstCouponDate);
 
-<span class="fc" id="L138">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L150">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iPenultimateCouponDate);
 
-<span class="fc" id="L141">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
+<span class="fc" id="L153">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
 
 		try {
-<span class="fc" id="L144">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate =</span>
-<span class="fc" id="L145">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
+<span class="fc" id="L156">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate =</span>
+<span class="fc" id="L157">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
 					dtFirstCoupon,
 					dtPenultimateCoupon,
 					strTenor,
@@ -150,14 +162,14 @@ package org.drip.product.creator;
 					org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB
 				);
 
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
 
-<span class="fc" id="L155">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
+<span class="fc" id="L167">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
 
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
-<span class="nc" id="L158">				(iStreamEndDate));</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
+<span class="nc" id="L170">				(iStreamEndDate));</span>
 
-<span class="fc" id="L160">			return org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (</span>
+<span class="fc" id="L172">			return org.drip.analytics.support.CompositePeriodBuilder.FixedCompositeUnit (</span>
 				lsStreamEdgeDate,
 				new org.drip.param.period.CompositePeriodSetting (
 					iFreq,
@@ -189,11 +201,11 @@ package org.drip.product.creator;
 					strCurrency
 				)
 			);
-<span class="nc" id="L192">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L193">			e.printStackTrace();</span>
+<span class="nc" id="L204">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L205">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L196">		return null;</span>
+<span class="nc" id="L208">		return null;</span>
 	}
 
 	/**
@@ -228,19 +240,19 @@ package org.drip.product.creator;
 			final org.drip.state.identifier.FloaterLabel floaterLabel,
 			final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (null == floaterLabel) return null;</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">		if (null == floaterLabel) return null;</span>
 
-<span class="fc" id="L233">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L245">		org.drip.analytics.date.JulianDate dtFirstCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iFirstCouponDate);
 
-<span class="fc" id="L236">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L248">		org.drip.analytics.date.JulianDate dtPenultimateCoupon = new org.drip.analytics.date.JulianDate</span>
 			(iPenultimateCouponDate);
 
-<span class="fc" id="L239">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
+<span class="fc" id="L251">		java.lang.String strTenor = (12 / iFreq) + &quot;M&quot;;</span>
 
 		try {
-<span class="fc" id="L242">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate = </span>
-<span class="fc" id="L243">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
+<span class="fc" id="L254">			java.util.List&lt;java.lang.Integer&gt; lsStreamEdgeDate = </span>
+<span class="fc" id="L255">				org.drip.analytics.support.CompositePeriodBuilder.BackwardEdgeDates (</span>
 					dtFirstCoupon,
 					dtPenultimateCoupon,
 					strTenor,
@@ -248,19 +260,19 @@ package org.drip.product.creator;
 					org.drip.analytics.support.CompositePeriodBuilder.LONG_STUB
 				);
 
-<span class="pc bpc" id="L251" title="1 of 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">			if (null == lsStreamEdgeDate) return null;</span>
 
-<span class="fc" id="L253">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
+<span class="fc" id="L265">			lsStreamEdgeDate.add (0, iStreamStartDate);</span>
 
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
-<span class="nc" id="L256">				(iStreamEndDate));</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">			lsStreamEdgeDate.add (null == dapStreamEnd ? iStreamEndDate : dapStreamEnd.roll</span>
+<span class="nc" id="L268">				(iStreamEndDate));</span>
 
-<span class="fc" id="L258">			return org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (</span>
+<span class="fc" id="L270">			return org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit (</span>
 				lsStreamEdgeDate,
 				new org.drip.param.period.CompositePeriodSetting (
 					iFreq,
 					strTenor,
-<span class="fc" id="L263">					floaterLabel.currency(),</span>
+<span class="fc" id="L275">					floaterLabel.currency(),</span>
 					dapPay,
 					1.,
 					null,
@@ -277,11 +289,11 @@ package org.drip.product.creator;
 					dblSpread
 				)
 			);
-<span class="nc" id="L280">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L281">			e.printStackTrace();</span>
+<span class="nc" id="L292">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L293">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L284">		return null;</span>
+<span class="nc" id="L296">		return null;</span>
 	}
 
 	/**
@@ -330,10 +342,10 @@ package org.drip.product.creator;
 			final org.drip.state.identifier.ForwardLabel forwardLabel,
 			final org.drip.state.identifier.EntityCDSLabel creditLabel)
 	{
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		if (null == forwardLabel) return null;</span>
 
-<span class="fc" id="L335">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsMixedPeriod =</span>
-<span class="fc" id="L336">			FirstPenultimateDateFixedStream (</span>
+<span class="fc" id="L347">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsMixedPeriod =</span>
+<span class="fc" id="L348">			FirstPenultimateDateFixedStream (</span>
 				iStreamStartDate,
 				iFixedStreamEndDate,
 				iFixedFirstCouponDate,
@@ -345,14 +357,14 @@ package org.drip.product.creator;
 				dapPay,
 				dapStreamEnd,
 				dapAccrualEnd,
-<span class="fc" id="L348">				forwardLabel.currency(),</span>
+<span class="fc" id="L360">				forwardLabel.currency(),</span>
 				creditLabel
 			);
 
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">		if (null == lsMixedPeriod) return null;</span>
+<span class="pc bpc" id="L364" title="1 of 2 branches missed.">		if (null == lsMixedPeriod) return null;</span>
 
-<span class="fc" id="L354">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsFloatPeriod =</span>
-<span class="fc" id="L355">			FirstPenultimateDateFloatStream (</span>
+<span class="fc" id="L366">		java.util.List&lt;org.drip.analytics.cashflow.CompositePeriod&gt; lsFloatPeriod =</span>
+<span class="fc" id="L367">			FirstPenultimateDateFloatStream (</span>
 				iFixedStreamEndDate,
 				iFloatStreamEndDate,
 				iFloatFirstCouponDate,
@@ -366,11 +378,11 @@ package org.drip.product.creator;
 				creditLabel
 			);
 
-<span class="pc bpc" id="L369" title="1 of 2 branches missed.">		if (null == lsFloatPeriod) return null;</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">		if (null == lsFloatPeriod) return null;</span>
 
-<span class="fc" id="L371">		lsMixedPeriod.addAll (lsFloatPeriod);</span>
+<span class="fc" id="L383">		lsMixedPeriod.addAll (lsFloatPeriod);</span>
 
-<span class="fc" id="L373">		return lsMixedPeriod;</span>
+<span class="fc" id="L385">		return lsMixedPeriod;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

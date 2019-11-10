@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy0
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,10 +83,9 @@ package org.drip.portfolioconstruction.optimizer;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
-*		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/strategy&quot;&gt;Strategy&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer/README.md&quot;&gt;Core Portfolio Construction Optimizer Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,11 +95,11 @@ package org.drip.portfolioconstruction.optimizer;
 public abstract class ConstraintTerm
 	extends org.drip.portfolioconstruction.optimizer.FormulationTerm
 {
-<span class="nc" id="L87">	private double _maximum = java.lang.Double.NaN;</span>
-<span class="nc" id="L88">	private double _minimum = java.lang.Double.NaN;</span>
-<span class="nc" id="L89">	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;</span>
-<span class="nc" id="L90">	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;</span>
-<span class="nc" id="L91">	private org.drip.portfolioconstruction.optimizer.SoftConstraint _softConstraint = null;</span>
+<span class="nc" id="L98">	private double _maximum = java.lang.Double.NaN;</span>
+<span class="nc" id="L99">	private double _minimum = java.lang.Double.NaN;</span>
+<span class="nc" id="L100">	private org.drip.portfolioconstruction.optimizer.Unit _unit = null;</span>
+<span class="nc" id="L101">	private org.drip.portfolioconstruction.optimizer.Scope _scope = null;</span>
+<span class="nc" id="L102">	private org.drip.portfolioconstruction.optimizer.SoftConstraint _softConstraint = null;</span>
 
 	protected ConstraintTerm (
 		final java.lang.String strName,
@@ -101,21 +112,28 @@ public abstract class ConstraintTerm
 		final double maximum)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L104">		super (</span>
+<span class="nc" id="L115">		super (</span>
 			strName,
 			strID,
 			strDescription,
 			strCategory
 		);
 
-<span class="nc bnc" id="L111" title="All 4 branches missed.">		if (null == (_scope = scope) ||</span>
-			null == (_unit = unit) ||
-<span class="nc bnc" id="L113" title="All 2 branches missed.">			(!org.drip.numerical.common.NumberUtil.IsValid (_minimum = minimum) &amp;&amp;</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_maximum = maximum)))</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == (_scope = scope) ||</span>
+			null == (_unit = unit) || (
+<span class="nc bnc" id="L124" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (</span>
+					_minimum = minimum
+<span class="nc bnc" id="L126" title="All 2 branches missed.">				) &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (</span>
+					_maximum = maximum
+				)
+			)
+		)
 		{
-<span class="nc" id="L116">			throw new java.lang.Exception (&quot;ConstraintTerm Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (</span>
+				&quot;ConstraintTerm Constructor =&gt; Invalid Inputs&quot;
+			);
 		}
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L136">	}</span>
 
 	/**
 	 * Retrieve the Soft Constraint
@@ -125,7 +143,7 @@ public abstract class ConstraintTerm
 
 	public org.drip.portfolioconstruction.optimizer.SoftConstraint softContraint()
 	{
-<span class="nc" id="L128">		return _softConstraint;</span>
+<span class="nc" id="L146">		return _softConstraint;</span>
 	}
 
 	/**
@@ -136,7 +154,7 @@ public abstract class ConstraintTerm
 
 	public org.drip.portfolioconstruction.optimizer.Scope scope()
 	{
-<span class="nc" id="L139">		return _scope;</span>
+<span class="nc" id="L157">		return _scope;</span>
 	}
 
 	/**
@@ -147,7 +165,7 @@ public abstract class ConstraintTerm
 
 	public org.drip.portfolioconstruction.optimizer.Unit unit()
 	{
-<span class="nc" id="L150">		return _unit;</span>
+<span class="nc" id="L168">		return _unit;</span>
 	}
 
 	/**
@@ -158,7 +176,7 @@ public abstract class ConstraintTerm
 
 	public double minimum()
 	{
-<span class="nc" id="L161">		return _minimum;</span>
+<span class="nc" id="L179">		return _minimum;</span>
 	}
 
 	/**
@@ -169,7 +187,7 @@ public abstract class ConstraintTerm
 
 	public double maximum()
 	{
-<span class="nc" id="L172">		return _maximum;</span>
+<span class="nc" id="L190">		return _maximum;</span>
 	}
 
 	/**
@@ -180,7 +198,7 @@ public abstract class ConstraintTerm
 
 	public boolean isEquality()
 	{
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		return _maximum == _minimum;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		return _maximum == _minimum;</span>
 	}
 
 	/**
@@ -194,13 +212,13 @@ public abstract class ConstraintTerm
 	public boolean setSoftConstraint (
 		final org.drip.portfolioconstruction.optimizer.SoftConstraint softConstraint)
 	{
-<span class="nc bnc" id="L197" title="All 2 branches missed.">		if (null == softConstraint)</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (null == softConstraint)</span>
 		{
-<span class="nc" id="L199">			return false;</span>
+<span class="nc" id="L217">			return false;</span>
 		}
 
-<span class="nc" id="L202">		_softConstraint = softConstraint;</span>
-<span class="nc" id="L203">		return true;</span>
+<span class="nc" id="L220">		_softConstraint = softConstraint;</span>
+<span class="nc" id="L221">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

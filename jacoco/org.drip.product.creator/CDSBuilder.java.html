@@ -6,6 +6,7 @@ package org.drip.product.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.product.creator;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,17 +90,17 @@ package org.drip.product.creator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator/README.md&quot;&gt;Streams and Products Construction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class CDSBuilder {</span>
+<span class="nc" id="L103">public class CDSBuilder {</span>
 
 	/**
 	 * Create the credit default swap from the effective/maturity dates, coupon, IR curve name, and
@@ -114,27 +126,27 @@ package org.drip.product.creator;
 		final java.lang.String strCalendar,
 		final boolean bAdjustDates)
 	{
-<span class="pc bpc" id="L117" title="5 of 10 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strCurrency || strCurrency.isEmpty() || null</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">			== cs || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
-<span class="nc" id="L119">			return null;</span>
+<span class="pc bpc" id="L129" title="5 of 10 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strCurrency || strCurrency.isEmpty() || null</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">			== cs || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L131">			return null;</span>
 
 		try {
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">			org.drip.analytics.daycount.DateAdjustParams dap = bAdjustDates ? new</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">			org.drip.analytics.daycount.DateAdjustParams dap = bAdjustDates ? new</span>
 				org.drip.analytics.daycount.DateAdjustParams 
 					(org.drip.analytics.daycount.Convention.DATE_ROLL_FOLLOWING, 1, strCalendar) : null;
 
-<span class="fc" id="L126">			org.drip.product.definition.CreditDefaultSwap cds = new org.drip.product.credit.CDSComponent</span>
-<span class="fc" id="L127">				(dtEffective.julian(), dtMaturity.julian(), dblCoupon, 4, &quot;Act/360&quot;, &quot;Act/360&quot;, &quot;&quot;, false,</span>
+<span class="fc" id="L138">			org.drip.product.definition.CreditDefaultSwap cds = new org.drip.product.credit.CDSComponent</span>
+<span class="fc" id="L139">				(dtEffective.julian(), dtMaturity.julian(), dblCoupon, 4, &quot;Act/360&quot;, &quot;Act/360&quot;, &quot;&quot;, false,</span>
 					null, null, null, dap, dap, dap, dap, null, null, 1., strCurrency, cs, strCalendar);
 
-<span class="fc" id="L130">			cds.setPrimaryCode (&quot;CDS.&quot; + dtMaturity.toString() + &quot;.&quot; + cs.creditCurveName());</span>
+<span class="fc" id="L142">			cds.setPrimaryCode (&quot;CDS.&quot; + dtMaturity.toString() + &quot;.&quot; + cs.creditCurveName());</span>
 
-<span class="fc" id="L132">			return cds;</span>
-<span class="nc" id="L133">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L134">			e.printStackTrace();</span>
+<span class="fc" id="L144">			return cds;</span>
+<span class="nc" id="L145">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L146">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L137">		return null;</span>
+<span class="nc" id="L149">		return null;</span>
 	}
 
 	/**
@@ -163,14 +175,14 @@ package org.drip.product.creator;
 		final java.lang.String strCalendar,
 		final boolean bAdjustDates)
 	{
-<span class="pc bpc" id="L166" title="5 of 10 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strCurrency || strCurrency.isEmpty() || null</span>
-<span class="pc bpc" id="L167" title="2 of 4 branches missed.">			== strCredit || strCredit.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
-<span class="nc" id="L168">			return null;</span>
+<span class="pc bpc" id="L178" title="5 of 10 branches missed.">		if (null == dtEffective || null == dtMaturity || null == strCurrency || strCurrency.isEmpty() || null</span>
+<span class="pc bpc" id="L179" title="2 of 4 branches missed.">			== strCredit || strCredit.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L180">			return null;</span>
 
-<span class="fc" id="L170">		org.drip.product.params.CreditSetting cs = new org.drip.product.params.CreditSetting (30,</span>
+<span class="fc" id="L182">		org.drip.product.params.CreditSetting cs = new org.drip.product.params.CreditSetting (30,</span>
 			dblRecovery, true, strCredit, true);
 
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">		return cs.validate() ? CreateCDS (dtEffective, dtMaturity, dblCoupon, strCurrency, cs, strCalendar,</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		return cs.validate() ? CreateCDS (dtEffective, dtMaturity, dblCoupon, strCurrency, cs, strCalendar,</span>
 			bAdjustDates) : null;
 	}
 
@@ -196,24 +208,24 @@ package org.drip.product.creator;
 		final org.drip.product.params.CreditSetting cs,
 		final java.lang.String strCalendar)
 	{
-<span class="nc bnc" id="L199" title="All 8 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strCurrency ||</span>
-<span class="nc bnc" id="L200" title="All 6 branches missed.">			strCurrency.isEmpty() || null == cs || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
-<span class="nc" id="L201">			return null;</span>
+<span class="nc bnc" id="L211" title="All 8 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strCurrency ||</span>
+<span class="nc bnc" id="L212" title="All 6 branches missed.">			strCurrency.isEmpty() || null == cs || !org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L213">			return null;</span>
 
 		try {
-<span class="nc" id="L204">			org.drip.product.definition.CreditDefaultSwap cds = new org.drip.product.credit.CDSComponent</span>
-<span class="nc" id="L205">				(dtEffective.julian(), dtEffective.addTenor (strTenor).julian(), dblCoupon, 4, &quot;30/360&quot;,</span>
+<span class="nc" id="L216">			org.drip.product.definition.CreditDefaultSwap cds = new org.drip.product.credit.CDSComponent</span>
+<span class="nc" id="L217">				(dtEffective.julian(), dtEffective.addTenor (strTenor).julian(), dblCoupon, 4, &quot;30/360&quot;,</span>
 					&quot;30/360&quot;, &quot;&quot;, true, null, null, null, null, null, null, null, null, null, 100.,
 						strCurrency, cs, strCalendar);
 
-<span class="nc" id="L209">			cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + cs.creditCurveName());</span>
+<span class="nc" id="L221">			cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + cs.creditCurveName());</span>
 
-<span class="nc" id="L211">			return cds;</span>
-<span class="nc" id="L212">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L213">			e.printStackTrace();</span>
+<span class="nc" id="L223">			return cds;</span>
+<span class="nc" id="L224">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L225">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L216">		return null;</span>
+<span class="nc" id="L228">		return null;</span>
 	}
 
 	/**
@@ -238,15 +250,15 @@ package org.drip.product.creator;
 		final java.lang.String strCredit,
 		final java.lang.String strCalendar)
 	{
-<span class="nc bnc" id="L241" title="All 8 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strCurrency ||</span>
-<span class="nc bnc" id="L242" title="All 6 branches missed.">			strCurrency.isEmpty() || null == strCredit || strCredit.isEmpty() ||</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
-<span class="nc" id="L244">			return null;</span>
+<span class="nc bnc" id="L253" title="All 8 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strCurrency ||</span>
+<span class="nc bnc" id="L254" title="All 6 branches missed.">			strCurrency.isEmpty() || null == strCredit || strCredit.isEmpty() ||</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblCoupon))</span>
+<span class="nc" id="L256">			return null;</span>
 
-<span class="nc" id="L246">		org.drip.product.params.CreditSetting cs = new org.drip.product.params.CreditSetting (30,</span>
+<span class="nc" id="L258">		org.drip.product.params.CreditSetting cs = new org.drip.product.params.CreditSetting (30,</span>
 			java.lang.Double.NaN, true, strCredit, true);
 
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		return cs.validate() ? CreateCDS (dtEffective, strTenor, dblCoupon, strCurrency, cs, strCalendar) :</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		return cs.validate() ? CreateCDS (dtEffective, strTenor, dblCoupon, strCurrency, cs, strCalendar) :</span>
 			null;
 	}
 
@@ -271,20 +283,20 @@ package org.drip.product.creator;
 		final java.lang.String strCredit,
 		final java.lang.String strCalendar)
 	{
-<span class="pc bpc" id="L274" title="3 of 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="pc bpc" id="L286" title="3 of 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="fc" id="L276">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
+<span class="fc" id="L288">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
 
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
 
-<span class="fc" id="L280">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
-<span class="fc" id="L281">			dtFirstCoupon.addTenor (strTenor), dblCoupon, strCurrency, 0.40, strCredit, strCalendar, true);</span>
+<span class="fc" id="L292">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
+<span class="fc" id="L293">			dtFirstCoupon.addTenor (strTenor), dblCoupon, strCurrency, 0.40, strCredit, strCalendar, true);</span>
 
-<span class="pc bpc" id="L283" title="1 of 2 branches missed.">		if (null == cds) return null;</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">		if (null == cds) return null;</span>
 
-<span class="fc" id="L285">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
+<span class="fc" id="L297">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
 
-<span class="fc" id="L287">		return cds;</span>
+<span class="fc" id="L299">		return cds;</span>
 	}
 
 	/**
@@ -304,7 +316,7 @@ package org.drip.product.creator;
 		final double dblCoupon,
 		final java.lang.String strCredit)
 	{
-<span class="fc" id="L307">		return CreateSNAC (dtEffective, strTenor, dblCoupon, &quot;USD&quot;, strCredit, &quot;USD&quot;);</span>
+<span class="fc" id="L319">		return CreateSNAC (dtEffective, strTenor, dblCoupon, &quot;USD&quot;, strCredit, &quot;USD&quot;);</span>
 	}
 
 	/**
@@ -324,18 +336,18 @@ package org.drip.product.creator;
 		final double dblCoupon,
 		final java.lang.String strCredit)
 	{
-<span class="nc bnc" id="L327" title="All 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L339" title="All 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="nc" id="L329">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
+<span class="nc" id="L341">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
 
-<span class="nc" id="L333">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
-<span class="nc" id="L334">			dtFirstCoupon.addTenor (strTenor), dblCoupon, &quot;EUR&quot;, 0.40, strCredit, &quot;EUR&quot;, true);</span>
+<span class="nc" id="L345">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
+<span class="nc" id="L346">			dtFirstCoupon.addTenor (strTenor), dblCoupon, &quot;EUR&quot;, 0.40, strCredit, &quot;EUR&quot;, true);</span>
 
-<span class="nc" id="L336">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
+<span class="nc" id="L348">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
 
-<span class="nc" id="L338">		return cds;</span>
+<span class="nc" id="L350">		return cds;</span>
 	}
 
 	/**
@@ -355,18 +367,18 @@ package org.drip.product.creator;
 		final double dblCoupon,
 		final java.lang.String strCredit)
 	{
-<span class="nc bnc" id="L358" title="All 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L370" title="All 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="nc" id="L360">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
+<span class="nc" id="L372">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L362" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
 
-<span class="nc" id="L364">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
-<span class="nc" id="L365">			dtFirstCoupon.addTenor (strTenor), dblCoupon, &quot;HKD&quot;, 0.40, strCredit, &quot;HKD&quot;, true);</span>
+<span class="nc" id="L376">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
+<span class="nc" id="L377">			dtFirstCoupon.addTenor (strTenor), dblCoupon, &quot;HKD&quot;, 0.40, strCredit, &quot;HKD&quot;, true);</span>
 
-<span class="nc" id="L367">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
+<span class="nc" id="L379">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
 
-<span class="nc" id="L369">		return cds;</span>
+<span class="nc" id="L381">		return cds;</span>
 	}
 
 	/**
@@ -388,18 +400,18 @@ package org.drip.product.creator;
 		final java.lang.String strCredit,
 		final java.lang.String strLocation)
 	{
-<span class="nc bnc" id="L391" title="All 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
+<span class="nc bnc" id="L403" title="All 6 branches missed.">		if (null == dtEffective || null == strTenor || strTenor.isEmpty()) return null;</span>
 
-<span class="nc" id="L393">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
+<span class="nc" id="L405">		org.drip.analytics.date.JulianDate dtFirstCoupon = dtEffective.nextCreditIMM (3);</span>
 
-<span class="nc bnc" id="L395" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">		if (null == dtFirstCoupon) return null;</span>
 
-<span class="nc" id="L397">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
-<span class="nc" id="L398">			dtFirstCoupon.addTenor (strTenor), dblCoupon, strLocation, 0.25, strCredit, strLocation, true);</span>
+<span class="nc" id="L409">		org.drip.product.definition.CreditDefaultSwap cds = CreateCDS (dtFirstCoupon.subtractTenor (&quot;3M&quot;),</span>
+<span class="nc" id="L410">			dtFirstCoupon.addTenor (strTenor), dblCoupon, strLocation, 0.25, strCredit, strLocation, true);</span>
 
-<span class="nc" id="L400">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
+<span class="nc" id="L412">		cds.setPrimaryCode (&quot;CDS.&quot; + strTenor + &quot;.&quot; + strCredit);</span>
 
-<span class="nc" id="L402">		return cds;</span>
+<span class="nc" id="L414">		return cds;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

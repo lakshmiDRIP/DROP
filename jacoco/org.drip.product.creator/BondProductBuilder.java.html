@@ -6,6 +6,7 @@ package org.drip.product.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.product.creator;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -83,10 +95,10 @@ package org.drip.product.creator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator/README.md&quot;&gt;Streams and Products Construction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -102,209 +114,209 @@ public class BondProductBuilder {
 	 * ISIN
 	 */
 
-<span class="nc" id="L105">	public java.lang.String _strISIN = &quot;&quot;;</span>
+<span class="nc" id="L117">	public java.lang.String _strISIN = &quot;&quot;;</span>
 
 	/**
 	 * CUSIP
 	 */
 
-<span class="nc" id="L111">	public java.lang.String _strCUSIP = &quot;&quot;;</span>
+<span class="nc" id="L123">	public java.lang.String _strCUSIP = &quot;&quot;;</span>
 
 	/**
 	 * Ticker
 	 */
 
-<span class="nc" id="L117">	public java.lang.String _strTicker = &quot;&quot;;</span>
+<span class="nc" id="L129">	public java.lang.String _strTicker = &quot;&quot;;</span>
 
 	/**
 	 * Coupon
 	 */
 
-<span class="nc" id="L123">	public double _dblCoupon = java.lang.Double.NaN;</span>
+<span class="nc" id="L135">	public double _dblCoupon = java.lang.Double.NaN;</span>
 
 	/**
 	 * Maturity
 	 */
 
-<span class="nc" id="L129">	public org.drip.analytics.date.JulianDate _dtMaturity = null;</span>
+<span class="nc" id="L141">	public org.drip.analytics.date.JulianDate _dtMaturity = null;</span>
 
 	/**
 	 * Coupon Frequency
 	 */
 
-<span class="nc" id="L135">	public int _iCouponFreq = 0;</span>
+<span class="nc" id="L147">	public int _iCouponFreq = 0;</span>
 
 	/**
 	 * Coupon Type
 	 */
 
-<span class="nc" id="L141">	public java.lang.String _strCouponType = &quot;&quot;;</span>
+<span class="nc" id="L153">	public java.lang.String _strCouponType = &quot;&quot;;</span>
 
 	/**
 	 * Maturity Type
 	 */
 
-<span class="nc" id="L147">	public java.lang.String _strMaturityType = &quot;&quot;;</span>
+<span class="nc" id="L159">	public java.lang.String _strMaturityType = &quot;&quot;;</span>
 
 	/**
 	 * Calculation Type
 	 */
 
-<span class="nc" id="L153">	public java.lang.String _strCalculationType = &quot;&quot;;</span>
+<span class="nc" id="L165">	public java.lang.String _strCalculationType = &quot;&quot;;</span>
 
 	/**
 	 * Day count Code
 	 */
 
-<span class="nc" id="L159">	public java.lang.String _strDayCountCode = &quot;&quot;;</span>
+<span class="nc" id="L171">	public java.lang.String _strDayCountCode = &quot;&quot;;</span>
 
 	/**
 	 * Redemption Value
 	 */
 
-<span class="nc" id="L165">	public double _dblRedemptionValue = java.lang.Double.NaN;</span>
+<span class="nc" id="L177">	public double _dblRedemptionValue = java.lang.Double.NaN;</span>
 
 	/**
 	 * Announce Date
 	 */
 
-<span class="nc" id="L171">	public org.drip.analytics.date.JulianDate _dtAnnounce = null;</span>
+<span class="nc" id="L183">	public org.drip.analytics.date.JulianDate _dtAnnounce = null;</span>
 
 	/**
 	 * First Settle Date
 	 */
 
-<span class="nc" id="L177">	public org.drip.analytics.date.JulianDate _dtFirstSettle = null;</span>
+<span class="nc" id="L189">	public org.drip.analytics.date.JulianDate _dtFirstSettle = null;</span>
 
 	/**
 	 * First Coupon Date
 	 */
 
-<span class="nc" id="L183">	public org.drip.analytics.date.JulianDate _dtFirstCoupon = null;</span>
+<span class="nc" id="L195">	public org.drip.analytics.date.JulianDate _dtFirstCoupon = null;</span>
 
 	/**
 	 * Interest Accrual Start Date
 	 */
 
-<span class="nc" id="L189">	public org.drip.analytics.date.JulianDate _dtInterestAccrualStart = null;</span>
+<span class="nc" id="L201">	public org.drip.analytics.date.JulianDate _dtInterestAccrualStart = null;</span>
 
 	/**
 	 * Issue Date
 	 */
 
-<span class="nc" id="L195">	public org.drip.analytics.date.JulianDate _dtIssue = null;</span>
+<span class="nc" id="L207">	public org.drip.analytics.date.JulianDate _dtIssue = null;</span>
 
 	/**
 	 * Callable flag
 	 */
 
-<span class="nc" id="L201">	public boolean _bIsCallable = false;</span>
+<span class="nc" id="L213">	public boolean _bIsCallable = false;</span>
 
 	/**
 	 * Putable flag
 	 */
 
-<span class="nc" id="L207">	public boolean _bIsPutable = false;</span>
+<span class="nc" id="L219">	public boolean _bIsPutable = false;</span>
 
 	/**
 	 * Sinkable flag
 	 */
 
-<span class="nc" id="L213">	public boolean _bIsSinkable = false;</span>
+<span class="nc" id="L225">	public boolean _bIsSinkable = false;</span>
 
 	/**
 	 * Redemption Currency
 	 */
 
-<span class="nc" id="L219">	public java.lang.String _strRedemptionCurrency = &quot;&quot;;</span>
+<span class="nc" id="L231">	public java.lang.String _strRedemptionCurrency = &quot;&quot;;</span>
 
 	/**
 	 * Coupon Currency
 	 */
 
-<span class="nc" id="L225">	public java.lang.String _strCouponCurrency = &quot;&quot;;</span>
+<span class="nc" id="L237">	public java.lang.String _strCouponCurrency = &quot;&quot;;</span>
 
 	/**
 	 * Trade Currency
 	 */
 
-<span class="nc" id="L231">	public java.lang.String _strTradeCurrency = &quot;&quot;;</span>
+<span class="nc" id="L243">	public java.lang.String _strTradeCurrency = &quot;&quot;;</span>
 
 	/**
 	 * Has Been Exercised flag
 	 */
 
-<span class="nc" id="L237">	public boolean _bHasBeenCalled = false;</span>
+<span class="nc" id="L249">	public boolean _bHasBeenCalled = false;</span>
 
 	/**
 	 * Floater Coupon Day Count Convention
 	 */
 
-<span class="nc" id="L243">	public java.lang.String _strFloatCouponConvention = &quot;&quot;;</span>
+<span class="nc" id="L255">	public java.lang.String _strFloatCouponConvention = &quot;&quot;;</span>
 
 	/**
 	 * Current Coupon
 	 */
 
-<span class="nc" id="L249">	public double _dblCurrentCoupon = java.lang.Double.NaN;</span>
+<span class="nc" id="L261">	public double _dblCurrentCoupon = java.lang.Double.NaN;</span>
 
 	/**
 	 * Is Floater flag
 	 */
 
-<span class="nc" id="L255">	public boolean _bIsFloater = false;</span>
+<span class="nc" id="L267">	public boolean _bIsFloater = false;</span>
 
 	/**
 	 * Final Maturity Date
 	 */
 
-<span class="nc" id="L261">	public org.drip.analytics.date.JulianDate _dtFinalMaturity = null;</span>
+<span class="nc" id="L273">	public org.drip.analytics.date.JulianDate _dtFinalMaturity = null;</span>
 
 	/**
 	 * Is Perpetual flag
 	 */
 
-<span class="nc" id="L267">	public boolean _bIsPerpetual = false;</span>
+<span class="nc" id="L279">	public boolean _bIsPerpetual = false;</span>
 
 	/**
 	 * Is Defaulted flag
 	 */
 
-<span class="nc" id="L273">	public boolean _bIsDefaulted = false;</span>
+<span class="nc" id="L285">	public boolean _bIsDefaulted = false;</span>
 
 	/**
 	 * Floater Spread
 	 */
 
-<span class="nc" id="L279">	public double _dblFloatSpread = java.lang.Double.NaN;</span>
+<span class="nc" id="L291">	public double _dblFloatSpread = java.lang.Double.NaN;</span>
 
 	/**
 	 * Rate Index
 	 */
 
-<span class="nc" id="L285">	public java.lang.String _strRateIndex = &quot;&quot;;</span>
+<span class="nc" id="L297">	public java.lang.String _strRateIndex = &quot;&quot;;</span>
 
 	/**
 	 * Issuer SPN
 	 */
 
-<span class="nc" id="L291">	public java.lang.String _strIssuerSPN = &quot;&quot;;</span>
+<span class="nc" id="L303">	public java.lang.String _strIssuerSPN = &quot;&quot;;</span>
 
 	private static final java.lang.String DES (
 		final BondProductBuilder bpb)
 	{
-<span class="nc" id="L296">		return bpb._strTicker + &quot;  &quot; + bpb._dtMaturity.toString() + &quot;[&quot; + bpb._strISIN + &quot;]&quot;;</span>
+<span class="nc" id="L308">		return bpb._strTicker + &quot;  &quot; + bpb._dtMaturity.toString() + &quot;[&quot; + bpb._strISIN + &quot;]&quot;;</span>
 	}
 
 	private org.drip.analytics.date.JulianDate reconcileStartDate()
 	{
-<span class="nc bnc" id="L301" title="All 2 branches missed.">		if (null != _dtInterestAccrualStart) return _dtInterestAccrualStart;</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">		if (null != _dtInterestAccrualStart) return _dtInterestAccrualStart;</span>
 
-<span class="nc bnc" id="L303" title="All 2 branches missed.">		if (null != _dtIssue) return _dtIssue;</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">		if (null != _dtIssue) return _dtIssue;</span>
 
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (null != _dtFirstSettle) return _dtFirstSettle;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (null != _dtFirstSettle) return _dtFirstSettle;</span>
 
-<span class="nc" id="L307">		return _dtAnnounce;</span>
+<span class="nc" id="L319">		return _dtAnnounce;</span>
 	}
 
 	/**
@@ -321,161 +333,161 @@ public class BondProductBuilder {
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 	{
 		try {
-<span class="nc" id="L324">			BondProductBuilder bpb = new BondProductBuilder();</span>
+<span class="nc" id="L336">			BondProductBuilder bpb = new BondProductBuilder();</span>
 
-<span class="nc bnc" id="L326" title="All 2 branches missed.">			if (null == (bpb._strISIN = rs.getString (&quot;ISIN&quot;))) {</span>
-<span class="nc" id="L327">				System.out.println (&quot;No ISIN!&quot;);</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">			if (null == (bpb._strISIN = rs.getString (&quot;ISIN&quot;))) {</span>
+<span class="nc" id="L339">				System.out.println (&quot;No ISIN!&quot;);</span>
 
-<span class="nc" id="L329">				return null;</span>
+<span class="nc" id="L341">				return null;</span>
 			}
 
 			if (m_bBlog) System.out.println (&quot;Loading &quot; + bpb._strISIN + &quot; ...&quot;);
 
-<span class="nc bnc" id="L334" title="All 2 branches missed.">			if (null == (bpb._strCUSIP = rs.getString (&quot;CUSIP&quot;))) {</span>
-<span class="nc" id="L335">				System.out.println (&quot;No CUSIP!&quot;);</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			if (null == (bpb._strCUSIP = rs.getString (&quot;CUSIP&quot;))) {</span>
+<span class="nc" id="L347">				System.out.println (&quot;No CUSIP!&quot;);</span>
 
-<span class="nc" id="L337">				return null;</span>
+<span class="nc" id="L349">				return null;</span>
 			}
 
-<span class="nc" id="L340">			bpb._strTicker = rs.getString (&quot;Ticker&quot;);</span>
+<span class="nc" id="L352">			bpb._strTicker = rs.getString (&quot;Ticker&quot;);</span>
 
-<span class="nc bnc" id="L342" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * rs.getDouble (&quot;Coupon&quot;)))</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * rs.getDouble (&quot;Coupon&quot;)))</span>
 			{
-<span class="nc" id="L344">				System.out.println (&quot;Invalid coupon for ISIN &quot; + bpb._strISIN);</span>
+<span class="nc" id="L356">				System.out.println (&quot;Invalid coupon for ISIN &quot; + bpb._strISIN);</span>
 
-<span class="nc" id="L346">				return null;</span>
+<span class="nc" id="L358">				return null;</span>
 			}
 
-<span class="nc bnc" id="L349" title="All 2 branches missed.">			if (null == (bpb._dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
-<span class="nc" id="L350">				(&quot;Maturity&quot;)))) {</span>
-<span class="nc" id="L351">				System.out.println (&quot;Invalid maturity for ISIN &quot; + bpb._strISIN);</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">			if (null == (bpb._dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
+<span class="nc" id="L362">				(&quot;Maturity&quot;)))) {</span>
+<span class="nc" id="L363">				System.out.println (&quot;Invalid maturity for ISIN &quot; + bpb._strISIN);</span>
 
-<span class="nc" id="L353">				return null;</span>
+<span class="nc" id="L365">				return null;</span>
 			}
 
-<span class="nc" id="L356">			bpb._iCouponFreq = rs.getInt (&quot;CouponFreq&quot;);</span>
+<span class="nc" id="L368">			bpb._iCouponFreq = rs.getInt (&quot;CouponFreq&quot;);</span>
 
-<span class="nc" id="L358">			bpb._strCouponType = rs.getString (&quot;CouponType&quot;);</span>
+<span class="nc" id="L370">			bpb._strCouponType = rs.getString (&quot;CouponType&quot;);</span>
 
-<span class="nc" id="L360">			bpb._strMaturityType = rs.getString (&quot;MaturityType&quot;);</span>
+<span class="nc" id="L372">			bpb._strMaturityType = rs.getString (&quot;MaturityType&quot;);</span>
 
-<span class="nc" id="L362">			bpb._strCalculationType = rs.getString (&quot;CalculationType&quot;);</span>
+<span class="nc" id="L374">			bpb._strCalculationType = rs.getString (&quot;CalculationType&quot;);</span>
 
-<span class="nc" id="L364">			bpb._strDayCountCode = rs.getString (&quot;DayCountConv&quot;);</span>
+<span class="nc" id="L376">			bpb._strDayCountCode = rs.getString (&quot;DayCountConv&quot;);</span>
 
-<span class="nc" id="L366">			bpb._dblRedemptionValue = rs.getDouble (&quot;RedemptionValue&quot;);</span>
+<span class="nc" id="L378">			bpb._dblRedemptionValue = rs.getDouble (&quot;RedemptionValue&quot;);</span>
 
-<span class="nc bnc" id="L368" title="All 2 branches missed.">			if (null == (bpb._dtAnnounce = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
-<span class="nc" id="L369">				(&quot;AnnounceDate&quot;)))) {</span>
-<span class="nc" id="L370">				System.out.println (&quot;Invalid announce date for ISIN &quot; + DES (bpb));</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">			if (null == (bpb._dtAnnounce = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
+<span class="nc" id="L381">				(&quot;AnnounceDate&quot;)))) {</span>
+<span class="nc" id="L382">				System.out.println (&quot;Invalid announce date for ISIN &quot; + DES (bpb));</span>
 
-<span class="nc" id="L372">				return null;</span>
+<span class="nc" id="L384">				return null;</span>
 			}
 
-<span class="nc" id="L375">			if (null == (bpb._dtFirstSettle = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry</span>
-<span class="nc bnc" id="L376" title="All 2 branches missed.">				(rs.getDate (&quot;FirstSettleDate&quot;)))) {</span>
-<span class="nc" id="L377">				System.out.println (&quot;Invalid first settle date for ISIN &quot; + DES (bpb));</span>
-
-<span class="nc" id="L379">				return null;</span>
-			}
-
-<span class="nc" id="L382">			if (null == (bpb._dtFirstCoupon = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry</span>
-<span class="nc bnc" id="L383" title="All 2 branches missed.">				(rs.getDate (&quot;FirstCouponDate&quot;)))) {</span>
-				if (m_bBlog) System.out.println (&quot;Invalid first coupon date for ISIN &quot; + DES (bpb));
-			}
-
-<span class="nc" id="L387">			if (null == (bpb._dtInterestAccrualStart = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry</span>
-<span class="nc bnc" id="L388" title="All 2 branches missed.">				(rs.getDate (&quot;AccrualStartDate&quot;)))) {</span>
-<span class="nc" id="L389">				System.out.println (&quot;Invalid accrual start date for &quot; + DES (bpb));</span>
+<span class="nc" id="L387">			if (null == (bpb._dtFirstSettle = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">				(rs.getDate (&quot;FirstSettleDate&quot;)))) {</span>
+<span class="nc" id="L389">				System.out.println (&quot;Invalid first settle date for ISIN &quot; + DES (bpb));</span>
 
 <span class="nc" id="L391">				return null;</span>
 			}
 
-<span class="nc bnc" id="L394" title="All 2 branches missed.">			if (null == (bpb._dtIssue = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
-<span class="nc" id="L395">				(&quot;IssueDate&quot;)))) {</span>
-<span class="nc" id="L396">				System.out.println (&quot;Invalid issue date for &quot; + DES (bpb));</span>
-
-<span class="nc" id="L398">				return null;</span>
+<span class="nc" id="L394">			if (null == (bpb._dtFirstCoupon = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">				(rs.getDate (&quot;FirstCouponDate&quot;)))) {</span>
+				if (m_bBlog) System.out.println (&quot;Invalid first coupon date for ISIN &quot; + DES (bpb));
 			}
 
-<span class="nc" id="L401">			bpb._bIsCallable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L402">				(&quot;IsCallable&quot;));</span>
+<span class="nc" id="L399">			if (null == (bpb._dtInterestAccrualStart = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">				(rs.getDate (&quot;AccrualStartDate&quot;)))) {</span>
+<span class="nc" id="L401">				System.out.println (&quot;Invalid accrual start date for &quot; + DES (bpb));</span>
 
-<span class="nc" id="L404">			bpb._bIsPutable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L405">				(&quot;IsPutable&quot;));</span>
-
-<span class="nc" id="L407">			bpb._bIsSinkable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L408">				(&quot;IsSinkable&quot;));</span>
-
-<span class="nc" id="L410">			bpb._strRedemptionCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
-<span class="nc" id="L411">				(rs.getString (&quot;RedemptionCurrency&quot;));</span>
-
-<span class="nc bnc" id="L413" title="All 4 branches missed.">			if (null == bpb._strRedemptionCurrency || bpb._strRedemptionCurrency.isEmpty()) {</span>
-<span class="nc" id="L414">				System.out.println (&quot;Invalid redemption currency for &quot; + DES (bpb));</span>
-
-<span class="nc" id="L416">				return null;</span>
+<span class="nc" id="L403">				return null;</span>
 			}
 
-<span class="nc" id="L419">			bpb._strCouponCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
-<span class="nc" id="L420">				(rs.getString (&quot;CouponCurrency&quot;));</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">			if (null == (bpb._dtIssue = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
+<span class="nc" id="L407">				(&quot;IssueDate&quot;)))) {</span>
+<span class="nc" id="L408">				System.out.println (&quot;Invalid issue date for &quot; + DES (bpb));</span>
 
-<span class="nc bnc" id="L422" title="All 4 branches missed.">			if (null == bpb._strCouponCurrency || bpb._strCouponCurrency.isEmpty()) {</span>
-<span class="nc" id="L423">				System.out.println (&quot;Invalid coupon currency for &quot; + DES (bpb));</span>
-
-<span class="nc" id="L425">				return null;</span>
+<span class="nc" id="L410">				return null;</span>
 			}
 
-<span class="nc" id="L428">			bpb._strTradeCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
-<span class="nc" id="L429">				(rs.getString (&quot;TradeCurrency&quot;));</span>
+<span class="nc" id="L413">			bpb._bIsCallable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L414">				(&quot;IsCallable&quot;));</span>
 
-<span class="nc bnc" id="L431" title="All 4 branches missed.">			if (null == bpb._strTradeCurrency || bpb._strTradeCurrency.isEmpty()) {</span>
-<span class="nc" id="L432">				System.out.println (&quot;Invalid trade currency for &quot; + DES (bpb));</span>
+<span class="nc" id="L416">			bpb._bIsPutable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L417">				(&quot;IsPutable&quot;));</span>
 
-<span class="nc" id="L434">				return null;</span>
+<span class="nc" id="L419">			bpb._bIsSinkable = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L420">				(&quot;IsSinkable&quot;));</span>
+
+<span class="nc" id="L422">			bpb._strRedemptionCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
+<span class="nc" id="L423">				(rs.getString (&quot;RedemptionCurrency&quot;));</span>
+
+<span class="nc bnc" id="L425" title="All 4 branches missed.">			if (null == bpb._strRedemptionCurrency || bpb._strRedemptionCurrency.isEmpty()) {</span>
+<span class="nc" id="L426">				System.out.println (&quot;Invalid redemption currency for &quot; + DES (bpb));</span>
+
+<span class="nc" id="L428">				return null;</span>
 			}
 
-<span class="nc" id="L437">			bpb._bHasBeenCalled = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L438">				(&quot;Called&quot;));</span>
+<span class="nc" id="L431">			bpb._strCouponCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
+<span class="nc" id="L432">				(rs.getString (&quot;CouponCurrency&quot;));</span>
 
-<span class="nc" id="L440">			bpb._strFloatCouponConvention = rs.getString (&quot;FloatCouponConvention&quot;);</span>
+<span class="nc bnc" id="L434" title="All 4 branches missed.">			if (null == bpb._strCouponCurrency || bpb._strCouponCurrency.isEmpty()) {</span>
+<span class="nc" id="L435">				System.out.println (&quot;Invalid coupon currency for &quot; + DES (bpb));</span>
 
-<span class="nc" id="L442">			bpb._bIsFloater = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L443">				(&quot;Floater&quot;));</span>
+<span class="nc" id="L437">				return null;</span>
+			}
+
+<span class="nc" id="L440">			bpb._strTradeCurrency = org.drip.analytics.support.Helper.SwitchIRCurve</span>
+<span class="nc" id="L441">				(rs.getString (&quot;TradeCurrency&quot;));</span>
+
+<span class="nc bnc" id="L443" title="All 4 branches missed.">			if (null == bpb._strTradeCurrency || bpb._strTradeCurrency.isEmpty()) {</span>
+<span class="nc" id="L444">				System.out.println (&quot;Invalid trade currency for &quot; + DES (bpb));</span>
+
+<span class="nc" id="L446">				return null;</span>
+			}
+
+<span class="nc" id="L449">			bpb._bHasBeenCalled = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L450">				(&quot;Called&quot;));</span>
+
+<span class="nc" id="L452">			bpb._strFloatCouponConvention = rs.getString (&quot;FloatCouponConvention&quot;);</span>
+
+<span class="nc" id="L454">			bpb._bIsFloater = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L455">				(&quot;Floater&quot;));</span>
 
 			// bpb._dblCurrentCoupon = 0.01 * rs.getDouble (&quot;CurrentCoupon&quot;);
 
-<span class="nc" id="L447">			bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
-<span class="nc" id="L448">				(&quot;FinalMaturity&quot;));</span>
+<span class="nc" id="L459">			bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromRSEntry (rs.getDate</span>
+<span class="nc" id="L460">				(&quot;FinalMaturity&quot;));</span>
 
-<span class="nc" id="L450">			bpb._bIsPerpetual = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L451">				(&quot;Perpetual&quot;));</span>
+<span class="nc" id="L462">			bpb._bIsPerpetual = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L463">				(&quot;Perpetual&quot;));</span>
 
-<span class="nc" id="L453">			bpb._bIsDefaulted = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
-<span class="nc" id="L454">				(&quot;Defaulted&quot;));</span>
+<span class="nc" id="L465">			bpb._bIsDefaulted = org.drip.numerical.common.StringUtil.ParseFromUnitaryString (rs.getString</span>
+<span class="nc" id="L466">				(&quot;Defaulted&quot;));</span>
 
-<span class="nc" id="L456">			bpb._dblFloatSpread = 0.0001 * rs.getDouble (&quot;FloatSpread&quot;);</span>
+<span class="nc" id="L468">			bpb._dblFloatSpread = 0.0001 * rs.getDouble (&quot;FloatSpread&quot;);</span>
 
-<span class="nc" id="L458">			bpb._strRateIndex = rs.getString (&quot;RateIndex&quot;);</span>
+<span class="nc" id="L470">			bpb._strRateIndex = rs.getString (&quot;RateIndex&quot;);</span>
 
-<span class="nc bnc" id="L460" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
-<span class="nc bnc" id="L461" title="All 2 branches missed.">				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {</span>
-<span class="nc" id="L462">				System.out.println (&quot;Invalid float spread for &quot; + DES (bpb));</span>
+<span class="nc bnc" id="L472" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {</span>
+<span class="nc" id="L474">				System.out.println (&quot;Invalid float spread for &quot; + DES (bpb));</span>
 
-<span class="nc" id="L464">				return null;</span>
+<span class="nc" id="L476">				return null;</span>
 			}
 
-<span class="nc" id="L467">			bpb._strIssuerSPN = rs.getString (&quot;SPN&quot;);</span>
+<span class="nc" id="L479">			bpb._strIssuerSPN = rs.getString (&quot;SPN&quot;);</span>
 
-<span class="nc bnc" id="L469" title="All 2 branches missed.">			if (!bpb.validate (mpc)) return null;</span>
+<span class="nc bnc" id="L481" title="All 2 branches missed.">			if (!bpb.validate (mpc)) return null;</span>
 
 			if (m_bBlog) System.out.println (&quot;Loaded &quot; + DES (bpb) + &quot;.&quot;);
 
-<span class="nc" id="L473">			return bpb;</span>
-<span class="nc" id="L474">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L475">			e.printStackTrace();</span>
+<span class="nc" id="L485">			return bpb;</span>
+<span class="nc" id="L486">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L487">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L478">		return null;</span>
+<span class="nc" id="L490">		return null;</span>
 	}
 
 	/**
@@ -504,109 +516,109 @@ public class BondProductBuilder {
 												(&quot;quotedMargin&quot;))
 			return null; */
 
-<span class="nc" id="L507">		BondProductBuilder bpb = new BondProductBuilder();</span>
+<span class="nc" id="L519">		BondProductBuilder bpb = new BondProductBuilder();</span>
 
-<span class="nc bnc" id="L509" title="All 2 branches missed.">		if (null == (bpb._strISIN = mapJSON.get (&quot;isin&quot;))) return null;</span>
+<span class="nc bnc" id="L521" title="All 2 branches missed.">		if (null == (bpb._strISIN = mapJSON.get (&quot;isin&quot;))) return null;</span>
 
-<span class="nc bnc" id="L511" title="All 2 branches missed.">		if (null == (bpb._strCUSIP = mapJSON.get (&quot;cusip&quot;))) return null;</span>
+<span class="nc bnc" id="L523" title="All 2 branches missed.">		if (null == (bpb._strCUSIP = mapJSON.get (&quot;cusip&quot;))) return null;</span>
 
-<span class="nc bnc" id="L513" title="All 2 branches missed.">		if (null == (bpb._strTicker = mapJSON.get (&quot;ticker&quot;))) return null;</span>
+<span class="nc bnc" id="L525" title="All 2 branches missed.">		if (null == (bpb._strTicker = mapJSON.get (&quot;ticker&quot;))) return null;</span>
 
-<span class="nc bnc" id="L515" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * java.lang.Double.parseDouble</span>
-<span class="nc" id="L516">			(mapJSON.get (&quot;coupon&quot;))))</span>
-<span class="nc" id="L517">			return null;</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (bpb._dblCoupon = 0.01 * java.lang.Double.parseDouble</span>
+<span class="nc" id="L528">			(mapJSON.get (&quot;coupon&quot;))))</span>
+<span class="nc" id="L529">			return null;</span>
 
-<span class="nc" id="L519">		if (null == (bpb._dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
-<span class="nc bnc" id="L520" title="All 2 branches missed.">			(mapJSON.get (&quot;maturity&quot;), &quot;-&quot;)))</span>
-<span class="nc" id="L521">			return null;</span>
+<span class="nc" id="L531">		if (null == (bpb._dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">			(mapJSON.get (&quot;maturity&quot;), &quot;-&quot;)))</span>
+<span class="nc" id="L533">			return null;</span>
 
-<span class="nc" id="L523">		bpb._iCouponFreq = java.lang.Integer.parseInt (mapJSON.get (&quot;frequency&quot;));</span>
+<span class="nc" id="L535">		bpb._iCouponFreq = java.lang.Integer.parseInt (mapJSON.get (&quot;frequency&quot;));</span>
 
-<span class="nc" id="L525">		bpb._strCouponType = mapJSON.get (&quot;couponType&quot;);</span>
+<span class="nc" id="L537">		bpb._strCouponType = mapJSON.get (&quot;couponType&quot;);</span>
 
-<span class="nc" id="L527">		bpb._strMaturityType = mapJSON.get (&quot;maturityType&quot;);</span>
+<span class="nc" id="L539">		bpb._strMaturityType = mapJSON.get (&quot;maturityType&quot;);</span>
 
-<span class="nc" id="L529">		bpb._strCalculationType = mapJSON.get (&quot;calcType&quot;);</span>
+<span class="nc" id="L541">		bpb._strCalculationType = mapJSON.get (&quot;calcType&quot;);</span>
 
-<span class="nc" id="L531">		bpb._strDayCountCode = mapJSON.get (&quot;dayCount&quot;);</span>
+<span class="nc" id="L543">		bpb._strDayCountCode = mapJSON.get (&quot;dayCount&quot;);</span>
 
-<span class="nc" id="L533">		bpb._dblRedemptionValue = java.lang.Double.parseDouble (mapJSON.get (&quot;redempValue&quot;));</span>
+<span class="nc" id="L545">		bpb._dblRedemptionValue = java.lang.Double.parseDouble (mapJSON.get (&quot;redempValue&quot;));</span>
 
-<span class="nc bnc" id="L535" title="All 2 branches missed.">		if (null == (bpb._strRedemptionCurrency = mapJSON.get (&quot;redempCrncy&quot;)) ||</span>
-<span class="nc bnc" id="L536" title="All 2 branches missed.">			bpb._strRedemptionCurrency.isEmpty()) {</span>
-<span class="nc" id="L537">			System.out.println (&quot;Invalid redemption currency for &quot; + DES (bpb));</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">		if (null == (bpb._strRedemptionCurrency = mapJSON.get (&quot;redempCrncy&quot;)) ||</span>
+<span class="nc bnc" id="L548" title="All 2 branches missed.">			bpb._strRedemptionCurrency.isEmpty()) {</span>
+<span class="nc" id="L549">			System.out.println (&quot;Invalid redemption currency for &quot; + DES (bpb));</span>
 
-<span class="nc" id="L539">			return null;</span>
+<span class="nc" id="L551">			return null;</span>
 		}
 
-<span class="nc bnc" id="L542" title="All 4 branches missed.">		if (null == (bpb._strCouponCurrency = mapJSON.get (&quot;cpnCrncy&quot;)) || bpb._strCouponCurrency.isEmpty())</span>
+<span class="nc bnc" id="L554" title="All 4 branches missed.">		if (null == (bpb._strCouponCurrency = mapJSON.get (&quot;cpnCrncy&quot;)) || bpb._strCouponCurrency.isEmpty())</span>
 		{
-<span class="nc" id="L544">			System.out.println (&quot;Invalid Coupon currency for &quot; + DES (bpb));</span>
+<span class="nc" id="L556">			System.out.println (&quot;Invalid Coupon currency for &quot; + DES (bpb));</span>
 
-<span class="nc" id="L546">			return null;</span>
-		}
-
-<span class="nc bnc" id="L549" title="All 4 branches missed.">		if (null == (bpb._strTradeCurrency = mapJSON.get (&quot;tradeCrncy&quot;)) || bpb._strTradeCurrency.isEmpty())</span>
-		{
-<span class="nc" id="L551">			System.out.println (&quot;Invalid Trade currency for &quot; + DES (bpb));</span>
-
-<span class="nc" id="L553">			return null;</span>
-		}
-
-<span class="nc" id="L556">		if (null == (bpb._dtFirstCoupon = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
-<span class="nc bnc" id="L557" title="All 2 branches missed.">			(mapJSON.get (&quot;firstCpnDate&quot;), &quot;-&quot;)))</span>
 <span class="nc" id="L558">			return null;</span>
+		}
 
-<span class="nc" id="L560">		if (null == (bpb._dtIssue = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
-<span class="nc bnc" id="L561" title="All 2 branches missed.">			(mapJSON.get (&quot;issueDate&quot;), &quot;-&quot;)))</span>
-<span class="nc" id="L562">			return null;</span>
+<span class="nc bnc" id="L561" title="All 4 branches missed.">		if (null == (bpb._strTradeCurrency = mapJSON.get (&quot;tradeCrncy&quot;)) || bpb._strTradeCurrency.isEmpty())</span>
+		{
+<span class="nc" id="L563">			System.out.println (&quot;Invalid Trade currency for &quot; + DES (bpb));</span>
+
+<span class="nc" id="L565">			return null;</span>
+		}
+
+<span class="nc" id="L568">		if (null == (bpb._dtFirstCoupon = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
+<span class="nc bnc" id="L569" title="All 2 branches missed.">			(mapJSON.get (&quot;firstCpnDate&quot;), &quot;-&quot;)))</span>
+<span class="nc" id="L570">			return null;</span>
+
+<span class="nc" id="L572">		if (null == (bpb._dtIssue = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
+<span class="nc bnc" id="L573" title="All 2 branches missed.">			(mapJSON.get (&quot;issueDate&quot;), &quot;-&quot;)))</span>
+<span class="nc" id="L574">			return null;</span>
 
 		try {
-<span class="nc" id="L565">			bpb._bIsCallable = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;callable&quot;));</span>
+<span class="nc" id="L577">			bpb._bIsCallable = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;callable&quot;));</span>
 
-<span class="nc" id="L567">			bpb._bIsPutable = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;putable&quot;));</span>
+<span class="nc" id="L579">			bpb._bIsPutable = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;putable&quot;));</span>
 
-<span class="nc" id="L569">			bpb._bIsSinkable = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;sinkable&quot;));</span>
+<span class="nc" id="L581">			bpb._bIsSinkable = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;sinkable&quot;));</span>
 
-<span class="nc" id="L571">			bpb._bHasBeenCalled = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;called&quot;));</span>
+<span class="nc" id="L583">			bpb._bHasBeenCalled = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;called&quot;));</span>
 
 			// bpb._strFloatCouponConvention = rs.getString (&quot;FloatCouponConvention&quot;);
 
-<span class="nc" id="L575">			bpb._bIsFloater = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;floater&quot;));</span>
+<span class="nc" id="L587">			bpb._bIsFloater = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;floater&quot;));</span>
 
 			// bpb._dblCurrentCoupon = 0.01 * rs.getDouble (&quot;CurrentCoupon&quot;);
 
-<span class="nc" id="L579">			if (null == (bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
-<span class="nc bnc" id="L580" title="All 2 branches missed.">				(mapJSON.get (&quot;finalMaturityDt&quot;), &quot;-&quot;)))</span>
-<span class="nc" id="L581">				return null;</span>
+<span class="nc" id="L591">			if (null == (bpb._dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianFromYYYYMMDD</span>
+<span class="nc bnc" id="L592" title="All 2 branches missed.">				(mapJSON.get (&quot;finalMaturityDt&quot;), &quot;-&quot;)))</span>
+<span class="nc" id="L593">				return null;</span>
 
-<span class="nc" id="L583">			bpb._bIsPerpetual = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;perpetual&quot;));</span>
+<span class="nc" id="L595">			bpb._bIsPerpetual = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;perpetual&quot;));</span>
 
-<span class="nc" id="L585">			bpb._bIsDefaulted = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;defaulted&quot;));</span>
+<span class="nc" id="L597">			bpb._bIsDefaulted = java.lang.Boolean.parseBoolean (mapJSON.get (&quot;defaulted&quot;));</span>
 
 			// bpb._dblFloatSpread = java.lang.Double.parseDouble (mapJSON.get (&quot;quotedMargin&quot;));
 
-<span class="nc" id="L589">			bpb._strRateIndex = mapJSON.get (&quot;resetIndex&quot;);</span>
+<span class="nc" id="L601">			bpb._strRateIndex = mapJSON.get (&quot;resetIndex&quot;);</span>
 
-<span class="nc bnc" id="L591" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
-<span class="nc bnc" id="L592" title="All 2 branches missed.">				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {</span>
-<span class="nc" id="L593">				System.out.println (&quot;Invalid float spread for &quot; + DES (bpb));</span>
+<span class="nc bnc" id="L603" title="All 6 branches missed.">			if (bpb._bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (bpb._dblFloatSpread) &amp;&amp; (null ==</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">				bpb._strRateIndex || bpb._strRateIndex.isEmpty())) {</span>
+<span class="nc" id="L605">				System.out.println (&quot;Invalid float spread for &quot; + DES (bpb));</span>
 
-<span class="nc" id="L595">				return null;</span>
+<span class="nc" id="L607">				return null;</span>
 			}
 
 			// bpb._strIssuerSPN = rs.getString (&quot;SPN&quot;);
 
-<span class="nc bnc" id="L600" title="All 2 branches missed.">			if (!bpb.validate (mpc)) return null;</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">			if (!bpb.validate (mpc)) return null;</span>
 
 			if (m_bBlog) System.out.println (&quot;Loaded &quot; + DES (bpb) + &quot;.&quot;);
 
-<span class="nc" id="L604">			return bpb;</span>
-<span class="nc" id="L605">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L606">			e.printStackTrace();</span>
+<span class="nc" id="L616">			return bpb;</span>
+<span class="nc" id="L617">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L618">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L609">		return null;</span>
+<span class="nc" id="L621">		return null;</span>
 	}
 
 	/**
@@ -614,8 +626,8 @@ public class BondProductBuilder {
 	 */
 
 	public BondProductBuilder()
-<span class="nc" id="L617">	{</span>
-<span class="nc" id="L618">	}</span>
+<span class="nc" id="L629">	{</span>
+<span class="nc" id="L630">	}</span>
 
 	/**
 	 * Set the Bond ISIN
@@ -628,11 +640,11 @@ public class BondProductBuilder {
 	public boolean setISIN (
 		final java.lang.String strISIN)
 	{
-<span class="nc bnc" id="L631" title="All 6 branches missed.">		if (null == strISIN || strISIN.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase (strISIN.trim()))</span>
-<span class="nc" id="L632">			return false;</span>
+<span class="nc bnc" id="L643" title="All 6 branches missed.">		if (null == strISIN || strISIN.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase (strISIN.trim()))</span>
+<span class="nc" id="L644">			return false;</span>
 
-<span class="nc" id="L634">		_strISIN = strISIN;</span>
-<span class="nc" id="L635">		return true;</span>
+<span class="nc" id="L646">		_strISIN = strISIN;</span>
+<span class="nc" id="L647">		return true;</span>
 	}
 
 	/**
@@ -646,11 +658,11 @@ public class BondProductBuilder {
 	public boolean setCUSIP (
 		final java.lang.String strCUSIP)
 	{
-<span class="nc bnc" id="L649" title="All 6 branches missed.">		if (null == strCUSIP || strCUSIP.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase (strCUSIP.trim()))</span>
-<span class="nc" id="L650">			return false;</span>
+<span class="nc bnc" id="L661" title="All 6 branches missed.">		if (null == strCUSIP || strCUSIP.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase (strCUSIP.trim()))</span>
+<span class="nc" id="L662">			return false;</span>
 
-<span class="nc" id="L652">		_strCUSIP = strCUSIP;</span>
-<span class="nc" id="L653">		return true;</span>
+<span class="nc" id="L664">		_strCUSIP = strCUSIP;</span>
+<span class="nc" id="L665">		return true;</span>
 	}
 
 	/**
@@ -664,9 +676,9 @@ public class BondProductBuilder {
 	public boolean setTicker (
 		final java.lang.String strTicker)
 	{
-<span class="nc bnc" id="L667" title="All 2 branches missed.">		if (null == (_strTicker = strTicker.trim())) _strTicker = &quot;&quot;;</span>
+<span class="nc bnc" id="L679" title="All 2 branches missed.">		if (null == (_strTicker = strTicker.trim())) _strTicker = &quot;&quot;;</span>
 
-<span class="nc" id="L669">		return true;</span>
+<span class="nc" id="L681">		return true;</span>
 	}
 
 	/**
@@ -680,18 +692,18 @@ public class BondProductBuilder {
 	public boolean setCoupon (
 		final java.lang.String strCoupon)
 	{
-<span class="nc bnc" id="L683" title="All 6 branches missed.">		if (null == strCoupon || strCoupon.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase (strCoupon.trim()))</span>
-<span class="nc" id="L684">			_dblCoupon = 0.;</span>
+<span class="nc bnc" id="L695" title="All 6 branches missed.">		if (null == strCoupon || strCoupon.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase (strCoupon.trim()))</span>
+<span class="nc" id="L696">			_dblCoupon = 0.;</span>
 
 		try {
-<span class="nc" id="L687">			_dblCoupon = java.lang.Double.parseDouble (strCoupon.trim());</span>
+<span class="nc" id="L699">			_dblCoupon = java.lang.Double.parseDouble (strCoupon.trim());</span>
 
-<span class="nc" id="L689">			return true;</span>
-<span class="nc" id="L690">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L701">			return true;</span>
+<span class="nc" id="L702">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad coupon &quot; + strCoupon + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L694">		return false;</span>
+<span class="nc" id="L706">		return false;</span>
 	}
 
 	/**
@@ -706,16 +718,16 @@ public class BondProductBuilder {
 		final java.lang.String strMaturity)
 	{
 		try {
-<span class="nc" id="L709">			if (null == (_dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
-<span class="nc bnc" id="L710" title="All 2 branches missed.">				(strMaturity.trim())))</span>
-<span class="nc" id="L711">				return false;</span>
+<span class="nc" id="L721">			if (null == (_dtMaturity = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
+<span class="nc bnc" id="L722" title="All 2 branches missed.">				(strMaturity.trim())))</span>
+<span class="nc" id="L723">				return false;</span>
 
-<span class="nc" id="L713">			return true;</span>
-<span class="nc" id="L714">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L725">			return true;</span>
+<span class="nc" id="L726">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad Maturity &quot; + strMaturity + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L718">		return false;</span>
+<span class="nc" id="L730">		return false;</span>
 	}
 
 	/**
@@ -729,19 +741,19 @@ public class BondProductBuilder {
 	public boolean setCouponFreq (
 		final java.lang.String strCouponFreq)
 	{
-<span class="nc bnc" id="L732" title="All 6 branches missed.">		if (null == strCouponFreq || strCouponFreq.isEmpty() || &quot;null&quot;.equalsIgnoreCase (strCouponFreq))</span>
-<span class="nc" id="L733">			_iCouponFreq = 0;</span>
+<span class="nc bnc" id="L744" title="All 6 branches missed.">		if (null == strCouponFreq || strCouponFreq.isEmpty() || &quot;null&quot;.equalsIgnoreCase (strCouponFreq))</span>
+<span class="nc" id="L745">			_iCouponFreq = 0;</span>
 		else {
 			try {
-<span class="nc" id="L736">				_iCouponFreq = (int) java.lang.Double.parseDouble (strCouponFreq.trim());</span>
-<span class="nc" id="L737">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L748">				_iCouponFreq = (int) java.lang.Double.parseDouble (strCouponFreq.trim());</span>
+<span class="nc" id="L749">			} catch (java.lang.Exception e) {</span>
 				if (m_bBlog) System.out.println (&quot;Bad Cpn Freq &quot; + strCouponFreq + &quot; for ISIN &quot; + _strISIN);
 
-<span class="nc" id="L740">				return false;</span>
-<span class="nc" id="L741">			}</span>
+<span class="nc" id="L752">				return false;</span>
+<span class="nc" id="L753">			}</span>
 		}
 
-<span class="nc" id="L744">		return true;</span>
+<span class="nc" id="L756">		return true;</span>
 	}
 
 	/**
@@ -755,9 +767,9 @@ public class BondProductBuilder {
 	public boolean setCouponType (
 		final java.lang.String strCouponType)
 	{
-<span class="nc bnc" id="L758" title="All 2 branches missed.">		if (null == (_strCouponType = strCouponType.trim())) _strCouponType = &quot;&quot;;</span>
+<span class="nc bnc" id="L770" title="All 2 branches missed.">		if (null == (_strCouponType = strCouponType.trim())) _strCouponType = &quot;&quot;;</span>
 
-<span class="nc" id="L760">		return true;</span>
+<span class="nc" id="L772">		return true;</span>
 	}
 
 	/**
@@ -771,9 +783,9 @@ public class BondProductBuilder {
 	public boolean setMaturityType (
 		final java.lang.String strMaturityType)
 	{
-<span class="nc bnc" id="L774" title="All 2 branches missed.">		if (null == (_strMaturityType = strMaturityType.trim())) _strMaturityType = &quot;&quot;;</span>
+<span class="nc bnc" id="L786" title="All 2 branches missed.">		if (null == (_strMaturityType = strMaturityType.trim())) _strMaturityType = &quot;&quot;;</span>
 
-<span class="nc" id="L776">		return true;</span>
+<span class="nc" id="L788">		return true;</span>
 	}
 
 	/**
@@ -787,9 +799,9 @@ public class BondProductBuilder {
 	public boolean setCalculationType (
 		final java.lang.String strCalculationType)
 	{
-<span class="nc bnc" id="L790" title="All 2 branches missed.">		if (null == (_strCalculationType = strCalculationType.trim())) _strCalculationType = &quot;&quot;;</span>
+<span class="nc bnc" id="L802" title="All 2 branches missed.">		if (null == (_strCalculationType = strCalculationType.trim())) _strCalculationType = &quot;&quot;;</span>
 
-<span class="nc" id="L792">		return true;</span>
+<span class="nc" id="L804">		return true;</span>
 	}
 
 	/**
@@ -803,17 +815,17 @@ public class BondProductBuilder {
 	public boolean setDayCountCode (
 		final java.lang.String strDayCountCode)
 	{
-<span class="nc" id="L806">		_strDayCountCode = &quot;Unknown DC&quot;;</span>
+<span class="nc" id="L818">		_strDayCountCode = &quot;Unknown DC&quot;;</span>
 
 		try {
-<span class="nc" id="L809">			_strDayCountCode = org.drip.analytics.support.Helper.ParseFromBBGDCCode</span>
-<span class="nc" id="L810">				(strDayCountCode.trim());</span>
+<span class="nc" id="L821">			_strDayCountCode = org.drip.analytics.support.Helper.ParseFromBBGDCCode</span>
+<span class="nc" id="L822">				(strDayCountCode.trim());</span>
 
-<span class="nc" id="L812">			return true;</span>
-<span class="nc" id="L813">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L824">			return true;</span>
+<span class="nc" id="L825">		} catch (java.lang.Exception e) {</span>
 		}
 
-<span class="nc" id="L816">		return false;</span>
+<span class="nc" id="L828">		return false;</span>
 	}
 
 	/**
@@ -828,14 +840,14 @@ public class BondProductBuilder {
 		final java.lang.String strRedemptionValue)
 	{
 		try {
-<span class="nc" id="L831">			_dblRedemptionValue = java.lang.Double.parseDouble (strRedemptionValue.trim());</span>
+<span class="nc" id="L843">			_dblRedemptionValue = java.lang.Double.parseDouble (strRedemptionValue.trim());</span>
 
-<span class="nc" id="L833">			return true;</span>
-<span class="nc" id="L834">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L835">			System.out.println (&quot;Bad Redemption Value &quot; + strRedemptionValue + &quot; for ISIN &quot; + _strISIN);</span>
+<span class="nc" id="L845">			return true;</span>
+<span class="nc" id="L846">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L847">			System.out.println (&quot;Bad Redemption Value &quot; + strRedemptionValue + &quot; for ISIN &quot; + _strISIN);</span>
 		}
 
-<span class="nc" id="L838">		return false;</span>
+<span class="nc" id="L850">		return false;</span>
 	}
 
 	/**
@@ -850,14 +862,14 @@ public class BondProductBuilder {
 		final java.lang.String strAnnounce)
 	{
 		try {
-<span class="nc" id="L853">			_dtAnnounce = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate (strAnnounce.trim());</span>
+<span class="nc" id="L865">			_dtAnnounce = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate (strAnnounce.trim());</span>
 
-<span class="nc" id="L855">			return true;</span>
-<span class="nc" id="L856">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L867">			return true;</span>
+<span class="nc" id="L868">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad Announce &quot; + strAnnounce + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L860">		return false;</span>
+<span class="nc" id="L872">		return false;</span>
 	}
 
 	/**
@@ -872,15 +884,15 @@ public class BondProductBuilder {
 		final java.lang.String strFirstSettle)
 	{
 		try {
-<span class="nc" id="L875">			_dtFirstSettle = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
-<span class="nc" id="L876">				(strFirstSettle.trim());</span>
+<span class="nc" id="L887">			_dtFirstSettle = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
+<span class="nc" id="L888">				(strFirstSettle.trim());</span>
 
-<span class="nc" id="L878">			return true;</span>
-<span class="nc" id="L879">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L890">			return true;</span>
+<span class="nc" id="L891">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad First Settle &quot; + strFirstSettle + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L883">		return false;</span>
+<span class="nc" id="L895">		return false;</span>
 	}
 
 	/**
@@ -895,15 +907,15 @@ public class BondProductBuilder {
 		final java.lang.String strFirstCoupon)
 	{
 		try {
-<span class="nc" id="L898">			_dtFirstCoupon = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
-<span class="nc" id="L899">				(strFirstCoupon.trim());</span>
+<span class="nc" id="L910">			_dtFirstCoupon = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
+<span class="nc" id="L911">				(strFirstCoupon.trim());</span>
 
-<span class="nc" id="L901">			return true;</span>
-<span class="nc" id="L902">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L913">			return true;</span>
+<span class="nc" id="L914">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad First Coupon &quot; + strFirstCoupon + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L906">		return false;</span>
+<span class="nc" id="L918">		return false;</span>
 	}
 
 	/**
@@ -918,16 +930,16 @@ public class BondProductBuilder {
 		final java.lang.String strInterestAccrualStart)
 	{
 		try {
-<span class="nc" id="L921">			_dtInterestAccrualStart = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
-<span class="nc" id="L922">				(strInterestAccrualStart.trim());</span>
+<span class="nc" id="L933">			_dtInterestAccrualStart = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
+<span class="nc" id="L934">				(strInterestAccrualStart.trim());</span>
 
-<span class="nc" id="L924">			return true;</span>
-<span class="nc" id="L925">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L936">			return true;</span>
+<span class="nc" id="L937">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog)
 				System.out.println (&quot;Bad Announce &quot; + strInterestAccrualStart + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L930">		return false;</span>
+<span class="nc" id="L942">		return false;</span>
 	}
 
 	/**
@@ -942,14 +954,14 @@ public class BondProductBuilder {
 		final java.lang.String strIssue)
 	{
 		try {
-<span class="nc" id="L945">			_dtIssue = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate (strIssue.trim());</span>
+<span class="nc" id="L957">			_dtIssue = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate (strIssue.trim());</span>
 
-<span class="nc" id="L947">			return true;</span>
-<span class="nc" id="L948">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L959">			return true;</span>
+<span class="nc" id="L960">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad Issue &quot; + strIssue + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L952">		return false;</span>
+<span class="nc" id="L964">		return false;</span>
 	}
 
 	/**
@@ -963,14 +975,14 @@ public class BondProductBuilder {
 	public boolean setIsCallable (
 		final java.lang.String strCallable)
 	{
-<span class="nc bnc" id="L966" title="All 2 branches missed.">		if (null == strCallable) _bIsCallable = false;</span>
+<span class="nc bnc" id="L978" title="All 2 branches missed.">		if (null == strCallable) _bIsCallable = false;</span>
 
-<span class="nc bnc" id="L968" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strCallable.trim()))</span>
-<span class="nc" id="L969">			_bIsCallable = true;</span>
+<span class="nc bnc" id="L980" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strCallable.trim()))</span>
+<span class="nc" id="L981">			_bIsCallable = true;</span>
 		else
-<span class="nc" id="L971">			_bIsCallable = false;</span>
+<span class="nc" id="L983">			_bIsCallable = false;</span>
 
-<span class="nc" id="L973">		return true;</span>
+<span class="nc" id="L985">		return true;</span>
 	}
 
 	/**
@@ -984,14 +996,14 @@ public class BondProductBuilder {
 	public boolean setIsPutable (
 		final java.lang.String strPutable)
 	{
-<span class="nc bnc" id="L987" title="All 2 branches missed.">		if (null == strPutable) _bIsPutable = false;</span>
+<span class="nc bnc" id="L999" title="All 2 branches missed.">		if (null == strPutable) _bIsPutable = false;</span>
 
-<span class="nc bnc" id="L989" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strPutable.trim()))</span>
-<span class="nc" id="L990">			_bIsPutable = true;</span>
+<span class="nc bnc" id="L1001" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strPutable.trim()))</span>
+<span class="nc" id="L1002">			_bIsPutable = true;</span>
 		else
-<span class="nc" id="L992">			_bIsPutable = false;</span>
+<span class="nc" id="L1004">			_bIsPutable = false;</span>
 
-<span class="nc" id="L994">		return true;</span>
+<span class="nc" id="L1006">		return true;</span>
 	}
 
 	/**
@@ -1005,14 +1017,14 @@ public class BondProductBuilder {
 	public boolean setIsSinkable (
 		final java.lang.String strSinkable)
 	{
-<span class="nc bnc" id="L1008" title="All 2 branches missed.">		if (null == strSinkable) _bIsSinkable = false;</span>
+<span class="nc bnc" id="L1020" title="All 2 branches missed.">		if (null == strSinkable) _bIsSinkable = false;</span>
 
-<span class="nc bnc" id="L1010" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strSinkable.trim()))</span>
-<span class="nc" id="L1011">			_bIsSinkable = true;</span>
+<span class="nc bnc" id="L1022" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strSinkable.trim()))</span>
+<span class="nc" id="L1023">			_bIsSinkable = true;</span>
 		else
-<span class="nc" id="L1013">			_bIsSinkable = false;</span>
+<span class="nc" id="L1025">			_bIsSinkable = false;</span>
 
-<span class="nc" id="L1015">		return true;</span>
+<span class="nc" id="L1027">		return true;</span>
 	}
 
 	/**
@@ -1026,11 +1038,11 @@ public class BondProductBuilder {
 	public boolean setRedemptionCurrency (
 		final java.lang.String strRedemptionCurrency)
 	{
-<span class="nc bnc" id="L1029" title="All 2 branches missed.">		if (null == (_strRedemptionCurrency = strRedemptionCurrency.trim()) || &quot;null&quot;.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1030" title="All 2 branches missed.">			(strRedemptionCurrency.trim()))</span>
-<span class="nc" id="L1031">			return false;</span>
+<span class="nc bnc" id="L1041" title="All 2 branches missed.">		if (null == (_strRedemptionCurrency = strRedemptionCurrency.trim()) || &quot;null&quot;.equalsIgnoreCase</span>
+<span class="nc bnc" id="L1042" title="All 2 branches missed.">			(strRedemptionCurrency.trim()))</span>
+<span class="nc" id="L1043">			return false;</span>
 
-<span class="nc" id="L1033">		return true;</span>
+<span class="nc" id="L1045">		return true;</span>
 	}
 
 	/**
@@ -1044,11 +1056,11 @@ public class BondProductBuilder {
 	public boolean setCouponCurrency (
 		final java.lang.String strCouponCurrency)
 	{
-<span class="nc bnc" id="L1047" title="All 2 branches missed.">		if (null == (_strCouponCurrency = strCouponCurrency.trim()) || &quot;null&quot;.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1048" title="All 2 branches missed.">			(strCouponCurrency.trim()))</span>
-<span class="nc" id="L1049">			return false;</span>
+<span class="nc bnc" id="L1059" title="All 2 branches missed.">		if (null == (_strCouponCurrency = strCouponCurrency.trim()) || &quot;null&quot;.equalsIgnoreCase</span>
+<span class="nc bnc" id="L1060" title="All 2 branches missed.">			(strCouponCurrency.trim()))</span>
+<span class="nc" id="L1061">			return false;</span>
 
-<span class="nc" id="L1051">		return true;</span>
+<span class="nc" id="L1063">		return true;</span>
 	}
 
 	/**
@@ -1062,11 +1074,11 @@ public class BondProductBuilder {
 	public boolean setTradeCurrency (
 		final java.lang.String strTradeCurrency)
 	{
-<span class="nc bnc" id="L1065" title="All 2 branches missed.">		if (null == (_strTradeCurrency = strTradeCurrency.trim()) || &quot;null&quot;.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1066" title="All 2 branches missed.">			(strTradeCurrency.trim()))</span>
-<span class="nc" id="L1067">			return false;</span>
+<span class="nc bnc" id="L1077" title="All 2 branches missed.">		if (null == (_strTradeCurrency = strTradeCurrency.trim()) || &quot;null&quot;.equalsIgnoreCase</span>
+<span class="nc bnc" id="L1078" title="All 2 branches missed.">			(strTradeCurrency.trim()))</span>
+<span class="nc" id="L1079">			return false;</span>
 
-<span class="nc" id="L1069">		return true;</span>
+<span class="nc" id="L1081">		return true;</span>
 	}
 
 	/**
@@ -1080,14 +1092,14 @@ public class BondProductBuilder {
 	public boolean setHasBeenCalled (
 		final java.lang.String strHasBeenCalled)
 	{
-<span class="nc bnc" id="L1083" title="All 2 branches missed.">		if (null == strHasBeenCalled) _bHasBeenCalled = false;</span>
+<span class="nc bnc" id="L1095" title="All 2 branches missed.">		if (null == strHasBeenCalled) _bHasBeenCalled = false;</span>
 
-<span class="nc bnc" id="L1085" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strHasBeenCalled.trim()))</span>
-<span class="nc" id="L1086">			_bHasBeenCalled = true;</span>
+<span class="nc bnc" id="L1097" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strHasBeenCalled.trim()))</span>
+<span class="nc" id="L1098">			_bHasBeenCalled = true;</span>
 		else
-<span class="nc" id="L1088">			_bHasBeenCalled = false;</span>
+<span class="nc" id="L1100">			_bHasBeenCalled = false;</span>
 
-<span class="nc" id="L1090">		return true;</span>
+<span class="nc" id="L1102">		return true;</span>
 	}
 
 	/**
@@ -1101,10 +1113,10 @@ public class BondProductBuilder {
 	public boolean setFloatCouponConvention (
 		final java.lang.String strFloatCouponConvention)
 	{
-<span class="nc bnc" id="L1104" title="All 2 branches missed.">		if (null == (_strFloatCouponConvention = strFloatCouponConvention.trim()))</span>
-<span class="nc" id="L1105">			_strFloatCouponConvention = &quot;&quot;;</span>
+<span class="nc bnc" id="L1116" title="All 2 branches missed.">		if (null == (_strFloatCouponConvention = strFloatCouponConvention.trim()))</span>
+<span class="nc" id="L1117">			_strFloatCouponConvention = &quot;&quot;;</span>
 
-<span class="nc" id="L1107">		return true;</span>
+<span class="nc" id="L1119">		return true;</span>
 	}
 
 	/**
@@ -1118,21 +1130,21 @@ public class BondProductBuilder {
 	public boolean setCurrentCoupon (
 		final java.lang.String strCurrentCoupon)
 	{
-<span class="nc bnc" id="L1121" title="All 4 branches missed.">		if (null == strCurrentCoupon || strCurrentCoupon.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase</span>
-<span class="nc bnc" id="L1122" title="All 2 branches missed.">			(strCurrentCoupon.trim()))</span>
-<span class="nc" id="L1123">			_dblCurrentCoupon = 0.;</span>
+<span class="nc bnc" id="L1133" title="All 4 branches missed.">		if (null == strCurrentCoupon || strCurrentCoupon.trim().isEmpty() || &quot;null&quot;.equalsIgnoreCase</span>
+<span class="nc bnc" id="L1134" title="All 2 branches missed.">			(strCurrentCoupon.trim()))</span>
+<span class="nc" id="L1135">			_dblCurrentCoupon = 0.;</span>
 		else {
 			try {
-<span class="nc" id="L1126">				_dblCurrentCoupon = java.lang.Double.parseDouble (strCurrentCoupon.trim());</span>
+<span class="nc" id="L1138">				_dblCurrentCoupon = java.lang.Double.parseDouble (strCurrentCoupon.trim());</span>
 
-<span class="nc" id="L1128">				return true;</span>
-<span class="nc" id="L1129">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1140">				return true;</span>
+<span class="nc" id="L1141">			} catch (java.lang.Exception e) {</span>
 				if (m_bBlog)
 					System.out.println (&quot;Bad Curr Cpn &quot; + strCurrentCoupon + &quot; for ISIN &quot; + _strISIN);
 			}
 		}
 
-<span class="nc" id="L1135">		return false;</span>
+<span class="nc" id="L1147">		return false;</span>
 	}
 
 	/**
@@ -1146,14 +1158,14 @@ public class BondProductBuilder {
 	public boolean setIsFloater (
 		final java.lang.String strIsFloater)
 	{
-<span class="nc bnc" id="L1149" title="All 2 branches missed.">		if (null == strIsFloater) _bIsFloater = false;</span>
+<span class="nc bnc" id="L1161" title="All 2 branches missed.">		if (null == strIsFloater) _bIsFloater = false;</span>
 
-<span class="nc bnc" id="L1151" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strIsFloater.trim()))</span>
-<span class="nc" id="L1152">			_bIsFloater = true;</span>
+<span class="nc bnc" id="L1163" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strIsFloater.trim()))</span>
+<span class="nc" id="L1164">			_bIsFloater = true;</span>
 		else
-<span class="nc" id="L1154">			_bIsFloater = false;</span>
+<span class="nc" id="L1166">			_bIsFloater = false;</span>
 
-<span class="nc" id="L1156">		return true;</span>
+<span class="nc" id="L1168">		return true;</span>
 	}
 
 	/**
@@ -1168,16 +1180,16 @@ public class BondProductBuilder {
 		final java.lang.String strFinalMaturity)
 	{
 		try {
-<span class="nc" id="L1171">			_dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
-<span class="nc" id="L1172">				(strFinalMaturity.trim());</span>
+<span class="nc" id="L1183">			_dtFinalMaturity = org.drip.analytics.date.DateUtil.MakeJulianDateFromBBGDate</span>
+<span class="nc" id="L1184">				(strFinalMaturity.trim());</span>
 
-<span class="nc" id="L1174">			return true;</span>
-<span class="nc" id="L1175">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1186">			return true;</span>
+<span class="nc" id="L1187">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog)
 				System.out.println (&quot;Bad Final Maturity &quot; + strFinalMaturity + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L1180">		return false;</span>
+<span class="nc" id="L1192">		return false;</span>
 	}
 
 	/**
@@ -1191,14 +1203,14 @@ public class BondProductBuilder {
 	public boolean setIsPerpetual (
 		final java.lang.String strIsPerpetual)
 	{
-<span class="nc bnc" id="L1194" title="All 2 branches missed.">		if (null == strIsPerpetual) _bIsPerpetual = false;</span>
+<span class="nc bnc" id="L1206" title="All 2 branches missed.">		if (null == strIsPerpetual) _bIsPerpetual = false;</span>
 
-<span class="nc bnc" id="L1196" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strIsPerpetual.trim()))</span>
-<span class="nc" id="L1197">			_bIsPerpetual = true;</span>
+<span class="nc bnc" id="L1208" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strIsPerpetual.trim()))</span>
+<span class="nc" id="L1209">			_bIsPerpetual = true;</span>
 		else
-<span class="nc" id="L1199">			_bIsPerpetual = false;</span>
+<span class="nc" id="L1211">			_bIsPerpetual = false;</span>
 
-<span class="nc" id="L1201">		return true;</span>
+<span class="nc" id="L1213">		return true;</span>
 	}
 
 	/**
@@ -1212,14 +1224,14 @@ public class BondProductBuilder {
 	public boolean setIsDefaulted (
 		final java.lang.String strIsDefaulted)
 	{
-<span class="nc bnc" id="L1215" title="All 2 branches missed.">		if (null == strIsDefaulted) _bIsDefaulted = false;</span>
+<span class="nc bnc" id="L1227" title="All 2 branches missed.">		if (null == strIsDefaulted) _bIsDefaulted = false;</span>
 
-<span class="nc bnc" id="L1217" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strIsDefaulted.trim()))</span>
-<span class="nc" id="L1218">			_bIsDefaulted = true;</span>
+<span class="nc bnc" id="L1229" title="All 2 branches missed.">		if (&quot;1&quot;.equalsIgnoreCase (strIsDefaulted.trim()))</span>
+<span class="nc" id="L1230">			_bIsDefaulted = true;</span>
 		else
-<span class="nc" id="L1220">			_bIsDefaulted = false;</span>
+<span class="nc" id="L1232">			_bIsDefaulted = false;</span>
 
-<span class="nc" id="L1222">		return true;</span>
+<span class="nc" id="L1234">		return true;</span>
 	}
 
 	/**
@@ -1234,14 +1246,14 @@ public class BondProductBuilder {
 		final java.lang.String strFloatSpread)
 	{
 		try {
-<span class="nc" id="L1237">			_dblFloatSpread = java.lang.Double.parseDouble (strFloatSpread.trim());</span>
+<span class="nc" id="L1249">			_dblFloatSpread = java.lang.Double.parseDouble (strFloatSpread.trim());</span>
 
-<span class="nc" id="L1239">			return true;</span>
-<span class="nc" id="L1240">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1251">			return true;</span>
+<span class="nc" id="L1252">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad Float Spread &quot; + strFloatSpread + &quot; for ISIN &quot; + _strISIN);
 		}
 
-<span class="nc" id="L1244">		return false;</span>
+<span class="nc" id="L1256">		return false;</span>
 	}
 
 	/**
@@ -1255,34 +1267,34 @@ public class BondProductBuilder {
 	public boolean setFloatSpread (
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 	{
-<span class="nc bnc" id="L1258" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon)) {</span>
-<span class="nc" id="L1259">			System.out.println (&quot;Curr cpn for ISIN &quot; + _strISIN + &quot; is NaN!&quot;);</span>
+<span class="nc bnc" id="L1270" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon)) {</span>
+<span class="nc" id="L1271">			System.out.println (&quot;Curr cpn for ISIN &quot; + _strISIN + &quot; is NaN!&quot;);</span>
 
-<span class="nc" id="L1261">			return false;</span>
+<span class="nc" id="L1273">			return false;</span>
 		}
 
-<span class="nc bnc" id="L1264" title="All 6 branches missed.">		if (null == mpc || null == mpc.scenarioDiscountCurveMap() || null == mpc.scenarioDiscountCurveMap().get (_strCouponCurrency) ||</span>
-<span class="nc bnc" id="L1265" title="All 2 branches missed.">			null == mpc.scenarioDiscountCurveMap().get (_strCouponCurrency).base()) {</span>
+<span class="nc bnc" id="L1276" title="All 6 branches missed.">		if (null == mpc || null == mpc.scenarioDiscountCurveMap() || null == mpc.scenarioDiscountCurveMap().get (_strCouponCurrency) ||</span>
+<span class="nc bnc" id="L1277" title="All 2 branches missed.">			null == mpc.scenarioDiscountCurveMap().get (_strCouponCurrency).base()) {</span>
 			if (m_bBlog) System.out.println (&quot;Bad mpc In for ISIN &quot; + _strISIN);
 
-<span class="nc" id="L1268">			return false;</span>
+<span class="nc" id="L1280">			return false;</span>
 		}
 
 		try {
-<span class="nc bnc" id="L1272" title="All 2 branches missed.">			if (0. != _dblCurrentCoupon) {</span>
-<span class="nc" id="L1273">				org.drip.state.discount.MergedDiscountForwardCurve dcBase = mpc.scenarioDiscountCurveMap().get (_strCouponCurrency).base();</span>
+<span class="nc bnc" id="L1284" title="All 2 branches missed.">			if (0. != _dblCurrentCoupon) {</span>
+<span class="nc" id="L1285">				org.drip.state.discount.MergedDiscountForwardCurve dcBase = mpc.scenarioDiscountCurveMap().get (_strCouponCurrency).base();</span>
 
-<span class="nc" id="L1275">				_dblFloatSpread = _dblCurrentCoupon - 100. * dcBase.libor (dcBase.epoch().julian(),</span>
-<span class="nc" id="L1276">					(org.drip.analytics.support.Helper.GetTenorFromFreq (_iCouponFreq)));</span>
-<span class="nc" id="L1277">			} else</span>
-<span class="nc" id="L1278">				_dblFloatSpread = 0.;</span>
+<span class="nc" id="L1287">				_dblFloatSpread = _dblCurrentCoupon - 100. * dcBase.libor (dcBase.epoch().julian(),</span>
+<span class="nc" id="L1288">					(org.drip.analytics.support.Helper.GetTenorFromFreq (_iCouponFreq)));</span>
+<span class="nc" id="L1289">			} else</span>
+<span class="nc" id="L1290">				_dblFloatSpread = 0.;</span>
 
-<span class="nc" id="L1280">			return true;</span>
-<span class="nc" id="L1281">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1292">			return true;</span>
+<span class="nc" id="L1293">		} catch (java.lang.Exception e) {</span>
 			if (m_bBlog) e.printStackTrace();
 		}
 
-<span class="nc" id="L1285">		return false;</span>
+<span class="nc" id="L1297">		return false;</span>
 	}
 
 	/**
@@ -1296,9 +1308,9 @@ public class BondProductBuilder {
 	public boolean setRateIndex (
 		final java.lang.String strRateIndex)
 	{
-<span class="nc bnc" id="L1299" title="All 2 branches missed.">		if (null == (_strRateIndex = strRateIndex)) _strRateIndex = &quot;&quot;;</span>
+<span class="nc bnc" id="L1311" title="All 2 branches missed.">		if (null == (_strRateIndex = strRateIndex)) _strRateIndex = &quot;&quot;;</span>
 
-<span class="nc" id="L1301">		return true;</span>
+<span class="nc" id="L1313">		return true;</span>
 	}
 
 	/**
@@ -1312,9 +1324,9 @@ public class BondProductBuilder {
 	public boolean setIssuerSPN (
 		final java.lang.String strIssuerSPN)
 	{
-<span class="nc bnc" id="L1315" title="All 2 branches missed.">		if (null == (_strIssuerSPN = strIssuerSPN)) _strIssuerSPN = &quot;&quot;;</span>
+<span class="nc bnc" id="L1327" title="All 2 branches missed.">		if (null == (_strIssuerSPN = strIssuerSPN)) _strIssuerSPN = &quot;&quot;;</span>
 
-<span class="nc" id="L1317">		return true;</span>
+<span class="nc" id="L1329">		return true;</span>
 	}
 
 	/**
@@ -1328,76 +1340,76 @@ public class BondProductBuilder {
 	public boolean validate (
 		final org.drip.param.definition.ScenarioMarketParams mpc)
 	{
-<span class="nc bnc" id="L1331" title="All 8 branches missed.">		if (null == _strISIN || _strISIN.isEmpty() || null == _strCUSIP || _strCUSIP.isEmpty()) {</span>
+<span class="nc bnc" id="L1343" title="All 8 branches missed.">		if (null == _strISIN || _strISIN.isEmpty() || null == _strCUSIP || _strCUSIP.isEmpty()) {</span>
 			if (m_bDisplayWarnings)
-<span class="nc" id="L1333">				System.out.println (&quot;Check ISIN[&quot; + _strISIN + &quot;] or CUSIP[&quot; + _strCUSIP + &quot;]&quot;);</span>
+<span class="nc" id="L1345">				System.out.println (&quot;Check ISIN[&quot; + _strISIN + &quot;] or CUSIP[&quot; + _strCUSIP + &quot;]&quot;);</span>
 
-<span class="nc" id="L1335">			return false;</span>
+<span class="nc" id="L1347">			return false;</span>
 		}
 
-<span class="nc bnc" id="L1338" title="All 4 branches missed.">		if (0 == _iCouponFreq &amp;&amp; 0. != _dblCoupon) {</span>
+<span class="nc bnc" id="L1350" title="All 4 branches missed.">		if (0 == _iCouponFreq &amp;&amp; 0. != _dblCoupon) {</span>
 			if (m_bDisplayWarnings)
-<span class="nc" id="L1340">				System.out.println (&quot;Coupon Freq and Cpn amt both not sero for ISIN[&quot; + _strISIN + &quot;]&quot;);</span>
+<span class="nc" id="L1352">				System.out.println (&quot;Coupon Freq and Cpn amt both not sero for ISIN[&quot; + _strISIN + &quot;]&quot;);</span>
 
-<span class="nc" id="L1342">			return false;</span>
+<span class="nc" id="L1354">			return false;</span>
 		}
 
-<span class="nc bnc" id="L1345" title="All 4 branches missed.">		if (49 == _iCouponFreq || 52 == _iCouponFreq) {</span>
+<span class="nc bnc" id="L1357" title="All 4 branches missed.">		if (49 == _iCouponFreq || 52 == _iCouponFreq) {</span>
 			if (m_bDisplayWarnings)
-<span class="nc" id="L1347">				System.out.println (&quot;ISIN[&quot; + _strISIN + &quot;] has cpn freq of &quot; + _iCouponFreq + &quot;!&quot;);</span>
+<span class="nc" id="L1359">				System.out.println (&quot;ISIN[&quot; + _strISIN + &quot;] has cpn freq of &quot; + _iCouponFreq + &quot;!&quot;);</span>
 
-<span class="nc" id="L1349">			return false;</span>
+<span class="nc" id="L1361">			return false;</span>
 		}
 
-<span class="nc bnc" id="L1352" title="All 2 branches missed.">		if (null == _dtInterestAccrualStart) {</span>
-<span class="nc bnc" id="L1353" title="All 2 branches missed.">			if (null == (_dtInterestAccrualStart = reconcileStartDate())) {</span>
+<span class="nc bnc" id="L1364" title="All 2 branches missed.">		if (null == _dtInterestAccrualStart) {</span>
+<span class="nc bnc" id="L1365" title="All 2 branches missed.">			if (null == (_dtInterestAccrualStart = reconcileStartDate())) {</span>
 				if (m_bDisplayWarnings)
-<span class="nc" id="L1355">					System.out.println (&quot;All possible date init candidates are null for ISIN &quot; + _strISIN);</span>
+<span class="nc" id="L1367">					System.out.println (&quot;All possible date init candidates are null for ISIN &quot; + _strISIN);</span>
 
-<span class="nc" id="L1357">				return false;</span>
+<span class="nc" id="L1369">				return false;</span>
 			}
 		}
 
-<span class="nc bnc" id="L1361" title="All 6 branches missed.">		if (_bIsFloater &amp;&amp; (null == _strRateIndex || _strRateIndex.isEmpty()) &amp;&amp;</span>
-<span class="nc bnc" id="L1362" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread) &amp;&amp; java.lang.Double.isNaN</span>
-<span class="nc bnc" id="L1363" title="All 2 branches missed.">				(_dblCurrentCoupon)) {</span>
+<span class="nc bnc" id="L1373" title="All 6 branches missed.">		if (_bIsFloater &amp;&amp; (null == _strRateIndex || _strRateIndex.isEmpty()) &amp;&amp;</span>
+<span class="nc bnc" id="L1374" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread) &amp;&amp; java.lang.Double.isNaN</span>
+<span class="nc bnc" id="L1375" title="All 2 branches missed.">				(_dblCurrentCoupon)) {</span>
 			if (m_bDisplayWarnings)
-<span class="nc" id="L1365">				System.out.println (&quot;Invalid Rate index &amp; float spread &amp; current coupon for &quot; + _strISIN);</span>
+<span class="nc" id="L1377">				System.out.println (&quot;Invalid Rate index &amp; float spread &amp; current coupon for &quot; + _strISIN);</span>
 
-<span class="nc" id="L1367">			return false;</span>
+<span class="nc" id="L1379">			return false;</span>
 		}
 
-<span class="nc bnc" id="L1370" title="All 6 branches missed.">		if (_bIsFloater &amp;&amp; (null == _strRateIndex || _strRateIndex.isEmpty())) {</span>
-<span class="nc" id="L1371">			if (null == (_strRateIndex = org.drip.analytics.support.Helper.CalcRateIndex</span>
-<span class="nc bnc" id="L1372" title="All 2 branches missed.">				(_strCouponCurrency, _iCouponFreq))) {</span>
+<span class="nc bnc" id="L1382" title="All 6 branches missed.">		if (_bIsFloater &amp;&amp; (null == _strRateIndex || _strRateIndex.isEmpty())) {</span>
+<span class="nc" id="L1383">			if (null == (_strRateIndex = org.drip.analytics.support.Helper.CalcRateIndex</span>
+<span class="nc bnc" id="L1384" title="All 2 branches missed.">				(_strCouponCurrency, _iCouponFreq))) {</span>
 				if (m_bDisplayWarnings)
-<span class="nc" id="L1374">					System.out.println (&quot;Warning: Cannot find Rate index for ISIN &quot; + _strISIN);</span>
+<span class="nc" id="L1386">					System.out.println (&quot;Warning: Cannot find Rate index for ISIN &quot; + _strISIN);</span>
 			}
 		}
 
-<span class="nc bnc" id="L1378" title="All 4 branches missed.">		if (_bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread)) {</span>
+<span class="nc bnc" id="L1390" title="All 4 branches missed.">		if (_bIsFloater &amp;&amp; !org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread)) {</span>
 			try {
-<span class="nc bnc" id="L1380" title="All 2 branches missed.">				if (!setFloatSpread (mpc)) {</span>
+<span class="nc bnc" id="L1392" title="All 2 branches missed.">				if (!setFloatSpread (mpc)) {</span>
 					if (m_bDisplayWarnings)
-<span class="nc" id="L1382">						System.out.println (&quot;Warning: Cannot set float spread for ISIN &quot; + _strISIN +</span>
+<span class="nc" id="L1394">						System.out.println (&quot;Warning: Cannot set float spread for ISIN &quot; + _strISIN +</span>
 							&quot; and Coupon Currency &quot; + _strCouponCurrency);
 				}
-<span class="nc" id="L1385">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1397">			} catch (java.lang.Exception e) {</span>
 				if (m_bDisplayWarnings)
-<span class="nc" id="L1387">					System.out.println (&quot;Warning: Cannot set float spread for ISIN &quot; + _strISIN +</span>
+<span class="nc" id="L1399">					System.out.println (&quot;Warning: Cannot set float spread for ISIN &quot; + _strISIN +</span>
 						&quot; and Coupon Currency &quot; + _strCouponCurrency);
 
-<span class="nc" id="L1390">				e.printStackTrace();</span>
-<span class="nc" id="L1391">			}</span>
+<span class="nc" id="L1402">				e.printStackTrace();</span>
+<span class="nc" id="L1403">			}</span>
 		}
 
-<span class="nc bnc" id="L1394" title="All 2 branches missed.">		if (null == _dtIssue) _dtIssue = reconcileStartDate();</span>
+<span class="nc bnc" id="L1406" title="All 2 branches missed.">		if (null == _dtIssue) _dtIssue = reconcileStartDate();</span>
 
-<span class="nc bnc" id="L1396" title="All 2 branches missed.">		if (null == _dtFirstSettle) _dtFirstSettle = reconcileStartDate();</span>
+<span class="nc bnc" id="L1408" title="All 2 branches missed.">		if (null == _dtFirstSettle) _dtFirstSettle = reconcileStartDate();</span>
 
-<span class="nc bnc" id="L1398" title="All 2 branches missed.">		if (null == _dtAnnounce) _dtAnnounce = reconcileStartDate();</span>
+<span class="nc bnc" id="L1410" title="All 2 branches missed.">		if (null == _dtAnnounce) _dtAnnounce = reconcileStartDate();</span>
 
-<span class="nc" id="L1400">		return true;</span>
+<span class="nc" id="L1412">		return true;</span>
 	}
 
 	/**
@@ -1408,87 +1420,87 @@ public class BondProductBuilder {
 
 	public java.lang.String makeSQLInsert()
 	{
-<span class="nc" id="L1411">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+<span class="nc" id="L1423">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
 
-<span class="nc" id="L1413">		sb.append (&quot;insert into BondValData values(&quot;);</span>
+<span class="nc" id="L1425">		sb.append (&quot;insert into BondValData values(&quot;);</span>
 
-<span class="nc" id="L1415">		sb.append (&quot;'&quot;).append (_strISIN).append (&quot;', &quot;);</span>
+<span class="nc" id="L1427">		sb.append (&quot;'&quot;).append (_strISIN).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1417">		sb.append (&quot;'&quot;).append (_strCUSIP).append (&quot;', &quot;);</span>
+<span class="nc" id="L1429">		sb.append (&quot;'&quot;).append (_strCUSIP).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1419">		sb.append (&quot;'&quot;).append (_strTicker).append (&quot;', &quot;);</span>
+<span class="nc" id="L1431">		sb.append (&quot;'&quot;).append (_strTicker).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1421">		sb.append (_dblCoupon).append (&quot;, &quot;);</span>
+<span class="nc" id="L1433">		sb.append (_dblCoupon).append (&quot;, &quot;);</span>
 
-<span class="nc" id="L1423">		sb.append (&quot;'&quot;).append (_dtMaturity.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1435">		sb.append (&quot;'&quot;).append (_dtMaturity.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1425">		sb.append (_iCouponFreq).append (&quot;, &quot;);</span>
+<span class="nc" id="L1437">		sb.append (_iCouponFreq).append (&quot;, &quot;);</span>
 
-<span class="nc" id="L1427">		sb.append (&quot;'&quot;).append (_strCouponType).append (&quot;', &quot;);</span>
+<span class="nc" id="L1439">		sb.append (&quot;'&quot;).append (_strCouponType).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1429">		sb.append (&quot;'&quot;).append (_strMaturityType).append (&quot;', &quot;);</span>
+<span class="nc" id="L1441">		sb.append (&quot;'&quot;).append (_strMaturityType).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1431">		sb.append (&quot;'&quot;).append (_strCalculationType).append (&quot;', &quot;);</span>
+<span class="nc" id="L1443">		sb.append (&quot;'&quot;).append (_strCalculationType).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1433">		sb.append (&quot;'&quot;).append (_strDayCountCode).append (&quot;', &quot;);</span>
+<span class="nc" id="L1445">		sb.append (&quot;'&quot;).append (_strDayCountCode).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1435">		sb.append (_dblRedemptionValue).append (&quot;, &quot;);</span>
+<span class="nc" id="L1447">		sb.append (_dblRedemptionValue).append (&quot;, &quot;);</span>
 
-<span class="nc" id="L1437">		sb.append (&quot;'&quot;).append (_dtAnnounce.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1449">		sb.append (&quot;'&quot;).append (_dtAnnounce.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1439">		sb.append (&quot;'&quot;).append (_dtFirstSettle.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1451">		sb.append (&quot;'&quot;).append (_dtFirstSettle.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1441" title="All 2 branches missed.">		if (null == _dtFirstCoupon)</span>
-<span class="nc" id="L1442">			sb.append (&quot;null, &quot;);</span>
+<span class="nc bnc" id="L1453" title="All 2 branches missed.">		if (null == _dtFirstCoupon)</span>
+<span class="nc" id="L1454">			sb.append (&quot;null, &quot;);</span>
 		else
-<span class="nc" id="L1444">			sb.append (&quot;'&quot;).append (_dtFirstCoupon.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1456">			sb.append (&quot;'&quot;).append (_dtFirstCoupon.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1446">		sb.append (&quot;'&quot;).append (_dtInterestAccrualStart.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1458">		sb.append (&quot;'&quot;).append (_dtInterestAccrualStart.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1448">		sb.append (&quot;'&quot;).append (_dtIssue.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1460">		sb.append (&quot;'&quot;).append (_dtIssue.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1450" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsCallable ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1462" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsCallable ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1452" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsPutable ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1464" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsPutable ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1454" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsSinkable ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1466" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsSinkable ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1456">		sb.append (&quot;'&quot;).append (_strRedemptionCurrency).append (&quot;', &quot;);</span>
+<span class="nc" id="L1468">		sb.append (&quot;'&quot;).append (_strRedemptionCurrency).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1458">		sb.append (&quot;'&quot;).append (_strCouponCurrency).append (&quot;', &quot;);</span>
+<span class="nc" id="L1470">		sb.append (&quot;'&quot;).append (_strCouponCurrency).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1460">		sb.append (&quot;'&quot;).append (_strTradeCurrency).append (&quot;', &quot;);</span>
+<span class="nc" id="L1472">		sb.append (&quot;'&quot;).append (_strTradeCurrency).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1462" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bHasBeenCalled ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1474" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bHasBeenCalled ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1464">		sb.append (&quot;'&quot;).append (_strFloatCouponConvention).append (&quot;', &quot;);</span>
+<span class="nc" id="L1476">		sb.append (&quot;'&quot;).append (_strFloatCouponConvention).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1466" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon))</span>
-<span class="nc" id="L1467">			sb.append (&quot;null, &quot;);</span>
+<span class="nc bnc" id="L1478" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentCoupon))</span>
+<span class="nc" id="L1479">			sb.append (&quot;null, &quot;);</span>
 		else
-<span class="nc" id="L1469">			sb.append (_dblCurrentCoupon).append (&quot;, &quot;);</span>
+<span class="nc" id="L1481">			sb.append (_dblCurrentCoupon).append (&quot;, &quot;);</span>
 
-<span class="nc bnc" id="L1471" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsFloater ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1483" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsFloater ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1473" title="All 2 branches missed.">		if (null == _dtFinalMaturity)</span>
-<span class="nc" id="L1474">			sb.append (&quot;null, &quot;);</span>
+<span class="nc bnc" id="L1485" title="All 2 branches missed.">		if (null == _dtFinalMaturity)</span>
+<span class="nc" id="L1486">			sb.append (&quot;null, &quot;);</span>
 		else
-<span class="nc" id="L1476">			sb.append (&quot;'&quot;).append (_dtFinalMaturity.toOracleDate()).append (&quot;', &quot;);</span>
+<span class="nc" id="L1488">			sb.append (&quot;'&quot;).append (_dtFinalMaturity.toOracleDate()).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1478" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsPerpetual ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1490" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsPerpetual ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1480" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsDefaulted ? 1 : 0).append (&quot;', &quot;);</span>
+<span class="nc bnc" id="L1492" title="All 2 branches missed.">		sb.append (&quot;'&quot;).append (_bIsDefaulted ? 1 : 0).append (&quot;', &quot;);</span>
 
-<span class="nc bnc" id="L1482" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread))</span>
-<span class="nc" id="L1483">			sb.append (&quot;null, &quot;);</span>
+<span class="nc bnc" id="L1494" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblFloatSpread))</span>
+<span class="nc" id="L1495">			sb.append (&quot;null, &quot;);</span>
 		else
-<span class="nc" id="L1485">			sb.append (_dblFloatSpread).append (&quot;, &quot;);</span>
+<span class="nc" id="L1497">			sb.append (_dblFloatSpread).append (&quot;, &quot;);</span>
 
-<span class="nc" id="L1487">		sb.append (&quot;'&quot;).append (_strRateIndex).append (&quot;', &quot;);</span>
+<span class="nc" id="L1499">		sb.append (&quot;'&quot;).append (_strRateIndex).append (&quot;', &quot;);</span>
 
-<span class="nc" id="L1489">		sb.append (&quot;'&quot;).append (_strIssuerSPN).append (&quot;')&quot;);</span>
+<span class="nc" id="L1501">		sb.append (&quot;'&quot;).append (_strIssuerSPN).append (&quot;')&quot;);</span>
 
-<span class="nc" id="L1491">		return sb.toString();</span>
+<span class="nc" id="L1503">		return sb.toString();</span>
 	}
 
 	/**
@@ -1499,10 +1511,10 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.IdentifierSet getIdentifierParams()
 	{
-<span class="nc" id="L1502">		org.drip.product.params.IdentifierSet idParams = new org.drip.product.params.IdentifierSet (_strISIN,</span>
+<span class="nc" id="L1514">		org.drip.product.params.IdentifierSet idParams = new org.drip.product.params.IdentifierSet (_strISIN,</span>
 			_strCUSIP, _strISIN, _strTicker);
 
-<span class="nc bnc" id="L1505" title="All 2 branches missed.">		return idParams.validate() ? idParams : null;</span>
+<span class="nc bnc" id="L1517" title="All 2 branches missed.">		return idParams.validate() ? idParams : null;</span>
 	}
 
 	/**
@@ -1513,10 +1525,10 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.CouponSetting getCouponParams()
 	{
-<span class="nc" id="L1516">		org.drip.product.params.CouponSetting cpnParams = new org.drip.product.params.CouponSetting</span>
+<span class="nc" id="L1528">		org.drip.product.params.CouponSetting cpnParams = new org.drip.product.params.CouponSetting</span>
 			(null, _strCouponType, _dblCoupon, java.lang.Double.NaN, java.lang.Double.NaN);
 
-<span class="nc bnc" id="L1519" title="All 2 branches missed.">		return cpnParams.validate() ? cpnParams : null;</span>
+<span class="nc bnc" id="L1531" title="All 2 branches missed.">		return cpnParams.validate() ? cpnParams : null;</span>
 	}
 
 	/**
@@ -1527,16 +1539,16 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.FloaterSetting getFloaterParams()
 	{
-<span class="nc bnc" id="L1530" title="All 2 branches missed.">		if (!_bIsFloater) return null;</span>
+<span class="nc bnc" id="L1542" title="All 2 branches missed.">		if (!_bIsFloater) return null;</span>
 
-<span class="nc" id="L1532">		org.drip.product.params.FloaterSetting fltParams = new org.drip.product.params.FloaterSetting (</span>
-<span class="nc" id="L1533">			org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex),</span>
+<span class="nc" id="L1544">		org.drip.product.params.FloaterSetting fltParams = new org.drip.product.params.FloaterSetting (</span>
+<span class="nc" id="L1545">			org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex),</span>
 			_strFloatCouponConvention,
 			_dblFloatSpread,
 			_dblCurrentCoupon
 		);
 
-<span class="nc bnc" id="L1539" title="All 2 branches missed.">		return fltParams.validate() ? fltParams : null;</span>
+<span class="nc bnc" id="L1551" title="All 2 branches missed.">		return fltParams.validate() ? fltParams : null;</span>
 	}
 
 	/**
@@ -1547,11 +1559,11 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.QuoteConvention getMarketConvention()
 	{
-<span class="nc" id="L1550">		org.drip.product.params.QuoteConvention mktConv = new org.drip.product.params.QuoteConvention (null,</span>
-<span class="nc" id="L1551">			_strCalculationType, _dtFirstSettle.julian(), _dblRedemptionValue, 0, &quot;&quot;,</span>
+<span class="nc" id="L1562">		org.drip.product.params.QuoteConvention mktConv = new org.drip.product.params.QuoteConvention (null,</span>
+<span class="nc" id="L1563">			_strCalculationType, _dtFirstSettle.julian(), _dblRedemptionValue, 0, &quot;&quot;,</span>
 				org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL);
 
-<span class="nc bnc" id="L1554" title="All 2 branches missed.">		return mktConv.validate() ? mktConv : null;</span>
+<span class="nc bnc" id="L1566" title="All 2 branches missed.">		return mktConv.validate() ? mktConv : null;</span>
 	}
 
 	/**
@@ -1562,10 +1574,10 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.CreditSetting getCRValuationParams()
 	{
-<span class="nc" id="L1565">		org.drip.product.params.CreditSetting crValParams = new org.drip.product.params.CreditSetting (30,</span>
+<span class="nc" id="L1577">		org.drip.product.params.CreditSetting crValParams = new org.drip.product.params.CreditSetting (30,</span>
 			java.lang.Double.NaN, true, &quot;&quot;, true);
 
-<span class="nc bnc" id="L1568" title="All 2 branches missed.">		return crValParams.validate() ? crValParams : null;</span>
+<span class="nc bnc" id="L1580" title="All 2 branches missed.">		return crValParams.validate() ? crValParams : null;</span>
 	}
 
 	/**
@@ -1576,10 +1588,10 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.TerminationSetting getCFTEParams()
 	{
-<span class="nc" id="L1579">		org.drip.product.params.TerminationSetting cfteParams = new</span>
+<span class="nc" id="L1591">		org.drip.product.params.TerminationSetting cfteParams = new</span>
 			org.drip.product.params.TerminationSetting (_bIsPerpetual, _bIsDefaulted, _bHasBeenCalled, null);
 
-<span class="nc bnc" id="L1582" title="All 2 branches missed.">		return cfteParams.validate() ? cfteParams : null;</span>
+<span class="nc bnc" id="L1594" title="All 2 branches missed.">		return cfteParams.validate() ? cfteParams : null;</span>
 	}
 
 	/**
@@ -1590,11 +1602,11 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.NotionalSetting getNotionalParams()
 	{
-<span class="nc" id="L1593">		org.drip.product.params.NotionalSetting notlParams = new org.drip.product.params.NotionalSetting</span>
+<span class="nc" id="L1605">		org.drip.product.params.NotionalSetting notlParams = new org.drip.product.params.NotionalSetting</span>
 			(100., _strRedemptionCurrency, null,
 				org.drip.product.params.NotionalSetting.PERIOD_AMORT_AT_START, false);
 
-<span class="nc bnc" id="L1597" title="All 2 branches missed.">		return notlParams.validate() ? notlParams : null;</span>
+<span class="nc bnc" id="L1609" title="All 2 branches missed.">		return notlParams.validate() ? notlParams : null;</span>
 	}
 
 	/**
@@ -1605,16 +1617,16 @@ public class BondProductBuilder {
 
 	public org.drip.product.params.BondStream getPeriodGenParams()
 	{
-<span class="nc" id="L1608">		return org.drip.product.params.BondStream.Create (_dtMaturity.julian(),</span>
-<span class="nc bnc" id="L1609" title="All 2 branches missed.">			_dtInterestAccrualStart.julian(), null == _dtFinalMaturity ? java.lang.Integer.MIN_VALUE :</span>
-<span class="nc bnc" id="L1610" title="All 2 branches missed.">				_dtFinalMaturity.julian(), null == _dtFirstCoupon ? java.lang.Integer.MIN_VALUE :</span>
-<span class="nc" id="L1611">					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,</span>
+<span class="nc" id="L1620">		return org.drip.product.params.BondStream.Create (_dtMaturity.julian(),</span>
+<span class="nc bnc" id="L1621" title="All 2 branches missed.">			_dtInterestAccrualStart.julian(), null == _dtFinalMaturity ? java.lang.Integer.MIN_VALUE :</span>
+<span class="nc bnc" id="L1622" title="All 2 branches missed.">				_dtFinalMaturity.julian(), null == _dtFirstCoupon ? java.lang.Integer.MIN_VALUE :</span>
+<span class="nc" id="L1623">					_dtFirstCoupon.julian(), _dtInterestAccrualStart.julian(), _iCouponFreq,</span>
 						_dblCurrentCoupon, _strDayCountCode, _strDayCountCode, null, null, null, null, null,
 							null, null, null, _strMaturityType, false, _strCouponCurrency,
-<span class="nc bnc" id="L1614" title="All 2 branches missed.">								_strCouponCurrency, !org.drip.numerical.common.StringUtil.IsEmpty (_strRateIndex)</span>
-<span class="nc" id="L1615">									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,</span>
-<span class="nc bnc" id="L1616" title="All 2 branches missed.">										!org.drip.numerical.common.StringUtil.IsEmpty (_strIssuerSPN) ?</span>
-<span class="nc" id="L1617">											org.drip.state.identifier.EntityCDSLabel.Standard (_strIssuerSPN,</span>
+<span class="nc bnc" id="L1626" title="All 2 branches missed.">								_strCouponCurrency, !org.drip.numerical.common.StringUtil.IsEmpty (_strRateIndex)</span>
+<span class="nc" id="L1627">									? org.drip.state.identifier.ForwardLabel.Standard (_strRateIndex) : null,</span>
+<span class="nc bnc" id="L1628" title="All 2 branches missed.">										!org.drip.numerical.common.StringUtil.IsEmpty (_strIssuerSPN) ?</span>
+<span class="nc" id="L1629">											org.drip.state.identifier.EntityCDSLabel.Standard (_strIssuerSPN,</span>
 												_strCouponCurrency) : null);
 	}
 
@@ -1626,12 +1638,12 @@ public class BondProductBuilder {
 
 	public java.lang.String makeSQLDelete()
 	{
-<span class="nc" id="L1629">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
+<span class="nc" id="L1641">		java.lang.StringBuilder sb = new java.lang.StringBuilder();</span>
 
-<span class="nc" id="L1631">		sb.append (&quot;delete from BondValData where ISIN = '&quot;).append (_strISIN).append</span>
-<span class="nc" id="L1632">			(&quot;' or CUSIP = '&quot;).append (_strCUSIP).append (&quot;'&quot;);</span>
+<span class="nc" id="L1643">		sb.append (&quot;delete from BondValData where ISIN = '&quot;).append (_strISIN).append</span>
+<span class="nc" id="L1644">			(&quot;' or CUSIP = '&quot;).append (_strCUSIP).append (&quot;'&quot;);</span>
 
-<span class="nc" id="L1634">		return sb.toString();</span>
+<span class="nc" id="L1646">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

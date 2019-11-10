@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.optimizer;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy0
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,9 +83,9 @@ package org.drip.portfolioconstruction.optimizer;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer&quot;&gt;Optimizer&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/optimizer/README.md&quot;&gt;Core Portfolio Construction Optimizer Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -83,11 +95,11 @@ package org.drip.portfolioconstruction.optimizer;
 public class Strategy
 	extends org.drip.portfolioconstruction.core.Block
 {
-<span class="nc" id="L86">	private boolean _allowCrossOver = false;</span>
-<span class="nc" id="L87">	private boolean _ignoreCompliance = false;</span>
-<span class="nc" id="L88">	private boolean _allowGrandFathering = false;</span>
-<span class="nc" id="L89">	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _objectiveFunction = null;</span>
-<span class="nc" id="L90">	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _constraintHierarchy = null;</span>
+<span class="nc" id="L98">	private boolean _allowCrossOver = false;</span>
+<span class="nc" id="L99">	private boolean _ignoreCompliance = false;</span>
+<span class="nc" id="L100">	private boolean _allowGrandFathering = false;</span>
+<span class="nc" id="L101">	private org.drip.portfolioconstruction.optimizer.ObjectiveFunction _objectiveFunction = null;</span>
+<span class="nc" id="L102">	private org.drip.portfolioconstruction.optimizer.ConstraintHierarchy _constraintHierarchy = null;</span>
 
 	/**
 	 * Strategy Constructor
@@ -115,22 +127,24 @@ public class Strategy
 		final boolean ignoreCompliance)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L118">		super (</span>
+<span class="nc" id="L130">		super (</span>
 			name,
 			id,
 			description
 		);
 
-<span class="nc" id="L124">		_constraintHierarchy = constraintHierarchy;</span>
-<span class="nc" id="L125">		_allowCrossOver = allowCrossOver;</span>
-<span class="nc" id="L126">		_ignoreCompliance = ignoreCompliance;</span>
-<span class="nc" id="L127">		_allowGrandFathering = allowGrandFathering;</span>
+<span class="nc" id="L136">		_constraintHierarchy = constraintHierarchy;</span>
+<span class="nc" id="L137">		_allowCrossOver = allowCrossOver;</span>
+<span class="nc" id="L138">		_ignoreCompliance = ignoreCompliance;</span>
+<span class="nc" id="L139">		_allowGrandFathering = allowGrandFathering;</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (null == (_objectiveFunction = objectiveFunction))</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (null == (_objectiveFunction = objectiveFunction))</span>
 		{
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;Strategy Construtor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L143">			throw new java.lang.Exception (</span>
+				&quot;Strategy Construtor =&gt; Invalid Inputs&quot;
+			);
 		}
-<span class="nc" id="L133">	}</span>
+<span class="nc" id="L147">	}</span>
 
 	/**
 	 * Indicate if Grand-fathering of the &quot;Previous&quot; is to be performed
@@ -140,7 +154,7 @@ public class Strategy
 
 	public boolean allowGrandFathering()
 	{
-<span class="nc" id="L143">		return _allowGrandFathering;</span>
+<span class="nc" id="L157">		return _allowGrandFathering;</span>
 	}
 
 	/**
@@ -151,7 +165,7 @@ public class Strategy
 
 	public boolean allowCrossOver()
 	{
-<span class="nc" id="L154">		return _allowCrossOver;</span>
+<span class="nc" id="L168">		return _allowCrossOver;</span>
 	}
 
 	/**
@@ -162,7 +176,7 @@ public class Strategy
 
 	public boolean ignoreCompliance()
 	{
-<span class="nc" id="L165">		return _ignoreCompliance;</span>
+<span class="nc" id="L179">		return _ignoreCompliance;</span>
 	}
 
 	/**
@@ -173,7 +187,7 @@ public class Strategy
 
 	public org.drip.portfolioconstruction.optimizer.ObjectiveFunction objectiveFunction()
 	{
-<span class="nc" id="L176">		return _objectiveFunction;</span>
+<span class="nc" id="L190">		return _objectiveFunction;</span>
 	}
 
 	/**
@@ -184,7 +198,7 @@ public class Strategy
 
 	public org.drip.portfolioconstruction.optimizer.ConstraintHierarchy constraintHierarchy()
 	{
-<span class="nc" id="L187">		return _constraintHierarchy;</span>
+<span class="nc" id="L201">		return _constraintHierarchy;</span>
 	}
 
 	/**
@@ -195,7 +209,7 @@ public class Strategy
 
 	public double[] constraintAttributes()
 	{
-<span class="nc" id="L198">		return null;</span>
+<span class="nc" id="L212">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
