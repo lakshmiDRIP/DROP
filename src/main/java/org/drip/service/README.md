@@ -2,8 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Service maintains the Environment, Product/Definition Containers, and hosts the Scenario/State
-	Manipulation APIs.
+DROP Service maintains the Environment, Product/Definition Containers, and hosts the Scenario/State Manipulation APIs.
 
 
 ## Component Packages
