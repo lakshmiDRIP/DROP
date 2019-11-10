@@ -1,6 +1,6 @@
 
 /**
- * Regression Engine Core: Unit Regressors
+ * Regression Engine Core - Unit Regressors
  *
  * @author Lakshmi Krishnamurthy
  */
