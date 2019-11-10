@@ -6,6 +6,7 @@ package org.drip.service.api;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.service.api;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,10 +86,10 @@ package org.drip.service.api;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md&quot;&gt;Horizon Roll Attribution Service API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -85,8 +97,8 @@ package org.drip.service.api;
  */
 
 public class InstrMetric {
-<span class="nc" id="L88">	private org.drip.service.api.ForwardRates _fwdMetric = null;</span>
-<span class="nc" id="L89">	private org.drip.service.api.ProductDailyPnL _pnlMetric = null;</span>
+<span class="nc" id="L100">	private org.drip.service.api.ForwardRates _fwdMetric = null;</span>
+<span class="nc" id="L101">	private org.drip.service.api.ProductDailyPnL _pnlMetric = null;</span>
 
 	/**
 	 * InstrMetric constructor
@@ -101,10 +113,10 @@ public class InstrMetric {
 		final org.drip.service.api.ForwardRates fwdMetric,
 		final org.drip.service.api.ProductDailyPnL pnlMetric)
 		throws java.lang.Exception
-<span class="nc" id="L104">	{</span>
-<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == (_fwdMetric = fwdMetric) || null == (_pnlMetric = pnlMetric))</span>
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;InstrMetric ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L107">	}</span>
+<span class="nc" id="L116">	{</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null == (_fwdMetric = fwdMetric) || null == (_pnlMetric = pnlMetric))</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;InstrMetric ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L119">	}</span>
 
 	/**
 	 * Retrieve the Forward Metric
@@ -114,7 +126,7 @@ public class InstrMetric {
 
 	public org.drip.service.api.ForwardRates fwdMetric()
 	{
-<span class="nc" id="L117">		return _fwdMetric;</span>
+<span class="nc" id="L129">		return _fwdMetric;</span>
 	}
 
 	/**
@@ -125,7 +137,7 @@ public class InstrMetric {
 
 	public org.drip.service.api.ProductDailyPnL pnlMetric()
 	{
-<span class="nc" id="L128">		return _pnlMetric;</span>
+<span class="nc" id="L140">		return _pnlMetric;</span>
 	}
 
 	/**
@@ -136,38 +148,38 @@ public class InstrMetric {
 
 	public double[] toArray()
 	{
-<span class="nc" id="L139">		double[] adblPnLMetric = _pnlMetric.toArray();</span>
+<span class="nc" id="L151">		double[] adblPnLMetric = _pnlMetric.toArray();</span>
 
-<span class="nc" id="L141">		double[] adblFwdMetric = _fwdMetric.toArray();</span>
+<span class="nc" id="L153">		double[] adblFwdMetric = _fwdMetric.toArray();</span>
 
-<span class="nc" id="L143">		int i = 0;</span>
-<span class="nc" id="L144">		double[] adblInstrMetric = new double[adblFwdMetric.length + adblPnLMetric.length];</span>
+<span class="nc" id="L155">		int i = 0;</span>
+<span class="nc" id="L156">		double[] adblInstrMetric = new double[adblFwdMetric.length + adblPnLMetric.length];</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		for (double dbl : adblPnLMetric)</span>
-<span class="nc" id="L147">			adblInstrMetric[i++] = dbl;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		for (double dbl : adblPnLMetric)</span>
+<span class="nc" id="L159">			adblInstrMetric[i++] = dbl;</span>
 
-<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (double dbl : adblFwdMetric)</span>
-<span class="nc" id="L150">			adblInstrMetric[i++] = dbl;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (double dbl : adblFwdMetric)</span>
+<span class="nc" id="L162">			adblInstrMetric[i++] = dbl;</span>
 
-<span class="nc" id="L152">		return adblInstrMetric;</span>
+<span class="nc" id="L164">		return adblInstrMetric;</span>
 	}
 
 	@Override public java.lang.String toString()
 	{
-<span class="nc" id="L157">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
+<span class="nc" id="L169">		java.lang.StringBuffer sb = new java.lang.StringBuffer();</span>
 
-<span class="nc" id="L159">		boolean bStart = true;</span>
+<span class="nc" id="L171">		boolean bStart = true;</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		for (double dbl : toArray()) {</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">			if (bStart)</span>
-<span class="nc" id="L163">				bStart = false;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (double dbl : toArray()) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			if (bStart)</span>
+<span class="nc" id="L175">				bStart = false;</span>
 			else
-<span class="nc" id="L165">				sb.append (&quot;,&quot;);</span>
+<span class="nc" id="L177">				sb.append (&quot;,&quot;);</span>
 
-<span class="nc" id="L167">			sb.append (dbl);</span>
+<span class="nc" id="L179">			sb.append (dbl);</span>
 		}
 
-<span class="nc" id="L170">		return sb.toString();</span>
+<span class="nc" id="L182">		return sb.toString();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

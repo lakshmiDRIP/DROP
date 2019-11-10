@@ -6,44 +6,56 @@ package org.drip.service.product;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,17 +83,17 @@ package org.drip.service.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product&quot;&gt;Product API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md&quot;&gt;Product Horizon PnL Attribution Decomposition&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L84">public class FixFloatAPI {</span>
+<span class="nc" id="L96">public class FixFloatAPI {</span>
 
 	/**
 	 * Compute the Horizon Change Attribution Details for the Specified Fix-Float Swap
@@ -102,63 +114,63 @@ package org.drip.service.product;
 			mapRollDownDiscountCurve,
 		final java.lang.String strMaturityTenor)
 	{
-<span class="nc bnc" id="L105" title="All 4 branches missed.">		if (null == mapRollDownDiscountCurve || 0 == mapRollDownDiscountCurve.size()) return null;</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (null == mapRollDownDiscountCurve || 0 == mapRollDownDiscountCurve.size()) return null;</span>
 
-<span class="nc" id="L107">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
-<span class="nc" id="L108">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (dcFirst.currency(),</span>
+<span class="nc" id="L119">		org.drip.market.otc.FixedFloatSwapConvention ffsc =</span>
+<span class="nc" id="L120">			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (dcFirst.currency(),</span>
 				&quot;ALL&quot;, strMaturityTenor, &quot;MAIN&quot;);
 
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (null == ffsc) return null;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">		if (null == ffsc) return null;</span>
 
-<span class="nc" id="L113">		int iSettleLag = ffsc.spotLag();</span>
+<span class="nc" id="L125">		int iSettleLag = ffsc.spotLag();</span>
 
-<span class="nc" id="L115">		org.drip.analytics.date.JulianDate dtFirst = dcFirst.epoch();</span>
+<span class="nc" id="L127">		org.drip.analytics.date.JulianDate dtFirst = dcFirst.epoch();</span>
 
-<span class="nc" id="L117">		org.drip.product.rates.FixFloatComponent ffc = ffsc.createFixFloatComponent (dtFirst,</span>
+<span class="nc" id="L129">		org.drip.product.rates.FixFloatComponent ffc = ffsc.createFixFloatComponent (dtFirst,</span>
 			strMaturityTenor, 0., 0., 1.);
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == ffc) return null;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == ffc) return null;</span>
 
-<span class="nc" id="L122">		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = new</span>
+<span class="nc" id="L134">		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (!csqcFirst.setFundingState (dcFirst)) return null;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (!csqcFirst.setFundingState (dcFirst)) return null;</span>
 
-<span class="nc" id="L127">		org.drip.param.market.CurveSurfaceQuoteContainer csqcSecond = new</span>
+<span class="nc" id="L139">		org.drip.param.market.CurveSurfaceQuoteContainer csqcSecond = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (!csqcSecond.setFundingState (dcSecond)) return null;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (!csqcSecond.setFundingState (dcSecond)) return null;</span>
 
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc" id="L133">			mapCSQCRollDown = new</span>
+<span class="nc" id="L145">			mapCSQCRollDown = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : mapRollDownDiscountCurve.keySet()) {</span>
-<span class="nc" id="L137">			org.drip.param.market.CurveSurfaceQuoteContainer csqcRollDown = new</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (java.lang.String strRollDownTenor : mapRollDownDiscountCurve.keySet()) {</span>
+<span class="nc" id="L149">			org.drip.param.market.CurveSurfaceQuoteContainer csqcRollDown = new</span>
 				org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="nc" id="L140">			org.drip.state.discount.MergedDiscountForwardCurve dcRollDown = mapRollDownDiscountCurve.get</span>
-<span class="nc" id="L141">				(strRollDownTenor);</span>
+<span class="nc" id="L152">			org.drip.state.discount.MergedDiscountForwardCurve dcRollDown = mapRollDownDiscountCurve.get</span>
+<span class="nc" id="L153">				(strRollDownTenor);</span>
 
-<span class="nc bnc" id="L143" title="All 4 branches missed.">			if (null == dcRollDown || !csqcRollDown.setFundingState (dcRollDown)) return null;</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">			if (null == dcRollDown || !csqcRollDown.setFundingState (dcRollDown)) return null;</span>
 
-<span class="nc" id="L145">			mapCSQCRollDown.put (strRollDownTenor, csqcRollDown);</span>
-<span class="nc" id="L146">		}</span>
+<span class="nc" id="L157">			mapCSQCRollDown.put (strRollDownTenor, csqcRollDown);</span>
+<span class="nc" id="L158">		}</span>
 
 		try {
-<span class="nc" id="L149">			double dblSwapRate = ffc.measureValue (org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="nc" id="L150">				(dtFirst.addBusDays (iSettleLag, ffc.payCurrency()).julian()), null, csqcFirst, null,</span>
+<span class="nc" id="L161">			double dblSwapRate = ffc.measureValue (org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="nc" id="L162">				(dtFirst.addBusDays (iSettleLag, ffc.payCurrency()).julian()), null, csqcFirst, null,</span>
 					&quot;SwapRate&quot;);
 
-<span class="nc" id="L153">			return org.drip.historical.engine.HorizonChangeExplainExecutor.GenerateAttribution (new</span>
-<span class="nc" id="L154">				org.drip.historical.engine.FixFloatExplainProcessor (ffsc.createFixFloatComponent (dtFirst,</span>
+<span class="nc" id="L165">			return org.drip.historical.engine.HorizonChangeExplainExecutor.GenerateAttribution (new</span>
+<span class="nc" id="L166">				org.drip.historical.engine.FixFloatExplainProcessor (ffsc.createFixFloatComponent (dtFirst,</span>
 					strMaturityTenor, dblSwapRate, 0., 1.), iSettleLag, &quot;SwapRate&quot;, dblSwapRate, dtFirst,
-<span class="nc" id="L156">						dcSecond.epoch(), csqcFirst, csqcSecond, mapCSQCRollDown));</span>
-<span class="nc" id="L157">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L158">			e.printStackTrace();</span>
+<span class="nc" id="L168">						dcSecond.epoch(), csqcFirst, csqcSecond, mapCSQCRollDown));</span>
+<span class="nc" id="L169">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L161">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 
 	/**
@@ -194,67 +206,67 @@ package org.drip.service.product;
 		final java.lang.String[] astrRollDownHorizon,
 		final int iLatentStateType)
 	{
-<span class="nc bnc" id="L197" title="All 6 branches missed.">		if (null == dtFirst || null == dtSecond || dtFirst.julian() &gt;= dtSecond.julian()) return null;</span>
+<span class="nc bnc" id="L209" title="All 6 branches missed.">		if (null == dtFirst || null == dtSecond || dtFirst.julian() &gt;= dtSecond.julian()) return null;</span>
 
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		int iNumFundingDepositInstrument = null == astrFundingDepositInstrumentTenor ? 0 :</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		int iNumFundingDepositInstrument = null == astrFundingDepositInstrumentTenor ? 0 :</span>
 			astrFundingDepositInstrumentTenor.length;
-<span class="nc bnc" id="L201" title="All 2 branches missed.">		int iNumFirstFundingDepositInstrument = null == adblFirstFundingDepositInstrument ? 0 :</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		int iNumFirstFundingDepositInstrument = null == adblFirstFundingDepositInstrument ? 0 :</span>
 			adblFirstFundingDepositInstrument.length;
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		int iNumSecondFundingDepositInstrument = null == adblSecondFundingDepositInstrument ? 0 :</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		int iNumSecondFundingDepositInstrument = null == adblSecondFundingDepositInstrument ? 0 :</span>
 			adblSecondFundingDepositInstrument.length;
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		int iNumFundingFixFloat = null == astrFundingFixFloatTenor ? 0 : astrFundingFixFloatTenor.length;</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		int iNumFirstFundingFixFloat = null == adblFirstFundingFixFloat ? 0 :</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		int iNumFundingFixFloat = null == astrFundingFixFloatTenor ? 0 : astrFundingFixFloatTenor.length;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		int iNumFirstFundingFixFloat = null == adblFirstFundingFixFloat ? 0 :</span>
 			adblFirstFundingFixFloat.length;
-<span class="nc bnc" id="L208" title="All 2 branches missed.">		int iNumSecondFundingFixFloat = null == adblSecondFundingFixFloat ? 0 :</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		int iNumSecondFundingFixFloat = null == adblSecondFundingFixFloat ? 0 :</span>
 			adblSecondFundingFixFloat.length;
-<span class="nc bnc" id="L210" title="All 2 branches missed.">		int iNumRollDownHorizon = null == astrRollDownHorizon ? 0 : astrRollDownHorizon .length;</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		int iNumRollDownHorizon = null == astrRollDownHorizon ? 0 : astrRollDownHorizon .length;</span>
 
 		org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="nc bnc" id="L213" title="All 2 branches missed.">			mapRollDownDiscountCurve = 0 == iNumRollDownHorizon ? null : new</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">			mapRollDownDiscountCurve = 0 == iNumRollDownHorizon ? null : new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.state.discount.MergedDiscountForwardCurve&gt;();
 
-<span class="nc bnc" id="L216" title="All 12 branches missed.">		if (0 == iNumFundingDepositInstrument || iNumFundingDepositInstrument !=</span>
+<span class="nc bnc" id="L228" title="All 12 branches missed.">		if (0 == iNumFundingDepositInstrument || iNumFundingDepositInstrument !=</span>
 			iNumFirstFundingDepositInstrument || iNumFundingDepositInstrument !=
 				iNumSecondFundingDepositInstrument || 0 == iNumFundingFixFloat || iNumFundingFixFloat !=
 					iNumFirstFundingFixFloat || iNumFundingFixFloat != iNumSecondFundingFixFloat)
-<span class="nc" id="L220">			return null;</span>
+<span class="nc" id="L232">			return null;</span>
 
-<span class="nc" id="L222">		org.drip.state.discount.MergedDiscountForwardCurve dcFirst =</span>
-<span class="nc" id="L223">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtFirst, strCurrency,</span>
+<span class="nc" id="L234">		org.drip.state.discount.MergedDiscountForwardCurve dcFirst =</span>
+<span class="nc" id="L235">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtFirst, strCurrency,</span>
 				astrFundingDepositInstrumentTenor, adblFirstFundingDepositInstrument, &quot;ForwardRate&quot;, null,
 					&quot;ForwardRate&quot;, astrFundingFixFloatTenor, adblFirstFundingFixFloat, &quot;SwapRate&quot;,
 						iLatentStateType);
 
-<span class="nc" id="L228">		org.drip.state.discount.MergedDiscountForwardCurve dcSecond =</span>
-<span class="nc" id="L229">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSecond, strCurrency,</span>
+<span class="nc" id="L240">		org.drip.state.discount.MergedDiscountForwardCurve dcSecond =</span>
+<span class="nc" id="L241">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSecond, strCurrency,</span>
 				astrFundingDepositInstrumentTenor, adblSecondFundingDepositInstrument, &quot;ForwardRate&quot;, null,
 					&quot;ForwardRate&quot;, astrFundingFixFloatTenor, adblSecondFundingFixFloat, &quot;SwapRate&quot;,
 						iLatentStateType);
 
-<span class="nc" id="L234">		org.drip.state.discount.MergedDiscountForwardCurve dcRollDown =</span>
-<span class="nc" id="L235">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSecond, strCurrency,</span>
+<span class="nc" id="L246">		org.drip.state.discount.MergedDiscountForwardCurve dcRollDown =</span>
+<span class="nc" id="L247">			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSecond, strCurrency,</span>
 				astrFundingDepositInstrumentTenor, adblFirstFundingDepositInstrument, &quot;ForwardRate&quot;, null,
 					&quot;ForwardRate&quot;, astrFundingFixFloatTenor, adblFirstFundingFixFloat, &quot;SwapRate&quot;,
 						iLatentStateType);
 
-<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (null == dcRollDown) return null;</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		if (null == dcRollDown) return null;</span>
 
-<span class="nc" id="L242">		mapRollDownDiscountCurve.put (&quot;Native&quot;, dcRollDown);</span>
+<span class="nc" id="L254">		mapRollDownDiscountCurve.put (&quot;Native&quot;, dcRollDown);</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumRollDownHorizon; ++j) {</span>
-<span class="nc" id="L245">			org.drip.state.discount.MergedDiscountForwardCurve dcHorizonRollDown =</span>
-<span class="nc" id="L246">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtFirst.addTenor</span>
-<span class="nc" id="L247">					(astrRollDownHorizon[j]), strCurrency, astrFundingDepositInstrumentTenor,</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (int j = 0; j &lt; iNumRollDownHorizon; ++j) {</span>
+<span class="nc" id="L257">			org.drip.state.discount.MergedDiscountForwardCurve dcHorizonRollDown =</span>
+<span class="nc" id="L258">				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtFirst.addTenor</span>
+<span class="nc" id="L259">					(astrRollDownHorizon[j]), strCurrency, astrFundingDepositInstrumentTenor,</span>
 						adblFirstFundingDepositInstrument, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;,
 							astrFundingFixFloatTenor, adblFirstFundingFixFloat, &quot;SwapRate&quot;,
 								iLatentStateType);
 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">			if (null == dcHorizonRollDown) return null;</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">			if (null == dcHorizonRollDown) return null;</span>
 
-<span class="nc" id="L254">			mapRollDownDiscountCurve.put (astrRollDownHorizon[j], dcHorizonRollDown);</span>
+<span class="nc" id="L266">			mapRollDownDiscountCurve.put (astrRollDownHorizon[j], dcHorizonRollDown);</span>
 		}
 
-<span class="nc" id="L257">		return HorizonChangeAttribution (dcFirst, dcSecond, mapRollDownDiscountCurve, strMaturityTenor);</span>
+<span class="nc" id="L269">		return HorizonChangeAttribution (dcFirst, dcSecond, mapRollDownDiscountCurve, strMaturityTenor);</span>
 	}
 
 	/**
@@ -287,32 +299,32 @@ package org.drip.service.product;
 			final java.lang.String[] astrRollDownHorizon,
 			final int iLatentStateType)
 	{
-<span class="nc bnc" id="L290" title="All 8 branches missed.">		if (null == adtSpot || 0 &gt;= iHorizonGap || null == aadblFundingDepositInstrumentQuote || null ==</span>
+<span class="nc bnc" id="L302" title="All 8 branches missed.">		if (null == adtSpot || 0 &gt;= iHorizonGap || null == aadblFundingDepositInstrumentQuote || null ==</span>
 			aadblFundingFixFloatQuote)
-<span class="nc" id="L292">			return null;</span>
+<span class="nc" id="L304">			return null;</span>
 
-<span class="nc" id="L294">		int iNumClose = adtSpot.length;</span>
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		int iNumRollDownTenor = null == astrRollDownHorizon ? 0 : astrRollDownHorizon.length;</span>
+<span class="nc" id="L306">		int iNumClose = adtSpot.length;</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		int iNumRollDownTenor = null == astrRollDownHorizon ? 0 : astrRollDownHorizon.length;</span>
 
-<span class="nc bnc" id="L297" title="All 8 branches missed.">		if (0 == iNumClose || iNumClose != aadblFundingDepositInstrumentQuote.length || iNumClose !=</span>
+<span class="nc bnc" id="L309" title="All 8 branches missed.">		if (0 == iNumClose || iNumClose != aadblFundingDepositInstrumentQuote.length || iNumClose !=</span>
 			aadblFundingFixFloatQuote.length || 0 == iNumRollDownTenor)
-<span class="nc" id="L299">			return null;</span>
+<span class="nc" id="L311">			return null;</span>
 
-<span class="nc" id="L301">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
+<span class="nc" id="L313">		java.util.List&lt;org.drip.historical.attribution.PositionChangeComponents&gt; lsPCC = new</span>
 			java.util.ArrayList&lt;org.drip.historical.attribution.PositionChangeComponents&gt;();
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		for (int i = iHorizonGap; i &lt; iNumClose; ++i) {</span>
-<span class="nc" id="L305">			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonChangeAttribution</span>
-<span class="nc" id="L306">				(adtSpot[i - iHorizonGap], adtSpot[i], astrFundingDepositInstrumentTenor,</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		for (int i = iHorizonGap; i &lt; iNumClose; ++i) {</span>
+<span class="nc" id="L317">			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonChangeAttribution</span>
+<span class="nc" id="L318">				(adtSpot[i - iHorizonGap], adtSpot[i], astrFundingDepositInstrumentTenor,</span>
 					aadblFundingDepositInstrumentQuote[i - iHorizonGap],
 						aadblFundingDepositInstrumentQuote[i], astrFundingFixFloatTenor,
 							aadblFundingFixFloatQuote[i - iHorizonGap], aadblFundingFixFloatQuote[i],
 								strCurrency, strMaturityTenor, astrRollDownHorizon, iLatentStateType);
 
-<span class="nc bnc" id="L312" title="All 2 branches missed.">			if (null != pcc) lsPCC.add (pcc);</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">			if (null != pcc) lsPCC.add (pcc);</span>
 		}
 
-<span class="nc" id="L315">		return lsPCC;</span>
+<span class="nc" id="L327">		return lsPCC;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

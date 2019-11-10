@@ -6,44 +6,56 @@ package org.drip.service.json;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,17 +84,17 @@ package org.drip.service.json;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json&quot;&gt;Serialized JSON Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md&quot;&gt;JSON Based Valuation Request Service&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class TreasuryBondProcessor {</span>
+<span class="nc" id="L97">public class TreasuryBondProcessor {</span>
 
 	/**
 	 * JSON Based in/out Treasury Bond Secular Metrics Thunker
@@ -95,177 +107,177 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject SecularMetrics (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L98">		java.lang.String strTreasuryCode = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
+<span class="fc" id="L110">		java.lang.String strTreasuryCode = org.drip.json.parser.Converter.StringEntry (jsonParameter,</span>
 			&quot;TreasuryCode&quot;);
 
-<span class="fc" id="L101">		org.drip.analytics.date.JulianDate dtEffective = org.drip.json.parser.Converter.DateEntry</span>
-<span class="fc" id="L102">			(jsonParameter, &quot;EffectiveDate&quot;);</span>
+<span class="fc" id="L113">		org.drip.analytics.date.JulianDate dtEffective = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L114">			(jsonParameter, &quot;EffectiveDate&quot;);</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (null == dtEffective) return null;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == dtEffective) return null;</span>
 
-<span class="fc" id="L106">		int iEffectiveDate = dtEffective.julian();</span>
+<span class="fc" id="L118">		int iEffectiveDate = dtEffective.julian();</span>
 
-<span class="fc" id="L108">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
-<span class="fc" id="L109">			(jsonParameter, &quot;MaturityDate&quot;);</span>
+<span class="fc" id="L120">		org.drip.analytics.date.JulianDate dtMaturity = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L121">			(jsonParameter, &quot;MaturityDate&quot;);</span>
 
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (null == dtMaturity) return null;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		if (null == dtMaturity) return null;</span>
 
-<span class="fc" id="L113">		org.drip.analytics.date.JulianDate dtSettle = org.drip.json.parser.Converter.DateEntry</span>
-<span class="fc" id="L114">			(jsonParameter, &quot;SettleDate&quot;);</span>
+<span class="fc" id="L125">		org.drip.analytics.date.JulianDate dtSettle = org.drip.json.parser.Converter.DateEntry</span>
+<span class="fc" id="L126">			(jsonParameter, &quot;SettleDate&quot;);</span>
 
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (null == dtSettle) return null;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (null == dtSettle) return null;</span>
 
-<span class="fc" id="L118">		int iSettleDate = dtSettle.julian();</span>
+<span class="fc" id="L130">		int iSettleDate = dtSettle.julian();</span>
 
-<span class="fc" id="L120">		double dblYield = java.lang.Double.NaN;</span>
-<span class="fc" id="L121">		double dblCoupon = java.lang.Double.NaN;</span>
-<span class="fc" id="L122">		double dblNotional = java.lang.Double.NaN;</span>
-<span class="fc" id="L123">		double dblCleanPrice = java.lang.Double.NaN;</span>
-
-		try {
-<span class="fc" id="L126">			dblCoupon = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Coupon&quot;);</span>
-
-<span class="fc" id="L128">			dblNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Notional&quot;);</span>
-
-<span class="fc" id="L130">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CleanPrice&quot;);</span>
-<span class="nc" id="L131">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L132">			e.printStackTrace();</span>
-
-<span class="nc" id="L134">			return null;</span>
-<span class="fc" id="L135">		}</span>
-
-<span class="fc" id="L137">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="fc" id="L138">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (strTreasuryCode);</span>
-
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (null == ts) return null;</span>
-
-<span class="fc" id="L142">		int iFrequency = ts.frequency();</span>
-
-<span class="fc" id="L144">		java.lang.String strDayCount = ts.dayCount();</span>
-
-<span class="fc" id="L146">		org.drip.product.definition.Bond tsy = org.drip.product.creator.BondBuilder.Treasury (ts.code(),</span>
-<span class="fc" id="L147">			dtEffective, dtMaturity, ts.currency(), dblCoupon, iFrequency, strDayCount);</span>
-
-<span class="pc bpc" id="L149" title="2 of 4 branches missed.">		if (null == tsy || tsy.maturityDate().julian() &lt;= iSettleDate) return null;</span>
-
-<span class="fc" id="L151">		java.lang.String strCurrency = tsy.payCurrency();</span>
-
-<span class="fc" id="L153">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
-<span class="fc" id="L154">			(iSettleDate);</span>
+<span class="fc" id="L132">		double dblYield = java.lang.Double.NaN;</span>
+<span class="fc" id="L133">		double dblCoupon = java.lang.Double.NaN;</span>
+<span class="fc" id="L134">		double dblNotional = java.lang.Double.NaN;</span>
+<span class="fc" id="L135">		double dblCleanPrice = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L157">			dblYield = tsy.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
-<span class="nc" id="L158">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L159">			e.printStackTrace();</span>
+<span class="fc" id="L138">			dblCoupon = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Coupon&quot;);</span>
 
-<span class="nc" id="L161">			return null;</span>
-<span class="fc" id="L162">		}</span>
+<span class="fc" id="L140">			dblNotional = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;Notional&quot;);</span>
 
-<span class="fc" id="L164">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L142">			dblCleanPrice = org.drip.json.parser.Converter.DoubleEntry (jsonParameter, &quot;CleanPrice&quot;);</span>
+<span class="nc" id="L143">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L144">			e.printStackTrace();</span>
 
-<span class="fc" id="L166">		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();</span>
+<span class="nc" id="L146">			return null;</span>
+<span class="fc" id="L147">		}</span>
 
-<span class="fc bfc" id="L168" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : tsy.couponPeriods()) {</span>
-<span class="fc" id="L169">			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L149">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="fc" id="L150">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (strTreasuryCode);</span>
 
-<span class="fc" id="L171">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (null == ts) return null;</span>
+
+<span class="fc" id="L154">		int iFrequency = ts.frequency();</span>
+
+<span class="fc" id="L156">		java.lang.String strDayCount = ts.dayCount();</span>
+
+<span class="fc" id="L158">		org.drip.product.definition.Bond tsy = org.drip.product.creator.BondBuilder.Treasury (ts.code(),</span>
+<span class="fc" id="L159">			dtEffective, dtMaturity, ts.currency(), dblCoupon, iFrequency, strDayCount);</span>
+
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (null == tsy || tsy.maturityDate().julian() &lt;= iSettleDate) return null;</span>
+
+<span class="fc" id="L163">		java.lang.String strCurrency = tsy.payCurrency();</span>
+
+<span class="fc" id="L165">		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot</span>
+<span class="fc" id="L166">			(iSettleDate);</span>
+
+		try {
+<span class="fc" id="L169">			dblYield = tsy.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
+<span class="nc" id="L170">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
+
+<span class="nc" id="L173">			return null;</span>
+<span class="fc" id="L174">		}</span>
+
+<span class="fc" id="L176">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+
+<span class="fc" id="L178">		org.drip.json.simple.JSONArray jsonCouponFlowArray = new org.drip.json.simple.JSONArray();</span>
+
+<span class="fc bfc" id="L180" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : tsy.couponPeriods()) {</span>
+<span class="fc" id="L181">			org.drip.json.simple.JSONObject jsonCouponFlow = new org.drip.json.simple.JSONObject();</span>
+
+<span class="fc" id="L183">			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,</span>
 				null);
 
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">			if (null == cpcm) return null;</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">			if (null == cpcm) return null;</span>
 
-<span class="fc" id="L176">			double dblPeriodCouponRate = cpcm.rate();</span>
+<span class="fc" id="L188">			double dblPeriodCouponRate = cpcm.rate();</span>
 
-<span class="fc" id="L178">			jsonCouponFlow.put (&quot;CouponRate&quot;, dblPeriodCouponRate);</span>
+<span class="fc" id="L190">			jsonCouponFlow.put (&quot;CouponRate&quot;, dblPeriodCouponRate);</span>
 
 			try {
-<span class="fc" id="L181">				int iPeriodStartDate = cp.startDate();</span>
+<span class="fc" id="L193">				int iPeriodStartDate = cp.startDate();</span>
 
-<span class="fc" id="L183">				int iPeriodEndDate = cp.endDate();</span>
+<span class="fc" id="L195">				int iPeriodEndDate = cp.endDate();</span>
 
-<span class="fc" id="L185">				double dblYieldDF = org.drip.analytics.support.Helper.Yield2DF (iFrequency, dblYield,</span>
-<span class="fc" id="L186">					org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iPeriodEndDate,</span>
+<span class="fc" id="L197">				double dblYieldDF = org.drip.analytics.support.Helper.Yield2DF (iFrequency, dblYield,</span>
+<span class="fc" id="L198">					org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate, iPeriodEndDate,</span>
 						strDayCount, false, null, strCurrency));
 
-<span class="fc" id="L189">				jsonCouponFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L190">					(iPeriodStartDate).toString());</span>
+<span class="fc" id="L201">				jsonCouponFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L202">					(iPeriodStartDate).toString());</span>
 
-<span class="fc" id="L192">				jsonCouponFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L193">					(iPeriodEndDate).toString());</span>
+<span class="fc" id="L204">				jsonCouponFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L205">					(iPeriodEndDate).toString());</span>
 
-<span class="fc" id="L195">				jsonCouponFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L196">					(cp.payDate()).toString());</span>
+<span class="fc" id="L207">				jsonCouponFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L208">					(cp.payDate()).toString());</span>
 
-<span class="fc" id="L198">				double dblCouponDCF = cp.couponDCF();</span>
+<span class="fc" id="L210">				double dblCouponDCF = cp.couponDCF();</span>
 
-<span class="fc" id="L200">				jsonCouponFlow.put (&quot;AccrualDays&quot;, org.drip.analytics.daycount.Convention.DaysAccrued</span>
-<span class="fc" id="L201">					(iPeriodStartDate, iPeriodEndDate, strDayCount, false, null, strCurrency));</span>
+<span class="fc" id="L212">				jsonCouponFlow.put (&quot;AccrualDays&quot;, org.drip.analytics.daycount.Convention.DaysAccrued</span>
+<span class="fc" id="L213">					(iPeriodStartDate, iPeriodEndDate, strDayCount, false, null, strCurrency));</span>
 
-<span class="fc" id="L203">				jsonCouponFlow.put (&quot;AccrualFraction&quot;, dblCouponDCF);</span>
+<span class="fc" id="L215">				jsonCouponFlow.put (&quot;AccrualFraction&quot;, dblCouponDCF);</span>
 
-<span class="fc" id="L205">				double dblCouponAmount = dblPeriodCouponRate * dblCouponDCF * dblNotional;</span>
+<span class="fc" id="L217">				double dblCouponAmount = dblPeriodCouponRate * dblCouponDCF * dblNotional;</span>
 
-<span class="fc" id="L207">				jsonCouponFlow.put (&quot;CouponAmount&quot;, dblCouponAmount);</span>
+<span class="fc" id="L219">				jsonCouponFlow.put (&quot;CouponAmount&quot;, dblCouponAmount);</span>
 
-<span class="fc" id="L209">				jsonCouponFlow.put (&quot;YieldDF&quot;, dblYieldDF);</span>
-<span class="nc" id="L210">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L211">				e.printStackTrace();</span>
+<span class="fc" id="L221">				jsonCouponFlow.put (&quot;YieldDF&quot;, dblYieldDF);</span>
+<span class="nc" id="L222">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L223">				e.printStackTrace();</span>
 
-<span class="nc" id="L213">				return null;</span>
-<span class="fc" id="L214">			}</span>
+<span class="nc" id="L225">				return null;</span>
+<span class="fc" id="L226">			}</span>
 
-<span class="fc" id="L216">			jsonCouponFlowArray.add (jsonCouponFlow);</span>
-<span class="fc" id="L217">		}</span>
+<span class="fc" id="L228">			jsonCouponFlowArray.add (jsonCouponFlow);</span>
+<span class="fc" id="L229">		}</span>
 
-<span class="fc" id="L219">		jsonResponse.put (&quot;CouponFlow&quot;, jsonCouponFlowArray);</span>
+<span class="fc" id="L231">		jsonResponse.put (&quot;CouponFlow&quot;, jsonCouponFlowArray);</span>
 
-<span class="fc" id="L221">		jsonResponse.put (&quot;CleanPrice&quot;, 100. * dblCleanPrice);</span>
+<span class="fc" id="L233">		jsonResponse.put (&quot;CleanPrice&quot;, 100. * dblCleanPrice);</span>
 
-<span class="fc" id="L223">		jsonResponse.put (&quot;Face&quot;, dblNotional);</span>
+<span class="fc" id="L235">		jsonResponse.put (&quot;Face&quot;, dblNotional);</span>
 
-<span class="fc" id="L225">		org.drip.analytics.date.JulianDate dtPreviousCouponDate = tsy.previousCouponDate (dtSettle);</span>
+<span class="fc" id="L237">		org.drip.analytics.date.JulianDate dtPreviousCouponDate = tsy.previousCouponDate (dtSettle);</span>
 
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">		if (null != dtPreviousCouponDate) {</span>
-<span class="fc" id="L228">			jsonResponse.put (&quot;AccrualDays&quot;, iSettleDate - dtPreviousCouponDate.julian());</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">		if (null != dtPreviousCouponDate) {</span>
+<span class="fc" id="L240">			jsonResponse.put (&quot;AccrualDays&quot;, iSettleDate - dtPreviousCouponDate.julian());</span>
 
-<span class="fc" id="L230">			jsonResponse.put (&quot;PreviousCouponDate&quot;, dtPreviousCouponDate.toString());</span>
+<span class="fc" id="L242">			jsonResponse.put (&quot;PreviousCouponDate&quot;, dtPreviousCouponDate.toString());</span>
 		}
 
 		try {
-<span class="fc" id="L234">			double dblAccruedAmount = tsy.accrued (iSettleDate, null) * dblNotional;</span>
+<span class="fc" id="L246">			double dblAccruedAmount = tsy.accrued (iSettleDate, null) * dblNotional;</span>
 
-<span class="fc" id="L236">			double dblCurrentPrincipal = tsy.notional (dtPreviousCouponDate.julian()) * dblNotional;</span>
+<span class="fc" id="L248">			double dblCurrentPrincipal = tsy.notional (dtPreviousCouponDate.julian()) * dblNotional;</span>
 
-<span class="fc" id="L238">			double dblRisk = tsy.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
+<span class="fc" id="L250">			double dblRisk = tsy.yield01FromPrice (valParams, null, null, dblCleanPrice);</span>
 
-<span class="fc" id="L240">			jsonResponse.put (&quot;Accrued&quot;, dblAccruedAmount);</span>
+<span class="fc" id="L252">			jsonResponse.put (&quot;Accrued&quot;, dblAccruedAmount);</span>
 
-<span class="fc" id="L242">			jsonResponse.put (&quot;Convexity&quot;, tsy.convexityFromPrice (valParams, null, null, dblCleanPrice));</span>
+<span class="fc" id="L254">			jsonResponse.put (&quot;Convexity&quot;, tsy.convexityFromPrice (valParams, null, null, dblCleanPrice));</span>
 
-<span class="fc" id="L244">			jsonResponse.put (&quot;CurrentPrincipal&quot;, dblCurrentPrincipal);</span>
+<span class="fc" id="L256">			jsonResponse.put (&quot;CurrentPrincipal&quot;, dblCurrentPrincipal);</span>
 
-<span class="fc" id="L246">			jsonResponse.put (&quot;DV01&quot;, dblRisk * dblNotional);</span>
+<span class="fc" id="L258">			jsonResponse.put (&quot;DV01&quot;, dblRisk * dblNotional);</span>
 
-<span class="fc" id="L248">			jsonResponse.put (&quot;ModifiedDuration&quot;, tsy.modifiedDurationFromPrice (valParams, null, null,</span>
+<span class="fc" id="L260">			jsonResponse.put (&quot;ModifiedDuration&quot;, tsy.modifiedDurationFromPrice (valParams, null, null,</span>
 				dblCleanPrice));
 
-<span class="fc" id="L251">			jsonResponse.put (&quot;Notional&quot;, dblNotional);</span>
+<span class="fc" id="L263">			jsonResponse.put (&quot;Notional&quot;, dblNotional);</span>
 
-<span class="fc" id="L253">			jsonResponse.put (&quot;NPV&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
+<span class="fc" id="L265">			jsonResponse.put (&quot;NPV&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
 
-<span class="fc" id="L255">			jsonResponse.put (&quot;Risk&quot;, dblRisk);</span>
+<span class="fc" id="L267">			jsonResponse.put (&quot;Risk&quot;, dblRisk);</span>
 
-<span class="fc" id="L257">			jsonResponse.put (&quot;SettleDate&quot;, dtSettle.toString());</span>
+<span class="fc" id="L269">			jsonResponse.put (&quot;SettleDate&quot;, dtSettle.toString());</span>
 
-<span class="fc" id="L259">			jsonResponse.put (&quot;Total&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
+<span class="fc" id="L271">			jsonResponse.put (&quot;Total&quot;, dblCurrentPrincipal + dblAccruedAmount);</span>
 
-<span class="fc" id="L261">			jsonResponse.put (&quot;Yield&quot;, tsy.yieldFromPrice (valParams, null, null, dblCleanPrice));</span>
-<span class="nc" id="L262">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L263">			e.printStackTrace();</span>
+<span class="fc" id="L273">			jsonResponse.put (&quot;Yield&quot;, tsy.yieldFromPrice (valParams, null, null, dblCleanPrice));</span>
+<span class="nc" id="L274">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L275">			e.printStackTrace();</span>
 
-<span class="nc" id="L265">			return null;</span>
-<span class="fc" id="L266">		}</span>
+<span class="nc" id="L277">			return null;</span>
+<span class="fc" id="L278">		}</span>
 
-<span class="fc" id="L268">		return jsonResponse;</span>
+<span class="fc" id="L280">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

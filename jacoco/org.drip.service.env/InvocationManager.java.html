@@ -6,43 +6,55 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -70,20 +82,20 @@ package org.drip.service.env;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Environment Shell&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md&quot;&gt;Library Module Loader Environment Manager&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L83">public class InvocationManager</span>
+<span class="nc" id="L95">public class InvocationManager</span>
 {
-<span class="fc" id="L85">	private static org.drip.service.env.BuildRecord s_BuildRecordLatest = null;</span>
-<span class="fc" id="L86">	private static org.drip.service.env.InvocationRecord s_InvocationRecord = null;</span>
+<span class="fc" id="L97">	private static org.drip.service.env.BuildRecord s_BuildRecordLatest = null;</span>
+<span class="fc" id="L98">	private static org.drip.service.env.InvocationRecord s_InvocationRecord = null;</span>
 
 	/**
 	 * Initialize the Invocation Manager
@@ -93,18 +105,18 @@ package org.drip.service.env;
 
 	public static final boolean Init()
 	{
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (!org.drip.service.env.BuildManager.Init())</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (!org.drip.service.env.BuildManager.Init())</span>
 		{
-<span class="nc" id="L98">			System.out.println (&quot;InvocationManager::Init =&gt; Cannot Initialize Build Manager!&quot;);</span>
+<span class="nc" id="L110">			System.out.println (&quot;InvocationManager::Init =&gt; Cannot Initialize Build Manager!&quot;);</span>
 
-<span class="nc" id="L100">			return false;</span>
+<span class="nc" id="L112">			return false;</span>
 		}
 
-<span class="fc" id="L103">		s_BuildRecordLatest = org.drip.service.env.BuildManager.latestBuildRecord();</span>
+<span class="fc" id="L115">		s_BuildRecordLatest = org.drip.service.env.BuildManager.latestBuildRecord();</span>
 
-<span class="fc" id="L105">		s_InvocationRecord = new org.drip.service.env.InvocationRecord();</span>
+<span class="fc" id="L117">		s_InvocationRecord = new org.drip.service.env.InvocationRecord();</span>
 
-<span class="fc" id="L107">		return true;</span>
+<span class="fc" id="L119">		return true;</span>
 	}
 
 	/**
@@ -115,33 +127,33 @@ package org.drip.service.env;
 
 	public static final boolean Setup()
 	{
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!s_InvocationRecord.recordSetup()) return false;</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (!s_InvocationRecord.recordSetup()) return false;</span>
 
-<span class="fc" id="L120">		System.out.println();</span>
+<span class="fc" id="L132">		System.out.println();</span>
 
-<span class="fc" id="L122">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L134">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L124">		System.out.println (&quot;\t|    Copyright (C) 2011-2019 (DRIP, DROP)&quot;);</span>
+<span class="fc" id="L136">		System.out.println (&quot;\t|    Copyright (C) 2011-2019 (DRIP, DROP)&quot;);</span>
 
-<span class="fc" id="L126">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L138">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L128">		System.out.println (&quot;\t|    Build Version  =&gt; &quot; + s_BuildRecordLatest.dripVersion() + &quot; multi mode&quot;);</span>
+<span class="fc" id="L140">		System.out.println (&quot;\t|    Build Version  =&gt; &quot; + s_BuildRecordLatest.dripVersion() + &quot; multi mode&quot;);</span>
 
-<span class="fc" id="L130">		System.out.println (&quot;\t|    Build JVM (TM) =&gt; &quot; + s_BuildRecordLatest.javaVersion());</span>
+<span class="fc" id="L142">		System.out.println (&quot;\t|    Build JVM (TM) =&gt; &quot; + s_BuildRecordLatest.javaVersion());</span>
 
-<span class="fc" id="L132">		System.out.println (&quot;\t|    Build Snap     =&gt; &quot; + s_BuildRecordLatest.timeStamp());</span>
+<span class="fc" id="L144">		System.out.println (&quot;\t|    Build Snap     =&gt; &quot; + s_BuildRecordLatest.timeStamp());</span>
 
-<span class="fc" id="L134">		System.out.println (&quot;\t|    Start Time     =&gt; &quot; + s_InvocationRecord.startSnap());</span>
+<span class="fc" id="L146">		System.out.println (&quot;\t|    Start Time     =&gt; &quot; + s_InvocationRecord.startSnap());</span>
 
-<span class="fc" id="L136">		System.out.println (&quot;\t|    Setup Time     =&gt; &quot; + s_InvocationRecord.setupSnap());</span>
+<span class="fc" id="L148">		System.out.println (&quot;\t|    Setup Time     =&gt; &quot; + s_InvocationRecord.setupSnap());</span>
 
-<span class="fc" id="L138">		System.out.println (&quot;\t|    Setup Duration =&gt; &quot; + s_InvocationRecord.setup (true));</span>
+<span class="fc" id="L150">		System.out.println (&quot;\t|    Setup Duration =&gt; &quot; + s_InvocationRecord.setup (true));</span>
 
-<span class="fc" id="L140">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L152">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L142">		System.out.println();</span>
+<span class="fc" id="L154">		System.out.println();</span>
 
-<span class="fc" id="L144">		return true;</span>
+<span class="fc" id="L156">		return true;</span>
 	}
 
 	/**
@@ -152,7 +164,7 @@ package org.drip.service.env;
 
 	public static final org.drip.service.env.BuildRecord latestBuildRecord()
 	{
-<span class="nc" id="L155">		return s_BuildRecordLatest;</span>
+<span class="nc" id="L167">		return s_BuildRecordLatest;</span>
 	}
 
 	/**
@@ -163,7 +175,7 @@ package org.drip.service.env;
 
 	public static final org.drip.service.env.InvocationRecord invocationRecord()
 	{
-<span class="nc" id="L166">		return s_InvocationRecord;</span>
+<span class="nc" id="L178">		return s_InvocationRecord;</span>
 	}
 
 	/**
@@ -174,37 +186,37 @@ package org.drip.service.env;
 
 	public static final boolean Terminate()
 	{
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">		if (!s_InvocationRecord.recordFinish()) return false;</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">		if (!s_InvocationRecord.recordFinish()) return false;</span>
 
-<span class="fc" id="L179">		System.out.println();</span>
+<span class="fc" id="L191">		System.out.println();</span>
 
-<span class="fc" id="L181">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L193">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L183">		System.out.println (&quot;\t|    Copyright (C) 2011-2019 (DRIP, DROP)&quot;);</span>
+<span class="fc" id="L195">		System.out.println (&quot;\t|    Copyright (C) 2011-2019 (DRIP, DROP)&quot;);</span>
 
-<span class="fc" id="L185">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L197">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L187">		System.out.println (&quot;\t|    Build Version  =&gt; &quot; + s_BuildRecordLatest.dripVersion() + &quot; multi mode&quot;);</span>
+<span class="fc" id="L199">		System.out.println (&quot;\t|    Build Version  =&gt; &quot; + s_BuildRecordLatest.dripVersion() + &quot; multi mode&quot;);</span>
 
-<span class="fc" id="L189">		System.out.println (&quot;\t|    Build JVM (TM) =&gt; &quot; + s_BuildRecordLatest.javaVersion());</span>
+<span class="fc" id="L201">		System.out.println (&quot;\t|    Build JVM (TM) =&gt; &quot; + s_BuildRecordLatest.javaVersion());</span>
 
-<span class="fc" id="L191">		System.out.println (&quot;\t|    Build Snap     =&gt; &quot; + s_BuildRecordLatest.timeStamp());</span>
+<span class="fc" id="L203">		System.out.println (&quot;\t|    Build Snap     =&gt; &quot; + s_BuildRecordLatest.timeStamp());</span>
 
-<span class="fc" id="L193">		System.out.println (&quot;\t|    Start Time     =&gt; &quot; + s_InvocationRecord.startSnap());</span>
+<span class="fc" id="L205">		System.out.println (&quot;\t|    Start Time     =&gt; &quot; + s_InvocationRecord.startSnap());</span>
 
-<span class="fc" id="L195">		System.out.println (&quot;\t|    Setup Time     =&gt; &quot; + s_InvocationRecord.setupSnap());</span>
+<span class="fc" id="L207">		System.out.println (&quot;\t|    Setup Time     =&gt; &quot; + s_InvocationRecord.setupSnap());</span>
 
-<span class="fc" id="L197">		System.out.println (&quot;\t|    Finish Time    =&gt; &quot; + s_InvocationRecord.finishSnap());</span>
+<span class="fc" id="L209">		System.out.println (&quot;\t|    Finish Time    =&gt; &quot; + s_InvocationRecord.finishSnap());</span>
 
-<span class="fc" id="L199">		System.out.println (&quot;\t|    Setup Duration =&gt; &quot; + s_InvocationRecord.setup (true));</span>
+<span class="fc" id="L211">		System.out.println (&quot;\t|    Setup Duration =&gt; &quot; + s_InvocationRecord.setup (true));</span>
 
-<span class="fc" id="L201">		System.out.println (&quot;\t|    Run Duration   =&gt; &quot; + s_InvocationRecord.elapsed (true));</span>
+<span class="fc" id="L213">		System.out.println (&quot;\t|    Run Duration   =&gt; &quot; + s_InvocationRecord.elapsed (true));</span>
 
-<span class="fc" id="L203">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
+<span class="fc" id="L215">		System.out.println (&quot;\t|-----------------------------------------------------------------|&quot;);</span>
 
-<span class="fc" id="L205">		System.out.println();</span>
+<span class="fc" id="L217">		System.out.println();</span>
 
-<span class="fc" id="L207">		return true;</span>
+<span class="fc" id="L219">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

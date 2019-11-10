@@ -6,45 +6,57 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,23 +85,23 @@ package org.drip.service.env;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Environment Shell&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md&quot;&gt;Library Module Loader Environment Manager&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class CacheManager {</span>
+<span class="nc" id="L98">public class CacheManager {</span>
 	private static final boolean s_bLog = true;
-<span class="fc" id="L88">	private static java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt; s_mapCache =</span>
+<span class="fc" id="L100">	private static java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt; s_mapCache =</span>
 		null;
 
-<span class="fc" id="L91">	private static final java.util.concurrent.ScheduledExecutorService _ses =</span>
-<span class="fc" id="L92">		java.util.concurrent.Executors.newScheduledThreadPool (1);</span>
+<span class="fc" id="L103">	private static final java.util.concurrent.ScheduledExecutorService _ses =</span>
+<span class="fc" id="L104">		java.util.concurrent.Executors.newScheduledThreadPool (1);</span>
 
 	/**
 	 * Initialize the Cache Manager
@@ -99,11 +111,11 @@ package org.drip.service.env;
 
 	public static final boolean Init()
 	{
-<span class="fc bfc" id="L102" title="All 2 branches covered.">		if (null != s_mapCache) return true;</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">		if (null != s_mapCache) return true;</span>
 
-<span class="fc" id="L104">		s_mapCache = new java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt;();</span>
+<span class="fc" id="L116">		s_mapCache = new java.util.concurrent.ConcurrentHashMap&lt;java.lang.String, java.lang.String&gt;();</span>
 
-<span class="fc" id="L106">		return true;</span>
+<span class="fc" id="L118">		return true;</span>
 	}
 
 	/**
@@ -121,23 +133,23 @@ package org.drip.service.env;
 		final java.lang.String strValue,
 		final long lSecondsToExpiry)
 	{
-<span class="nc bnc" id="L124" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;</span>
+<span class="nc bnc" id="L136" title="All 8 branches missed.">		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;</span>
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (0 &lt; lSecondsToExpiry) {</span>
-<span class="nc" id="L127">			java.lang.Runnable timedTask = new java.lang.Runnable() {</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (0 &lt; lSecondsToExpiry) {</span>
+<span class="nc" id="L139">			java.lang.Runnable timedTask = new java.lang.Runnable() {</span>
 				@Override public void run() {
 					if (s_bLog)
-<span class="nc" id="L130">						System.out.println (&quot;\t\t[&quot; + new java.util.Date() + &quot;] Removing &quot; + strKey +</span>
-<span class="nc" id="L131">							&quot; from Thread &quot; + java.lang.Thread.currentThread());</span>
+<span class="nc" id="L142">						System.out.println (&quot;\t\t[&quot; + new java.util.Date() + &quot;] Removing &quot; + strKey +</span>
+<span class="nc" id="L143">							&quot; from Thread &quot; + java.lang.Thread.currentThread());</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);</span>
-<span class="nc" id="L134">				}</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);</span>
+<span class="nc" id="L146">				}</span>
 			};
 
-<span class="nc" id="L137">			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);</span>
+<span class="nc" id="L149">			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);</span>
 		}
 
-<span class="nc" id="L140">		return s_mapCache.put (strKey, strValue);</span>
+<span class="nc" id="L152">		return s_mapCache.put (strKey, strValue);</span>
 	}
 
 	/**
@@ -151,9 +163,9 @@ package org.drip.service.env;
 	public static final boolean Contains (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L154" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return false;</span>
+<span class="nc bnc" id="L166" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return false;</span>
 
-<span class="nc" id="L156">		return s_mapCache.contains (strKey);</span>
+<span class="nc" id="L168">		return s_mapCache.contains (strKey);</span>
 	}
 
 	/**
@@ -167,9 +179,9 @@ package org.drip.service.env;
 	public static final java.lang.String Get (
 		final java.lang.String strKey)
 	{
-<span class="nc bnc" id="L170" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return null;</span>
+<span class="nc bnc" id="L182" title="All 4 branches missed.">		if (null == strKey || strKey.isEmpty()) return null;</span>
 
-<span class="nc" id="L172">		return s_mapCache.get (strKey);</span>
+<span class="nc" id="L184">		return s_mapCache.get (strKey);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

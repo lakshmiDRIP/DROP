@@ -6,6 +6,7 @@ package org.drip.product.params;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.product.params;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,10 +90,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params/README.md&quot;&gt;Fixed Income Product Customization Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -89,12 +101,12 @@ package org.drip.product.params;
  */
 
 public class CouponSetting implements org.drip.product.params.Validatable {
-<span class="pc" id="L92">	private double _dblCouponRateExtension = 0.;</span>
-<span class="pc" id="L93">	private java.lang.String _strCouponType = &quot;&quot;;</span>
-<span class="pc" id="L94">	private org.drip.numerical.common.Array2D _fs = null;</span>
-<span class="pc" id="L95">	private double _dblCouponRate = java.lang.Double.NaN;</span>
-<span class="pc" id="L96">	private double _dblCouponFloorRate = java.lang.Double.NaN;</span>
-<span class="pc" id="L97">	private double _dblCouponCeilingRate = java.lang.Double.NaN;</span>
+<span class="pc" id="L104">	private double _dblCouponRateExtension = 0.;</span>
+<span class="pc" id="L105">	private java.lang.String _strCouponType = &quot;&quot;;</span>
+<span class="pc" id="L106">	private org.drip.numerical.common.Array2D _fs = null;</span>
+<span class="pc" id="L107">	private double _dblCouponRate = java.lang.Double.NaN;</span>
+<span class="pc" id="L108">	private double _dblCouponFloorRate = java.lang.Double.NaN;</span>
+<span class="pc" id="L109">	private double _dblCouponCeilingRate = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the CouponSetting from the coupon schedule, coupon type, and the coupon amount
@@ -112,13 +124,13 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 		final double dblCouponRate,
 		final double dblCouponCeilingRate,
 		final double dblCouponFloorRate)
-<span class="fc" id="L115">	{</span>
-<span class="fc" id="L116">		_fs = fs;</span>
-<span class="fc" id="L117">		_dblCouponRate = dblCouponRate;</span>
-<span class="fc" id="L118">		_strCouponType = strCouponType;</span>
-<span class="fc" id="L119">		_dblCouponFloorRate = dblCouponFloorRate;</span>
-<span class="fc" id="L120">		_dblCouponCeilingRate = dblCouponCeilingRate;</span>
-<span class="fc" id="L121">	}</span>
+<span class="fc" id="L127">	{</span>
+<span class="fc" id="L128">		_fs = fs;</span>
+<span class="fc" id="L129">		_dblCouponRate = dblCouponRate;</span>
+<span class="fc" id="L130">		_strCouponType = strCouponType;</span>
+<span class="fc" id="L131">		_dblCouponFloorRate = dblCouponFloorRate;</span>
+<span class="fc" id="L132">		_dblCouponCeilingRate = dblCouponCeilingRate;</span>
+<span class="fc" id="L133">	}</span>
 
 	/**
 	 * Construct the CouponSetting from the coupon schedule, coupon type, the coupon rate, and its extension
@@ -138,14 +150,14 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 		final double dblCouponRateExtension,
 		final double dblCouponCeilingRate,
 		final double dblCouponFloorRate)
-<span class="nc" id="L141">	{</span>
-<span class="nc" id="L142">		_fs = fs;</span>
-<span class="nc" id="L143">		_dblCouponRate = dblCouponRate;</span>
-<span class="nc" id="L144">		_strCouponType = strCouponType;</span>
-<span class="nc" id="L145">		_dblCouponFloorRate = dblCouponFloorRate;</span>
-<span class="nc" id="L146">		_dblCouponCeilingRate = dblCouponCeilingRate;</span>
-<span class="nc" id="L147">		_dblCouponRateExtension = dblCouponRateExtension;</span>
-<span class="nc" id="L148">	}</span>
+<span class="nc" id="L153">	{</span>
+<span class="nc" id="L154">		_fs = fs;</span>
+<span class="nc" id="L155">		_dblCouponRate = dblCouponRate;</span>
+<span class="nc" id="L156">		_strCouponType = strCouponType;</span>
+<span class="nc" id="L157">		_dblCouponFloorRate = dblCouponFloorRate;</span>
+<span class="nc" id="L158">		_dblCouponCeilingRate = dblCouponCeilingRate;</span>
+<span class="nc" id="L159">		_dblCouponRateExtension = dblCouponRateExtension;</span>
+<span class="nc" id="L160">	}</span>
 
 	/**
 	 * Trim the component coupon if it falls outside the (optionally) specified coupon window. Note that
@@ -164,39 +176,39 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) ||</span>
-<span class="nc bnc" id="L168" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblDate))</span>
-<span class="nc" id="L169">			throw new java.lang.Exception (&quot;CouponSetting::processCouponWindow =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCouponRate) ||</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblDate))</span>
+<span class="nc" id="L181">			throw new java.lang.Exception (&quot;CouponSetting::processCouponWindow =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
-<span class="nc bnc" id="L172" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate))</span>
-<span class="nc" id="L173">			return dblCouponRate;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate))</span>
+<span class="nc" id="L185">			return dblCouponRate;</span>
 
-<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp; dblCouponRate &gt;</span>
+<span class="nc bnc" id="L187" title="All 4 branches missed.">		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp; dblCouponRate &gt;</span>
 			_dblCouponCeilingRate)
-<span class="nc" id="L177">			return _dblCouponCeilingRate;</span>
+<span class="nc" id="L189">			return _dblCouponCeilingRate;</span>
 
-<span class="nc bnc" id="L179" title="All 4 branches missed.">		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; dblCouponRate &lt;</span>
+<span class="nc bnc" id="L191" title="All 4 branches missed.">		if (!!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; dblCouponRate &lt;</span>
 			_dblCouponFloorRate)
-<span class="nc" id="L181">			return _dblCouponFloorRate;</span>
+<span class="nc" id="L193">			return _dblCouponFloorRate;</span>
 
-<span class="nc" id="L183">		return dblCouponRate;</span>
+<span class="nc" id="L195">		return dblCouponRate;</span>
 	}
 
 	@Override public boolean validate()
 	{
-<span class="pc bpc" id="L188" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRate) ||</span>
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRateExtension))</span>
-<span class="nc" id="L190">			return false;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRate) ||</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblCouponRateExtension))</span>
+<span class="nc" id="L202">			return false;</span>
 
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		if (null == _fs) _fs = org.drip.numerical.common.Array2D.BulletSchedule();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">		if (null == _fs) _fs = org.drip.numerical.common.Array2D.BulletSchedule();</span>
 
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
-<span class="nc bnc" id="L195" title="All 4 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; _dblCouponCeilingRate &lt;</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		if (org.drip.numerical.common.NumberUtil.IsValid (_dblCouponCeilingRate) &amp;&amp;</span>
+<span class="nc bnc" id="L207" title="All 4 branches missed.">			org.drip.numerical.common.NumberUtil.IsValid (_dblCouponFloorRate) &amp;&amp; _dblCouponCeilingRate &lt;</span>
 				_dblCouponFloorRate)
-<span class="nc" id="L197">			return false;</span>
+<span class="nc" id="L209">			return false;</span>
 
-<span class="fc" id="L199">		return true;</span>
+<span class="fc" id="L211">		return true;</span>
 	}
 
 	/**
@@ -207,7 +219,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	public org.drip.numerical.common.Array2D factorSchedule()
 	{
-<span class="fc" id="L210">		return _fs;</span>
+<span class="fc" id="L222">		return _fs;</span>
 	}
 
 	/**
@@ -218,7 +230,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	public java.lang.String couponType()
 	{
-<span class="nc" id="L221">		return _strCouponType;</span>
+<span class="nc" id="L233">		return _strCouponType;</span>
 	}
 
 	/**
@@ -229,7 +241,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	public double couponRate()
 	{
-<span class="nc" id="L232">		return _dblCouponRate;</span>
+<span class="nc" id="L244">		return _dblCouponRate;</span>
 	}
 
 	/**
@@ -240,7 +252,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	public double couponRateExtension()
 	{
-<span class="nc" id="L243">		return _dblCouponRateExtension;</span>
+<span class="nc" id="L255">		return _dblCouponRateExtension;</span>
 	}
 
 	/**
@@ -251,7 +263,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	public double couponCeilingRate()
 	{
-<span class="nc" id="L254">		return _dblCouponCeilingRate;</span>
+<span class="nc" id="L266">		return _dblCouponCeilingRate;</span>
 	}
 
 	/**
@@ -262,7 +274,7 @@ public class CouponSetting implements org.drip.product.params.Validatable {
 
 	public double couponFloorRate()
 	{
-<span class="nc" id="L265">		return _dblCouponFloorRate;</span>
+<span class="nc" id="L277">		return _dblCouponFloorRate;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

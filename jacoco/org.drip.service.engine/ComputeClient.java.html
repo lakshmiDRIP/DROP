@@ -6,44 +6,56 @@ package org.drip.service.engine;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,10 +83,10 @@ package org.drip.service.engine;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md&quot;&gt;Compute Engine Request-Response Thunker&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -82,9 +94,9 @@ package org.drip.service.engine;
  */
 
 public class ComputeClient {
-<span class="nc" id="L85">	private int _iComputeServerPort = -1;</span>
-<span class="nc" id="L86">	private java.lang.String _strComputeServerHost = &quot;&quot;;</span>
-<span class="nc" id="L87">	private java.net.Socket _socketComputeServer = null;</span>
+<span class="nc" id="L97">	private int _iComputeServerPort = -1;</span>
+<span class="nc" id="L98">	private java.lang.String _strComputeServerHost = &quot;&quot;;</span>
+<span class="nc" id="L99">	private java.net.Socket _socketComputeServer = null;</span>
 
 	/**
 	 * Construct Standard LocalHost-based Instance of the ComputeClient
@@ -95,15 +107,15 @@ public class ComputeClient {
 	public static final ComputeClient Standard()
 	{
 		try {
-<span class="nc" id="L98">			ComputeClient cc = new ComputeClient (&quot;127.0.0.1&quot;,</span>
+<span class="nc" id="L110">			ComputeClient cc = new ComputeClient (&quot;127.0.0.1&quot;,</span>
 				org.drip.service.engine.ComputeServer.DRIP_COMPUTE_ENGINE_PORT);
 
-<span class="nc bnc" id="L101" title="All 2 branches missed.">			return cc.initialize() ? cc : null;</span>
-<span class="nc" id="L102">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L103">			e.printStackTrace();</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">			return cc.initialize() ? cc : null;</span>
+<span class="nc" id="L114">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L115">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L106">		return null;</span>
+<span class="nc" id="L118">		return null;</span>
 	}
 
 	/**
@@ -119,11 +131,11 @@ public class ComputeClient {
 		final java.lang.String strComputeServerHost,
 		final int iComputeServerPort)
 		throws java.lang.Exception
-<span class="nc" id="L122">	{</span>
-<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == (_strComputeServerHost = strComputeServerHost) || 0 &gt;= (_iComputeServerPort =</span>
+<span class="nc" id="L134">	{</span>
+<span class="nc bnc" id="L135" title="All 4 branches missed.">		if (null == (_strComputeServerHost = strComputeServerHost) || 0 &gt;= (_iComputeServerPort =</span>
 			iComputeServerPort))
-<span class="nc" id="L125">			throw new java.lang.Exception (&quot;ComputeClient Constructor =&gt; Invalid Inputs!&quot;);</span>
-<span class="nc" id="L126">	}</span>
+<span class="nc" id="L137">			throw new java.lang.Exception (&quot;ComputeClient Constructor =&gt; Invalid Inputs!&quot;);</span>
+<span class="nc" id="L138">	}</span>
 
 	/**
 	 * Retrieve the Compute Server Host
@@ -133,7 +145,7 @@ public class ComputeClient {
 
 	public java.lang.String computeServerHost()
 	{
-<span class="nc" id="L136">		return _strComputeServerHost;</span>
+<span class="nc" id="L148">		return _strComputeServerHost;</span>
 	}
 
 	/**
@@ -144,7 +156,7 @@ public class ComputeClient {
 
 	public int computeServerPort()
 	{
-<span class="nc" id="L147">		return _iComputeServerPort;</span>
+<span class="nc" id="L159">		return _iComputeServerPort;</span>
 	}
 
 	/**
@@ -156,14 +168,14 @@ public class ComputeClient {
 	public boolean initialize()
 	{
 		try {
-<span class="nc" id="L159">	    	_socketComputeServer = new java.net.Socket (_strComputeServerHost, _iComputeServerPort);</span>
+<span class="nc" id="L171">	    	_socketComputeServer = new java.net.Socket (_strComputeServerHost, _iComputeServerPort);</span>
 
-<span class="nc" id="L161">	    	return true;</span>
-<span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L163">			e.printStackTrace();</span>
+<span class="nc" id="L173">	    	return true;</span>
+<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L175">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L166">		return false;</span>
+<span class="nc" id="L178">		return false;</span>
 	}
 
 	/**
@@ -177,34 +189,34 @@ public class ComputeClient {
 	public org.drip.json.simple.JSONObject invoke (
 		final org.drip.json.simple.JSONObject jsonRequest)
 	{
-<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (!org.drip.service.engine.RequestResponseDecorator.AffixRequestHeaders (jsonRequest)) return null;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">		if (!org.drip.service.engine.RequestResponseDecorator.AffixRequestHeaders (jsonRequest)) return null;</span>
 
 		try {
-<span class="nc" id="L183">	    	java.io.PrintWriter pw = new java.io.PrintWriter (_socketComputeServer.getOutputStream(), true);</span>
+<span class="nc" id="L195">	    	java.io.PrintWriter pw = new java.io.PrintWriter (_socketComputeServer.getOutputStream(), true);</span>
 
-<span class="nc" id="L185">	    	pw.write (jsonRequest.toJSONString() + &quot;\n&quot;);</span>
+<span class="nc" id="L197">	    	pw.write (jsonRequest.toJSONString() + &quot;\n&quot;);</span>
 
-<span class="nc" id="L187">	    	pw.flush();</span>
+<span class="nc" id="L199">	    	pw.flush();</span>
 
-<span class="nc" id="L189">	    	java.lang.Object objResponse = org.drip.json.simple.JSONValue.parse (new java.io.BufferedReader</span>
-<span class="nc" id="L190">	    		(new java.io.InputStreamReader (_socketComputeServer.getInputStream())).readLine());</span>
+<span class="nc" id="L201">	    	java.lang.Object objResponse = org.drip.json.simple.JSONValue.parse (new java.io.BufferedReader</span>
+<span class="nc" id="L202">	    		(new java.io.InputStreamReader (_socketComputeServer.getInputStream())).readLine());</span>
 
-<span class="nc bnc" id="L192" title="All 4 branches missed.">			return null == objResponse || !(objResponse instanceof org.drip.json.simple.JSONObject) ? null :</span>
+<span class="nc bnc" id="L204" title="All 4 branches missed.">			return null == objResponse || !(objResponse instanceof org.drip.json.simple.JSONObject) ? null :</span>
 				(org.drip.json.simple.JSONObject) objResponse;
-<span class="nc" id="L194">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L195">			e.printStackTrace();</span>
+<span class="nc" id="L206">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L207">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L198">		return null;</span>
+<span class="nc" id="L210">		return null;</span>
 	}
 
 	@SuppressWarnings (&quot;unchecked&quot;) public static final void main (
 		final java.lang.String[] astrArgs)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L205">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
+<span class="nc" id="L217">		org.drip.service.env.EnvManager.InitEnv (&quot;&quot;);</span>
 
-<span class="nc" id="L207">		String[] astrAssetName = new String[] {</span>
+<span class="nc" id="L219">		String[] astrAssetName = new String[] {</span>
 			&quot;TOK&quot;,
 			&quot;EWJ&quot;,
 			&quot;HYG&quot;,
@@ -214,7 +226,7 @@ public class ComputeClient {
 			&quot;BWX&quot;
 		};
 
-<span class="nc" id="L217">		double[] adblAssetExpectedReturns = new double[] {</span>
+<span class="nc" id="L229">		double[] adblAssetExpectedReturns = new double[] {</span>
 			0.008355,
 			0.007207,
 			0.006279,
@@ -224,7 +236,7 @@ public class ComputeClient {
 			0.001570
 		};
 
-<span class="nc" id="L227">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
+<span class="nc" id="L239">		double[][] aadblAssetReturnsCovariance = new double[][] {</span>
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
 			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
@@ -234,7 +246,7 @@ public class ComputeClient {
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
 
-<span class="nc" id="L237">		double[] adblAssetLowerBound = new double[] {</span>
+<span class="nc" id="L249">		double[] adblAssetLowerBound = new double[] {</span>
 			0.05,
 			0.05,
 			0.05,
@@ -244,7 +256,7 @@ public class ComputeClient {
 			0.03
 		};
 
-<span class="nc" id="L247">		double[] adblAssetUpperBound = new double[] {</span>
+<span class="nc" id="L259">		double[] adblAssetUpperBound = new double[] {</span>
 			0.40,
 			0.40,
 			0.30,
@@ -254,46 +266,46 @@ public class ComputeClient {
 			0.50
 		};
 
-<span class="nc" id="L257">		double[][] aadblBound = new double[adblAssetExpectedReturns.length][2];</span>
+<span class="nc" id="L269">		double[][] aadblBound = new double[adblAssetExpectedReturns.length][2];</span>
 
-<span class="nc bnc" id="L259" title="All 2 branches missed.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
-<span class="nc" id="L260">			aadblBound[i][0] = adblAssetLowerBound[i];</span>
-<span class="nc" id="L261">			aadblBound[i][1] = adblAssetUpperBound[i];</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="nc" id="L272">			aadblBound[i][0] = adblAssetLowerBound[i];</span>
+<span class="nc" id="L273">			aadblBound[i][1] = adblAssetUpperBound[i];</span>
 		}
 
-<span class="nc" id="L264">		org.drip.json.simple.JSONObject jsonParameters = new org.drip.json.simple.JSONObject();</span>
+<span class="nc" id="L276">		org.drip.json.simple.JSONObject jsonParameters = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L266">		jsonParameters.put (&quot;AssetSet&quot;, org.drip.json.parser.Converter.Array (astrAssetName));</span>
+<span class="nc" id="L278">		jsonParameters.put (&quot;AssetSet&quot;, org.drip.json.parser.Converter.Array (astrAssetName));</span>
 
-<span class="nc" id="L268">		jsonParameters.put (&quot;AssetExpectedReturns&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="nc" id="L269">			(adblAssetExpectedReturns));</span>
+<span class="nc" id="L280">		jsonParameters.put (&quot;AssetExpectedReturns&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="nc" id="L281">			(adblAssetExpectedReturns));</span>
 
-<span class="nc" id="L271">		jsonParameters.put (&quot;AssetReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
-<span class="nc" id="L272">			(aadblAssetReturnsCovariance));</span>
+<span class="nc" id="L283">		jsonParameters.put (&quot;AssetReturnsCovariance&quot;, org.drip.json.parser.Converter.Array</span>
+<span class="nc" id="L284">			(aadblAssetReturnsCovariance));</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
-<span class="nc" id="L275">			jsonParameters.put (astrAssetName[i] + &quot;::LowerBound&quot;, aadblBound[i][0]);</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		for (int i = 0; i &lt; adblAssetExpectedReturns.length; ++i) {</span>
+<span class="nc" id="L287">			jsonParameters.put (astrAssetName[i] + &quot;::LowerBound&quot;, aadblBound[i][0]);</span>
 
-<span class="nc" id="L277">			jsonParameters.put (astrAssetName[i] + &quot;::UpperBound&quot;, aadblBound[i][1]);</span>
+<span class="nc" id="L289">			jsonParameters.put (astrAssetName[i] + &quot;::UpperBound&quot;, aadblBound[i][1]);</span>
 		}
 
-<span class="nc" id="L280">		org.drip.json.simple.JSONObject jsonRequest = new org.drip.json.simple.JSONObject();</span>
+<span class="nc" id="L292">		org.drip.json.simple.JSONObject jsonRequest = new org.drip.json.simple.JSONObject();</span>
 
-<span class="nc" id="L282">		jsonRequest.put (&quot;API&quot;, &quot;PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE&quot;);</span>
+<span class="nc" id="L294">		jsonRequest.put (&quot;API&quot;, &quot;PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE&quot;);</span>
 
-<span class="nc" id="L284">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
+<span class="nc" id="L296">		jsonRequest.put (&quot;Parameters&quot;, jsonParameters);</span>
 
-<span class="nc" id="L286">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
+<span class="nc" id="L298">		System.out.println (&quot;\n\t|---------------- JSON REQUEST -----------------|\n&quot;);</span>
 
-<span class="nc" id="L288">		System.out.println (jsonRequest.toJSONString());</span>
+<span class="nc" id="L300">		System.out.println (jsonRequest.toJSONString());</span>
 
-<span class="nc" id="L290">		ComputeClient cc = Standard();</span>
+<span class="nc" id="L302">		ComputeClient cc = Standard();</span>
 
-<span class="nc" id="L292">		org.drip.json.simple.JSONObject jsonResponse = cc.invoke (jsonRequest);</span>
+<span class="nc" id="L304">		org.drip.json.simple.JSONObject jsonResponse = cc.invoke (jsonRequest);</span>
 
-<span class="nc" id="L294">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
+<span class="nc" id="L306">		System.out.println (&quot;\n\t|---------------- JSON RESPONSE ----------------|\n&quot;);</span>
 
-<span class="nc" id="L296">		System.out.println (jsonResponse.toJSONString());</span>
-<span class="nc" id="L297">	}</span>
+<span class="nc" id="L308">		System.out.println (jsonResponse.toJSONString());</span>
+<span class="nc" id="L309">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

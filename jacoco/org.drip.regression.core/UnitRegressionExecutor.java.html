@@ -6,6 +6,7 @@ package org.drip.regression.core;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -15,39 +16,50 @@ package org.drip.regression.core;
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -77,10 +89,10 @@ package org.drip.regression.core;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression&quot;&gt;Regression&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/README.md&quot;&gt;Regression Engine Core and the Unit Regressors&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/regression/core/README.md&quot;&gt;Regression Engine Core - Unit Regressors&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -90,8 +102,8 @@ package org.drip.regression.core;
 public abstract class UnitRegressionExecutor implements org.drip.regression.core.UnitRegressor {
 	private static final boolean _bDisplayStatus = false;
 
-<span class="fc" id="L93">	private java.lang.String _strRegressorSet = &quot;&quot;;</span>
-<span class="fc" id="L94">	private java.lang.String _strRegressorName = &quot;&quot;;</span>
+<span class="fc" id="L105">	private java.lang.String _strRegressorSet = &quot;&quot;;</span>
+<span class="fc" id="L106">	private java.lang.String _strRegressorName = &quot;&quot;;</span>
 
 	/**
 	 * Constructor for the unit regression executor
@@ -106,11 +118,11 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 		final java.lang.String strRegressorName,
 		final java.lang.String strRegressorSet)
 		throws java.lang.Exception
-<span class="fc" id="L109">	{</span>
-<span class="pc bpc" id="L110" title="3 of 6 branches missed.">		if (null == (_strRegressorName = strRegressorName) || strRegressorName.isEmpty() || null ==</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">			(_strRegressorSet = strRegressorSet) || _strRegressorSet.isEmpty())</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;UnitRegressionExecutor ctr: Invalid inputs&quot;);</span>
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L121">	{</span>
+<span class="pc bpc" id="L122" title="3 of 6 branches missed.">		if (null == (_strRegressorName = strRegressorName) || strRegressorName.isEmpty() || null ==</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			(_strRegressorSet = strRegressorSet) || _strRegressorSet.isEmpty())</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;UnitRegressionExecutor ctr: Invalid inputs&quot;);</span>
+<span class="fc" id="L125">	}</span>
 
 	/**
 	 * One-time initialization to set up the objects needed for the regression
@@ -120,7 +132,7 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 
 	public boolean preRegression()
 	{
-<span class="fc" id="L123">		return true;</span>
+<span class="fc" id="L135">		return true;</span>
 	}
 
 	/**
@@ -142,61 +154,61 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 	public boolean postRegression (
 		final org.drip.regression.core.RegressionRunDetail rnvd)
 	{
-<span class="fc" id="L145">		return true;</span>
+<span class="fc" id="L157">		return true;</span>
 	}
 
 	@Override public org.drip.regression.core.RegressionRunOutput regress()
 	{
-<span class="fc" id="L150">		org.drip.regression.core.RegressionRunOutput ro = null;</span>
+<span class="fc" id="L162">		org.drip.regression.core.RegressionRunOutput ro = null;</span>
 
 		try {
-<span class="fc" id="L153">			ro = new org.drip.regression.core.RegressionRunOutput (_strRegressorSet + &quot;.&quot; +</span>
+<span class="fc" id="L165">			ro = new org.drip.regression.core.RegressionRunOutput (_strRegressorSet + &quot;.&quot; +</span>
 				_strRegressorName);
-<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 
-<span class="nc" id="L158">			return null;</span>
-<span class="fc" id="L159">		}</span>
+<span class="nc" id="L170">			return null;</span>
+<span class="fc" id="L171">		}</span>
 
-<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (!preRegression()) {</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		if (!preRegression()) {</span>
 			if (_bDisplayStatus)
 				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName +
 					&quot;: Cannot set-up the regressor!&quot;);
 
-<span class="fc" id="L166">			return null;</span>
+<span class="fc" id="L178">			return null;</span>
 		}
 
-<span class="fc" id="L169">		long lStartTime = System.nanoTime();</span>
+<span class="fc" id="L181">		long lStartTime = System.nanoTime();</span>
 
-<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (!execRegression()) {</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		if (!execRegression()) {</span>
 			if (_bDisplayStatus)
 				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName + &quot;: failed&quot;);
 
-<span class="fc" id="L175">			ro.setTerminationStatus (false);</span>
+<span class="fc" id="L187">			ro.setTerminationStatus (false);</span>
 
-<span class="fc" id="L177">			return ro;</span>
+<span class="fc" id="L189">			return ro;</span>
 		}
 
-<span class="fc" id="L180">		ro._lExecTime = (long) (1.e-03 * (System.nanoTime() - lStartTime));</span>
+<span class="fc" id="L192">		ro._lExecTime = (long) (1.e-03 * (System.nanoTime() - lStartTime));</span>
 
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		if (!postRegression (ro.getRegressionDetail())) {</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (!postRegression (ro.getRegressionDetail())) {</span>
 			if (_bDisplayStatus)
 				System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName +
 					&quot;: Regressor clean-up unsuccessful!&quot;);
 
-<span class="nc" id="L187">			return null;</span>
+<span class="nc" id="L199">			return null;</span>
 		}
 
 		if (_bDisplayStatus) System.out.println (_strRegressorSet + &quot;.&quot; + _strRegressorName + &quot;: succeeded&quot;);
 
-<span class="fc" id="L192">		ro.setTerminationStatus (true);</span>
+<span class="fc" id="L204">		ro.setTerminationStatus (true);</span>
 
-<span class="fc" id="L194">		return ro;</span>
+<span class="fc" id="L206">		return ro;</span>
 	}
 
 	@Override public java.lang.String getName()
 	{
-<span class="fc" id="L199">		return _strRegressorName;</span>
+<span class="fc" id="L211">		return _strRegressorName;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

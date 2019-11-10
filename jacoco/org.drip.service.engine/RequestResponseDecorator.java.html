@@ -5,46 +5,57 @@ package org.drip.service.engine;
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
-
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,17 +84,17 @@ package org.drip.service.engine;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine&quot;&gt;Engine&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md&quot;&gt;Compute Engine Request-Response Thunker&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class RequestResponseDecorator {</span>
+<span class="nc" id="L97">public class RequestResponseDecorator {</span>
 
 	/**
 	 * Affix the Headers on the JSON Request
@@ -96,15 +107,15 @@ package org.drip.service.engine;
 	@SuppressWarnings (&quot;unchecked&quot;) public static final boolean AffixRequestHeaders (
 		final org.drip.json.simple.JSONObject jsonRequest)
 	{
-<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (null == jsonRequest) return false;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (null == jsonRequest) return false;</span>
 
-<span class="nc" id="L101">		jsonRequest.put (&quot;APITYPE&quot;, &quot;REQUEST&quot;);</span>
+<span class="nc" id="L112">		jsonRequest.put (&quot;APITYPE&quot;, &quot;REQUEST&quot;);</span>
 
-<span class="nc" id="L103">		jsonRequest.put (&quot;REQUESTTIMESTAMP&quot;, new java.util.Date().toString());</span>
+<span class="nc" id="L114">		jsonRequest.put (&quot;REQUESTTIMESTAMP&quot;, new java.util.Date().toString());</span>
 
-<span class="nc" id="L105">		jsonRequest.put (&quot;REQUESTID&quot;, org.drip.numerical.common.StringUtil.GUID());</span>
+<span class="nc" id="L116">		jsonRequest.put (&quot;REQUESTID&quot;, org.drip.numerical.common.StringUtil.GUID());</span>
 
-<span class="nc" id="L107">		return true;</span>
+<span class="nc" id="L118">		return true;</span>
 	}
 
 	/**
@@ -120,21 +131,21 @@ package org.drip.service.engine;
 		final org.drip.json.simple.JSONObject jsonResponse,
 		final org.drip.json.simple.JSONObject jsonRequest)
 	{
-<span class="nc bnc" id="L123" title="All 4 branches missed.">		if (null == jsonResponse || null == jsonRequest) return false;</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (null == jsonResponse || null == jsonRequest) return false;</span>
 
-<span class="nc" id="L125">    	jsonResponse.put (&quot;APITYPE&quot;, &quot;RESPONSE&quot;);</span>
+<span class="nc" id="L136">    	jsonResponse.put (&quot;APITYPE&quot;, &quot;RESPONSE&quot;);</span>
 
-<span class="nc" id="L127">    	jsonResponse.put (&quot;REQUESTTIMESTAMP&quot;, org.drip.json.parser.Converter.StringEntry</span>
-<span class="nc" id="L128">    		(jsonRequest, &quot;REQUESTTIMESTAMP&quot;));</span>
+<span class="nc" id="L138">    	jsonResponse.put (&quot;REQUESTTIMESTAMP&quot;, org.drip.json.parser.Converter.StringEntry</span>
+<span class="nc" id="L139">    		(jsonRequest, &quot;REQUESTTIMESTAMP&quot;));</span>
 
-<span class="nc" id="L130">    	jsonResponse.put (&quot;REQUESTID&quot;, org.drip.json.parser.Converter.StringEntry (jsonRequest,</span>
+<span class="nc" id="L141">    	jsonResponse.put (&quot;REQUESTID&quot;, org.drip.json.parser.Converter.StringEntry (jsonRequest,</span>
     		&quot;REQUESTID&quot;));
 
-<span class="nc" id="L133">    	jsonResponse.put (&quot;RESPONSETIMESTAMP&quot;, new java.util.Date().toString());</span>
+<span class="nc" id="L144">    	jsonResponse.put (&quot;RESPONSETIMESTAMP&quot;, new java.util.Date().toString());</span>
 
-<span class="nc" id="L135">    	jsonResponse.put (&quot;RESPONSEID&quot;, org.drip.numerical.common.StringUtil.GUID());</span>
+<span class="nc" id="L146">    	jsonResponse.put (&quot;RESPONSEID&quot;, org.drip.numerical.common.StringUtil.GUID());</span>
 
-<span class="nc" id="L137">		return true;</span>
+<span class="nc" id="L148">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

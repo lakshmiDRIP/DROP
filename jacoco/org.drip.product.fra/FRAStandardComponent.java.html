@@ -6,6 +6,7 @@ package org.drip.product.fra;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.product.fra;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.product.fra;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fra&quot;&gt;FRA&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/fra/README.md&quot;&gt;Standard/Market FRAs - Caps/Floors&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -84,7 +96,7 @@ package org.drip.product.fra;
  */
 
 public class FRAStandardComponent extends org.drip.product.rates.SingleStreamComponent {
-<span class="fc" id="L87">	private double _dblStrike = java.lang.Double.NaN;</span>
+<span class="fc" id="L99">	private double _dblStrike = java.lang.Double.NaN;</span>
 
 	/**
 	 * FRAStandardComponent constructor
@@ -104,11 +116,11 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L107">		super (strName, stream, csp);</span>
+<span class="fc" id="L119">		super (strName, stream, csp);</span>
 
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike))</span>
-<span class="nc" id="L110">			throw new java.lang.Exception (&quot;FRAStandardComponent ctr =&gt; Invalid Inputs!&quot;);</span>
-<span class="fc" id="L111">	}</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStrike = dblStrike))</span>
+<span class="nc" id="L122">			throw new java.lang.Exception (&quot;FRAStandardComponent ctr =&gt; Invalid Inputs!&quot;);</span>
+<span class="fc" id="L123">	}</span>
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
 		final org.drip.param.valuation.ValuationParams valParams,
@@ -116,154 +128,154 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L119" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
 
-<span class="fc" id="L121">		org.drip.state.identifier.FundingLabel fundingLabel =</span>
-<span class="fc" id="L122">			org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
+<span class="fc" id="L133">		org.drip.state.identifier.FundingLabel fundingLabel =</span>
+<span class="fc" id="L134">			org.drip.state.identifier.FundingLabel.Standard (payCurrency());</span>
 
-<span class="fc" id="L124">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel);</span>
+<span class="fc" id="L136">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState (fundingLabel);</span>
 
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="fc" id="L128">		long lStart = System.nanoTime();</span>
+<span class="fc" id="L140">		long lStart = System.nanoTime();</span>
 
-<span class="fc" id="L130">		double dblParForward = java.lang.Double.NaN;</span>
+<span class="fc" id="L142">		double dblParForward = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L132">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L144">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L134">		int iEffectiveDate = effectiveDate().julian();</span>
+<span class="fc" id="L146">		int iEffectiveDate = effectiveDate().julian();</span>
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">		if (iValueDate &gt; iEffectiveDate) return null;</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">		if (iValueDate &gt; iEffectiveDate) return null;</span>
 
-<span class="fc" id="L138">		org.drip.analytics.date.JulianDate dtMaturity = maturityDate();</span>
+<span class="fc" id="L150">		org.drip.analytics.date.JulianDate dtMaturity = maturityDate();</span>
 
-<span class="fc" id="L140">		int iMaturityDate = dtMaturity.julian();</span>
+<span class="fc" id="L152">		int iMaturityDate = dtMaturity.julian();</span>
 
-<span class="fc" id="L142">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel().get (&quot;DERIVED&quot;);</span>
+<span class="fc" id="L154">		org.drip.state.identifier.ForwardLabel forwardLabel = forwardLabel().get (&quot;DERIVED&quot;);</span>
 
-<span class="fc" id="L144">		org.drip.state.forward.ForwardRateEstimator fc = csqs.forwardState (forwardLabel);</span>
+<span class="fc" id="L156">		org.drip.state.forward.ForwardRateEstimator fc = csqs.forwardState (forwardLabel);</span>
 
-<span class="pc bpc" id="L146" title="2 of 4 branches missed.">		if (null == fc || !forwardLabel.match (fc.index())) return null;</span>
+<span class="pc bpc" id="L158" title="2 of 4 branches missed.">		if (null == fc || !forwardLabel.match (fc.index())) return null;</span>
 
-<span class="fc" id="L148">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L160">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L151">		org.drip.param.valuation.CashSettleParams settleParams = cashSettleParams();</span>
+<span class="fc" id="L163">		org.drip.param.valuation.CashSettleParams settleParams = cashSettleParams();</span>
 
 		try {
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			int dblCashSettle = null == settleParams ? valParams.cashPayDate() : settleParams.cashSettleDate</span>
-<span class="fc" id="L155">				(iValueDate);</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">			int dblCashSettle = null == settleParams ? valParams.cashPayDate() : settleParams.cashSettleDate</span>
+<span class="fc" id="L167">				(iValueDate);</span>
 
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			dblParForward = csqs.available (dtMaturity, forwardLabel) ? csqs.fixing (dtMaturity,</span>
-<span class="fc" id="L158">				forwardLabel) : fc.forward (dtMaturity);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">			dblParForward = csqs.available (dtMaturity, forwardLabel) ? csqs.fixing (dtMaturity,</span>
+<span class="fc" id="L170">				forwardLabel) : fc.forward (dtMaturity);</span>
 
-<span class="fc" id="L160">			double dblMultiplicativeQuantoAdjustment = java.lang.Math.exp</span>
-<span class="fc" id="L161">				(org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (csqs.forwardVolatility</span>
-<span class="fc" id="L162">					(forwardLabel), csqs.fundingVolatility (fundingLabel), csqs.forwardFundingCorrelation</span>
-<span class="fc" id="L163">						(forwardLabel, fundingLabel), iValueDate, iEffectiveDate));</span>
+<span class="fc" id="L172">			double dblMultiplicativeQuantoAdjustment = java.lang.Math.exp</span>
+<span class="fc" id="L173">				(org.drip.analytics.support.OptionHelper.IntegratedCrossVolQuanto (csqs.forwardVolatility</span>
+<span class="fc" id="L174">					(forwardLabel), csqs.fundingVolatility (fundingLabel), csqs.forwardFundingCorrelation</span>
+<span class="fc" id="L175">						(forwardLabel, fundingLabel), iValueDate, iEffectiveDate));</span>
 
-<span class="fc" id="L165">			double dblDCF = org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate,</span>
-<span class="fc" id="L166">				iMaturityDate, stream().couponDC(), false, null, stream().calendar());</span>
+<span class="fc" id="L177">			double dblDCF = org.drip.analytics.daycount.Convention.YearFraction (iEffectiveDate,</span>
+<span class="fc" id="L178">				iMaturityDate, stream().couponDC(), false, null, stream().calendar());</span>
 
-<span class="fc" id="L168">			double dblQuantoAdjustedParForward = dblParForward * dblMultiplicativeQuantoAdjustment;</span>
+<span class="fc" id="L180">			double dblQuantoAdjustedParForward = dblParForward * dblMultiplicativeQuantoAdjustment;</span>
 
-<span class="fc" id="L170">			double dblDV01 = 0.0001 * dblDCF * dcFunding.df (iMaturityDate) / dcFunding.df (dblCashSettle)</span>
-<span class="fc" id="L171">				* notional (iValueDate);</span>
+<span class="fc" id="L182">			double dblDV01 = 0.0001 * dblDCF * dcFunding.df (iMaturityDate) / dcFunding.df (dblCashSettle)</span>
+<span class="fc" id="L183">				* notional (iValueDate);</span>
 
-<span class="fc" id="L173">			double dblLevelLift = dblQuantoAdjustedParForward - _dblStrike;</span>
-<span class="fc" id="L174">			double dblPV = dblDV01 * dblLevelLift;</span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">			double dblLevelCapLift = dblLevelLift &lt; 0. ? -1. * dblLevelLift : 0.;</span>
-<span class="fc bfc" id="L176" title="All 2 branches covered.">			double dblLevelFloorLift = dblLevelLift &gt; 0. ? dblLevelLift : 0.;</span>
+<span class="fc" id="L185">			double dblLevelLift = dblQuantoAdjustedParForward - _dblStrike;</span>
+<span class="fc" id="L186">			double dblPV = dblDV01 * dblLevelLift;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">			double dblLevelCapLift = dblLevelLift &lt; 0. ? -1. * dblLevelLift : 0.;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">			double dblLevelFloorLift = dblLevelLift &gt; 0. ? dblLevelLift : 0.;</span>
 
-<span class="fc" id="L178">			double dblDCParForward = dcFunding.libor (iEffectiveDate, iMaturityDate);</span>
+<span class="fc" id="L190">			double dblDCParForward = dcFunding.libor (iEffectiveDate, iMaturityDate);</span>
 
-<span class="fc" id="L180">			mapResult.put (&quot;additivequantoadjustment&quot;, dblQuantoAdjustedParForward - dblParForward);</span>
+<span class="fc" id="L192">			mapResult.put (&quot;additivequantoadjustment&quot;, dblQuantoAdjustedParForward - dblParForward);</span>
 
-<span class="fc" id="L182">			mapResult.put (&quot;caplift&quot;, dblLevelCapLift);</span>
+<span class="fc" id="L194">			mapResult.put (&quot;caplift&quot;, dblLevelCapLift);</span>
 
-<span class="fc" id="L184">			mapResult.put (&quot;discountcurveadditivebasis&quot;, dblQuantoAdjustedParForward - dblDCParForward);</span>
+<span class="fc" id="L196">			mapResult.put (&quot;discountcurveadditivebasis&quot;, dblQuantoAdjustedParForward - dblDCParForward);</span>
 
-<span class="fc" id="L186">			mapResult.put (&quot;discountcurvemultiplicativebasis&quot;, dblQuantoAdjustedParForward /</span>
+<span class="fc" id="L198">			mapResult.put (&quot;discountcurvemultiplicativebasis&quot;, dblQuantoAdjustedParForward /</span>
 				dblDCParForward);
 
-<span class="fc" id="L189">			mapResult.put (&quot;discountcurveparforward&quot;, dblDCParForward);</span>
+<span class="fc" id="L201">			mapResult.put (&quot;discountcurveparforward&quot;, dblDCParForward);</span>
 
-<span class="fc" id="L191">			mapResult.put (&quot;dv01&quot;, dblDV01);</span>
+<span class="fc" id="L203">			mapResult.put (&quot;dv01&quot;, dblDV01);</span>
 
-<span class="fc" id="L193">			mapResult.put (&quot;floorlift&quot;, dblLevelFloorLift);</span>
+<span class="fc" id="L205">			mapResult.put (&quot;floorlift&quot;, dblLevelFloorLift);</span>
 
-<span class="fc" id="L195">			mapResult.put (&quot;forward&quot;, dblParForward);</span>
+<span class="fc" id="L207">			mapResult.put (&quot;forward&quot;, dblParForward);</span>
 
-<span class="fc" id="L197">			mapResult.put (&quot;forwardrate&quot;, dblParForward);</span>
+<span class="fc" id="L209">			mapResult.put (&quot;forwardrate&quot;, dblParForward);</span>
 
-<span class="fc" id="L199">			mapResult.put (&quot;mercuriorfactor&quot;, (dblDCF * dblDCParForward + 1.) / (dblDCF *</span>
+<span class="fc" id="L211">			mapResult.put (&quot;mercuriorfactor&quot;, (dblDCF * dblDCParForward + 1.) / (dblDCF *</span>
 				dblQuantoAdjustedParForward + 1.));
 
-<span class="fc" id="L202">			mapResult.put (&quot;multiplicativequantoadjustment&quot;, dblMultiplicativeQuantoAdjustment);</span>
+<span class="fc" id="L214">			mapResult.put (&quot;multiplicativequantoadjustment&quot;, dblMultiplicativeQuantoAdjustment);</span>
 
-<span class="fc" id="L204">			mapResult.put (&quot;parforward&quot;, dblParForward);</span>
+<span class="fc" id="L216">			mapResult.put (&quot;parforward&quot;, dblParForward);</span>
 
-<span class="fc" id="L206">			mapResult.put (&quot;parforwardrate&quot;, dblParForward);</span>
+<span class="fc" id="L218">			mapResult.put (&quot;parforwardrate&quot;, dblParForward);</span>
 
-<span class="fc" id="L208">			mapResult.put (&quot;price&quot;, dblPV);</span>
+<span class="fc" id="L220">			mapResult.put (&quot;price&quot;, dblPV);</span>
 
-<span class="fc" id="L210">			mapResult.put (&quot;pv&quot;, dblPV);</span>
+<span class="fc" id="L222">			mapResult.put (&quot;pv&quot;, dblPV);</span>
 
-<span class="fc" id="L212">			mapResult.put (&quot;quantoadjustedparforward&quot;, dblQuantoAdjustedParForward);</span>
+<span class="fc" id="L224">			mapResult.put (&quot;quantoadjustedparforward&quot;, dblQuantoAdjustedParForward);</span>
 
-<span class="fc" id="L214">			mapResult.put (&quot;upfront&quot;, dblPV);</span>
-<span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="fc" id="L226">			mapResult.put (&quot;upfront&quot;, dblPV);</span>
+<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
 
-<span class="nc" id="L218">			return null;</span>
-<span class="fc" id="L219">		}</span>
+<span class="nc" id="L230">			return null;</span>
+<span class="fc" id="L231">		}</span>
 
-<span class="fc" id="L221">		mapResult.put (&quot;calctime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L233">		mapResult.put (&quot;calctime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L223">		return mapResult;</span>
+<span class="fc" id="L235">		return mapResult;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L228">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L240">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L230">		setstrMeasureNames.add (&quot;AdditiveQuantoAdjustment&quot;);</span>
+<span class="nc" id="L242">		setstrMeasureNames.add (&quot;AdditiveQuantoAdjustment&quot;);</span>
 
-<span class="nc" id="L232">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L244">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L234">		setstrMeasureNames.add (&quot;CapLift&quot;);</span>
+<span class="nc" id="L246">		setstrMeasureNames.add (&quot;CapLift&quot;);</span>
 
-<span class="nc" id="L236">		setstrMeasureNames.add (&quot;DiscountCurveAdditiveBasis&quot;);</span>
+<span class="nc" id="L248">		setstrMeasureNames.add (&quot;DiscountCurveAdditiveBasis&quot;);</span>
 
-<span class="nc" id="L238">		setstrMeasureNames.add (&quot;DiscountCurveMultiplicativeBasis&quot;);</span>
+<span class="nc" id="L250">		setstrMeasureNames.add (&quot;DiscountCurveMultiplicativeBasis&quot;);</span>
 
-<span class="nc" id="L240">		setstrMeasureNames.add (&quot;DiscountCurveParForward&quot;);</span>
+<span class="nc" id="L252">		setstrMeasureNames.add (&quot;DiscountCurveParForward&quot;);</span>
 
-<span class="nc" id="L242">		setstrMeasureNames.add (&quot;DV01&quot;);</span>
+<span class="nc" id="L254">		setstrMeasureNames.add (&quot;DV01&quot;);</span>
 
-<span class="nc" id="L244">		setstrMeasureNames.add (&quot;FloorLift&quot;);</span>
+<span class="nc" id="L256">		setstrMeasureNames.add (&quot;FloorLift&quot;);</span>
 
-<span class="nc" id="L246">		setstrMeasureNames.add (&quot;Forward&quot;);</span>
+<span class="nc" id="L258">		setstrMeasureNames.add (&quot;Forward&quot;);</span>
 
-<span class="nc" id="L248">		setstrMeasureNames.add (&quot;ForwardRate&quot;);</span>
+<span class="nc" id="L260">		setstrMeasureNames.add (&quot;ForwardRate&quot;);</span>
 
-<span class="nc" id="L250">		setstrMeasureNames.add (&quot;MercurioRFactor&quot;);</span>
+<span class="nc" id="L262">		setstrMeasureNames.add (&quot;MercurioRFactor&quot;);</span>
 
-<span class="nc" id="L252">		setstrMeasureNames.add (&quot;MultiplicativeQuantoAdjustment&quot;);</span>
+<span class="nc" id="L264">		setstrMeasureNames.add (&quot;MultiplicativeQuantoAdjustment&quot;);</span>
 
-<span class="nc" id="L254">		setstrMeasureNames.add (&quot;ParForward&quot;);</span>
+<span class="nc" id="L266">		setstrMeasureNames.add (&quot;ParForward&quot;);</span>
 
-<span class="nc" id="L256">		setstrMeasureNames.add (&quot;ParForwardRate&quot;);</span>
+<span class="nc" id="L268">		setstrMeasureNames.add (&quot;ParForwardRate&quot;);</span>
 
-<span class="nc" id="L258">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+<span class="nc" id="L270">		setstrMeasureNames.add (&quot;Price&quot;);</span>
 
-<span class="nc" id="L260">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+<span class="nc" id="L272">		setstrMeasureNames.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L262">		setstrMeasureNames.add (&quot;QuantoAdjustedParForward&quot;);</span>
+<span class="nc" id="L274">		setstrMeasureNames.add (&quot;QuantoAdjustedParForward&quot;);</span>
 
-<span class="nc" id="L264">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L276">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L266">		return setstrMeasureNames;</span>
+<span class="nc" id="L278">		return setstrMeasureNames;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian jackDDirtyPVDManifestMeasure (
@@ -272,7 +284,7 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc" id="L275">		return null;</span>
+<span class="nc" id="L287">		return null;</span>
 	}
 
 	@Override public org.drip.numerical.differentiation.WengertJacobian manifestMeasureDFMicroJack (
@@ -282,19 +294,19 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="nc" id="L285">		return null;</span>
+<span class="nc" id="L297">		return null;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="fc" id="L292">			return new org.drip.product.calib.FRAComponentQuoteSet (aLSS);</span>
-<span class="nc" id="L293">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L294">			e.printStackTrace();</span>
+<span class="fc" id="L304">			return new org.drip.product.calib.FRAComponentQuoteSet (aLSS);</span>
+<span class="nc" id="L305">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L306">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L297">		return null;</span>
+<span class="nc" id="L309">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
@@ -304,7 +316,7 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L307">		return null;</span>
+<span class="nc" id="L319">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
@@ -314,43 +326,43 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="pc bpc" id="L317" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof</span>
+<span class="pc bpc" id="L329" title="3 of 6 branches missed.">		if (null == valParams || null == pqs || !(pqs instanceof</span>
 			org.drip.product.calib.FRAComponentQuoteSet))
-<span class="nc" id="L319">			return null;</span>
+<span class="nc" id="L331">			return null;</span>
 
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; effectiveDate().julian()) return null;</span>
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">		if (valParams.valueDate() &gt; effectiveDate().julian()) return null;</span>
 
-<span class="fc" id="L323">		org.drip.product.calib.FRAComponentQuoteSet fcqs = (org.drip.product.calib.FRAComponentQuoteSet) pqs;</span>
+<span class="fc" id="L335">		org.drip.product.calib.FRAComponentQuoteSet fcqs = (org.drip.product.calib.FRAComponentQuoteSet) pqs;</span>
 
-<span class="pc bpc" id="L325" title="2 of 4 branches missed.">		if (!fcqs.containsFRARate() &amp;&amp; !fcqs.containsParForwardRate()) return null;</span>
+<span class="pc bpc" id="L337" title="2 of 4 branches missed.">		if (!fcqs.containsFRARate() &amp;&amp; !fcqs.containsParForwardRate()) return null;</span>
 
-<span class="fc" id="L327">		double dblForwardRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L339">		double dblForwardRate = java.lang.Double.NaN;</span>
 
 		try {
-<span class="pc bpc" id="L330" title="1 of 2 branches missed.">			if (fcqs.containsParForwardRate())</span>
-<span class="fc" id="L331">				dblForwardRate = fcqs.parForwardRate();</span>
-<span class="nc bnc" id="L332" title="All 2 branches missed.">			else if (fcqs.containsFRARate())</span>
-<span class="nc" id="L333">				dblForwardRate = fcqs.fraRate();</span>
-<span class="nc" id="L334">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L335">			e.printStackTrace();</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">			if (fcqs.containsParForwardRate())</span>
+<span class="fc" id="L343">				dblForwardRate = fcqs.parForwardRate();</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">			else if (fcqs.containsFRARate())</span>
+<span class="nc" id="L345">				dblForwardRate = fcqs.fraRate();</span>
+<span class="nc" id="L346">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L347">			e.printStackTrace();</span>
 
-<span class="nc" id="L337">			return null;</span>
-<span class="fc" id="L338">		}</span>
+<span class="nc" id="L349">			return null;</span>
+<span class="fc" id="L350">		}</span>
 
-<span class="fc" id="L340">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
+<span class="fc" id="L352">		org.drip.state.estimator.PredictorResponseWeightConstraint prwc = new</span>
 			org.drip.state.estimator.PredictorResponseWeightConstraint();
 
-<span class="fc" id="L343">		double dblMaturity = maturityDate().julian();</span>
+<span class="fc" id="L355">		double dblMaturity = maturityDate().julian();</span>
 
-<span class="pc bpc" id="L345" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (dblMaturity, 1.)) return null;</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">		if (!prwc.addPredictorResponseWeight (dblMaturity, 1.)) return null;</span>
 
-<span class="pc bpc" id="L347" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Rate&quot;, dblMaturity, 1.)) return null;</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">		if (!prwc.addDResponseWeightDManifestMeasure (&quot;Rate&quot;, dblMaturity, 1.)) return null;</span>
 
-<span class="pc bpc" id="L349" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblForwardRate)) return null;</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">		if (!prwc.updateValue (dblForwardRate)) return null;</span>
 
-<span class="pc bpc" id="L351" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Rate&quot;, 1.)) return null;</span>
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">		if (!prwc.updateDValueDManifestMeasure (&quot;Rate&quot;, 1.)) return null;</span>
 
-<span class="fc" id="L353">		return prwc;</span>
+<span class="fc" id="L365">		return prwc;</span>
 	}
 
 	/**
@@ -361,7 +373,7 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 
 	public double strike()
 	{
-<span class="fc" id="L364">		return _dblStrike;</span>
+<span class="fc" id="L376">		return _dblStrike;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

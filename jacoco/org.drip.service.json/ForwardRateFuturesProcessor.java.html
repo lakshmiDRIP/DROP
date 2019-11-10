@@ -6,44 +6,56 @@ package org.drip.service.json;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,17 +84,17 @@ package org.drip.service.json;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json&quot;&gt;Serialized JSON Service&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md&quot;&gt;JSON Based Valuation Request Service&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L85">public class ForwardRateFuturesProcessor {</span>
+<span class="nc" id="L97">public class ForwardRateFuturesProcessor {</span>
 
 	/**
 	 * JSON Based in/out Funding Futures Curve Metrics Thunker
@@ -95,79 +107,79 @@ package org.drip.service.json;
 	@SuppressWarnings (&quot;unchecked&quot;) static final org.drip.json.simple.JSONObject CurveMetrics (
 		final org.drip.json.simple.JSONObject jsonParameter)
 	{
-<span class="fc" id="L98">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
-<span class="fc" id="L99">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
+<span class="fc" id="L110">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =</span>
+<span class="fc" id="L111">			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);</span>
 
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">		if (null == dcFunding) return null;</span>
 
-<span class="fc" id="L103">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
+<span class="fc" id="L115">		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new</span>
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!csqc.setFundingState (dcFunding)) return null;</span>
 
-<span class="fc" id="L108">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
+<span class="fc" id="L120">		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();</span>
 
-<span class="fc" id="L110">		org.drip.product.rates.SingleStreamComponent futures =</span>
-<span class="fc" id="L111">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtSpot.addTenor</span>
-<span class="fc" id="L112">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;FuturesEffectiveTenor&quot;)),</span>
-<span class="fc" id="L113">					dcFunding.currency());</span>
+<span class="fc" id="L122">		org.drip.product.rates.SingleStreamComponent futures =</span>
+<span class="fc" id="L123">			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtSpot.addTenor</span>
+<span class="fc" id="L124">				(org.drip.json.parser.Converter.StringEntry (jsonParameter, &quot;FuturesEffectiveTenor&quot;)),</span>
+<span class="fc" id="L125">					dcFunding.currency());</span>
 
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (null == futures) return null;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">		if (null == futures) return null;</span>
 
-<span class="fc" id="L117">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapResult = futures.value</span>
-<span class="fc" id="L118">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
+<span class="fc" id="L129">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapResult = futures.value</span>
+<span class="fc" id="L130">			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);</span>
 
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">		if (null == mapResult) return null;</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">		if (null == mapResult) return null;</span>
 
-<span class="fc" id="L122">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
+<span class="fc" id="L134">		org.drip.json.simple.JSONObject jsonResponse = new org.drip.json.simple.JSONObject();</span>
 
-<span class="fc bfc" id="L124" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapResult.entrySet())</span>
-<span class="fc" id="L125">			jsonResponse.put (me.getKey(), me.getValue());</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; me : mapResult.entrySet())</span>
+<span class="fc" id="L137">			jsonResponse.put (me.getKey(), me.getValue());</span>
 
-<span class="fc" id="L127">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
+<span class="fc" id="L139">		org.drip.json.simple.JSONArray jsonCashFlowArray = new org.drip.json.simple.JSONArray();</span>
 
-<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : futures.couponPeriods()) {</span>
-<span class="fc" id="L130">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		for (org.drip.analytics.cashflow.CompositePeriod cp : futures.couponPeriods()) {</span>
+<span class="fc" id="L142">			org.drip.json.simple.JSONObject jsonCashFlow = new org.drip.json.simple.JSONObject();</span>
 
 			try {
-<span class="fc" id="L133">				jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L134">					(cp.startDate()).toString());</span>
+<span class="fc" id="L145">				jsonCashFlow.put (&quot;StartDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L146">					(cp.startDate()).toString());</span>
 
-<span class="fc" id="L136">				jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L137">					(cp.endDate()).toString());</span>
+<span class="fc" id="L148">				jsonCashFlow.put (&quot;EndDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L149">					(cp.endDate()).toString());</span>
 
-<span class="fc" id="L139">				jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L140">					(cp.payDate()).toString());</span>
+<span class="fc" id="L151">				jsonCashFlow.put (&quot;PayDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L152">					(cp.payDate()).toString());</span>
 
-<span class="fc" id="L142">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L143">					(cp.fxFixingDate()).toString());</span>
+<span class="fc" id="L154">				jsonCashFlow.put (&quot;FixingDate&quot;, new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L155">					(cp.fxFixingDate()).toString());</span>
 
-<span class="fc" id="L145">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
+<span class="fc" id="L157">				jsonCashFlow.put (&quot;CouponDCF&quot;, cp.couponDCF());</span>
 
-<span class="fc" id="L147">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
-<span class="nc" id="L148">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L149">				e.printStackTrace();</span>
+<span class="fc" id="L159">				jsonCashFlow.put (&quot;PayDiscountFactor&quot;, cp.df (csqc));</span>
+<span class="nc" id="L160">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L161">				e.printStackTrace();</span>
 
-<span class="nc" id="L151">				return null;</span>
-<span class="fc" id="L152">			}</span>
+<span class="nc" id="L163">				return null;</span>
+<span class="fc" id="L164">			}</span>
 
-<span class="fc" id="L154">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional());</span>
+<span class="fc" id="L166">			jsonCashFlow.put (&quot;BaseNotional&quot;, cp.baseNotional());</span>
 
-<span class="fc" id="L156">			jsonCashFlow.put (&quot;Tenor&quot;, cp.tenor());</span>
+<span class="fc" id="L168">			jsonCashFlow.put (&quot;Tenor&quot;, cp.tenor());</span>
 
-<span class="fc" id="L158">			jsonCashFlow.put (&quot;FundingLabel&quot;, cp.fundingLabel().fullyQualifiedName());</span>
+<span class="fc" id="L170">			jsonCashFlow.put (&quot;FundingLabel&quot;, cp.fundingLabel().fullyQualifiedName());</span>
 
-<span class="fc" id="L160">			jsonCashFlow.put (&quot;ForwardLabel&quot;, ((org.drip.state.identifier.ForwardLabel)</span>
-<span class="fc" id="L161">				cp.floaterLabel()).fullyQualifiedName());</span>
+<span class="fc" id="L172">			jsonCashFlow.put (&quot;ForwardLabel&quot;, ((org.drip.state.identifier.ForwardLabel)</span>
+<span class="fc" id="L173">				cp.floaterLabel()).fullyQualifiedName());</span>
 
-<span class="fc" id="L163">			jsonCashFlow.put (&quot;ReferenceRate&quot;, cp.couponMetrics (dtSpot.julian(), csqc).rate());</span>
+<span class="fc" id="L175">			jsonCashFlow.put (&quot;ReferenceRate&quot;, cp.couponMetrics (dtSpot.julian(), csqc).rate());</span>
 
-<span class="fc" id="L165">			jsonCashFlowArray.add (jsonCashFlow);</span>
-<span class="fc" id="L166">		}</span>
+<span class="fc" id="L177">			jsonCashFlowArray.add (jsonCashFlow);</span>
+<span class="fc" id="L178">		}</span>
 
-<span class="fc" id="L168">		jsonResponse.put (&quot;FloatingCashFlow&quot;, jsonCashFlowArray);</span>
+<span class="fc" id="L180">		jsonResponse.put (&quot;FloatingCashFlow&quot;, jsonCashFlowArray);</span>
 
-<span class="fc" id="L170">		return jsonResponse;</span>
+<span class="fc" id="L182">		return jsonResponse;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

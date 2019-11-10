@@ -6,6 +6,7 @@ package org.drip.product.params;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.product.params;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -77,10 +89,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params/README.md&quot;&gt;Fixed Income Product Customization Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -88,10 +100,10 @@ package org.drip.product.params;
  */
 
 public class TerminationSetting implements org.drip.product.params.Validatable {
-<span class="fc" id="L91">	private boolean _bIsDefaulted = false;</span>
-<span class="fc" id="L92">	private boolean _bIsPerpetual = false;</span>
-<span class="fc" id="L93">	private boolean _bHasBeenExercised = false;</span>
-<span class="fc" id="L94">	private org.drip.analytics.daycount.DateAdjustParams _dap = null;</span>
+<span class="fc" id="L103">	private boolean _bIsDefaulted = false;</span>
+<span class="fc" id="L104">	private boolean _bIsPerpetual = false;</span>
+<span class="fc" id="L105">	private boolean _bHasBeenExercised = false;</span>
+<span class="fc" id="L106">	private org.drip.analytics.daycount.DateAdjustParams _dap = null;</span>
 
 	/**
 	 * Construct the TerminationSetting object from the perpetual flag, defaulted flag, and the has
@@ -108,16 +120,16 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 		final boolean bIsDefaulted,
 		final boolean bHasBeenExercised,
 		final org.drip.analytics.daycount.DateAdjustParams dap)
-<span class="fc" id="L111">	{</span>
-<span class="fc" id="L112">		_dap = dap;</span>
-<span class="fc" id="L113">		_bIsPerpetual = bIsPerpetual;</span>
-<span class="fc" id="L114">		_bIsDefaulted = bIsDefaulted;</span>
-<span class="fc" id="L115">		_bHasBeenExercised = bHasBeenExercised;</span>
-<span class="fc" id="L116">	}</span>
+<span class="fc" id="L123">	{</span>
+<span class="fc" id="L124">		_dap = dap;</span>
+<span class="fc" id="L125">		_bIsPerpetual = bIsPerpetual;</span>
+<span class="fc" id="L126">		_bIsDefaulted = bIsDefaulted;</span>
+<span class="fc" id="L127">		_bHasBeenExercised = bHasBeenExercised;</span>
+<span class="fc" id="L128">	}</span>
 
 	@Override public boolean validate()
 	{
-<span class="fc" id="L120">		return true;</span>
+<span class="fc" id="L132">		return true;</span>
 	}
 
 	/**
@@ -128,7 +140,7 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 
 	public boolean defaulted()
 	{
-<span class="nc" id="L131">		return _bIsDefaulted;</span>
+<span class="nc" id="L143">		return _bIsDefaulted;</span>
 	}
 
 	/**
@@ -139,7 +151,7 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 
 	public boolean perpetual()
 	{
-<span class="nc" id="L142">		return _bIsPerpetual;</span>
+<span class="nc" id="L154">		return _bIsPerpetual;</span>
 	}
 
 	/**
@@ -150,7 +162,7 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 
 	public boolean exercised()
 	{
-<span class="nc" id="L153">		return _bHasBeenExercised;</span>
+<span class="nc" id="L165">		return _bHasBeenExercised;</span>
 	}
 
 	/**
@@ -161,7 +173,7 @@ public class TerminationSetting implements org.drip.product.params.Validatable {
 
 	public org.drip.analytics.daycount.DateAdjustParams dap()
 	{
-<span class="fc" id="L164">		return _dap;</span>
+<span class="fc" id="L176">		return _dap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

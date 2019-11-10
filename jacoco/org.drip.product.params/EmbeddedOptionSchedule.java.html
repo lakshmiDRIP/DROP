@@ -6,6 +6,7 @@ package org.drip.product.params;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.product.params;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -81,10 +93,10 @@ package org.drip.product.params;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params&quot;&gt;Params&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/params/README.md&quot;&gt;Fixed Income Product Customization Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -94,14 +106,14 @@ package org.drip.product.params;
 public class EmbeddedOptionSchedule {
 	public static final int CALL_NOTICE_PERIOD_DEFAULT = 30;
 
-<span class="fc" id="L97">	private int _aiDate[] = null;</span>
-<span class="fc" id="L98">	private boolean _bIsPut = false;</span>
-<span class="fc" id="L99">	private double _adblFactor[] = null;</span>
-<span class="fc" id="L100">	private java.lang.String _strFloatIndex = &quot;&quot;;</span>
-<span class="fc" id="L101">	private boolean _bFixToFloatOnExercise = false;</span>
-<span class="fc" id="L102">	private int _iNoticePeriod = CALL_NOTICE_PERIOD_DEFAULT;</span>
-<span class="fc" id="L103">	private double _dblFixToFloatSpread = java.lang.Double.NaN;</span>
-<span class="fc" id="L104">	private double _dblFixToFloatExerciseDate = java.lang.Double.NaN;</span>
+<span class="fc" id="L109">	private int _aiDate[] = null;</span>
+<span class="fc" id="L110">	private boolean _bIsPut = false;</span>
+<span class="fc" id="L111">	private double _adblFactor[] = null;</span>
+<span class="fc" id="L112">	private java.lang.String _strFloatIndex = &quot;&quot;;</span>
+<span class="fc" id="L113">	private boolean _bFixToFloatOnExercise = false;</span>
+<span class="fc" id="L114">	private int _iNoticePeriod = CALL_NOTICE_PERIOD_DEFAULT;</span>
+<span class="fc" id="L115">	private double _dblFixToFloatSpread = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private double _dblFixToFloatExerciseDate = java.lang.Double.NaN;</span>
 
 	/**
 	 * Create the EOS from the dates/factors string arrays
@@ -132,29 +144,29 @@ public class EmbeddedOptionSchedule {
 		final java.lang.String strFloatIndex,
 		final double dblFixToFloatSpread)
 	{
-<span class="nc bnc" id="L135" title="All 8 branches missed.">		if (null == strDates || strDates.isEmpty() || null == strFactors || strFactors.isEmpty())</span>
-<span class="nc" id="L136">			return null;</span>
+<span class="nc bnc" id="L147" title="All 8 branches missed.">		if (null == strDates || strDates.isEmpty() || null == strFactors || strFactors.isEmpty())</span>
+<span class="nc" id="L148">			return null;</span>
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (bIsDiscrete) {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (bIsDiscrete) {</span>
 			try {
-<span class="nc" id="L140">				return new EmbeddedOptionSchedule</span>
-<span class="nc" id="L141">					(org.drip.numerical.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new</span>
+<span class="nc" id="L152">				return new EmbeddedOptionSchedule</span>
+<span class="nc" id="L153">					(org.drip.numerical.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new</span>
 						java.util.StringTokenizer (strDates, &quot;;&quot;)),
-<span class="nc" id="L143">							org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
+<span class="nc" id="L155">							org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
 								java.util.StringTokenizer (strFactors, &quot;;&quot;)), bIsPut, iNoticePeriod,
 									bFixToFloatOnExercise, dblFixToFloatExerciseDate, strFloatIndex,
 										dblFixToFloatSpread);
-<span class="nc" id="L147">			} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L148">				e.printStackTrace();</span>
+<span class="nc" id="L159">			} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L160">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L151">			return null;</span>
+<span class="nc" id="L163">			return null;</span>
 		}
 
-<span class="nc" id="L154">		return FromAmerican (iScheduleStart,</span>
-<span class="nc" id="L155">			org.drip.numerical.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new</span>
+<span class="nc" id="L166">		return FromAmerican (iScheduleStart,</span>
+<span class="nc" id="L167">			org.drip.numerical.common.StringUtil.MakeIntegerArrayFromStringTokenizer (new</span>
 				java.util.StringTokenizer (strDates, &quot;;&quot;)),
-<span class="nc" id="L157">					org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
+<span class="nc" id="L169">					org.drip.numerical.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new</span>
 						java.util.StringTokenizer (strFactors, &quot;;&quot;)), bIsPut, iNoticePeriod,
 							bFixToFloatOnExercise, dblFixToFloatExerciseDate, strFloatIndex,
 								dblFixToFloatSpread);
@@ -187,7 +199,7 @@ public class EmbeddedOptionSchedule {
 		final java.lang.String strFloatIndex,
 		final double dblFixToFloatSpread)
 	{
-<span class="nc" id="L190">		return FromAmerican (iValDate, aiDate, adblFactor, bIsPut, iNoticePeriod, 30, bFixToFloatOnExercise,</span>
+<span class="nc" id="L202">		return FromAmerican (iValDate, aiDate, adblFactor, bIsPut, iNoticePeriod, 30, bFixToFloatOnExercise,</span>
 			dblFixToFloatExerciseDate, strFloatIndex, dblFixToFloatSpread);
 	}
 
@@ -220,47 +232,47 @@ public class EmbeddedOptionSchedule {
 		final java.lang.String strFloatIndex,
 		final double dblFixToFloatSpread)
 	{
-<span class="pc bpc" id="L223" title="6 of 12 branches missed.">		if (null == aiDate || aiDate.length == 0 || null == adblFactor || adblFactor.length == 0 ||</span>
+<span class="pc bpc" id="L235" title="6 of 12 branches missed.">		if (null == aiDate || aiDate.length == 0 || null == adblFactor || adblFactor.length == 0 ||</span>
 			aiDate.length != adblFactor.length || 0 &gt;= iCallDiscretization)
-<span class="nc" id="L225">			return null;</span>
+<span class="nc" id="L237">			return null;</span>
 
-<span class="fc" id="L227">		int iCallDate = aiDate[0];</span>
+<span class="fc" id="L239">		int iCallDate = aiDate[0];</span>
 
-<span class="fc" id="L229">		java.util.ArrayList&lt;java.lang.Integer&gt; liCallDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L241">		java.util.ArrayList&lt;java.lang.Integer&gt; liCallDates = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L231">		java.util.ArrayList&lt;java.lang.Double&gt; ldblCallFactors = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L243">		java.util.ArrayList&lt;java.lang.Double&gt; ldblCallFactors = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc bfc" id="L233" title="All 2 branches covered.">		for (int i = 1; i &lt; aiDate.length; ++i) {</span>
-<span class="fc bfc" id="L234" title="All 2 branches covered.">			while (iCallDate &lt;= aiDate[i]) {</span>
-<span class="fc" id="L235">				liCallDates.add (iCallDate);</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">		for (int i = 1; i &lt; aiDate.length; ++i) {</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">			while (iCallDate &lt;= aiDate[i]) {</span>
+<span class="fc" id="L247">				liCallDates.add (iCallDate);</span>
 
-<span class="fc" id="L237">				ldblCallFactors.add (adblFactor[i - 1]);</span>
+<span class="fc" id="L249">				ldblCallFactors.add (adblFactor[i - 1]);</span>
 
-<span class="fc" id="L239">				iCallDate += iCallDiscretization;</span>
+<span class="fc" id="L251">				iCallDate += iCallDiscretization;</span>
 			}
 		}
 
-<span class="fc" id="L243">		int[] aiEOSDate = new int[liCallDates.size()];</span>
+<span class="fc" id="L255">		int[] aiEOSDate = new int[liCallDates.size()];</span>
 
-<span class="fc" id="L245">		int i = 0;</span>
+<span class="fc" id="L257">		int i = 0;</span>
 
-<span class="fc bfc" id="L247" title="All 2 branches covered.">		for (int iEOSDate : liCallDates)</span>
-<span class="fc" id="L248">			aiEOSDate[i++] = iEOSDate;</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">		for (int iEOSDate : liCallDates)</span>
+<span class="fc" id="L260">			aiEOSDate[i++] = iEOSDate;</span>
 
-<span class="fc" id="L250">		double[] adblEOSFactor = new double[ldblCallFactors.size()];</span>
+<span class="fc" id="L262">		double[] adblEOSFactor = new double[ldblCallFactors.size()];</span>
 
-<span class="fc" id="L252">		i = 0;</span>
+<span class="fc" id="L264">		i = 0;</span>
 
-<span class="fc bfc" id="L254" title="All 2 branches covered.">		for (double dblCallFactor : ldblCallFactors)</span>
-<span class="fc" id="L255">			adblEOSFactor[i++] = dblCallFactor;</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">		for (double dblCallFactor : ldblCallFactors)</span>
+<span class="fc" id="L267">			adblEOSFactor[i++] = dblCallFactor;</span>
 
 		try {
-<span class="fc" id="L258">			return new EmbeddedOptionSchedule (aiEOSDate, adblEOSFactor, bIsPut, iNoticePeriod,</span>
+<span class="fc" id="L270">			return new EmbeddedOptionSchedule (aiEOSDate, adblEOSFactor, bIsPut, iNoticePeriod,</span>
 				bFixToFloatOnExercise, dblFixToFloatExerciseDate, strFloatIndex, dblFixToFloatSpread);
-<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
 
-<span class="nc" id="L263">			return null;</span>
+<span class="nc" id="L275">			return null;</span>
 		}
 	}
 
@@ -289,26 +301,26 @@ public class EmbeddedOptionSchedule {
 		final java.lang.String strFloatIndex,
 		final double dblFixToFloatSpread)
 		throws java.lang.Exception
-<span class="fc" id="L292">	{</span>
-<span class="pc bpc" id="L293" title="3 of 6 branches missed.">		if (null == aiDate || null == adblFactor || aiDate.length != adblFactor.length)</span>
-<span class="nc" id="L294">			throw new java.lang.Exception (&quot;EmbeddedOptionSchedule ctr =&gt; Invalid params&quot;);</span>
+<span class="fc" id="L304">	{</span>
+<span class="pc bpc" id="L305" title="3 of 6 branches missed.">		if (null == aiDate || null == adblFactor || aiDate.length != adblFactor.length)</span>
+<span class="nc" id="L306">			throw new java.lang.Exception (&quot;EmbeddedOptionSchedule ctr =&gt; Invalid params&quot;);</span>
 
-<span class="fc" id="L296">		_aiDate = new int[aiDate.length];</span>
-<span class="fc" id="L297">		_adblFactor = new double[adblFactor.length];</span>
+<span class="fc" id="L308">		_aiDate = new int[aiDate.length];</span>
+<span class="fc" id="L309">		_adblFactor = new double[adblFactor.length];</span>
 
-<span class="fc bfc" id="L299" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiDate.length; ++i)</span>
-<span class="fc" id="L300">			_aiDate[i] = aiDate[i];</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiDate.length; ++i)</span>
+<span class="fc" id="L312">			_aiDate[i] = aiDate[i];</span>
 
-<span class="fc bfc" id="L302" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblFactor.length; ++i)</span>
-<span class="fc" id="L303">			_adblFactor[i] = adblFactor[i];</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblFactor.length; ++i)</span>
+<span class="fc" id="L315">			_adblFactor[i] = adblFactor[i];</span>
 
-<span class="fc" id="L305">		_bIsPut = bIsPut;</span>
-<span class="fc" id="L306">		_iNoticePeriod = iNoticePeriod;</span>
-<span class="fc" id="L307">		_strFloatIndex = strFloatIndex;</span>
-<span class="fc" id="L308">		_dblFixToFloatSpread = dblFixToFloatSpread;</span>
-<span class="fc" id="L309">		_bFixToFloatOnExercise = bFixToFloatOnExercise;</span>
-<span class="fc" id="L310">		_dblFixToFloatExerciseDate = dblFixToFloatExerciseDate;</span>
-<span class="fc" id="L311">	}</span>
+<span class="fc" id="L317">		_bIsPut = bIsPut;</span>
+<span class="fc" id="L318">		_iNoticePeriod = iNoticePeriod;</span>
+<span class="fc" id="L319">		_strFloatIndex = strFloatIndex;</span>
+<span class="fc" id="L320">		_dblFixToFloatSpread = dblFixToFloatSpread;</span>
+<span class="fc" id="L321">		_bFixToFloatOnExercise = bFixToFloatOnExercise;</span>
+<span class="fc" id="L322">		_dblFixToFloatExerciseDate = dblFixToFloatExerciseDate;</span>
+<span class="fc" id="L323">	}</span>
 
 	/**
 	 * Construct a Deep Copy EOS from another EOS
@@ -318,23 +330,23 @@ public class EmbeddedOptionSchedule {
 
 	public EmbeddedOptionSchedule (
 		final EmbeddedOptionSchedule eosOther)
-<span class="fc" id="L321">	{</span>
-<span class="fc" id="L322">		_aiDate = new int[eosOther._aiDate.length];</span>
-<span class="fc" id="L323">		_adblFactor = new double[eosOther._adblFactor.length];</span>
+<span class="fc" id="L333">	{</span>
+<span class="fc" id="L334">		_aiDate = new int[eosOther._aiDate.length];</span>
+<span class="fc" id="L335">		_adblFactor = new double[eosOther._adblFactor.length];</span>
 
-<span class="fc bfc" id="L325" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiDate.length; ++i)</span>
-<span class="fc" id="L326">			_aiDate[i] = eosOther._aiDate[i];</span>
+<span class="fc bfc" id="L337" title="All 2 branches covered.">		for (int i = 0; i &lt; _aiDate.length; ++i)</span>
+<span class="fc" id="L338">			_aiDate[i] = eosOther._aiDate[i];</span>
 
-<span class="fc bfc" id="L328" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblFactor.length; ++i)</span>
-<span class="fc" id="L329">			_adblFactor[i] = eosOther._adblFactor[i];</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">		for (int i = 0; i &lt; _adblFactor.length; ++i)</span>
+<span class="fc" id="L341">			_adblFactor[i] = eosOther._adblFactor[i];</span>
 
-<span class="fc" id="L331">		_bIsPut = eosOther._bIsPut;</span>
-<span class="fc" id="L332">		_iNoticePeriod = eosOther._iNoticePeriod;</span>
-<span class="fc" id="L333">		_strFloatIndex = eosOther._strFloatIndex;</span>
-<span class="fc" id="L334">		_dblFixToFloatSpread = eosOther._dblFixToFloatSpread;</span>
-<span class="fc" id="L335">		_bFixToFloatOnExercise = eosOther._bFixToFloatOnExercise;</span>
-<span class="fc" id="L336">		_dblFixToFloatExerciseDate = eosOther._dblFixToFloatExerciseDate;</span>
-<span class="fc" id="L337">	}</span>
+<span class="fc" id="L343">		_bIsPut = eosOther._bIsPut;</span>
+<span class="fc" id="L344">		_iNoticePeriod = eosOther._iNoticePeriod;</span>
+<span class="fc" id="L345">		_strFloatIndex = eosOther._strFloatIndex;</span>
+<span class="fc" id="L346">		_dblFixToFloatSpread = eosOther._dblFixToFloatSpread;</span>
+<span class="fc" id="L347">		_bFixToFloatOnExercise = eosOther._bFixToFloatOnExercise;</span>
+<span class="fc" id="L348">		_dblFixToFloatExerciseDate = eosOther._dblFixToFloatExerciseDate;</span>
+<span class="fc" id="L349">	}</span>
 
 	/**
 	 * Whether the component is putable or callable
@@ -344,7 +356,7 @@ public class EmbeddedOptionSchedule {
 
 	public boolean isPut()
 	{
-<span class="fc" id="L347">		return _bIsPut;</span>
+<span class="fc" id="L359">		return _bIsPut;</span>
 	}
 
 	/**
@@ -355,7 +367,7 @@ public class EmbeddedOptionSchedule {
 
 	public int[] dates()
 	{
-<span class="fc" id="L358">		return _aiDate;</span>
+<span class="fc" id="L370">		return _aiDate;</span>
 	}
 
 	/**
@@ -366,7 +378,7 @@ public class EmbeddedOptionSchedule {
 
 	public double[] factors()
 	{
-<span class="fc" id="L369">		return _adblFactor;</span>
+<span class="fc" id="L381">		return _adblFactor;</span>
 	}
 
 	/**
@@ -380,7 +392,7 @@ public class EmbeddedOptionSchedule {
 	public double factor (
 		final int iIndex)
 	{
-<span class="nc" id="L383">		return _adblFactor[iIndex];</span>
+<span class="nc" id="L395">		return _adblFactor[iIndex];</span>
 	}
 
 	/**
@@ -391,7 +403,7 @@ public class EmbeddedOptionSchedule {
 
 	public int exerciseNoticePeriod()
 	{
-<span class="fc" id="L394">		return _iNoticePeriod;</span>
+<span class="fc" id="L406">		return _iNoticePeriod;</span>
 	}
 
 	/**
@@ -402,7 +414,7 @@ public class EmbeddedOptionSchedule {
 
 	public boolean isFixToFloatOnExercise()
 	{
-<span class="nc" id="L405">		return _bFixToFloatOnExercise;</span>
+<span class="nc" id="L417">		return _bFixToFloatOnExercise;</span>
 	}
 
 	/**
@@ -416,25 +428,25 @@ public class EmbeddedOptionSchedule {
 	public int[] exerciseDates (
 		final int iSpotDate)
 	{
-<span class="fc" id="L419">		java.util.List&lt;java.lang.Integer&gt; lsDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
+<span class="fc" id="L431">		java.util.List&lt;java.lang.Integer&gt; lsDate = new java.util.ArrayList&lt;java.lang.Integer&gt;();</span>
 
-<span class="fc" id="L421">		int iExerciseSize = _aiDate.length;</span>
-<span class="fc" id="L422">		int iExerciseCutOff = iSpotDate + _iNoticePeriod;</span>
+<span class="fc" id="L433">		int iExerciseSize = _aiDate.length;</span>
+<span class="fc" id="L434">		int iExerciseCutOff = iSpotDate + _iNoticePeriod;</span>
 
-<span class="fc bfc" id="L424" title="All 2 branches covered.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="fc bfc" id="L425" title="All 2 branches covered.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsDate.add (_aiDate[i]);</span>
+<span class="fc bfc" id="L436" title="All 2 branches covered.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
+<span class="fc bfc" id="L437" title="All 2 branches covered.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsDate.add (_aiDate[i]);</span>
 		}
 
-<span class="fc" id="L428">		int iSize = lsDate.size();</span>
+<span class="fc" id="L440">		int iSize = lsDate.size();</span>
 
-<span class="pc bpc" id="L430" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
+<span class="pc bpc" id="L442" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
 
-<span class="fc" id="L432">		int[] aiExerciseDate = new int[iSize];</span>
+<span class="fc" id="L444">		int[] aiExerciseDate = new int[iSize];</span>
 
-<span class="fc bfc" id="L434" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="fc" id="L435">			aiExerciseDate[i] = lsDate.get (i);</span>
+<span class="fc bfc" id="L446" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L447">			aiExerciseDate[i] = lsDate.get (i);</span>
 
-<span class="fc" id="L437">		return aiExerciseDate;</span>
+<span class="fc" id="L449">		return aiExerciseDate;</span>
 	}
 
 	/**
@@ -448,25 +460,25 @@ public class EmbeddedOptionSchedule {
 	public double[] exerciseFactors (
 		final int iSpotDate)
 	{
-<span class="fc" id="L451">		java.util.List&lt;java.lang.Double&gt; lsFactor = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="fc" id="L463">		java.util.List&lt;java.lang.Double&gt; lsFactor = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="fc" id="L453">		int iExerciseSize = _aiDate.length;</span>
-<span class="fc" id="L454">		int iExerciseCutOff = iSpotDate + _iNoticePeriod;</span>
+<span class="fc" id="L465">		int iExerciseSize = _aiDate.length;</span>
+<span class="fc" id="L466">		int iExerciseCutOff = iSpotDate + _iNoticePeriod;</span>
 
-<span class="fc bfc" id="L456" title="All 2 branches covered.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="fc bfc" id="L457" title="All 2 branches covered.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsFactor.add (_adblFactor[i]);</span>
+<span class="fc bfc" id="L468" title="All 2 branches covered.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">			if (_aiDate[i] &gt;= iExerciseCutOff) lsFactor.add (_adblFactor[i]);</span>
 		}
 
-<span class="fc" id="L460">		int iSize = lsFactor.size();</span>
+<span class="fc" id="L472">		int iSize = lsFactor.size();</span>
 
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
+<span class="pc bpc" id="L474" title="1 of 2 branches missed.">		if (0 == iSize) return null;</span>
 
-<span class="fc" id="L464">		double[] aiExerciseFactor = new double[iSize];</span>
+<span class="fc" id="L476">		double[] aiExerciseFactor = new double[iSize];</span>
 
-<span class="fc bfc" id="L466" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
-<span class="fc" id="L467">			aiExerciseFactor[i] = lsFactor.get (i);</span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">		for (int i = 0; i &lt; iSize; ++i)</span>
+<span class="fc" id="L479">			aiExerciseFactor[i] = lsFactor.get (i);</span>
 
-<span class="fc" id="L469">		return aiExerciseFactor;</span>
+<span class="fc" id="L481">		return aiExerciseFactor;</span>
 	}
 
 	/**
@@ -483,13 +495,13 @@ public class EmbeddedOptionSchedule {
 		final int iSpotDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L486">		int iExerciseSize = _aiDate.length;</span>
+<span class="fc" id="L498">		int iExerciseSize = _aiDate.length;</span>
 
-<span class="pc bpc" id="L488" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="fc bfc" id="L489" title="All 2 branches covered.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _aiDate[i];</span>
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
+<span class="fc bfc" id="L501" title="All 2 branches covered.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _aiDate[i];</span>
 		}
 
-<span class="nc" id="L492">		throw new java.lang.Exception (&quot;EmbeddedOptionSchedule::nextDate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L504">		throw new java.lang.Exception (&quot;EmbeddedOptionSchedule::nextDate =&gt; Invalid Inputs&quot;);</span>
 	}
 
 	/**
@@ -506,13 +518,13 @@ public class EmbeddedOptionSchedule {
 		final int iSpotDate)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L509">		int iExerciseSize = _aiDate.length;</span>
+<span class="fc" id="L521">		int iExerciseSize = _aiDate.length;</span>
 
-<span class="pc bpc" id="L511" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
-<span class="fc bfc" id="L512" title="All 2 branches covered.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _adblFactor[i];</span>
+<span class="pc bpc" id="L523" title="1 of 2 branches missed.">		for (int i = 0; i &lt; iExerciseSize; ++i) {</span>
+<span class="fc bfc" id="L524" title="All 2 branches covered.">			if (_aiDate[i] - _iNoticePeriod &gt;= iSpotDate) return _adblFactor[i];</span>
 		}
 
-<span class="nc" id="L515">		throw new java.lang.Exception (&quot;EmbeddedOptionSchedule::nextFactor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L527">		throw new java.lang.Exception (&quot;EmbeddedOptionSchedule::nextFactor =&gt; Invalid Inputs&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

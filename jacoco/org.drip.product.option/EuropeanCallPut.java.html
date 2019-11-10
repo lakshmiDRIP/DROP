@@ -6,6 +6,7 @@ package org.drip.product.option;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.product.option;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.product.option;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/option&quot;&gt;Option&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/option/README.md&quot;&gt;Options on Fixed Income Components&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -84,8 +96,8 @@ package org.drip.product.option;
  */
 
 public class EuropeanCallPut {
-<span class="fc" id="L87">	private double _dblStrike = java.lang.Double.NaN;</span>
-<span class="fc" id="L88">	private org.drip.analytics.date.JulianDate _dtMaturity = null;</span>
+<span class="fc" id="L99">	private double _dblStrike = java.lang.Double.NaN;</span>
+<span class="fc" id="L100">	private org.drip.analytics.date.JulianDate _dtMaturity = null;</span>
 
 	/**
 	 * EuropeanCallPut constructor
@@ -100,11 +112,11 @@ public class EuropeanCallPut {
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblStrike)
 		throws java.lang.Exception
-<span class="fc" id="L103">	{</span>
-<span class="pc bpc" id="L104" title="3 of 6 branches missed.">		if (null == (_dtMaturity = dtMaturity) || !org.drip.numerical.common.NumberUtil.IsValid (_dblStrike =</span>
+<span class="fc" id="L115">	{</span>
+<span class="pc bpc" id="L116" title="3 of 6 branches missed.">		if (null == (_dtMaturity = dtMaturity) || !org.drip.numerical.common.NumberUtil.IsValid (_dblStrike =</span>
 			dblStrike) || 0. &gt;= _dblStrike)
-<span class="nc" id="L106">			throw new java.lang.Exception (&quot;EuropeanCallPut ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L107">	}</span>
+<span class="nc" id="L118">			throw new java.lang.Exception (&quot;EuropeanCallPut ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L119">	}</span>
 
 	/**
 	 * Retrieve the Option Maturity
@@ -114,7 +126,7 @@ public class EuropeanCallPut {
 
 	public org.drip.analytics.date.JulianDate maturity()
 	{
-<span class="nc" id="L117">		return _dtMaturity;</span>
+<span class="nc" id="L129">		return _dtMaturity;</span>
 	}
 
 	/**
@@ -125,7 +137,7 @@ public class EuropeanCallPut {
 
 	public double strike()
 	{
-<span class="nc" id="L128">		return _dblStrike;</span>
+<span class="nc" id="L140">		return _dblStrike;</span>
 	}
 
 	/**
@@ -149,147 +161,147 @@ public class EuropeanCallPut {
 		final org.drip.function.definition.R1ToR1 auVolatility,
 		final org.drip.pricer.option.FokkerPlanckGenerator fpg)
 	{
-<span class="pc bpc" id="L152" title="4 of 8 branches missed.">		if (null == valParams || null == dc || null == auVolatility || null == fpg) return null;</span>
+<span class="pc bpc" id="L164" title="4 of 8 branches missed.">		if (null == valParams || null == dc || null == auVolatility || null == fpg) return null;</span>
 
-<span class="fc" id="L154">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L166">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L156">		int iMaturityDate = _dtMaturity.julian();</span>
+<span class="fc" id="L168">		int iMaturityDate = _dtMaturity.julian();</span>
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (iValueDate &gt;= iMaturityDate) return null;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (iValueDate &gt;= iMaturityDate) return null;</span>
 
-<span class="fc" id="L160">		long lStartTime = System.nanoTime();</span>
+<span class="fc" id="L172">		long lStartTime = System.nanoTime();</span>
 
-<span class="fc" id="L162">		double dblRiskFreeRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L163">		double dblTTE = (iMaturityDate - iValueDate) / 365.25;</span>
-<span class="fc" id="L164">		double dblImpliedPutVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L165">		double dblImpliedCallVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L166">		double dblTimeAveragedVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L167">		double dblBlackScholesPutVolatility = java.lang.Double.NaN;</span>
-<span class="fc" id="L168">		double dblBlackScholesCallVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L174">		double dblRiskFreeRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L175">		double dblTTE = (iMaturityDate - iValueDate) / 365.25;</span>
+<span class="fc" id="L176">		double dblImpliedPutVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L177">		double dblImpliedCallVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L178">		double dblTimeAveragedVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L179">		double dblBlackScholesPutVolatility = java.lang.Double.NaN;</span>
+<span class="fc" id="L180">		double dblBlackScholesCallVolatility = java.lang.Double.NaN;</span>
 
 		try {
-<span class="fc" id="L171">			dblRiskFreeRate = dc.zero (iMaturityDate);</span>
+<span class="fc" id="L183">			dblRiskFreeRate = dc.zero (iMaturityDate);</span>
 
-<span class="fc" id="L173">			dblTimeAveragedVolatility = auVolatility.integrate (iValueDate, iMaturityDate) / (iMaturityDate -</span>
+<span class="fc" id="L185">			dblTimeAveragedVolatility = auVolatility.integrate (iValueDate, iMaturityDate) / (iMaturityDate -</span>
 				iValueDate);
-<span class="nc" id="L175">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L176">			e.printStackTrace();</span>
+<span class="nc" id="L187">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L188">			e.printStackTrace();</span>
 
-<span class="nc" id="L178">			return null;</span>
-<span class="fc" id="L179">		}</span>
+<span class="nc" id="L190">			return null;</span>
+<span class="fc" id="L191">		}</span>
 
-<span class="fc" id="L181">		org.drip.pricer.option.Greeks callGreeks = fpg.greeks (_dblStrike, dblTTE, dblRiskFreeRate,</span>
+<span class="fc" id="L193">		org.drip.pricer.option.Greeks callGreeks = fpg.greeks (_dblStrike, dblTTE, dblRiskFreeRate,</span>
 			dblUnderlier, false, bIsForward, dblTimeAveragedVolatility);
 
-<span class="fc" id="L184">		org.drip.pricer.option.PutGreeks putGreeks = (org.drip.pricer.option.PutGreeks) fpg.greeks</span>
-<span class="fc" id="L185">			(_dblStrike, dblTTE, dblRiskFreeRate, dblUnderlier, true, bIsForward, dblTimeAveragedVolatility);</span>
+<span class="fc" id="L196">		org.drip.pricer.option.PutGreeks putGreeks = (org.drip.pricer.option.PutGreeks) fpg.greeks</span>
+<span class="fc" id="L197">			(_dblStrike, dblTTE, dblRiskFreeRate, dblUnderlier, true, bIsForward, dblTimeAveragedVolatility);</span>
 
-<span class="pc bpc" id="L187" title="2 of 4 branches missed.">		if (null == callGreeks || null == putGreeks) return null;</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">		if (null == callGreeks || null == putGreeks) return null;</span>
 
-<span class="fc" id="L189">		double dblCallPrice = callGreeks.price();</span>
+<span class="fc" id="L201">		double dblCallPrice = callGreeks.price();</span>
 
-<span class="fc" id="L191">		double dblPutPrice = putGreeks.price();</span>
+<span class="fc" id="L203">		double dblPutPrice = putGreeks.price();</span>
 
 		try {
-<span class="fc" id="L194">			dblBlackScholesCallVolatility = fpg.impliedBlackScholesVolatility (_dblStrike, dblTTE,</span>
+<span class="fc" id="L206">			dblBlackScholesCallVolatility = fpg.impliedBlackScholesVolatility (_dblStrike, dblTTE,</span>
 				dblRiskFreeRate, dblUnderlier, false, bIsForward, dblCallPrice);
 
-<span class="fc" id="L197">			dblBlackScholesPutVolatility = fpg.impliedBlackScholesVolatility (_dblStrike, dblTTE,</span>
+<span class="fc" id="L209">			dblBlackScholesPutVolatility = fpg.impliedBlackScholesVolatility (_dblStrike, dblTTE,</span>
 				dblRiskFreeRate, dblUnderlier, true, bIsForward, dblPutPrice);
 
-<span class="fc" id="L200">			dblImpliedCallVolatility = fpg.impliedVolatilityFromPrice (_dblStrike, dblTTE, dblRiskFreeRate,</span>
+<span class="fc" id="L212">			dblImpliedCallVolatility = fpg.impliedVolatilityFromPrice (_dblStrike, dblTTE, dblRiskFreeRate,</span>
 				dblUnderlier, false, bIsForward, dblCallPrice);
 
-<span class="fc" id="L203">			dblImpliedPutVolatility = fpg.impliedVolatilityFromPrice (_dblStrike, dblTTE, dblRiskFreeRate,</span>
+<span class="fc" id="L215">			dblImpliedPutVolatility = fpg.impliedVolatilityFromPrice (_dblStrike, dblTTE, dblRiskFreeRate,</span>
 				dblUnderlier, true, bIsForward, dblPutPrice);
-<span class="nc" id="L205">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L206">			e.printStackTrace();</span>
+<span class="nc" id="L217">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L218">			e.printStackTrace();</span>
 
-<span class="nc" id="L208">			return null;</span>
-<span class="fc" id="L209">		}</span>
+<span class="nc" id="L220">			return null;</span>
+<span class="fc" id="L221">		}</span>
 
-<span class="fc" id="L211">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasure = new</span>
+<span class="fc" id="L223">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapMeasure = new</span>
 			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L214">		mapMeasure.put (&quot;BlackScholesCallVolatility&quot;, dblBlackScholesCallVolatility);</span>
+<span class="fc" id="L226">		mapMeasure.put (&quot;BlackScholesCallVolatility&quot;, dblBlackScholesCallVolatility);</span>
 
-<span class="fc" id="L216">		mapMeasure.put (&quot;BlackScholesPutVolatility&quot;, dblBlackScholesPutVolatility);</span>
+<span class="fc" id="L228">		mapMeasure.put (&quot;BlackScholesPutVolatility&quot;, dblBlackScholesPutVolatility);</span>
 
-<span class="fc" id="L218">		mapMeasure.put (&quot;CalcTime&quot;, (System.nanoTime() - lStartTime) * 1.e-09);</span>
+<span class="fc" id="L230">		mapMeasure.put (&quot;CalcTime&quot;, (System.nanoTime() - lStartTime) * 1.e-09);</span>
 
-<span class="fc" id="L220">		mapMeasure.put (&quot;CallCharm&quot;, callGreeks.charm());</span>
+<span class="fc" id="L232">		mapMeasure.put (&quot;CallCharm&quot;, callGreeks.charm());</span>
 
-<span class="fc" id="L222">		mapMeasure.put (&quot;CallColor&quot;, callGreeks.color());</span>
+<span class="fc" id="L234">		mapMeasure.put (&quot;CallColor&quot;, callGreeks.color());</span>
 
-<span class="fc" id="L224">		mapMeasure.put (&quot;CallDelta&quot;, callGreeks.delta());</span>
+<span class="fc" id="L236">		mapMeasure.put (&quot;CallDelta&quot;, callGreeks.delta());</span>
 
-<span class="fc" id="L226">		mapMeasure.put (&quot;CallGamma&quot;, callGreeks.gamma());</span>
+<span class="fc" id="L238">		mapMeasure.put (&quot;CallGamma&quot;, callGreeks.gamma());</span>
 
-<span class="fc" id="L228">		mapMeasure.put (&quot;CallPrice&quot;, callGreeks.price());</span>
+<span class="fc" id="L240">		mapMeasure.put (&quot;CallPrice&quot;, callGreeks.price());</span>
 
-<span class="fc" id="L230">		mapMeasure.put (&quot;CallProb1&quot;, callGreeks.prob1());</span>
+<span class="fc" id="L242">		mapMeasure.put (&quot;CallProb1&quot;, callGreeks.prob1());</span>
 
-<span class="fc" id="L232">		mapMeasure.put (&quot;CallProb2&quot;, callGreeks.prob2());</span>
+<span class="fc" id="L244">		mapMeasure.put (&quot;CallProb2&quot;, callGreeks.prob2());</span>
 
-<span class="fc" id="L234">		mapMeasure.put (&quot;CallRho&quot;, callGreeks.rho());</span>
+<span class="fc" id="L246">		mapMeasure.put (&quot;CallRho&quot;, callGreeks.rho());</span>
 
-<span class="fc" id="L236">		mapMeasure.put (&quot;CallSpeed&quot;, callGreeks.speed());</span>
+<span class="fc" id="L248">		mapMeasure.put (&quot;CallSpeed&quot;, callGreeks.speed());</span>
 
-<span class="fc" id="L238">		mapMeasure.put (&quot;CallTheta&quot;, callGreeks.theta());</span>
+<span class="fc" id="L250">		mapMeasure.put (&quot;CallTheta&quot;, callGreeks.theta());</span>
 
-<span class="fc" id="L240">		mapMeasure.put (&quot;CallUltima&quot;, callGreeks.ultima());</span>
+<span class="fc" id="L252">		mapMeasure.put (&quot;CallUltima&quot;, callGreeks.ultima());</span>
 
-<span class="fc" id="L242">		mapMeasure.put (&quot;CallVanna&quot;, callGreeks.vanna());</span>
+<span class="fc" id="L254">		mapMeasure.put (&quot;CallVanna&quot;, callGreeks.vanna());</span>
 
-<span class="fc" id="L244">		mapMeasure.put (&quot;CallVega&quot;, callGreeks.vega());</span>
+<span class="fc" id="L256">		mapMeasure.put (&quot;CallVega&quot;, callGreeks.vega());</span>
 
-<span class="fc" id="L246">		mapMeasure.put (&quot;CallVeta&quot;, callGreeks.veta());</span>
+<span class="fc" id="L258">		mapMeasure.put (&quot;CallVeta&quot;, callGreeks.veta());</span>
 
-<span class="fc" id="L248">		mapMeasure.put (&quot;CallVomma&quot;, callGreeks.vomma());</span>
+<span class="fc" id="L260">		mapMeasure.put (&quot;CallVomma&quot;, callGreeks.vomma());</span>
 
-<span class="fc" id="L250">		mapMeasure.put (&quot;DF&quot;, callGreeks.df());</span>
+<span class="fc" id="L262">		mapMeasure.put (&quot;DF&quot;, callGreeks.df());</span>
 
-<span class="fc" id="L252">		mapMeasure.put (&quot;EffectiveVolatility&quot;, callGreeks.effectiveVolatility());</span>
+<span class="fc" id="L264">		mapMeasure.put (&quot;EffectiveVolatility&quot;, callGreeks.effectiveVolatility());</span>
 
-<span class="fc" id="L254">		mapMeasure.put (&quot;ImpliedCallVolatility&quot;, dblImpliedCallVolatility);</span>
+<span class="fc" id="L266">		mapMeasure.put (&quot;ImpliedCallVolatility&quot;, dblImpliedCallVolatility);</span>
 
-<span class="fc" id="L256">		mapMeasure.put (&quot;ImpliedPutVolatility&quot;, dblImpliedPutVolatility);</span>
+<span class="fc" id="L268">		mapMeasure.put (&quot;ImpliedPutVolatility&quot;, dblImpliedPutVolatility);</span>
 
-<span class="fc" id="L258">		mapMeasure.put (&quot;PutCharm&quot;, putGreeks.charm());</span>
+<span class="fc" id="L270">		mapMeasure.put (&quot;PutCharm&quot;, putGreeks.charm());</span>
 
-<span class="fc" id="L260">		mapMeasure.put (&quot;PutColor&quot;, putGreeks.color());</span>
+<span class="fc" id="L272">		mapMeasure.put (&quot;PutColor&quot;, putGreeks.color());</span>
 
-<span class="fc" id="L262">		mapMeasure.put (&quot;PutDelta&quot;, putGreeks.delta());</span>
+<span class="fc" id="L274">		mapMeasure.put (&quot;PutDelta&quot;, putGreeks.delta());</span>
 
-<span class="fc" id="L264">		mapMeasure.put (&quot;PutGamma&quot;, putGreeks.gamma());</span>
+<span class="fc" id="L276">		mapMeasure.put (&quot;PutGamma&quot;, putGreeks.gamma());</span>
 
-<span class="fc" id="L266">		mapMeasure.put (&quot;PutPrice&quot;, putGreeks.price());</span>
+<span class="fc" id="L278">		mapMeasure.put (&quot;PutPrice&quot;, putGreeks.price());</span>
 
-<span class="fc" id="L268">		mapMeasure.put (&quot;PutPriceFromParity&quot;, putGreeks.putPriceFromParity());</span>
+<span class="fc" id="L280">		mapMeasure.put (&quot;PutPriceFromParity&quot;, putGreeks.putPriceFromParity());</span>
 
-<span class="fc" id="L270">		mapMeasure.put (&quot;PutProb1&quot;, putGreeks.prob1());</span>
+<span class="fc" id="L282">		mapMeasure.put (&quot;PutProb1&quot;, putGreeks.prob1());</span>
 
-<span class="fc" id="L272">		mapMeasure.put (&quot;PutProb2&quot;, putGreeks.prob2());</span>
+<span class="fc" id="L284">		mapMeasure.put (&quot;PutProb2&quot;, putGreeks.prob2());</span>
 
-<span class="fc" id="L274">		mapMeasure.put (&quot;PutRho&quot;, putGreeks.rho());</span>
+<span class="fc" id="L286">		mapMeasure.put (&quot;PutRho&quot;, putGreeks.rho());</span>
 
-<span class="fc" id="L276">		mapMeasure.put (&quot;PutSpeed&quot;, putGreeks.speed());</span>
+<span class="fc" id="L288">		mapMeasure.put (&quot;PutSpeed&quot;, putGreeks.speed());</span>
 
-<span class="fc" id="L278">		mapMeasure.put (&quot;PutTheta&quot;, putGreeks.theta());</span>
+<span class="fc" id="L290">		mapMeasure.put (&quot;PutTheta&quot;, putGreeks.theta());</span>
 
-<span class="fc" id="L280">		mapMeasure.put (&quot;PutUltima&quot;, putGreeks.ultima());</span>
+<span class="fc" id="L292">		mapMeasure.put (&quot;PutUltima&quot;, putGreeks.ultima());</span>
 
-<span class="fc" id="L282">		mapMeasure.put (&quot;PutVanna&quot;, putGreeks.vanna());</span>
+<span class="fc" id="L294">		mapMeasure.put (&quot;PutVanna&quot;, putGreeks.vanna());</span>
 
-<span class="fc" id="L284">		mapMeasure.put (&quot;PutVega&quot;, putGreeks.vega());</span>
+<span class="fc" id="L296">		mapMeasure.put (&quot;PutVega&quot;, putGreeks.vega());</span>
 
-<span class="fc" id="L286">		mapMeasure.put (&quot;PutVeta&quot;, putGreeks.veta());</span>
+<span class="fc" id="L298">		mapMeasure.put (&quot;PutVeta&quot;, putGreeks.veta());</span>
 
-<span class="fc" id="L288">		mapMeasure.put (&quot;PutVomma&quot;, putGreeks.vomma());</span>
+<span class="fc" id="L300">		mapMeasure.put (&quot;PutVomma&quot;, putGreeks.vomma());</span>
 
-<span class="fc" id="L290">		mapMeasure.put (&quot;TTE&quot;, dblTTE);</span>
+<span class="fc" id="L302">		mapMeasure.put (&quot;TTE&quot;, dblTTE);</span>
 
-<span class="fc" id="L292">		return mapMeasure;</span>
+<span class="fc" id="L304">		return mapMeasure;</span>
 	}
 
 	/**
@@ -314,20 +326,20 @@ public class EuropeanCallPut {
 		final double dblCallPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L317" title="2 of 4 branches missed.">		if (null == valParams || null == dc)</span>
-<span class="nc" id="L318">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromCallPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L329" title="2 of 4 branches missed.">		if (null == valParams || null == dc)</span>
+<span class="nc" id="L330">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromCallPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L320">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L332">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L322">		int iMaturityDate = _dtMaturity.julian();</span>
+<span class="fc" id="L334">		int iMaturityDate = _dtMaturity.julian();</span>
 
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">		if (iValueDate &gt;= iMaturityDate)</span>
-<span class="nc" id="L325">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromCallPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L336" title="1 of 2 branches missed.">		if (iValueDate &gt;= iMaturityDate)</span>
+<span class="nc" id="L337">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromCallPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L327">		double dblTTE = 1. * (iMaturityDate - iValueDate) / 365.25;</span>
+<span class="fc" id="L339">		double dblTTE = 1. * (iMaturityDate - iValueDate) / 365.25;</span>
 
-<span class="fc" id="L329">		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,</span>
-<span class="fc" id="L330">			dblTTE, dc.zero (iMaturityDate), dblUnderlier, false, bIsForward, dblCallPrice);</span>
+<span class="fc" id="L341">		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,</span>
+<span class="fc" id="L342">			dblTTE, dc.zero (iMaturityDate), dblUnderlier, false, bIsForward, dblCallPrice);</span>
 	}
 
 	/**
@@ -352,20 +364,20 @@ public class EuropeanCallPut {
 		final double dblPutPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L355" title="2 of 4 branches missed.">		if (null == valParams || null == dc)</span>
-<span class="nc" id="L356">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromPutPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L367" title="2 of 4 branches missed.">		if (null == valParams || null == dc)</span>
+<span class="nc" id="L368">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromPutPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L358">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L370">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L360">		int iMaturityDate = _dtMaturity.julian();</span>
+<span class="fc" id="L372">		int iMaturityDate = _dtMaturity.julian();</span>
 
-<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		if (iValueDate &gt;= iMaturityDate)</span>
-<span class="nc" id="L363">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromPutPrice =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">		if (iValueDate &gt;= iMaturityDate)</span>
+<span class="nc" id="L375">			throw new java.lang.Exception (&quot;EuropeanCallPut::implyVolatilityFromPutPrice =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L365">		double dblTTE = 1. * (iMaturityDate - iValueDate) / 365.25;</span>
+<span class="fc" id="L377">		double dblTTE = 1. * (iMaturityDate - iValueDate) / 365.25;</span>
 
-<span class="fc" id="L367">		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,</span>
-<span class="fc" id="L368">			dblTTE, dc.zero (iMaturityDate), dblUnderlier, true, bIsForward, dblPutPrice);</span>
+<span class="fc" id="L379">		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,</span>
+<span class="fc" id="L380">			dblTTE, dc.zero (iMaturityDate), dblUnderlier, true, bIsForward, dblPutPrice);</span>
 	}
 
 	/**
@@ -376,87 +388,87 @@ public class EuropeanCallPut {
 
 	public java.util.Set&lt;java.lang.String&gt; getMeasureNames()
 	{
-<span class="nc" id="L379">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L391">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L381">		setstrMeasureNames.add (&quot;BlackScholesCallVolatility&quot;);</span>
+<span class="nc" id="L393">		setstrMeasureNames.add (&quot;BlackScholesCallVolatility&quot;);</span>
 
-<span class="nc" id="L383">		setstrMeasureNames.add (&quot;BlackScholesPutVolatility&quot;);</span>
+<span class="nc" id="L395">		setstrMeasureNames.add (&quot;BlackScholesPutVolatility&quot;);</span>
 
-<span class="nc" id="L385">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L397">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L387">		setstrMeasureNames.add (&quot;CallCharm&quot;);</span>
+<span class="nc" id="L399">		setstrMeasureNames.add (&quot;CallCharm&quot;);</span>
 
-<span class="nc" id="L389">		setstrMeasureNames.add (&quot;CallColor&quot;);</span>
+<span class="nc" id="L401">		setstrMeasureNames.add (&quot;CallColor&quot;);</span>
 
-<span class="nc" id="L391">		setstrMeasureNames.add (&quot;CallDelta&quot;);</span>
+<span class="nc" id="L403">		setstrMeasureNames.add (&quot;CallDelta&quot;);</span>
 
-<span class="nc" id="L393">		setstrMeasureNames.add (&quot;CallGamma&quot;);</span>
+<span class="nc" id="L405">		setstrMeasureNames.add (&quot;CallGamma&quot;);</span>
 
-<span class="nc" id="L395">		setstrMeasureNames.add (&quot;CallPrice&quot;);</span>
+<span class="nc" id="L407">		setstrMeasureNames.add (&quot;CallPrice&quot;);</span>
 
-<span class="nc" id="L397">		setstrMeasureNames.add (&quot;CallProb1&quot;);</span>
+<span class="nc" id="L409">		setstrMeasureNames.add (&quot;CallProb1&quot;);</span>
 
-<span class="nc" id="L399">		setstrMeasureNames.add (&quot;CallProb2&quot;);</span>
+<span class="nc" id="L411">		setstrMeasureNames.add (&quot;CallProb2&quot;);</span>
 
-<span class="nc" id="L401">		setstrMeasureNames.add (&quot;CallRho&quot;);</span>
+<span class="nc" id="L413">		setstrMeasureNames.add (&quot;CallRho&quot;);</span>
 
-<span class="nc" id="L403">		setstrMeasureNames.add (&quot;CallSpeed&quot;);</span>
+<span class="nc" id="L415">		setstrMeasureNames.add (&quot;CallSpeed&quot;);</span>
 
-<span class="nc" id="L405">		setstrMeasureNames.add (&quot;CallTheta&quot;);</span>
+<span class="nc" id="L417">		setstrMeasureNames.add (&quot;CallTheta&quot;);</span>
 
-<span class="nc" id="L407">		setstrMeasureNames.add (&quot;CallUltima&quot;);</span>
+<span class="nc" id="L419">		setstrMeasureNames.add (&quot;CallUltima&quot;);</span>
 
-<span class="nc" id="L409">		setstrMeasureNames.add (&quot;CallVanna&quot;);</span>
+<span class="nc" id="L421">		setstrMeasureNames.add (&quot;CallVanna&quot;);</span>
 
-<span class="nc" id="L411">		setstrMeasureNames.add (&quot;CallVega&quot;);</span>
+<span class="nc" id="L423">		setstrMeasureNames.add (&quot;CallVega&quot;);</span>
 
-<span class="nc" id="L413">		setstrMeasureNames.add (&quot;CallVeta&quot;);</span>
+<span class="nc" id="L425">		setstrMeasureNames.add (&quot;CallVeta&quot;);</span>
 
-<span class="nc" id="L415">		setstrMeasureNames.add (&quot;CallVomma&quot;);</span>
+<span class="nc" id="L427">		setstrMeasureNames.add (&quot;CallVomma&quot;);</span>
 
-<span class="nc" id="L417">		setstrMeasureNames.add (&quot;DF&quot;);</span>
+<span class="nc" id="L429">		setstrMeasureNames.add (&quot;DF&quot;);</span>
 
-<span class="nc" id="L419">		setstrMeasureNames.add (&quot;EffectiveVolatility&quot;);</span>
+<span class="nc" id="L431">		setstrMeasureNames.add (&quot;EffectiveVolatility&quot;);</span>
 
-<span class="nc" id="L421">		setstrMeasureNames.add (&quot;ImpliedCallVolatility&quot;);</span>
+<span class="nc" id="L433">		setstrMeasureNames.add (&quot;ImpliedCallVolatility&quot;);</span>
 
-<span class="nc" id="L423">		setstrMeasureNames.add (&quot;ImpliedPutVolatility&quot;);</span>
+<span class="nc" id="L435">		setstrMeasureNames.add (&quot;ImpliedPutVolatility&quot;);</span>
 
-<span class="nc" id="L425">		setstrMeasureNames.add (&quot;PutCharm&quot;);</span>
+<span class="nc" id="L437">		setstrMeasureNames.add (&quot;PutCharm&quot;);</span>
 
-<span class="nc" id="L427">		setstrMeasureNames.add (&quot;PutColor&quot;);</span>
+<span class="nc" id="L439">		setstrMeasureNames.add (&quot;PutColor&quot;);</span>
 
-<span class="nc" id="L429">		setstrMeasureNames.add (&quot;PutDelta&quot;);</span>
+<span class="nc" id="L441">		setstrMeasureNames.add (&quot;PutDelta&quot;);</span>
 
-<span class="nc" id="L431">		setstrMeasureNames.add (&quot;PutGamma&quot;);</span>
+<span class="nc" id="L443">		setstrMeasureNames.add (&quot;PutGamma&quot;);</span>
 
-<span class="nc" id="L433">		setstrMeasureNames.add (&quot;PutPrice&quot;);</span>
+<span class="nc" id="L445">		setstrMeasureNames.add (&quot;PutPrice&quot;);</span>
 
-<span class="nc" id="L435">		setstrMeasureNames.add (&quot;PutPriceFromParity&quot;);</span>
+<span class="nc" id="L447">		setstrMeasureNames.add (&quot;PutPriceFromParity&quot;);</span>
 
-<span class="nc" id="L437">		setstrMeasureNames.add (&quot;PutProb1&quot;);</span>
+<span class="nc" id="L449">		setstrMeasureNames.add (&quot;PutProb1&quot;);</span>
 
-<span class="nc" id="L439">		setstrMeasureNames.add (&quot;PutProb2&quot;);</span>
+<span class="nc" id="L451">		setstrMeasureNames.add (&quot;PutProb2&quot;);</span>
 
-<span class="nc" id="L441">		setstrMeasureNames.add (&quot;PutRho&quot;);</span>
+<span class="nc" id="L453">		setstrMeasureNames.add (&quot;PutRho&quot;);</span>
 
-<span class="nc" id="L443">		setstrMeasureNames.add (&quot;PutSpeed&quot;);</span>
+<span class="nc" id="L455">		setstrMeasureNames.add (&quot;PutSpeed&quot;);</span>
 
-<span class="nc" id="L445">		setstrMeasureNames.add (&quot;PutTheta&quot;);</span>
+<span class="nc" id="L457">		setstrMeasureNames.add (&quot;PutTheta&quot;);</span>
 
-<span class="nc" id="L447">		setstrMeasureNames.add (&quot;PutUltima&quot;);</span>
+<span class="nc" id="L459">		setstrMeasureNames.add (&quot;PutUltima&quot;);</span>
 
-<span class="nc" id="L449">		setstrMeasureNames.add (&quot;PutVanna&quot;);</span>
+<span class="nc" id="L461">		setstrMeasureNames.add (&quot;PutVanna&quot;);</span>
 
-<span class="nc" id="L451">		setstrMeasureNames.add (&quot;PutVega&quot;);</span>
+<span class="nc" id="L463">		setstrMeasureNames.add (&quot;PutVega&quot;);</span>
 
-<span class="nc" id="L453">		setstrMeasureNames.add (&quot;PutVeta&quot;);</span>
+<span class="nc" id="L465">		setstrMeasureNames.add (&quot;PutVeta&quot;);</span>
 
-<span class="nc" id="L455">		setstrMeasureNames.add (&quot;PutVomma&quot;);</span>
+<span class="nc" id="L467">		setstrMeasureNames.add (&quot;PutVomma&quot;);</span>
 
-<span class="nc" id="L457">		setstrMeasureNames.add (&quot;TTE&quot;);</span>
+<span class="nc" id="L469">		setstrMeasureNames.add (&quot;TTE&quot;);</span>
 
-<span class="nc" id="L459">		return setstrMeasureNames;</span>
+<span class="nc" id="L471">		return setstrMeasureNames;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

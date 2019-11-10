@@ -6,6 +6,7 @@ package org.drip.product.option;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.product.option;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.product.option;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/option&quot;&gt;Option&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/option/README.md&quot;&gt;Options on Fixed Income Components&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,9 +96,9 @@ package org.drip.product.option;
  */
 
 public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
-<span class="fc" id="L87">	private boolean _bIsReceiver = false;</span>
-<span class="fc" id="L88">	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = null;</span>
-<span class="fc" id="L89">	private org.drip.product.definition.CreditDefaultSwap _cds = null;</span>
+<span class="fc" id="L99">	private boolean _bIsReceiver = false;</span>
+<span class="fc" id="L100">	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = null;</span>
+<span class="fc" id="L101">	private org.drip.product.definition.CreditDefaultSwap _cds = null;</span>
 
 	/**
 	 * CDSEuropeanOption constructor
@@ -114,14 +126,14 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L117">		super (strName, cds, strManifestMeasure, dblStrike, cds.initialNotional(), ltds, csp);</span>
+<span class="fc" id="L129">		super (strName, cds, strManifestMeasure, dblStrike, cds.initialNotional(), ltds, csp);</span>
 
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (null == (_fpg = fpg))</span>
-<span class="nc" id="L120">			throw new java.lang.Exception (&quot;CDSEuropeanOption ctr: Invalid Option Pricer&quot;);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if (null == (_fpg = fpg))</span>
+<span class="nc" id="L132">			throw new java.lang.Exception (&quot;CDSEuropeanOption ctr: Invalid Option Pricer&quot;);</span>
 
-<span class="fc" id="L122">		_cds = cds;</span>
-<span class="fc" id="L123">		_bIsReceiver = bIsReceiver;</span>
-<span class="fc" id="L124">	}</span>
+<span class="fc" id="L134">		_cds = cds;</span>
+<span class="fc" id="L135">		_bIsReceiver = bIsReceiver;</span>
+<span class="fc" id="L136">	}</span>
 
 	/**
 	 * Generate the Standard CDS European Option Measures from the Integrated Surface Variance
@@ -142,305 +154,305 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblIntegratedSurfaceVariance)
 	{
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">		if (null == valParams) return null;</span>
 
-<span class="fc" id="L147">		int iValueDate = valParams.valueDate();</span>
+<span class="fc" id="L159">		int iValueDate = valParams.valueDate();</span>
 
-<span class="fc" id="L149">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
-
-		try {
-<span class="pc bpc" id="L152" title="1 of 4 branches missed.">			if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_cds.effectiveDate().julian(),</span>
-<span class="fc" id="L153">				_cds.payCurrency()))</span>
-<span class="nc" id="L154">				return null;</span>
-<span class="nc" id="L155">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L156">			e.printStackTrace();</span>
-
-<span class="nc" id="L158">			return null;</span>
-<span class="fc" id="L159">		}</span>
-
-<span class="fc" id="L161">		long lStart = System.nanoTime();</span>
-
-<span class="fc" id="L163">		int iExerciseDate = exerciseDate().julian();</span>
-
-<span class="fc" id="L165">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCDSOutput = _cds.value</span>
-<span class="fc" id="L166">			(valParams, pricerParams, csqc, vcp);</span>
-
-<span class="fc" id="L168">		java.lang.String strManifestMeasure = manifestMeasure();</span>
-
-<span class="pc bpc" id="L170" title="2 of 4 branches missed.">		if (null == mapCDSOutput || !mapCDSOutput.containsKey (&quot;DV01&quot;) || !mapCDSOutput.containsKey</span>
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">			(strManifestMeasure))</span>
-<span class="nc" id="L172">			return null;</span>
-
-<span class="fc" id="L174">		double dblCDSDV01 = mapCDSOutput.get (&quot;DV01&quot;);</span>
-
-<span class="fc" id="L176">		double dblATMManifestMeasure = mapCDSOutput.get (strManifestMeasure);</span>
-
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure) ||</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblCDSDV01))</span>
-<span class="nc" id="L180">			return null;</span>
-
-<span class="fc" id="L182">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
-<span class="fc" id="L183">			(_cds.fundingLabel());</span>
+<span class="fc" id="L161">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
 
 		try {
-<span class="fc" id="L186">			double dblStrike = strike();</span>
+<span class="pc bpc" id="L164" title="1 of 4 branches missed.">			if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_cds.effectiveDate().julian(),</span>
+<span class="fc" id="L165">				_cds.payCurrency()))</span>
+<span class="nc" id="L166">				return null;</span>
+<span class="nc" id="L167">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
 
-<span class="fc" id="L188">			double dblNotional = notional();</span>
+<span class="nc" id="L170">			return null;</span>
+<span class="fc" id="L171">		}</span>
 
-<span class="fc" id="L190">			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
-<span class="fc" id="L191">			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">			double dblManifestMeasureIntrinsic = _bIsReceiver ? dblATMManifestMeasure - dblStrike : dblStrike</span>
+<span class="fc" id="L173">		long lStart = System.nanoTime();</span>
+
+<span class="fc" id="L175">		int iExerciseDate = exerciseDate().julian();</span>
+
+<span class="fc" id="L177">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCDSOutput = _cds.value</span>
+<span class="fc" id="L178">			(valParams, pricerParams, csqc, vcp);</span>
+
+<span class="fc" id="L180">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+
+<span class="pc bpc" id="L182" title="2 of 4 branches missed.">		if (null == mapCDSOutput || !mapCDSOutput.containsKey (&quot;DV01&quot;) || !mapCDSOutput.containsKey</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">			(strManifestMeasure))</span>
+<span class="nc" id="L184">			return null;</span>
+
+<span class="fc" id="L186">		double dblCDSDV01 = mapCDSOutput.get (&quot;DV01&quot;);</span>
+
+<span class="fc" id="L188">		double dblATMManifestMeasure = mapCDSOutput.get (strManifestMeasure);</span>
+
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure) ||</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblCDSDV01))</span>
+<span class="nc" id="L192">			return null;</span>
+
+<span class="fc" id="L194">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqc.fundingState</span>
+<span class="fc" id="L195">			(_cds.fundingLabel());</span>
+
+		try {
+<span class="fc" id="L198">			double dblStrike = strike();</span>
+
+<span class="fc" id="L200">			double dblNotional = notional();</span>
+
+<span class="fc" id="L202">			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
+<span class="fc" id="L203">			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">			double dblManifestMeasureIntrinsic = _bIsReceiver ? dblATMManifestMeasure - dblStrike : dblStrike</span>
 				- dblATMManifestMeasure;
 
-<span class="pc bpc" id="L195" title="2 of 4 branches missed.">			if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L196">				dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">			else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">				strManifestMeasure.equalsIgnoreCase (&quot;ParSpread&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">					(&quot;QuantoAdjustedParSpread&quot;))</span>
-<span class="fc" id="L200">				dblManifestMeasurePriceTransformer = dblCDSDV01;</span>
+<span class="pc bpc" id="L207" title="2 of 4 branches missed.">			if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L208">				dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate);</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">			else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) ||</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">				strManifestMeasure.equalsIgnoreCase (&quot;ParSpread&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">					(&quot;QuantoAdjustedParSpread&quot;))</span>
+<span class="fc" id="L212">				dblManifestMeasurePriceTransformer = dblCDSDV01;</span>
 
-<span class="pc bpc" id="L202" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;</span>
 
-<span class="fc" id="L204">			double dblTTE = (iExerciseDate - iValueDate) / 365.25;</span>
+<span class="fc" id="L216">			double dblTTE = (iExerciseDate - iValueDate) / 365.25;</span>
 
-<span class="fc" id="L206">			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (dblStrike, dblTTE, -(java.lang.Math.log</span>
-<span class="fc" id="L207">				(dcFunding.df (iExerciseDate))) / dblTTE, dblATMManifestMeasure, _bIsReceiver, true,</span>
-<span class="fc" id="L208">					java.lang.Math.sqrt (dblIntegratedSurfaceVariance / dblTTE));</span>
+<span class="fc" id="L218">			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (dblStrike, dblTTE, -(java.lang.Math.log</span>
+<span class="fc" id="L219">				(dcFunding.df (iExerciseDate))) / dblTTE, dblATMManifestMeasure, _bIsReceiver, true,</span>
+<span class="fc" id="L220">					java.lang.Math.sqrt (dblIntegratedSurfaceVariance / dblTTE));</span>
 
-<span class="fc" id="L210">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
+<span class="fc" id="L222">			org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapResult = new</span>
 				org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L213">			double dblForwardIntrinsic = optGreek.expectedPayoff();</span>
+<span class="fc" id="L225">			double dblForwardIntrinsic = optGreek.expectedPayoff();</span>
 
-<span class="fc" id="L215">			double dblForwardATMIntrinsic = optGreek.expectedATMPayoff();</span>
+<span class="fc" id="L227">			double dblForwardATMIntrinsic = optGreek.expectedATMPayoff();</span>
 
-<span class="fc" id="L217">			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
+<span class="fc" id="L229">			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
 
-<span class="fc" id="L219">			double dblFPGCharm = optGreek.charm();</span>
+<span class="fc" id="L231">			double dblFPGCharm = optGreek.charm();</span>
 
-<span class="fc" id="L221">			double dblFPGColor = optGreek.color();</span>
+<span class="fc" id="L233">			double dblFPGColor = optGreek.color();</span>
 
-<span class="fc" id="L223">			double dblFPGDelta = optGreek.delta();</span>
+<span class="fc" id="L235">			double dblFPGDelta = optGreek.delta();</span>
 
-<span class="fc" id="L225">			double dblFPGGamma = optGreek.gamma();</span>
+<span class="fc" id="L237">			double dblFPGGamma = optGreek.gamma();</span>
 
-<span class="fc" id="L227">			double dblFPGRho = optGreek.rho();</span>
+<span class="fc" id="L239">			double dblFPGRho = optGreek.rho();</span>
 
-<span class="fc" id="L229">			double dblFPGSpeed = optGreek.speed();</span>
+<span class="fc" id="L241">			double dblFPGSpeed = optGreek.speed();</span>
 
-<span class="fc" id="L231">			double dblFPGTheta = optGreek.theta();</span>
+<span class="fc" id="L243">			double dblFPGTheta = optGreek.theta();</span>
 
-<span class="fc" id="L233">			double dblFPGUltima = optGreek.ultima();</span>
+<span class="fc" id="L245">			double dblFPGUltima = optGreek.ultima();</span>
 
-<span class="fc" id="L235">			double dblFPGVanna = optGreek.vanna();</span>
+<span class="fc" id="L247">			double dblFPGVanna = optGreek.vanna();</span>
 
-<span class="fc" id="L237">			double dblFPGVega = optGreek.vega();</span>
+<span class="fc" id="L249">			double dblFPGVega = optGreek.vega();</span>
 
-<span class="fc" id="L239">			double dblFPGVeta = optGreek.veta();</span>
+<span class="fc" id="L251">			double dblFPGVeta = optGreek.veta();</span>
 
-<span class="fc" id="L241">			double dblFPGVomma = optGreek.vomma();</span>
+<span class="fc" id="L253">			double dblFPGVomma = optGreek.vomma();</span>
 
-<span class="fc" id="L243">			mapResult.put (&quot;ATMManifestMeasure&quot;, dblATMManifestMeasure);</span>
+<span class="fc" id="L255">			mapResult.put (&quot;ATMManifestMeasure&quot;, dblATMManifestMeasure);</span>
 
-<span class="fc" id="L245">			mapResult.put (&quot;ATMPrice&quot;, dblForwardATMIntrinsic * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L257">			mapResult.put (&quot;ATMPrice&quot;, dblForwardATMIntrinsic * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L247">			mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
+<span class="fc" id="L259">			mapResult.put (&quot;CalcTime&quot;, (System.nanoTime() - lStart) * 1.e-09);</span>
 
-<span class="fc" id="L249">			mapResult.put (&quot;Charm&quot;, dblFPGCharm * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L261">			mapResult.put (&quot;Charm&quot;, dblFPGCharm * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L251">			mapResult.put (&quot;Color&quot;, dblFPGColor * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L263">			mapResult.put (&quot;Color&quot;, dblFPGColor * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L253">			mapResult.put (&quot;Delta&quot;, dblFPGDelta * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L265">			mapResult.put (&quot;Delta&quot;, dblFPGDelta * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L255">			mapResult.put (&quot;EffectiveVolatility&quot;, optGreek.effectiveVolatility());</span>
+<span class="fc" id="L267">			mapResult.put (&quot;EffectiveVolatility&quot;, optGreek.effectiveVolatility());</span>
 
-<span class="fc" id="L257">			mapResult.put (&quot;ExpectedATMPayoff&quot;, optGreek.expectedATMPayoff());</span>
+<span class="fc" id="L269">			mapResult.put (&quot;ExpectedATMPayoff&quot;, optGreek.expectedATMPayoff());</span>
 
-<span class="fc" id="L259">			mapResult.put (&quot;ExpectedPayoff&quot;, optGreek.expectedPayoff());</span>
+<span class="fc" id="L271">			mapResult.put (&quot;ExpectedPayoff&quot;, optGreek.expectedPayoff());</span>
 
-<span class="fc" id="L261">			mapResult.put (&quot;ForwardATMIntrinsic&quot;, dblForwardATMIntrinsic);</span>
+<span class="fc" id="L273">			mapResult.put (&quot;ForwardATMIntrinsic&quot;, dblForwardATMIntrinsic);</span>
 
-<span class="fc" id="L263">			mapResult.put (&quot;ForwardIntrinsic&quot;, dblForwardIntrinsic);</span>
+<span class="fc" id="L275">			mapResult.put (&quot;ForwardIntrinsic&quot;, dblForwardIntrinsic);</span>
 
-<span class="fc" id="L265">			mapResult.put (&quot;FPGCharm&quot;, dblFPGCharm);</span>
+<span class="fc" id="L277">			mapResult.put (&quot;FPGCharm&quot;, dblFPGCharm);</span>
 
-<span class="fc" id="L267">			mapResult.put (&quot;FPGColor&quot;, dblFPGColor);</span>
+<span class="fc" id="L279">			mapResult.put (&quot;FPGColor&quot;, dblFPGColor);</span>
 
-<span class="fc" id="L269">			mapResult.put (&quot;FPGDelta&quot;, dblFPGDelta);</span>
+<span class="fc" id="L281">			mapResult.put (&quot;FPGDelta&quot;, dblFPGDelta);</span>
 
-<span class="fc" id="L271">			mapResult.put (&quot;FPGGamma&quot;, dblFPGGamma);</span>
+<span class="fc" id="L283">			mapResult.put (&quot;FPGGamma&quot;, dblFPGGamma);</span>
 
-<span class="fc" id="L273">			mapResult.put (&quot;FPGRho&quot;, dblFPGRho);</span>
+<span class="fc" id="L285">			mapResult.put (&quot;FPGRho&quot;, dblFPGRho);</span>
 
-<span class="fc" id="L275">			mapResult.put (&quot;FPGSpeed&quot;, dblFPGSpeed);</span>
+<span class="fc" id="L287">			mapResult.put (&quot;FPGSpeed&quot;, dblFPGSpeed);</span>
 
-<span class="fc" id="L277">			mapResult.put (&quot;FPGTheta&quot;, dblFPGTheta);</span>
+<span class="fc" id="L289">			mapResult.put (&quot;FPGTheta&quot;, dblFPGTheta);</span>
 
-<span class="fc" id="L279">			mapResult.put (&quot;FPGUltima&quot;, dblFPGUltima);</span>
+<span class="fc" id="L291">			mapResult.put (&quot;FPGUltima&quot;, dblFPGUltima);</span>
 
-<span class="fc" id="L281">			mapResult.put (&quot;FPGVanna&quot;, dblFPGVanna);</span>
+<span class="fc" id="L293">			mapResult.put (&quot;FPGVanna&quot;, dblFPGVanna);</span>
 
-<span class="fc" id="L283">			mapResult.put (&quot;FPGVega&quot;, dblFPGVega);</span>
+<span class="fc" id="L295">			mapResult.put (&quot;FPGVega&quot;, dblFPGVega);</span>
 
-<span class="fc" id="L285">			mapResult.put (&quot;FPGVeta&quot;, dblFPGVeta);</span>
+<span class="fc" id="L297">			mapResult.put (&quot;FPGVeta&quot;, dblFPGVeta);</span>
 
-<span class="fc" id="L287">			mapResult.put (&quot;FPGVomma&quot;, dblFPGVomma);</span>
+<span class="fc" id="L299">			mapResult.put (&quot;FPGVomma&quot;, dblFPGVomma);</span>
 
-<span class="fc" id="L289">			mapResult.put (&quot;Gamma&quot;, dblFPGGamma * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L301">			mapResult.put (&quot;Gamma&quot;, dblFPGGamma * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L291">			mapResult.put (&quot;IntegratedSurfaceVariance&quot;, dblIntegratedSurfaceVariance);</span>
+<span class="fc" id="L303">			mapResult.put (&quot;IntegratedSurfaceVariance&quot;, dblIntegratedSurfaceVariance);</span>
 
-<span class="fc" id="L293">			mapResult.put (&quot;ManifestMeasureIntrinsic&quot;, dblManifestMeasureIntrinsic);</span>
+<span class="fc" id="L305">			mapResult.put (&quot;ManifestMeasureIntrinsic&quot;, dblManifestMeasureIntrinsic);</span>
 
-<span class="fc" id="L295">			mapResult.put (&quot;ManifestMeasureIntrinsicValue&quot;, dblManifestMeasureIntrinsic *</span>
+<span class="fc" id="L307">			mapResult.put (&quot;ManifestMeasureIntrinsicValue&quot;, dblManifestMeasureIntrinsic *</span>
 				dblManifestMeasurePriceTransformer);
 
-<span class="fc" id="L298">			mapResult.put (&quot;ManifestMeasurePriceTransformer&quot;, dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L310">			mapResult.put (&quot;ManifestMeasurePriceTransformer&quot;, dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L300">			mapResult.put (&quot;MoneynessFactor&quot;, dblMoneynessFactor);</span>
+<span class="fc" id="L312">			mapResult.put (&quot;MoneynessFactor&quot;, dblMoneynessFactor);</span>
 
-<span class="fc" id="L302">			mapResult.put (&quot;Price&quot;, dblSpotPrice);</span>
+<span class="fc" id="L314">			mapResult.put (&quot;Price&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L304">			mapResult.put (&quot;Prob1&quot;, optGreek.prob1());</span>
+<span class="fc" id="L316">			mapResult.put (&quot;Prob1&quot;, optGreek.prob1());</span>
 
-<span class="fc" id="L306">			mapResult.put (&quot;Prob2&quot;, optGreek.prob2());</span>
+<span class="fc" id="L318">			mapResult.put (&quot;Prob2&quot;, optGreek.prob2());</span>
 
-<span class="fc" id="L308">			mapResult.put (&quot;PV&quot;, dblSpotPrice * dblNotional);</span>
+<span class="fc" id="L320">			mapResult.put (&quot;PV&quot;, dblSpotPrice * dblNotional);</span>
 
-<span class="fc" id="L310">			mapResult.put (&quot;Rho&quot;, dblFPGRho * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L322">			mapResult.put (&quot;Rho&quot;, dblFPGRho * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L312">			mapResult.put (&quot;Speed&quot;, dblFPGSpeed * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L324">			mapResult.put (&quot;Speed&quot;, dblFPGSpeed * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L314">			mapResult.put (&quot;SpotPrice&quot;, dblSpotPrice);</span>
+<span class="fc" id="L326">			mapResult.put (&quot;SpotPrice&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L316">			mapResult.put (&quot;Theta&quot;, dblFPGTheta * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L328">			mapResult.put (&quot;Theta&quot;, dblFPGTheta * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L318">			mapResult.put (&quot;Ultima&quot;, optGreek.ultima() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L330">			mapResult.put (&quot;Ultima&quot;, optGreek.ultima() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L320">			mapResult.put (&quot;Upfront&quot;, dblSpotPrice);</span>
+<span class="fc" id="L332">			mapResult.put (&quot;Upfront&quot;, dblSpotPrice);</span>
 
-<span class="fc" id="L322">			mapResult.put (&quot;Vanna&quot;, optGreek.vanna() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L334">			mapResult.put (&quot;Vanna&quot;, optGreek.vanna() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L324">			mapResult.put (&quot;Vega&quot;, dblFPGVega * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L336">			mapResult.put (&quot;Vega&quot;, dblFPGVega * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L326">			mapResult.put (&quot;Veta&quot;, optGreek.veta() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L338">			mapResult.put (&quot;Veta&quot;, optGreek.veta() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L328">			mapResult.put (&quot;Vomma&quot;, optGreek.vomma() * dblManifestMeasurePriceTransformer);</span>
+<span class="fc" id="L340">			mapResult.put (&quot;Vomma&quot;, optGreek.vomma() * dblManifestMeasurePriceTransformer);</span>
 
-<span class="fc" id="L330">			return mapResult;</span>
-<span class="nc" id="L331">		} catch (java.lang.Exception e) {</span>
+<span class="fc" id="L342">			return mapResult;</span>
+<span class="nc" id="L343">		} catch (java.lang.Exception e) {</span>
 			// e.printStackTrace();
 		}
 
-<span class="nc" id="L335">		return null;</span>
+<span class="nc" id="L347">		return null;</span>
 	}
 
 	@Override public java.util.Set&lt;java.lang.String&gt; measureNames()
 	{
-<span class="nc" id="L340">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L352">		java.util.Set&lt;java.lang.String&gt; setstrMeasureNames = new java.util.TreeSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L342">		setstrMeasureNames.add (&quot;ATMManifestMeasure&quot;);</span>
+<span class="nc" id="L354">		setstrMeasureNames.add (&quot;ATMManifestMeasure&quot;);</span>
 
-<span class="nc" id="L344">		setstrMeasureNames.add (&quot;ATMPrice&quot;);</span>
+<span class="nc" id="L356">		setstrMeasureNames.add (&quot;ATMPrice&quot;);</span>
 
-<span class="nc" id="L346">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
+<span class="nc" id="L358">		setstrMeasureNames.add (&quot;CalcTime&quot;);</span>
 
-<span class="nc" id="L348">		setstrMeasureNames.add (&quot;Charm&quot;);</span>
+<span class="nc" id="L360">		setstrMeasureNames.add (&quot;Charm&quot;);</span>
 
-<span class="nc" id="L350">		setstrMeasureNames.add (&quot;Color&quot;);</span>
+<span class="nc" id="L362">		setstrMeasureNames.add (&quot;Color&quot;);</span>
 
-<span class="nc" id="L352">		setstrMeasureNames.add (&quot;Delta&quot;);</span>
+<span class="nc" id="L364">		setstrMeasureNames.add (&quot;Delta&quot;);</span>
 
-<span class="nc" id="L354">		setstrMeasureNames.add (&quot;EffectiveVolatility&quot;);</span>
+<span class="nc" id="L366">		setstrMeasureNames.add (&quot;EffectiveVolatility&quot;);</span>
 
-<span class="nc" id="L356">		setstrMeasureNames.add (&quot;ExpectedATMPayoff&quot;);</span>
+<span class="nc" id="L368">		setstrMeasureNames.add (&quot;ExpectedATMPayoff&quot;);</span>
 
-<span class="nc" id="L358">		setstrMeasureNames.add (&quot;ExpectedPayoff&quot;);</span>
+<span class="nc" id="L370">		setstrMeasureNames.add (&quot;ExpectedPayoff&quot;);</span>
 
-<span class="nc" id="L360">		setstrMeasureNames.add (&quot;ForwardATMIntrinsic&quot;);</span>
+<span class="nc" id="L372">		setstrMeasureNames.add (&quot;ForwardATMIntrinsic&quot;);</span>
 
-<span class="nc" id="L362">		setstrMeasureNames.add (&quot;ForwardIntrinsic&quot;);</span>
+<span class="nc" id="L374">		setstrMeasureNames.add (&quot;ForwardIntrinsic&quot;);</span>
 
-<span class="nc" id="L364">		setstrMeasureNames.add (&quot;FPGCharm&quot;);</span>
+<span class="nc" id="L376">		setstrMeasureNames.add (&quot;FPGCharm&quot;);</span>
 
-<span class="nc" id="L366">		setstrMeasureNames.add (&quot;FPGColor&quot;);</span>
+<span class="nc" id="L378">		setstrMeasureNames.add (&quot;FPGColor&quot;);</span>
 
-<span class="nc" id="L368">		setstrMeasureNames.add (&quot;FPGDelta&quot;);</span>
+<span class="nc" id="L380">		setstrMeasureNames.add (&quot;FPGDelta&quot;);</span>
 
-<span class="nc" id="L370">		setstrMeasureNames.add (&quot;FPGGamma&quot;);</span>
+<span class="nc" id="L382">		setstrMeasureNames.add (&quot;FPGGamma&quot;);</span>
 
-<span class="nc" id="L372">		setstrMeasureNames.add (&quot;FPGRho&quot;);</span>
+<span class="nc" id="L384">		setstrMeasureNames.add (&quot;FPGRho&quot;);</span>
 
-<span class="nc" id="L374">		setstrMeasureNames.add (&quot;FPGSpeed&quot;);</span>
+<span class="nc" id="L386">		setstrMeasureNames.add (&quot;FPGSpeed&quot;);</span>
 
-<span class="nc" id="L376">		setstrMeasureNames.add (&quot;FPGTheta&quot;);</span>
+<span class="nc" id="L388">		setstrMeasureNames.add (&quot;FPGTheta&quot;);</span>
 
-<span class="nc" id="L378">		setstrMeasureNames.add (&quot;FPGUltima&quot;);</span>
+<span class="nc" id="L390">		setstrMeasureNames.add (&quot;FPGUltima&quot;);</span>
 
-<span class="nc" id="L380">		setstrMeasureNames.add (&quot;FPGVanna&quot;);</span>
+<span class="nc" id="L392">		setstrMeasureNames.add (&quot;FPGVanna&quot;);</span>
 
-<span class="nc" id="L382">		setstrMeasureNames.add (&quot;FPGVega&quot;);</span>
+<span class="nc" id="L394">		setstrMeasureNames.add (&quot;FPGVega&quot;);</span>
 
-<span class="nc" id="L384">		setstrMeasureNames.add (&quot;FPGVeta&quot;);</span>
+<span class="nc" id="L396">		setstrMeasureNames.add (&quot;FPGVeta&quot;);</span>
 
-<span class="nc" id="L386">		setstrMeasureNames.add (&quot;FPGVomma&quot;);</span>
+<span class="nc" id="L398">		setstrMeasureNames.add (&quot;FPGVomma&quot;);</span>
 
-<span class="nc" id="L388">		setstrMeasureNames.add (&quot;Gamma&quot;);</span>
+<span class="nc" id="L400">		setstrMeasureNames.add (&quot;Gamma&quot;);</span>
 
-<span class="nc" id="L390">		setstrMeasureNames.add (&quot;IntegratedSurfaceVariance&quot;);</span>
+<span class="nc" id="L402">		setstrMeasureNames.add (&quot;IntegratedSurfaceVariance&quot;);</span>
 
-<span class="nc" id="L392">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsic&quot;);</span>
+<span class="nc" id="L404">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsic&quot;);</span>
 
-<span class="nc" id="L394">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
+<span class="nc" id="L406">		setstrMeasureNames.add (&quot;ManifestMeasureIntrinsicValue&quot;);</span>
 
-<span class="nc" id="L396">		setstrMeasureNames.add (&quot;ManifestMeasurePriceTransformer&quot;);</span>
+<span class="nc" id="L408">		setstrMeasureNames.add (&quot;ManifestMeasurePriceTransformer&quot;);</span>
 
-<span class="nc" id="L398">		setstrMeasureNames.add (&quot;MoneynessFactor&quot;);</span>
+<span class="nc" id="L410">		setstrMeasureNames.add (&quot;MoneynessFactor&quot;);</span>
 
-<span class="nc" id="L400">		setstrMeasureNames.add (&quot;Price&quot;);</span>
+<span class="nc" id="L412">		setstrMeasureNames.add (&quot;Price&quot;);</span>
 
-<span class="nc" id="L402">		setstrMeasureNames.add (&quot;Prob1&quot;);</span>
+<span class="nc" id="L414">		setstrMeasureNames.add (&quot;Prob1&quot;);</span>
 
-<span class="nc" id="L404">		setstrMeasureNames.add (&quot;Prob2&quot;);</span>
+<span class="nc" id="L416">		setstrMeasureNames.add (&quot;Prob2&quot;);</span>
 
-<span class="nc" id="L406">		setstrMeasureNames.add (&quot;PV&quot;);</span>
+<span class="nc" id="L418">		setstrMeasureNames.add (&quot;PV&quot;);</span>
 
-<span class="nc" id="L408">		setstrMeasureNames.add (&quot;Rho&quot;);</span>
+<span class="nc" id="L420">		setstrMeasureNames.add (&quot;Rho&quot;);</span>
 
-<span class="nc" id="L410">		setstrMeasureNames.add (&quot;Speed&quot;);</span>
+<span class="nc" id="L422">		setstrMeasureNames.add (&quot;Speed&quot;);</span>
 
-<span class="nc" id="L412">		setstrMeasureNames.add (&quot;SpotPrice&quot;);</span>
+<span class="nc" id="L424">		setstrMeasureNames.add (&quot;SpotPrice&quot;);</span>
 
-<span class="nc" id="L414">		setstrMeasureNames.add (&quot;Theta&quot;);</span>
+<span class="nc" id="L426">		setstrMeasureNames.add (&quot;Theta&quot;);</span>
 
-<span class="nc" id="L416">		setstrMeasureNames.add (&quot;Ultima&quot;);</span>
+<span class="nc" id="L428">		setstrMeasureNames.add (&quot;Ultima&quot;);</span>
 
-<span class="nc" id="L418">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
+<span class="nc" id="L430">		setstrMeasureNames.add (&quot;Upfront&quot;);</span>
 
-<span class="nc" id="L420">		setstrMeasureNames.add (&quot;Vanna&quot;);</span>
+<span class="nc" id="L432">		setstrMeasureNames.add (&quot;Vanna&quot;);</span>
 
-<span class="nc" id="L422">		setstrMeasureNames.add (&quot;Vega&quot;);</span>
+<span class="nc" id="L434">		setstrMeasureNames.add (&quot;Vega&quot;);</span>
 
-<span class="nc" id="L424">		setstrMeasureNames.add (&quot;Veta&quot;);</span>
+<span class="nc" id="L436">		setstrMeasureNames.add (&quot;Veta&quot;);</span>
 
-<span class="nc" id="L426">		setstrMeasureNames.add (&quot;Vomma&quot;);</span>
+<span class="nc" id="L438">		setstrMeasureNames.add (&quot;Vomma&quot;);</span>
 
-<span class="nc" id="L428">		return setstrMeasureNames;</span>
+<span class="nc" id="L440">		return setstrMeasureNames;</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.String&gt; couponCurrency()
 	{
-<span class="nc" id="L433">		return _cds.couponCurrency();</span>
+<span class="nc" id="L445">		return _cds.couponCurrency();</span>
 	}
 
 	@Override public java.lang.String payCurrency()
 	{
-<span class="nc" id="L438">		return _cds.payCurrency();</span>
+<span class="nc" id="L450">		return _cds.payCurrency();</span>
 	}
 
 	@Override public java.lang.String principalCurrency()
 	{
-<span class="nc" id="L443">		return _cds.principalCurrency();</span>
+<span class="nc" id="L455">		return _cds.principalCurrency();</span>
 	}
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; value (
@@ -449,18 +461,18 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 		final org.drip.param.market.CurveSurfaceQuoteContainer csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
-<span class="pc bpc" id="L452" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
+<span class="pc bpc" id="L464" title="2 of 4 branches missed.">		if (null == valParams || null == csqs) return null;</span>
 
 		try {
-<span class="fc" id="L455">			return valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
-<span class="fc" id="L456">				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
-<span class="fc" id="L457">					(org.drip.state.identifier.CustomLabel.Standard (_cds.name() + &quot;_&quot; + manifestMeasure())),</span>
-<span class="fc" id="L458">						valParams.valueDate(), exerciseDate().julian()));</span>
-<span class="nc" id="L459">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L460">			e.printStackTrace();</span>
+<span class="fc" id="L467">			return valueFromSurfaceVariance (valParams, pricerParams, csqs, vcp,</span>
+<span class="fc" id="L468">				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
+<span class="fc" id="L469">					(org.drip.state.identifier.CustomLabel.Standard (_cds.name() + &quot;_&quot; + manifestMeasure())),</span>
+<span class="fc" id="L470">						valParams.valueDate(), exerciseDate().julian()));</span>
+<span class="nc" id="L471">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L472">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L463">		return null;</span>
+<span class="nc" id="L475">		return null;</span>
 	}
 
 	@Override public double pv (
@@ -470,96 +482,96 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L473" title="All 2 branches missed.">		if (null == valParams) throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">		if (null == valParams) throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L475">		int iValueDate = valParams.valueDate();</span>
+<span class="nc" id="L487">		int iValueDate = valParams.valueDate();</span>
 
-<span class="nc" id="L477">		int iExerciseDate = exerciseDate().julian();</span>
+<span class="nc" id="L489">		int iExerciseDate = exerciseDate().julian();</span>
 
-<span class="nc" id="L479">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
+<span class="nc" id="L491">		org.drip.product.params.LastTradingDateSetting ltds = lastTradingDateSetting();</span>
 
-<span class="nc" id="L481">		java.lang.String strPayCurrency = payCurrency();</span>
+<span class="nc" id="L493">		java.lang.String strPayCurrency = payCurrency();</span>
 
-<span class="nc bnc" id="L483" title="All 4 branches missed.">		if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_cds.effectiveDate().julian(),</span>
+<span class="nc bnc" id="L495" title="All 4 branches missed.">		if (null != ltds &amp;&amp; iValueDate &gt;= ltds.lastTradingDate (_cds.effectiveDate().julian(),</span>
 			strPayCurrency))
-<span class="nc" id="L485">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);;</span>
+<span class="nc" id="L497">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);;</span>
 
-<span class="nc" id="L487">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCDSOutput = _cds.value</span>
-<span class="nc" id="L488">			(valParams, pricerParams, csqs, quotingParams);</span>
+<span class="nc" id="L499">		org.drip.analytics.support.CaseInsensitiveTreeMap&lt;java.lang.Double&gt; mapCDSOutput = _cds.value</span>
+<span class="nc" id="L500">			(valParams, pricerParams, csqs, quotingParams);</span>
 
-<span class="nc" id="L490">		java.lang.String strManifestMeasure = manifestMeasure();</span>
+<span class="nc" id="L502">		java.lang.String strManifestMeasure = manifestMeasure();</span>
 
-<span class="nc bnc" id="L492" title="All 4 branches missed.">		if (null == mapCDSOutput || !mapCDSOutput.containsKey (strManifestMeasure))</span>
-<span class="nc" id="L493">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L504" title="All 4 branches missed.">		if (null == mapCDSOutput || !mapCDSOutput.containsKey (strManifestMeasure))</span>
+<span class="nc" id="L505">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L495">		double dblFixedCleanDV01 = mapCDSOutput.get (&quot;CleanDV01&quot;);</span>
+<span class="nc" id="L507">		double dblFixedCleanDV01 = mapCDSOutput.get (&quot;CleanDV01&quot;);</span>
 
-<span class="nc" id="L497">		double dblATMManifestMeasure = mapCDSOutput.get (strManifestMeasure);</span>
+<span class="nc" id="L509">		double dblATMManifestMeasure = mapCDSOutput.get (strManifestMeasure);</span>
 
-<span class="nc bnc" id="L499" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure))</span>
-<span class="nc" id="L500">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblATMManifestMeasure))</span>
+<span class="nc" id="L512">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L502">		double dblIntegratedSurfaceVariance =</span>
-<span class="nc" id="L503">			org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
-<span class="nc" id="L504">				(org.drip.state.identifier.CustomLabel.Standard (_cds.name() + &quot;_&quot; + strManifestMeasure)),</span>
+<span class="nc" id="L514">		double dblIntegratedSurfaceVariance =</span>
+<span class="nc" id="L515">			org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (csqs.customVolatility</span>
+<span class="nc" id="L516">				(org.drip.state.identifier.CustomLabel.Standard (_cds.name() + &quot;_&quot; + strManifestMeasure)),</span>
 					iValueDate, iExerciseDate);
 
-<span class="nc bnc" id="L507" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))</span>
-<span class="nc" id="L508">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L519" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance))</span>
+<span class="nc" id="L520">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L510">		double dblIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblIntegratedSurfaceVariance);</span>
+<span class="nc" id="L522">		double dblIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblIntegratedSurfaceVariance);</span>
 
-<span class="nc" id="L512">		double dblStrike = strike();</span>
+<span class="nc" id="L524">		double dblStrike = strike();</span>
 
-<span class="nc" id="L514">		double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
+<span class="nc" id="L526">		double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;</span>
 
-<span class="nc" id="L516">		double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);</span>
+<span class="nc" id="L528">		double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);</span>
 
-<span class="nc" id="L518">		double dblForwardIntrinsic = java.lang.Double.NaN;</span>
-<span class="nc" id="L519">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
-<span class="nc" id="L520">		double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblIntegratedSurfaceVariance) /</span>
+<span class="nc" id="L530">		double dblForwardIntrinsic = java.lang.Double.NaN;</span>
+<span class="nc" id="L531">		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;</span>
+<span class="nc" id="L532">		double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblIntegratedSurfaceVariance) /</span>
 			dblIntegratedSurfaceVolatility;
-<span class="nc" id="L522">		double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblIntegratedSurfaceVariance) /</span>
+<span class="nc" id="L534">		double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblIntegratedSurfaceVariance) /</span>
 			dblIntegratedSurfaceVolatility;
 
-<span class="nc" id="L525">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
-<span class="nc" id="L526">			(org.drip.state.identifier.FundingLabel.Standard (strPayCurrency));</span>
+<span class="nc" id="L537">		org.drip.state.discount.MergedDiscountForwardCurve dcFunding = csqs.fundingState</span>
+<span class="nc" id="L538">			(org.drip.state.identifier.FundingLabel.Standard (strPayCurrency));</span>
 
-<span class="nc bnc" id="L528" title="All 2 branches missed.">		if (null == dcFunding) throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">		if (null == dcFunding) throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L530">		org.drip.state.credit.CreditCurve cc = csqs.creditState (_cds.creditLabel());</span>
+<span class="nc" id="L542">		org.drip.state.credit.CreditCurve cc = csqs.creditState (_cds.creditLabel());</span>
 
-<span class="nc bnc" id="L532" title="All 2 branches missed.">		if (null == cc) throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">		if (null == cc) throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L534" title="All 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
-<span class="nc" id="L535">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate) * cc.survival (iExerciseDate);</span>
-<span class="nc bnc" id="L536" title="All 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) || strManifestMeasure.equalsIgnoreCase</span>
-<span class="nc bnc" id="L537" title="All 4 branches missed.">			(&quot;ParSpread&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))</span>
-<span class="nc" id="L538">			dblManifestMeasurePriceTransformer = dblFixedCleanDV01;</span>
+<span class="nc bnc" id="L546" title="All 4 branches missed.">		if (strManifestMeasure.equalsIgnoreCase (&quot;Price&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;PV&quot;))</span>
+<span class="nc" id="L547">			dblManifestMeasurePriceTransformer = dcFunding.df (iExerciseDate) * cc.survival (iExerciseDate);</span>
+<span class="nc bnc" id="L548" title="All 2 branches missed.">		else if (strManifestMeasure.equalsIgnoreCase (&quot;FairPremium&quot;) || strManifestMeasure.equalsIgnoreCase</span>
+<span class="nc bnc" id="L549" title="All 4 branches missed.">			(&quot;ParSpread&quot;) || strManifestMeasure.equalsIgnoreCase (&quot;Rate&quot;))</span>
+<span class="nc" id="L550">			dblManifestMeasurePriceTransformer = dblFixedCleanDV01;</span>
 
-<span class="nc bnc" id="L540" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
-<span class="nc" id="L541">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L552" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))</span>
+<span class="nc" id="L553">			throw new java.lang.Exception (&quot;CDSEuropeanOption::pv =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L543" title="All 2 branches missed.">		if (_bIsReceiver)</span>
-<span class="nc" id="L544">			dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDPlus)</span>
-<span class="nc" id="L545">				- dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDMinus);</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">		if (_bIsReceiver)</span>
+<span class="nc" id="L556">			dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDPlus)</span>
+<span class="nc" id="L557">				- dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (dblDMinus);</span>
 		else
-<span class="nc" id="L547">			dblForwardIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDMinus) -</span>
-<span class="nc" id="L548">				dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDPlus);</span>
+<span class="nc" id="L559">			dblForwardIntrinsic = dblStrike * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDMinus) -</span>
+<span class="nc" id="L560">				dblATMManifestMeasure * org.drip.measure.gaussian.NormalQuadrature.CDF (-dblDPlus);</span>
 
-<span class="nc" id="L550">		return dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
+<span class="nc" id="L562">		return dblForwardIntrinsic * dblManifestMeasurePriceTransformer;</span>
 	}
 
 	@Override public org.drip.product.calib.ProductQuoteSet calibQuoteSet (
 		final org.drip.state.representation.LatentStateSpecification[] aLSS)
 	{
 		try {
-<span class="nc" id="L557">			return new org.drip.product.calib.ProductQuoteSet (aLSS);</span>
-<span class="nc" id="L558">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L559">			e.printStackTrace();</span>
+<span class="nc" id="L569">			return new org.drip.product.calib.ProductQuoteSet (aLSS);</span>
+<span class="nc" id="L570">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L571">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L562">		return null;</span>
+<span class="nc" id="L574">		return null;</span>
 	}
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint volatilityPRWC (
@@ -569,7 +581,7 @@ public class CDSEuropeanOption extends org.drip.product.option.OptionComponent {
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
 	{
-<span class="nc" id="L572">		return null;</span>
+<span class="nc" id="L584">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

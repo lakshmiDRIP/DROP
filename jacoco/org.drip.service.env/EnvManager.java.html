@@ -6,6 +6,7 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.service.env;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -77,18 +89,18 @@ package org.drip.service.env;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env&quot;&gt;Environment Shell&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md&quot;&gt;Library Module Loader Environment Manager&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L90">public class EnvManager {</span>
-<span class="fc" id="L91">	private static boolean s_bInvocationCapture = false;</span>
+<span class="nc" id="L102">public class EnvManager {</span>
+<span class="fc" id="L103">	private static boolean s_bInvocationCapture = false;</span>
 
 	/**
 	 * Initialize the logger, the database connections, the day count parameters, and day count objects.
@@ -103,160 +115,160 @@ package org.drip.service.env;
 		final java.lang.String strConfig,
 		final boolean bInvocationCapture)
 	{
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (s_bInvocationCapture = bInvocationCapture)</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (s_bInvocationCapture = bInvocationCapture)</span>
 		{
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Init())</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Init())</span>
 			{
-<span class="nc" id="L110">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Invocation Manager!&quot;);</span>
+<span class="nc" id="L122">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Invocation Manager!&quot;);</span>
 
-<span class="nc" id="L112">				return null;</span>
+<span class="nc" id="L124">				return null;</span>
 			}
 		}
 
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (!org.drip.analytics.support.Logger.Init (strConfig)) {</span>
-<span class="nc" id="L117">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Logger Manager!&quot;);</span>
-
-<span class="nc" id="L119">			return null;</span>
-		}
-
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">		if (!org.drip.service.env.CacheManager.Init()) {</span>
-<span class="nc" id="L123">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Cache Manager!&quot;);</span>
-
-<span class="nc" id="L125">			return null;</span>
-		}
-
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!org.drip.analytics.daycount.Convention.Init (strConfig)) {</span>
-<span class="nc" id="L129">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Day Count Conventions!&quot;);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">		if (!org.drip.analytics.support.Logger.Init (strConfig)) {</span>
+<span class="nc" id="L129">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Logger Manager!&quot;);</span>
 
 <span class="nc" id="L131">			return null;</span>
 		}
 
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.service.env.StandardCDXManager.InitStandardCDXSeries()) {</span>
-<span class="nc" id="L135">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize standard CDX Indexes!&quot;);</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">		if (!org.drip.service.env.CacheManager.Init()) {</span>
+<span class="nc" id="L135">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Cache Manager!&quot;);</span>
 
 <span class="nc" id="L137">			return null;</span>
 		}
 
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (!org.drip.market.definition.OvernightIndexContainer.Init()) {</span>
-<span class="nc" id="L141">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Overnight Indexes!&quot;);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">		if (!org.drip.analytics.daycount.Convention.Init (strConfig)) {</span>
+<span class="nc" id="L141">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Day Count Conventions!&quot;);</span>
 
 <span class="nc" id="L143">			return null;</span>
 		}
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.market.definition.IBORIndexContainer.Init()) {</span>
-<span class="nc" id="L147">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize IBOR Indexes!&quot;);</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if (!org.drip.service.env.StandardCDXManager.InitStandardCDXSeries()) {</span>
+<span class="nc" id="L147">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize standard CDX Indexes!&quot;);</span>
 
 <span class="nc" id="L149">			return null;</span>
 		}
 
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.ShortTermFuturesContainer.Init()) {</span>
-<span class="nc" id="L153">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Short Term Futures!&quot;);</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">		if (!org.drip.market.definition.OvernightIndexContainer.Init()) {</span>
+<span class="nc" id="L153">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Overnight Indexes!&quot;);</span>
 
 <span class="nc" id="L155">			return null;</span>
 		}
 
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.FuturesOptionsContainer.Init()) {</span>
-<span class="nc" id="L159">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Short Term Futures Options!&quot;);</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">		if (!org.drip.market.definition.IBORIndexContainer.Init()) {</span>
+<span class="nc" id="L159">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize IBOR Indexes!&quot;);</span>
 
 <span class="nc" id="L161">			return null;</span>
 		}
 
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (!org.drip.market.otc.IBORFixedFloatContainer.Init()) {</span>
-<span class="nc" id="L165">			System.out.println</span>
-<span class="nc" id="L166">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize IBOR Fix-Float Convention Settings!&quot;);</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.ShortTermFuturesContainer.Init()) {</span>
+<span class="nc" id="L165">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Short Term Futures!&quot;);</span>
 
-<span class="nc" id="L168">			return null;</span>
+<span class="nc" id="L167">			return null;</span>
 		}
 
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">		if (!org.drip.market.otc.IBORFloatFloatContainer.Init()) {</span>
-<span class="nc" id="L172">			System.out.println</span>
-<span class="nc" id="L173">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize IBOR Float-Float Convention Settings!&quot;);</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.FuturesOptionsContainer.Init()) {</span>
+<span class="nc" id="L171">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Short Term Futures Options!&quot;);</span>
 
-<span class="nc" id="L175">			return null;</span>
+<span class="nc" id="L173">			return null;</span>
 		}
 
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		if (!org.drip.market.otc.OvernightFixedFloatContainer.Init()) {</span>
-<span class="nc" id="L179">			System.out.println</span>
-<span class="nc" id="L180">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize Overnight Fix-Float Convention Settings!&quot;);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">		if (!org.drip.market.otc.IBORFixedFloatContainer.Init()) {</span>
+<span class="nc" id="L177">			System.out.println</span>
+<span class="nc" id="L178">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize IBOR Fix-Float Convention Settings!&quot;);</span>
 
-<span class="nc" id="L182">			return null;</span>
+<span class="nc" id="L180">			return null;</span>
 		}
 
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.DeliverableSwapFuturesContainer.Init()) {</span>
-<span class="nc" id="L186">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Deliverable Swap Futures Settings!&quot;);</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">		if (!org.drip.market.otc.IBORFloatFloatContainer.Init()) {</span>
+<span class="nc" id="L184">			System.out.println</span>
+<span class="nc" id="L185">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize IBOR Float-Float Convention Settings!&quot;);</span>
 
-<span class="nc" id="L188">			return null;</span>
+<span class="nc" id="L187">			return null;</span>
 		}
 
-<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (!org.drip.market.otc.CrossFloatConventionContainer.Init()) {</span>
-<span class="nc" id="L192">			System.out.println</span>
-<span class="nc" id="L193">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize Cross-Currency Float-Float Convention Settings!&quot;);</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">		if (!org.drip.market.otc.OvernightFixedFloatContainer.Init()) {</span>
+<span class="nc" id="L191">			System.out.println</span>
+<span class="nc" id="L192">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize Overnight Fix-Float Convention Settings!&quot;);</span>
 
-<span class="nc" id="L195">			return null;</span>
+<span class="nc" id="L194">			return null;</span>
 		}
 
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">		if (!org.drip.market.otc.SwapOptionSettlementContainer.Init()) {</span>
-<span class="nc" id="L199">			System.out.println</span>
-<span class="nc" id="L200">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Swap Option Settlement Conventions!&quot;);</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.DeliverableSwapFuturesContainer.Init()) {</span>
+<span class="nc" id="L198">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize Deliverable Swap Futures Settings!&quot;);</span>
 
-<span class="nc" id="L202">			return null;</span>
+<span class="nc" id="L200">			return null;</span>
 		}
 
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">		if (!org.drip.market.otc.CreditIndexConventionContainer.Init()) {</span>
-<span class="nc" id="L206">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Credit Index Conventions!&quot;);</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		if (!org.drip.market.otc.CrossFloatConventionContainer.Init()) {</span>
+<span class="nc" id="L204">			System.out.println</span>
+<span class="nc" id="L205">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize Cross-Currency Float-Float Convention Settings!&quot;);</span>
 
-<span class="nc" id="L208">			return null;</span>
+<span class="nc" id="L207">			return null;</span>
 		}
 
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.TreasuryFuturesConventionContainer.Init()) {</span>
-<span class="nc" id="L212">			System.out.println</span>
-<span class="nc" id="L213">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Bond Futures Convention Conventions!&quot;);</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">		if (!org.drip.market.otc.SwapOptionSettlementContainer.Init()) {</span>
+<span class="nc" id="L211">			System.out.println</span>
+<span class="nc" id="L212">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Swap Option Settlement Conventions!&quot;);</span>
 
-<span class="nc" id="L215">			return null;</span>
+<span class="nc" id="L214">			return null;</span>
 		}
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.TreasuryFuturesOptionContainer.Init()) {</span>
-<span class="nc" id="L219">			System.out.println</span>
-<span class="nc" id="L220">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Bond Futures Option Conventions!&quot;);</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">		if (!org.drip.market.otc.CreditIndexConventionContainer.Init()) {</span>
+<span class="nc" id="L218">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Credit Index Conventions!&quot;);</span>
 
-<span class="nc" id="L222">			return null;</span>
+<span class="nc" id="L220">			return null;</span>
 		}
 
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">		if (!org.drip.market.definition.FXSettingContainer.Init()) {</span>
-<span class="nc" id="L226">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the FX Conventions!&quot;);</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.TreasuryFuturesConventionContainer.Init()) {</span>
+<span class="nc" id="L224">			System.out.println</span>
+<span class="nc" id="L225">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Bond Futures Convention Conventions!&quot;);</span>
 
-<span class="nc" id="L228">			return null;</span>
+<span class="nc" id="L227">			return null;</span>
 		}
 
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">		if (!org.drip.market.issue.TreasurySettingContainer.Init()) {</span>
-<span class="nc" id="L232">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Treasury Settings!&quot;);</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.TreasuryFuturesOptionContainer.Init()) {</span>
+<span class="nc" id="L231">			System.out.println</span>
+<span class="nc" id="L232">				(&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Bond Futures Option Conventions!&quot;);</span>
 
 <span class="nc" id="L234">			return null;</span>
 		}
 
-<span class="pc bpc" id="L237" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.TreasuryFuturesContractContainer.Init()) {</span>
-<span class="nc" id="L238">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Treasury Futures Contract!&quot;);</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">		if (!org.drip.market.definition.FXSettingContainer.Init()) {</span>
+<span class="nc" id="L238">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the FX Conventions!&quot;);</span>
 
 <span class="nc" id="L240">			return null;</span>
 		}
 
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">		if (!org.drip.simm.common.ISDASettingsContainer.Init()) {</span>
-<span class="nc" id="L244">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize ISDA SIMM 2.0 Specifications!&quot;);</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">		if (!org.drip.market.issue.TreasurySettingContainer.Init()) {</span>
+<span class="nc" id="L244">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Treasury Settings!&quot;);</span>
 
 <span class="nc" id="L246">			return null;</span>
 		}
 
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (s_bInvocationCapture)</span>
-		{
-<span class="pc bpc" id="L251" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Setup())</span>
-			{
-<span class="nc" id="L253">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Setup Invocation Manager!&quot;);</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">		if (!org.drip.market.exchange.TreasuryFuturesContractContainer.Init()) {</span>
+<span class="nc" id="L250">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize the Treasury Futures Contract!&quot;);</span>
 
-<span class="nc" id="L255">				return null;</span>
+<span class="nc" id="L252">			return null;</span>
+		}
+
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">		if (!org.drip.simm.common.ISDASettingsContainer.Init()) {</span>
+<span class="nc" id="L256">			System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Initialize ISDA SIMM 2.0 Specifications!&quot;);</span>
+
+<span class="nc" id="L258">			return null;</span>
+		}
+
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">		if (s_bInvocationCapture)</span>
+		{
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">			if (!org.drip.service.env.InvocationManager.Setup())</span>
+			{
+<span class="nc" id="L265">				System.out.println (&quot;EnvManager::InitEnv =&gt; Cannot Setup Invocation Manager!&quot;);</span>
+
+<span class="nc" id="L267">				return null;</span>
 			}
 		}
 
-<span class="fc" id="L259">		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);</span>
+<span class="fc" id="L271">		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);</span>
 	}
 
 	/**
@@ -270,7 +282,7 @@ package org.drip.service.env;
 	public static final java.sql.Statement InitEnv (
 		final java.lang.String strConfig)
 	{
-<span class="fc" id="L273">		return InitEnv (</span>
+<span class="fc" id="L285">		return InitEnv (</span>
 			strConfig,
 			true
 		);
@@ -284,7 +296,7 @@ package org.drip.service.env;
 
 	public static final boolean TerminateEnv()
 	{
-<span class="pc bpc" id="L287" title="1 of 2 branches missed.">		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

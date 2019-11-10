@@ -6,44 +6,56 @@ package org.drip.service.api;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.service.api;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md&quot;&gt;Horizon Roll Attribution Service API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -83,12 +95,12 @@ package org.drip.service.api;
  */
 
 public class FixFloatFundingInstrument {
-<span class="nc" id="L86">	private int _iLatentStateType = -1;</span>
-<span class="nc" id="L87">	private double[] _adblQuote = null;</span>
-<span class="nc" id="L88">	private java.lang.String _strCurrency = &quot;&quot;;</span>
-<span class="nc" id="L89">	private java.lang.String[] _astrMaturityTenor = null;</span>
-<span class="nc" id="L90">	private org.drip.state.discount.DiscountCurve _dc = null;</span>
-<span class="nc" id="L91">	private org.drip.analytics.date.JulianDate _dtSpot = null;</span>
+<span class="nc" id="L98">	private int _iLatentStateType = -1;</span>
+<span class="nc" id="L99">	private double[] _adblQuote = null;</span>
+<span class="nc" id="L100">	private java.lang.String _strCurrency = &quot;&quot;;</span>
+<span class="nc" id="L101">	private java.lang.String[] _astrMaturityTenor = null;</span>
+<span class="nc" id="L102">	private org.drip.state.discount.DiscountCurve _dc = null;</span>
+<span class="nc" id="L103">	private org.drip.analytics.date.JulianDate _dtSpot = null;</span>
 
 	/**
 	 * FixFloatFundingInstrument Constructor
@@ -109,13 +121,13 @@ public class FixFloatFundingInstrument {
 		final double[] adblQuote,
 		final int iLatentStateType)
 		throws java.lang.Exception
-<span class="nc" id="L112">	{</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">		if (null == (_dc = org.drip.service.template.LatentMarketStateBuilder.FundingCurve (_dtSpot = dtSpot,</span>
+<span class="nc" id="L124">	{</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == (_dc = org.drip.service.template.LatentMarketStateBuilder.FundingCurve (_dtSpot = dtSpot,</span>
 			_strCurrency = strCurrency, null, null, &quot;ForwardRate&quot;, null, &quot;ForwardRate&quot;, _astrMaturityTenor =
 				astrMaturityTenor, _adblQuote = adblQuote, &quot;SwapRate&quot;, _iLatentStateType =
 					iLatentStateType)))
-<span class="nc" id="L117">			throw new java.lang.Exception (&quot;FixFloatFundingInstrument Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L129">			throw new java.lang.Exception (&quot;FixFloatFundingInstrument Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L130">	}</span>
 
 	/**
 	 * Retrieve the Spot Date
@@ -125,7 +137,7 @@ public class FixFloatFundingInstrument {
 
 	public org.drip.analytics.date.JulianDate spotDate()
 	{
-<span class="nc" id="L128">		return _dtSpot;</span>
+<span class="nc" id="L140">		return _dtSpot;</span>
 	}
 
 	/**
@@ -136,7 +148,7 @@ public class FixFloatFundingInstrument {
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L139">		return _strCurrency;</span>
+<span class="nc" id="L151">		return _strCurrency;</span>
 	}
 
 	/**
@@ -147,7 +159,7 @@ public class FixFloatFundingInstrument {
 
 	public int latentStateType()
 	{
-<span class="nc" id="L150">		return _iLatentStateType;</span>
+<span class="nc" id="L162">		return _iLatentStateType;</span>
 	}
 
 	/**
@@ -158,7 +170,7 @@ public class FixFloatFundingInstrument {
 
 	public java.lang.String[] maturityTenors()
 	{
-<span class="nc" id="L161">		return _astrMaturityTenor;</span>
+<span class="nc" id="L173">		return _astrMaturityTenor;</span>
 	}
 
 	/**
@@ -169,7 +181,7 @@ public class FixFloatFundingInstrument {
 
 	public double[] quotes()
 	{
-<span class="nc" id="L172">		return _adblQuote;</span>
+<span class="nc" id="L184">		return _adblQuote;</span>
 	}
 
 	/**
@@ -180,7 +192,7 @@ public class FixFloatFundingInstrument {
 
 	public org.drip.state.discount.DiscountCurve fundingState()
 	{
-<span class="nc" id="L183">		return _dc;</span>
+<span class="nc" id="L195">		return _dc;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,6 +6,7 @@ package org.drip.service.api;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -14,39 +15,50 @@ package org.drip.service.api;
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -74,10 +86,10 @@ package org.drip.service.api;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api&quot;&gt;API&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md&quot;&gt;Horizon Roll Attribution Service API&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -85,13 +97,13 @@ package org.drip.service.api;
  */
 
 public class DiscountCurveInputInstrument {
-<span class="nc" id="L88">	private org.drip.analytics.date.JulianDate _dt = null;</span>
-<span class="nc" id="L89">	private java.util.List&lt;java.lang.Double&gt; _lsCashQuote = null;</span>
-<span class="nc" id="L90">	private java.util.List&lt;java.lang.String&gt; _lsCashTenor = null;</span>
-<span class="nc" id="L91">	private java.util.List&lt;java.lang.Double&gt; _lsSwapQuote = null;</span>
-<span class="nc" id="L92">	private java.util.List&lt;java.lang.String&gt; _lsSwapTenor = null;</span>
-<span class="nc" id="L93">	private java.util.List&lt;java.lang.Double&gt; _lsFutureQuote = null;</span>
-<span class="nc" id="L94">	private java.util.List&lt;java.lang.String&gt; _lsFutureTenor = null;</span>
+<span class="nc" id="L100">	private org.drip.analytics.date.JulianDate _dt = null;</span>
+<span class="nc" id="L101">	private java.util.List&lt;java.lang.Double&gt; _lsCashQuote = null;</span>
+<span class="nc" id="L102">	private java.util.List&lt;java.lang.String&gt; _lsCashTenor = null;</span>
+<span class="nc" id="L103">	private java.util.List&lt;java.lang.Double&gt; _lsSwapQuote = null;</span>
+<span class="nc" id="L104">	private java.util.List&lt;java.lang.String&gt; _lsSwapTenor = null;</span>
+<span class="nc" id="L105">	private java.util.List&lt;java.lang.Double&gt; _lsFutureQuote = null;</span>
+<span class="nc" id="L106">	private java.util.List&lt;java.lang.String&gt; _lsFutureTenor = null;</span>
 
 	/**
 	 * DiscountCurveInputInstrument constructor
@@ -116,26 +128,26 @@ public class DiscountCurveInputInstrument {
 		final java.util.List&lt;java.lang.String&gt; lsSwapTenor,
 		final java.util.List&lt;java.lang.Double&gt; lsSwapQuote)
 		throws java.lang.Exception
-<span class="nc" id="L119">	{</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (null == (_dt = dt))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;DiscountCurveInputInstrument ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L131">	{</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == (_dt = dt))</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;DiscountCurveInputInstrument ctr: Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">		int iNumCashQuote = null == (_lsCashQuote = lsCashQuote) ? 0 : _lsCashQuote.size();</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		int iNumCashQuote = null == (_lsCashQuote = lsCashQuote) ? 0 : _lsCashQuote.size();</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		int iNumCashTenor = null == (_lsCashTenor = lsCashTenor) ? 0 : _lsCashTenor.size();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		int iNumCashTenor = null == (_lsCashTenor = lsCashTenor) ? 0 : _lsCashTenor.size();</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		int iNumFutureQuote = null == (_lsFutureQuote = lsFutureQuote) ? 0 : _lsFutureQuote.size();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		int iNumFutureQuote = null == (_lsFutureQuote = lsFutureQuote) ? 0 : _lsFutureQuote.size();</span>
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		int iNumFutureTenor = null == (_lsFutureTenor = lsFutureTenor) ? 0 : _lsFutureTenor.size();</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		int iNumFutureTenor = null == (_lsFutureTenor = lsFutureTenor) ? 0 : _lsFutureTenor.size();</span>
 
-<span class="nc bnc" id="L131" title="All 2 branches missed.">		int iNumSwapQuote = null == (_lsSwapQuote = lsSwapQuote) ? 0 : _lsSwapQuote.size();</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		int iNumSwapQuote = null == (_lsSwapQuote = lsSwapQuote) ? 0 : _lsSwapQuote.size();</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">		int iNumSwapTenor = null == (_lsSwapTenor = lsSwapTenor) ? 0 : _lsSwapTenor.size();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		int iNumSwapTenor = null == (_lsSwapTenor = lsSwapTenor) ? 0 : _lsSwapTenor.size();</span>
 
-<span class="nc bnc" id="L135" title="All 12 branches missed.">		if (iNumCashQuote != iNumCashTenor || iNumFutureQuote != iNumFutureTenor || iNumSwapQuote !=</span>
+<span class="nc bnc" id="L147" title="All 12 branches missed.">		if (iNumCashQuote != iNumCashTenor || iNumFutureQuote != iNumFutureTenor || iNumSwapQuote !=</span>
 			iNumSwapTenor || (0 == iNumCashTenor &amp;&amp; 0 == iNumFutureTenor &amp;&amp; 0 == iNumSwapTenor))
-<span class="nc" id="L137">			throw new java.lang.Exception (&quot;DiscountCurveInputInstrument ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L138">	}</span>
+<span class="nc" id="L149">			throw new java.lang.Exception (&quot;DiscountCurveInputInstrument ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L150">	}</span>
 
 	/**
 	 * Retrieve the Curve Epoch Date
@@ -145,7 +157,7 @@ public class DiscountCurveInputInstrument {
 
 	public org.drip.analytics.date.JulianDate date()
 	{
-<span class="nc" id="L148">		return _dt;</span>
+<span class="nc" id="L160">		return _dt;</span>
 	}
 
 	/**
@@ -156,19 +168,19 @@ public class DiscountCurveInputInstrument {
 
 	public double[] cashQuote()
 	{
-<span class="nc bnc" id="L159" title="All 2 branches missed.">		if (null == _lsCashQuote) return null;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		if (null == _lsCashQuote) return null;</span>
 
-<span class="nc" id="L161">		int iNumQuote = _lsCashQuote.size();</span>
+<span class="nc" id="L173">		int iNumQuote = _lsCashQuote.size();</span>
 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">		if (0 == iNumQuote) return null;</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (0 == iNumQuote) return null;</span>
 
-<span class="nc" id="L165">		int i = 0;</span>
-<span class="nc" id="L166">		double[] adblQuote = new double[iNumQuote];</span>
+<span class="nc" id="L177">		int i = 0;</span>
+<span class="nc" id="L178">		double[] adblQuote = new double[iNumQuote];</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (double dblQuote : _lsCashQuote)</span>
-<span class="nc" id="L169">			adblQuote[i++] = dblQuote;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (double dblQuote : _lsCashQuote)</span>
+<span class="nc" id="L181">			adblQuote[i++] = dblQuote;</span>
 
-<span class="nc" id="L171">		return adblQuote;</span>
+<span class="nc" id="L183">		return adblQuote;</span>
 	}
 
 	/**
@@ -179,19 +191,19 @@ public class DiscountCurveInputInstrument {
 
 	public java.lang.String[] cashTenor()
 	{
-<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (null == _lsCashTenor) return null;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (null == _lsCashTenor) return null;</span>
 
-<span class="nc" id="L184">		int iNumTenor = _lsCashTenor.size();</span>
+<span class="nc" id="L196">		int iNumTenor = _lsCashTenor.size();</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L188">		int i = 0;</span>
-<span class="nc" id="L189">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
+<span class="nc" id="L200">		int i = 0;</span>
+<span class="nc" id="L201">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
 
-<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (java.lang.String strTenor : _lsCashTenor)</span>
-<span class="nc" id="L192">			astrTenor[i++] = strTenor;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		for (java.lang.String strTenor : _lsCashTenor)</span>
+<span class="nc" id="L204">			astrTenor[i++] = strTenor;</span>
 
-<span class="nc" id="L194">		return astrTenor;</span>
+<span class="nc" id="L206">		return astrTenor;</span>
 	}
 
 	/**
@@ -202,19 +214,19 @@ public class DiscountCurveInputInstrument {
 
 	public double[] futureQuote()
 	{
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (null == _lsFutureQuote) return null;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (null == _lsFutureQuote) return null;</span>
 
-<span class="nc" id="L207">		int iNumQuote = _lsFutureQuote.size();</span>
+<span class="nc" id="L219">		int iNumQuote = _lsFutureQuote.size();</span>
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (0 == iNumQuote) return null;</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (0 == iNumQuote) return null;</span>
 
-<span class="nc" id="L211">		int i = 0;</span>
-<span class="nc" id="L212">		double[] adblQuote = new double[iNumQuote];</span>
+<span class="nc" id="L223">		int i = 0;</span>
+<span class="nc" id="L224">		double[] adblQuote = new double[iNumQuote];</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">		for (double dblQuote : _lsFutureQuote)</span>
-<span class="nc" id="L215">			adblQuote[i++] = dblQuote;</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		for (double dblQuote : _lsFutureQuote)</span>
+<span class="nc" id="L227">			adblQuote[i++] = dblQuote;</span>
 
-<span class="nc" id="L217">		return adblQuote;</span>
+<span class="nc" id="L229">		return adblQuote;</span>
 	}
 
 	/**
@@ -225,19 +237,19 @@ public class DiscountCurveInputInstrument {
 
 	public java.lang.String[] futureTenor()
 	{
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (null == _lsFutureTenor) return null;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (null == _lsFutureTenor) return null;</span>
 
-<span class="nc" id="L230">		int iNumTenor = _lsFutureTenor.size();</span>
+<span class="nc" id="L242">		int iNumTenor = _lsFutureTenor.size();</span>
 
-<span class="nc bnc" id="L232" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L234">		int i = 0;</span>
-<span class="nc" id="L235">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
+<span class="nc" id="L246">		int i = 0;</span>
+<span class="nc" id="L247">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
 
-<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (java.lang.String strTenor : _lsFutureTenor)</span>
-<span class="nc" id="L238">			astrTenor[i++] = strTenor;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (java.lang.String strTenor : _lsFutureTenor)</span>
+<span class="nc" id="L250">			astrTenor[i++] = strTenor;</span>
 
-<span class="nc" id="L240">		return astrTenor;</span>
+<span class="nc" id="L252">		return astrTenor;</span>
 	}
 
 	/**
@@ -248,19 +260,19 @@ public class DiscountCurveInputInstrument {
 
 	public double[] swapQuote()
 	{
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		if (null == _lsSwapQuote) return null;</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">		if (null == _lsSwapQuote) return null;</span>
 
-<span class="nc" id="L253">		int iNumQuote = _lsSwapQuote.size();</span>
+<span class="nc" id="L265">		int iNumQuote = _lsSwapQuote.size();</span>
 
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		if (0 == iNumQuote) return null;</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		if (0 == iNumQuote) return null;</span>
 
-<span class="nc" id="L257">		int i = 0;</span>
-<span class="nc" id="L258">		double[] adblQuote = new double[iNumQuote];</span>
+<span class="nc" id="L269">		int i = 0;</span>
+<span class="nc" id="L270">		double[] adblQuote = new double[iNumQuote];</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		for (double dblQuote : _lsSwapQuote)</span>
-<span class="nc" id="L261">			adblQuote[i++] = dblQuote;</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		for (double dblQuote : _lsSwapQuote)</span>
+<span class="nc" id="L273">			adblQuote[i++] = dblQuote;</span>
 
-<span class="nc" id="L263">		return adblQuote;</span>
+<span class="nc" id="L275">		return adblQuote;</span>
 	}
 
 	/**
@@ -271,19 +283,19 @@ public class DiscountCurveInputInstrument {
 
 	public java.lang.String[] swapTenor()
 	{
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (null == _lsSwapTenor) return null;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (null == _lsSwapTenor) return null;</span>
 
-<span class="nc" id="L276">		int iNumTenor = _lsSwapTenor.size();</span>
+<span class="nc" id="L288">		int iNumTenor = _lsSwapTenor.size();</span>
 
-<span class="nc bnc" id="L278" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (0 == iNumTenor) return null;</span>
 
-<span class="nc" id="L280">		int i = 0;</span>
-<span class="nc" id="L281">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
+<span class="nc" id="L292">		int i = 0;</span>
+<span class="nc" id="L293">		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];</span>
 
-<span class="nc bnc" id="L283" title="All 2 branches missed.">		for (java.lang.String strTenor : _lsSwapTenor)</span>
-<span class="nc" id="L284">			astrTenor[i++] = strTenor;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		for (java.lang.String strTenor : _lsSwapTenor)</span>
+<span class="nc" id="L296">			astrTenor[i++] = strTenor;</span>
 
-<span class="nc" id="L286">		return astrTenor;</span>
+<span class="nc" id="L298">		return astrTenor;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
