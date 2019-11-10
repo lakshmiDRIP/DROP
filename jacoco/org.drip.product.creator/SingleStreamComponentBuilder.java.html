@@ -6,6 +6,7 @@ package org.drip.product.creator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -16,39 +17,50 @@ package org.drip.product.creator;
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -78,17 +90,17 @@ package org.drip.product.creator;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator&quot;&gt;Creator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/README.md&quot;&gt;Product Components/Baskets for Credit, FRA, FX, Govvie, Rates, and Option AssetClasses&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/product/creator/README.md&quot;&gt;Streams and Products Construction Utilities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L91">public class SingleStreamComponentBuilder {</span>
+<span class="nc" id="L103">public class SingleStreamComponentBuilder {</span>
 
 	/**
 	 * Construct the Forward Rate Futures Code given a Effective Date
@@ -104,14 +116,14 @@ package org.drip.product.creator;
 		final int iEffectiveDate)
 	{
 		try {
-<span class="fc" id="L107">			return strPrefix + org.drip.analytics.date.DateUtil.CodeFromMonth</span>
-<span class="fc" id="L108">				(org.drip.analytics.date.DateUtil.Month (iEffectiveDate)) +</span>
-<span class="fc" id="L109">					(org.drip.analytics.date.DateUtil.Year (iEffectiveDate) % 10);</span>
-<span class="nc" id="L110">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L111">			e.printStackTrace();</span>
+<span class="fc" id="L119">			return strPrefix + org.drip.analytics.date.DateUtil.CodeFromMonth</span>
+<span class="fc" id="L120">				(org.drip.analytics.date.DateUtil.Month (iEffectiveDate)) +</span>
+<span class="fc" id="L121">					(org.drip.analytics.date.DateUtil.Year (iEffectiveDate) % 10);</span>
+<span class="nc" id="L122">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L123">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L114">		return null;</span>
+<span class="nc" id="L126">		return null;</span>
 	}
 
 	/**
@@ -129,49 +141,49 @@ package org.drip.product.creator;
 		final int iNumContract,
 		final java.lang.String strCurrency)
 	{
-<span class="pc bpc" id="L132" title="3 of 8 branches missed.">		if (null == dtSpot || 0 &gt;= iNumContract || null == strCurrency || strCurrency.isEmpty()) return null;</span>
+<span class="pc bpc" id="L144" title="3 of 8 branches missed.">		if (null == dtSpot || 0 &gt;= iNumContract || null == strCurrency || strCurrency.isEmpty()) return null;</span>
 
-<span class="fc" id="L134">		org.drip.product.rates.SingleStreamComponent[] aSSC = new</span>
+<span class="fc" id="L146">		org.drip.product.rates.SingleStreamComponent[] aSSC = new</span>
 			org.drip.product.rates.SingleStreamComponent[iNumContract];
 
 		try {
-<span class="fc" id="L138">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="fc" id="L150">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (&quot;3M&quot;,
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
-<span class="fc" id="L141">						org.drip.state.identifier.ForwardLabel.Standard (strCurrency + &quot;-3M&quot;),</span>
+<span class="fc" id="L153">						org.drip.state.identifier.ForwardLabel.Standard (strCurrency + &quot;-3M&quot;),</span>
 							org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 								0.);
 
-<span class="fc" id="L145">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L157">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting (4, &quot;3M&quot;, strCurrency, null, 1., null, null,
 					null, null);
 
-<span class="fc" id="L149">			org.drip.param.valuation.CashSettleParams csp = new org.drip.param.valuation.CashSettleParams (0,</span>
+<span class="fc" id="L161">			org.drip.param.valuation.CashSettleParams csp = new org.drip.param.valuation.CashSettleParams (0,</span>
 				strCurrency, 0);
 
-<span class="fc" id="L152">			org.drip.analytics.date.JulianDate dtStart = dtSpot.nextRatesFuturesIMM (3);</span>
+<span class="fc" id="L164">			org.drip.analytics.date.JulianDate dtStart = dtSpot.nextRatesFuturesIMM (3);</span>
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumContract; ++i) {</span>
-<span class="fc" id="L155">				org.drip.analytics.date.JulianDate dtMaturity = dtStart.addMonths (3);</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">			for (int i = 0; i &lt; iNumContract; ++i) {</span>
+<span class="fc" id="L167">				org.drip.analytics.date.JulianDate dtMaturity = dtStart.addMonths (3);</span>
 
-<span class="fc" id="L157">				aSSC[i] = new org.drip.product.rates.SingleStreamComponent (&quot;FUTURE_&quot; + i, new</span>
+<span class="fc" id="L169">				aSSC[i] = new org.drip.product.rates.SingleStreamComponent (&quot;FUTURE_&quot; + i, new</span>
 					org.drip.product.rates.Stream
 						(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L160">							(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtStart,</span>
+<span class="fc" id="L172">							(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtStart,</span>
 								dtMaturity), cps, cfus)), csp);
 
-<span class="fc bfc" id="L163" title="All 2 branches covered.">				aSSC[i].setPrimaryCode (ForwardRateFuturesCode (&quot;USD&quot;.equalsIgnoreCase (strCurrency) ? &quot;ED&quot; :</span>
-<span class="fc" id="L164">					strCurrency, dtStart.julian()));</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">				aSSC[i].setPrimaryCode (ForwardRateFuturesCode (&quot;USD&quot;.equalsIgnoreCase (strCurrency) ? &quot;ED&quot; :</span>
+<span class="fc" id="L176">					strCurrency, dtStart.julian()));</span>
 
-<span class="fc" id="L166">				dtStart = dtMaturity;</span>
+<span class="fc" id="L178">				dtStart = dtMaturity;</span>
 			}
-<span class="nc" id="L168">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L169">			e.printStackTrace();</span>
+<span class="nc" id="L180">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L181">			e.printStackTrace();</span>
 
-<span class="nc" id="L171">			return null;</span>
-<span class="fc" id="L172">		}</span>
+<span class="nc" id="L183">			return null;</span>
+<span class="fc" id="L184">		}</span>
 
-<span class="fc" id="L174">		return aSSC;</span>
+<span class="fc" id="L186">		return aSSC;</span>
 	}
 
 	/**
@@ -189,19 +201,19 @@ package org.drip.product.creator;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="fc" id="L192">		java.lang.String strTenor = fri.tenor();</span>
+<span class="fc" id="L204">		java.lang.String strTenor = fri.tenor();</span>
 
-<span class="fc" id="L194">		java.lang.String strCurrency = fri.currency();</span>
+<span class="fc" id="L206">		java.lang.String strCurrency = fri.currency();</span>
 
-<span class="fc" id="L196">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
+<span class="fc" id="L208">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
 
-<span class="fc" id="L198">		java.lang.String strCode = &quot;DEPOSIT::&quot; + fri.fullyQualifiedName() + &quot;::{&quot; + dtEffective + &quot;-&gt;&quot; +</span>
+<span class="fc" id="L210">		java.lang.String strCode = &quot;DEPOSIT::&quot; + fri.fullyQualifiedName() + &quot;::{&quot; + dtEffective + &quot;-&gt;&quot; +</span>
 			dtMaturity + &quot;}&quot;;
 
 		try {
-<span class="fc bfc" id="L202" title="All 2 branches covered.">			int iFreq = bIsON ? 360 : org.drip.analytics.support.Helper.TenorToFreq (strTenor);</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">			int iFreq = bIsON ? 360 : org.drip.analytics.support.Helper.TenorToFreq (strTenor);</span>
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strTenor, bIsON ?
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
@@ -209,25 +221,25 @@ package org.drip.product.creator;
 								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.);
 
-<span class="fc" id="L212">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L224">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency,
-<span class="fc" id="L214">					fri.floaterIndex().spotLagDAPForward(), 1., null, null, null, null);</span>
+<span class="fc" id="L226">					fri.floaterIndex().spotLagDAPForward(), 1., null, null, null, null);</span>
 
-<span class="fc" id="L216">			org.drip.product.rates.SingleStreamComponent sscDeposit = new</span>
+<span class="fc" id="L228">			org.drip.product.rates.SingleStreamComponent sscDeposit = new</span>
 				org.drip.product.rates.SingleStreamComponent (strCode, new org.drip.product.rates.Stream
 					(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L219">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
+<span class="fc" id="L231">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
 							dtMaturity), cps, cfus)), new org.drip.param.valuation.CashSettleParams (0,
 								strCurrency, 0));
 
-<span class="fc" id="L223">			sscDeposit.setPrimaryCode (strCode);</span>
+<span class="fc" id="L235">			sscDeposit.setPrimaryCode (strCode);</span>
 
-<span class="fc" id="L225">			return sscDeposit;</span>
-<span class="nc" id="L226">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L227">			e.printStackTrace();</span>
+<span class="fc" id="L237">			return sscDeposit;</span>
+<span class="nc" id="L238">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L239">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L230">		return null;</span>
+<span class="nc" id="L242">		return null;</span>
 	}
 
 	/**
@@ -245,37 +257,37 @@ package org.drip.product.creator;
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final double dblStrike)
 	{
-<span class="pc bpc" id="L248" title="2 of 4 branches missed.">		if (null == dtForwardStart || null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L260" title="2 of 4 branches missed.">		if (null == dtForwardStart || null == forwardLabel) return null;</span>
 
-<span class="fc" id="L250">		java.lang.String strCurrency = forwardLabel.currency();</span>
+<span class="fc" id="L262">		java.lang.String strCurrency = forwardLabel.currency();</span>
 
-<span class="fc" id="L252">		org.drip.analytics.date.JulianDate dtEffective = null;</span>
+<span class="fc" id="L264">		org.drip.analytics.date.JulianDate dtEffective = null;</span>
 
-<span class="fc" id="L254">		org.drip.analytics.daycount.DateAdjustParams dapEffective =</span>
-<span class="fc" id="L255">			forwardLabel.floaterIndex().spotLagDAPForward();</span>
+<span class="fc" id="L266">		org.drip.analytics.daycount.DateAdjustParams dapEffective =</span>
+<span class="fc" id="L267">			forwardLabel.floaterIndex().spotLagDAPForward();</span>
 
 		try {
-<span class="pc bpc" id="L258" title="1 of 2 branches missed.">			dtEffective = null == dapEffective ? dtForwardStart : new org.drip.analytics.date.JulianDate</span>
-<span class="fc" id="L259">				(dapEffective.roll (dtForwardStart.julian()));</span>
-<span class="nc" id="L260">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">			dtEffective = null == dapEffective ? dtForwardStart : new org.drip.analytics.date.JulianDate</span>
+<span class="fc" id="L271">				(dapEffective.roll (dtForwardStart.julian()));</span>
+<span class="nc" id="L272">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
 
-<span class="nc" id="L263">			return null;</span>
-<span class="fc" id="L264">		}</span>
+<span class="nc" id="L275">			return null;</span>
+<span class="fc" id="L276">		}</span>
 
-<span class="fc" id="L266">		java.lang.String strTenor = forwardLabel.tenor();</span>
+<span class="fc" id="L278">		java.lang.String strTenor = forwardLabel.tenor();</span>
 
-<span class="fc" id="L268">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
+<span class="fc" id="L280">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
 
-<span class="fc" id="L270">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
+<span class="fc" id="L282">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
 		
-<span class="fc bfc" id="L272" title="All 2 branches covered.">		java.lang.String strCode = (0 == dblStrike ? &quot;FUTURES::&quot; : &quot;FRA::&quot;) +</span>
-<span class="fc" id="L273">			forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective + &quot;-&gt;&quot; + dtMaturity + &quot;}&quot;;</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">		java.lang.String strCode = (0 == dblStrike ? &quot;FUTURES::&quot; : &quot;FRA::&quot;) +</span>
+<span class="fc" id="L285">			forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective + &quot;-&gt;&quot; + dtMaturity + &quot;}&quot;;</span>
 
 		try {
-<span class="pc bpc" id="L276" title="1 of 2 branches missed.">			int iFreq = bIsON ? 360 : 12 / org.drip.analytics.support.Helper.TenorToMonths (strTenor);</span>
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">			int iFreq = bIsON ? 360 : 12 / org.drip.analytics.support.Helper.TenorToMonths (strTenor);</span>
 
-<span class="pc bpc" id="L278" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strTenor, bIsON ?
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
@@ -283,25 +295,25 @@ package org.drip.product.creator;
 								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.);
 
-<span class="fc" id="L286">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L298">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, null, 1., null,
 					null, null, null);
 
-<span class="fc" id="L290">			org.drip.product.fra.FRAStandardComponent sscDeposit = new</span>
+<span class="fc" id="L302">			org.drip.product.fra.FRAStandardComponent sscDeposit = new</span>
 				org.drip.product.fra.FRAStandardComponent (strCode, new org.drip.product.rates.Stream
 					(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L293">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
+<span class="fc" id="L305">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
 							dtMaturity), cps, cfus)), dblStrike, new
 								org.drip.param.valuation.CashSettleParams (0, strCurrency, 0));
 
-<span class="fc" id="L297">			sscDeposit.setPrimaryCode (strCode);</span>
+<span class="fc" id="L309">			sscDeposit.setPrimaryCode (strCode);</span>
 
-<span class="fc" id="L299">			return sscDeposit;</span>
-<span class="nc" id="L300">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L301">			e.printStackTrace();</span>
+<span class="fc" id="L311">			return sscDeposit;</span>
+<span class="nc" id="L312">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L313">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L304">		return null;</span>
+<span class="nc" id="L316">		return null;</span>
 	}
 
 	/**
@@ -319,25 +331,25 @@ package org.drip.product.creator;
 		final org.drip.state.identifier.ForwardLabel forwardLabel,
 		final double dblStrike)
 	{
-<span class="pc bpc" id="L322" title="2 of 4 branches missed.">		if (null == dtForwardStart || null == forwardLabel) return null;</span>
+<span class="pc bpc" id="L334" title="2 of 4 branches missed.">		if (null == dtForwardStart || null == forwardLabel) return null;</span>
 
-<span class="fc" id="L324">		org.drip.analytics.date.JulianDate dtEffective = dtForwardStart;</span>
+<span class="fc" id="L336">		org.drip.analytics.date.JulianDate dtEffective = dtForwardStart;</span>
 
-<span class="fc" id="L326">		java.lang.String strTenor = forwardLabel.tenor();</span>
+<span class="fc" id="L338">		java.lang.String strTenor = forwardLabel.tenor();</span>
 
-<span class="fc" id="L328">		java.lang.String strCurrency = forwardLabel.currency();</span>
+<span class="fc" id="L340">		java.lang.String strCurrency = forwardLabel.currency();</span>
 
-<span class="fc" id="L330">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
+<span class="fc" id="L342">		boolean bIsON = &quot;ON&quot;.equalsIgnoreCase (strTenor);</span>
 
-<span class="fc" id="L332">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
+<span class="fc" id="L344">		org.drip.analytics.date.JulianDate dtMaturity = dtEffective.addTenor (strTenor);</span>
 		
-<span class="fc" id="L334">		java.lang.String strCode = &quot;FUTURES::&quot; + forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective +</span>
+<span class="fc" id="L346">		java.lang.String strCode = &quot;FUTURES::&quot; + forwardLabel.fullyQualifiedName() + &quot;::{&quot; + dtEffective +</span>
 			&quot;-&gt;&quot; + dtMaturity + &quot;}&quot;;
 
 		try {
-<span class="fc" id="L338">			int iFreq = org.drip.analytics.support.Helper.TenorToFreq (strTenor);</span>
+<span class="fc" id="L350">			int iFreq = org.drip.analytics.support.Helper.TenorToFreq (strTenor);</span>
 
-<span class="pc bpc" id="L340" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">			org.drip.param.period.ComposableFloatingUnitSetting cfus = new</span>
 				org.drip.param.period.ComposableFloatingUnitSetting (strTenor, bIsON ?
 					org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
 						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
@@ -345,25 +357,25 @@ package org.drip.product.creator;
 								org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.);
 
-<span class="fc" id="L348">			org.drip.param.period.CompositePeriodSetting cps = new</span>
+<span class="fc" id="L360">			org.drip.param.period.CompositePeriodSetting cps = new</span>
 				org.drip.param.period.CompositePeriodSetting (iFreq, strTenor, strCurrency, null, 1., null,
 					null, null, null);
 
-<span class="fc" id="L352">			org.drip.product.fra.FRAMarketComponent sscDeposit = new org.drip.product.fra.FRAMarketComponent</span>
+<span class="fc" id="L364">			org.drip.product.fra.FRAMarketComponent sscDeposit = new org.drip.product.fra.FRAMarketComponent</span>
 				(strCode, new org.drip.product.rates.Stream
 					(org.drip.analytics.support.CompositePeriodBuilder.FloatingCompositeUnit
-<span class="fc" id="L355">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
+<span class="fc" id="L367">						(org.drip.analytics.support.CompositePeriodBuilder.EdgePair (dtEffective,</span>
 							dtMaturity), cps, cfus)), dblStrike, new
 								org.drip.param.valuation.CashSettleParams (0, strCurrency, 0));
 
-<span class="fc" id="L359">			sscDeposit.setPrimaryCode (strCode);</span>
+<span class="fc" id="L371">			sscDeposit.setPrimaryCode (strCode);</span>
 
-<span class="fc" id="L361">			return sscDeposit;</span>
-<span class="nc" id="L362">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L363">			e.printStackTrace();</span>
+<span class="fc" id="L373">			return sscDeposit;</span>
+<span class="nc" id="L374">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L375">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L366">		return null;</span>
+<span class="nc" id="L378">		return null;</span>
 	}
 
 	/**
@@ -379,7 +391,7 @@ package org.drip.product.creator;
 		final org.drip.analytics.date.JulianDate dtSpot,
 		final org.drip.state.identifier.ForwardLabel fri)
 	{
-<span class="fc" id="L382">		return FRAStandard (dtSpot, fri, 0.);</span>
+<span class="fc" id="L394">		return FRAStandard (dtSpot, fri, 0.);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

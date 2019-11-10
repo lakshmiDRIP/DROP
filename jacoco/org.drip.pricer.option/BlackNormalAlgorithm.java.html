@@ -6,6 +6,7 @@ package org.drip.pricer.option;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
@@ -13,39 +14,50 @@ package org.drip.pricer.option;
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.pricer.option;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer&quot;&gt;Pricer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer/option&quot;&gt;Option&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md&quot;&gt;Product Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md&quot;&gt;Fixed Income Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer/README.md&quot;&gt;Custom Pricing Algorithms and the Derivative Fokker Planck Trajectory Generators&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pricer/option/README.md&quot;&gt;Deterministic/Stochastic Volatility Settings/Greeks&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -90,8 +102,8 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 	 */
 
 	public BlackNormalAlgorithm()
-<span class="fc" id="L93">	{</span>
-<span class="fc" id="L94">	}</span>
+<span class="fc" id="L105">	{</span>
+<span class="fc" id="L106">	}</span>
 
 	@Override public double payoff (
 		final double dblStrike,
@@ -104,27 +116,27 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility) ||</span>
-<span class="pc bpc" id="L110" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;BlackNormalAlgorithm::payoff =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility) ||</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;BlackNormalAlgorithm::payoff =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L114">		double dblD1D2Diff = dblVolatility * java.lang.Math.sqrt (dblTimeToExpiry);</span>
+<span class="fc" id="L126">		double dblD1D2Diff = dblVolatility * java.lang.Math.sqrt (dblTimeToExpiry);</span>
 
-<span class="fc" id="L116">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
+<span class="fc" id="L128">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
 
-<span class="fc bfc" id="L118" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
-<span class="fc" id="L119">		double dblD = (dblForward - dblStrike) / dblD1D2Diff;</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
+<span class="fc" id="L131">		double dblD = (dblForward - dblStrike) / dblD1D2Diff;</span>
 
-<span class="fc" id="L121">		double dblCallPayoff = dblForward * dblD1D2Diff * java.lang.Math.exp (-0.5 * dblD * dblD) /</span>
-<span class="fc" id="L122">			java.lang.Math.sqrt (2. * java.lang.Math.PI) / dblForward - dblStrike * -1. * dblD1D2Diff * dblD</span>
-<span class="fc" id="L123">				* org.drip.measure.gaussian.NormalQuadrature.CDF (dblD) / dblStrike;</span>
+<span class="fc" id="L133">		double dblCallPayoff = dblForward * dblD1D2Diff * java.lang.Math.exp (-0.5 * dblD * dblD) /</span>
+<span class="fc" id="L134">			java.lang.Math.sqrt (2. * java.lang.Math.PI) / dblForward - dblStrike * -1. * dblD1D2Diff * dblD</span>
+<span class="fc" id="L135">				* org.drip.measure.gaussian.NormalQuadrature.CDF (dblD) / dblStrike;</span>
 
-<span class="pc bpc" id="L125" title="1 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
+<span class="pc bpc" id="L137" title="1 of 4 branches missed.">		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;</span>
 
-<span class="fc bfc" id="L127" title="All 2 branches covered.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;</span>
 	}
 
 	@Override public org.drip.pricer.option.Greeks greeks (
@@ -136,34 +148,34 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 		final boolean bIsForward,
 		final double dblVolatility)
 	{
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||</span>
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||</span>
-<span class="pc bpc" id="L141" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility) ||</span>
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
-<span class="nc" id="L144">			return null;</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (dblUnderlier) ||</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (dblVolatility) ||</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">					!org.drip.numerical.common.NumberUtil.IsValid (dblTimeToExpiry) ||</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))</span>
+<span class="nc" id="L156">			return null;</span>
 
-<span class="fc" id="L146">		double dblD1D2Diff = dblVolatility * java.lang.Math.sqrt (dblTimeToExpiry);</span>
+<span class="fc" id="L158">		double dblD1D2Diff = dblVolatility * java.lang.Math.sqrt (dblTimeToExpiry);</span>
 
-<span class="fc" id="L148">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
+<span class="fc" id="L160">		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
-<span class="fc" id="L151">		double dblD = (dblForward - dblStrike) / dblD1D2Diff;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;</span>
+<span class="fc" id="L163">		double dblD = (dblForward - dblStrike) / dblD1D2Diff;</span>
 
-<span class="fc" id="L153">		double dblN = java.lang.Math.exp (-0.5 * dblD * dblD) / java.lang.Math.sqrt (2. * java.lang.Math.PI);</span>
+<span class="fc" id="L165">		double dblN = java.lang.Math.exp (-0.5 * dblD * dblD) / java.lang.Math.sqrt (2. * java.lang.Math.PI);</span>
 
-<span class="fc" id="L155">		double dblCallProb1 = dblD1D2Diff * dblN / dblForward;</span>
+<span class="fc" id="L167">		double dblCallProb1 = dblD1D2Diff * dblN / dblForward;</span>
 
 		try {
-<span class="fc" id="L158">			double dblCallProb2 = -1. * dblD1D2Diff * dblD * org.drip.measure.gaussian.NormalQuadrature.CDF (dblD)</span>
+<span class="fc" id="L170">			double dblCallProb2 = -1. * dblD1D2Diff * dblD * org.drip.measure.gaussian.NormalQuadrature.CDF (dblD)</span>
 				/ dblStrike;
 
-<span class="fc" id="L161">			double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblCallProb2;</span>
-<span class="fc" id="L162">			double dblATMCallPayoff = dblForward * (dblCallProb1 - dblCallProb2);</span>
-<span class="fc" id="L163">			double dblCallPrice = dblDF * dblExpectedCallPayoff;</span>
+<span class="fc" id="L173">			double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblCallProb2;</span>
+<span class="fc" id="L174">			double dblATMCallPayoff = dblForward * (dblCallProb1 - dblCallProb2);</span>
+<span class="fc" id="L175">			double dblCallPrice = dblDF * dblExpectedCallPayoff;</span>
 
-<span class="fc bfc" id="L165" title="All 2 branches covered.">			if (!bIsPut)</span>
-<span class="fc" id="L166">				return new org.drip.pricer.option.Greeks (</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">			if (!bIsPut)</span>
+<span class="fc" id="L178">				return new org.drip.pricer.option.Greeks (</span>
 					dblDF,
 					dblVolatility,
 					dblExpectedCallPayoff,
@@ -185,12 +197,12 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 					java.lang.Double.NaN
 				);
 
-<span class="fc" id="L188">			double dblPutProb1 = dblD * dblD1D2Diff * org.drip.measure.gaussian.NormalQuadrature.CDF (-1. * dblD) /</span>
+<span class="fc" id="L200">			double dblPutProb1 = dblD * dblD1D2Diff * org.drip.measure.gaussian.NormalQuadrature.CDF (-1. * dblD) /</span>
 				dblForward;
 
-<span class="fc" id="L191">			double dblPutProb2 = dblD1D2Diff * dblN / dblStrike;</span>
+<span class="fc" id="L203">			double dblPutProb2 = dblD1D2Diff * dblN / dblStrike;</span>
 
-<span class="fc" id="L193">			return new org.drip.pricer.option.PutGreeks (</span>
+<span class="fc" id="L205">			return new org.drip.pricer.option.PutGreeks (</span>
 				dblDF,
 				dblVolatility,
 				dblExpectedCallPayoff + dblStrike - dblForward,
@@ -212,11 +224,11 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 				java.lang.Double.NaN,
 				java.lang.Double.NaN
 			);
-<span class="nc" id="L215">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="nc" id="L227">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L219">		return null;</span>
+<span class="nc" id="L231">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

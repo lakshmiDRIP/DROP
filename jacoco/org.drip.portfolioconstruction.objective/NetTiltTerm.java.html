@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.objective;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy0
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,9 +83,9 @@ package org.drip.portfolioconstruction.objective;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective&quot;&gt;Objective&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/objective/README.md&quot;&gt;Portfolio Construction Objective Term Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -102,7 +114,7 @@ public class NetTiltTerm
 		final double[] membershipArray)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L105">		super (</span>
+<span class="nc" id="L117">		super (</span>
 			name,
 			&quot;OBJECTIVE_TERM_NET_TILT&quot;,
 			&quot;Net Tilt Objective Term&quot;,
@@ -110,49 +122,49 @@ public class NetTiltTerm
 			magnitudeArray,
 			membershipArray
 		);
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L125">	}</span>
 
 	@Override public org.drip.function.definition.RdToR1 rdtoR1()
 	{
-<span class="nc" id="L117">		return new org.drip.function.definition.RdToR1 (null)</span>
-<span class="nc" id="L118">		{</span>
+<span class="nc" id="L129">		return new org.drip.function.definition.RdToR1 (null)</span>
+<span class="nc" id="L130">		{</span>
 			@Override public int dimension()
 			{
-<span class="nc" id="L121">				return initialHoldingsArray().length;</span>
+<span class="nc" id="L133">				return initialHoldingsArray().length;</span>
 			}
 
 			@Override public double evaluate (
 				final double[] variateArray)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L128" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
 				{
-<span class="nc" id="L130">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L142">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
 				}
 
-<span class="nc" id="L133">				double tiltValue = 0.;</span>
-<span class="nc" id="L134">				int dimension = variateArray.length;</span>
+<span class="nc" id="L145">				double tiltValue = 0.;</span>
+<span class="nc" id="L146">				int dimension = variateArray.length;</span>
 
-<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (dimension != dimension())</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">				if (dimension != dimension())</span>
 				{
-<span class="nc" id="L138">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L150">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::evaluate =&gt; Invalid Inputs&quot;);</span>
 				}
 
-<span class="nc" id="L141">				double[] magnitudeArray = magnitudeArray();</span>
+<span class="nc" id="L153">				double[] magnitudeArray = magnitudeArray();</span>
 
-<span class="nc" id="L143">				double[] membershipArray = membershipArray();</span>
+<span class="nc" id="L155">				double[] membershipArray = membershipArray();</span>
 
-<span class="nc" id="L145">				double[] initialHoldingsArray = initialHoldingsArray();</span>
+<span class="nc" id="L157">				double[] initialHoldingsArray = initialHoldingsArray();</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">				for (int dimensionIndex = 0; dimensionIndex &lt; dimension; ++dimensionIndex)</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">				for (int dimensionIndex = 0; dimensionIndex &lt; dimension; ++dimensionIndex)</span>
 				{
-<span class="nc" id="L149">					tiltValue += magnitudeArray[dimensionIndex] * membershipArray[dimensionIndex] *</span>
-<span class="nc" id="L150">						java.lang.Math.abs (</span>
+<span class="nc" id="L161">					tiltValue += magnitudeArray[dimensionIndex] * membershipArray[dimensionIndex] *</span>
+<span class="nc" id="L162">						java.lang.Math.abs (</span>
 							variateArray[dimensionIndex] - initialHoldingsArray[dimensionIndex]
 						);
 				}
 
-<span class="nc" id="L155">				return tiltValue;</span>
+<span class="nc" id="L167">				return tiltValue;</span>
 			}
 
 			@Override public double derivative (
@@ -161,26 +173,26 @@ public class NetTiltTerm
 				final int derivativeOrder)
 				throws java.lang.Exception
 			{
-<span class="nc bnc" id="L164" title="All 4 branches missed.">				if (0 == derivativeOrder ||</span>
-<span class="nc bnc" id="L165" title="All 2 branches missed.">					null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
+<span class="nc bnc" id="L176" title="All 4 branches missed.">				if (0 == derivativeOrder ||</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">					null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))</span>
 				{
-<span class="nc" id="L167">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L179">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
 				}
 
-<span class="nc" id="L170">				int dimension = variateArray.length;</span>
+<span class="nc" id="L182">				int dimension = variateArray.length;</span>
 
-<span class="nc bnc" id="L172" title="All 4 branches missed.">				if (dimension != dimension() || variateIndex &gt;= dimension)</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">				if (dimension != dimension() || variateIndex &gt;= dimension)</span>
 				{
-<span class="nc" id="L174">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L186">					throw new java.lang.Exception (&quot;NetTiltTerm::rdToR1::derivative =&gt; Invalid Inputs&quot;);</span>
 				}
 
-<span class="nc bnc" id="L177" title="All 2 branches missed.">				if (2 &lt;= derivativeOrder)</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">				if (2 &lt;= derivativeOrder)</span>
 				{
-<span class="nc" id="L179">					return 0.;</span>
+<span class="nc" id="L191">					return 0.;</span>
 				}
 
-<span class="nc bnc" id="L182" title="All 2 branches missed.">				return (variateArray[variateIndex] &gt; initialHoldingsArray()[variateIndex] ? 1. : -1.) *</span>
-<span class="nc" id="L183">					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">				return (variateArray[variateIndex] &gt; initialHoldingsArray()[variateIndex] ? 1. : -1.) *</span>
+<span class="nc" id="L195">					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];</span>
 			}
 		};
 	}

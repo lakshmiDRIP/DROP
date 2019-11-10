@@ -6,43 +6,55 @@ package org.drip.portfolioconstruction.core;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -71,25 +83,26 @@ package org.drip.portfolioconstruction.core;
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
  *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction&quot;&gt;Portfolio Construction&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/core&quot;&gt;Core&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md&quot;&gt;Asset Allocation Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md&quot;&gt;Portfolio Construction under Allocation Constraints&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/core/README.md&quot;&gt;Core Portfolio Construction Component Suite&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Account extends org.drip.portfolioconstruction.core.Block
+public class Account
+	extends org.drip.portfolioconstruction.core.Block
 {
-<span class="nc" id="L85">	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;</span>
-<span class="nc" id="L86">	private org.drip.portfolioconstruction.composite.AlphaGroup _alphaGroup = null;</span>
-<span class="nc" id="L87">	private org.drip.portfolioconstruction.composite.Benchmark _trackingBenchmark = null;</span>
-<span class="nc" id="L88">	private org.drip.portfolioconstruction.composite.Benchmark _objectiveBenchmark = null;</span>
-<span class="nc" id="L89">	private org.drip.portfolioconstruction.core.TaxAccountingScheme _taxAccountingScheme = null;</span>
-<span class="nc" id="L90">	private org.drip.portfolioconstruction.risk.AssetCovariance _assetCovarianceRiskModel = null;</span>
-<span class="nc" id="L91">	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _alphaUncertaintyGroup = null;</span>
-<span class="nc" id="L92">	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _transactionChargeGroup = null;</span>
+<span class="nc" id="L98">	private org.drip.portfolioconstruction.composite.Holdings _holdings = null;</span>
+<span class="nc" id="L99">	private org.drip.portfolioconstruction.composite.AlphaGroup _alphaGroup = null;</span>
+<span class="nc" id="L100">	private org.drip.portfolioconstruction.composite.Benchmark _trackingBenchmark = null;</span>
+<span class="nc" id="L101">	private org.drip.portfolioconstruction.composite.Benchmark _objectiveBenchmark = null;</span>
+<span class="nc" id="L102">	private org.drip.portfolioconstruction.core.TaxAccountingScheme _taxAccountingScheme = null;</span>
+<span class="nc" id="L103">	private org.drip.portfolioconstruction.risk.AssetCovariance _assetCovarianceRiskModel = null;</span>
+<span class="nc" id="L104">	private org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup _alphaUncertaintyGroup = null;</span>
+<span class="nc" id="L105">	private org.drip.portfolioconstruction.composite.TransactionChargeGroup _transactionChargeGroup = null;</span>
 
 	/**
 	 * Account Constructor
@@ -111,15 +124,15 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 		final org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L114">		super (</span>
+<span class="nc" id="L127">		super (</span>
 			name,
 			id,
 			description
 		);
 
-<span class="nc" id="L120">		_holdings = holdings;</span>
-<span class="nc" id="L121">		_taxAccountingScheme = taxAccountingScheme;</span>
-<span class="nc" id="L122">	}</span>
+<span class="nc" id="L133">		_holdings = holdings;</span>
+<span class="nc" id="L134">		_taxAccountingScheme = taxAccountingScheme;</span>
+<span class="nc" id="L135">	}</span>
 
 	/**
 	 * Retrieve the Holdings
@@ -129,7 +142,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.composite.Holdings holdings()
 	{
-<span class="nc" id="L132">		return _holdings;</span>
+<span class="nc" id="L145">		return _holdings;</span>
 	}
 
 	/**
@@ -140,7 +153,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public java.lang.String currency()
 	{
-<span class="nc" id="L143">		return _holdings.currency();</span>
+<span class="nc" id="L156">		return _holdings.currency();</span>
 	}
 
 	/**
@@ -151,7 +164,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.composite.Benchmark trackingBenchmark()
 	{
-<span class="nc" id="L154">		return _trackingBenchmark;</span>
+<span class="nc" id="L167">		return _trackingBenchmark;</span>
 	}
 
 	/**
@@ -162,7 +175,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.composite.Benchmark objectiveBenchmark()
 	{
-<span class="nc" id="L165">		return _objectiveBenchmark;</span>
+<span class="nc" id="L178">		return _objectiveBenchmark;</span>
 	}
 
 	/**
@@ -173,7 +186,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.composite.AlphaGroup alphaGroup()
 	{
-<span class="nc" id="L176">		return _alphaGroup;</span>
+<span class="nc" id="L189">		return _alphaGroup;</span>
 	}
 
 	/**
@@ -184,7 +197,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup alphaUncertaintyGroup()
 	{
-<span class="nc" id="L187">		return _alphaUncertaintyGroup;</span>
+<span class="nc" id="L200">		return _alphaUncertaintyGroup;</span>
 	}
 
 	/**
@@ -195,7 +208,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.risk.AssetCovariance assetCovariance()
 	{
-<span class="nc" id="L198">		return _assetCovarianceRiskModel;</span>
+<span class="nc" id="L211">		return _assetCovarianceRiskModel;</span>
 	}
 
 	/**
@@ -206,7 +219,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionChargeGroup()
 	{
-<span class="nc" id="L209">		return _transactionChargeGroup;</span>
+<span class="nc" id="L222">		return _transactionChargeGroup;</span>
 	}
 
 	/**
@@ -217,7 +230,7 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 
 	public org.drip.portfolioconstruction.core.TaxAccountingScheme taxAccountingScheme()
 	{
-<span class="nc" id="L220">		return _taxAccountingScheme;</span>
+<span class="nc" id="L233">		return _taxAccountingScheme;</span>
 	}
 
 	/**
@@ -231,13 +244,13 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 	public boolean setTrackingBenchmark (
 		final org.drip.portfolioconstruction.composite.Benchmark trackingBenchmark)
 	{
-<span class="nc bnc" id="L234" title="All 2 branches missed.">		if (null == trackingBenchmark)</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (null == trackingBenchmark)</span>
 		{
-<span class="nc" id="L236">			return false;</span>
+<span class="nc" id="L249">			return false;</span>
 		}
 
-<span class="nc" id="L239">		_trackingBenchmark = trackingBenchmark;</span>
-<span class="nc" id="L240">		return true;</span>
+<span class="nc" id="L252">		_trackingBenchmark = trackingBenchmark;</span>
+<span class="nc" id="L253">		return true;</span>
 	}
 
 	/**
@@ -251,13 +264,13 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 	public boolean setObjectiveBenchmark (
 		final org.drip.portfolioconstruction.composite.Benchmark objectiveBenchmark)
 	{
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (null == objectiveBenchmark)</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">		if (null == objectiveBenchmark)</span>
 		{
-<span class="nc" id="L256">			return false;</span>
+<span class="nc" id="L269">			return false;</span>
 		}
 
-<span class="nc" id="L259">		_objectiveBenchmark = objectiveBenchmark;</span>
-<span class="nc" id="L260">		return true;</span>
+<span class="nc" id="L272">		_objectiveBenchmark = objectiveBenchmark;</span>
+<span class="nc" id="L273">		return true;</span>
 	}
 
 	/**
@@ -271,13 +284,13 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 	public boolean setAlphaGroup (
 		final org.drip.portfolioconstruction.composite.AlphaGroup alphaGroup)
 	{
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		if (null == alphaGroup)</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">		if (null == alphaGroup)</span>
 		{
-<span class="nc" id="L276">			return false;</span>
+<span class="nc" id="L289">			return false;</span>
 		}
 
-<span class="nc" id="L279">		_alphaGroup = alphaGroup;</span>
-<span class="nc" id="L280">		return true;</span>
+<span class="nc" id="L292">		_alphaGroup = alphaGroup;</span>
+<span class="nc" id="L293">		return true;</span>
 	}
 
 	/**
@@ -291,13 +304,13 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 	public boolean setAlphaUncertaintyGroup (
 		final org.drip.portfolioconstruction.risk.AlphaUncertaintyGroup alphaUncertaintyGroup)
 	{
-<span class="nc bnc" id="L294" title="All 2 branches missed.">		if (null == alphaUncertaintyGroup)</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (null == alphaUncertaintyGroup)</span>
 		{
-<span class="nc" id="L296">			return false;</span>
+<span class="nc" id="L309">			return false;</span>
 		}
 
-<span class="nc" id="L299">		_alphaUncertaintyGroup = alphaUncertaintyGroup;</span>
-<span class="nc" id="L300">		return true;</span>
+<span class="nc" id="L312">		_alphaUncertaintyGroup = alphaUncertaintyGroup;</span>
+<span class="nc" id="L313">		return true;</span>
 	}
 
 	/**
@@ -311,13 +324,13 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 	public boolean setAssetCovariance (
 		final org.drip.portfolioconstruction.risk.AssetCovariance assetCovarianceRiskModel)
 	{
-<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (null == assetCovarianceRiskModel)</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (null == assetCovarianceRiskModel)</span>
 		{
-<span class="nc" id="L316">			return false;</span>
+<span class="nc" id="L329">			return false;</span>
 		}
 
-<span class="nc" id="L319">		_assetCovarianceRiskModel = assetCovarianceRiskModel;</span>
-<span class="nc" id="L320">		return true;</span>
+<span class="nc" id="L332">		_assetCovarianceRiskModel = assetCovarianceRiskModel;</span>
+<span class="nc" id="L333">		return true;</span>
 	}
 
 	/**
@@ -331,13 +344,13 @@ public class Account extends org.drip.portfolioconstruction.core.Block
 	public boolean setTransactionCostGroup (
 		final org.drip.portfolioconstruction.composite.TransactionChargeGroup transactionChargeGroup)
 	{
-<span class="nc bnc" id="L334" title="All 2 branches missed.">		if (null == transactionChargeGroup)</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">		if (null == transactionChargeGroup)</span>
 		{
-<span class="nc" id="L336">			return false;</span>
+<span class="nc" id="L349">			return false;</span>
 		}
 
-<span class="nc" id="L339">		_transactionChargeGroup = transactionChargeGroup;</span>
-<span class="nc" id="L340">		return true;</span>
+<span class="nc" id="L352">		_transactionChargeGroup = transactionChargeGroup;</span>
+<span class="nc" id="L353">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
