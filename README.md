@@ -1,6 +1,6 @@
 # DROP
 
-**v4.42**  *3 November 2019*
+**v4.43**  *9 November 2019*
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
