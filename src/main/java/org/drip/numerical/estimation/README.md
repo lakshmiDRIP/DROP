@@ -51,6 +51,8 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * Abramowitz, M., and I. A. Stegun (2007): Handbook of Mathematics Functions <b>Dover Book on Mathematics</b>
 
+ * Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
+
 
 ## DROP Specifications
 
