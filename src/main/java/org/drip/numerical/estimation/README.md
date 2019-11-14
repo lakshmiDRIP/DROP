@@ -55,6 +55,10 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
 
+ * Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+
+ * National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical Functions https://dlmf.nist.gov/5.11
+
 
 ## DROP Specifications
 
