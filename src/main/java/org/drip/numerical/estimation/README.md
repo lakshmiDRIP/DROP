@@ -59,6 +59,8 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical Functions https://dlmf.nist.gov/5.11
 
+ * Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n! https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+
 
 ## DROP Specifications
 
