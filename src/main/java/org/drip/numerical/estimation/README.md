@@ -53,6 +53,8 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * Blagouchine, I. V. (2018): Three Notes on Ser's and Hasse's Representations for the Zeta-Functions https://arxiv.org/abs/1606.02044 <b>arXiv</b>
 
+ * Mezo, I., and M. E. Hoffman (2017): Zeros of the Digamma Function and its Barnes G-function Analogue <i>Integral Transforms and Special Functions</i> <b>28 (28)</b> 846-858
+
 
 ## DROP Specifications
 
