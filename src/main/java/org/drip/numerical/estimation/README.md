@@ -61,8 +61,6 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n! https://arxiv.org/abs/1003.2907 <b>arXiv</b>
 
- * Toth V. T. (2016): Programmable Calculators – The Gamma Function http://www.rskey.org/CMS/index.php/the-library/11
-
 
 ## DROP Specifications
 
