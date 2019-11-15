@@ -62,7 +62,7 @@ DROP Numerical implements Numerical Quadrature, Differentiation, Eigenization, L
 
  * Stoer, J., and R. Bulirsch (2002): <i>Introduction to Numerical Analysis 3rd Edition</i> <b>Springer</b>
 
- * Toth, V. T. (2016): Programmable Calculators – The Gamma Function http://www.rskey.org/CMS/index.php/the-library/11
+ * Toth, V. T. (2016): Programmable Calculators: The Gamma Function http://www.rskey.org/CMS/index.php/the-library/11
 
  * Whitaker, E. T., and G. N. Watson (1996): <i>A Course on Modern Analysis</i> <b>Cambridge University Press</b> New York
 
