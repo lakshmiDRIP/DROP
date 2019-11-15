@@ -65,6 +65,8 @@ DROP Numerical Estimation Package implements Function Numerical Estimates/Correc
 
  * Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
 
+ * Wikipedia (2019): Stirling's Approximation https://en.wikipedia.org/wiki/Stirling%27s_approximation
+
 
 ## DROP Specifications
 
