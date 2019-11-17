@@ -6,42 +6,54 @@ package org.drip.simm.parameters;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.simm.parameters;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md&quot;&gt;ISDA SIMM Risk Factor Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,8 +120,8 @@ package org.drip.simm.parameters;
 
 public class RiskMeasureSensitivitySettingsCR
 {
-<span class="nc" id="L111">	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;</span>
-<span class="nc" id="L112">	private java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;</span>
+<span class="nc" id="L123">	private org.drip.measure.stochastic.LabelCorrelation _crossBucketCorrelation = null;</span>
+<span class="nc" id="L124">	private java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;</span>
 		_bucketSensitivitySettingsMap = null;
 
 	/**
@@ -121,33 +133,33 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_DELTA_20()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L124">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L136">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L128">			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();</span>
+<span class="nc" id="L140">			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L132">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L144">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndex,
-<span class="nc" id="L134">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketIndex)</span>
+<span class="nc" id="L146">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketIndex)</span>
 			);
-<span class="nc" id="L136">		}</span>
+<span class="nc" id="L148">		}</span>
 
 		try
 		{
-<span class="nc" id="L140">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L152">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
-<span class="nc" id="L142">				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()</span>
+<span class="nc" id="L154">				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()</span>
 			);
 		}
-<span class="nc" id="L145">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L157">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L147">			e.printStackTrace();</span>
+<span class="nc" id="L159">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L150">		return null;</span>
+<span class="nc" id="L162">		return null;</span>
 	}
 
 	/**
@@ -159,33 +171,33 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_DELTA_21()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L162">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L174">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L166">			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();</span>
+<span class="nc" id="L178">			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L170">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L182">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndex,
-<span class="nc" id="L172">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketIndex)</span>
+<span class="nc" id="L184">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketIndex)</span>
 			);
-<span class="nc" id="L174">		}</span>
+<span class="nc" id="L186">		}</span>
 
 		try
 		{
-<span class="nc" id="L178">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L190">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
-<span class="nc" id="L180">				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()</span>
+<span class="nc" id="L192">				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()</span>
 			);
 		}
-<span class="nc" id="L183">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L195">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L185">			e.printStackTrace();</span>
+<span class="nc" id="L197">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L188">		return null;</span>
+<span class="nc" id="L200">		return null;</span>
 	}
 
 	/**
@@ -197,33 +209,33 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_VEGA_20()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L200">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L212">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L204">			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();</span>
+<span class="nc" id="L216">			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L208">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L220">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndex,
-<span class="nc" id="L210">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_20 (bucketIndex)</span>
+<span class="nc" id="L222">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_20 (bucketIndex)</span>
 			);
-<span class="nc" id="L212">		}</span>
+<span class="nc" id="L224">		}</span>
 
 		try
 		{
-<span class="nc" id="L216">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L228">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
-<span class="nc" id="L218">				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()</span>
+<span class="nc" id="L230">				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()</span>
 			);
 		}
-<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L233">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L223">			e.printStackTrace();</span>
+<span class="nc" id="L235">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L226">		return null;</span>
+<span class="nc" id="L238">		return null;</span>
 	}
 
 	/**
@@ -235,33 +247,33 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_VEGA_21()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L238">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L250">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L242">			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();</span>
+<span class="nc" id="L254">			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();</span>
 
-<span class="nc bnc" id="L244" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L246">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L258">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndex,
-<span class="nc" id="L248">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_21 (bucketIndex)</span>
+<span class="nc" id="L260">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRQ_21 (bucketIndex)</span>
 			);
-<span class="nc" id="L250">		}</span>
+<span class="nc" id="L262">		}</span>
 
 		try
 		{
-<span class="nc" id="L254">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L266">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
-<span class="nc" id="L256">				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()</span>
+<span class="nc" id="L268">				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()</span>
 			);
 		}
-<span class="nc" id="L259">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L271">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L264">		return null;</span>
+<span class="nc" id="L276">		return null;</span>
 	}
 
 	/**
@@ -273,33 +285,33 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_CURVATURE_20()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L276">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L288">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L280">			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();</span>
+<span class="nc" id="L292">			org.drip.simm.credit.CRQSettingsContainer20.BucketSet();</span>
 
-<span class="nc bnc" id="L282" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L284">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L296">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndex,
-<span class="nc" id="L286">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRQ_20 (bucketIndex)</span>
+<span class="nc" id="L298">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRQ_20 (bucketIndex)</span>
 			);
-<span class="nc" id="L288">		}</span>
+<span class="nc" id="L300">		}</span>
 
 		try
 		{
-<span class="nc" id="L292">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L304">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
-<span class="nc" id="L294">				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()</span>
+<span class="nc" id="L306">				org.drip.simm.credit.CRQSettingsContainer20.CrossBucketCorrelation()</span>
 			);
 		}
-<span class="nc" id="L297">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L309">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L299">			e.printStackTrace();</span>
+<span class="nc" id="L311">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L302">		return null;</span>
+<span class="nc" id="L314">		return null;</span>
 	}
 
 	/**
@@ -311,33 +323,33 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRQ_CURVATURE_21()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L314">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L326">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L318">			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();</span>
+<span class="nc" id="L330">			org.drip.simm.credit.CRQSettingsContainer21.BucketSet();</span>
 
-<span class="nc bnc" id="L320" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">		for (int bucketIndex : bucketIndexSet)</span>
 		{
-<span class="nc" id="L322">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L334">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndex,
-<span class="nc" id="L324">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRQ_21 (bucketIndex)</span>
+<span class="nc" id="L336">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRQ_21 (bucketIndex)</span>
 			);
-<span class="nc" id="L326">		}</span>
+<span class="nc" id="L338">		}</span>
 
 		try
 		{
-<span class="nc" id="L330">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L342">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
-<span class="nc" id="L332">				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()</span>
+<span class="nc" id="L344">				org.drip.simm.credit.CRQSettingsContainer21.CrossBucketCorrelation()</span>
 			);
 		}
-<span class="nc" id="L335">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L347">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L337">			e.printStackTrace();</span>
+<span class="nc" id="L349">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L340">		return null;</span>
+<span class="nc" id="L352">		return null;</span>
 	}
 
 	/**
@@ -349,30 +361,30 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_DELTA_20()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L352">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L364">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L356">			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();</span>
+<span class="nc" id="L368">			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();</span>
 
-<span class="nc" id="L358">		int bucketCount = bucketIndexSet.size();</span>
+<span class="nc" id="L370">		int bucketCount = bucketIndexSet.size();</span>
 
-<span class="nc" id="L360">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L372">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L362">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
+<span class="nc" id="L374">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
 
-<span class="nc bnc" id="L364" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
 		{
-<span class="nc" id="L366">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L378">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndexOuter,
-<span class="nc" id="L368">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketIndexOuter)</span>
+<span class="nc" id="L380">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketIndexOuter)</span>
 			);
 
-<span class="nc" id="L371">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
+<span class="nc" id="L383">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
 
-<span class="nc bnc" id="L373" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
 			{
-<span class="nc bnc" id="L375" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					org.drip.simm.credit.CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
@@ -380,7 +392,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 		try
 		{
-<span class="nc" id="L383">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L395">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					bucketLabelList,
@@ -388,12 +400,12 @@ public class RiskMeasureSensitivitySettingsCR
 				)
 			);
 		}
-<span class="nc" id="L391">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L403">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L393">			e.printStackTrace();</span>
+<span class="nc" id="L405">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L396">		return null;</span>
+<span class="nc" id="L408">		return null;</span>
 	}
 
 	/**
@@ -405,30 +417,30 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_DELTA_21()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L408">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L420">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L412">			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();</span>
+<span class="nc" id="L424">			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();</span>
 
-<span class="nc" id="L414">		int bucketCount = bucketIndexSet.size();</span>
+<span class="nc" id="L426">		int bucketCount = bucketIndexSet.size();</span>
 
-<span class="nc" id="L416">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L428">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L418">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
+<span class="nc" id="L430">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
 
-<span class="nc bnc" id="L420" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
 		{
-<span class="nc" id="L422">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L434">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndexOuter,
-<span class="nc" id="L424">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketIndexOuter)</span>
+<span class="nc" id="L436">				org.drip.simm.parameters.BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketIndexOuter)</span>
 			);
 
-<span class="nc" id="L427">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
+<span class="nc" id="L439">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
 
-<span class="nc bnc" id="L429" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
 			{
-<span class="nc bnc" id="L431" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					org.drip.simm.credit.CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
@@ -436,7 +448,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 		try
 		{
-<span class="nc" id="L439">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L451">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					bucketLabelList,
@@ -444,12 +456,12 @@ public class RiskMeasureSensitivitySettingsCR
 				)
 			);
 		}
-<span class="nc" id="L447">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L459">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L449">			e.printStackTrace();</span>
+<span class="nc" id="L461">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L452">		return null;</span>
+<span class="nc" id="L464">		return null;</span>
 	}
 
 	/**
@@ -461,30 +473,30 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_VEGA_20()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L464">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L476">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L468">			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();</span>
+<span class="nc" id="L480">			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();</span>
 
-<span class="nc" id="L470">		int bucketCount = bucketIndexSet.size();</span>
+<span class="nc" id="L482">		int bucketCount = bucketIndexSet.size();</span>
 
-<span class="nc" id="L472">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L484">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L474">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
+<span class="nc" id="L486">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
 
-<span class="nc bnc" id="L476" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
+<span class="nc bnc" id="L488" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
 		{
-<span class="nc" id="L478">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L490">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndexOuter,
-<span class="nc" id="L480">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)</span>
+<span class="nc" id="L492">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)</span>
 			);
 
-<span class="nc" id="L483">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
+<span class="nc" id="L495">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
 
-<span class="nc bnc" id="L485" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
 			{
-<span class="nc bnc" id="L487" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					org.drip.simm.credit.CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
@@ -492,7 +504,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 		try
 		{
-<span class="nc" id="L495">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L507">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					bucketLabelList,
@@ -500,12 +512,12 @@ public class RiskMeasureSensitivitySettingsCR
 				)
 			);
 		}
-<span class="nc" id="L503">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L515">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L505">			e.printStackTrace();</span>
+<span class="nc" id="L517">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L508">		return null;</span>
+<span class="nc" id="L520">		return null;</span>
 	}
 
 	/**
@@ -517,30 +529,30 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_VEGA_21()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L520">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L532">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L524">			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();</span>
+<span class="nc" id="L536">			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();</span>
 
-<span class="nc" id="L526">		int bucketCount = bucketIndexSet.size();</span>
+<span class="nc" id="L538">		int bucketCount = bucketIndexSet.size();</span>
 
-<span class="nc" id="L528">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L540">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L530">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
+<span class="nc" id="L542">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
 
-<span class="nc bnc" id="L532" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
 		{
-<span class="nc" id="L534">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L546">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndexOuter,
-<span class="nc" id="L536">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_21 (bucketIndexOuter)</span>
+<span class="nc" id="L548">				org.drip.simm.parameters.BucketVegaSettingsCR.ISDA_CRNQ_21 (bucketIndexOuter)</span>
 			);
 
-<span class="nc" id="L539">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
+<span class="nc" id="L551">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
 
-<span class="nc bnc" id="L541" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
 			{
-<span class="nc bnc" id="L543" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					org.drip.simm.credit.CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
@@ -548,7 +560,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 		try
 		{
-<span class="nc" id="L551">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L563">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					bucketLabelList,
@@ -556,12 +568,12 @@ public class RiskMeasureSensitivitySettingsCR
 				)
 			);
 		}
-<span class="nc" id="L559">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L571">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L561">			e.printStackTrace();</span>
+<span class="nc" id="L573">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L564">		return null;</span>
+<span class="nc" id="L576">		return null;</span>
 	}
 
 	/**
@@ -573,30 +585,30 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_CURVATURE_20()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L576">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L588">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L580">			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();</span>
+<span class="nc" id="L592">			org.drip.simm.credit.CRNQSettingsContainer20.BucketSet();</span>
 
-<span class="nc" id="L582">		int bucketCount = bucketIndexSet.size();</span>
+<span class="nc" id="L594">		int bucketCount = bucketIndexSet.size();</span>
 
-<span class="nc" id="L584">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L596">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L586">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
+<span class="nc" id="L598">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
 
-<span class="nc bnc" id="L588" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
+<span class="nc bnc" id="L600" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
 		{
-<span class="nc" id="L590">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L602">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndexOuter,
-<span class="nc" id="L592">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)</span>
+<span class="nc" id="L604">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRNQ_20 (bucketIndexOuter)</span>
 			);
 
-<span class="nc" id="L595">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
+<span class="nc" id="L607">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
 
-<span class="nc bnc" id="L597" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
+<span class="nc bnc" id="L609" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
 			{
-<span class="nc bnc" id="L599" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
+<span class="nc bnc" id="L611" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					org.drip.simm.credit.CRNQBucketCorrelation20.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
@@ -604,7 +616,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 		try
 		{
-<span class="nc" id="L607">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L619">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					bucketLabelList,
@@ -612,12 +624,12 @@ public class RiskMeasureSensitivitySettingsCR
 				)
 			);
 		}
-<span class="nc" id="L615">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L627">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L617">			e.printStackTrace();</span>
+<span class="nc" id="L629">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L620">		return null;</span>
+<span class="nc" id="L632">		return null;</span>
 	}
 
 	/**
@@ -629,30 +641,30 @@ public class RiskMeasureSensitivitySettingsCR
 	public static final RiskMeasureSensitivitySettingsCR ISDA_CRNQ_CURVATURE_21()
 	{
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
-<span class="nc" id="L632">			bucketSensitivitySettingsMap = new</span>
+<span class="nc" id="L644">			bucketSensitivitySettingsMap = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;();
 
 		java.util.Set&lt;java.lang.Integer&gt; bucketIndexSet =
-<span class="nc" id="L636">			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();</span>
+<span class="nc" id="L648">			org.drip.simm.credit.CRNQSettingsContainer21.BucketSet();</span>
 
-<span class="nc" id="L638">		int bucketCount = bucketIndexSet.size();</span>
+<span class="nc" id="L650">		int bucketCount = bucketIndexSet.size();</span>
 
-<span class="nc" id="L640">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L652">		java.util.List&lt;java.lang.String&gt; bucketLabelList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L642">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
+<span class="nc" id="L654">		double[][] crossBucketCorrelation = new double[bucketCount][bucketCount];</span>
 
-<span class="nc bnc" id="L644" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
+<span class="nc bnc" id="L656" title="All 2 branches missed.">		for (int bucketIndexOuter = 0; bucketIndexOuter &lt; bucketCount; ++bucketIndexOuter)</span>
 		{
-<span class="nc" id="L646">			bucketSensitivitySettingsMap.put (</span>
+<span class="nc" id="L658">			bucketSensitivitySettingsMap.put (</span>
 				&quot;&quot; + bucketIndexOuter,
-<span class="nc" id="L648">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRNQ_21 (bucketIndexOuter)</span>
+<span class="nc" id="L660">				org.drip.simm.parameters.BucketCurvatureSettingsCR.ISDA_CRNQ_21 (bucketIndexOuter)</span>
 			);
 
-<span class="nc" id="L651">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
+<span class="nc" id="L663">			bucketLabelList.add (&quot;&quot; + bucketIndexOuter);</span>
 
-<span class="nc bnc" id="L653" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">			for (int bucketIndexInner = 0; bucketIndexInner &lt; bucketCount; ++bucketIndexInner)</span>
 			{
-<span class="nc bnc" id="L655" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
+<span class="nc bnc" id="L667" title="All 2 branches missed.">				crossBucketCorrelation[bucketIndexInner][bucketIndexOuter] =</span>
 					bucketIndexInner == bucketIndexOuter ? 1. :
 					org.drip.simm.credit.CRNQBucketCorrelation21.NON_RESIDUAL_TO_NON_RESIDUAL;
 			}
@@ -660,7 +672,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 		try
 		{
-<span class="nc" id="L663">			return new RiskMeasureSensitivitySettingsCR (</span>
+<span class="nc" id="L675">			return new RiskMeasureSensitivitySettingsCR (</span>
 				bucketSensitivitySettingsMap,
 				new org.drip.measure.stochastic.LabelCorrelation (
 					bucketLabelList,
@@ -668,12 +680,12 @@ public class RiskMeasureSensitivitySettingsCR
 				)
 			);
 		}
-<span class="nc" id="L671">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L683">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L673">			e.printStackTrace();</span>
+<span class="nc" id="L685">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L676">		return null;</span>
+<span class="nc" id="L688">		return null;</span>
 	}
 
 	/**
@@ -690,14 +702,14 @@ public class RiskMeasureSensitivitySettingsCR
 			bucketSensitivitySettingsMap,
 		final org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L693">	{</span>
-<span class="nc bnc" id="L694" title="All 2 branches missed.">		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||</span>
-<span class="nc bnc" id="L695" title="All 4 branches missed.">				0 == _bucketSensitivitySettingsMap.size() ||</span>
+<span class="nc" id="L705">	{</span>
+<span class="nc bnc" id="L706" title="All 2 branches missed.">		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||</span>
+<span class="nc bnc" id="L707" title="All 4 branches missed.">				0 == _bucketSensitivitySettingsMap.size() ||</span>
 			null == (_crossBucketCorrelation = crossBucketCorrelation))
 		{
-<span class="nc" id="L698">			throw new java.lang.Exception (&quot;RiskMeasureSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L710">			throw new java.lang.Exception (&quot;RiskMeasureSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L700">	}</span>
+<span class="nc" id="L712">	}</span>
 
 	/**
 	 * Retrieve the Cross Bucket Correlation
@@ -707,7 +719,7 @@ public class RiskMeasureSensitivitySettingsCR
 
 	public org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation()
 	{
-<span class="nc" id="L710">		return _crossBucketCorrelation;</span>
+<span class="nc" id="L722">		return _crossBucketCorrelation;</span>
 	}
 
 	/**
@@ -719,7 +731,7 @@ public class RiskMeasureSensitivitySettingsCR
 	public java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsCR&gt;
 		bucketSensitivitySettingsMap()
 	{
-<span class="nc" id="L722">		return _bucketSensitivitySettingsMap;</span>
+<span class="nc" id="L734">		return _bucketSensitivitySettingsMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

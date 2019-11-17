@@ -6,31 +6,61 @@ package org.drip.simm.margin;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -78,10 +108,10 @@ package org.drip.simm.margin;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md&quot;&gt;ISDA SIMM Risk Factor Margin Metrics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -90,8 +120,8 @@ package org.drip.simm.margin;
 
 public class RiskFactorAggregateCR
 {
-<span class="nc" id="L93">	private double _concentrationRiskFactor = java.lang.Double.NaN;</span>
-<span class="nc" id="L94">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;</span>
+<span class="nc" id="L123">	private double _concentrationRiskFactor = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;</span>
 		_componentSensitivityMarginMap = null;
 
 	/**
@@ -108,14 +138,14 @@ public class RiskFactorAggregateCR
 			componentSensitivityMarginMap,
 		final double concentrationRiskFactor)
 		throws java.lang.Exception
-<span class="nc" id="L111">	{</span>
-<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (null == (_componentSensitivityMarginMap = componentSensitivityMarginMap) ||</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">			0 == _componentSensitivityMarginMap.size() ||</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))</span>
+<span class="nc" id="L141">	{</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (null == (_componentSensitivityMarginMap = componentSensitivityMarginMap) ||</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">			0 == _componentSensitivityMarginMap.size() ||</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_concentrationRiskFactor = concentrationRiskFactor))</span>
 		 {
-<span class="nc" id="L116">			 throw new java.lang.Exception (&quot;RiskFactorAggregateCR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L146">			 throw new java.lang.Exception (&quot;RiskFactorAggregateCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		 }
-<span class="nc" id="L118">	}</span>
+<span class="nc" id="L148">	}</span>
 
 	/**
 	 * Retrieve the Bucket Concentration Risk Factor
@@ -125,7 +155,7 @@ public class RiskFactorAggregateCR
 
 	public double concentrationRiskFactor()
 	{
-<span class="nc" id="L128">		return _concentrationRiskFactor;</span>
+<span class="nc" id="L158">		return _concentrationRiskFactor;</span>
 	}
 
 	/**
@@ -137,7 +167,7 @@ public class RiskFactorAggregateCR
 	public java.util.Map&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;
 		componentSensitivityMarginMap()
 	{
-<span class="nc" id="L140">		return _componentSensitivityMarginMap;</span>
+<span class="nc" id="L170">		return _componentSensitivityMarginMap;</span>
 	}
 
 	/**
@@ -151,8 +181,8 @@ public class RiskFactorAggregateCR
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentSensitivityMargin (
 		final java.lang.String componentName)
 	{
-<span class="nc bnc" id="L154" title="All 4 branches missed.">		return null != componentName || _componentSensitivityMarginMap.containsKey (componentName) ?</span>
-<span class="nc" id="L155">			_componentSensitivityMarginMap.get (componentName) : null;</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">		return null != componentName || _componentSensitivityMarginMap.containsKey (componentName) ?</span>
+<span class="nc" id="L185">			_componentSensitivityMarginMap.get (componentName) : null;</span>
 	}
 
 	/**
@@ -169,25 +199,25 @@ public class RiskFactorAggregateCR
 		final java.lang.String componentName)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L172" title="All 4 branches missed.">		if (null == componentName || !_componentSensitivityMarginMap.containsKey (componentName))</span>
+<span class="nc bnc" id="L202" title="All 4 branches missed.">		if (null == componentName || !_componentSensitivityMarginMap.containsKey (componentName))</span>
 		{
-<span class="nc" id="L174">			throw new java.lang.Exception</span>
+<span class="nc" id="L204">			throw new java.lang.Exception</span>
 				(&quot;RiskFactorAggregateCR::cumulativeComponentSensitivityMargin =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L178">		double cumulativeComponentSensitivityMargin = 0.;</span>
+<span class="nc" id="L208">		double cumulativeComponentSensitivityMargin = 0.;</span>
 
-<span class="nc" id="L180">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin =</span>
-<span class="nc" id="L181">			_componentSensitivityMarginMap.get (componentName);</span>
+<span class="nc" id="L210">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin =</span>
+<span class="nc" id="L211">			_componentSensitivityMarginMap.get (componentName);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMarginEntry :
-<span class="nc bnc" id="L184" title="All 2 branches missed.">			componentTenorSensitivityMargin.entrySet())</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">			componentTenorSensitivityMargin.entrySet())</span>
 		{
-<span class="nc" id="L186">			cumulativeComponentSensitivityMargin = cumulativeComponentSensitivityMargin +</span>
-<span class="nc" id="L187">				componentTenorSensitivityMarginEntry.getValue();</span>
-<span class="nc" id="L188">		}</span>
+<span class="nc" id="L216">			cumulativeComponentSensitivityMargin = cumulativeComponentSensitivityMargin +</span>
+<span class="nc" id="L217">				componentTenorSensitivityMarginEntry.getValue();</span>
+<span class="nc" id="L218">		}</span>
 
-<span class="nc" id="L190">		return cumulativeComponentSensitivityMargin;</span>
+<span class="nc" id="L220">		return cumulativeComponentSensitivityMargin;</span>
 	}
 
 	/**
@@ -198,20 +228,20 @@ public class RiskFactorAggregateCR
 
 	public double cumulativeSensitivityMargin()
 	{
-<span class="nc" id="L201">		double cumulativeSensitivityMargin = 0.;</span>
+<span class="nc" id="L231">		double cumulativeSensitivityMargin = 0.;</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.util.Map&lt;java.lang.String, java.lang.Double&gt;&gt;
-<span class="nc bnc" id="L204" title="All 2 branches missed.">			componentSensitivityMarginMapEntry : _componentSensitivityMarginMap.entrySet())</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			componentSensitivityMarginMapEntry : _componentSensitivityMarginMap.entrySet())</span>
 		{
 			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMapEntry :
-<span class="nc bnc" id="L207" title="All 2 branches missed.">				componentSensitivityMarginMapEntry.getValue().entrySet())</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">				componentSensitivityMarginMapEntry.getValue().entrySet())</span>
 			{
-<span class="nc" id="L209">				cumulativeSensitivityMargin = cumulativeSensitivityMargin +</span>
-<span class="nc" id="L210">					componentTenorSensitivityMapEntry.getValue();</span>
-<span class="nc" id="L211">			}</span>
-<span class="nc" id="L212">		}</span>
+<span class="nc" id="L239">				cumulativeSensitivityMargin = cumulativeSensitivityMargin +</span>
+<span class="nc" id="L240">					componentTenorSensitivityMapEntry.getValue();</span>
+<span class="nc" id="L241">			}</span>
+<span class="nc" id="L242">		}</span>
 
-<span class="nc" id="L214">		return cumulativeSensitivityMargin;</span>
+<span class="nc" id="L244">		return cumulativeSensitivityMargin;</span>
 	}
 
 	/**
@@ -232,43 +262,43 @@ public class RiskFactorAggregateCR
 		final java.lang.String componentName2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L235" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR ||</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName1) ||</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName2))</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR ||</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName1) ||</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName2))</span>
 		{
-<span class="nc" id="L239">			throw new java.lang.Exception</span>
+<span class="nc" id="L269">			throw new java.lang.Exception</span>
 				(&quot;RiskFactorAggregateCR::componentLinearMarginCovariance =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L243">		double crossTenorCorrelation = bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation();</span>
+<span class="nc" id="L273">		double crossTenorCorrelation = bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation();</span>
 
-<span class="nc" id="L245">		double componentLinearMarginCovariance = 0.;</span>
+<span class="nc" id="L275">		double componentLinearMarginCovariance = 0.;</span>
 
-<span class="nc" id="L247">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin1 =</span>
-<span class="nc" id="L248">			_componentSensitivityMarginMap.get (componentName1);</span>
+<span class="nc" id="L277">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin1 =</span>
+<span class="nc" id="L278">			_componentSensitivityMarginMap.get (componentName1);</span>
 
-<span class="nc" id="L250">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin2 =</span>
-<span class="nc" id="L251">			_componentSensitivityMarginMap.get (componentName2);</span>
+<span class="nc" id="L280">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin2 =</span>
+<span class="nc" id="L281">			_componentSensitivityMarginMap.get (componentName2);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin1Entry :
-<span class="nc bnc" id="L254" title="All 2 branches missed.">			componentTenorSensitivityMargin1.entrySet())</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">			componentTenorSensitivityMargin1.entrySet())</span>
 		{
-<span class="nc" id="L256">			java.lang.String component1Tenor = componentTenorSensitivityMargin1Entry.getKey();</span>
+<span class="nc" id="L286">			java.lang.String component1Tenor = componentTenorSensitivityMargin1Entry.getKey();</span>
 
-<span class="nc" id="L258">			double component1SensitivityMargin = componentTenorSensitivityMargin1Entry.getValue();</span>
+<span class="nc" id="L288">			double component1SensitivityMargin = componentTenorSensitivityMargin1Entry.getValue();</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
-<span class="nc bnc" id="L261" title="All 2 branches missed.">				componentTenorSensitivityMargin2Entry : componentTenorSensitivityMargin2.entrySet())</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">				componentTenorSensitivityMargin2Entry : componentTenorSensitivityMargin2.entrySet())</span>
 			{
-<span class="nc" id="L263">				componentLinearMarginCovariance = componentLinearMarginCovariance +</span>
-<span class="nc" id="L264">					component1SensitivityMargin * componentTenorSensitivityMargin2Entry.getValue() * (</span>
-<span class="nc bnc" id="L265" title="All 2 branches missed.">						component1Tenor.equalsIgnoreCase (componentTenorSensitivityMargin2Entry.getKey()) ?</span>
+<span class="nc" id="L293">				componentLinearMarginCovariance = componentLinearMarginCovariance +</span>
+<span class="nc" id="L294">					component1SensitivityMargin * componentTenorSensitivityMargin2Entry.getValue() * (</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">						component1Tenor.equalsIgnoreCase (componentTenorSensitivityMargin2Entry.getKey()) ?</span>
 							1. : crossTenorCorrelation
 					);
-<span class="nc" id="L268">			}</span>
-<span class="nc" id="L269">		}</span>
+<span class="nc" id="L298">			}</span>
+<span class="nc" id="L299">		}</span>
 
-<span class="nc" id="L271">		return componentLinearMarginCovariance;</span>
+<span class="nc" id="L301">		return componentLinearMarginCovariance;</span>
 	}
 
 	/**
@@ -289,43 +319,43 @@ public class RiskFactorAggregateCR
 		final java.lang.String componentName2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L292" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR ||</span>
-<span class="nc bnc" id="L293" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName1) ||</span>
-<span class="nc bnc" id="L294" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName2))</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">		if (null == bucketSensitivitySettingsCR ||</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName1) ||</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">			!_componentSensitivityMarginMap.containsKey (componentName2))</span>
 		{
-<span class="nc" id="L296">			throw new java.lang.Exception</span>
+<span class="nc" id="L326">			throw new java.lang.Exception</span>
 				(&quot;RiskFactorAggregateCR::componentCurvatureMarginCovariance =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L300">		double crossTenorCorrelation = bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation();</span>
+<span class="nc" id="L330">		double crossTenorCorrelation = bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation();</span>
 
-<span class="nc" id="L302">		double componentCurvatureMarginCovariance = 0.;</span>
+<span class="nc" id="L332">		double componentCurvatureMarginCovariance = 0.;</span>
 
-<span class="nc" id="L304">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin1 =</span>
-<span class="nc" id="L305">			_componentSensitivityMarginMap.get (componentName1);</span>
+<span class="nc" id="L334">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin1 =</span>
+<span class="nc" id="L335">			_componentSensitivityMarginMap.get (componentName1);</span>
 
-<span class="nc" id="L307">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin2 =</span>
-<span class="nc" id="L308">			_componentSensitivityMarginMap.get (componentName2);</span>
+<span class="nc" id="L337">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin2 =</span>
+<span class="nc" id="L338">			_componentSensitivityMarginMap.get (componentName2);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; componentTenorSensitivityMargin1Entry :
-<span class="nc bnc" id="L311" title="All 2 branches missed.">			componentTenorSensitivityMargin1.entrySet())</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">			componentTenorSensitivityMargin1.entrySet())</span>
 		{
-<span class="nc" id="L313">			java.lang.String component1Tenor = componentTenorSensitivityMargin1Entry.getKey();</span>
+<span class="nc" id="L343">			java.lang.String component1Tenor = componentTenorSensitivityMargin1Entry.getKey();</span>
 
-<span class="nc" id="L315">			double component1SensitivityMargin = componentTenorSensitivityMargin1Entry.getValue();</span>
+<span class="nc" id="L345">			double component1SensitivityMargin = componentTenorSensitivityMargin1Entry.getValue();</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt;
-<span class="nc bnc" id="L318" title="All 2 branches missed.">				componentTenorSensitivityMargin2Entry : componentTenorSensitivityMargin2.entrySet())</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">				componentTenorSensitivityMargin2Entry : componentTenorSensitivityMargin2.entrySet())</span>
 			{
-<span class="nc" id="L320">				componentCurvatureMarginCovariance = componentCurvatureMarginCovariance +</span>
-<span class="nc" id="L321">					component1SensitivityMargin * componentTenorSensitivityMargin2Entry.getValue() * (</span>
-<span class="nc bnc" id="L322" title="All 2 branches missed.">						component1Tenor.equalsIgnoreCase (componentTenorSensitivityMargin2Entry.getKey()) ?</span>
+<span class="nc" id="L350">				componentCurvatureMarginCovariance = componentCurvatureMarginCovariance +</span>
+<span class="nc" id="L351">					component1SensitivityMargin * componentTenorSensitivityMargin2Entry.getValue() * (</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">						component1Tenor.equalsIgnoreCase (componentTenorSensitivityMargin2Entry.getKey()) ?</span>
 							1. : crossTenorCorrelation * crossTenorCorrelation
 					);
-<span class="nc" id="L325">			}</span>
-<span class="nc" id="L326">		}</span>
+<span class="nc" id="L355">			}</span>
+<span class="nc" id="L356">		}</span>
 
-<span class="nc" id="L328">		return componentCurvatureMarginCovariance;</span>
+<span class="nc" id="L358">		return componentCurvatureMarginCovariance;</span>
 	}
 
 	/**
@@ -339,46 +369,46 @@ public class RiskFactorAggregateCR
 	public org.drip.simm.margin.SensitivityAggregateCR linearMargin (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
 	{
-<span class="nc" id="L342">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _componentSensitivityMarginMap.keySet();</span>
+<span class="nc" id="L372">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _componentSensitivityMarginMap.keySet();</span>
 
-<span class="nc" id="L344">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceMap = new</span>
+<span class="nc" id="L374">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L347">		double cumulativeMarginSensitivity = 0.;</span>
+<span class="nc" id="L377">		double cumulativeMarginSensitivity = 0.;</span>
 
 		try
 		{
-<span class="nc bnc" id="L351" title="All 2 branches missed.">			for (java.lang.String componentName1 : componentNameSet)</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">			for (java.lang.String componentName1 : componentNameSet)</span>
 			{
-<span class="nc bnc" id="L353" title="All 2 branches missed.">				for (java.lang.String componentName2 : componentNameSet)</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">				for (java.lang.String componentName2 : componentNameSet)</span>
 				{
-<span class="nc" id="L355">					double componentLinearMarginCovariance = componentLinearMarginCovariance (</span>
+<span class="nc" id="L385">					double componentLinearMarginCovariance = componentLinearMarginCovariance (</span>
 						bucketSensitivitySettingsCR,
 						componentName1,
 						componentName2
 					);
 
-<span class="nc" id="L361">					cumulativeMarginSensitivity = cumulativeMarginSensitivity +</span>
+<span class="nc" id="L391">					cumulativeMarginSensitivity = cumulativeMarginSensitivity +</span>
 						componentLinearMarginCovariance;
 
-<span class="nc" id="L364">					componentMarginCovarianceMap.put (</span>
+<span class="nc" id="L394">					componentMarginCovarianceMap.put (</span>
 						componentName1 + &quot;_&quot; + componentName2,
-<span class="nc" id="L366">						componentLinearMarginCovariance</span>
+<span class="nc" id="L396">						componentLinearMarginCovariance</span>
 					);
-<span class="nc" id="L368">				}</span>
-<span class="nc" id="L369">			}</span>
+<span class="nc" id="L398">				}</span>
+<span class="nc" id="L399">			}</span>
 
-<span class="nc" id="L371">			return new SensitivityAggregateCR (</span>
+<span class="nc" id="L401">			return new SensitivityAggregateCR (</span>
 				componentMarginCovarianceMap,
 				cumulativeMarginSensitivity
 			);
 		}
-<span class="nc" id="L376">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L406">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L378">			e.printStackTrace();</span>
+<span class="nc" id="L408">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L381">		return null;</span>
+<span class="nc" id="L411">		return null;</span>
 	}
 
 	/**
@@ -392,46 +422,46 @@ public class RiskFactorAggregateCR
 	public org.drip.simm.margin.SensitivityAggregateCR curvatureMargin (
 		final org.drip.simm.parameters.BucketSensitivitySettingsCR bucketSensitivitySettingsCR)
 	{
-<span class="nc" id="L395">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _componentSensitivityMarginMap.keySet();</span>
+<span class="nc" id="L425">		java.util.Set&lt;java.lang.String&gt; componentNameSet = _componentSensitivityMarginMap.keySet();</span>
 
-<span class="nc" id="L397">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceMap = new</span>
+<span class="nc" id="L427">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; componentMarginCovarianceMap = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="nc" id="L400">		double cumulativeMarginSensitivity = 0.;</span>
+<span class="nc" id="L430">		double cumulativeMarginSensitivity = 0.;</span>
 
 		try
 		{
-<span class="nc bnc" id="L404" title="All 2 branches missed.">			for (java.lang.String componentName1 : componentNameSet)</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">			for (java.lang.String componentName1 : componentNameSet)</span>
 			{
-<span class="nc bnc" id="L406" title="All 2 branches missed.">				for (java.lang.String componentName2 : componentNameSet)</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">				for (java.lang.String componentName2 : componentNameSet)</span>
 				{
-<span class="nc" id="L408">					double componentCurvatureMarginCovariance = componentCurvatureMarginCovariance (</span>
+<span class="nc" id="L438">					double componentCurvatureMarginCovariance = componentCurvatureMarginCovariance (</span>
 						bucketSensitivitySettingsCR,
 						componentName1,
 						componentName2
 					);
 
-<span class="nc" id="L414">					cumulativeMarginSensitivity = cumulativeMarginSensitivity +</span>
+<span class="nc" id="L444">					cumulativeMarginSensitivity = cumulativeMarginSensitivity +</span>
 						componentCurvatureMarginCovariance;
 
-<span class="nc" id="L417">					componentMarginCovarianceMap.put (</span>
+<span class="nc" id="L447">					componentMarginCovarianceMap.put (</span>
 						componentName1 + &quot;_&quot; + componentName2,
-<span class="nc" id="L419">						componentCurvatureMarginCovariance</span>
+<span class="nc" id="L449">						componentCurvatureMarginCovariance</span>
 					);
-<span class="nc" id="L421">				}</span>
-<span class="nc" id="L422">			}</span>
+<span class="nc" id="L451">				}</span>
+<span class="nc" id="L452">			}</span>
 
-<span class="nc" id="L424">			return new SensitivityAggregateCR (</span>
+<span class="nc" id="L454">			return new SensitivityAggregateCR (</span>
 				componentMarginCovarianceMap,
 				cumulativeMarginSensitivity
 			);
 		}
-<span class="nc" id="L429">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L459">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L431">			e.printStackTrace();</span>
+<span class="nc" id="L461">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L434">		return null;</span>
+<span class="nc" id="L464">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

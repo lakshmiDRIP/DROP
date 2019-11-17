@@ -6,42 +6,54 @@ package org.drip.simm.foundation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md&quot;&gt;Foundation Utilities for ISDA SIMM&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,8 +120,8 @@ package org.drip.simm.foundation;
 
 public class RiskGroupPrincipalCovariance
 {
-<span class="nc" id="L111">	private double _extraGroupCorrelation = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private org.drip.numerical.eigen.EigenComponent _principalEigenComponent = null;</span>
+<span class="nc" id="L123">	private double _extraGroupCorrelation = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private org.drip.numerical.eigen.EigenComponent _principalEigenComponent = null;</span>
 
 	/**
 	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
@@ -127,21 +139,21 @@ public class RiskGroupPrincipalCovariance
 	{
 		try
 		{
-<span class="nc" id="L130">			return new RiskGroupPrincipalCovariance (</span>
+<span class="nc" id="L142">			return new RiskGroupPrincipalCovariance (</span>
 				new org.drip.numerical.eigen.PowerIterationComponentExtractor (
 					30,
 					0.000001,
 					false
-<span class="nc" id="L135">				).principalComponent (intraGroupCorrelationMatrix),</span>
+<span class="nc" id="L147">				).principalComponent (intraGroupCorrelationMatrix),</span>
 				extraGroupCorrelation
 			);
 		}
-<span class="nc" id="L139">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L151">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L141">			e.printStackTrace();</span>
+<span class="nc" id="L153">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L144">		return null;</span>
+<span class="nc" id="L156">		return null;</span>
 	}
 
 	/**
@@ -157,14 +169,14 @@ public class RiskGroupPrincipalCovariance
 		final org.drip.numerical.eigen.EigenComponent principalEigenComponent,
 		final double extraGroupCorrelation)
 		throws java.lang.Exception
-<span class="nc" id="L160">	{</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == (_principalEigenComponent = principalEigenComponent) ||</span>
-<span class="nc bnc" id="L162" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||</span>
+<span class="nc" id="L172">	{</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == (_principalEigenComponent = principalEigenComponent) ||</span>
+<span class="nc bnc" id="L174" title="All 6 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||</span>
 				-1. &gt; _extraGroupCorrelation || 1. &lt; _extraGroupCorrelation)
 		{
-<span class="nc" id="L165">			throw new java.lang.Exception (&quot;RiskGroupPrincipalCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L177">			throw new java.lang.Exception (&quot;RiskGroupPrincipalCovariance Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L167">	}</span>
+<span class="nc" id="L179">	}</span>
 
 	/**
 	 * Retrieve the Intra-Group Principal Eigen-Component
@@ -174,7 +186,7 @@ public class RiskGroupPrincipalCovariance
 
 	public org.drip.numerical.eigen.EigenComponent principalEigenComponent()
 	{
-<span class="nc" id="L177">		return _principalEigenComponent;</span>
+<span class="nc" id="L189">		return _principalEigenComponent;</span>
 	}
 
 	/**
@@ -185,7 +197,7 @@ public class RiskGroupPrincipalCovariance
 
 	public double extraGroupCorrelation()
 	{
-<span class="nc" id="L188">		return _extraGroupCorrelation;</span>
+<span class="nc" id="L200">		return _extraGroupCorrelation;</span>
 	}
 
 	/**
@@ -196,19 +208,19 @@ public class RiskGroupPrincipalCovariance
 
 	public double[] scaledPrincipalEigenvector()
 	{
-<span class="nc" id="L199">		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());</span>
+<span class="nc" id="L211">		double scaleFactor = java.lang.Math.sqrt (_principalEigenComponent.eigenvalue());</span>
 
-<span class="nc" id="L201">		double[] principalEigenvector = _principalEigenComponent.eigenvector();</span>
+<span class="nc" id="L213">		double[] principalEigenvector = _principalEigenComponent.eigenvector();</span>
 
-<span class="nc" id="L203">		int componentCount = principalEigenvector.length;</span>
-<span class="nc" id="L204">		double[] scaledPrincipalEigenvector = new double[componentCount];</span>
+<span class="nc" id="L215">		int componentCount = principalEigenvector.length;</span>
+<span class="nc" id="L216">		double[] scaledPrincipalEigenvector = new double[componentCount];</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		for (int componentIndex = 0; componentIndex &lt; componentCount; ++componentIndex)</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		for (int componentIndex = 0; componentIndex &lt; componentCount; ++componentIndex)</span>
 		{
-<span class="nc" id="L208">			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;</span>
+<span class="nc" id="L220">			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;</span>
 		}
 
-<span class="nc" id="L211">		return scaledPrincipalEigenvector;</span>
+<span class="nc" id="L223">		return scaledPrincipalEigenvector;</span>
 	}
 
 	/**
@@ -219,9 +231,9 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] unadjustedCovariance()
 	{
-<span class="nc" id="L222">		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();</span>
+<span class="nc" id="L234">		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();</span>
 
-<span class="nc" id="L224">		return org.drip.numerical.linearalgebra.Matrix.CrossProduct (</span>
+<span class="nc" id="L236">		return org.drip.numerical.linearalgebra.Matrix.CrossProduct (</span>
 			scaledPrincipalEigenvector,
 			scaledPrincipalEigenvector
 		);
@@ -235,8 +247,8 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] adjustedCovariance()
 	{
-<span class="nc" id="L238">		return org.drip.numerical.linearalgebra.Matrix.Scale2D (</span>
-<span class="nc" id="L239">			unadjustedCovariance(),</span>
+<span class="nc" id="L250">		return org.drip.numerical.linearalgebra.Matrix.Scale2D (</span>
+<span class="nc" id="L251">			unadjustedCovariance(),</span>
 			_extraGroupCorrelation
 		);
 	}

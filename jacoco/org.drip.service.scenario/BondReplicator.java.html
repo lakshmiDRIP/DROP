@@ -6,43 +6,55 @@ package org.drip.service.scenario;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -70,10 +82,10 @@ package org.drip.service.scenario;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md&quot;&gt;Algorithm Support Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service&quot;&gt;Service&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario&quot;&gt;Scenario&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md&quot;&gt;Computation Support&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md&quot;&gt;Environment, Product/Definition Containers, and Scenario/State Manipulation APIs&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md&quot;&gt;Custom Scenario Service Metric Generator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -101,66 +113,66 @@ public class BondReplicator
 
 	public static final double CORPORATE_LOAN_RECOVERY_RATE = 0.70;
 
-<span class="fc" id="L104">	private int _iSettleLag = -1;</span>
-<span class="fc" id="L105">	private double[] _adblGovvieQuote = null;</span>
-<span class="fc" id="L106">	private double[] _adblCreditQuote = null;</span>
-<span class="fc" id="L107">	private double[] _adblDepositQuote = null;</span>
-<span class="fc" id="L108">	private double[] _adblFuturesQuote = null;</span>
-<span class="fc" id="L109">	private double[] _adblFixFloatQuote = null;</span>
-<span class="fc" id="L110">	private double _dblFX = java.lang.Double.NaN;</span>
-<span class="fc" id="L111">	private java.lang.String _strGovvieCode = &quot;&quot;;</span>
-<span class="fc" id="L112">	private boolean _bMarketPriceCreditMetrics = false;</span>
-<span class="fc" id="L113">	private java.lang.String[] _astrCreditTenor = null;</span>
-<span class="fc" id="L114">	private java.lang.String[] _astrGovvieTenor = null;</span>
-<span class="fc" id="L115">	private double _dblTenorBump = java.lang.Double.NaN;</span>
-<span class="fc" id="L116">	private java.lang.String[] _astrDepositTenor = null;</span>
-<span class="fc" id="L117">	private java.lang.String[] _astrFixFloatTenor = null;</span>
-<span class="fc" id="L118">	private double _dblIssuePrice = java.lang.Double.NaN;</span>
-<span class="fc" id="L119">	private double _dblIssueAmount = java.lang.Double.NaN;</span>
-<span class="fc" id="L120">	private double _dblZSpreadBump = java.lang.Double.NaN;</span>
-<span class="fc" id="L121">	private double _dblCurrentPrice = java.lang.Double.NaN;</span>
-<span class="fc" id="L122">	private double _dblRecoveryRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L123">	private double _dblCustomYieldBump = java.lang.Double.NaN;</span>
-<span class="fc" id="L124">	private org.drip.analytics.date.JulianDate _dtValue = null;</span>
-<span class="fc" id="L125">	private org.drip.product.credit.BondComponent _bond = null;</span>
-<span class="fc" id="L126">	private double _dblCustomCreditBasisBump = java.lang.Double.NaN;</span>
-<span class="fc" id="L127">	private double _dblSpreadDurationMultiplier = java.lang.Double.NaN;</span>
+<span class="fc" id="L116">	private int _iSettleLag = -1;</span>
+<span class="fc" id="L117">	private double[] _adblGovvieQuote = null;</span>
+<span class="fc" id="L118">	private double[] _adblCreditQuote = null;</span>
+<span class="fc" id="L119">	private double[] _adblDepositQuote = null;</span>
+<span class="fc" id="L120">	private double[] _adblFuturesQuote = null;</span>
+<span class="fc" id="L121">	private double[] _adblFixFloatQuote = null;</span>
+<span class="fc" id="L122">	private double _dblFX = java.lang.Double.NaN;</span>
+<span class="fc" id="L123">	private java.lang.String _strGovvieCode = &quot;&quot;;</span>
+<span class="fc" id="L124">	private boolean _bMarketPriceCreditMetrics = false;</span>
+<span class="fc" id="L125">	private java.lang.String[] _astrCreditTenor = null;</span>
+<span class="fc" id="L126">	private java.lang.String[] _astrGovvieTenor = null;</span>
+<span class="fc" id="L127">	private double _dblTenorBump = java.lang.Double.NaN;</span>
+<span class="fc" id="L128">	private java.lang.String[] _astrDepositTenor = null;</span>
+<span class="fc" id="L129">	private java.lang.String[] _astrFixFloatTenor = null;</span>
+<span class="fc" id="L130">	private double _dblIssuePrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L131">	private double _dblIssueAmount = java.lang.Double.NaN;</span>
+<span class="fc" id="L132">	private double _dblZSpreadBump = java.lang.Double.NaN;</span>
+<span class="fc" id="L133">	private double _dblCurrentPrice = java.lang.Double.NaN;</span>
+<span class="fc" id="L134">	private double _dblRecoveryRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L135">	private double _dblCustomYieldBump = java.lang.Double.NaN;</span>
+<span class="fc" id="L136">	private org.drip.analytics.date.JulianDate _dtValue = null;</span>
+<span class="fc" id="L137">	private org.drip.product.credit.BondComponent _bond = null;</span>
+<span class="fc" id="L138">	private double _dblCustomCreditBasisBump = java.lang.Double.NaN;</span>
+<span class="fc" id="L139">	private double _dblSpreadDurationMultiplier = java.lang.Double.NaN;</span>
 
-<span class="fc" id="L129">	private double _dblLogNormalVolatility = 0.1;</span>
-<span class="fc" id="L130">	private double _dblResetRate = java.lang.Double.NaN;</span>
-<span class="fc" id="L131">	private int _iResetDate = java.lang.Integer.MIN_VALUE;</span>
-<span class="fc" id="L132">	private org.drip.analytics.date.JulianDate _dtSettle = null;</span>
-<span class="fc" id="L133">	private org.drip.param.valuation.ValuationParams _valParams = null;</span>
-<span class="fc" id="L134">	private org.drip.service.scenario.EOSMetricsReplicator _emr = null;</span>
-<span class="fc" id="L135">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcCreditBase = null;</span>
-<span class="fc" id="L136">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcCredit01Up = null;</span>
-<span class="fc" id="L137">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFundingBase = null;</span>
-<span class="fc" id="L138">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFunding01Up = null;</span>
-<span class="fc" id="L139">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFundingEuroDollar = null;</span>
-<span class="fc" id="L140">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L141">	private double _dblLogNormalVolatility = 0.1;</span>
+<span class="fc" id="L142">	private double _dblResetRate = java.lang.Double.NaN;</span>
+<span class="fc" id="L143">	private int _iResetDate = java.lang.Integer.MIN_VALUE;</span>
+<span class="fc" id="L144">	private org.drip.analytics.date.JulianDate _dtSettle = null;</span>
+<span class="fc" id="L145">	private org.drip.param.valuation.ValuationParams _valParams = null;</span>
+<span class="fc" id="L146">	private org.drip.service.scenario.EOSMetricsReplicator _emr = null;</span>
+<span class="fc" id="L147">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcCreditBase = null;</span>
+<span class="fc" id="L148">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcCredit01Up = null;</span>
+<span class="fc" id="L149">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFundingBase = null;</span>
+<span class="fc" id="L150">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFunding01Up = null;</span>
+<span class="fc" id="L151">	private org.drip.param.market.CurveSurfaceQuoteContainer _csqcFundingEuroDollar = null;</span>
+<span class="fc" id="L152">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCCredit = null;
 
-<span class="fc" id="L143">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L155">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCGovvieUp = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="fc" id="L147">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L159">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCGovvieDown = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="fc" id="L151">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L163">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCFundingUp = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="fc" id="L155">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L167">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCFundingDown = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="fc" id="L159">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L171">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCForwardFundingUp = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
-<span class="fc" id="L163">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
+<span class="fc" id="L175">	private java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;</span>
 		_mapCSQCForwardFundingDown = new
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
@@ -214,7 +226,7 @@ public class BondReplicator
 		final org.drip.product.credit.BondComponent bond)
 	{
 		try {
-<span class="nc" id="L217">			return new BondReplicator (</span>
+<span class="nc" id="L229">			return new BondReplicator (</span>
 				dblCurrentPrice,
 				dblIssuePrice,
 				dblIssueAmount,
@@ -241,11 +253,11 @@ public class BondReplicator
 				CORPORATE_SUBORDINATE_RECOVERY_RATE,
 				bond
 			);
-<span class="nc" id="L244">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L245">			e.printStackTrace();</span>
+<span class="nc" id="L256">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L257">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L248">		return null;</span>
+<span class="nc" id="L260">		return null;</span>
 	}
 
 	/**
@@ -298,7 +310,7 @@ public class BondReplicator
 		final org.drip.product.credit.BondComponent bond)
 	{
 		try {
-<span class="fc" id="L301">			return new BondReplicator (</span>
+<span class="fc" id="L313">			return new BondReplicator (</span>
 				dblCurrentPrice,
 				dblIssuePrice,
 				dblIssueAmount,
@@ -325,11 +337,11 @@ public class BondReplicator
 				CORPORATE_SENIOR_RECOVERY_RATE,
 				bond
 			);
-<span class="nc" id="L328">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L329">			e.printStackTrace();</span>
+<span class="nc" id="L340">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L341">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L332">		return null;</span>
+<span class="nc" id="L344">		return null;</span>
 	}
 
 	/**
@@ -382,7 +394,7 @@ public class BondReplicator
 		final org.drip.product.credit.BondComponent bond)
 	{
 		try {
-<span class="fc" id="L385">			return new BondReplicator (</span>
+<span class="fc" id="L397">			return new BondReplicator (</span>
 				dblCurrentPrice,
 				dblIssuePrice,
 				dblIssueAmount,
@@ -409,11 +421,11 @@ public class BondReplicator
 				CORPORATE_LOAN_RECOVERY_RATE,
 				bond
 			);
-<span class="nc" id="L412">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L413">			e.printStackTrace();</span>
+<span class="nc" id="L424">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L425">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L416">		return null;</span>
+<span class="nc" id="L428">		return null;</span>
 	}
 
 	/**
@@ -475,366 +487,366 @@ public class BondReplicator
 		final double dblRecoveryRate,
 		final org.drip.product.credit.BondComponent bond)
 		throws java.lang.Exception
-<span class="fc" id="L478">	{</span>
-<span class="pc bpc" id="L479" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentPrice = dblCurrentPrice) ||</span>
-<span class="pc bpc" id="L480" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblIssuePrice = dblIssuePrice) ||</span>
-<span class="pc bpc" id="L481" title="2 of 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblIssueAmount = dblIssueAmount) || null ==</span>
-<span class="pc bpc" id="L482" title="3 of 6 branches missed.">					(_dtValue = dtValue) || !org.drip.numerical.common.NumberUtil.IsValid (_dblFX = dblFX) || 0.</span>
+<span class="fc" id="L490">	{</span>
+<span class="pc bpc" id="L491" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblCurrentPrice = dblCurrentPrice) ||</span>
+<span class="pc bpc" id="L492" title="1 of 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_dblIssuePrice = dblIssuePrice) ||</span>
+<span class="pc bpc" id="L493" title="2 of 4 branches missed.">				!org.drip.numerical.common.NumberUtil.IsValid (_dblIssueAmount = dblIssueAmount) || null ==</span>
+<span class="pc bpc" id="L494" title="3 of 6 branches missed.">					(_dtValue = dtValue) || !org.drip.numerical.common.NumberUtil.IsValid (_dblFX = dblFX) || 0.</span>
 						&gt;= _dblFX || 0 &gt; (_iSettleLag = iSettleLag) ||
-<span class="pc bpc" id="L484" title="3 of 6 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (_dblRecoveryRate = dblRecoveryRate) ||</span>
+<span class="pc bpc" id="L496" title="3 of 6 branches missed.">							!org.drip.numerical.common.NumberUtil.IsValid (_dblRecoveryRate = dblRecoveryRate) ||</span>
 								0. &gt;= _dblRecoveryRate || null == (_bond = bond))
-<span class="nc" id="L486">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L498">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L488">		_dblResetRate = dblResetRate;</span>
-<span class="fc" id="L489">		_dblTenorBump = dblTenorBump;</span>
-<span class="fc" id="L490">		_strGovvieCode = strGovvieCode;</span>
-<span class="fc" id="L491">		_dblZSpreadBump = dblZSpreadBump;</span>
-<span class="fc" id="L492">		_adblCreditQuote = adblCreditQuote;</span>
-<span class="fc" id="L493">		_astrCreditTenor = astrCreditTenor;</span>
-<span class="fc" id="L494">		_adblGovvieQuote = adblGovvieQuote;</span>
-<span class="fc" id="L495">		_astrGovvieTenor = astrGovvieTenor;</span>
-<span class="fc" id="L496">		_adblDepositQuote = adblDepositQuote;</span>
-<span class="fc" id="L497">		_astrDepositTenor = astrDepositTenor;</span>
-<span class="fc" id="L498">		_adblFuturesQuote = adblFuturesQuote;</span>
-<span class="fc" id="L499">		_adblFixFloatQuote = adblFixFloatQuote;</span>
-<span class="fc" id="L500">		_astrFixFloatTenor = astrFixFloatTenor;</span>
-<span class="fc" id="L501">		_dblCustomYieldBump = dblCustomYieldBump;</span>
-<span class="fc" id="L502">		_dblCustomCreditBasisBump = dblCustomCreditBasisBump;</span>
-<span class="fc" id="L503">		_bMarketPriceCreditMetrics = bMarketPriceCreditMetrics;</span>
-<span class="fc" id="L504">		_dblSpreadDurationMultiplier = dblSpreadDurationMultiplier;</span>
+<span class="fc" id="L500">		_dblResetRate = dblResetRate;</span>
+<span class="fc" id="L501">		_dblTenorBump = dblTenorBump;</span>
+<span class="fc" id="L502">		_strGovvieCode = strGovvieCode;</span>
+<span class="fc" id="L503">		_dblZSpreadBump = dblZSpreadBump;</span>
+<span class="fc" id="L504">		_adblCreditQuote = adblCreditQuote;</span>
+<span class="fc" id="L505">		_astrCreditTenor = astrCreditTenor;</span>
+<span class="fc" id="L506">		_adblGovvieQuote = adblGovvieQuote;</span>
+<span class="fc" id="L507">		_astrGovvieTenor = astrGovvieTenor;</span>
+<span class="fc" id="L508">		_adblDepositQuote = adblDepositQuote;</span>
+<span class="fc" id="L509">		_astrDepositTenor = astrDepositTenor;</span>
+<span class="fc" id="L510">		_adblFuturesQuote = adblFuturesQuote;</span>
+<span class="fc" id="L511">		_adblFixFloatQuote = adblFixFloatQuote;</span>
+<span class="fc" id="L512">		_astrFixFloatTenor = astrFixFloatTenor;</span>
+<span class="fc" id="L513">		_dblCustomYieldBump = dblCustomYieldBump;</span>
+<span class="fc" id="L514">		_dblCustomCreditBasisBump = dblCustomCreditBasisBump;</span>
+<span class="fc" id="L515">		_bMarketPriceCreditMetrics = bMarketPriceCreditMetrics;</span>
+<span class="fc" id="L516">		_dblSpreadDurationMultiplier = dblSpreadDurationMultiplier;</span>
 
-<span class="fc" id="L506">		java.lang.String strCurrency = _bond.currency();</span>
+<span class="fc" id="L518">		java.lang.String strCurrency = _bond.currency();</span>
 
-<span class="pc bpc" id="L508" title="1 of 2 branches missed.">		if (null == (_dtSettle = _dtValue.addBusDays (_iSettleLag, strCurrency)))</span>
-<span class="nc" id="L509">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L520" title="1 of 2 branches missed.">		if (null == (_dtSettle = _dtValue.addBusDays (_iSettleLag, strCurrency)))</span>
+<span class="nc" id="L521">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L511">		_valParams = new org.drip.param.valuation.ValuationParams (_dtValue, _dtSettle, strCurrency);</span>
+<span class="fc" id="L523">		_valParams = new org.drip.param.valuation.ValuationParams (_dtValue, _dtSettle, strCurrency);</span>
 
-<span class="fc" id="L513">		org.drip.analytics.date.JulianDate dtSpot = dtValue;</span>
+<span class="fc" id="L525">		org.drip.analytics.date.JulianDate dtSpot = dtValue;</span>
 
-<span class="fc" id="L515">		org.drip.state.discount.MergedDiscountForwardCurve mdfc =</span>
-<span class="fc" id="L516">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
+<span class="fc" id="L527">		org.drip.state.discount.MergedDiscountForwardCurve mdfc =</span>
+<span class="fc" id="L528">			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
 				strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 					&quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;);
 
-<span class="pc bpc" id="L520" title="1 of 2 branches missed.">		if (null == mdfc) throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		if (null == mdfc) throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L522" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adtSpot = org.drip.analytics.support.Helper.SpotDateArray</span>
-<span class="fc" id="L523">			(dtSpot, null == _astrGovvieTenor ? 0 : _astrGovvieTenor.length);</span>
+<span class="pc bpc" id="L534" title="1 of 2 branches missed.">		org.drip.analytics.date.JulianDate[] adtSpot = org.drip.analytics.support.Helper.SpotDateArray</span>
+<span class="fc" id="L535">			(dtSpot, null == _astrGovvieTenor ? 0 : _astrGovvieTenor.length);</span>
 
-<span class="fc" id="L525">		org.drip.analytics.date.JulianDate[] adtMaturity = org.drip.analytics.support.Helper.FromTenor</span>
-<span class="fc" id="L526">			(dtSpot, _astrGovvieTenor);</span>
+<span class="fc" id="L537">		org.drip.analytics.date.JulianDate[] adtMaturity = org.drip.analytics.support.Helper.FromTenor</span>
+<span class="fc" id="L538">			(dtSpot, _astrGovvieTenor);</span>
 
-<span class="fc" id="L528">		org.drip.state.govvie.GovvieCurve gc = org.drip.service.template.LatentMarketStateBuilder.GovvieCurve</span>
-<span class="fc" id="L529">			(_strGovvieCode, dtSpot, adtSpot, adtMaturity, _adblGovvieQuote, _adblGovvieQuote, &quot;Yield&quot;,</span>
+<span class="fc" id="L540">		org.drip.state.govvie.GovvieCurve gc = org.drip.service.template.LatentMarketStateBuilder.GovvieCurve</span>
+<span class="fc" id="L541">			(_strGovvieCode, dtSpot, adtSpot, adtMaturity, _adblGovvieQuote, _adblGovvieQuote, &quot;Yield&quot;,</span>
 				org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">		if (null == gc) throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L544" title="1 of 2 branches missed.">		if (null == gc) throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L534" title="All 2 branches covered.">		if (_bond.isFloater()) {</span>
-<span class="fc" id="L535">			org.drip.analytics.cashflow.CompositePeriod cp = _bond.stream().containingPeriod</span>
-<span class="fc" id="L536">				(dtSpot.julian());</span>
+<span class="fc bfc" id="L546" title="All 2 branches covered.">		if (_bond.isFloater()) {</span>
+<span class="fc" id="L547">			org.drip.analytics.cashflow.CompositePeriod cp = _bond.stream().containingPeriod</span>
+<span class="fc" id="L548">				(dtSpot.julian());</span>
 
-<span class="pc bpc" id="L538" title="1 of 4 branches missed.">			if (null != cp &amp;&amp; cp instanceof org.drip.analytics.cashflow.CompositeFloatingPeriod) {</span>
-<span class="fc" id="L539">				org.drip.analytics.cashflow.CompositeFloatingPeriod cfp =</span>
+<span class="pc bpc" id="L550" title="1 of 4 branches missed.">			if (null != cp &amp;&amp; cp instanceof org.drip.analytics.cashflow.CompositeFloatingPeriod) {</span>
+<span class="fc" id="L551">				org.drip.analytics.cashflow.CompositeFloatingPeriod cfp =</span>
 					(org.drip.analytics.cashflow.CompositeFloatingPeriod) cp;
 
-<span class="fc" id="L542">				_iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get</span>
-<span class="fc" id="L543">					(0))).referenceIndexPeriod().fixingDate();</span>
+<span class="fc" id="L554">				_iResetDate = ((org.drip.analytics.cashflow.ComposableUnitFloatingPeriod) (cfp.periods().get</span>
+<span class="fc" id="L555">					(0))).referenceIndexPeriod().fixingDate();</span>
 			}
 		}
 
-<span class="pc bpc" id="L547" title="1 of 2 branches missed.">		if (null == (_csqcFundingBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, null,</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">		if (null == (_csqcFundingBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, null,</span>
 			null, null, null, null)))
-<span class="nc" id="L549">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L561">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L551" title="All 2 branches covered.">		org.drip.state.identifier.FloaterLabel fl = _bond.isFloater() ? _bond.floaterSetting().fri() : null;</span>
+<span class="fc bfc" id="L563" title="All 2 branches covered.">		org.drip.state.identifier.FloaterLabel fl = _bond.isFloater() ? _bond.floaterSetting().fri() : null;</span>
 
-<span class="fc bfc" id="L553" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
-<span class="fc bfc" id="L554" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="pc bpc" id="L555" title="1 of 2 branches missed.">				if (!_csqcFundingBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
+<span class="fc bfc" id="L565" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
+<span class="fc bfc" id="L566" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="pc bpc" id="L567" title="1 of 2 branches missed.">				if (!_csqcFundingBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
 					_dblResetRate))
-<span class="nc" id="L557">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="pc bpc" id="L558" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
-<span class="pc bpc" id="L559" title="1 of 2 branches missed.">			if (!_csqcFundingBase.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
+<span class="nc" id="L569">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L570" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="pc bpc" id="L571" title="1 of 2 branches missed.">			if (!_csqcFundingBase.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
 				_dblResetRate))
-<span class="nc" id="L561">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L573">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
 
-<span class="fc" id="L565">		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create</span>
-<span class="pc bpc" id="L566" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
+<span class="fc" id="L577">		if (null == (_csqcFunding01Up = org.drip.param.creator.MarketParamsBuilder.Create</span>
+<span class="pc bpc" id="L578" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
 				strCurrency, _astrDepositTenor, org.drip.analytics.support.Helper.ParallelNodeBump
-<span class="fc" id="L568">					(_adblDepositQuote, 0.0001), &quot;ForwardRate&quot;,</span>
-<span class="fc" id="L569">						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001),</span>
+<span class="fc" id="L580">					(_adblDepositQuote, 0.0001), &quot;ForwardRate&quot;,</span>
+<span class="fc" id="L581">						org.drip.analytics.support.Helper.ParallelNodeBump (_adblFuturesQuote, 0.0001),</span>
 							&quot;ForwardRate&quot;, _astrFixFloatTenor,
-<span class="fc" id="L571">								org.drip.analytics.support.Helper.ParallelNodeBump (_adblFixFloatQuote,</span>
+<span class="fc" id="L583">								org.drip.analytics.support.Helper.ParallelNodeBump (_adblFixFloatQuote,</span>
 									0.0001), &quot;SwapRate&quot;), gc, null, null, null, null, null)))
-<span class="nc" id="L573">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L585">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L575" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
-<span class="fc bfc" id="L576" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="pc bpc" id="L577" title="1 of 2 branches missed.">				if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
+<span class="fc bfc" id="L587" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
+<span class="fc bfc" id="L588" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="pc bpc" id="L589" title="1 of 2 branches missed.">				if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
 					_dblResetRate /* + 0.0001 */))
-<span class="nc" id="L579">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="pc bpc" id="L580" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
-<span class="pc bpc" id="L581" title="1 of 2 branches missed.">			if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
+<span class="nc" id="L591">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L592" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="pc bpc" id="L593" title="1 of 2 branches missed.">			if (!_csqcFunding01Up.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
 				_dblResetRate /* + 0.0001 */))
-<span class="nc" id="L583">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L595">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
 
-<span class="fc" id="L587">		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create</span>
-<span class="pc bpc" id="L588" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
+<span class="fc" id="L599">		if (null == (_csqcFundingEuroDollar = org.drip.param.creator.MarketParamsBuilder.Create</span>
+<span class="pc bpc" id="L600" title="1 of 2 branches missed.">			(org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,</span>
 				strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 					&quot;ForwardRate&quot;, null, null, &quot;SwapRate&quot;), gc, null, null, null, null, null)))
-<span class="nc" id="L591">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L603">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L593" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
-<span class="fc bfc" id="L594" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="pc bpc" id="L595" title="1 of 2 branches missed.">				if (!_csqcFundingEuroDollar.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
+<span class="fc bfc" id="L605" title="All 4 branches covered.">		if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">			if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="pc bpc" id="L607" title="1 of 2 branches missed.">				if (!_csqcFundingEuroDollar.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel) fl,</span>
 					_dblResetRate))
-<span class="nc" id="L597">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="pc bpc" id="L598" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
-<span class="pc bpc" id="L599" title="1 of 2 branches missed.">			if (!_csqcFundingEuroDollar.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
+<span class="nc" id="L609">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L610" title="1 of 2 branches missed.">			} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="pc bpc" id="L611" title="1 of 2 branches missed.">			if (!_csqcFundingEuroDollar.setFixing (_iResetDate, (org.drip.state.identifier.OTCFixFloatLabel) fl,</span>
 				_dblResetRate))
-<span class="nc" id="L601">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L613">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 			}
 		}
 
 		java.util.Map&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="fc" id="L606">			mapTenorForwardFundingUp =</span>
-<span class="fc" id="L607">				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (dtSpot,</span>
+<span class="fc" id="L618">			mapTenorForwardFundingUp =</span>
+<span class="fc" id="L619">				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (dtSpot,</span>
 					strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 						&quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
 								_dblTenorBump, false);
 
 		java.util.Map&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="fc" id="L614">			mapTenorForwardFundingDown =</span>
-<span class="fc" id="L615">				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (dtSpot,</span>
+<span class="fc" id="L626">			mapTenorForwardFundingDown =</span>
+<span class="fc" id="L627">				org.drip.service.template.LatentMarketStateBuilder.BumpedForwardFundingCurve (dtSpot,</span>
 					strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;, _adblFuturesQuote,
 						&quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
 								_dblTenorBump, false);
 
-<span class="pc bpc" id="L621" title="2 of 4 branches missed.">		if (null == mapTenorForwardFundingUp || null == mapTenorForwardFundingDown)</span>
-<span class="nc" id="L622">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L633" title="2 of 4 branches missed.">		if (null == mapTenorForwardFundingUp || null == mapTenorForwardFundingDown)</span>
+<span class="nc" id="L634">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="fc bfc" id="L625" title="All 2 branches covered.">			meTenorForwardFundingUp : mapTenorForwardFundingUp.entrySet()) {</span>
-<span class="fc" id="L626">			java.lang.String strKey = meTenorForwardFundingUp.getKey();</span>
+<span class="fc bfc" id="L637" title="All 2 branches covered.">			meTenorForwardFundingUp : mapTenorForwardFundingUp.entrySet()) {</span>
+<span class="fc" id="L638">			java.lang.String strKey = meTenorForwardFundingUp.getKey();</span>
 
-<span class="fc" id="L628">			org.drip.param.market.CurveSurfaceQuoteContainer csqcForwardFundingTenorUp =</span>
-<span class="fc" id="L629">				org.drip.param.creator.MarketParamsBuilder.Create (meTenorForwardFundingUp.getValue(), gc,</span>
+<span class="fc" id="L640">			org.drip.param.market.CurveSurfaceQuoteContainer csqcForwardFundingTenorUp =</span>
+<span class="fc" id="L641">				org.drip.param.creator.MarketParamsBuilder.Create (meTenorForwardFundingUp.getValue(), gc,</span>
 					null, null, null, null, null);
 
-<span class="fc" id="L632">			org.drip.param.market.CurveSurfaceQuoteContainer csqcForwardFundingTenorDown =</span>
-<span class="fc" id="L633">				org.drip.param.creator.MarketParamsBuilder.Create (mapTenorForwardFundingDown.get (strKey),</span>
+<span class="fc" id="L644">			org.drip.param.market.CurveSurfaceQuoteContainer csqcForwardFundingTenorDown =</span>
+<span class="fc" id="L645">				org.drip.param.creator.MarketParamsBuilder.Create (mapTenorForwardFundingDown.get (strKey),</span>
 					gc, null, null, null, null, null);
 
-<span class="pc bpc" id="L636" title="2 of 4 branches missed.">			if (null == csqcForwardFundingTenorUp || null == csqcForwardFundingTenorDown)</span>
-<span class="nc" id="L637">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L648" title="2 of 4 branches missed.">			if (null == csqcForwardFundingTenorUp || null == csqcForwardFundingTenorDown)</span>
+<span class="nc" id="L649">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L639">			_mapCSQCForwardFundingUp.put (strKey, csqcForwardFundingTenorUp);</span>
+<span class="fc" id="L651">			_mapCSQCForwardFundingUp.put (strKey, csqcForwardFundingTenorUp);</span>
 
-<span class="fc" id="L641">			_mapCSQCForwardFundingDown.put (strKey, csqcForwardFundingTenorDown);</span>
-<span class="fc" id="L642">		}</span>
+<span class="fc" id="L653">			_mapCSQCForwardFundingDown.put (strKey, csqcForwardFundingTenorDown);</span>
+<span class="fc" id="L654">		}</span>
 
 		java.util.Map&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="fc" id="L645">			mapTenorFundingUp = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve</span>
-<span class="fc" id="L646">				(dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;,</span>
+<span class="fc" id="L657">			mapTenorFundingUp = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve</span>
+<span class="fc" id="L658">				(dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;,</span>
 					_adblFuturesQuote, &quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
 						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, 0.0001 *
 							_dblTenorBump, false);
 
 		java.util.Map&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="fc" id="L652">			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve</span>
-<span class="fc" id="L653">				(dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;,</span>
+<span class="fc" id="L664">			mapTenorFundingDown = org.drip.service.template.LatentMarketStateBuilder.BumpedFundingCurve</span>
+<span class="fc" id="L665">				(dtSpot, strCurrency, _astrDepositTenor, _adblDepositQuote, &quot;ForwardRate&quot;,</span>
 					_adblFuturesQuote, &quot;ForwardRate&quot;, _astrFixFloatTenor, _adblFixFloatQuote, &quot;SwapRate&quot;,
 						org.drip.service.template.LatentMarketStateBuilder.SMOOTH, -0.0001 *
 							_dblTenorBump, false);
 
-<span class="pc bpc" id="L658" title="2 of 4 branches missed.">		if (null == mapTenorFundingUp || null == mapTenorFundingDown)</span>
-<span class="nc" id="L659">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L670" title="2 of 4 branches missed.">		if (null == mapTenorFundingUp || null == mapTenorFundingDown)</span>
+<span class="nc" id="L671">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.discount.MergedDiscountForwardCurve&gt;
-<span class="fc bfc" id="L662" title="All 2 branches covered.">			meTenorFundingUp : mapTenorFundingUp.entrySet()) {</span>
-<span class="fc" id="L663">			java.lang.String strKey = meTenorFundingUp.getKey();</span>
+<span class="fc bfc" id="L674" title="All 2 branches covered.">			meTenorFundingUp : mapTenorFundingUp.entrySet()) {</span>
+<span class="fc" id="L675">			java.lang.String strKey = meTenorFundingUp.getKey();</span>
 
-<span class="fc" id="L665">			org.drip.param.market.CurveSurfaceQuoteContainer csqcFundingTenorUp =</span>
-<span class="fc" id="L666">				org.drip.param.creator.MarketParamsBuilder.Create (meTenorFundingUp.getValue(), gc, null,</span>
+<span class="fc" id="L677">			org.drip.param.market.CurveSurfaceQuoteContainer csqcFundingTenorUp =</span>
+<span class="fc" id="L678">				org.drip.param.creator.MarketParamsBuilder.Create (meTenorFundingUp.getValue(), gc, null,</span>
 					null, null, null, null);
 
-<span class="fc" id="L669">			org.drip.param.market.CurveSurfaceQuoteContainer csqcFundingTenorDown =</span>
-<span class="fc" id="L670">				org.drip.param.creator.MarketParamsBuilder.Create (mapTenorFundingDown.get (strKey), gc,</span>
+<span class="fc" id="L681">			org.drip.param.market.CurveSurfaceQuoteContainer csqcFundingTenorDown =</span>
+<span class="fc" id="L682">				org.drip.param.creator.MarketParamsBuilder.Create (mapTenorFundingDown.get (strKey), gc,</span>
 					null, null, null, null, null);
 
-<span class="pc bpc" id="L673" title="2 of 4 branches missed.">			if (null == csqcFundingTenorUp || null == csqcFundingTenorDown)</span>
-<span class="nc" id="L674">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L685" title="2 of 4 branches missed.">			if (null == csqcFundingTenorUp || null == csqcFundingTenorDown)</span>
+<span class="nc" id="L686">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L676" title="All 4 branches covered.">			if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
-<span class="fc bfc" id="L677" title="All 2 branches covered.">				if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
-<span class="pc bpc" id="L678" title="1 of 2 branches missed.">					if (!csqcFundingTenorUp.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
+<span class="fc bfc" id="L688" title="All 4 branches covered.">			if (_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) {</span>
+<span class="fc bfc" id="L689" title="All 2 branches covered.">				if (fl instanceof org.drip.state.identifier.ForwardLabel) {</span>
+<span class="pc bpc" id="L690" title="1 of 2 branches missed.">					if (!csqcFundingTenorUp.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
 						fl, _dblResetRate /* + 0.0001 * _dblTenorBump */))
-<span class="nc" id="L680">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L692">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L682" title="1 of 2 branches missed.">					if (!csqcFundingTenorDown.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
+<span class="pc bpc" id="L694" title="1 of 2 branches missed.">					if (!csqcFundingTenorDown.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
 						fl, _dblResetRate /* - 0.0001 * _dblTenorBump */))
-<span class="nc" id="L684">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="pc bpc" id="L685" title="1 of 2 branches missed.">				} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
-<span class="pc bpc" id="L686" title="1 of 2 branches missed.">					if (!csqcFundingTenorUp.setFixing (_iResetDate,</span>
+<span class="nc" id="L696">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L697" title="1 of 2 branches missed.">				} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel) {</span>
+<span class="pc bpc" id="L698" title="1 of 2 branches missed.">					if (!csqcFundingTenorUp.setFixing (_iResetDate,</span>
 						(org.drip.state.identifier.OTCFixFloatLabel) fl, _dblResetRate + 0.0001 *
 							_dblTenorBump))
-<span class="nc" id="L689">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L701">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="pc bpc" id="L691" title="1 of 2 branches missed.">					if (!csqcFundingTenorDown.setFixing (_iResetDate,</span>
+<span class="pc bpc" id="L703" title="1 of 2 branches missed.">					if (!csqcFundingTenorDown.setFixing (_iResetDate,</span>
 						(org.drip.state.identifier.OTCFixFloatLabel) fl, _dblResetRate - 0.0001 *
 						_dblTenorBump))
-<span class="nc" id="L694">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L706">						throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 				}
 			}
 
-<span class="fc" id="L698">			_mapCSQCFundingUp.put (strKey, csqcFundingTenorUp);</span>
+<span class="fc" id="L710">			_mapCSQCFundingUp.put (strKey, csqcFundingTenorUp);</span>
 
-<span class="fc" id="L700">			_mapCSQCFundingDown.put (strKey, csqcFundingTenorDown);</span>
-<span class="fc" id="L701">		}</span>
+<span class="fc" id="L712">			_mapCSQCFundingDown.put (strKey, csqcFundingTenorDown);</span>
+<span class="fc" id="L713">		}</span>
 
-<span class="fc" id="L703">		java.util.Map&lt;java.lang.String, org.drip.state.govvie.GovvieCurve&gt; mapTenorGovvieUp =</span>
-<span class="fc" id="L704">			org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve (_strGovvieCode, dtSpot,</span>
+<span class="fc" id="L715">		java.util.Map&lt;java.lang.String, org.drip.state.govvie.GovvieCurve&gt; mapTenorGovvieUp =</span>
+<span class="fc" id="L716">			org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve (_strGovvieCode, dtSpot,</span>
 				adtSpot, adtMaturity,_adblGovvieQuote, _adblGovvieQuote, &quot;Yield&quot;,
 					org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001 *
 						_dblTenorBump, false);
 
-<span class="fc" id="L709">		java.util.Map&lt;java.lang.String, org.drip.state.govvie.GovvieCurve&gt; mapTenorGovvieDown =</span>
-<span class="fc" id="L710">			org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve (_strGovvieCode, dtSpot,</span>
+<span class="fc" id="L721">		java.util.Map&lt;java.lang.String, org.drip.state.govvie.GovvieCurve&gt; mapTenorGovvieDown =</span>
+<span class="fc" id="L722">			org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve (_strGovvieCode, dtSpot,</span>
 				adtSpot, adtMaturity,_adblGovvieQuote, _adblGovvieQuote, &quot;Yield&quot;,
 					org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, -0.0001 *
 						_dblTenorBump, false);
 
-<span class="pc bpc" id="L715" title="2 of 4 branches missed.">		if (null == mapTenorGovvieUp || null == mapTenorGovvieDown)</span>
-<span class="nc" id="L716">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L727" title="2 of 4 branches missed.">		if (null == mapTenorGovvieUp || null == mapTenorGovvieDown)</span>
+<span class="nc" id="L728">			throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.govvie.GovvieCurve&gt; meTenorGovvieUp :
-<span class="fc bfc" id="L719" title="All 2 branches covered.">			mapTenorGovvieUp.entrySet()) {</span>
-<span class="fc" id="L720">			java.lang.String strKey = meTenorGovvieUp.getKey();</span>
+<span class="fc bfc" id="L731" title="All 2 branches covered.">			mapTenorGovvieUp.entrySet()) {</span>
+<span class="fc" id="L732">			java.lang.String strKey = meTenorGovvieUp.getKey();</span>
 
-<span class="fc" id="L722">			org.drip.param.market.CurveSurfaceQuoteContainer csqcGovvieTenorUp =</span>
-<span class="fc" id="L723">				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, meTenorGovvieUp.getValue(), null,</span>
+<span class="fc" id="L734">			org.drip.param.market.CurveSurfaceQuoteContainer csqcGovvieTenorUp =</span>
+<span class="fc" id="L735">				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, meTenorGovvieUp.getValue(), null,</span>
 					null, null, null, null);
 
-<span class="fc" id="L726">			org.drip.param.market.CurveSurfaceQuoteContainer csqcGovvieTenorDown =</span>
-<span class="fc" id="L727">				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, mapTenorGovvieDown.get (strKey),</span>
+<span class="fc" id="L738">			org.drip.param.market.CurveSurfaceQuoteContainer csqcGovvieTenorDown =</span>
+<span class="fc" id="L739">				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, mapTenorGovvieDown.get (strKey),</span>
 					null, null, null, null, null);
 
-<span class="pc bpc" id="L730" title="2 of 4 branches missed.">			if (null == csqcGovvieTenorUp || null == csqcGovvieTenorDown)</span>
-<span class="nc" id="L731">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L742" title="2 of 4 branches missed.">			if (null == csqcGovvieTenorUp || null == csqcGovvieTenorDown)</span>
+<span class="nc" id="L743">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L733">			_mapCSQCGovvieUp.put (strKey, csqcGovvieTenorUp);</span>
+<span class="fc" id="L745">			_mapCSQCGovvieUp.put (strKey, csqcGovvieTenorUp);</span>
 
-<span class="fc" id="L735">			_mapCSQCGovvieDown.put (strKey, csqcGovvieTenorDown);</span>
+<span class="fc" id="L747">			_mapCSQCGovvieDown.put (strKey, csqcGovvieTenorDown);</span>
 
-<span class="fc bfc" id="L737" title="All 4 branches covered.">			if ((_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) &amp;&amp;</span>
-<span class="pc bpc" id="L738" title="1 of 2 branches missed.">				(!csqcGovvieTenorUp.setFixing (_iResetDate, fl, _dblResetRate) ||</span>
-<span class="pc bpc" id="L739" title="1 of 2 branches missed.">					!csqcGovvieTenorDown.setFixing (_iResetDate, fl, _dblResetRate)))</span>
-<span class="nc" id="L740">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="fc" id="L741">		}</span>
+<span class="fc bfc" id="L749" title="All 4 branches covered.">			if ((_bond.isFloater() &amp;&amp; java.lang.Integer.MIN_VALUE != _iResetDate) &amp;&amp;</span>
+<span class="pc bpc" id="L750" title="1 of 2 branches missed.">				(!csqcGovvieTenorUp.setFixing (_iResetDate, fl, _dblResetRate) ||</span>
+<span class="pc bpc" id="L751" title="1 of 2 branches missed.">					!csqcGovvieTenorDown.setFixing (_iResetDate, fl, _dblResetRate)))</span>
+<span class="nc" id="L752">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L753">		}</span>
 
-<span class="fc" id="L743">		org.drip.state.identifier.EntityCDSLabel cl = _bond.creditLabel();</span>
+<span class="fc" id="L755">		org.drip.state.identifier.EntityCDSLabel cl = _bond.creditLabel();</span>
 
-<span class="pc bpc" id="L745" title="1 of 2 branches missed.">		java.lang.String strReferenceEntity = null != cl ? cl.referenceEntity() : null;</span>
+<span class="pc bpc" id="L757" title="1 of 2 branches missed.">		java.lang.String strReferenceEntity = null != cl ? cl.referenceEntity() : null;</span>
 
-<span class="pc bpc" id="L747" title="1 of 2 branches missed.">		if (null == strReferenceEntity) return;</span>
+<span class="pc bpc" id="L759" title="1 of 2 branches missed.">		if (null == strReferenceEntity) return;</span>
 
-<span class="pc bpc" id="L749" title="1 of 2 branches missed.">		if (!_bMarketPriceCreditMetrics) {</span>
-<span class="nc bnc" id="L750" title="All 2 branches missed.">			if (null == (_csqcCreditBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,</span>
-<span class="nc" id="L751">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot, strReferenceEntity,</span>
+<span class="pc bpc" id="L761" title="1 of 2 branches missed.">		if (!_bMarketPriceCreditMetrics) {</span>
+<span class="nc bnc" id="L762" title="All 2 branches missed.">			if (null == (_csqcCreditBase = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,</span>
+<span class="nc" id="L763">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot, strReferenceEntity,</span>
 					_astrCreditTenor, _adblCreditQuote, _adblCreditQuote, &quot;FairPremium&quot;, mdfc), null, null,
 						null, null)))
-<span class="nc" id="L754">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L766">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L756" title="All 4 branches missed.">			if (_bond.isFloater() &amp;&amp; !_csqcCreditBase.setFixing (_iResetDate,</span>
+<span class="nc bnc" id="L768" title="All 4 branches missed.">			if (_bond.isFloater() &amp;&amp; !_csqcCreditBase.setFixing (_iResetDate,</span>
 				(org.drip.state.identifier.ForwardLabel) fl, _dblResetRate))
-<span class="nc" id="L758">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L770">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L760" title="All 2 branches missed.">			if (null == (_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,</span>
-<span class="nc" id="L761">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot, strReferenceEntity,</span>
+<span class="nc bnc" id="L772" title="All 2 branches missed.">			if (null == (_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,</span>
+<span class="nc" id="L773">				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot, strReferenceEntity,</span>
 					_astrCreditTenor, _adblCreditQuote, org.drip.analytics.support.Helper.ParallelNodeBump
-<span class="nc" id="L763">						(_adblCreditQuote, _dblTenorBump), &quot;FairPremium&quot;, mdfc), null, null, null, null)))</span>
-<span class="nc" id="L764">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L775">						(_adblCreditQuote, _dblTenorBump), &quot;FairPremium&quot;, mdfc), null, null, null, null)))</span>
+<span class="nc" id="L776">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L766" title="All 4 branches missed.">			if (_bond.isFloater() &amp;&amp; !_csqcCredit01Up.setFixing (_iResetDate, fl, _dblResetRate))</span>
-<span class="nc" id="L767">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L778" title="All 4 branches missed.">			if (_bond.isFloater() &amp;&amp; !_csqcCredit01Up.setFixing (_iResetDate, fl, _dblResetRate))</span>
+<span class="nc" id="L779">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L769">			java.util.Map&lt;java.lang.String, org.drip.state.credit.CreditCurve&gt; mapTenorCredit =</span>
-<span class="nc" id="L770">				org.drip.service.template.LatentMarketStateBuilder.BumpedCreditCurve (dtSpot,</span>
+<span class="nc" id="L781">			java.util.Map&lt;java.lang.String, org.drip.state.credit.CreditCurve&gt; mapTenorCredit =</span>
+<span class="nc" id="L782">				org.drip.service.template.LatentMarketStateBuilder.BumpedCreditCurve (dtSpot,</span>
 					strReferenceEntity, _astrCreditTenor, _adblCreditQuote, _adblCreditQuote, &quot;FairPremium&quot;,
 						mdfc, _dblTenorBump, false);
 
-<span class="nc bnc" id="L774" title="All 2 branches missed.">			if (null == mapTenorCredit)</span>
-<span class="nc" id="L775">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L786" title="All 2 branches missed.">			if (null == mapTenorCredit)</span>
+<span class="nc" id="L787">				throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L777">			_mapCSQCCredit = new</span>
+<span class="nc" id="L789">			_mapCSQCCredit = new</span>
 				org.drip.analytics.support.CaseInsensitiveHashMap&lt;org.drip.param.market.CurveSurfaceQuoteContainer&gt;();
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.state.credit.CreditCurve&gt; meTenorCredit :
-<span class="nc bnc" id="L781" title="All 2 branches missed.">				mapTenorCredit.entrySet()) {</span>
-<span class="nc" id="L782">				org.drip.param.market.CurveSurfaceQuoteContainer csqcCreditTenor =</span>
-<span class="nc" id="L783">					org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, meTenorCredit.getValue(),</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">				mapTenorCredit.entrySet()) {</span>
+<span class="nc" id="L794">				org.drip.param.market.CurveSurfaceQuoteContainer csqcCreditTenor =</span>
+<span class="nc" id="L795">					org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, meTenorCredit.getValue(),</span>
 						null, null, null, null);
 
-<span class="nc bnc" id="L786" title="All 2 branches missed.">				if (null == csqcCreditTenor)</span>
-<span class="nc" id="L787">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L798" title="All 2 branches missed.">				if (null == csqcCreditTenor)</span>
+<span class="nc" id="L799">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L789">				_mapCSQCCredit.put (meTenorCredit.getKey(), csqcCreditTenor);</span>
+<span class="nc" id="L801">				_mapCSQCCredit.put (meTenorCredit.getKey(), csqcCreditTenor);</span>
 
-<span class="nc bnc" id="L791" title="All 4 branches missed.">				if (_bond.isFloater() &amp;&amp; !csqcCreditTenor.setFixing (_iResetDate, fl, _dblResetRate))</span>
-<span class="nc" id="L792">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L793">			}</span>
-<span class="nc" id="L794">		} else {</span>
-<span class="fc" id="L795">			org.drip.state.credit.CreditCurve ccBase =</span>
-<span class="fc" id="L796">				org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (strReferenceEntity, dtSpot, new</span>
+<span class="nc bnc" id="L803" title="All 4 branches missed.">				if (_bond.isFloater() &amp;&amp; !csqcCreditTenor.setFixing (_iResetDate, fl, _dblResetRate))</span>
+<span class="nc" id="L804">					throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L805">			}</span>
+<span class="nc" id="L806">		} else {</span>
+<span class="fc" id="L807">			org.drip.state.credit.CreditCurve ccBase =</span>
+<span class="fc" id="L808">				org.drip.state.creator.ScenarioCreditCurveBuilder.Custom (strReferenceEntity, dtSpot, new</span>
 					org.drip.product.definition.CalibratableComponent[] {bond}, mdfc, new double[]
 						{_dblCurrentPrice}, new java.lang.String[] {&quot;Price&quot;}, _dblRecoveryRate, false, new
 							org.drip.param.definition.CalibrationParams (&quot;Price&quot;, 0,
-<span class="fc" id="L800">								_bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase, null,</span>
+<span class="fc" id="L812">								_bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase, null,</span>
 									_dblCurrentPrice)));
 
-<span class="pc bpc" id="L803" title="1 of 2 branches missed.">			if (null == ccBase || null == (_csqcCreditBase =</span>
-<span class="pc bpc" id="L804" title="1 of 2 branches missed.">				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, ccBase, null, null, null,</span>
+<span class="pc bpc" id="L815" title="1 of 2 branches missed.">			if (null == ccBase || null == (_csqcCreditBase =</span>
+<span class="pc bpc" id="L816" title="1 of 2 branches missed.">				org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc, ccBase, null, null, null,</span>
 					null)))
-<span class="nc" id="L806">				return;</span>
+<span class="nc" id="L818">				return;</span>
 
-<span class="fc bfc" id="L808" title="All 2 branches covered.">			if (_bond.isFloater())</span>
+<span class="fc bfc" id="L820" title="All 2 branches covered.">			if (_bond.isFloater())</span>
 			{
-<span class="pc bpc" id="L810" title="1 of 4 branches missed.">				if (null != fl &amp;&amp; org.drip.numerical.common.NumberUtil.IsValid (_dblResetRate))</span>
+<span class="pc bpc" id="L822" title="1 of 4 branches missed.">				if (null != fl &amp;&amp; org.drip.numerical.common.NumberUtil.IsValid (_dblResetRate))</span>
 				{
-<span class="fc bfc" id="L812" title="All 2 branches covered.">					if (fl instanceof org.drip.state.identifier.ForwardLabel)</span>
+<span class="fc bfc" id="L824" title="All 2 branches covered.">					if (fl instanceof org.drip.state.identifier.ForwardLabel)</span>
 					{
-<span class="pc bpc" id="L814" title="1 of 2 branches missed.">						if (!_csqcCreditBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
+<span class="pc bpc" id="L826" title="1 of 2 branches missed.">						if (!_csqcCreditBase.setFixing (_iResetDate, (org.drip.state.identifier.ForwardLabel)</span>
 							fl, _dblResetRate))
 						{
-<span class="nc" id="L817">							throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L829">							throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 						}
-<span class="pc bpc" id="L819" title="1 of 2 branches missed.">					} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel)</span>
+<span class="pc bpc" id="L831" title="1 of 2 branches missed.">					} else if (fl instanceof org.drip.state.identifier.OTCFixFloatLabel)</span>
 					{
-<span class="pc bpc" id="L821" title="1 of 2 branches missed.">						if (!_csqcCreditBase.setFixing (_iResetDate,</span>
+<span class="pc bpc" id="L833" title="1 of 2 branches missed.">						if (!_csqcCreditBase.setFixing (_iResetDate,</span>
 							(org.drip.state.identifier.OTCFixFloatLabel) fl, _dblResetRate))
 						{
-<span class="nc" id="L824">							throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L836">							throw new java.lang.Exception (&quot;BondReplicator Constructor =&gt; Invalid Inputs&quot;);</span>
 						}
 					}
 				}
 			}
 
-<span class="fc" id="L830">			_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,</span>
-<span class="fc" id="L831">				org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (dtSpot.julian(),</span>
-<span class="fc" id="L832">					strReferenceEntity, strCurrency, ccBase.hazard (bond.maturityDate()) + 0.0001,</span>
+<span class="fc" id="L842">			_csqcCredit01Up = org.drip.param.creator.MarketParamsBuilder.Create (mdfc, gc,</span>
+<span class="fc" id="L843">				org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (dtSpot.julian(),</span>
+<span class="fc" id="L844">					strReferenceEntity, strCurrency, ccBase.hazard (bond.maturityDate()) + 0.0001,</span>
 						_dblRecoveryRate), null, null, null, null);
 		}
 
-<span class="pc bpc" id="L836" title="1 of 4 branches missed.">		_emr = !_bond.callable() &amp;&amp; _bond.putable() ? null :</span>
-<span class="fc" id="L837">			org.drip.service.scenario.EOSMetricsReplicator.Standard (</span>
+<span class="pc bpc" id="L848" title="1 of 4 branches missed.">		_emr = !_bond.callable() &amp;&amp; _bond.putable() ? null :</span>
+<span class="fc" id="L849">			org.drip.service.scenario.EOSMetricsReplicator.Standard (</span>
 				_bond,
 				_valParams,
 				_csqcFundingBase,
@@ -848,7 +860,7 @@ public class BondReplicator
 				_dblLogNormalVolatility,
 				_dblCurrentPrice
 			);
-<span class="fc" id="L851">	}</span>
+<span class="fc" id="L863">	}</span>
 
 	/**
 	 * Retrieve the Bond Current Market Price
@@ -858,7 +870,7 @@ public class BondReplicator
 
 	public double currentPrice()
 	{
-<span class="nc" id="L861">		return _dblCurrentPrice;</span>
+<span class="nc" id="L873">		return _dblCurrentPrice;</span>
 	}
 
 	/**
@@ -869,7 +881,7 @@ public class BondReplicator
 
 	public double issuePrice()
 	{
-<span class="nc" id="L872">		return _dblIssuePrice;</span>
+<span class="nc" id="L884">		return _dblIssuePrice;</span>
 	}
 
 	/**
@@ -880,7 +892,7 @@ public class BondReplicator
 
 	public double issueAmount()
 	{
-<span class="nc" id="L883">		return _dblIssueAmount;</span>
+<span class="nc" id="L895">		return _dblIssueAmount;</span>
 	}
 
 	/**
@@ -891,7 +903,7 @@ public class BondReplicator
 
 	public org.drip.analytics.date.JulianDate valueDate()
 	{
-<span class="nc" id="L894">		return _dtValue;</span>
+<span class="nc" id="L906">		return _dtValue;</span>
 	}
 
 	/**
@@ -902,7 +914,7 @@ public class BondReplicator
 
 	public java.lang.String[] depositTenor()
 	{
-<span class="nc" id="L905">		return _astrDepositTenor;</span>
+<span class="nc" id="L917">		return _astrDepositTenor;</span>
 	}
 
 	/**
@@ -913,7 +925,7 @@ public class BondReplicator
 
 	public double[] depositQuote()
 	{
-<span class="nc" id="L916">		return _adblDepositQuote;</span>
+<span class="nc" id="L928">		return _adblDepositQuote;</span>
 	}
 
 	/**
@@ -924,7 +936,7 @@ public class BondReplicator
 
 	public double[] futuresQuote()
 	{
-<span class="nc" id="L927">		return _adblFuturesQuote;</span>
+<span class="nc" id="L939">		return _adblFuturesQuote;</span>
 	}
 
 	/**
@@ -935,7 +947,7 @@ public class BondReplicator
 
 	public java.lang.String[] fixFloatTenor()
 	{
-<span class="nc" id="L938">		return _astrFixFloatTenor;</span>
+<span class="nc" id="L950">		return _astrFixFloatTenor;</span>
 	}
 
 	/**
@@ -946,7 +958,7 @@ public class BondReplicator
 
 	public double[] fixFloatQuote()
 	{
-<span class="nc" id="L949">		return _adblFixFloatQuote;</span>
+<span class="nc" id="L961">		return _adblFixFloatQuote;</span>
 	}
 
 	/**
@@ -957,7 +969,7 @@ public class BondReplicator
 
 	public double recoveryRate()
 	{
-<span class="nc" id="L960">		return _dblRecoveryRate;</span>
+<span class="nc" id="L972">		return _dblRecoveryRate;</span>
 	}
 
 	/**
@@ -968,7 +980,7 @@ public class BondReplicator
 
 	public double customYieldBump()
 	{
-<span class="nc" id="L971">		return _dblCustomYieldBump;</span>
+<span class="nc" id="L983">		return _dblCustomYieldBump;</span>
 	}
 
 	/**
@@ -979,7 +991,7 @@ public class BondReplicator
 
 	public double customCreditBasisBump()
 	{
-<span class="nc" id="L982">		return _dblCustomCreditBasisBump;</span>
+<span class="nc" id="L994">		return _dblCustomCreditBasisBump;</span>
 	}
 
 	/**
@@ -990,7 +1002,7 @@ public class BondReplicator
 
 	public double zSpreadBump()
 	{
-<span class="nc" id="L993">		return _dblZSpreadBump;</span>
+<span class="nc" id="L1005">		return _dblZSpreadBump;</span>
 	}
 
 	/**
@@ -1001,7 +1013,7 @@ public class BondReplicator
 
 	public double tenorBump()
 	{
-<span class="nc" id="L1004">		return _dblTenorBump;</span>
+<span class="nc" id="L1016">		return _dblTenorBump;</span>
 	}
 
 	/**
@@ -1012,7 +1024,7 @@ public class BondReplicator
 
 	public double spreadDurationMultiplier()
 	{
-<span class="nc" id="L1015">		return _dblSpreadDurationMultiplier;</span>
+<span class="nc" id="L1027">		return _dblSpreadDurationMultiplier;</span>
 	}
 
 	/**
@@ -1023,7 +1035,7 @@ public class BondReplicator
 
 	public java.lang.String govvieCode()
 	{
-<span class="nc" id="L1026">		return _strGovvieCode;</span>
+<span class="nc" id="L1038">		return _strGovvieCode;</span>
 	}
 
 	/**
@@ -1034,7 +1046,7 @@ public class BondReplicator
 
 	public java.lang.String[] govvieTenor()
 	{
-<span class="nc" id="L1037">		return _astrGovvieTenor;</span>
+<span class="nc" id="L1049">		return _astrGovvieTenor;</span>
 	}
 
 	/**
@@ -1045,7 +1057,7 @@ public class BondReplicator
 
 	public double[] govvieQuote()
 	{
-<span class="nc" id="L1048">		return _adblGovvieQuote;</span>
+<span class="nc" id="L1060">		return _adblGovvieQuote;</span>
 	}
 
 	/**
@@ -1056,7 +1068,7 @@ public class BondReplicator
 
 	public boolean creditMetricsFromMarketPrice()
 	{
-<span class="nc" id="L1059">		return _bMarketPriceCreditMetrics;</span>
+<span class="nc" id="L1071">		return _bMarketPriceCreditMetrics;</span>
 	}
 
 	/**
@@ -1067,7 +1079,7 @@ public class BondReplicator
 
 	public java.lang.String[] creditTenor()
 	{
-<span class="nc" id="L1070">		return _astrCreditTenor;</span>
+<span class="nc" id="L1082">		return _astrCreditTenor;</span>
 	}
 
 	/**
@@ -1078,7 +1090,7 @@ public class BondReplicator
 
 	public double[] creditQuote()
 	{
-<span class="nc" id="L1081">		return _adblCreditQuote;</span>
+<span class="nc" id="L1093">		return _adblCreditQuote;</span>
 	}
 
 	/**
@@ -1089,7 +1101,7 @@ public class BondReplicator
 
 	public double fx()
 	{
-<span class="nc" id="L1092">		return _dblFX;</span>
+<span class="nc" id="L1104">		return _dblFX;</span>
 	}
 
 	/**
@@ -1100,7 +1112,7 @@ public class BondReplicator
 
 	public double settleLag()
 	{
-<span class="nc" id="L1103">		return _iSettleLag;</span>
+<span class="nc" id="L1115">		return _iSettleLag;</span>
 	}
 
 	/**
@@ -1111,7 +1123,7 @@ public class BondReplicator
 
 	public org.drip.product.credit.BondComponent bond()
 	{
-<span class="nc" id="L1114">		return _bond;</span>
+<span class="nc" id="L1126">		return _bond;</span>
 	}
 
 	/**
@@ -1122,7 +1134,7 @@ public class BondReplicator
 
 	public org.drip.analytics.date.JulianDate settleDate()
 	{
-<span class="nc" id="L1125">		return _dtSettle;</span>
+<span class="nc" id="L1137">		return _dtSettle;</span>
 	}
 
 	/**
@@ -1133,7 +1145,7 @@ public class BondReplicator
 
 	public org.drip.param.valuation.ValuationParams valuationParameters()
 	{
-<span class="nc" id="L1136">		return _valParams;</span>
+<span class="nc" id="L1148">		return _valParams;</span>
 	}
 
 	/**
@@ -1145,7 +1157,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		fundingTenorCSQCUp()
 	{
-<span class="nc" id="L1148">		return _mapCSQCFundingUp;</span>
+<span class="nc" id="L1160">		return _mapCSQCFundingUp;</span>
 	}
 
 	/**
@@ -1157,7 +1169,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		fundingTenorCSQCDown()
 	{
-<span class="nc" id="L1160">		return _mapCSQCFundingDown;</span>
+<span class="nc" id="L1172">		return _mapCSQCFundingDown;</span>
 	}
 
 	/**
@@ -1169,7 +1181,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		forwardFundingTenorCSQCUp()
 	{
-<span class="nc" id="L1172">		return _mapCSQCForwardFundingUp;</span>
+<span class="nc" id="L1184">		return _mapCSQCForwardFundingUp;</span>
 	}
 
 	/**
@@ -1181,7 +1193,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		forwardFundingTenorCSQCDown()
 	{
-<span class="nc" id="L1184">		return _mapCSQCForwardFundingDown;</span>
+<span class="nc" id="L1196">		return _mapCSQCForwardFundingDown;</span>
 	}
 
 	/**
@@ -1193,7 +1205,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		govvieTenorCSQCUp()
 	{
-<span class="nc" id="L1196">		return _mapCSQCGovvieUp;</span>
+<span class="nc" id="L1208">		return _mapCSQCGovvieUp;</span>
 	}
 
 	/**
@@ -1205,7 +1217,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		govvieTenorCSQCDown()
 	{
-<span class="nc" id="L1208">		return _mapCSQCGovvieDown;</span>
+<span class="nc" id="L1220">		return _mapCSQCGovvieDown;</span>
 	}
 
 	/**
@@ -1217,7 +1229,7 @@ public class BondReplicator
 	public java.util.Map&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
 		creditTenorCSQC()
 	{
-<span class="nc" id="L1220">		return _mapCSQCCredit;</span>
+<span class="nc" id="L1232">		return _mapCSQCCredit;</span>
 	}
 
 	/**
@@ -1228,7 +1240,7 @@ public class BondReplicator
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer fundingBaseCSQC()
 	{
-<span class="fc" id="L1231">		return _csqcFundingBase;</span>
+<span class="fc" id="L1243">		return _csqcFundingBase;</span>
 	}
 
 	/**
@@ -1239,7 +1251,7 @@ public class BondReplicator
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer fundingEuroDollarCSQC()
 	{
-<span class="nc" id="L1242">		return _csqcFundingEuroDollar;</span>
+<span class="nc" id="L1254">		return _csqcFundingEuroDollar;</span>
 	}
 
 	/**
@@ -1250,7 +1262,7 @@ public class BondReplicator
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer creditBaseCSQC()
 	{
-<span class="fc" id="L1253">		return _csqcCreditBase;</span>
+<span class="fc" id="L1265">		return _csqcCreditBase;</span>
 	}
 
 	/**
@@ -1261,7 +1273,7 @@ public class BondReplicator
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer funding01UpCSQC()
 	{
-<span class="nc" id="L1264">		return _csqcFunding01Up;</span>
+<span class="nc" id="L1276">		return _csqcFunding01Up;</span>
 	}
 
 	/**
@@ -1272,7 +1284,7 @@ public class BondReplicator
 
 	public org.drip.param.market.CurveSurfaceQuoteContainer credit01UpCSQC()
 	{
-<span class="nc" id="L1275">		return _csqcCredit01Up;</span>
+<span class="nc" id="L1287">		return _csqcCredit01Up;</span>
 	}
 
 	/**
@@ -1283,7 +1295,7 @@ public class BondReplicator
 
 	public int resetDate()
 	{
-<span class="nc" id="L1286">		return _iResetDate;</span>
+<span class="nc" id="L1298">		return _iResetDate;</span>
 	}
 
 	/**
@@ -1294,7 +1306,7 @@ public class BondReplicator
 
 	public double resetRate()
 	{
-<span class="nc" id="L1297">		return _dblResetRate;</span>
+<span class="nc" id="L1309">		return _dblResetRate;</span>
 	}
 
 	/**
@@ -1305,7 +1317,7 @@ public class BondReplicator
 
 	public org.drip.service.scenario.EOSMetricsReplicator eosMetricsReplicator()
 	{
-<span class="nc" id="L1308">		return _emr;</span>
+<span class="nc" id="L1320">		return _emr;</span>
 	}
 
 	/**
@@ -1316,752 +1328,752 @@ public class BondReplicator
 
 	public org.drip.service.scenario.BondReplicationRun generateRun()
 	{
-<span class="fc" id="L1319">		int iMaturityDate = _bond.maturityDate().julian();</span>
+<span class="fc" id="L1331">		int iMaturityDate = _bond.maturityDate().julian();</span>
 
-<span class="fc" id="L1321">		double dblNextPutFactor = 1.;</span>
-<span class="fc" id="L1322">		double dblNextCallFactor = 1.;</span>
-<span class="fc" id="L1323">		int iNextPutDate = iMaturityDate;</span>
-<span class="fc" id="L1324">		int iNextCallDate = iMaturityDate;</span>
-<span class="fc" id="L1325">		double dblCV01 = java.lang.Double.NaN;</span>
-<span class="fc" id="L1326">		double dblAccrued = java.lang.Double.NaN;</span>
-<span class="fc" id="L1327">		double dblYield01 = java.lang.Double.NaN;</span>
-<span class="fc" id="L1328">		double dblNominalYield = java.lang.Double.NaN;</span>
-<span class="fc" id="L1329">		double dblBEYToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1330">		double dblOASToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1331">		double dblOASToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1332">		double dblSpreadDuration = java.lang.Double.NaN;</span>
-<span class="fc" id="L1333">		double dblYieldToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1334">		double dblParOASToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1335">		double dblESpreadToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1336">		double dblISpreadToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1337">		double dblJSpreadToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1338">		double dblNSpreadToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1339">		double dblZSpreadToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1340">		double dblZSpreadToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1341">		double dblBondBasisToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1342">		double dblBondBasisToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1343">		double dblConvexityToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1344">		double dblWALCreditToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1345">		double dblParZSpreadToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1346">		double dblCreditBasisToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1347">		double dblWALLossOnlyToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1348">		double dblYieldFromPriceNextPut = java.lang.Double.NaN;</span>
-<span class="fc" id="L1349">		double dblYieldFromPriceNextCall = java.lang.Double.NaN;</span>
-<span class="fc" id="L1350">		double dblWALCouponOnlyToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1351">		double dblDiscountMarginToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1352">		double dblParCreditBasisToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1353">		double dblYieldToMaturityFwdCoupon = java.lang.Double.NaN;</span>
-<span class="fc" id="L1354">		double dblEffectiveDurationAdjusted = java.lang.Double.NaN;</span>
-<span class="fc" id="L1355">		double dblMacaulayDurationToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1356">		double dblModifiedDurationToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1357">		double dblModifiedDurationToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1358">		double dblWALPrincipalOnlyToExercise = java.lang.Double.NaN;</span>
-<span class="fc" id="L1359">		double dblWALPrincipalOnlyToMaturity = java.lang.Double.NaN;</span>
-<span class="fc" id="L1360">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCreditKRD = null;</span>
-<span class="fc" id="L1361">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCreditKPRD = null;</span>
+<span class="fc" id="L1333">		double dblNextPutFactor = 1.;</span>
+<span class="fc" id="L1334">		double dblNextCallFactor = 1.;</span>
+<span class="fc" id="L1335">		int iNextPutDate = iMaturityDate;</span>
+<span class="fc" id="L1336">		int iNextCallDate = iMaturityDate;</span>
+<span class="fc" id="L1337">		double dblCV01 = java.lang.Double.NaN;</span>
+<span class="fc" id="L1338">		double dblAccrued = java.lang.Double.NaN;</span>
+<span class="fc" id="L1339">		double dblYield01 = java.lang.Double.NaN;</span>
+<span class="fc" id="L1340">		double dblNominalYield = java.lang.Double.NaN;</span>
+<span class="fc" id="L1341">		double dblBEYToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1342">		double dblOASToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1343">		double dblOASToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1344">		double dblSpreadDuration = java.lang.Double.NaN;</span>
+<span class="fc" id="L1345">		double dblYieldToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1346">		double dblParOASToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1347">		double dblESpreadToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1348">		double dblISpreadToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1349">		double dblJSpreadToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1350">		double dblNSpreadToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1351">		double dblZSpreadToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1352">		double dblZSpreadToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1353">		double dblBondBasisToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1354">		double dblBondBasisToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1355">		double dblConvexityToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1356">		double dblWALCreditToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1357">		double dblParZSpreadToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1358">		double dblCreditBasisToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1359">		double dblWALLossOnlyToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1360">		double dblYieldFromPriceNextPut = java.lang.Double.NaN;</span>
+<span class="fc" id="L1361">		double dblYieldFromPriceNextCall = java.lang.Double.NaN;</span>
+<span class="fc" id="L1362">		double dblWALCouponOnlyToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1363">		double dblDiscountMarginToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1364">		double dblParCreditBasisToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1365">		double dblYieldToMaturityFwdCoupon = java.lang.Double.NaN;</span>
+<span class="fc" id="L1366">		double dblEffectiveDurationAdjusted = java.lang.Double.NaN;</span>
+<span class="fc" id="L1367">		double dblMacaulayDurationToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1368">		double dblModifiedDurationToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1369">		double dblModifiedDurationToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1370">		double dblWALPrincipalOnlyToExercise = java.lang.Double.NaN;</span>
+<span class="fc" id="L1371">		double dblWALPrincipalOnlyToMaturity = java.lang.Double.NaN;</span>
+<span class="fc" id="L1372">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCreditKRD = null;</span>
+<span class="fc" id="L1373">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapCreditKPRD = null;</span>
 
-<span class="fc" id="L1363">		int iValueDate = _dtValue.julian();</span>
+<span class="fc" id="L1375">		int iValueDate = _dtValue.julian();</span>
 
-<span class="fc" id="L1365">		java.lang.String strCurrency = _bond.currency();</span>
+<span class="fc" id="L1377">		java.lang.String strCurrency = _bond.currency();</span>
 
-<span class="fc" id="L1367">		org.drip.product.params.EmbeddedOptionSchedule eosPut = _bond.putSchedule();</span>
+<span class="fc" id="L1379">		org.drip.product.params.EmbeddedOptionSchedule eosPut = _bond.putSchedule();</span>
 
-<span class="fc" id="L1369">		org.drip.product.params.EmbeddedOptionSchedule eosCall = _bond.callSchedule();</span>
+<span class="fc" id="L1381">		org.drip.product.params.EmbeddedOptionSchedule eosCall = _bond.callSchedule();</span>
 
-<span class="fc" id="L1371">		org.drip.service.scenario.BondReplicationRun arr = new</span>
+<span class="fc" id="L1383">		org.drip.service.scenario.BondReplicationRun arr = new</span>
 			org.drip.service.scenario.BondReplicationRun();
 
-<span class="fc" id="L1374">		org.drip.param.valuation.WorkoutInfo wi = _bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase,</span>
+<span class="fc" id="L1386">		org.drip.param.valuation.WorkoutInfo wi = _bond.exerciseYieldFromPrice (_valParams, _csqcFundingBase,</span>
 			null, _dblCurrentPrice);
 
-<span class="pc bpc" id="L1377" title="1 of 2 branches missed.">		if (null == wi) return null;</span>
+<span class="pc bpc" id="L1389" title="1 of 2 branches missed.">		if (null == wi) return null;</span>
 
-<span class="fc" id="L1379">		int iWorkoutDate = wi.date();</span>
+<span class="fc" id="L1391">		int iWorkoutDate = wi.date();</span>
 
-<span class="fc" id="L1381">		double dblWorkoutFactor = wi.factor();</span>
+<span class="fc" id="L1393">		double dblWorkoutFactor = wi.factor();</span>
 
-<span class="fc" id="L1383">		double dblYieldToExercise = wi.yield();</span>
+<span class="fc" id="L1395">		double dblYieldToExercise = wi.yield();</span>
 
-<span class="fc" id="L1385">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLIBORKRD = new</span>
+<span class="fc" id="L1397">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLIBORKRD = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L1388">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLIBORKPRD = new</span>
+<span class="fc" id="L1400">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapLIBORKPRD = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L1391">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFundingKRD = new</span>
+<span class="fc" id="L1403">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFundingKRD = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L1394">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFundingKPRD = new</span>
+<span class="fc" id="L1406">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapFundingKPRD = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L1397">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapGovvieKRD = new</span>
+<span class="fc" id="L1409">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapGovvieKRD = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
-<span class="fc" id="L1400">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapGovvieKPRD = new</span>
+<span class="fc" id="L1412">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; mapGovvieKPRD = new</span>
 			org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();
 
 		try {
-<span class="fc bfc" id="L1404" title="All 2 branches covered.">			if (null != eosCall) {</span>
-<span class="fc" id="L1405">				iNextCallDate = eosCall.nextDate (iValueDate);</span>
+<span class="fc bfc" id="L1416" title="All 2 branches covered.">			if (null != eosCall) {</span>
+<span class="fc" id="L1417">				iNextCallDate = eosCall.nextDate (iValueDate);</span>
 
-<span class="fc" id="L1407">				dblNextCallFactor = eosCall.nextFactor (iValueDate);</span>
+<span class="fc" id="L1419">				dblNextCallFactor = eosCall.nextFactor (iValueDate);</span>
 			}
 
-<span class="pc bpc" id="L1410" title="1 of 2 branches missed.">			if (null != eosPut) {</span>
-<span class="nc" id="L1411">				iNextPutDate = eosPut.nextDate (iValueDate);</span>
+<span class="pc bpc" id="L1422" title="1 of 2 branches missed.">			if (null != eosPut) {</span>
+<span class="nc" id="L1423">				iNextPutDate = eosPut.nextDate (iValueDate);</span>
 
-<span class="nc" id="L1413">				dblNextPutFactor = eosPut.nextFactor (iValueDate);</span>
+<span class="nc" id="L1425">				dblNextPutFactor = eosPut.nextFactor (iValueDate);</span>
 			}
-<span class="nc" id="L1415">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1416">			e.printStackTrace();</span>
+<span class="nc" id="L1427">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1428">			e.printStackTrace();</span>
 
-<span class="nc" id="L1418">			return null;</span>
-<span class="fc" id="L1419">		}</span>
-
-		try {
-<span class="fc" id="L1422">			dblAccrued = _bond.accrued (_dtSettle.julian(), _csqcFundingBase);</span>
-<span class="nc" id="L1423">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1424">			e.printStackTrace();</span>
-
-<span class="nc" id="L1426">			return null;</span>
-<span class="fc" id="L1427">		}</span>
+<span class="nc" id="L1430">			return null;</span>
+<span class="fc" id="L1431">		}</span>
 
 		try {
-<span class="fc" id="L1430">			dblYieldToMaturity = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null, _dblCurrentPrice);</span>
-<span class="nc" id="L1431">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1432">			e.printStackTrace();</span>
+<span class="fc" id="L1434">			dblAccrued = _bond.accrued (_dtSettle.julian(), _csqcFundingBase);</span>
+<span class="nc" id="L1435">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1436">			e.printStackTrace();</span>
 
-<span class="nc" id="L1434">			return null;</span>
-<span class="fc" id="L1435">		}</span>
+<span class="nc" id="L1438">			return null;</span>
+<span class="fc" id="L1439">		}</span>
 
 		try {
-<span class="fc" id="L1438">			dblBEYToMaturity = _bond.yieldFromPrice (_valParams, _csqcFundingBase,</span>
-<span class="fc" id="L1439">				org.drip.param.valuation.ValuationCustomizationParams.BondEquivalent (strCurrency),</span>
+<span class="fc" id="L1442">			dblYieldToMaturity = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null, _dblCurrentPrice);</span>
+<span class="nc" id="L1443">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1444">			e.printStackTrace();</span>
+
+<span class="nc" id="L1446">			return null;</span>
+<span class="fc" id="L1447">		}</span>
+
+		try {
+<span class="fc" id="L1450">			dblBEYToMaturity = _bond.yieldFromPrice (_valParams, _csqcFundingBase,</span>
+<span class="fc" id="L1451">				org.drip.param.valuation.ValuationCustomizationParams.BondEquivalent (strCurrency),</span>
 					_dblCurrentPrice);
-<span class="nc" id="L1441">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1442">			e.printStackTrace();</span>
+<span class="nc" id="L1453">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1454">			e.printStackTrace();</span>
 
-<span class="nc" id="L1444">			return null;</span>
-<span class="fc" id="L1445">		}</span>
+<span class="nc" id="L1456">			return null;</span>
+<span class="fc" id="L1457">		}</span>
 
 		try {
-<span class="fc" id="L1448">			dblYieldToMaturityFwdCoupon = _bond.yieldFromPrice (_valParams, _csqcFundingBase, new</span>
-<span class="fc" id="L1449">				org.drip.param.valuation.ValuationCustomizationParams (_bond.couponDC(), _bond.freq(), false,</span>
+<span class="fc" id="L1460">			dblYieldToMaturityFwdCoupon = _bond.yieldFromPrice (_valParams, _csqcFundingBase, new</span>
+<span class="fc" id="L1461">				org.drip.param.valuation.ValuationCustomizationParams (_bond.couponDC(), _bond.freq(), false,</span>
 					null, strCurrency, false, true), _dblCurrentPrice);
-<span class="nc" id="L1451">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1452">			e.printStackTrace();</span>
+<span class="nc" id="L1463">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1464">			e.printStackTrace();</span>
 
-<span class="nc" id="L1454">			return null;</span>
-<span class="fc" id="L1455">		}</span>
+<span class="nc" id="L1466">			return null;</span>
+<span class="fc" id="L1467">		}</span>
 
 		try {
-<span class="fc" id="L1458">			dblYieldFromPriceNextCall = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null,</span>
+<span class="fc" id="L1470">			dblYieldFromPriceNextCall = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null,</span>
 				iNextCallDate, dblNextCallFactor, _dblCurrentPrice);
-<span class="nc" id="L1460">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1461">			e.printStackTrace();</span>
+<span class="nc" id="L1472">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1473">			e.printStackTrace();</span>
 
-<span class="nc" id="L1463">			return null;</span>
-<span class="fc" id="L1464">		}</span>
+<span class="nc" id="L1475">			return null;</span>
+<span class="fc" id="L1476">		}</span>
 
 		try {
-<span class="fc" id="L1467">			dblYieldFromPriceNextPut = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null,</span>
+<span class="fc" id="L1479">			dblYieldFromPriceNextPut = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null,</span>
 				iNextPutDate, dblNextPutFactor, _dblCurrentPrice);
-<span class="nc" id="L1469">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1470">			e.printStackTrace();</span>
+<span class="nc" id="L1481">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1482">			e.printStackTrace();</span>
 
-<span class="nc" id="L1472">			return null;</span>
-<span class="fc" id="L1473">		}</span>
-
-		try {
-<span class="fc" id="L1476">			dblNominalYield = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null, _dblIssuePrice);</span>
-<span class="nc" id="L1477">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1478">			e.printStackTrace();</span>
-
-<span class="nc" id="L1480">			return null;</span>
-<span class="fc" id="L1481">		}</span>
+<span class="nc" id="L1484">			return null;</span>
+<span class="fc" id="L1485">		}</span>
 
 		try {
-<span class="fc" id="L1484">			dblOASToMaturity = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, _dblCurrentPrice);</span>
-<span class="nc" id="L1485">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1486">			e.printStackTrace();</span>
-<span class="fc" id="L1487">		}</span>
+<span class="fc" id="L1488">			dblNominalYield = _bond.yieldFromPrice (_valParams, _csqcFundingBase, null, _dblIssuePrice);</span>
+<span class="nc" id="L1489">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1490">			e.printStackTrace();</span>
+
+<span class="nc" id="L1492">			return null;</span>
+<span class="fc" id="L1493">		}</span>
 
 		try {
-<span class="fc bfc" id="L1490" title="All 2 branches covered.">			dblZSpreadToMaturity = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
-<span class="fc" id="L1491">				_csqcFundingBase, null, _dblCurrentPrice) : _bond.zSpreadFromPrice (_valParams,</span>
+<span class="fc" id="L1496">			dblOASToMaturity = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, _dblCurrentPrice);</span>
+<span class="nc" id="L1497">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1498">			e.printStackTrace();</span>
+<span class="fc" id="L1499">		}</span>
+
+		try {
+<span class="fc bfc" id="L1502" title="All 2 branches covered.">			dblZSpreadToMaturity = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
+<span class="fc" id="L1503">				_csqcFundingBase, null, _dblCurrentPrice) : _bond.zSpreadFromPrice (_valParams,</span>
 					_csqcFundingBase, null, _dblCurrentPrice);
-<span class="nc" id="L1493">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1494">			e.printStackTrace();</span>
-<span class="fc" id="L1495">		}</span>
+<span class="nc" id="L1505">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1506">			e.printStackTrace();</span>
+<span class="fc" id="L1507">		}</span>
 
 		try {
-<span class="fc bfc" id="L1498" title="All 2 branches covered.">			 dblZSpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
+<span class="fc bfc" id="L1510" title="All 2 branches covered.">			 dblZSpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
 				_csqcFundingBase, null, iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice) :
-<span class="fc" id="L1500">					_bond.zSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1512">					_bond.zSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 						dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1502">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1503">			e.printStackTrace();</span>
-<span class="fc" id="L1504">		}</span>
+<span class="nc" id="L1514">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1515">			e.printStackTrace();</span>
+<span class="fc" id="L1516">		}</span>
 
 		try {
-<span class="fc bfc" id="L1507" title="All 2 branches covered.">			 dblParZSpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
+<span class="fc bfc" id="L1519" title="All 2 branches covered.">			 dblParZSpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
 				_csqcFundingBase, null, iWorkoutDate, dblWorkoutFactor, _dblIssuePrice) :
-<span class="fc" id="L1509">					_bond.zSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1521">					_bond.zSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 						dblWorkoutFactor, _dblIssuePrice);
-<span class="nc" id="L1511">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1512">			e.printStackTrace();</span>
-<span class="fc" id="L1513">		}</span>
+<span class="nc" id="L1523">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1524">			e.printStackTrace();</span>
+<span class="fc" id="L1525">		}</span>
 
 		try {
-<span class="fc" id="L1516">			dblBondBasisToMaturity = _bond.bondBasisFromPrice (_valParams, _csqcFundingBase, null,</span>
+<span class="fc" id="L1528">			dblBondBasisToMaturity = _bond.bondBasisFromPrice (_valParams, _csqcFundingBase, null,</span>
 				_dblCurrentPrice);
-<span class="nc" id="L1518">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1519">			e.printStackTrace();</span>
-<span class="fc" id="L1520">		}</span>
+<span class="nc" id="L1530">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1531">			e.printStackTrace();</span>
+<span class="fc" id="L1532">		}</span>
 
 		try {
-<span class="fc" id="L1523">			dblBondBasisToExercise = _bond.bondBasisFromPrice (_valParams, _csqcFundingBase, null,</span>
+<span class="fc" id="L1535">			dblBondBasisToExercise = _bond.bondBasisFromPrice (_valParams, _csqcFundingBase, null,</span>
 				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1525">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1526">			e.printStackTrace();</span>
-<span class="fc" id="L1527">		}</span>
+<span class="nc" id="L1537">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1538">			e.printStackTrace();</span>
+<span class="fc" id="L1539">		}</span>
 
 		try {
-<span class="fc" id="L1530">			dblModifiedDurationToMaturity = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,</span>
+<span class="fc" id="L1542">			dblModifiedDurationToMaturity = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,</span>
 				_csqcFunding01Up, null, dblBondBasisToMaturity)) / _dblCurrentPrice;
-<span class="nc" id="L1532">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1533">			e.printStackTrace();</span>
-<span class="fc" id="L1534">		}</span>
+<span class="nc" id="L1544">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1545">			e.printStackTrace();</span>
+<span class="fc" id="L1546">		}</span>
 
 		try {
-<span class="fc" id="L1537">			dblMacaulayDurationToMaturity = _bond.macaulayDurationFromPrice (_valParams, _csqcFundingBase,</span>
+<span class="fc" id="L1549">			dblMacaulayDurationToMaturity = _bond.macaulayDurationFromPrice (_valParams, _csqcFundingBase,</span>
 				null, _dblCurrentPrice);
-<span class="nc" id="L1539">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1540">			e.printStackTrace();</span>
-<span class="fc" id="L1541">		}</span>
+<span class="nc" id="L1551">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1552">			e.printStackTrace();</span>
+<span class="fc" id="L1553">		}</span>
 
 		try {
-<span class="fc" id="L1544">			dblModifiedDurationToExercise = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,</span>
+<span class="fc" id="L1556">			dblModifiedDurationToExercise = (_dblCurrentPrice - _bond.priceFromBondBasis (_valParams,</span>
 				_csqcFunding01Up, null, iWorkoutDate, dblWorkoutFactor, dblBondBasisToExercise)) /
 					_dblCurrentPrice;
-<span class="nc" id="L1547">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1548">			e.printStackTrace();</span>
-<span class="fc" id="L1549">		}</span>
+<span class="nc" id="L1559">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1560">			e.printStackTrace();</span>
+<span class="fc" id="L1561">		}</span>
 
 		try {
-<span class="fc" id="L1552">			dblYield01 = 0.5 * (_bond.priceFromYield (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1564">			dblYield01 = 0.5 * (_bond.priceFromYield (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 				dblWorkoutFactor, dblYieldToExercise - 0.0001 * _dblCustomYieldBump) - _bond.priceFromYield
-<span class="fc" id="L1554">					(_valParams, _csqcFundingBase, null, iWorkoutDate, dblWorkoutFactor, dblYieldToExercise +</span>
+<span class="fc" id="L1566">					(_valParams, _csqcFundingBase, null, iWorkoutDate, dblWorkoutFactor, dblYieldToExercise +</span>
 						0.0001 * _dblCustomYieldBump)) / _dblCustomYieldBump;
-<span class="nc" id="L1556">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1557">			e.printStackTrace();</span>
-<span class="fc" id="L1558">		}</span>
+<span class="nc" id="L1568">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1569">			e.printStackTrace();</span>
+<span class="fc" id="L1570">		}</span>
 
 		try {
-<span class="pc bpc" id="L1561" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
-<span class="pc bpc" id="L1562" title="1 of 2 branches missed.">				dblCreditBasisToExercise = _bMarketPriceCreditMetrics ? 0. : _bond.creditBasisFromPrice</span>
-<span class="pc" id="L1563">					(_valParams, _csqcCreditBase, null, iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);</span>
-<span class="nc" id="L1564">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1565">			e.printStackTrace();</span>
-<span class="fc" id="L1566">		}</span>
+<span class="pc bpc" id="L1573" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
+<span class="pc bpc" id="L1574" title="1 of 2 branches missed.">				dblCreditBasisToExercise = _bMarketPriceCreditMetrics ? 0. : _bond.creditBasisFromPrice</span>
+<span class="pc" id="L1575">					(_valParams, _csqcCreditBase, null, iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);</span>
+<span class="nc" id="L1576">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1577">			e.printStackTrace();</span>
+<span class="fc" id="L1578">		}</span>
 
 		try {
-<span class="pc bpc" id="L1569" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
-<span class="fc" id="L1570">				dblParCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,</span>
+<span class="pc bpc" id="L1581" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
+<span class="fc" id="L1582">				dblParCreditBasisToExercise = _bond.creditBasisFromPrice (_valParams, _csqcCreditBase, null,</span>
 					iWorkoutDate, dblWorkoutFactor, _dblIssuePrice);
-<span class="nc" id="L1572">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1573">			e.printStackTrace();</span>
-<span class="fc" id="L1574">		}</span>
+<span class="nc" id="L1584">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1585">			e.printStackTrace();</span>
+<span class="fc" id="L1586">		}</span>
 
 		try {
-<span class="pc bpc" id="L1577" title="1 of 2 branches missed.">			if (null != _csqcCreditBase) {</span>
-<span class="pc bpc" id="L1578" title="1 of 2 branches missed.">				if (!_bMarketPriceCreditMetrics)</span>
-<span class="nc" id="L1579">					dblEffectiveDurationAdjusted = (_dblCurrentPrice - _bond.priceFromCreditBasis</span>
-<span class="nc" id="L1580">						(_valParams, _csqcCreditBase, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="pc bpc" id="L1589" title="1 of 2 branches missed.">			if (null != _csqcCreditBase) {</span>
+<span class="pc bpc" id="L1590" title="1 of 2 branches missed.">				if (!_bMarketPriceCreditMetrics)</span>
+<span class="nc" id="L1591">					dblEffectiveDurationAdjusted = (_dblCurrentPrice - _bond.priceFromCreditBasis</span>
+<span class="nc" id="L1592">						(_valParams, _csqcCreditBase, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblCreditBasisToExercise + 0.0001 * _dblCustomCreditBasisBump)) /
 								_dblCurrentPrice / _dblCustomCreditBasisBump;
 				else {
-<span class="fc" id="L1584">					org.drip.state.identifier.EntityCDSLabel cl = _bond.creditLabel();</span>
+<span class="fc" id="L1596">					org.drip.state.identifier.EntityCDSLabel cl = _bond.creditLabel();</span>
 
-<span class="fc" id="L1586">					org.drip.state.credit.CreditCurve ccBase = _csqcCreditBase.creditState (cl);</span>
+<span class="fc" id="L1598">					org.drip.state.credit.CreditCurve ccBase = _csqcCreditBase.creditState (cl);</span>
 
-<span class="fc" id="L1588">					org.drip.state.credit.CreditCurve ccAdj =</span>
-<span class="fc" id="L1589">						org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (_dtValue.julian(),</span>
-<span class="fc" id="L1590">							cl.referenceEntity(), strCurrency, ccBase.hazard (_bond.maturityDate()) + 0.0001</span>
+<span class="fc" id="L1600">					org.drip.state.credit.CreditCurve ccAdj =</span>
+<span class="fc" id="L1601">						org.drip.state.creator.ScenarioCreditCurveBuilder.FlatHazard (_dtValue.julian(),</span>
+<span class="fc" id="L1602">							cl.referenceEntity(), strCurrency, ccBase.hazard (_bond.maturityDate()) + 0.0001</span>
 								* _dblCustomCreditBasisBump, _dblRecoveryRate);
 
-<span class="pc bpc" id="L1593" title="1 of 2 branches missed.">					if (null != ccAdj)</span>
-<span class="fc" id="L1594">						dblEffectiveDurationAdjusted = (_dblCurrentPrice - _bond.priceFromCreditBasis</span>
-<span class="fc" id="L1595">							(_valParams, org.drip.param.creator.MarketParamsBuilder.Create</span>
-<span class="fc" id="L1596">								(_csqcCreditBase.fundingState (_bond.fundingLabel()),</span>
-<span class="fc" id="L1597">									_csqcCreditBase.govvieState (_bond.govvieLabel()), ccAdj, &quot;&quot;, null, null,</span>
-<span class="fc" id="L1598">										_csqcCreditBase.fixings()), null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="pc bpc" id="L1605" title="1 of 2 branches missed.">					if (null != ccAdj)</span>
+<span class="fc" id="L1606">						dblEffectiveDurationAdjusted = (_dblCurrentPrice - _bond.priceFromCreditBasis</span>
+<span class="fc" id="L1607">							(_valParams, org.drip.param.creator.MarketParamsBuilder.Create</span>
+<span class="fc" id="L1608">								(_csqcCreditBase.fundingState (_bond.fundingLabel()),</span>
+<span class="fc" id="L1609">									_csqcCreditBase.govvieState (_bond.govvieLabel()), ccAdj, &quot;&quot;, null, null,</span>
+<span class="fc" id="L1610">										_csqcCreditBase.fixings()), null, iWorkoutDate, dblWorkoutFactor,</span>
 											0.)) / _dblCurrentPrice / _dblCustomCreditBasisBump;
 				}
 			}
-<span class="nc" id="L1602">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1603">			e.printStackTrace();</span>
-<span class="fc" id="L1604">		}</span>
+<span class="nc" id="L1614">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1615">			e.printStackTrace();</span>
+<span class="fc" id="L1616">		}</span>
 
 		try {
-<span class="fc bfc" id="L1607" title="All 2 branches covered.">			dblSpreadDuration = _dblSpreadDurationMultiplier * (_dblCurrentPrice - (_bond.isFloater() ?</span>
-<span class="fc" id="L1608">				_bond.priceFromDiscountMargin (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc bfc" id="L1619" title="All 2 branches covered.">			dblSpreadDuration = _dblSpreadDurationMultiplier * (_dblCurrentPrice - (_bond.isFloater() ?</span>
+<span class="fc" id="L1620">				_bond.priceFromDiscountMargin (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 					dblWorkoutFactor, dblZSpreadToExercise + 0.0001 * _dblZSpreadBump) :
-<span class="fc" id="L1610">						_bond.priceFromZSpread (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1622">						_bond.priceFromZSpread (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 							dblWorkoutFactor, dblZSpreadToExercise + 0.0001 * _dblZSpreadBump))) /
 								_dblCurrentPrice;
-<span class="nc" id="L1613">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1614">			e.printStackTrace();</span>
-<span class="fc" id="L1615">		}</span>
+<span class="nc" id="L1625">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1626">			e.printStackTrace();</span>
+<span class="fc" id="L1627">		}</span>
 
 		try {
-<span class="pc bpc" id="L1618" title="1 of 2 branches missed.">			if (null != _csqcCredit01Up)</span>
-<span class="fc" id="L1619">				dblCV01 = _dblCurrentPrice - _bond.priceFromCreditBasis (_valParams, _csqcCredit01Up, null,</span>
+<span class="pc bpc" id="L1630" title="1 of 2 branches missed.">			if (null != _csqcCredit01Up)</span>
+<span class="fc" id="L1631">				dblCV01 = _dblCurrentPrice - _bond.priceFromCreditBasis (_valParams, _csqcCredit01Up, null,</span>
 					iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise);
-<span class="nc" id="L1621">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1622">			e.printStackTrace();</span>
-<span class="fc" id="L1623">		}</span>
+<span class="nc" id="L1633">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1634">			e.printStackTrace();</span>
+<span class="fc" id="L1635">		}</span>
 
 		try {
-<span class="fc" id="L1626">			dblConvexityToExercise = _bond.convexityFromPrice (_valParams, _csqcFundingBase, null,</span>
+<span class="fc" id="L1638">			dblConvexityToExercise = _bond.convexityFromPrice (_valParams, _csqcFundingBase, null,</span>
 				iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1628">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1629">			e.printStackTrace();</span>
-<span class="fc" id="L1630">		}</span>
+<span class="nc" id="L1640">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1641">			e.printStackTrace();</span>
+<span class="fc" id="L1642">		}</span>
 
 		try {
-<span class="fc" id="L1633">			dblDiscountMarginToExercise = dblYieldToExercise - _csqcFundingBase.fundingState</span>
-<span class="fc" id="L1634">				(_bond.fundingLabel()).libor (_valParams.valueDate(), &quot;1M&quot;);</span>
-<span class="nc" id="L1635">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1636">			e.printStackTrace();</span>
-<span class="fc" id="L1637">		}</span>
+<span class="fc" id="L1645">			dblDiscountMarginToExercise = dblYieldToExercise - _csqcFundingBase.fundingState</span>
+<span class="fc" id="L1646">				(_bond.fundingLabel()).libor (_valParams.valueDate(), &quot;1M&quot;);</span>
+<span class="nc" id="L1647">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1648">			e.printStackTrace();</span>
+<span class="fc" id="L1649">		}</span>
 
 		try {
-<span class="fc bfc" id="L1640" title="All 2 branches covered.">			dblESpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
+<span class="fc bfc" id="L1652" title="All 2 branches covered.">			dblESpreadToExercise = _bond.isFloater() ? _bond.discountMarginFromPrice (_valParams,</span>
 				_csqcFundingEuroDollar, null, iWorkoutDate, dblWorkoutFactor, _dblCurrentPrice) :
-<span class="fc" id="L1642">					_bond.zSpreadFromPrice (_valParams, _csqcFundingEuroDollar, null, iWorkoutDate,</span>
+<span class="fc" id="L1654">					_bond.zSpreadFromPrice (_valParams, _csqcFundingEuroDollar, null, iWorkoutDate,</span>
 						dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1644">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1645">			e.printStackTrace();</span>
-<span class="fc" id="L1646">		}</span>
+<span class="nc" id="L1656">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1657">			e.printStackTrace();</span>
+<span class="fc" id="L1658">		}</span>
 
 		try {
-<span class="fc" id="L1649">			dblISpreadToExercise = _bond.iSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1661">			dblISpreadToExercise = _bond.iSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 				dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1651">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1652">			e.printStackTrace();</span>
-<span class="fc" id="L1653">		}</span>
+<span class="nc" id="L1663">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1664">			e.printStackTrace();</span>
+<span class="fc" id="L1665">		}</span>
 
 		try {
-<span class="fc" id="L1656">			dblJSpreadToExercise = _bond.jSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1668">			dblJSpreadToExercise = _bond.jSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 				dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1658">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1659">			e.printStackTrace();</span>
-<span class="fc" id="L1660">		}</span>
+<span class="nc" id="L1670">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1671">			e.printStackTrace();</span>
+<span class="fc" id="L1672">		}</span>
 
 		try {
-<span class="fc" id="L1663">			dblNSpreadToExercise = _bond.nSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1675">			dblNSpreadToExercise = _bond.nSpreadFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 				dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1665">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1666">			e.printStackTrace();</span>
-<span class="fc" id="L1667">		}</span>
+<span class="nc" id="L1677">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1678">			e.printStackTrace();</span>
+<span class="fc" id="L1679">		}</span>
 
 		try {
-<span class="fc" id="L1670">			dblWALPrincipalOnlyToExercise = _bond.weightedAverageLifePrincipalOnly (_valParams,</span>
+<span class="fc" id="L1682">			dblWALPrincipalOnlyToExercise = _bond.weightedAverageLifePrincipalOnly (_valParams,</span>
 				_csqcFundingBase, iWorkoutDate, dblWorkoutFactor);
-<span class="nc" id="L1672">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1673">			e.printStackTrace();</span>
-<span class="fc" id="L1674">		}</span>
+<span class="nc" id="L1684">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1685">			e.printStackTrace();</span>
+<span class="fc" id="L1686">		}</span>
 
 		try {
-<span class="fc" id="L1677">			dblWALPrincipalOnlyToMaturity = _bond.weightedAverageLifePrincipalOnly (_valParams,</span>
+<span class="fc" id="L1689">			dblWALPrincipalOnlyToMaturity = _bond.weightedAverageLifePrincipalOnly (_valParams,</span>
 				_csqcFundingBase, iMaturityDate, 1.);
-<span class="nc" id="L1679">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1680">			e.printStackTrace();</span>
-<span class="fc" id="L1681">		}</span>
+<span class="nc" id="L1691">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1692">			e.printStackTrace();</span>
+<span class="fc" id="L1693">		}</span>
 
 		try {
-<span class="pc bpc" id="L1684" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
-<span class="fc" id="L1685">				dblWALLossOnlyToExercise = _bond.weightedAverageLifeLossOnly (_valParams, _csqcCreditBase,</span>
+<span class="pc bpc" id="L1696" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
+<span class="fc" id="L1697">				dblWALLossOnlyToExercise = _bond.weightedAverageLifeLossOnly (_valParams, _csqcCreditBase,</span>
 					iWorkoutDate, dblWorkoutFactor);
-<span class="nc" id="L1687">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1688">			e.printStackTrace();</span>
-<span class="fc" id="L1689">		}</span>
+<span class="nc" id="L1699">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1700">			e.printStackTrace();</span>
+<span class="fc" id="L1701">		}</span>
 
 		try {
-<span class="fc" id="L1692">			dblWALCouponOnlyToExercise = _bond.weightedAverageLifeCouponOnly (_valParams, _csqcFundingBase,</span>
+<span class="fc" id="L1704">			dblWALCouponOnlyToExercise = _bond.weightedAverageLifeCouponOnly (_valParams, _csqcFundingBase,</span>
 				iWorkoutDate, dblWorkoutFactor);
-<span class="nc" id="L1694">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1695">			e.printStackTrace();</span>
-<span class="fc" id="L1696">		}</span>
+<span class="nc" id="L1706">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1707">			e.printStackTrace();</span>
+<span class="fc" id="L1708">		}</span>
 
 		try {
-<span class="pc bpc" id="L1699" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
-<span class="fc" id="L1700">				dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,</span>
+<span class="pc bpc" id="L1711" title="1 of 2 branches missed.">			if (null != _csqcCreditBase)</span>
+<span class="fc" id="L1712">				dblWALCreditToExercise = _bond.weightedAverageLifeCredit (_valParams, _csqcCreditBase,</span>
 					iWorkoutDate, dblWorkoutFactor);
-<span class="nc" id="L1702">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1703">			e.printStackTrace();</span>
-<span class="fc" id="L1704">		}</span>
+<span class="nc" id="L1714">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1715">			e.printStackTrace();</span>
+<span class="fc" id="L1716">		}</span>
 
 		try {
-<span class="fc" id="L1707">			dblOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1719">			dblOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 				dblWorkoutFactor, _dblCurrentPrice);
-<span class="nc" id="L1709">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1710">			e.printStackTrace();</span>
-<span class="fc" id="L1711">		}</span>
+<span class="nc" id="L1721">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1722">			e.printStackTrace();</span>
+<span class="fc" id="L1723">		}</span>
 
 		try {
-<span class="fc" id="L1714">			dblParOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
+<span class="fc" id="L1726">			dblParOASToExercise = _bond.oasFromPrice (_valParams, _csqcFundingBase, null, iWorkoutDate,</span>
 				dblWorkoutFactor, _dblIssuePrice);
-<span class="nc" id="L1716">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L1717">			e.printStackTrace();</span>
-<span class="fc" id="L1718">		}</span>
+<span class="nc" id="L1728">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L1729">			e.printStackTrace();</span>
+<span class="fc" id="L1730">		}</span>
 
-<span class="fc" id="L1720">		double dblEffectiveDuration = dblYield01 / _dblCurrentPrice;</span>
+<span class="fc" id="L1732">		double dblEffectiveDuration = dblYield01 / _dblCurrentPrice;</span>
 
 		try {
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="fc bfc" id="L1724" title="All 2 branches covered.">				meCSQCUp : _mapCSQCFundingUp.entrySet()) {</span>
-<span class="fc" id="L1725">				java.lang.String strKey = meCSQCUp.getKey();</span>
+<span class="fc bfc" id="L1736" title="All 2 branches covered.">				meCSQCUp : _mapCSQCFundingUp.entrySet()) {</span>
+<span class="fc" id="L1737">				java.lang.String strKey = meCSQCUp.getKey();</span>
 
-<span class="fc" id="L1727">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
+<span class="fc" id="L1739">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
 
-<span class="fc" id="L1729">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCFundingDown.get</span>
-<span class="fc" id="L1730">					(strKey);</span>
+<span class="fc" id="L1741">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCFundingDown.get</span>
+<span class="fc" id="L1742">					(strKey);</span>
 
-<span class="fc bfc" id="L1732" title="All 2 branches covered.">				double dblTenorFundingUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,</span>
-<span class="fc" id="L1733">					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,</span>
+<span class="fc bfc" id="L1744" title="All 2 branches covered.">				double dblTenorFundingUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,</span>
+<span class="fc" id="L1745">					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
 
-<span class="fc bfc" id="L1736" title="All 2 branches covered.">				double dblTenorFundingUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1737">					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1738">						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1748" title="All 2 branches covered.">				double dblTenorFundingUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1749">					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1750">						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc bfc" id="L1741" title="All 2 branches covered.">				double dblTenorFundingDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1742">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1743">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1753" title="All 2 branches covered.">				double dblTenorFundingDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1754">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1755">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblZSpreadToExercise);
 
-<span class="fc bfc" id="L1746" title="All 2 branches covered.">				double dblTenorFundingDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1747">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1748">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1758" title="All 2 branches covered.">				double dblTenorFundingDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1759">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1760">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc" id="L1751">				double dblBaseFloaterPrice = 0.5 * (dblTenorFundingDownPrice + dblTenorFundingUpPrice);</span>
+<span class="fc" id="L1763">				double dblBaseFloaterPrice = 0.5 * (dblTenorFundingDownPrice + dblTenorFundingUpPrice);</span>
 
-<span class="fc" id="L1753">				mapFundingKRD.put (strKey, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /</span>
-<span class="fc bfc" id="L1754" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);</span>
+<span class="fc" id="L1765">				mapFundingKRD.put (strKey, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /</span>
+<span class="fc bfc" id="L1766" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);</span>
 
-<span class="fc" id="L1756">				mapFundingKPRD.put (strKey, 0.5 * (dblTenorFundingDownParPrice - dblTenorFundingUpParPrice) /</span>
-<span class="fc bfc" id="L1757" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);</span>
-<span class="fc" id="L1758">			}</span>
+<span class="fc" id="L1768">				mapFundingKPRD.put (strKey, 0.5 * (dblTenorFundingDownParPrice - dblTenorFundingUpParPrice) /</span>
+<span class="fc bfc" id="L1769" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);</span>
+<span class="fc" id="L1770">			}</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="fc bfc" id="L1761" title="All 2 branches covered.">				meCSQCUp : _mapCSQCForwardFundingUp.entrySet()) {</span>
-<span class="fc" id="L1762">				java.lang.String strKey = meCSQCUp.getKey();</span>
+<span class="fc bfc" id="L1773" title="All 2 branches covered.">				meCSQCUp : _mapCSQCForwardFundingUp.entrySet()) {</span>
+<span class="fc" id="L1774">				java.lang.String strKey = meCSQCUp.getKey();</span>
 
-<span class="fc" id="L1764">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
+<span class="fc" id="L1776">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
 
-<span class="fc" id="L1766">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown =</span>
-<span class="fc" id="L1767">					_mapCSQCForwardFundingDown.get (strKey);</span>
+<span class="fc" id="L1778">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown =</span>
+<span class="fc" id="L1779">					_mapCSQCForwardFundingDown.get (strKey);</span>
 
-<span class="fc bfc" id="L1769" title="All 2 branches covered.">				double dblTenorForwardUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,</span>
-<span class="fc" id="L1770">					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,</span>
+<span class="fc bfc" id="L1781" title="All 2 branches covered.">				double dblTenorForwardUpPrice = _bond.isFloater() ? _bond.priceFromFundingCurve (_valParams,</span>
+<span class="fc" id="L1782">					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
 
-<span class="fc bfc" id="L1773" title="All 2 branches covered.">				double dblTenorForwardUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1774">					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1775">						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1785" title="All 2 branches covered.">				double dblTenorForwardUpParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1786">					(_valParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1787">						(_valParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc bfc" id="L1778" title="All 2 branches covered.">				double dblTenorForwardDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1779">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1780">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1790" title="All 2 branches covered.">				double dblTenorForwardDownPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1791">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1792">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblZSpreadToExercise);
 
-<span class="fc bfc" id="L1783" title="All 2 branches covered.">				double dblTenorForwardDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
-<span class="fc" id="L1784">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
-<span class="fc" id="L1785">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
+<span class="fc bfc" id="L1795" title="All 2 branches covered.">				double dblTenorForwardDownParPrice = _bond.isFloater() ? _bond.priceFromFundingCurve</span>
+<span class="fc" id="L1796">					(_valParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bond.priceFromZSpread</span>
+<span class="fc" id="L1797">						(_valParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,</span>
 							dblParZSpreadToExercise);
 
-<span class="fc" id="L1788">				double dblBaseFloaterPrice = 0.5 * (dblTenorForwardDownPrice + dblTenorForwardUpPrice);</span>
+<span class="fc" id="L1800">				double dblBaseFloaterPrice = 0.5 * (dblTenorForwardDownPrice + dblTenorForwardUpPrice);</span>
 
-<span class="fc" id="L1790">				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /</span>
-<span class="fc bfc" id="L1791" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);</span>
+<span class="fc" id="L1802">				mapLIBORKRD.put (strKey, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /</span>
+<span class="fc bfc" id="L1803" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblCurrentPrice) / _dblTenorBump);</span>
 
-<span class="fc" id="L1793">				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /</span>
-<span class="fc bfc" id="L1794" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);</span>
-<span class="fc" id="L1795">			}</span>
+<span class="fc" id="L1805">				mapLIBORKPRD.put (strKey, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /</span>
+<span class="fc bfc" id="L1806" title="All 2 branches covered.">					(_bond.isFloater() ? dblBaseFloaterPrice : _dblIssuePrice) / _dblTenorBump);</span>
+<span class="fc" id="L1807">			}</span>
 
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="fc bfc" id="L1798" title="All 2 branches covered.">				meCSQCUp : _mapCSQCGovvieUp.entrySet()) {</span>
-<span class="fc" id="L1799">				java.lang.String strKey = meCSQCUp.getKey();</span>
+<span class="fc bfc" id="L1810" title="All 2 branches covered.">				meCSQCUp : _mapCSQCGovvieUp.entrySet()) {</span>
+<span class="fc" id="L1811">				java.lang.String strKey = meCSQCUp.getKey();</span>
 
-<span class="fc" id="L1801">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
+<span class="fc" id="L1813">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();</span>
 
-<span class="fc" id="L1803">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCGovvieDown.get</span>
-<span class="fc" id="L1804">					(strKey);</span>
+<span class="fc" id="L1815">				org.drip.param.market.CurveSurfaceQuoteContainer csqcTenorDown = _mapCSQCGovvieDown.get</span>
+<span class="fc" id="L1816">					(strKey);</span>
 
-<span class="fc" id="L1806">				mapGovvieKRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
-<span class="fc" id="L1807">					iWorkoutDate, dblWorkoutFactor, dblOASToExercise) - _bond.priceFromOAS (_valParams,</span>
+<span class="fc" id="L1818">				mapGovvieKRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
+<span class="fc" id="L1819">					iWorkoutDate, dblWorkoutFactor, dblOASToExercise) - _bond.priceFromOAS (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblOASToExercise)) /
 							_dblCurrentPrice / _dblTenorBump);
 
-<span class="fc" id="L1811">				mapGovvieKPRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
-<span class="fc" id="L1812">					iWorkoutDate, dblWorkoutFactor, dblParOASToExercise) - _bond.priceFromOAS (_valParams,</span>
+<span class="fc" id="L1823">				mapGovvieKPRD.put (strKey, 0.5 * (_bond.priceFromOAS (_valParams, csqcTenorDown, null,</span>
+<span class="fc" id="L1824">					iWorkoutDate, dblWorkoutFactor, dblParOASToExercise) - _bond.priceFromOAS (_valParams,</span>
 						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblParOASToExercise)) /
 							_dblIssuePrice / _dblTenorBump);
-<span class="fc" id="L1815">			}</span>
+<span class="fc" id="L1827">			}</span>
 
-<span class="pc bpc" id="L1817" title="1 of 2 branches missed.">			if (null != _mapCSQCCredit) {</span>
-<span class="nc" id="L1818">				mapCreditKRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+<span class="pc bpc" id="L1829" title="1 of 2 branches missed.">			if (null != _mapCSQCCredit) {</span>
+<span class="nc" id="L1830">				mapCreditKRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L1820">				mapCreditKPRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L1832">				mapCreditKPRD = new org.drip.analytics.support.CaseInsensitiveHashMap&lt;java.lang.Double&gt;();</span>
 
 				for (java.util.Map.Entry&lt;java.lang.String, org.drip.param.market.CurveSurfaceQuoteContainer&gt;
-<span class="nc bnc" id="L1823" title="All 2 branches missed.">					meCSQC : _mapCSQCCredit.entrySet()) {</span>
-<span class="nc" id="L1824">					java.lang.String strKey = meCSQC.getKey();</span>
+<span class="nc bnc" id="L1835" title="All 2 branches missed.">					meCSQC : _mapCSQCCredit.entrySet()) {</span>
+<span class="nc" id="L1836">					java.lang.String strKey = meCSQC.getKey();</span>
 
-<span class="nc" id="L1826">					org.drip.param.market.CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();</span>
+<span class="nc" id="L1838">					org.drip.param.market.CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();</span>
 
-<span class="nc" id="L1828">					mapCreditKRD.put (strKey, (_dblCurrentPrice - _bond.priceFromCreditBasis (_valParams,</span>
+<span class="nc" id="L1840">					mapCreditKRD.put (strKey, (_dblCurrentPrice - _bond.priceFromCreditBasis (_valParams,</span>
 						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise)) /
 							_dblCurrentPrice);
 
-<span class="nc" id="L1832">					mapCreditKPRD.put (strKey, (_dblIssuePrice - _bond.priceFromCreditBasis (_valParams,</span>
+<span class="nc" id="L1844">					mapCreditKPRD.put (strKey, (_dblIssuePrice - _bond.priceFromCreditBasis (_valParams,</span>
 						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblParCreditBasisToExercise)) /
 							_dblIssuePrice);
-<span class="nc" id="L1835">				}</span>
+<span class="nc" id="L1847">				}</span>
 			}
 
-<span class="pc bpc" id="L1838" title="1 of 2 branches missed.">			org.drip.analytics.output.BondEOSMetrics bem = null == _emr ? null : _emr.generateRun();</span>
+<span class="pc bpc" id="L1850" title="1 of 2 branches missed.">			org.drip.analytics.output.BondEOSMetrics bem = null == _emr ? null : _emr.generateRun();</span>
 
-<span class="fc bfc" id="L1840" title="All 2 branches covered.">			if (null != bem)</span>
+<span class="fc bfc" id="L1852" title="All 2 branches covered.">			if (null != bem)</span>
 			{
-<span class="pc bpc" id="L1842" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCOAS&quot;, bem.oas())))</span>
-<span class="nc" id="L1843">					return null;</span>
+<span class="pc bpc" id="L1854" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCOAS&quot;, bem.oas())))</span>
+<span class="nc" id="L1855">					return null;</span>
 
-<span class="pc bpc" id="L1845" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCDuration&quot;,</span>
-<span class="fc" id="L1846">					bem.oasDuration())))</span>
-<span class="nc" id="L1847">					return null;</span>
+<span class="pc bpc" id="L1857" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCDuration&quot;,</span>
+<span class="fc" id="L1858">					bem.oasDuration())))</span>
+<span class="nc" id="L1859">					return null;</span>
 
-<span class="pc bpc" id="L1849" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCConvexity&quot;,</span>
-<span class="fc" id="L1850">					bem.oasConvexity())))</span>
-<span class="nc" id="L1851">					return null;</span>
+<span class="pc bpc" id="L1861" title="1 of 2 branches missed.">				if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MCConvexity&quot;,</span>
+<span class="fc" id="L1862">					bem.oasConvexity())))</span>
+<span class="nc" id="L1863">					return null;</span>
 			}
 
-<span class="pc bpc" id="L1854" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Price&quot;, _dblCurrentPrice)))</span>
-<span class="nc" id="L1855">				return null;</span>
+<span class="pc bpc" id="L1866" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Price&quot;, _dblCurrentPrice)))</span>
+<span class="nc" id="L1867">				return null;</span>
 
-<span class="pc bpc" id="L1857" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Market Value&quot;,</span>
+<span class="pc bpc" id="L1869" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Market Value&quot;,</span>
 				_dblCurrentPrice * _dblIssueAmount)))
-<span class="nc" id="L1859">				return null;</span>
+<span class="nc" id="L1871">				return null;</span>
 
-<span class="pc bpc" id="L1861" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued&quot;, dblAccrued)))</span>
-<span class="nc" id="L1862">				return null;</span>
-
-<span class="pc bpc" id="L1864" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued$&quot;, dblAccrued *</span>
-				_dblIssueAmount)))
-<span class="nc" id="L1866">				return null;</span>
-
-<span class="pc bpc" id="L1868" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued Interest Factor&quot;,</span>
-				dblAccrued * _dblFX)))
-<span class="nc" id="L1870">				return null;</span>
-
-<span class="pc bpc" id="L1872" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity&quot;,</span>
-				dblYieldToMaturity)))
+<span class="pc bpc" id="L1873" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued&quot;, dblAccrued)))</span>
 <span class="nc" id="L1874">				return null;</span>
 
-<span class="pc bpc" id="L1876" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity CBE&quot;,</span>
-				dblBEYToMaturity)))
+<span class="pc bpc" id="L1876" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued$&quot;, dblAccrued *</span>
+				_dblIssueAmount)))
 <span class="nc" id="L1878">				return null;</span>
 
-<span class="pc bpc" id="L1880" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YTM fwdCpn&quot;,</span>
-				dblYieldToMaturityFwdCoupon)))
+<span class="pc bpc" id="L1880" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Accrued Interest Factor&quot;,</span>
+				dblAccrued * _dblFX)))
 <span class="nc" id="L1882">				return null;</span>
 
-<span class="pc bpc" id="L1884" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Worst&quot;,</span>
-				dblYieldToExercise)))
+<span class="pc bpc" id="L1884" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity&quot;,</span>
+				dblYieldToMaturity)))
 <span class="nc" id="L1886">				return null;</span>
 
-<span class="pc bpc" id="L1888" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO CALL&quot;,</span>
-				dblYieldFromPriceNextCall)))
+<span class="pc bpc" id="L1888" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Maturity CBE&quot;,</span>
+				dblBEYToMaturity)))
 <span class="nc" id="L1890">				return null;</span>
 
-<span class="pc bpc" id="L1892" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO PUT&quot;,</span>
-				dblYieldFromPriceNextPut)))
+<span class="pc bpc" id="L1892" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YTM fwdCpn&quot;,</span>
+				dblYieldToMaturityFwdCoupon)))
 <span class="nc" id="L1894">				return null;</span>
 
-<span class="pc bpc" id="L1896" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Nominal Yield&quot;,</span>
-				dblNominalYield)))
+<span class="pc bpc" id="L1896" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Yield To Worst&quot;,</span>
+				dblYieldToExercise)))
 <span class="nc" id="L1898">				return null;</span>
 
-<span class="pc bpc" id="L1900" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Spread&quot;, dblOASToExercise)))</span>
-<span class="nc" id="L1901">				return null;</span>
+<span class="pc bpc" id="L1900" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO CALL&quot;,</span>
+				dblYieldFromPriceNextCall)))
+<span class="nc" id="L1902">				return null;</span>
 
-<span class="pc bpc" id="L1903" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Vol_OAS&quot;,</span>
+<span class="pc bpc" id="L1904" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;YIELD TO PUT&quot;,</span>
+				dblYieldFromPriceNextPut)))
+<span class="nc" id="L1906">				return null;</span>
+
+<span class="pc bpc" id="L1908" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Nominal Yield&quot;,</span>
+				dblNominalYield)))
+<span class="nc" id="L1910">				return null;</span>
+
+<span class="pc bpc" id="L1912" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Spread&quot;, dblOASToExercise)))</span>
+<span class="nc" id="L1913">				return null;</span>
+
+<span class="pc bpc" id="L1915" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Z_Vol_OAS&quot;,</span>
 				dblZSpreadToExercise)))
-<span class="nc" id="L1905">				return null;</span>
+<span class="nc" id="L1917">				return null;</span>
 
-<span class="pc bpc" id="L1907" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAS&quot;, dblZSpreadToMaturity)))</span>
-<span class="nc" id="L1908">				return null;</span>
+<span class="pc bpc" id="L1919" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAS&quot;, dblZSpreadToMaturity)))</span>
+<span class="nc" id="L1920">				return null;</span>
 
-<span class="pc bpc" id="L1910" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TSY OAS&quot;, dblOASToMaturity)))</span>
-<span class="nc" id="L1911">				return null;</span>
-
-<span class="pc bpc" id="L1913" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR&quot;,</span>
-				dblModifiedDurationToMaturity)))
-<span class="nc" id="L1915">				return null;</span>
-
-<span class="pc bpc" id="L1917" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MACAULAY DURATION&quot;,</span>
-				dblMacaulayDurationToMaturity)))
-<span class="nc" id="L1919">				return null;</span>
-
-<span class="pc bpc" id="L1921" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR TO WORST&quot;,</span>
-				dblModifiedDurationToExercise)))
+<span class="pc bpc" id="L1922" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TSY OAS&quot;, dblOASToMaturity)))</span>
 <span class="nc" id="L1923">				return null;</span>
 
-<span class="pc bpc" id="L1925" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Funding DURATION&quot;,</span>
-<span class="fc" id="L1926">				mapFundingKRD.get (&quot;bump&quot;))))</span>
+<span class="pc bpc" id="L1925" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR&quot;,</span>
+				dblModifiedDurationToMaturity)))
 <span class="nc" id="L1927">				return null;</span>
 
-<span class="pc bpc" id="L1929" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;LIBOR DURATION&quot;,</span>
-<span class="fc" id="L1930">				mapLIBORKRD.get (&quot;bump&quot;))))</span>
+<span class="pc bpc" id="L1929" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MACAULAY DURATION&quot;,</span>
+				dblMacaulayDurationToMaturity)))
 <span class="nc" id="L1931">				return null;</span>
 
-<span class="pc bpc" id="L1933" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TREASURY DURATION&quot;,</span>
-<span class="fc" id="L1934">				mapGovvieKRD.get (&quot;bump&quot;))))</span>
+<span class="pc bpc" id="L1933" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;MOD DUR TO WORST&quot;,</span>
+				dblModifiedDurationToExercise)))
 <span class="nc" id="L1935">				return null;</span>
 
-<span class="pc bpc" id="L1937" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION&quot;,</span>
-				dblEffectiveDuration)))
+<span class="pc bpc" id="L1937" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Funding DURATION&quot;,</span>
+<span class="fc" id="L1938">				mapFundingKRD.get (&quot;bump&quot;))))</span>
 <span class="nc" id="L1939">				return null;</span>
 
-<span class="pc bpc" id="L1941" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION ADJ&quot;,</span>
-				dblEffectiveDurationAdjusted)))
+<span class="pc bpc" id="L1941" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;LIBOR DURATION&quot;,</span>
+<span class="fc" id="L1942">				mapLIBORKRD.get (&quot;bump&quot;))))</span>
 <span class="nc" id="L1943">				return null;</span>
 
-<span class="pc bpc" id="L1945" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAD MULT&quot;,</span>
-				dblEffectiveDurationAdjusted / dblEffectiveDuration)))
+<span class="pc bpc" id="L1945" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;TREASURY DURATION&quot;,</span>
+<span class="fc" id="L1946">				mapGovvieKRD.get (&quot;bump&quot;))))</span>
 <span class="nc" id="L1947">				return null;</span>
 
-<span class="pc bpc" id="L1949" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur&quot;,</span>
-				dblSpreadDuration)))
+<span class="pc bpc" id="L1949" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION&quot;,</span>
+				dblEffectiveDuration)))
 <span class="nc" id="L1951">				return null;</span>
 
-<span class="pc bpc" id="L1953" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur $&quot;,</span>
-				dblSpreadDuration * _dblIssueAmount)))
+<span class="pc bpc" id="L1953" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;EFFECTIVE DURATION ADJ&quot;,</span>
+				dblEffectiveDurationAdjusted)))
 <span class="nc" id="L1955">				return null;</span>
 
-<span class="pc bpc" id="L1957" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DV01&quot;, dblYield01)))</span>
-<span class="nc" id="L1958">				return null;</span>
+<span class="pc bpc" id="L1957" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;OAD MULT&quot;,</span>
+				dblEffectiveDurationAdjusted / dblEffectiveDuration)))
+<span class="nc" id="L1959">				return null;</span>
 
-<span class="pc bpc" id="L1960" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;CV01&quot;, dblCV01))) return null;</span>
+<span class="pc bpc" id="L1961" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur&quot;,</span>
+				dblSpreadDuration)))
+<span class="nc" id="L1963">				return null;</span>
 
-<span class="pc bpc" id="L1962" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Convexity&quot;,</span>
+<span class="pc bpc" id="L1965" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Spread Dur $&quot;,</span>
+				dblSpreadDuration * _dblIssueAmount)))
+<span class="nc" id="L1967">				return null;</span>
+
+<span class="pc bpc" id="L1969" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DV01&quot;, dblYield01)))</span>
+<span class="nc" id="L1970">				return null;</span>
+
+<span class="pc bpc" id="L1972" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;CV01&quot;, dblCV01))) return null;</span>
+
+<span class="pc bpc" id="L1974" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Convexity&quot;,</span>
 				dblConvexityToExercise)))
-<span class="nc" id="L1964">				return null;</span>
-
-<span class="pc bpc" id="L1966" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Modified Convexity&quot;,</span>
-				dblConvexityToExercise)))
-<span class="nc" id="L1968">				return null;</span>
-
-<span class="pc bpc" id="L1970" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DISCOUNT MARGIN&quot;,</span>
-				dblDiscountMarginToExercise)))
-<span class="nc" id="L1972">				return null;</span>
-
-<span class="pc bpc" id="L1974" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;E-Spread&quot;,</span>
-				dblESpreadToExercise)))
 <span class="nc" id="L1976">				return null;</span>
 
-<span class="pc bpc" id="L1978" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;I-Spread&quot;,</span>
-				dblISpreadToExercise)))
+<span class="pc bpc" id="L1978" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;Modified Convexity&quot;,</span>
+				dblConvexityToExercise)))
 <span class="nc" id="L1980">				return null;</span>
 
-<span class="pc bpc" id="L1982" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;J-Spread&quot;,</span>
-				dblJSpreadToExercise)))
+<span class="pc bpc" id="L1982" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;DISCOUNT MARGIN&quot;,</span>
+				dblDiscountMarginToExercise)))
 <span class="nc" id="L1984">				return null;</span>
 
-<span class="pc bpc" id="L1986" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;N-Spread&quot;,</span>
-				dblNSpreadToExercise)))
+<span class="pc bpc" id="L1986" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;E-Spread&quot;,</span>
+				dblESpreadToExercise)))
 <span class="nc" id="L1988">				return null;</span>
 
-<span class="pc bpc" id="L1990" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL To Worst&quot;,</span>
-				dblWALPrincipalOnlyToExercise)))
+<span class="pc bpc" id="L1990" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;I-Spread&quot;,</span>
+				dblISpreadToExercise)))
 <span class="nc" id="L1992">				return null;</span>
 
-<span class="pc bpc" id="L1994" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL&quot;,</span>
-				dblWALPrincipalOnlyToMaturity)))
+<span class="pc bpc" id="L1994" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;J-Spread&quot;,</span>
+				dblJSpreadToExercise)))
 <span class="nc" id="L1996">				return null;</span>
 
-<span class="pc bpc" id="L1998" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL2&quot;,</span>
-				dblWALLossOnlyToExercise)))
+<span class="pc bpc" id="L1998" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;N-Spread&quot;,</span>
+				dblNSpreadToExercise)))
 <span class="nc" id="L2000">				return null;</span>
 
-<span class="pc bpc" id="L2002" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL3&quot;,</span>
-<span class="fc bfc" id="L2003" title="All 2 branches covered.">				!org.drip.numerical.common.NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :</span>
-					dblWALCouponOnlyToExercise)))
-<span class="nc" id="L2005">				return null;</span>
+<span class="pc bpc" id="L2002" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL To Worst&quot;,</span>
+				dblWALPrincipalOnlyToExercise)))
+<span class="nc" id="L2004">				return null;</span>
 
-<span class="pc bpc" id="L2007" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL4&quot;,</span>
+<span class="pc bpc" id="L2006" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL&quot;,</span>
 				dblWALPrincipalOnlyToMaturity)))
-<span class="nc" id="L2009">				return null;</span>
+<span class="nc" id="L2008">				return null;</span>
 
-<span class="pc bpc" id="L2011" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL_Adj&quot;,</span>
-				dblWALCreditToExercise)))
-<span class="nc" id="L2013">				return null;</span>
+<span class="pc bpc" id="L2010" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL2&quot;,</span>
+				dblWALLossOnlyToExercise)))
+<span class="nc" id="L2012">				return null;</span>
 
-<span class="pc bpc" id="L2015" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KRD&quot;,</span>
-				mapFundingKRD)))
+<span class="pc bpc" id="L2014" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL3&quot;,</span>
+<span class="fc bfc" id="L2015" title="All 2 branches covered.">				!org.drip.numerical.common.NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :</span>
+					dblWALCouponOnlyToExercise)))
 <span class="nc" id="L2017">				return null;</span>
 
-<span class="pc bpc" id="L2019" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KPRD&quot;,</span>
-				mapFundingKPRD)))
+<span class="pc bpc" id="L2019" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL4&quot;,</span>
+				dblWALPrincipalOnlyToMaturity)))
 <span class="nc" id="L2021">				return null;</span>
 
-<span class="pc bpc" id="L2023" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KRD&quot;,</span>
-				mapLIBORKRD)))
+<span class="pc bpc" id="L2023" title="1 of 2 branches missed.">			if (!arr.addNamedField (new org.drip.service.scenario.NamedField (&quot;WAL_Adj&quot;,</span>
+				dblWALCreditToExercise)))
 <span class="nc" id="L2025">				return null;</span>
 
-<span class="pc bpc" id="L2027" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KPRD&quot;,</span>
-				mapLIBORKPRD)))
+<span class="pc bpc" id="L2027" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KRD&quot;,</span>
+				mapFundingKRD)))
 <span class="nc" id="L2029">				return null;</span>
 
-<span class="pc bpc" id="L2031" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KRD&quot;,</span>
-				mapGovvieKRD)))
+<span class="pc bpc" id="L2031" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Funding KPRD&quot;,</span>
+				mapFundingKPRD)))
 <span class="nc" id="L2033">				return null;</span>
 
-<span class="pc bpc" id="L2035" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KPRD&quot;,</span>
-				mapGovvieKPRD)))
+<span class="pc bpc" id="L2035" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KRD&quot;,</span>
+				mapLIBORKRD)))
 <span class="nc" id="L2037">				return null;</span>
-<span class="nc" id="L2038">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L2039">			e.printStackTrace();</span>
 
-<span class="nc" id="L2041">			return null;</span>
-<span class="fc" id="L2042">		}</span>
+<span class="pc bpc" id="L2039" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;LIBOR KPRD&quot;,</span>
+				mapLIBORKPRD)))
+<span class="nc" id="L2041">				return null;</span>
 
-		try {
-<span class="pc bpc" id="L2045" title="1 of 2 branches missed.">			if (null != mapCreditKRD)</span>
-<span class="nc" id="L2046">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KRD&quot;,</span>
-					mapCreditKRD));
+<span class="pc bpc" id="L2043" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KRD&quot;,</span>
+				mapGovvieKRD)))
+<span class="nc" id="L2045">				return null;</span>
 
-<span class="pc bpc" id="L2049" title="1 of 2 branches missed.">			if (null != mapCreditKPRD)</span>
-<span class="nc" id="L2050">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KPRD&quot;,</span>
-					mapCreditKPRD));
-<span class="nc" id="L2052">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L2053">			e.printStackTrace();</span>
+<span class="pc bpc" id="L2047" title="1 of 2 branches missed.">			if (!arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Govvie KPRD&quot;,</span>
+				mapGovvieKPRD)))
+<span class="nc" id="L2049">				return null;</span>
+<span class="nc" id="L2050">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2051">			e.printStackTrace();</span>
+
+<span class="nc" id="L2053">			return null;</span>
 <span class="fc" id="L2054">		}</span>
 
-<span class="fc" id="L2056">		System.out.println (&quot;Workout        : &quot; + new org.drip.analytics.date.JulianDate (iWorkoutDate));</span>
+		try {
+<span class="pc bpc" id="L2057" title="1 of 2 branches missed.">			if (null != mapCreditKRD)</span>
+<span class="nc" id="L2058">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KRD&quot;,</span>
+					mapCreditKRD));
 
-<span class="fc" id="L2058">		System.out.println (&quot;Next Call Date : &quot; + new org.drip.analytics.date.JulianDate (iNextCallDate) +</span>
+<span class="pc bpc" id="L2061" title="1 of 2 branches missed.">			if (null != mapCreditKPRD)</span>
+<span class="nc" id="L2062">				arr.addNamedFieldMap (new org.drip.service.scenario.NamedFieldMap (&quot;Credit KPRD&quot;,</span>
+					mapCreditKPRD));
+<span class="nc" id="L2064">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L2065">			e.printStackTrace();</span>
+<span class="fc" id="L2066">		}</span>
+
+<span class="fc" id="L2068">		System.out.println (&quot;Workout        : &quot; + new org.drip.analytics.date.JulianDate (iWorkoutDate));</span>
+
+<span class="fc" id="L2070">		System.out.println (&quot;Next Call Date : &quot; + new org.drip.analytics.date.JulianDate (iNextCallDate) +</span>
 			&quot; | &quot; + dblNextCallFactor);
 
-<span class="fc" id="L2061">		System.out.println (&quot;Maturity Date  : &quot; + new org.drip.analytics.date.JulianDate (iMaturityDate) +</span>
+<span class="fc" id="L2073">		System.out.println (&quot;Maturity Date  : &quot; + new org.drip.analytics.date.JulianDate (iMaturityDate) +</span>
 			&quot; | 1.0&quot;);
 
-<span class="fc" id="L2064">		return arr;</span>
+<span class="fc" id="L2076">		return arr;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,42 +6,54 @@ package org.drip.simm.parameters;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.simm.parameters;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters&quot;&gt;Parameters&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md&quot;&gt;ISDA SIMM Risk Factor Parameters&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,9 +120,9 @@ package org.drip.simm.parameters;
 
 public class RiskClassSensitivitySettingsCR
 {
-<span class="nc" id="L111">	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _vega = null;</span>
-<span class="nc" id="L112">	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _delta = null;</span>
-<span class="nc" id="L113">	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _curvature = null;</span>
+<span class="nc" id="L123">	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _vega = null;</span>
+<span class="nc" id="L124">	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _delta = null;</span>
+<span class="nc" id="L125">	private org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR _curvature = null;</span>
 
 	/**
 	 * Generate the SIMM 2.0 CRQ Class Sensitivity Settings
@@ -122,18 +134,18 @@ public class RiskClassSensitivitySettingsCR
 	{
 		try
 		{
-<span class="nc" id="L125">			return new RiskClassSensitivitySettingsCR (</span>
-<span class="nc" id="L126">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_20(),</span>
-<span class="nc" id="L127">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_20(),</span>
-<span class="nc" id="L128">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20()</span>
+<span class="nc" id="L137">			return new RiskClassSensitivitySettingsCR (</span>
+<span class="nc" id="L138">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_20(),</span>
+<span class="nc" id="L139">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_20(),</span>
+<span class="nc" id="L140">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_20()</span>
 			);
 		}
-<span class="nc" id="L131">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L143">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L133">			e.printStackTrace();</span>
+<span class="nc" id="L145">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L136">		return null;</span>
+<span class="nc" id="L148">		return null;</span>
 	}
 
 	/**
@@ -146,18 +158,18 @@ public class RiskClassSensitivitySettingsCR
 	{
 		try
 		{
-<span class="nc" id="L149">			return new RiskClassSensitivitySettingsCR (</span>
-<span class="nc" id="L150">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_21(),</span>
-<span class="nc" id="L151">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_21(),</span>
-<span class="nc" id="L152">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_21()</span>
+<span class="nc" id="L161">			return new RiskClassSensitivitySettingsCR (</span>
+<span class="nc" id="L162">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_DELTA_21(),</span>
+<span class="nc" id="L163">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_VEGA_21(),</span>
+<span class="nc" id="L164">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRQ_CURVATURE_21()</span>
 			);
 		}
-<span class="nc" id="L155">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L167">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L157">			e.printStackTrace();</span>
+<span class="nc" id="L169">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L160">		return null;</span>
+<span class="nc" id="L172">		return null;</span>
 	}
 
 	/**
@@ -170,18 +182,18 @@ public class RiskClassSensitivitySettingsCR
 	{
 		try
 		{
-<span class="nc" id="L173">			return new RiskClassSensitivitySettingsCR (</span>
-<span class="nc" id="L174">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_20(),</span>
-<span class="nc" id="L175">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_20(),</span>
-<span class="nc" id="L176">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_20()</span>
+<span class="nc" id="L185">			return new RiskClassSensitivitySettingsCR (</span>
+<span class="nc" id="L186">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_20(),</span>
+<span class="nc" id="L187">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_20(),</span>
+<span class="nc" id="L188">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_20()</span>
 			);
 		}
-<span class="nc" id="L179">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L191">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L181">			e.printStackTrace();</span>
+<span class="nc" id="L193">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L184">		return null;</span>
+<span class="nc" id="L196">		return null;</span>
 	}
 
 	/**
@@ -194,18 +206,18 @@ public class RiskClassSensitivitySettingsCR
 	{
 		try
 		{
-<span class="nc" id="L197">			return new RiskClassSensitivitySettingsCR (</span>
-<span class="nc" id="L198">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_21(),</span>
-<span class="nc" id="L199">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_21(),</span>
-<span class="nc" id="L200">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_21()</span>
+<span class="nc" id="L209">			return new RiskClassSensitivitySettingsCR (</span>
+<span class="nc" id="L210">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_DELTA_21(),</span>
+<span class="nc" id="L211">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_VEGA_21(),</span>
+<span class="nc" id="L212">				org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR.ISDA_CRNQ_CURVATURE_21()</span>
 			);
 		}
-<span class="nc" id="L203">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L215">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L205">			e.printStackTrace();</span>
+<span class="nc" id="L217">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L208">		return null;</span>
+<span class="nc" id="L220">		return null;</span>
 	}
 
 	/**
@@ -223,14 +235,14 @@ public class RiskClassSensitivitySettingsCR
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR vega,
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR curvature)
 		throws java.lang.Exception
-<span class="nc" id="L226">	{</span>
-<span class="nc bnc" id="L227" title="All 6 branches missed.">		if (null == (_delta = delta) ||</span>
+<span class="nc" id="L238">	{</span>
+<span class="nc bnc" id="L239" title="All 6 branches missed.">		if (null == (_delta = delta) ||</span>
 			null == (_vega = vega) ||
 			null == (_curvature = curvature))
 		{
-<span class="nc" id="L231">			throw new java.lang.Exception (&quot;RiskClassSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L243">			throw new java.lang.Exception (&quot;RiskClassSensitivitySettingsCR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L233">	}</span>
+<span class="nc" id="L245">	}</span>
 
 	/**
 	 * Retrieve the Credit Risk Class Delta Sensitivity Settings
@@ -240,7 +252,7 @@ public class RiskClassSensitivitySettingsCR
 
 	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR delta()
 	{
-<span class="nc" id="L243">		return _delta;</span>
+<span class="nc" id="L255">		return _delta;</span>
 	}
 
 	/**
@@ -251,7 +263,7 @@ public class RiskClassSensitivitySettingsCR
 
 	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR vega()
 	{
-<span class="nc" id="L254">		return _vega;</span>
+<span class="nc" id="L266">		return _vega;</span>
 	}
 
 	/**
@@ -262,7 +274,7 @@ public class RiskClassSensitivitySettingsCR
 
 	public org.drip.simm.parameters.RiskMeasureSensitivitySettingsCR curvature()
 	{
-<span class="nc" id="L265">		return _curvature;</span>
+<span class="nc" id="L277">		return _curvature;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

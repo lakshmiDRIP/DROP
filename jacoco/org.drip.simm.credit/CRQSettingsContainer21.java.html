@@ -6,42 +6,54 @@ package org.drip.simm.credit;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -95,54 +107,54 @@ package org.drip.simm.credit;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md&quot;&gt;Credit Qualifying/Non-Qualifying Risk Factor Settings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L108">public class CRQSettingsContainer21</span>
+<span class="nc" id="L120">public class CRQSettingsContainer21</span>
 {
-<span class="fc" id="L110">	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;</span>
+<span class="fc" id="L122">	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;</span>
 
-<span class="fc" id="L112">	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.credit.CRBucket&gt; s_BucketMap = new</span>
+<span class="fc" id="L124">	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.credit.CRBucket&gt; s_BucketMap = new</span>
 		java.util.TreeMap&lt;java.lang.Integer, org.drip.simm.credit.CRBucket&gt;();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
-<span class="fc" id="L117">		java.util.List&lt;java.lang.String&gt; bucketList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L129">		java.util.List&lt;java.lang.String&gt; bucketList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="fc" id="L119">		bucketList.add (&quot;1&quot;);</span>
+<span class="fc" id="L131">		bucketList.add (&quot;1&quot;);</span>
 
-<span class="fc" id="L121">		bucketList.add (&quot;2&quot;);</span>
+<span class="fc" id="L133">		bucketList.add (&quot;2&quot;);</span>
 
-<span class="fc" id="L123">		bucketList.add (&quot;3&quot;);</span>
+<span class="fc" id="L135">		bucketList.add (&quot;3&quot;);</span>
 
-<span class="fc" id="L125">		bucketList.add (&quot;4&quot;);</span>
+<span class="fc" id="L137">		bucketList.add (&quot;4&quot;);</span>
 
-<span class="fc" id="L127">		bucketList.add (&quot;5&quot;);</span>
+<span class="fc" id="L139">		bucketList.add (&quot;5&quot;);</span>
 
-<span class="fc" id="L129">		bucketList.add (&quot;6&quot;);</span>
+<span class="fc" id="L141">		bucketList.add (&quot;6&quot;);</span>
 
-<span class="fc" id="L131">		bucketList.add (&quot;7&quot;);</span>
+<span class="fc" id="L143">		bucketList.add (&quot;7&quot;);</span>
 
-<span class="fc" id="L133">		bucketList.add (&quot;8&quot;);</span>
+<span class="fc" id="L145">		bucketList.add (&quot;8&quot;);</span>
 
-<span class="fc" id="L135">		bucketList.add (&quot;9&quot;);</span>
+<span class="fc" id="L147">		bucketList.add (&quot;9&quot;);</span>
 
-<span class="fc" id="L137">		bucketList.add (&quot;10&quot;);</span>
+<span class="fc" id="L149">		bucketList.add (&quot;10&quot;);</span>
 
-<span class="fc" id="L139">		bucketList.add (&quot;11&quot;);</span>
+<span class="fc" id="L151">		bucketList.add (&quot;11&quot;);</span>
 
-<span class="fc" id="L141">		bucketList.add (&quot;12&quot;);</span>
+<span class="fc" id="L153">		bucketList.add (&quot;12&quot;);</span>
 
 		try
 		{
-<span class="fc" id="L145">			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (</span>
+<span class="fc" id="L157">			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (</span>
 				bucketList,
 				new double[][]
 				{
@@ -161,14 +173,14 @@ package org.drip.simm.credit;
 				}
 			);
 
-<span class="fc" id="L164">			return true;</span>
+<span class="fc" id="L176">			return true;</span>
 		}
-<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L180">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return false;</span>
+<span class="nc" id="L183">		return false;</span>
 	}
 
 	/**
@@ -181,8 +193,8 @@ package org.drip.simm.credit;
 	{
 		try
 		{
-<span class="fc" id="L184">			s_BucketMap.put (</span>
-<span class="fc" id="L185">				-1,</span>
+<span class="fc" id="L196">			s_BucketMap.put (</span>
+<span class="fc" id="L197">				-1,</span>
 				new org.drip.simm.credit.CRBucket (
 					-1,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
@@ -191,8 +203,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L194">			s_BucketMap.put (</span>
-<span class="fc" id="L195">				1,</span>
+<span class="fc" id="L206">			s_BucketMap.put (</span>
+<span class="fc" id="L207">				1,</span>
 				new org.drip.simm.credit.CRBucket (
 					1,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
@@ -201,8 +213,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L204">			s_BucketMap.put (</span>
-<span class="fc" id="L205">				2,</span>
+<span class="fc" id="L216">			s_BucketMap.put (</span>
+<span class="fc" id="L217">				2,</span>
 				new org.drip.simm.credit.CRBucket (
 					2,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
@@ -211,8 +223,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L214">			s_BucketMap.put (</span>
-<span class="fc" id="L215">				3,</span>
+<span class="fc" id="L226">			s_BucketMap.put (</span>
+<span class="fc" id="L227">				3,</span>
 				new org.drip.simm.credit.CRBucket (
 					3,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
@@ -221,8 +233,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L224">			s_BucketMap.put (</span>
-<span class="fc" id="L225">				4,</span>
+<span class="fc" id="L236">			s_BucketMap.put (</span>
+<span class="fc" id="L237">				4,</span>
 				new org.drip.simm.credit.CRBucket (
 					4,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
@@ -231,8 +243,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L234">			s_BucketMap.put (</span>
-<span class="fc" id="L235">				5,</span>
+<span class="fc" id="L246">			s_BucketMap.put (</span>
+<span class="fc" id="L247">				5,</span>
 				new org.drip.simm.credit.CRBucket (
 					5,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
@@ -241,8 +253,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L244">			s_BucketMap.put (</span>
-<span class="fc" id="L245">				6,</span>
+<span class="fc" id="L256">			s_BucketMap.put (</span>
+<span class="fc" id="L257">				6,</span>
 				new org.drip.simm.credit.CRBucket (
 					6,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
@@ -251,8 +263,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L254">			s_BucketMap.put (</span>
-<span class="fc" id="L255">				7,</span>
+<span class="fc" id="L266">			s_BucketMap.put (</span>
+<span class="fc" id="L267">				7,</span>
 				new org.drip.simm.credit.CRBucket (
 					7,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
@@ -261,8 +273,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L264">			s_BucketMap.put (</span>
-<span class="fc" id="L265">				8,</span>
+<span class="fc" id="L276">			s_BucketMap.put (</span>
+<span class="fc" id="L277">				8,</span>
 				new org.drip.simm.credit.CRBucket (
 					8,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
@@ -271,8 +283,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L274">			s_BucketMap.put (</span>
-<span class="fc" id="L275">				9,</span>
+<span class="fc" id="L286">			s_BucketMap.put (</span>
+<span class="fc" id="L287">				9,</span>
 				new org.drip.simm.credit.CRBucket (
 					9,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
@@ -281,8 +293,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L284">			s_BucketMap.put (</span>
-<span class="fc" id="L285">				10,</span>
+<span class="fc" id="L296">			s_BucketMap.put (</span>
+<span class="fc" id="L297">				10,</span>
 				new org.drip.simm.credit.CRBucket (
 					10,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
@@ -291,8 +303,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L294">			s_BucketMap.put (</span>
-<span class="fc" id="L295">				11,</span>
+<span class="fc" id="L306">			s_BucketMap.put (</span>
+<span class="fc" id="L307">				11,</span>
 				new org.drip.simm.credit.CRBucket (
 					11,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
@@ -301,8 +313,8 @@ package org.drip.simm.credit;
 				)
 			);
 
-<span class="fc" id="L304">			s_BucketMap.put (</span>
-<span class="fc" id="L305">				12,</span>
+<span class="fc" id="L316">			s_BucketMap.put (</span>
+<span class="fc" id="L317">				12,</span>
 				new org.drip.simm.credit.CRBucket (
 					12,
 					org.drip.simm.credit.CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
@@ -311,14 +323,14 @@ package org.drip.simm.credit;
 				)
 			);
 		}
-<span class="nc" id="L314">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L326">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L316">			e.printStackTrace();</span>
+<span class="nc" id="L328">			e.printStackTrace();</span>
 
-<span class="nc" id="L318">			return false;</span>
-<span class="fc" id="L319">		}</span>
+<span class="nc" id="L330">			return false;</span>
+<span class="fc" id="L331">		}</span>
 
-<span class="fc" id="L321">		return SetUpCrossBucketCorrelation();</span>
+<span class="fc" id="L333">		return SetUpCrossBucketCorrelation();</span>
 	}
 
 	/**
@@ -329,19 +341,19 @@ package org.drip.simm.credit;
 
 	public static final java.util.Set&lt;java.lang.String&gt; TenorSet()
 	{
-<span class="nc" id="L332">		java.util.Set&lt;java.lang.String&gt; tenorSet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
+<span class="nc" id="L344">		java.util.Set&lt;java.lang.String&gt; tenorSet = new java.util.HashSet&lt;java.lang.String&gt;();</span>
 
-<span class="nc" id="L334">		tenorSet.add (&quot;1Y&quot;);</span>
+<span class="nc" id="L346">		tenorSet.add (&quot;1Y&quot;);</span>
 
-<span class="nc" id="L336">		tenorSet.add (&quot;2Y&quot;);</span>
+<span class="nc" id="L348">		tenorSet.add (&quot;2Y&quot;);</span>
 
-<span class="nc" id="L338">		tenorSet.add (&quot;3Y&quot;);</span>
+<span class="nc" id="L350">		tenorSet.add (&quot;3Y&quot;);</span>
 
-<span class="nc" id="L340">		tenorSet.add (&quot;5Y&quot;);</span>
+<span class="nc" id="L352">		tenorSet.add (&quot;5Y&quot;);</span>
 
-<span class="nc" id="L342">		tenorSet.add (&quot;10Y&quot;);</span>
+<span class="nc" id="L354">		tenorSet.add (&quot;10Y&quot;);</span>
 
-<span class="nc" id="L344">		return tenorSet;</span>
+<span class="nc" id="L356">		return tenorSet;</span>
 	}
 
 	/**
@@ -352,7 +364,7 @@ package org.drip.simm.credit;
 
 	public static final java.util.Set&lt;java.lang.Integer&gt; BucketSet()
 	{
-<span class="nc" id="L355">		return s_BucketMap.keySet();</span>
+<span class="nc" id="L367">		return s_BucketMap.keySet();</span>
 	}
 
 	/**
@@ -366,7 +378,7 @@ package org.drip.simm.credit;
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-<span class="nc" id="L369">		return s_BucketMap.containsKey (bucketNumber);</span>
+<span class="nc" id="L381">		return s_BucketMap.containsKey (bucketNumber);</span>
 	}
 
 	/**
@@ -380,7 +392,7 @@ package org.drip.simm.credit;
 	public static final org.drip.simm.credit.CRBucket Bucket (
 		final int bucketNumber)
 	{
-<span class="nc bnc" id="L383" title="All 2 branches missed.">		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;</span>
 	}
 
 	/**
@@ -391,7 +403,7 @@ package org.drip.simm.credit;
 
 	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
 	{
-<span class="nc" id="L394">		return s_CrossBucketCorrelation;</span>
+<span class="nc" id="L406">		return s_CrossBucketCorrelation;</span>
 	}
 
 	/**
@@ -402,7 +414,7 @@ package org.drip.simm.credit;
 
 	public static final java.util.Map&lt;java.lang.Integer, org.drip.simm.credit.CRBucket&gt; BucketMap()
 	{
-<span class="nc" id="L405">		return s_BucketMap;</span>
+<span class="nc" id="L417">		return s_BucketMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

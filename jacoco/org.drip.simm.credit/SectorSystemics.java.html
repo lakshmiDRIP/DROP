@@ -6,42 +6,54 @@ package org.drip.simm.credit;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,24 +108,24 @@ package org.drip.simm.credit;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit&quot;&gt;Credit&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md&quot;&gt;Credit Qualifying/Non-Qualifying Risk Factor Settings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class SectorSystemics</span>
+<span class="nc" id="L121">public class SectorSystemics</span>
 {
 
 	/**
 	 * The Sovereigns Sector
 	 */
 
-<span class="fc" id="L116">	public static final java.lang.String[] SOVEREIGNS = new java.lang.String[]</span>
+<span class="fc" id="L128">	public static final java.lang.String[] SOVEREIGNS = new java.lang.String[]</span>
 	{
 		&quot;SOVEREIGN&quot;,
 		&quot;CENTRAL_BANK&quot;
@@ -123,7 +135,7 @@ package org.drip.simm.credit;
 	 * The Financials Sector
 	 */
 
-<span class="fc" id="L126">	public static final java.lang.String[] FINANCIALS = new java.lang.String[]</span>
+<span class="fc" id="L138">	public static final java.lang.String[] FINANCIALS = new java.lang.String[]</span>
 	{
 		&quot;FINANCIAL&quot;,
 		&quot;GOVERNMENT_BACKED_FINANCIAL&quot;
@@ -133,7 +145,7 @@ package org.drip.simm.credit;
 	 * The Basic Materials Sector
 	 */
 
-<span class="fc" id="L136">	public static final java.lang.String[] BASIC_MATERIALS = new java.lang.String[]</span>
+<span class="fc" id="L148">	public static final java.lang.String[] BASIC_MATERIALS = new java.lang.String[]</span>
 	{
 		&quot;BASIC_MATERIALS&quot;,
 		&quot;ENERGY&quot;,
@@ -144,7 +156,7 @@ package org.drip.simm.credit;
 	 * The Consumer Sector
 	 */
 
-<span class="fc" id="L147">	public static final java.lang.String[] CONSUMER = new java.lang.String[]</span>
+<span class="fc" id="L159">	public static final java.lang.String[] CONSUMER = new java.lang.String[]</span>
 	{
 		&quot;CONSUMER&quot;
 	};
@@ -153,7 +165,7 @@ package org.drip.simm.credit;
 	 * The Technology/Media/Telecommunications Sector
 	 */
 
-<span class="fc" id="L156">	public static final java.lang.String[] TMT = new java.lang.String[]</span>
+<span class="fc" id="L168">	public static final java.lang.String[] TMT = new java.lang.String[]</span>
 	{
 		&quot;TECHNOLOGY&quot;,
 		&quot;MEDIA&quot;,
@@ -164,7 +176,7 @@ package org.drip.simm.credit;
 	 * The Local Services Sector
 	 */
 
-<span class="fc" id="L167">	public static final java.lang.String[] LOCAL_SERVICES = new java.lang.String[]</span>
+<span class="fc" id="L179">	public static final java.lang.String[] LOCAL_SERVICES = new java.lang.String[]</span>
 	{
 		&quot;NON_FINANCIAL&quot;,
 		&quot;HEALTH_CARE&quot;,
@@ -178,7 +190,7 @@ package org.drip.simm.credit;
 	 * The RMBS/CMBS Sector
 	 */
 
-<span class="fc" id="L181">	public static final java.lang.String[] RMBS_CMBS = new java.lang.String[]</span>
+<span class="fc" id="L193">	public static final java.lang.String[] RMBS_CMBS = new java.lang.String[]</span>
 	{
 		&quot;RMBS&quot;,
 		&quot;CMBS&quot;
@@ -188,7 +200,7 @@ package org.drip.simm.credit;
 	 * The &quot;Residual&quot; Sector
 	 */
 
-<span class="fc" id="L191">	public static final java.lang.String[] RESIDUAL = new java.lang.String[]</span>
+<span class="fc" id="L203">	public static final java.lang.String[] RESIDUAL = new java.lang.String[]</span>
 	{
 		&quot;RESIDUAL&quot;
 	};
@@ -197,7 +209,7 @@ package org.drip.simm.credit;
 	 * The Consumer Services Sector
 	 */
 
-<span class="fc" id="L200">	public static final java.lang.String[] CONSUMER_SERVICES = new java.lang.String[]</span>
+<span class="fc" id="L212">	public static final java.lang.String[] CONSUMER_SERVICES = new java.lang.String[]</span>
 	{
 		&quot;CONSUMER_GOODS&quot;,
 		&quot;CONSUMER_SERVICES&quot;,
@@ -210,7 +222,7 @@ package org.drip.simm.credit;
 	 * The Telecommunications/Industrials Sector
 	 */
 
-<span class="fc" id="L213">	public static final java.lang.String[] TELECOMMUNICATIONS_INDUSTRIALS = new java.lang.String[]</span>
+<span class="fc" id="L225">	public static final java.lang.String[] TELECOMMUNICATIONS_INDUSTRIALS = new java.lang.String[]</span>
 	{
 		&quot;TELECOMMUNICATIONS&quot;,
 		&quot;INDUSTRIALS&quot;
@@ -220,7 +232,7 @@ package org.drip.simm.credit;
 	 * The Heavy Industrials Sector
 	 */
 
-<span class="fc" id="L223">	public static final java.lang.String[] HEAVY_INDUSTRIALS = new java.lang.String[]</span>
+<span class="fc" id="L235">	public static final java.lang.String[] HEAVY_INDUSTRIALS = new java.lang.String[]</span>
 	{
 		&quot;BASIC_MATERIALS&quot;,
 		&quot;ENERGY&quot;,
@@ -234,7 +246,7 @@ package org.drip.simm.credit;
 	 * The Investment Sector
 	 */
 
-<span class="fc" id="L237">	public static final java.lang.String[] INVESTMENT = new java.lang.String[]</span>
+<span class="fc" id="L249">	public static final java.lang.String[] INVESTMENT = new java.lang.String[]</span>
 	{
 		&quot;FINANCIAL&quot;,
 		&quot;GOVERNMENT_BACKED_FINANCIAL&quot;,
@@ -246,7 +258,7 @@ package org.drip.simm.credit;
 	 * The &quot;All&quot; Sector
 	 */
 
-<span class="fc" id="L249">	public static final java.lang.String[] ALL = new java.lang.String[]</span>
+<span class="fc" id="L261">	public static final java.lang.String[] ALL = new java.lang.String[]</span>
 	{
 		&quot;ALL&quot;
 	};
@@ -255,7 +267,7 @@ package org.drip.simm.credit;
 	 * The Indexes/Funds/ETF's Sector
 	 */
 
-<span class="fc" id="L258">	public static final java.lang.String[] INDEX_FUND_ETF = new java.lang.String[]</span>
+<span class="fc" id="L270">	public static final java.lang.String[] INDEX_FUND_ETF = new java.lang.String[]</span>
 	{
 		&quot;INDEX&quot;,
 		&quot;FUND&quot;,
@@ -266,7 +278,7 @@ package org.drip.simm.credit;
 	 * The Volatility Index Sector
 	 */
 
-<span class="fc" id="L269">	public static final java.lang.String[] VOLATILITY_INDEX = new java.lang.String[]</span>
+<span class="fc" id="L281">	public static final java.lang.String[] VOLATILITY_INDEX = new java.lang.String[]</span>
 	{
 		&quot;VOLATILITY_INDEX&quot;
 	};

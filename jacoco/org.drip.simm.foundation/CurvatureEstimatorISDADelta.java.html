@@ -6,42 +6,54 @@ package org.drip.simm.foundation;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.simm.foundation;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation&quot;&gt;Foundation&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md&quot;&gt;Foundation Utilities for ISDA SIMM&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -117,7 +129,7 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 
 	public static final CurvatureEstimatorISDADelta Standard()
 	{
-<span class="nc" id="L120">		return new CurvatureEstimatorISDADelta();</span>
+<span class="nc" id="L132">		return new CurvatureEstimatorISDADelta();</span>
 	}
 
 	/**
@@ -125,8 +137,8 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 	 */
 
 	public CurvatureEstimatorISDADelta()
-<span class="nc" id="L128">	{</span>
-<span class="nc" id="L129">	}</span>
+<span class="nc" id="L140">	{</span>
+<span class="nc" id="L141">	}</span>
 
 	@Override public double margin (
 		final double cumulativeRiskFactorSensitivity,
@@ -134,25 +146,25 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 		final double riskFactorSensitivityVariance)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (riskFactorSensitivityVariance) ||</span>
 			0. &gt; riskFactorSensitivityVariance)
 		{
-<span class="nc" id="L140">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L152">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L143">		double curvatureMarginVariance = cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance;</span>
+<span class="nc" id="L155">		double curvatureMarginVariance = cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance;</span>
 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">		if (0. &gt; curvatureMarginVariance)</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (0. &gt; curvatureMarginVariance)</span>
 		{
-<span class="nc" id="L147">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Margin Variance&quot;);</span>
+<span class="nc" id="L159">			throw new java.lang.Exception (&quot;CurvatureEstimatorISDADelta::margin =&gt; Invalid Margin Variance&quot;);</span>
 		}
 
-<span class="nc" id="L150">		return java.lang.Math.sqrt (curvatureMarginVariance);</span>
+<span class="nc" id="L162">		return java.lang.Math.sqrt (curvatureMarginVariance);</span>
 	}
 
 	@Override public boolean isCorrelatorQuadratric()
 	{
-<span class="nc" id="L155">		return false;</span>
+<span class="nc" id="L167">		return false;</span>
 	}
 
 	@Override public double varianceModulator (
@@ -162,7 +174,7 @@ public class CurvatureEstimatorISDADelta implements org.drip.simm.foundation.Cur
 		final double bucketVariance2)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L165">		return 1.;</span>
+<span class="nc" id="L177">		return 1.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

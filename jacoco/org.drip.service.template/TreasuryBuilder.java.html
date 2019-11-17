@@ -6,45 +6,57 @@ package org.drip.service.template;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -83,7 +95,7 @@ package org.drip.service.template;
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class TreasuryBuilder {</span>
+<span class="nc" id="L98">public class TreasuryBuilder {</span>
 
 	/**
 	 * Construct an Instance of the Australian Treasury AUD AGB Bond
@@ -100,11 +112,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L103">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L104">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;AGB&quot;);</span>
+<span class="nc" id="L115">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L116">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;AGB&quot;);</span>
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L107">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L119">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -122,11 +134,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L125">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L126">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;BTPS&quot;);</span>
+<span class="nc" id="L137">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L138">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;BTPS&quot;);</span>
 
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L129">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L141">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -144,11 +156,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L147">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L148">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;CAN&quot;);</span>
+<span class="nc" id="L159">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L160">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;CAN&quot;);</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L151">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L163">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -166,11 +178,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L169">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L170">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;DBR&quot;);</span>
+<span class="nc" id="L181">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L182">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;DBR&quot;);</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L173">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L185">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -188,11 +200,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L191">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L192">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;FRTR&quot;);</span>
+<span class="nc" id="L203">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L204">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;FRTR&quot;);</span>
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L195">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L207">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -210,11 +222,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L213">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L214">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;GGB&quot;);</span>
+<span class="nc" id="L225">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L226">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;GGB&quot;);</span>
 
-<span class="nc bnc" id="L216" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L217">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L229">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -232,11 +244,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L235">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L236">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;GILT&quot;);</span>
+<span class="nc" id="L247">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L248">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;GILT&quot;);</span>
 
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L239">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L251">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -254,11 +266,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L257">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L258">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;JGB&quot;);</span>
+<span class="nc" id="L269">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L270">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;JGB&quot;);</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L261">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L273">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -276,11 +288,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L279">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L280">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;MBONO&quot;);</span>
+<span class="nc" id="L291">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L292">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;MBONO&quot;);</span>
 
-<span class="nc bnc" id="L282" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L283">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L295">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -298,11 +310,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="nc" id="L301">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="nc" id="L302">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;SPGB&quot;);</span>
+<span class="nc" id="L313">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="nc" id="L314">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;SPGB&quot;);</span>
 
-<span class="nc bnc" id="L304" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="nc" id="L305">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="nc" id="L317">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -320,11 +332,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="fc" id="L323">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="fc" id="L324">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;UST&quot;);</span>
+<span class="fc" id="L335">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="fc" id="L336">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (&quot;UST&quot;);</span>
 
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="fc" id="L327">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="fc" id="L339">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -344,11 +356,11 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate dtMaturity,
 		final double dblCoupon)
 	{
-<span class="fc" id="L347">		org.drip.market.issue.TreasurySetting ts =</span>
-<span class="fc" id="L348">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (strCode);</span>
+<span class="fc" id="L359">		org.drip.market.issue.TreasurySetting ts =</span>
+<span class="fc" id="L360">			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (strCode);</span>
 
-<span class="pc bpc" id="L350" title="1 of 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
-<span class="fc" id="L351">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,</span>
+<span class="fc" id="L363">			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());</span>
 	}
 
 	/**
@@ -368,21 +380,21 @@ package org.drip.service.template;
 		final org.drip.analytics.date.JulianDate[] adtMaturity,
 		final double[] adblCoupon)
 	{
-<span class="pc bpc" id="L371" title="3 of 6 branches missed.">		if (null == adtEffective || null == adtMaturity || null == adblCoupon) return null;</span>
+<span class="pc bpc" id="L383" title="3 of 6 branches missed.">		if (null == adtEffective || null == adtMaturity || null == adblCoupon) return null;</span>
 
-<span class="fc" id="L373">		int iNumTreasury = adtEffective.length;</span>
-<span class="fc" id="L374">		org.drip.product.govvie.TreasuryComponent[] aTreasury = new</span>
+<span class="fc" id="L385">		int iNumTreasury = adtEffective.length;</span>
+<span class="fc" id="L386">		org.drip.product.govvie.TreasuryComponent[] aTreasury = new</span>
 			org.drip.product.govvie.TreasuryComponent[iNumTreasury];
 
-<span class="pc bpc" id="L377" title="3 of 6 branches missed.">		if (0 == iNumTreasury || iNumTreasury != adtMaturity.length || iNumTreasury != adblCoupon.length)</span>
-<span class="nc" id="L378">			return null;</span>
+<span class="pc bpc" id="L389" title="3 of 6 branches missed.">		if (0 == iNumTreasury || iNumTreasury != adtMaturity.length || iNumTreasury != adblCoupon.length)</span>
+<span class="nc" id="L390">			return null;</span>
 
-<span class="fc bfc" id="L380" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTreasury; ++i) {</span>
-<span class="pc bpc" id="L381" title="1 of 2 branches missed.">			if (null == (aTreasury[i] = FromCode (strCode, adtEffective[i], adtMaturity[i], adblCoupon[i])))</span>
-<span class="nc" id="L382">				return null;</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumTreasury; ++i) {</span>
+<span class="pc bpc" id="L393" title="1 of 2 branches missed.">			if (null == (aTreasury[i] = FromCode (strCode, adtEffective[i], adtMaturity[i], adblCoupon[i])))</span>
+<span class="nc" id="L394">				return null;</span>
 		}
 
-<span class="fc" id="L385">		return aTreasury;</span>
+<span class="fc" id="L397">		return aTreasury;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

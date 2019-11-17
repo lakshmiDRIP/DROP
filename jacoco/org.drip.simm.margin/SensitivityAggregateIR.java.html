@@ -6,31 +6,61 @@ package org.drip.simm.margin;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DRIP, a free-software/open-source library for buy/side financial/trading model
- *  	libraries targeting analysts and developers
- *  	https://lakshmidrip.github.io/DRIP/
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
- *  DRIP is composed of four main libraries:
+ *  	https://lakshmidrip.github.io/DROP/
  *  
- *  - DRIP Fixed Income - https://lakshmidrip.github.io/DRIP-Fixed-Income/
- *  - DRIP Asset Allocation - https://lakshmidrip.github.io/DRIP-Asset-Allocation/
- *  - DRIP Numerical Optimizer - https://lakshmidrip.github.io/DRIP-Numerical-Optimizer/
- *  - DRIP Statistical Learning - https://lakshmidrip.github.io/DRIP-Statistical-Learning/
+ *  DROP is composed of three modules:
+ *  
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
+ *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- *  - DRIP Fixed Income: Library for Instrument/Trading Conventions, Treasury Futures/Options,
- *  	Funding/Forward/Overnight Curves, Multi-Curve Construction/Valuation, Collateral Valuation and XVA
- *  	Metric Generation, Calibration and Hedge Attributions, Statistical Curve Construction, Bond RV
- *  	Metrics, Stochastic Evolution and Option Pricing, Interest Rate Dynamics and Option Pricing, LMM
- *  	Extensions/Calibrations/Greeks, Algorithmic Differentiation, and Asset Backed Models and Analytics.
+ * 	DROP Product Core implements libraries for the following:
+ * 	- Fixed Income Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
- *  - DRIP Asset Allocation: Library for model libraries for MPT framework, Black Litterman Strategy
- *  	Incorporator, Holdings Constraint, and Transaction Costs.
+ * 	DROP Portfolio Core implements libraries for the following:
+ * 	- Asset Allocation Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- *  - DRIP Numerical Optimizer: Library for Numerical Optimization and Spline Functionality.
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
- *  - DRIP Statistical Learning: Library for Statistical Evaluation and Machine Learning.
+ * 	Documentation for DROP is Spread Over:
+ * 
+ * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
+ * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
+ * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
+ * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
+ * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
+ * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
+ * 	- Community Credits        =&gt; https://lakshmidrip.github.io/DROP/credits.html
+ * 	- Issues Catalog           =&gt; https://github.com/lakshmiDRIP/DROP/issues
+ * 	- JUnit                    =&gt; https://lakshmidrip.github.io/DROP/junit/index.html
+ * 	- Jacoco                   =&gt; https://lakshmidrip.github.io/DROP/jacoco/index.html
  * 
  *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  *   	you may not use this file except in compliance with the License.
@@ -79,10 +109,10 @@ package org.drip.simm.margin;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin&quot;&gt;Margin&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md&quot;&gt;ISDA SIMM Risk Factor Margin Metrics&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -91,42 +121,42 @@ package org.drip.simm.margin;
 
 public class SensitivityAggregateIR
 {
-<span class="nc" id="L94">	private double _marginCovariance_OIS_OIS = java.lang.Double.NaN;</span>
-<span class="nc" id="L95">	private double _marginCovariance_OIS_PRIME = java.lang.Double.NaN;</span>
-<span class="nc" id="L96">	private double _marginCovariance_OIS_LIBOR1M = java.lang.Double.NaN;</span>
-<span class="nc" id="L97">	private double _marginCovariance_OIS_LIBOR3M = java.lang.Double.NaN;</span>
-<span class="nc" id="L98">	private double _marginCovariance_OIS_LIBOR6M = java.lang.Double.NaN;</span>
-<span class="nc" id="L99">	private double _marginCovariance_OIS_LIBOR12M = java.lang.Double.NaN;</span>
-<span class="nc" id="L100">	private double _marginCovariance_OIS_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L124">	private double _marginCovariance_OIS_OIS = java.lang.Double.NaN;</span>
+<span class="nc" id="L125">	private double _marginCovariance_OIS_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L126">	private double _marginCovariance_OIS_LIBOR1M = java.lang.Double.NaN;</span>
+<span class="nc" id="L127">	private double _marginCovariance_OIS_LIBOR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L128">	private double _marginCovariance_OIS_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L129">	private double _marginCovariance_OIS_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L130">	private double _marginCovariance_OIS_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L102">	private double _marginCovariance_LIBOR1M_PRIME = java.lang.Double.NaN;</span>
-<span class="nc" id="L103">	private double _marginCovariance_LIBOR1M_LIBOR1M = java.lang.Double.NaN;</span>
-<span class="nc" id="L104">	private double _marginCovariance_LIBOR1M_LIBOR3M = java.lang.Double.NaN;</span>
-<span class="nc" id="L105">	private double _marginCovariance_LIBOR1M_LIBOR6M = java.lang.Double.NaN;</span>
-<span class="nc" id="L106">	private double _marginCovariance_LIBOR1M_LIBOR12M = java.lang.Double.NaN;</span>
-<span class="nc" id="L107">	private double _marginCovariance_LIBOR1M_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L132">	private double _marginCovariance_LIBOR1M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L133">	private double _marginCovariance_LIBOR1M_LIBOR1M = java.lang.Double.NaN;</span>
+<span class="nc" id="L134">	private double _marginCovariance_LIBOR1M_LIBOR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L135">	private double _marginCovariance_LIBOR1M_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L136">	private double _marginCovariance_LIBOR1M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L137">	private double _marginCovariance_LIBOR1M_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L109">	private double _marginCovariance_LIBOR3M_PRIME = java.lang.Double.NaN;</span>
-<span class="nc" id="L110">	private double _marginCovariance_LIBOR3M_LIBOR3M = java.lang.Double.NaN;</span>
-<span class="nc" id="L111">	private double _marginCovariance_LIBOR3M_LIBOR6M = java.lang.Double.NaN;</span>
-<span class="nc" id="L112">	private double _marginCovariance_LIBOR3M_LIBOR12M = java.lang.Double.NaN;</span>
-<span class="nc" id="L113">	private double _marginCovariance_LIBOR3M_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L139">	private double _marginCovariance_LIBOR3M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L140">	private double _marginCovariance_LIBOR3M_LIBOR3M = java.lang.Double.NaN;</span>
+<span class="nc" id="L141">	private double _marginCovariance_LIBOR3M_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L142">	private double _marginCovariance_LIBOR3M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L143">	private double _marginCovariance_LIBOR3M_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L115">	private double _marginCovariance_LIBOR6M_PRIME = java.lang.Double.NaN;</span>
-<span class="nc" id="L116">	private double _marginCovariance_LIBOR6M_LIBOR6M = java.lang.Double.NaN;</span>
-<span class="nc" id="L117">	private double _marginCovariance_LIBOR6M_LIBOR12M = java.lang.Double.NaN;</span>
-<span class="nc" id="L118">	private double _marginCovariance_LIBOR6M_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L145">	private double _marginCovariance_LIBOR6M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L146">	private double _marginCovariance_LIBOR6M_LIBOR6M = java.lang.Double.NaN;</span>
+<span class="nc" id="L147">	private double _marginCovariance_LIBOR6M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L148">	private double _marginCovariance_LIBOR6M_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L120">	private double _marginCovariance_LIBOR12M_PRIME = java.lang.Double.NaN;</span>
-<span class="nc" id="L121">	private double _marginCovariance_LIBOR12M_LIBOR12M = java.lang.Double.NaN;</span>
-<span class="nc" id="L122">	private double _marginCovariance_LIBOR12M_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L150">	private double _marginCovariance_LIBOR12M_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L151">	private double _marginCovariance_LIBOR12M_LIBOR12M = java.lang.Double.NaN;</span>
+<span class="nc" id="L152">	private double _marginCovariance_LIBOR12M_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L124">	private double _marginCovariance_PRIME_PRIME = java.lang.Double.NaN;</span>
-<span class="nc" id="L125">	private double _marginCovariance_PRIME_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L154">	private double _marginCovariance_PRIME_PRIME = java.lang.Double.NaN;</span>
+<span class="nc" id="L155">	private double _marginCovariance_PRIME_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L127">	private double _marginCovariance_MUNICIPAL_MUNICIPAL = java.lang.Double.NaN;</span>
+<span class="nc" id="L157">	private double _marginCovariance_MUNICIPAL_MUNICIPAL = java.lang.Double.NaN;</span>
 
-<span class="nc" id="L129">	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;</span>
+<span class="nc" id="L159">	private double _cumulativeMarginSensitivity = java.lang.Double.NaN;</span>
 
 	/**
 	 * SensitivityAggregateIR Constructor
@@ -195,69 +225,69 @@ public class SensitivityAggregateIR
 		final double marginCovariance_MUNICIPAL_MUNICIPAL,
 		final double cumulativeMarginSensitivity)
 		throws java.lang.Exception
-<span class="nc" id="L198">	{</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_OIS =</span>
+<span class="nc" id="L228">	{</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_OIS =</span>
 				marginCovariance_OIS_OIS) ||
-<span class="nc bnc" id="L201" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR1M =</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR1M =</span>
 				marginCovariance_OIS_LIBOR1M) ||
-<span class="nc bnc" id="L203" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR3M =</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR3M =</span>
 				marginCovariance_OIS_LIBOR3M) ||
-<span class="nc bnc" id="L205" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR6M =</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR6M =</span>
 				marginCovariance_OIS_LIBOR6M) ||
-<span class="nc bnc" id="L207" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR12M =</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_LIBOR12M =</span>
 				marginCovariance_OIS_LIBOR12M) ||
-<span class="nc bnc" id="L209" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_PRIME =</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_PRIME =</span>
 				marginCovariance_OIS_PRIME) ||
-<span class="nc bnc" id="L211" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_MUNICIPAL =</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_OIS_MUNICIPAL =</span>
 				marginCovariance_OIS_MUNICIPAL) ||
-<span class="nc bnc" id="L213" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR1M =</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR1M =</span>
 				marginCovariance_LIBOR1M_LIBOR1M) ||
-<span class="nc bnc" id="L215" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR3M =</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR3M =</span>
 				marginCovariance_LIBOR1M_LIBOR3M) ||
-<span class="nc bnc" id="L217" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR6M =</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR6M =</span>
 				marginCovariance_LIBOR1M_LIBOR6M) ||
-<span class="nc bnc" id="L219" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR12M =</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR12M =</span>
 				marginCovariance_LIBOR1M_LIBOR12M) ||
-<span class="nc bnc" id="L221" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_PRIME =</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_PRIME =</span>
 				marginCovariance_LIBOR1M_PRIME) ||
-<span class="nc bnc" id="L223" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_MUNICIPAL =</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR1M_MUNICIPAL =</span>
 				marginCovariance_LIBOR1M_MUNICIPAL) ||
-<span class="nc bnc" id="L225" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR3M =</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR3M =</span>
 				marginCovariance_LIBOR3M_LIBOR3M) ||
-<span class="nc bnc" id="L227" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR6M =</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR6M =</span>
 				marginCovariance_LIBOR3M_LIBOR6M) ||
-<span class="nc bnc" id="L229" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR12M =</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR12M =</span>
 				marginCovariance_LIBOR3M_LIBOR12M) ||
-<span class="nc bnc" id="L231" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_PRIME =</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_PRIME =</span>
 				marginCovariance_LIBOR3M_PRIME) ||
-<span class="nc bnc" id="L233" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_MUNICIPAL =</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR3M_MUNICIPAL =</span>
 				marginCovariance_LIBOR3M_MUNICIPAL) ||
-<span class="nc bnc" id="L235" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR6M =</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR6M =</span>
 				marginCovariance_LIBOR6M_LIBOR6M) ||
-<span class="nc bnc" id="L237" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR12M =</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR12M =</span>
 				marginCovariance_LIBOR6M_LIBOR12M) ||
-<span class="nc bnc" id="L239" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_PRIME =</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_PRIME =</span>
 				marginCovariance_LIBOR6M_PRIME) ||
-<span class="nc bnc" id="L241" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_MUNICIPAL =</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR6M_MUNICIPAL =</span>
 				marginCovariance_LIBOR6M_MUNICIPAL) ||
-<span class="nc bnc" id="L243" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_LIBOR12M =</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_LIBOR12M =</span>
 				marginCovariance_LIBOR12M_LIBOR12M) ||
-<span class="nc bnc" id="L245" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_PRIME =</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_PRIME =</span>
 				marginCovariance_LIBOR12M_PRIME) ||
-<span class="nc bnc" id="L247" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_MUNICIPAL =</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_LIBOR12M_MUNICIPAL =</span>
 				marginCovariance_LIBOR12M_MUNICIPAL) ||
-<span class="nc bnc" id="L249" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_PRIME_PRIME =</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_PRIME_PRIME =</span>
 				marginCovariance_PRIME_PRIME) ||
-<span class="nc bnc" id="L251" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_PRIME_MUNICIPAL =</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_PRIME_MUNICIPAL =</span>
 				marginCovariance_PRIME_MUNICIPAL) ||
-<span class="nc bnc" id="L253" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_MUNICIPAL_MUNICIPAL =</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_marginCovariance_MUNICIPAL_MUNICIPAL =</span>
 				marginCovariance_MUNICIPAL_MUNICIPAL) ||
-<span class="nc bnc" id="L255" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_cumulativeMarginSensitivity =</span>
 				cumulativeMarginSensitivity))
 		{
-<span class="nc" id="L258">			throw new java.lang.Exception (&quot;SensitivityAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L288">			throw new java.lang.Exception (&quot;SensitivityAggregateIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L260">	}</span>
+<span class="nc" id="L290">	}</span>
 
 	/**
 	 * Retrieve the OIS - OIS Margin Co-variance
@@ -267,7 +297,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_OIS()
 	{
-<span class="nc" id="L270">		return _marginCovariance_OIS_OIS;</span>
+<span class="nc" id="L300">		return _marginCovariance_OIS_OIS;</span>
 	}
 
 	/**
@@ -278,7 +308,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_LIBOR1M()
 	{
-<span class="nc" id="L281">		return _marginCovariance_OIS_LIBOR1M;</span>
+<span class="nc" id="L311">		return _marginCovariance_OIS_LIBOR1M;</span>
 	}
 
 	/**
@@ -289,7 +319,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_LIBOR3M()
 	{
-<span class="nc" id="L292">		return _marginCovariance_OIS_LIBOR3M;</span>
+<span class="nc" id="L322">		return _marginCovariance_OIS_LIBOR3M;</span>
 	}
 
 	/**
@@ -300,7 +330,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_LIBOR6M()
 	{
-<span class="nc" id="L303">		return _marginCovariance_OIS_LIBOR6M;</span>
+<span class="nc" id="L333">		return _marginCovariance_OIS_LIBOR6M;</span>
 	}
 
 	/**
@@ -311,7 +341,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_LIBOR12M()
 	{
-<span class="nc" id="L314">		return _marginCovariance_OIS_LIBOR12M;</span>
+<span class="nc" id="L344">		return _marginCovariance_OIS_LIBOR12M;</span>
 	}
 
 	/**
@@ -322,7 +352,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_PRIME()
 	{
-<span class="nc" id="L325">		return _marginCovariance_OIS_PRIME;</span>
+<span class="nc" id="L355">		return _marginCovariance_OIS_PRIME;</span>
 	}
 
 	/**
@@ -333,7 +363,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_OIS_MUNICIPAL()
 	{
-<span class="nc" id="L336">		return _marginCovariance_OIS_MUNICIPAL;</span>
+<span class="nc" id="L366">		return _marginCovariance_OIS_MUNICIPAL;</span>
 	}
 
 	/**
@@ -344,7 +374,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR1M_LIBOR1M()
 	{
-<span class="nc" id="L347">		return _marginCovariance_LIBOR1M_LIBOR1M;</span>
+<span class="nc" id="L377">		return _marginCovariance_LIBOR1M_LIBOR1M;</span>
 	}
 
 	/**
@@ -355,7 +385,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR1M_LIBOR3M()
 	{
-<span class="nc" id="L358">		return _marginCovariance_LIBOR1M_LIBOR3M;</span>
+<span class="nc" id="L388">		return _marginCovariance_LIBOR1M_LIBOR3M;</span>
 	}
 
 	/**
@@ -366,7 +396,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR1M_LIBOR6M()
 	{
-<span class="nc" id="L369">		return _marginCovariance_LIBOR1M_LIBOR6M;</span>
+<span class="nc" id="L399">		return _marginCovariance_LIBOR1M_LIBOR6M;</span>
 	}
 
 	/**
@@ -377,7 +407,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR1M_LIBOR12M()
 	{
-<span class="nc" id="L380">		return _marginCovariance_LIBOR1M_LIBOR12M;</span>
+<span class="nc" id="L410">		return _marginCovariance_LIBOR1M_LIBOR12M;</span>
 	}
 
 	/**
@@ -388,7 +418,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR1M_PRIME()
 	{
-<span class="nc" id="L391">		return _marginCovariance_LIBOR1M_PRIME;</span>
+<span class="nc" id="L421">		return _marginCovariance_LIBOR1M_PRIME;</span>
 	}
 
 	/**
@@ -399,7 +429,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR1M_MUNICIPAL()
 	{
-<span class="nc" id="L402">		return _marginCovariance_LIBOR1M_MUNICIPAL;</span>
+<span class="nc" id="L432">		return _marginCovariance_LIBOR1M_MUNICIPAL;</span>
 	}
 
 	/**
@@ -410,7 +440,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR3M_LIBOR3M()
 	{
-<span class="nc" id="L413">		return _marginCovariance_LIBOR3M_LIBOR3M;</span>
+<span class="nc" id="L443">		return _marginCovariance_LIBOR3M_LIBOR3M;</span>
 	}
 
 	/**
@@ -421,7 +451,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR3M_LIBOR6M()
 	{
-<span class="nc" id="L424">		return _marginCovariance_LIBOR3M_LIBOR6M;</span>
+<span class="nc" id="L454">		return _marginCovariance_LIBOR3M_LIBOR6M;</span>
 	}
 
 	/**
@@ -432,7 +462,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR3M_LIBOR12M()
 	{
-<span class="nc" id="L435">		return _marginCovariance_LIBOR3M_LIBOR12M;</span>
+<span class="nc" id="L465">		return _marginCovariance_LIBOR3M_LIBOR12M;</span>
 	}
 
 	/**
@@ -443,7 +473,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR3M_PRIME()
 	{
-<span class="nc" id="L446">		return _marginCovariance_LIBOR3M_PRIME;</span>
+<span class="nc" id="L476">		return _marginCovariance_LIBOR3M_PRIME;</span>
 	}
 
 	/**
@@ -454,7 +484,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR3M_MUNICIPAL()
 	{
-<span class="nc" id="L457">		return _marginCovariance_LIBOR3M_MUNICIPAL;</span>
+<span class="nc" id="L487">		return _marginCovariance_LIBOR3M_MUNICIPAL;</span>
 	}
 
 	/**
@@ -465,7 +495,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR6M_LIBOR6M()
 	{
-<span class="nc" id="L468">		return _marginCovariance_LIBOR6M_LIBOR6M;</span>
+<span class="nc" id="L498">		return _marginCovariance_LIBOR6M_LIBOR6M;</span>
 	}
 
 	/**
@@ -476,7 +506,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR6M_LIBOR12M()
 	{
-<span class="nc" id="L479">		return _marginCovariance_LIBOR6M_LIBOR12M;</span>
+<span class="nc" id="L509">		return _marginCovariance_LIBOR6M_LIBOR12M;</span>
 	}
 
 	/**
@@ -487,7 +517,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR6M_PRIME()
 	{
-<span class="nc" id="L490">		return _marginCovariance_LIBOR6M_PRIME;</span>
+<span class="nc" id="L520">		return _marginCovariance_LIBOR6M_PRIME;</span>
 	}
 
 	/**
@@ -498,7 +528,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR6M_MUNICIPAL()
 	{
-<span class="nc" id="L501">		return _marginCovariance_LIBOR6M_MUNICIPAL;</span>
+<span class="nc" id="L531">		return _marginCovariance_LIBOR6M_MUNICIPAL;</span>
 	}
 
 	/**
@@ -509,7 +539,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR12M_LIBOR12M()
 	{
-<span class="nc" id="L512">		return _marginCovariance_LIBOR12M_LIBOR12M;</span>
+<span class="nc" id="L542">		return _marginCovariance_LIBOR12M_LIBOR12M;</span>
 	}
 
 	/**
@@ -520,7 +550,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR12M_PRIME()
 	{
-<span class="nc" id="L523">		return _marginCovariance_LIBOR12M_PRIME;</span>
+<span class="nc" id="L553">		return _marginCovariance_LIBOR12M_PRIME;</span>
 	}
 
 	/**
@@ -531,7 +561,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_LIBOR12M_MUNICIPAL()
 	{
-<span class="nc" id="L534">		return _marginCovariance_LIBOR12M_MUNICIPAL;</span>
+<span class="nc" id="L564">		return _marginCovariance_LIBOR12M_MUNICIPAL;</span>
 	}
 
 	/**
@@ -542,7 +572,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_PRIME_PRIME()
 	{
-<span class="nc" id="L545">		return _marginCovariance_PRIME_PRIME;</span>
+<span class="nc" id="L575">		return _marginCovariance_PRIME_PRIME;</span>
 	}
 
 	/**
@@ -553,7 +583,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_PRIME_MUNICIPAL()
 	{
-<span class="nc" id="L556">		return _marginCovariance_PRIME_MUNICIPAL;</span>
+<span class="nc" id="L586">		return _marginCovariance_PRIME_MUNICIPAL;</span>
 	}
 
 	/**
@@ -564,7 +594,7 @@ public class SensitivityAggregateIR
 
 	public double marginCovariance_MUNICIPAL_MUNICIPAL()
 	{
-<span class="nc" id="L567">		return _marginCovariance_MUNICIPAL_MUNICIPAL;</span>
+<span class="nc" id="L597">		return _marginCovariance_MUNICIPAL_MUNICIPAL;</span>
 	}
 
 	/**
@@ -575,7 +605,7 @@ public class SensitivityAggregateIR
 
 	public double cumulativeMarginCovariance()
 	{
-<span class="nc" id="L578">		return _marginCovariance_OIS_OIS +</span>
+<span class="nc" id="L608">		return _marginCovariance_OIS_OIS +</span>
 			_marginCovariance_OIS_PRIME +
 			_marginCovariance_OIS_LIBOR1M +
 			_marginCovariance_OIS_LIBOR3M +
@@ -613,7 +643,7 @@ public class SensitivityAggregateIR
 
 	public double cumulativeMargin()
 	{
-<span class="nc" id="L616">		return java.lang.Math.sqrt (cumulativeMarginCovariance());</span>
+<span class="nc" id="L646">		return java.lang.Math.sqrt (cumulativeMarginCovariance());</span>
 	}
 
 	/**
@@ -624,7 +654,7 @@ public class SensitivityAggregateIR
 
 	public double cumulativeMarginSensitivity()
 	{
-<span class="nc" id="L627">		return _cumulativeMarginSensitivity;</span>
+<span class="nc" id="L657">		return _cumulativeMarginSensitivity;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

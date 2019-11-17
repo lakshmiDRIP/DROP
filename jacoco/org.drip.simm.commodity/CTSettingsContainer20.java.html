@@ -6,42 +6,54 @@ package org.drip.simm.commodity;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,64 +108,64 @@ package org.drip.simm.commodity;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity&quot;&gt;Commodity&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/README.md&quot;&gt;Commodity Risk Factor Calibration Settings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class CTSettingsContainer20</span>
+<span class="nc" id="L121">public class CTSettingsContainer20</span>
 {
-<span class="fc" id="L111">	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;</span>
+<span class="fc" id="L123">	private static org.drip.measure.stochastic.LabelCorrelation s_CrossBucketCorrelation = null;</span>
 
-<span class="fc" id="L113">	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.commodity.CTBucket&gt; s_BucketMap =</span>
+<span class="fc" id="L125">	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.commodity.CTBucket&gt; s_BucketMap =</span>
 		new java.util.TreeMap&lt;java.lang.Integer, org.drip.simm.commodity.CTBucket&gt;();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
-<span class="fc" id="L118">		java.util.List&lt;java.lang.String&gt; bucketList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
+<span class="fc" id="L130">		java.util.List&lt;java.lang.String&gt; bucketList = new java.util.ArrayList&lt;java.lang.String&gt;();</span>
 
-<span class="fc" id="L120">		bucketList.add (&quot;1&quot;);</span>
+<span class="fc" id="L132">		bucketList.add (&quot;1&quot;);</span>
 
-<span class="fc" id="L122">		bucketList.add (&quot;2&quot;);</span>
+<span class="fc" id="L134">		bucketList.add (&quot;2&quot;);</span>
 
-<span class="fc" id="L124">		bucketList.add (&quot;3&quot;);</span>
+<span class="fc" id="L136">		bucketList.add (&quot;3&quot;);</span>
 
-<span class="fc" id="L126">		bucketList.add (&quot;4&quot;);</span>
+<span class="fc" id="L138">		bucketList.add (&quot;4&quot;);</span>
 
-<span class="fc" id="L128">		bucketList.add (&quot;5&quot;);</span>
+<span class="fc" id="L140">		bucketList.add (&quot;5&quot;);</span>
 
-<span class="fc" id="L130">		bucketList.add (&quot;6&quot;);</span>
+<span class="fc" id="L142">		bucketList.add (&quot;6&quot;);</span>
 
-<span class="fc" id="L132">		bucketList.add (&quot;7&quot;);</span>
+<span class="fc" id="L144">		bucketList.add (&quot;7&quot;);</span>
 
-<span class="fc" id="L134">		bucketList.add (&quot;8&quot;);</span>
+<span class="fc" id="L146">		bucketList.add (&quot;8&quot;);</span>
 
-<span class="fc" id="L136">		bucketList.add (&quot;9&quot;);</span>
+<span class="fc" id="L148">		bucketList.add (&quot;9&quot;);</span>
 
-<span class="fc" id="L138">		bucketList.add (&quot;10&quot;);</span>
+<span class="fc" id="L150">		bucketList.add (&quot;10&quot;);</span>
 
-<span class="fc" id="L140">		bucketList.add (&quot;11&quot;);</span>
+<span class="fc" id="L152">		bucketList.add (&quot;11&quot;);</span>
 
-<span class="fc" id="L142">		bucketList.add (&quot;12&quot;);</span>
+<span class="fc" id="L154">		bucketList.add (&quot;12&quot;);</span>
 
-<span class="fc" id="L144">		bucketList.add (&quot;13&quot;);</span>
+<span class="fc" id="L156">		bucketList.add (&quot;13&quot;);</span>
 
-<span class="fc" id="L146">		bucketList.add (&quot;14&quot;);</span>
+<span class="fc" id="L158">		bucketList.add (&quot;14&quot;);</span>
 
-<span class="fc" id="L148">		bucketList.add (&quot;15&quot;);</span>
+<span class="fc" id="L160">		bucketList.add (&quot;15&quot;);</span>
 
-<span class="fc" id="L150">		bucketList.add (&quot;16&quot;);</span>
+<span class="fc" id="L162">		bucketList.add (&quot;16&quot;);</span>
 
-<span class="fc" id="L152">		bucketList.add (&quot;17&quot;);</span>
+<span class="fc" id="L164">		bucketList.add (&quot;17&quot;);</span>
 
 		try
 		{
-<span class="fc" id="L156">			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (</span>
+<span class="fc" id="L168">			s_CrossBucketCorrelation = new org.drip.measure.stochastic.LabelCorrelation (</span>
 				bucketList,
 				new double[][]
 				{
@@ -177,14 +189,14 @@ package org.drip.simm.commodity;
 				}
 			);
 
-<span class="fc" id="L180">			return true;</span>
+<span class="fc" id="L192">			return true;</span>
 		}
-<span class="nc" id="L182">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L194">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L184">			e.printStackTrace();</span>
+<span class="nc" id="L196">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L187">		return false;</span>
+<span class="nc" id="L199">		return false;</span>
 	}
 
 	/**
@@ -197,8 +209,8 @@ package org.drip.simm.commodity;
 	{
 		try
 		{
-<span class="fc" id="L200">			s_BucketMap.put (</span>
-<span class="fc" id="L201">				1,</span>
+<span class="fc" id="L212">			s_BucketMap.put (</span>
+<span class="fc" id="L213">				1,</span>
 				new org.drip.simm.commodity.CTBucket (
 					1,
 					&quot;Coal&quot;,
@@ -207,8 +219,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L210">			s_BucketMap.put (</span>
-<span class="fc" id="L211">				2,</span>
+<span class="fc" id="L222">			s_BucketMap.put (</span>
+<span class="fc" id="L223">				2,</span>
 				new org.drip.simm.commodity.CTBucket (
 					2,
 					&quot;Crude&quot;,
@@ -217,8 +229,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L220">			s_BucketMap.put (</span>
-<span class="fc" id="L221">				3,</span>
+<span class="fc" id="L232">			s_BucketMap.put (</span>
+<span class="fc" id="L233">				3,</span>
 				new org.drip.simm.commodity.CTBucket (
 					3,
 					&quot;Light Ends&quot;,
@@ -227,8 +239,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L230">			s_BucketMap.put (</span>
-<span class="fc" id="L231">				4,</span>
+<span class="fc" id="L242">			s_BucketMap.put (</span>
+<span class="fc" id="L243">				4,</span>
 				new org.drip.simm.commodity.CTBucket (
 					4,
 					&quot;Middle Distillates&quot;,
@@ -237,8 +249,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L240">			s_BucketMap.put (</span>
-<span class="fc" id="L241">				5,</span>
+<span class="fc" id="L252">			s_BucketMap.put (</span>
+<span class="fc" id="L253">				5,</span>
 				new org.drip.simm.commodity.CTBucket (
 					5,
 					&quot;Heavy Distillates&quot;,
@@ -247,8 +259,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L250">			s_BucketMap.put (</span>
-<span class="fc" id="L251">				6,</span>
+<span class="fc" id="L262">			s_BucketMap.put (</span>
+<span class="fc" id="L263">				6,</span>
 				new org.drip.simm.commodity.CTBucket (
 					6,
 					&quot;North American Natural Gas&quot;,
@@ -257,8 +269,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L260">			s_BucketMap.put (</span>
-<span class="fc" id="L261">				7,</span>
+<span class="fc" id="L272">			s_BucketMap.put (</span>
+<span class="fc" id="L273">				7,</span>
 				new org.drip.simm.commodity.CTBucket (
 					7,
 					&quot;European Natural Gas&quot;,
@@ -267,8 +279,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L270">			s_BucketMap.put (</span>
-<span class="fc" id="L271">				8,</span>
+<span class="fc" id="L282">			s_BucketMap.put (</span>
+<span class="fc" id="L283">				8,</span>
 				new org.drip.simm.commodity.CTBucket (
 					8,
 					&quot;North American Power&quot;,
@@ -277,8 +289,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L280">			s_BucketMap.put (</span>
-<span class="fc" id="L281">				9,</span>
+<span class="fc" id="L292">			s_BucketMap.put (</span>
+<span class="fc" id="L293">				9,</span>
 				new org.drip.simm.commodity.CTBucket (
 					9,
 					&quot;European Power&quot;,
@@ -287,8 +299,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L290">			s_BucketMap.put (</span>
-<span class="fc" id="L291">				10,</span>
+<span class="fc" id="L302">			s_BucketMap.put (</span>
+<span class="fc" id="L303">				10,</span>
 				new org.drip.simm.commodity.CTBucket (
 					10,
 					&quot;Freight&quot;,
@@ -297,8 +309,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L300">			s_BucketMap.put (</span>
-<span class="fc" id="L301">				11,</span>
+<span class="fc" id="L312">			s_BucketMap.put (</span>
+<span class="fc" id="L313">				11,</span>
 				new org.drip.simm.commodity.CTBucket (
 					11,
 					&quot;Base Metals&quot;,
@@ -307,8 +319,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L310">			s_BucketMap.put (</span>
-<span class="fc" id="L311">				12,</span>
+<span class="fc" id="L322">			s_BucketMap.put (</span>
+<span class="fc" id="L323">				12,</span>
 				new org.drip.simm.commodity.CTBucket (
 					12,
 					&quot;Precious Metals&quot;,
@@ -317,8 +329,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L320">			s_BucketMap.put (</span>
-<span class="fc" id="L321">				13,</span>
+<span class="fc" id="L332">			s_BucketMap.put (</span>
+<span class="fc" id="L333">				13,</span>
 				new org.drip.simm.commodity.CTBucket (
 					13,
 					&quot;Grains&quot;,
@@ -327,8 +339,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L330">			s_BucketMap.put (</span>
-<span class="fc" id="L331">				14,</span>
+<span class="fc" id="L342">			s_BucketMap.put (</span>
+<span class="fc" id="L343">				14,</span>
 				new org.drip.simm.commodity.CTBucket (
 					14,
 					&quot;Softs&quot;,
@@ -337,8 +349,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L340">			s_BucketMap.put (</span>
-<span class="fc" id="L341">				15,</span>
+<span class="fc" id="L352">			s_BucketMap.put (</span>
+<span class="fc" id="L353">				15,</span>
 				new org.drip.simm.commodity.CTBucket (
 					15,
 					&quot;Livestock&quot;,
@@ -347,8 +359,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L350">			s_BucketMap.put (</span>
-<span class="fc" id="L351">				16,</span>
+<span class="fc" id="L362">			s_BucketMap.put (</span>
+<span class="fc" id="L363">				16,</span>
 				new org.drip.simm.commodity.CTBucket (
 					16,
 					&quot;Other&quot;,
@@ -357,8 +369,8 @@ package org.drip.simm.commodity;
 				)
 			);
 
-<span class="fc" id="L360">			s_BucketMap.put (</span>
-<span class="fc" id="L361">				17,</span>
+<span class="fc" id="L372">			s_BucketMap.put (</span>
+<span class="fc" id="L373">				17,</span>
 				new org.drip.simm.commodity.CTBucket (
 					17,
 					&quot;Indexes&quot;,
@@ -367,14 +379,14 @@ package org.drip.simm.commodity;
 				)
 			);
 		}
-<span class="nc" id="L370">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L382">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L372">			e.printStackTrace();</span>
+<span class="nc" id="L384">			e.printStackTrace();</span>
 
-<span class="nc" id="L374">			return false;</span>
-<span class="fc" id="L375">		}</span>
+<span class="nc" id="L386">			return false;</span>
+<span class="fc" id="L387">		}</span>
 
-<span class="fc" id="L377">		return SetUpCrossBucketCorrelation();</span>
+<span class="fc" id="L389">		return SetUpCrossBucketCorrelation();</span>
 	}
 
 	/**
@@ -385,7 +397,7 @@ package org.drip.simm.commodity;
 
 	public static final java.util.Set&lt;java.lang.Integer&gt; BucketSet()
 	{
-<span class="nc" id="L388">		return s_BucketMap.keySet();</span>
+<span class="nc" id="L400">		return s_BucketMap.keySet();</span>
 	}
 
 	/**
@@ -399,7 +411,7 @@ package org.drip.simm.commodity;
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-<span class="nc" id="L402">		return s_BucketMap.containsKey (bucketNumber);</span>
+<span class="nc" id="L414">		return s_BucketMap.containsKey (bucketNumber);</span>
 	}
 
 	/**
@@ -413,7 +425,7 @@ package org.drip.simm.commodity;
 	public static final org.drip.simm.commodity.CTBucket Bucket (
 		final int bucketNumber)
 	{
-<span class="nc bnc" id="L416" title="All 2 branches missed.">		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;</span>
 	}
 
 	/**
@@ -424,7 +436,7 @@ package org.drip.simm.commodity;
 
 	public static final org.drip.measure.stochastic.LabelCorrelation CrossBucketCorrelation()
 	{
-<span class="nc" id="L427">		return s_CrossBucketCorrelation;</span>
+<span class="nc" id="L439">		return s_CrossBucketCorrelation;</span>
 	}
 
 	/**
@@ -435,7 +447,7 @@ package org.drip.simm.commodity;
 
 	public static final java.util.Map&lt;java.lang.Integer, org.drip.simm.commodity.CTBucket&gt; BucketMap()
 	{
-<span class="nc" id="L438">		return s_BucketMap;</span>
+<span class="nc" id="L450">		return s_BucketMap;</span>
 	}
 
 	/**
@@ -446,8 +458,8 @@ package org.drip.simm.commodity;
 
 	public static final org.drip.simm.foundation.RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-<span class="nc" id="L449">		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (</span>
-<span class="nc" id="L450">			s_CrossBucketCorrelation.matrix(),</span>
+<span class="nc" id="L461">		return org.drip.simm.foundation.RiskGroupPrincipalCovariance.Standard (</span>
+<span class="nc" id="L462">			s_CrossBucketCorrelation.matrix(),</span>
 			1.
 		);
 	}
