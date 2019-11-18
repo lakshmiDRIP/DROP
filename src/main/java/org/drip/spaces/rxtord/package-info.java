@@ -1,6 +1,6 @@
 
 /**
- * R^x To R^d Normed Function Spaces
+ * R<sup>x</sup> To R<sup>d</sup> Normed Function Spaces
  *
  * @author Lakshmi Krishnamurthy
  */

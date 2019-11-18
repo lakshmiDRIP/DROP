@@ -1,6 +1,6 @@
 
 /**
- * R^x Continuous/Combinatorial Tensor Spaces
+ * R<sup>x</sup> Continuous/Combinatorial Tensor Spaces
  *
  * @author Lakshmi Krishnamurthy
  */
