@@ -6,42 +6,54 @@ package org.drip.simm.product;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.simm.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product/README.md&quot;&gt;ISDA SIMM Risk Factor Sensitivities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,7 +120,7 @@ package org.drip.simm.product;
 
 public class RiskFactorTenorSensitivity
 {
-<span class="nc" id="L111">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _sensitivityMap = null;</span>
+<span class="nc" id="L123">	private java.util.Map&lt;java.lang.String, java.lang.Double&gt; _sensitivityMap = null;</span>
 
 	/**
 	 * RiskFactorTenorSensitivity Constructor
@@ -121,12 +133,12 @@ public class RiskFactorTenorSensitivity
 	public RiskFactorTenorSensitivity (
 		java.util.Map&lt;java.lang.String, java.lang.Double&gt; sensitivityMap)
 		throws java.lang.Exception
-<span class="nc" id="L124">	{</span>
-<span class="nc bnc" id="L125" title="All 4 branches missed.">		if (null == (_sensitivityMap = sensitivityMap) || 0 == _sensitivityMap.size())</span>
+<span class="nc" id="L136">	{</span>
+<span class="nc bnc" id="L137" title="All 4 branches missed.">		if (null == (_sensitivityMap = sensitivityMap) || 0 == _sensitivityMap.size())</span>
 		{
-<span class="nc" id="L127">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L139">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L129">	}</span>
+<span class="nc" id="L141">	}</span>
 
 	/**
 	 * Retrieve the Set of Tenors
@@ -136,7 +148,7 @@ public class RiskFactorTenorSensitivity
 
 	public java.util.Set&lt;java.lang.String&gt; tenorSet()
 	{
-<span class="nc" id="L139">		return _sensitivityMap.keySet();</span>
+<span class="nc" id="L151">		return _sensitivityMap.keySet();</span>
 	}
 
 	/**
@@ -152,17 +164,17 @@ public class RiskFactorTenorSensitivity
 		final java.lang.String tenor,
 		final double sensitivity)
 	{
-<span class="nc bnc" id="L155" title="All 4 branches missed.">		if (null == tenor || !org.drip.numerical.common.NumberUtil.IsValid (sensitivity))</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">		if (null == tenor || !org.drip.numerical.common.NumberUtil.IsValid (sensitivity))</span>
 		{
-<span class="nc" id="L157">			return false;</span>
+<span class="nc" id="L169">			return false;</span>
 		}
 
-<span class="nc" id="L160">		_sensitivityMap.put (</span>
+<span class="nc" id="L172">		_sensitivityMap.put (</span>
 			tenor,
-<span class="nc" id="L162">			sensitivity</span>
+<span class="nc" id="L174">			sensitivity</span>
 		);
 
-<span class="nc" id="L165">		return true;</span>
+<span class="nc" id="L177">		return true;</span>
 	}
 
 	/**
@@ -176,7 +188,7 @@ public class RiskFactorTenorSensitivity
 	public boolean tenorExists (
 		final java.lang.String tenor)
 	{
-<span class="nc bnc" id="L179" title="All 4 branches missed.">		return null != tenor &amp;&amp; _sensitivityMap.containsKey (tenor);</span>
+<span class="nc bnc" id="L191" title="All 4 branches missed.">		return null != tenor &amp;&amp; _sensitivityMap.containsKey (tenor);</span>
 	}
 
 	/**
@@ -193,12 +205,12 @@ public class RiskFactorTenorSensitivity
 		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (!tenorExists (tenor))</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">		if (!tenorExists (tenor))</span>
 		{
-<span class="nc" id="L198">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity::sensitivity =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L210">			throw new java.lang.Exception (&quot;RiskFactorTenorSensitivity::sensitivity =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L201">		return _sensitivityMap.get (tenor);</span>
+<span class="nc" id="L213">		return _sensitivityMap.get (tenor);</span>
 	}
 
 	/**
@@ -209,7 +221,7 @@ public class RiskFactorTenorSensitivity
 
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; sensitivityMap()
 	{
-<span class="nc" id="L212">		return _sensitivityMap;</span>
+<span class="nc" id="L224">		return _sensitivityMap;</span>
 	}
 
 	/**
@@ -220,14 +232,14 @@ public class RiskFactorTenorSensitivity
 
 	public double cumulative()
 	{
-<span class="nc" id="L223">		double cumulative = 0.;</span>
+<span class="nc" id="L235">		double cumulative = 0.;</span>
 
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; sensitivityEntry : _sensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; sensitivityEntry : _sensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L227">			cumulative = cumulative + sensitivityEntry.getValue();</span>
-<span class="nc" id="L228">		}</span>
+<span class="nc" id="L239">			cumulative = cumulative + sensitivityEntry.getValue();</span>
+<span class="nc" id="L240">		}</span>
 
-<span class="nc" id="L230">		return cumulative;</span>
+<span class="nc" id="L242">		return cumulative;</span>
 	}
 
 	/**
@@ -241,31 +253,31 @@ public class RiskFactorTenorSensitivity
 	public java.util.Map&lt;java.lang.String, java.lang.Double&gt; sensitivityMargin (
 		final java.util.Map&lt;java.lang.String, java.lang.Double&gt; sensitivityRiskWeightMap)
 	{
-<span class="nc bnc" id="L244" title="All 4 branches missed.">		if (null == sensitivityRiskWeightMap || 0 == sensitivityRiskWeightMap.size())</span>
+<span class="nc bnc" id="L256" title="All 4 branches missed.">		if (null == sensitivityRiskWeightMap || 0 == sensitivityRiskWeightMap.size())</span>
 		{
-<span class="nc" id="L246">			return null;</span>
+<span class="nc" id="L258">			return null;</span>
 		}
 
-<span class="nc" id="L249">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; sensitivityMargin = new</span>
+<span class="nc" id="L261">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; sensitivityMargin = new</span>
 			java.util.HashMap&lt;java.lang.String, java.lang.Double&gt;();
 
 		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; sensitivityEntry :
-<span class="nc bnc" id="L253" title="All 2 branches missed.">			_sensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">			_sensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L255">			java.lang.String tenor = sensitivityEntry.getKey();</span>
+<span class="nc" id="L267">			java.lang.String tenor = sensitivityEntry.getKey();</span>
 
-<span class="nc bnc" id="L257" title="All 2 branches missed.">			if (!sensitivityRiskWeightMap.containsKey (tenor))</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">			if (!sensitivityRiskWeightMap.containsKey (tenor))</span>
 			{
-<span class="nc" id="L259">				return null;</span>
+<span class="nc" id="L271">				return null;</span>
 			}
 
-<span class="nc" id="L262">			sensitivityMargin.put (</span>
+<span class="nc" id="L274">			sensitivityMargin.put (</span>
 				tenor,
-<span class="nc" id="L264">				sensitivityEntry.getValue() * sensitivityRiskWeightMap.get (tenor)</span>
+<span class="nc" id="L276">				sensitivityEntry.getValue() * sensitivityRiskWeightMap.get (tenor)</span>
 			);
-<span class="nc" id="L266">		}</span>
+<span class="nc" id="L278">		}</span>
 
-<span class="nc" id="L268">		return sensitivityMargin;</span>
+<span class="nc" id="L280">		return sensitivityMargin;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

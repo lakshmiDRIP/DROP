@@ -6,42 +6,54 @@ package org.drip.simm.rates;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,102 +108,102 @@ package org.drip.simm.rates;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates&quot;&gt;Rates&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md&quot;&gt;SIMM IR Risk Factor Settings&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L109">public class IRThresholdContainer21</span>
+<span class="nc" id="L121">public class IRThresholdContainer21</span>
 {
-<span class="fc" id="L111">	private static final java.util.Map&lt;java.lang.String, java.lang.Integer&gt; s_CurrencyThresholdMap = new</span>
+<span class="fc" id="L123">	private static final java.util.Map&lt;java.lang.String, java.lang.Integer&gt; s_CurrencyThresholdMap = new</span>
 		java.util.HashMap&lt;java.lang.String, java.lang.Integer&gt;();
 
-<span class="fc" id="L114">	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.rates.IRThreshold&gt; s_ThresholdMap =</span>
+<span class="fc" id="L126">	private static final java.util.Map&lt;java.lang.Integer, org.drip.simm.rates.IRThreshold&gt; s_ThresholdMap =</span>
 		new java.util.TreeMap&lt;java.lang.Integer, org.drip.simm.rates.IRThreshold&gt;();
 
 	private static final boolean SetupCurrencyMap()
 	{
-<span class="fc" id="L119">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L131">		s_CurrencyThresholdMap.put (</span>
 			&quot;USD&quot;,
-<span class="fc" id="L121">			2</span>
+<span class="fc" id="L133">			2</span>
 		);
 
-<span class="fc" id="L124">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L136">		s_CurrencyThresholdMap.put (</span>
 			&quot;EUR&quot;,
-<span class="fc" id="L126">			2</span>
+<span class="fc" id="L138">			2</span>
 		);
 
-<span class="fc" id="L129">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L141">		s_CurrencyThresholdMap.put (</span>
 			&quot;GBP&quot;,
-<span class="fc" id="L131">			2</span>
+<span class="fc" id="L143">			2</span>
 		);
 
-<span class="fc" id="L134">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L146">		s_CurrencyThresholdMap.put (</span>
 			&quot;AUD&quot;,
-<span class="fc" id="L136">			3</span>
+<span class="fc" id="L148">			3</span>
 		);
 
-<span class="fc" id="L139">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L151">		s_CurrencyThresholdMap.put (</span>
 			&quot;CAD&quot;,
-<span class="fc" id="L141">			3</span>
+<span class="fc" id="L153">			3</span>
 		);
 
-<span class="fc" id="L144">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L156">		s_CurrencyThresholdMap.put (</span>
 			&quot;CHF&quot;,
-<span class="fc" id="L146">			3</span>
+<span class="fc" id="L158">			3</span>
 		);
 
-<span class="fc" id="L149">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L161">		s_CurrencyThresholdMap.put (</span>
 			&quot;DKK&quot;,
-<span class="fc" id="L151">			3</span>
+<span class="fc" id="L163">			3</span>
 		);
 
-<span class="fc" id="L154">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L166">		s_CurrencyThresholdMap.put (</span>
 			&quot;HKD&quot;,
-<span class="fc" id="L156">			3</span>
+<span class="fc" id="L168">			3</span>
 		);
 
-<span class="fc" id="L159">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L171">		s_CurrencyThresholdMap.put (</span>
 			&quot;KRW&quot;,
-<span class="fc" id="L161">			3</span>
+<span class="fc" id="L173">			3</span>
 		);
 
-<span class="fc" id="L164">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L176">		s_CurrencyThresholdMap.put (</span>
 			&quot;NOK&quot;,
-<span class="fc" id="L166">			3</span>
+<span class="fc" id="L178">			3</span>
 		);
 
-<span class="fc" id="L169">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L181">		s_CurrencyThresholdMap.put (</span>
 			&quot;NZD&quot;,
-<span class="fc" id="L171">			3</span>
+<span class="fc" id="L183">			3</span>
 		);
 
-<span class="fc" id="L174">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L186">		s_CurrencyThresholdMap.put (</span>
 			&quot;SEK&quot;,
-<span class="fc" id="L176">			3</span>
+<span class="fc" id="L188">			3</span>
 		);
 
-<span class="fc" id="L179">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L191">		s_CurrencyThresholdMap.put (</span>
 			&quot;SGD&quot;,
-<span class="fc" id="L181">			3</span>
+<span class="fc" id="L193">			3</span>
 		);
 
-<span class="fc" id="L184">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L196">		s_CurrencyThresholdMap.put (</span>
 			&quot;TWD&quot;,
-<span class="fc" id="L186">			3</span>
+<span class="fc" id="L198">			3</span>
 		);
 
-<span class="fc" id="L189">		s_CurrencyThresholdMap.put (</span>
+<span class="fc" id="L201">		s_CurrencyThresholdMap.put (</span>
 			&quot;JPY&quot;,
-<span class="fc" id="L191">			4</span>
+<span class="fc" id="L203">			4</span>
 		);
 
-<span class="fc" id="L194">		return true;</span>
+<span class="fc" id="L206">		return true;</span>
 	}
 
 	/**
@@ -204,8 +216,8 @@ package org.drip.simm.rates;
 	{
 		try
 		{
-<span class="fc" id="L207">			s_ThresholdMap.put (</span>
-<span class="fc" id="L208">				1,</span>
+<span class="fc" id="L219">			s_ThresholdMap.put (</span>
+<span class="fc" id="L220">				1,</span>
 				new org.drip.simm.rates.IRThreshold (
 					new org.drip.simm.rates.CurrencyRiskGroup (
 						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_HIGH,
@@ -222,8 +234,8 @@ package org.drip.simm.rates;
 				)
 			);
 
-<span class="fc" id="L225">			s_ThresholdMap.put (</span>
-<span class="fc" id="L226">				2,</span>
+<span class="fc" id="L237">			s_ThresholdMap.put (</span>
+<span class="fc" id="L238">				2,</span>
 				new org.drip.simm.rates.IRThreshold (
 					new org.drip.simm.rates.CurrencyRiskGroup (
 						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
@@ -242,8 +254,8 @@ package org.drip.simm.rates;
 				)
 			);
 
-<span class="fc" id="L245">			s_ThresholdMap.put (</span>
-<span class="fc" id="L246">				3,</span>
+<span class="fc" id="L257">			s_ThresholdMap.put (</span>
+<span class="fc" id="L258">				3,</span>
 				new org.drip.simm.rates.IRThreshold (
 					new org.drip.simm.rates.CurrencyRiskGroup (
 						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_REGULAR,
@@ -270,8 +282,8 @@ package org.drip.simm.rates;
 				)
 			);
 
-<span class="fc" id="L273">			s_ThresholdMap.put (</span>
-<span class="fc" id="L274">				4,</span>
+<span class="fc" id="L285">			s_ThresholdMap.put (</span>
+<span class="fc" id="L286">				4,</span>
 				new org.drip.simm.rates.IRThreshold (
 					new org.drip.simm.rates.CurrencyRiskGroup (
 						org.drip.simm.rates.IRSystemics.VOLATILITY_TYPE_LOW,
@@ -288,14 +300,14 @@ package org.drip.simm.rates;
 				)
 			);
 		}
-<span class="nc" id="L291">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L303">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L293">			e.printStackTrace();</span>
+<span class="nc" id="L305">			e.printStackTrace();</span>
 
-<span class="nc" id="L295">			return false;</span>
-<span class="fc" id="L296">		}</span>
+<span class="nc" id="L307">			return false;</span>
+<span class="fc" id="L308">		}</span>
 
-<span class="fc" id="L298">		return SetupCurrencyMap();</span>
+<span class="fc" id="L310">		return SetupCurrencyMap();</span>
 	}
 
 	/**
@@ -306,7 +318,7 @@ package org.drip.simm.rates;
 
 	public static final java.util.Set&lt;java.lang.Integer&gt; IndexSet()
 	{
-<span class="nc" id="L309">		return s_ThresholdMap.keySet();</span>
+<span class="nc" id="L321">		return s_ThresholdMap.keySet();</span>
 	}
 
 	/**
@@ -317,7 +329,7 @@ package org.drip.simm.rates;
 
 	public static final java.util.Set&lt;java.lang.String&gt; CurrencySet()
 	{
-<span class="nc" id="L320">		return s_CurrencyThresholdMap.keySet();</span>
+<span class="nc" id="L332">		return s_CurrencyThresholdMap.keySet();</span>
 	}
 
 	/**
@@ -331,7 +343,7 @@ package org.drip.simm.rates;
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
-<span class="nc" id="L334">		return s_ThresholdMap.containsKey (groupNumber);</span>
+<span class="nc" id="L346">		return s_ThresholdMap.containsKey (groupNumber);</span>
 	}
 
 	/**
@@ -345,7 +357,7 @@ package org.drip.simm.rates;
 	public static final boolean ContainsThreshold (
 		final java.lang.String currency)
 	{
-<span class="nc" id="L348">		return s_CurrencyThresholdMap.containsKey (currency);</span>
+<span class="nc" id="L360">		return s_CurrencyThresholdMap.containsKey (currency);</span>
 	}
 
 	/**
@@ -359,8 +371,8 @@ package org.drip.simm.rates;
 	public static final org.drip.simm.rates.IRThreshold Threshold (
 		final java.lang.String currency)
 	{
-<span class="nc bnc" id="L362" title="All 2 branches missed.">		return ContainsThreshold (currency) ? s_ThresholdMap.get (s_CurrencyThresholdMap.get (currency)) :</span>
-<span class="nc" id="L363">			s_ThresholdMap.get (1);</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">		return ContainsThreshold (currency) ? s_ThresholdMap.get (s_CurrencyThresholdMap.get (currency)) :</span>
+<span class="nc" id="L375">			s_ThresholdMap.get (1);</span>
 	}
 
 	/**
@@ -374,7 +386,7 @@ package org.drip.simm.rates;
 	public static final org.drip.simm.rates.IRThreshold Threshold (
 		final int groupNumber)
 	{
-<span class="nc bnc" id="L377" title="All 2 branches missed.">		return ContainsThreshold (groupNumber) ? s_ThresholdMap.get (groupNumber) : null;</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">		return ContainsThreshold (groupNumber) ? s_ThresholdMap.get (groupNumber) : null;</span>
 	}
 
 	/**
@@ -385,7 +397,7 @@ package org.drip.simm.rates;
 
 	public static final java.util.Map&lt;java.lang.String, java.lang.Integer&gt; CurrencyThresholdMap()
 	{
-<span class="nc" id="L388">		return s_CurrencyThresholdMap;</span>
+<span class="nc" id="L400">		return s_CurrencyThresholdMap;</span>
 	}
 
 	/**
@@ -396,7 +408,7 @@ package org.drip.simm.rates;
 
 	public static final java.util.Map&lt;java.lang.Integer, org.drip.simm.rates.IRThreshold&gt; ThresholdMap()
 	{
-<span class="nc" id="L399">		return s_ThresholdMap;</span>
+<span class="nc" id="L411">		return s_ThresholdMap;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

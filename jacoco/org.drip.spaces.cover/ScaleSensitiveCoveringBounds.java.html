@@ -6,45 +6,57 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -89,10 +101,10 @@ package org.drip.spaces.cover;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Cover&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md&quot;&gt;Vector Spaces Covering Number Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -100,8 +112,8 @@ package org.drip.spaces.cover;
  */
 
 public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
-<span class="fc" id="L103">	private int _iSampleSize = -1;</span>
-<span class="fc" id="L104">	private org.drip.function.definition.R1ToR1 _r1r1FatShatter = null;</span>
+<span class="fc" id="L115">	private int _iSampleSize = -1;</span>
+<span class="fc" id="L116">	private org.drip.function.definition.R1ToR1 _r1r1FatShatter = null;</span>
 
 	/**
 	 * ScaleSensitiveCoveringBounds Constructor
@@ -116,10 +128,10 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final org.drip.function.definition.R1ToR1 r1r1FatShatter,
 		final int iSampleSize)
 		throws java.lang.Exception
-<span class="fc" id="L119">	{</span>
-<span class="pc bpc" id="L120" title="2 of 4 branches missed.">		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 &gt;= (_iSampleSize = iSampleSize))</span>
-<span class="nc" id="L121">			throw new java.lang.Exception (&quot;ScaleSensitiveCoveringBounds ctr: Invalid Inputs&quot;);</span>
-<span class="fc" id="L122">	}</span>
+<span class="fc" id="L131">	{</span>
+<span class="pc bpc" id="L132" title="2 of 4 branches missed.">		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 &gt;= (_iSampleSize = iSampleSize))</span>
+<span class="nc" id="L133">			throw new java.lang.Exception (&quot;ScaleSensitiveCoveringBounds ctr: Invalid Inputs&quot;);</span>
+<span class="fc" id="L134">	}</span>
 
 	/**
 	 * Retrieve the Fat Shattering Coefficient Function
@@ -129,7 +141,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 
 	public org.drip.function.definition.R1ToR1 fatShatteringFunction()
 	{
-<span class="nc" id="L132">		return _r1r1FatShatter;</span>
+<span class="nc" id="L144">		return _r1r1FatShatter;</span>
 	}
 
 	/**
@@ -140,7 +152,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 
 	public int sampleSize()
 	{
-<span class="nc" id="L143">		return _iSampleSize;</span>
+<span class="nc" id="L155">		return _iSampleSize;</span>
 	}
 
 	/**
@@ -158,13 +170,13 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L161" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L162">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L173" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L174">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::sampleSizeLowerBound =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L165">		double dblLog2 = java.lang.Math.log (2.);</span>
+<span class="fc" id="L177">		double dblLog2 = java.lang.Math.log (2.);</span>
 
-<span class="fc" id="L167">		return 2. * _r1r1FatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *</span>
+<span class="fc" id="L179">		return 2. * _r1r1FatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *</span>
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2;
 	}
 
@@ -183,21 +195,21 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L186" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L187">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L198" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L199">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::restrictedSubsetCardinality =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L190">		double dblLog2 = java.lang.Math.log (2.);</span>
+<span class="fc" id="L202">		double dblLog2 = java.lang.Math.log (2.);</span>
 
-<span class="fc" id="L192">		double dblFatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * dblCover);</span>
+<span class="fc" id="L204">		double dblFatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * dblCover);</span>
 
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">		if (_iSampleSize &lt; 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">		if (_iSampleSize &lt; 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *</span>
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2)
-<span class="nc" id="L196">			throw new java.lang.Exception</span>
+<span class="nc" id="L208">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::restrictedSubsetCardinality =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L199">		return 6. * dblFatShatteringCoefficient * java.lang.Math.log (16. / dblCover) * java.lang.Math.log</span>
-<span class="fc" id="L200">			(32. * java.lang.Math.E * _iSampleSize / (dblFatShatteringCoefficient * dblCover)) / dblLog2 +</span>
+<span class="fc" id="L211">		return 6. * dblFatShatteringCoefficient * java.lang.Math.log (16. / dblCover) * java.lang.Math.log</span>
+<span class="fc" id="L212">			(32. * java.lang.Math.E * _iSampleSize / (dblFatShatteringCoefficient * dblCover)) / dblLog2 +</span>
 				dblLog2;
 	}
 
@@ -223,25 +235,25 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L226" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
-<span class="nc" id="L227">			throw new java.lang.Exception</span>
+<span class="pc bpc" id="L238" title="2 of 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)</span>
+<span class="nc" id="L239">			throw new java.lang.Exception</span>
 				(&quot;ScaleSensitiveCoveringBounds::upperProbabilityBoundWeight =&gt; Invalid Inputs&quot;);
 
-<span class="fc" id="L230">		return java.lang.Math.log (4.) - (dblCover * dblCover * _iSampleSize / 128.);</span>
+<span class="fc" id="L242">		return java.lang.Math.log (4.) - (dblCover * dblCover * _iSampleSize / 128.);</span>
 	}
 
 	@Override public double logLowerBound (
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L237">		return restrictedSubsetCardinality (dblCover);</span>
+<span class="fc" id="L249">		return restrictedSubsetCardinality (dblCover);</span>
 	}
 
 	@Override public double logUpperBound (
 		final double dblCover)
 		throws java.lang.Exception
 	{
-<span class="fc" id="L244">		return _r1r1FatShatter.evaluate (4. * dblCover) / 32.;</span>
+<span class="fc" id="L256">		return _r1r1FatShatter.evaluate (4. * dblCover) / 32.;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

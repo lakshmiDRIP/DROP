@@ -6,45 +6,57 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.spaces.tensor;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor&quot;&gt;Tensor&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; Continuous/Combinatorial Tensor Spaces&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -84,7 +96,7 @@ package org.drip.spaces.tensor;
  */
 
 public class R1CombinatorialVector implements org.drip.spaces.tensor.R1GeneralizedVector {
-<span class="nc" id="L87">	private java.util.List&lt;java.lang.Double&gt; _lsElementSpace = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L99">	private java.util.List&lt;java.lang.Double&gt; _lsElementSpace = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
 	/**
 	 * R1CombinatorialVector Constructor
@@ -97,10 +109,10 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 	public R1CombinatorialVector (
 		final java.util.List&lt;java.lang.Double&gt; lsElementSpace)
 		throws java.lang.Exception
-<span class="nc" id="L100">	{</span>
-<span class="nc bnc" id="L101" title="All 4 branches missed.">		if (null == (_lsElementSpace = lsElementSpace) || 0 == _lsElementSpace.size())</span>
-<span class="nc" id="L102">			throw new java.lang.Exception (&quot;R1CombinatorialVector ctr: Invalid Inputs&quot;);</span>
-<span class="nc" id="L103">	}</span>
+<span class="nc" id="L112">	{</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">		if (null == (_lsElementSpace = lsElementSpace) || 0 == _lsElementSpace.size())</span>
+<span class="nc" id="L114">			throw new java.lang.Exception (&quot;R1CombinatorialVector ctr: Invalid Inputs&quot;);</span>
+<span class="nc" id="L115">	}</span>
 
 	/**
 	 * Retrieve the Full Candidate List of Elements
@@ -110,103 +122,103 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 
 	public java.util.List&lt;java.lang.Double&gt; elementSpace()
 	{
-<span class="nc" id="L113">		return _lsElementSpace;</span>
+<span class="nc" id="L125">		return _lsElementSpace;</span>
 	}
 
 	@Override public double leftEdge()
 	{
-<span class="nc" id="L118">		double dblLeftEdge = java.lang.Double.NaN;</span>
+<span class="nc" id="L130">		double dblLeftEdge = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L120" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">			if (java.lang.Double.NEGATIVE_INFINITY == dblElement) return dblElement;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			if (java.lang.Double.NEGATIVE_INFINITY == dblElement) return dblElement;</span>
 
-<span class="nc bnc" id="L123" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftEdge))</span>
-<span class="nc" id="L124">				dblLeftEdge = dblElement;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftEdge))</span>
+<span class="nc" id="L136">				dblLeftEdge = dblElement;</span>
 			else {
-<span class="nc bnc" id="L126" title="All 2 branches missed.">				if (dblLeftEdge &gt; dblElement) dblLeftEdge = dblElement;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">				if (dblLeftEdge &gt; dblElement) dblLeftEdge = dblElement;</span>
 			}
-<span class="nc" id="L128">		}</span>
+<span class="nc" id="L140">		}</span>
 
-<span class="nc" id="L130">		return dblLeftEdge;</span>
+<span class="nc" id="L142">		return dblLeftEdge;</span>
 	}
 
 	@Override public double rightEdge()
 	{
-<span class="nc" id="L135">		double dblRightEdge = java.lang.Double.NaN;</span>
+<span class="nc" id="L147">		double dblRightEdge = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">			if (java.lang.Double.POSITIVE_INFINITY == dblElement) return dblElement;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">			if (java.lang.Double.POSITIVE_INFINITY == dblElement) return dblElement;</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge))</span>
-<span class="nc" id="L141">				dblRightEdge = dblElement;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge))</span>
+<span class="nc" id="L153">				dblRightEdge = dblElement;</span>
 			else {
-<span class="nc bnc" id="L143" title="All 2 branches missed.">				if (dblRightEdge &lt; dblElement) dblRightEdge = dblElement;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">				if (dblRightEdge &lt; dblElement) dblRightEdge = dblElement;</span>
 			}
-<span class="nc" id="L145">		}</span>
+<span class="nc" id="L157">		}</span>
 
-<span class="nc" id="L147">		return dblRightEdge;</span>
+<span class="nc" id="L159">		return dblRightEdge;</span>
 	}
 
 	@Override public boolean validateInstance (
 		final double dblX)
 	{
-<span class="nc" id="L153">		return _lsElementSpace.contains (dblX);</span>
+<span class="nc" id="L165">		return _lsElementSpace.contains (dblX);</span>
 	}
 
 	@Override public org.drip.spaces.tensor.Cardinality cardinality()
 	{
-<span class="nc" id="L158">		return org.drip.spaces.tensor.Cardinality.CountablyFinite (_lsElementSpace.size());</span>
+<span class="nc" id="L170">		return org.drip.spaces.tensor.Cardinality.CountablyFinite (_lsElementSpace.size());</span>
 	}
 
 	@Override public boolean match (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-<span class="nc bnc" id="L164" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;</span>
+<span class="nc bnc" id="L176" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;</span>
 
-<span class="nc" id="L166">		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;</span>
+<span class="nc" id="L178">		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;</span>
 
-<span class="nc bnc" id="L168" title="All 2 branches missed.">		if (!cardinality().match (r1cvOther.cardinality())) return false;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">		if (!cardinality().match (r1cvOther.cardinality())) return false;</span>
 
-<span class="nc" id="L170">		java.util.List&lt;java.lang.Double&gt; lsElementSpaceOther = r1cvOther.elementSpace();</span>
+<span class="nc" id="L182">		java.util.List&lt;java.lang.Double&gt; lsElementSpaceOther = r1cvOther.elementSpace();</span>
 
-<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
-<span class="nc bnc" id="L173" title="All 2 branches missed.">			if (!lsElementSpaceOther.contains (dblElement)) return false;</span>
-<span class="nc" id="L174">		}</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if (!lsElementSpaceOther.contains (dblElement)) return false;</span>
+<span class="nc" id="L186">		}</span>
 
-<span class="nc" id="L176">		return true;</span>
+<span class="nc" id="L188">		return true;</span>
 	}
 
 	@Override public boolean subset (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-<span class="nc bnc" id="L182" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;</span>
+<span class="nc bnc" id="L194" title="All 4 branches missed.">		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;</span>
 
-<span class="nc" id="L184">		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;</span>
+<span class="nc" id="L196">		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;</span>
 
-<span class="nc bnc" id="L186" title="All 2 branches missed.">		if (cardinality().number() &lt; r1cvOther.cardinality().number()) return false;</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (cardinality().number() &lt; r1cvOther.cardinality().number()) return false;</span>
 
-<span class="nc" id="L188">		java.util.List&lt;java.lang.Double&gt; lsElementSpaceOther = r1cvOther.elementSpace();</span>
+<span class="nc" id="L200">		java.util.List&lt;java.lang.Double&gt; lsElementSpaceOther = r1cvOther.elementSpace();</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">			if (!lsElementSpaceOther.contains (dblElement)) return false;</span>
-<span class="nc" id="L192">		}</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">		for (double dblElement : _lsElementSpace) {</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			if (!lsElementSpaceOther.contains (dblElement)) return false;</span>
+<span class="nc" id="L204">		}</span>
 
-<span class="nc" id="L194">		return true;</span>
+<span class="nc" id="L206">		return true;</span>
 	}
 
 	@Override public boolean isPredictorBounded()
 	{
-<span class="nc bnc" id="L199" title="All 4 branches missed.">		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY &amp;&amp; rightEdge() !=</span>
+<span class="nc bnc" id="L211" title="All 4 branches missed.">		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY &amp;&amp; rightEdge() !=</span>
 			java.lang.Double.POSITIVE_INFINITY;
 	}
 
 	@Override public double hyperVolume()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (!isPredictorBounded())</span>
-<span class="nc" id="L207">			throw new java.lang.Exception (&quot;R1CombinatorialVector::hyperVolume =&gt; Space not Bounded&quot;);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (!isPredictorBounded())</span>
+<span class="nc" id="L219">			throw new java.lang.Exception (&quot;R1CombinatorialVector::hyperVolume =&gt; Space not Bounded&quot;);</span>
 
-<span class="nc" id="L209">		return rightEdge() - leftEdge();</span>
+<span class="nc" id="L221">		return rightEdge() - leftEdge();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

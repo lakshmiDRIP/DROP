@@ -6,45 +6,57 @@ package org.drip.spaces.rxtord;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -81,10 +93,10 @@ package org.drip.spaces.rxtord;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/README.md&quot;&gt;R&lt;sup&gt;x&lt;/sup&gt; To R&lt;sup&gt;d&lt;/sup&gt; Normed Function Spaces&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -109,65 +121,65 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.rxtord.Nor
 		final org.drip.function.definition.RdToRd funcRdToRd)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L112">		super (rdContinuousInput, rdContinuousOutput, funcRdToRd);</span>
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L124">		super (rdContinuousInput, rdContinuousOutput, funcRdToRd);</span>
+<span class="nc" id="L125">	}</span>
 
 	@Override public double[] populationMetricNorm()
 	{
-<span class="nc" id="L117">		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =</span>
-<span class="nc" id="L118">			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();</span>
+<span class="nc" id="L129">		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =</span>
+<span class="nc" id="L130">			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();</span>
 
-<span class="nc" id="L120">		final org.drip.measure.continuous.Rd multiDist = rdContinuousInput.borelSigmaMeasure();</span>
+<span class="nc" id="L132">		final org.drip.measure.continuous.Rd multiDist = rdContinuousInput.borelSigmaMeasure();</span>
 
-<span class="nc" id="L122">		final org.drip.function.definition.RdToRd funcRdToRd = function();</span>
+<span class="nc" id="L134">		final org.drip.function.definition.RdToRd funcRdToRd = function();</span>
 
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == multiDist || null == funcRdToRd) return null;</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == multiDist || null == funcRdToRd) return null;</span>
 
-<span class="nc" id="L126">		final int iPNorm = outputMetricVectorSpace().pNorm();</span>
+<span class="nc" id="L138">		final int iPNorm = outputMetricVectorSpace().pNorm();</span>
 
-<span class="nc" id="L128">		org.drip.function.definition.RdToRd funcRdToRdPointNorm = new org.drip.function.definition.RdToRd</span>
-<span class="nc" id="L129">			(null) {</span>
+<span class="nc" id="L140">		org.drip.function.definition.RdToRd funcRdToRdPointNorm = new org.drip.function.definition.RdToRd</span>
+<span class="nc" id="L141">			(null) {</span>
 			@Override public double[] evaluate (
 				final double[] adblX)
 			{
-<span class="nc" id="L133">				double[] adblNorm = funcRdToRd.evaluate (adblX);</span>
+<span class="nc" id="L145">				double[] adblNorm = funcRdToRd.evaluate (adblX);</span>
 
-<span class="nc bnc" id="L135" title="All 2 branches missed.">				if (null == adblNorm) return null;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">				if (null == adblNorm) return null;</span>
 
-<span class="nc" id="L137">				int iOutputDimension = adblNorm.length;</span>
-<span class="nc" id="L138">				double dblProbabilityDensity = java.lang.Double.NaN;</span>
+<span class="nc" id="L149">				int iOutputDimension = adblNorm.length;</span>
+<span class="nc" id="L150">				double dblProbabilityDensity = java.lang.Double.NaN;</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">				if (0 == iOutputDimension) return null;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">				if (0 == iOutputDimension) return null;</span>
 
 				try {
-<span class="nc" id="L143">					dblProbabilityDensity = multiDist.density (adblX);</span>
-<span class="nc" id="L144">				} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L145">					e.printStackTrace();</span>
+<span class="nc" id="L155">					dblProbabilityDensity = multiDist.density (adblX);</span>
+<span class="nc" id="L156">				} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L157">					e.printStackTrace();</span>
 
-<span class="nc" id="L147">					return null;</span>
-<span class="nc" id="L148">				}</span>
+<span class="nc" id="L159">					return null;</span>
+<span class="nc" id="L160">				}</span>
 
-<span class="nc bnc" id="L150" title="All 2 branches missed.">				for (int j = 0; j &lt; iOutputDimension; ++j)</span>
-<span class="nc" id="L151">					adblNorm[j] = dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
-<span class="nc" id="L152">						(adblNorm[j]), iPNorm);</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">				for (int j = 0; j &lt; iOutputDimension; ++j)</span>
+<span class="nc" id="L163">					adblNorm[j] = dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs</span>
+<span class="nc" id="L164">						(adblNorm[j]), iPNorm);</span>
 
-<span class="nc" id="L154">				return adblNorm;</span>
+<span class="nc" id="L166">				return adblNorm;</span>
 			}
 		};
 
-<span class="nc" id="L158">		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate</span>
-<span class="nc" id="L159">			(rdContinuousInput.leftDimensionEdge(), rdContinuousInput.rightDimensionEdge());</span>
+<span class="nc" id="L170">		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate</span>
+<span class="nc" id="L171">			(rdContinuousInput.leftDimensionEdge(), rdContinuousInput.rightDimensionEdge());</span>
 
-<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (null == adblPopulationRdMetricNorm) return null;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		if (null == adblPopulationRdMetricNorm) return null;</span>
 
-<span class="nc" id="L163">		int iOutputDimension = adblPopulationRdMetricNorm.length;</span>
+<span class="nc" id="L175">		int iOutputDimension = adblPopulationRdMetricNorm.length;</span>
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">		if (0 == iOutputDimension) return null;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (0 == iOutputDimension) return null;</span>
 
-<span class="nc bnc" id="L167" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimension; ++i)</span>
-<span class="nc" id="L168">			adblPopulationRdMetricNorm[i] = java.lang.Math.pow (adblPopulationRdMetricNorm[i], 1. / iPNorm);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (int i = 0; i &lt; iOutputDimension; ++i)</span>
+<span class="nc" id="L180">			adblPopulationRdMetricNorm[i] = java.lang.Math.pow (adblPopulationRdMetricNorm[i], 1. / iPNorm);</span>
 
-<span class="nc" id="L170">		return adblPopulationRdMetricNorm;</span>
+<span class="nc" id="L182">		return adblPopulationRdMetricNorm;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

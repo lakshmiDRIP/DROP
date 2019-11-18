@@ -6,42 +6,54 @@ package org.drip.spaces.graph;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -89,10 +101,10 @@ package org.drip.spaces.graph;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph/README.md&quot;&gt;Graph Representation and Traversal Algorithms&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -101,9 +113,9 @@ package org.drip.spaces.graph;
 
 public class SinglyLinkedNode
 {
-<span class="nc" id="L104">	private SinglyLinkedNode _tail = null;</span>
-<span class="nc" id="L105">	private SinglyLinkedNode _adjacent = null;</span>
-<span class="nc" id="L106">	private double _value = java.lang.Double.NaN;</span>
+<span class="nc" id="L116">	private SinglyLinkedNode _tail = null;</span>
+<span class="nc" id="L117">	private SinglyLinkedNode _adjacent = null;</span>
+<span class="nc" id="L118">	private double _value = java.lang.Double.NaN;</span>
 
 	/**
 	 * Generate a FIFO Linked List from the Value Array
@@ -116,50 +128,50 @@ public class SinglyLinkedNode
 	public static final SinglyLinkedNode FIFOListFromArray (
 		final double[] valueArray)
 	{
-<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (null == valueArray)</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (null == valueArray)</span>
 		{
-<span class="nc" id="L121">			return null;</span>
+<span class="nc" id="L133">			return null;</span>
 		}
 
-<span class="nc" id="L124">		SinglyLinkedNode singlyLinkedNode = null;</span>
-<span class="nc" id="L125">		int arraySize = valueArray.length;</span>
+<span class="nc" id="L136">		SinglyLinkedNode singlyLinkedNode = null;</span>
+<span class="nc" id="L137">		int arraySize = valueArray.length;</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (0 == arraySize)</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (0 == arraySize)</span>
 		{
-<span class="nc" id="L129">			return null;</span>
+<span class="nc" id="L141">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			for (int valueIndex = 0; valueIndex &lt; arraySize; ++valueIndex)</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			for (int valueIndex = 0; valueIndex &lt; arraySize; ++valueIndex)</span>
 			{
-<span class="nc bnc" id="L136" title="All 2 branches missed.">				if (null == singlyLinkedNode)</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">				if (null == singlyLinkedNode)</span>
 				{
-<span class="nc" id="L138">					singlyLinkedNode = new SinglyLinkedNode (</span>
+<span class="nc" id="L150">					singlyLinkedNode = new SinglyLinkedNode (</span>
 						valueArray[valueIndex],
 						null
 					);
 				}
 				else
 				{
-<span class="nc bnc" id="L145" title="All 2 branches missed.">					if (null == singlyLinkedNode.addToTail (</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">					if (null == singlyLinkedNode.addToTail (</span>
 						new SinglyLinkedNode (
 							valueArray[valueIndex],
 							null
 						)
 					))
 					{
-<span class="nc" id="L152">						return null;</span>
+<span class="nc" id="L164">						return null;</span>
 					}
 				}
 			}
 		}
-<span class="nc" id="L157">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L169">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L159">			e.printStackTrace();</span>
-<span class="nc" id="L160">		}</span>
+<span class="nc" id="L171">			e.printStackTrace();</span>
+<span class="nc" id="L172">		}</span>
 
-<span class="nc" id="L162">		return null;</span>
+<span class="nc" id="L174">		return null;</span>
 	}
 
 	/**
@@ -173,50 +185,50 @@ public class SinglyLinkedNode
 	public static final SinglyLinkedNode lIFOListFromArray (
 		final double[] valueArray)
 	{
-<span class="nc bnc" id="L176" title="All 2 branches missed.">		if (null == valueArray)</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">		if (null == valueArray)</span>
 		{
-<span class="nc" id="L178">			return null;</span>
+<span class="nc" id="L190">			return null;</span>
 		}
 
-<span class="nc" id="L181">		SinglyLinkedNode singlyLinkedNode = null;</span>
-<span class="nc" id="L182">		int arraySize = valueArray.length;</span>
+<span class="nc" id="L193">		SinglyLinkedNode singlyLinkedNode = null;</span>
+<span class="nc" id="L194">		int arraySize = valueArray.length;</span>
 
-<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (0 == arraySize)</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (0 == arraySize)</span>
 		{
-<span class="nc" id="L186">			return null;</span>
+<span class="nc" id="L198">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc bnc" id="L191" title="All 2 branches missed.">			for (int valueIndex = 0; valueIndex &lt; arraySize; ++valueIndex)</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			for (int valueIndex = 0; valueIndex &lt; arraySize; ++valueIndex)</span>
 			{
-<span class="nc bnc" id="L193" title="All 2 branches missed.">				if (null == singlyLinkedNode)</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">				if (null == singlyLinkedNode)</span>
 				{
-<span class="nc" id="L195">					singlyLinkedNode = new SinglyLinkedNode (</span>
+<span class="nc" id="L207">					singlyLinkedNode = new SinglyLinkedNode (</span>
 						valueArray[valueIndex],
 						null
 					);
 				}
 				else
 				{
-<span class="nc bnc" id="L202" title="All 2 branches missed.">					if (null == singlyLinkedNode.addToHead (</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">					if (null == singlyLinkedNode.addToHead (</span>
 						new SinglyLinkedNode (
 							valueArray[valueIndex],
 							null
 						)
 					))
 					{
-<span class="nc" id="L209">						return null;</span>
+<span class="nc" id="L221">						return null;</span>
 					}
 				}
 			}
 		}
-<span class="nc" id="L214">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L226">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L216">			e.printStackTrace();</span>
-<span class="nc" id="L217">		}</span>
+<span class="nc" id="L228">			e.printStackTrace();</span>
+<span class="nc" id="L229">		}</span>
 
-<span class="nc" id="L219">		return null;</span>
+<span class="nc" id="L231">		return null;</span>
 	}
 
 	/**
@@ -232,15 +244,15 @@ public class SinglyLinkedNode
 		final double value,
 		final SinglyLinkedNode adjacent)
 		throws java.lang.Exception
-<span class="nc" id="L235">	{</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_value = value))</span>
+<span class="nc" id="L247">	{</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_value = value))</span>
 		{
-<span class="nc" id="L238">			throw new java.lang.Exception (&quot;SinglyLinkedNodeConstructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L250">			throw new java.lang.Exception (&quot;SinglyLinkedNodeConstructor =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L241">		_adjacent = adjacent;</span>
-<span class="nc" id="L242">		_tail = this;</span>
-<span class="nc" id="L243">	}</span>
+<span class="nc" id="L253">		_adjacent = adjacent;</span>
+<span class="nc" id="L254">		_tail = this;</span>
+<span class="nc" id="L255">	}</span>
 
 	/**
 	 * Retrieve the Linked Node Value
@@ -250,7 +262,7 @@ public class SinglyLinkedNode
 
 	public double value()
 	{
-<span class="nc" id="L253">		return _value;</span>
+<span class="nc" id="L265">		return _value;</span>
 	}
 
 	/**
@@ -261,7 +273,7 @@ public class SinglyLinkedNode
 
 	public SinglyLinkedNode adjacent()
 	{
-<span class="nc" id="L264">		return _adjacent;</span>
+<span class="nc" id="L276">		return _adjacent;</span>
 	}
 
 	/**
@@ -272,7 +284,7 @@ public class SinglyLinkedNode
 
 	public SinglyLinkedNode head()
 	{
-<span class="nc" id="L275">		return this;</span>
+<span class="nc" id="L287">		return this;</span>
 	}
 
 	/**
@@ -283,7 +295,7 @@ public class SinglyLinkedNode
 
 	public SinglyLinkedNode tail()
 	{
-<span class="nc" id="L286">		return _tail;</span>
+<span class="nc" id="L298">		return _tail;</span>
 	}
 
 	/**
@@ -297,15 +309,15 @@ public class SinglyLinkedNode
 	public SinglyLinkedNode addToHead (
 		final SinglyLinkedNode otherList)
 	{
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		if (null == otherList)</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">		if (null == otherList)</span>
 		{
-<span class="nc" id="L302">			return null;</span>
+<span class="nc" id="L314">			return null;</span>
 		}
 
-<span class="nc" id="L305">		SinglyLinkedNode otherTail = otherList.tail();</span>
+<span class="nc" id="L317">		SinglyLinkedNode otherTail = otherList.tail();</span>
 
-<span class="nc" id="L307">		otherTail._tail = this;</span>
-<span class="nc" id="L308">		return otherTail;</span>
+<span class="nc" id="L319">		otherTail._tail = this;</span>
+<span class="nc" id="L320">		return otherTail;</span>
 	}
 
 	/**
@@ -319,8 +331,8 @@ public class SinglyLinkedNode
 	public SinglyLinkedNode addToTail (
 		final SinglyLinkedNode otherList)
 	{
-<span class="nc" id="L322">		_tail = otherList;</span>
-<span class="nc" id="L323">		return this;</span>
+<span class="nc" id="L334">		_tail = otherList;</span>
+<span class="nc" id="L335">		return this;</span>
 	}
 
 	/**
@@ -334,24 +346,24 @@ public class SinglyLinkedNode
 	public SinglyLinkedNode locate (
 		final double value)
 	{
-<span class="nc bnc" id="L337" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (value))</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (value))</span>
 		{
-<span class="nc" id="L339">			return null;</span>
+<span class="nc" id="L351">			return null;</span>
 		}
 
-<span class="nc" id="L342">		SinglyLinkedNode node = this;</span>
+<span class="nc" id="L354">		SinglyLinkedNode node = this;</span>
 
-<span class="nc bnc" id="L344" title="All 2 branches missed.">		while (null != node)</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">		while (null != node)</span>
 		{
-<span class="nc bnc" id="L346" title="All 2 branches missed.">			if (node.value() == value)</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">			if (node.value() == value)</span>
 			{
-<span class="nc" id="L348">				return node;</span>
+<span class="nc" id="L360">				return node;</span>
 			}
 
-<span class="nc" id="L351">			node = node.adjacent();</span>
+<span class="nc" id="L363">			node = node.adjacent();</span>
 		}
 
-<span class="nc" id="L354">		return null;</span>
+<span class="nc" id="L366">		return null;</span>
 	}
 
 	/**
@@ -365,24 +377,24 @@ public class SinglyLinkedNode
 	public boolean containsValue (
 		final double value)
 	{
-<span class="nc bnc" id="L368" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (value))</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (value))</span>
 		{
-<span class="nc" id="L370">			return false;</span>
+<span class="nc" id="L382">			return false;</span>
 		}
 
-<span class="nc" id="L373">		SinglyLinkedNode node = this;</span>
+<span class="nc" id="L385">		SinglyLinkedNode node = this;</span>
 
-<span class="nc bnc" id="L375" title="All 2 branches missed.">		while (null != node)</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">		while (null != node)</span>
 		{
-<span class="nc bnc" id="L377" title="All 2 branches missed.">			if (node.value() == value)</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">			if (node.value() == value)</span>
 			{
-<span class="nc" id="L379">				return true;</span>
+<span class="nc" id="L391">				return true;</span>
 			}
 
-<span class="nc" id="L382">			node = node.adjacent();</span>
+<span class="nc" id="L394">			node = node.adjacent();</span>
 		}
 
-<span class="nc" id="L385">		return false;</span>
+<span class="nc" id="L397">		return false;</span>
 	}
 
 	/**
@@ -398,36 +410,36 @@ public class SinglyLinkedNode
 		final double locationNodeValue,
 		final double insertionNodeValue)
 	{
-<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (locationNodeValue) ||</span>
-<span class="nc bnc" id="L402" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (insertionNodeValue))</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (locationNodeValue) ||</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (insertionNodeValue))</span>
 		{
-<span class="nc" id="L404">			return false;</span>
+<span class="nc" id="L416">			return false;</span>
 		}
 
-<span class="nc" id="L407">		SinglyLinkedNode locationNode = locate (locationNodeValue);</span>
+<span class="nc" id="L419">		SinglyLinkedNode locationNode = locate (locationNodeValue);</span>
 
-<span class="nc bnc" id="L409" title="All 2 branches missed.">		if (null == locationNode)</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">		if (null == locationNode)</span>
 		{
-<span class="nc" id="L411">			return false;</span>
+<span class="nc" id="L423">			return false;</span>
 		}
 
-<span class="nc" id="L414">		SinglyLinkedNode locationNodeAdjacent = locationNode.adjacent();</span>
+<span class="nc" id="L426">		SinglyLinkedNode locationNodeAdjacent = locationNode.adjacent();</span>
 
 		try
 		{
-<span class="nc" id="L418">			locationNode._adjacent = new SinglyLinkedNode (</span>
+<span class="nc" id="L430">			locationNode._adjacent = new SinglyLinkedNode (</span>
 				insertionNodeValue,
 				locationNodeAdjacent
 			);
 		}
-<span class="nc" id="L423">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L435">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L425">			e.printStackTrace();</span>
+<span class="nc" id="L437">			e.printStackTrace();</span>
 
-<span class="nc" id="L427">			return false;</span>
-<span class="nc" id="L428">		}</span>
+<span class="nc" id="L439">			return false;</span>
+<span class="nc" id="L440">		}</span>
 
-<span class="nc" id="L430">		return true;</span>
+<span class="nc" id="L442">		return true;</span>
 	}
 
 	/**
@@ -441,67 +453,67 @@ public class SinglyLinkedNode
 	public SinglyLinkedNode removeAt (
 		final double removalNodeValue)
 	{
-<span class="nc bnc" id="L444" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (removalNodeValue))</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (removalNodeValue))</span>
 		{
-<span class="nc" id="L446">			return null;</span>
+<span class="nc" id="L458">			return null;</span>
 		}
 
-<span class="nc" id="L449">		boolean nodeFound = false;</span>
-<span class="nc" id="L450">		SinglyLinkedNode priorNode = null;</span>
-<span class="nc" id="L451">		SinglyLinkedNode currentNode = this;</span>
+<span class="nc" id="L461">		boolean nodeFound = false;</span>
+<span class="nc" id="L462">		SinglyLinkedNode priorNode = null;</span>
+<span class="nc" id="L463">		SinglyLinkedNode currentNode = this;</span>
 
-<span class="nc bnc" id="L453" title="All 2 branches missed.">		while (null != currentNode)</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">		while (null != currentNode)</span>
 		{
-<span class="nc bnc" id="L455" title="All 2 branches missed.">			if (currentNode.value() == removalNodeValue)</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">			if (currentNode.value() == removalNodeValue)</span>
 			{
-<span class="nc" id="L457">				nodeFound = true;</span>
-<span class="nc" id="L458">				break;</span>
+<span class="nc" id="L469">				nodeFound = true;</span>
+<span class="nc" id="L470">				break;</span>
 			}
 
-<span class="nc" id="L461">			priorNode = currentNode;</span>
+<span class="nc" id="L473">			priorNode = currentNode;</span>
 
-<span class="nc" id="L463">			currentNode = currentNode.adjacent();</span>
+<span class="nc" id="L475">			currentNode = currentNode.adjacent();</span>
 		}
 
-<span class="nc bnc" id="L466" title="All 2 branches missed.">		if (!nodeFound)</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">		if (!nodeFound)</span>
 		{
-<span class="nc" id="L468">			return null;</span>
+<span class="nc" id="L480">			return null;</span>
 		}
 
-<span class="nc bnc" id="L471" title="All 2 branches missed.">		if (null == priorNode)</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">		if (null == priorNode)</span>
 		{
 			try
 			{
-<span class="nc" id="L475">				return addToHead (</span>
+<span class="nc" id="L487">				return addToHead (</span>
 					new SinglyLinkedNode (
 						removalNodeValue,
-<span class="nc" id="L478">						currentNode.adjacent()</span>
+<span class="nc" id="L490">						currentNode.adjacent()</span>
 					)
 				);
 			}
-<span class="nc" id="L482">			catch (java.lang.Exception e)</span>
+<span class="nc" id="L494">			catch (java.lang.Exception e)</span>
 			{
-<span class="nc" id="L484">				e.printStackTrace();</span>
+<span class="nc" id="L496">				e.printStackTrace();</span>
 			}
 
-<span class="nc" id="L487">			return null;</span>
+<span class="nc" id="L499">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L492">			priorNode._adjacent = new SinglyLinkedNode (</span>
+<span class="nc" id="L504">			priorNode._adjacent = new SinglyLinkedNode (</span>
 				removalNodeValue,
-<span class="nc" id="L494">				currentNode.adjacent()</span>
+<span class="nc" id="L506">				currentNode.adjacent()</span>
 			);
 		}
-<span class="nc" id="L497">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L509">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L499">			e.printStackTrace();</span>
+<span class="nc" id="L511">			e.printStackTrace();</span>
 
-<span class="nc" id="L501">			return null;</span>
-<span class="nc" id="L502">		}</span>
+<span class="nc" id="L513">			return null;</span>
+<span class="nc" id="L514">		}</span>
 
-<span class="nc" id="L504">		return this;</span>
+<span class="nc" id="L516">		return this;</span>
 	}
 
 	/**
@@ -512,18 +524,18 @@ public class SinglyLinkedNode
 
 	public java.util.List&lt;java.lang.Double&gt; toList()
 	{
-<span class="nc" id="L515">		java.util.List&lt;java.lang.Double&gt; valueList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L527">		java.util.List&lt;java.lang.Double&gt; valueList = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc" id="L517">		SinglyLinkedNode node = this;</span>
+<span class="nc" id="L529">		SinglyLinkedNode node = this;</span>
 
-<span class="nc bnc" id="L519" title="All 2 branches missed.">		while (null != node)</span>
+<span class="nc bnc" id="L531" title="All 2 branches missed.">		while (null != node)</span>
 		{
-<span class="nc" id="L521">			valueList.add (node.value());</span>
+<span class="nc" id="L533">			valueList.add (node.value());</span>
 
-<span class="nc" id="L523">			node = node.adjacent();</span>
+<span class="nc" id="L535">			node = node.adjacent();</span>
 		}
 
-<span class="nc" id="L526">		return valueList;</span>
+<span class="nc" id="L538">		return valueList;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,10 +85,10 @@ package org.drip.spaces.iterator;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator&quot;&gt;Iterator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md&quot;&gt;Iterative/Exhaustive Vector Space Scanners&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -84,42 +96,42 @@ package org.drip.spaces.iterator;
  */
 
 public abstract class RdSpanningStateSpaceScan {
-<span class="fc" id="L87">	private boolean _bCyclicalScan = false;</span>
-<span class="fc" id="L88">	private int[] _aiStateIndexCursor = null;</span>
-<span class="fc" id="L89">	private int[] _aiTerminalStateIndex = null;</span>
+<span class="fc" id="L99">	private boolean _bCyclicalScan = false;</span>
+<span class="fc" id="L100">	private int[] _aiStateIndexCursor = null;</span>
+<span class="fc" id="L101">	private int[] _aiTerminalStateIndex = null;</span>
 
 	protected RdSpanningStateSpaceScan (
 		final int[] aiTerminalStateIndex,
 		final boolean bCyclicalScan)
 		throws java.lang.Exception
-<span class="fc" id="L95">	{</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (null == aiTerminalStateIndex)</span>
-<span class="nc" id="L97">			throw new java.lang.Exception (&quot;RdSpanningStateSpaceScan ctr: Invalid Input&quot;);</span>
+<span class="fc" id="L107">	{</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		if (null == aiTerminalStateIndex)</span>
+<span class="nc" id="L109">			throw new java.lang.Exception (&quot;RdSpanningStateSpaceScan ctr: Invalid Input&quot;);</span>
 
-<span class="fc" id="L99">		int iDimension = aiTerminalStateIndex.length;</span>
-<span class="fc" id="L100">		_aiTerminalStateIndex = new int[iDimension];</span>
-<span class="fc" id="L101">		_aiStateIndexCursor = new int[iDimension];</span>
-<span class="fc" id="L102">		_bCyclicalScan = bCyclicalScan;</span>
+<span class="fc" id="L111">		int iDimension = aiTerminalStateIndex.length;</span>
+<span class="fc" id="L112">		_aiTerminalStateIndex = new int[iDimension];</span>
+<span class="fc" id="L113">		_aiStateIndexCursor = new int[iDimension];</span>
+<span class="fc" id="L114">		_bCyclicalScan = bCyclicalScan;</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (0 == iDimension)</span>
-<span class="nc" id="L105">			throw new java.lang.Exception (&quot;RdSpanningStateSpaceScan ctr: Invalid Input&quot;);</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">		if (0 == iDimension)</span>
+<span class="nc" id="L117">			throw new java.lang.Exception (&quot;RdSpanningStateSpaceScan ctr: Invalid Input&quot;);</span>
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">			if (0 &gt;= (_aiTerminalStateIndex[i] = aiTerminalStateIndex[i]))</span>
-<span class="nc" id="L109">				throw new java.lang.Exception (&quot;RdSpanningStateSpaceScan ctr: Invalid Input&quot;);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; iDimension; ++i) {</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">			if (0 &gt;= (_aiTerminalStateIndex[i] = aiTerminalStateIndex[i]))</span>
+<span class="nc" id="L121">				throw new java.lang.Exception (&quot;RdSpanningStateSpaceScan ctr: Invalid Input&quot;);</span>
 
-<span class="fc" id="L111">			_aiStateIndexCursor[i] = 0;</span>
+<span class="fc" id="L123">			_aiStateIndexCursor[i] = 0;</span>
 		}
-<span class="fc" id="L113">	}</span>
+<span class="fc" id="L125">	}</span>
 
 	protected boolean setStateIndexCursor (
 		final int[] aiStateIndexCursor)
 	{
-<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		if (null == _aiStateIndexCursor || _aiStateIndexCursor.length != _aiTerminalStateIndex.length)</span>
-<span class="nc" id="L119">			return false;</span>
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">		if (null == _aiStateIndexCursor || _aiStateIndexCursor.length != _aiTerminalStateIndex.length)</span>
+<span class="nc" id="L131">			return false;</span>
 
-<span class="fc" id="L121">		_aiStateIndexCursor = aiStateIndexCursor;</span>
-<span class="fc" id="L122">		return true;</span>
+<span class="fc" id="L133">		_aiStateIndexCursor = aiStateIndexCursor;</span>
+<span class="fc" id="L134">		return true;</span>
 	}
 
 	/**
@@ -130,7 +142,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public int[] terminalStateIndex()
 	{
-<span class="fc" id="L133">		return _aiTerminalStateIndex;</span>
+<span class="fc" id="L145">		return _aiTerminalStateIndex;</span>
 	}
 
 	/**
@@ -141,7 +153,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public int dimension()
 	{
-<span class="fc" id="L144">		return _aiTerminalStateIndex.length;</span>
+<span class="fc" id="L156">		return _aiTerminalStateIndex.length;</span>
 	}
 
 	/**
@@ -152,7 +164,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public int[] stateIndexCursor()
 	{
-<span class="fc" id="L155">		return _aiStateIndexCursor;</span>
+<span class="fc" id="L167">		return _aiStateIndexCursor;</span>
 	}
 
 	/**
@@ -163,7 +175,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public boolean cyclicalScan()
 	{
-<span class="fc" id="L166">		return _bCyclicalScan;</span>
+<span class="fc" id="L178">		return _bCyclicalScan;</span>
 	}
 
 	/**

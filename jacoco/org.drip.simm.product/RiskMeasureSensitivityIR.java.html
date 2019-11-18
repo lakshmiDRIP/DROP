@@ -6,42 +6,54 @@ package org.drip.simm.product;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -96,10 +108,10 @@ package org.drip.simm.product;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/AnalyticsCore.md&quot;&gt;Analytics Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ExposureAnalyticsLibrary.md&quot;&gt;Exposure Analytics Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm&quot;&gt;SIMM&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product&quot;&gt;Product&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md&quot;&gt;Portfolio Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md&quot;&gt;Initial and Variation Margin Analytics&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md&quot;&gt;Initial Margin Analytics based on ISDA SIMM and its Variants&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product/README.md&quot;&gt;ISDA SIMM Risk Factor Sensitivities&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -108,7 +120,7 @@ package org.drip.simm.product;
 
 public class RiskMeasureSensitivityIR
 {
-<span class="nc" id="L111">	private java.util.Map&lt;java.lang.String, org.drip.simm.product.BucketSensitivityIR&gt; _bucketSensitivityMap</span>
+<span class="nc" id="L123">	private java.util.Map&lt;java.lang.String, org.drip.simm.product.BucketSensitivityIR&gt; _bucketSensitivityMap</span>
 		= null;
 
 	private static final double PositionPrincipalComponentCovariance (
@@ -116,22 +128,22 @@ public class RiskMeasureSensitivityIR
 		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L119">		java.lang.String positionPrincipalComponentScheme =</span>
-<span class="nc" id="L120">			marginEstimationSettings.positionPrincipalComponentScheme();</span>
+<span class="nc" id="L131">		java.lang.String positionPrincipalComponentScheme =</span>
+<span class="nc" id="L132">			marginEstimationSettings.positionPrincipalComponentScheme();</span>
 
-<span class="nc" id="L122">		if (positionPrincipalComponentScheme.equalsIgnoreCase</span>
-<span class="nc bnc" id="L123" title="All 2 branches missed.">			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))</span>
+<span class="nc" id="L134">		if (positionPrincipalComponentScheme.equalsIgnoreCase</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_FRTB))</span>
 		{
-<span class="nc" id="L125">			return bucketAggregate.positionPrincipalComponentCovarianceFRTB();</span>
+<span class="nc" id="L137">			return bucketAggregate.positionPrincipalComponentCovarianceFRTB();</span>
 		}
 
-<span class="nc" id="L128">		if (positionPrincipalComponentScheme.equalsIgnoreCase</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))</span>
+<span class="nc" id="L140">		if (positionPrincipalComponentScheme.equalsIgnoreCase</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			(org.drip.simm.foundation.MarginEstimationSettings.POSITION_PRINCIPAL_COMPONENT_COVARIANCE_ESTIMATOR_ISDA))</span>
 		{
-<span class="nc" id="L131">			return bucketAggregate.positionPrincipalComponentCovarianceISDA();</span>
+<span class="nc" id="L143">			return bucketAggregate.positionPrincipalComponentCovarianceISDA();</span>
 		}
 
-<span class="nc" id="L134">		throw new java.lang.Exception</span>
+<span class="nc" id="L146">		throw new java.lang.Exception</span>
 			(&quot;RiskMeasureSensitivityIR::PositionPrincipalComponentCovariance =&gt; Invalid Inputs&quot;);
 	}
 
@@ -147,12 +159,12 @@ public class RiskMeasureSensitivityIR
 		final java.util.Map&lt;java.lang.String, org.drip.simm.product.BucketSensitivityIR&gt;
 			bucketSensitivityMap)
 		throws java.lang.Exception
-<span class="nc" id="L150">	{</span>
-<span class="nc bnc" id="L151" title="All 4 branches missed.">		if (null == (_bucketSensitivityMap = bucketSensitivityMap) || 0 == _bucketSensitivityMap.size())</span>
+<span class="nc" id="L162">	{</span>
+<span class="nc bnc" id="L163" title="All 4 branches missed.">		if (null == (_bucketSensitivityMap = bucketSensitivityMap) || 0 == _bucketSensitivityMap.size())</span>
 		{
-<span class="nc" id="L153">			throw new java.lang.Exception (&quot;RiskMeasureSensitivityIR Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L165">			throw new java.lang.Exception (&quot;RiskMeasureSensitivityIR Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L155">	}</span>
+<span class="nc" id="L167">	}</span>
 
 	/**
 	 * Retrieve the Risk Class Bucket Sensitivity Map
@@ -163,7 +175,7 @@ public class RiskMeasureSensitivityIR
 	public java.util.Map&lt;java.lang.String, org.drip.simm.product.BucketSensitivityIR&gt;
 		bucketSensitivityMap()
 	{
-<span class="nc" id="L166">		return _bucketSensitivityMap;</span>
+<span class="nc" id="L178">		return _bucketSensitivityMap;</span>
 	}
 
 	/**
@@ -179,92 +191,92 @@ public class RiskMeasureSensitivityIR
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettings,
 		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
-<span class="nc bnc" id="L182" title="All 4 branches missed.">		if (null == riskMeasureSensitivitySettings ||</span>
+<span class="nc bnc" id="L194" title="All 4 branches missed.">		if (null == riskMeasureSensitivitySettings ||</span>
 			null == marginEstimationSettings)
 		{
-<span class="nc" id="L185">			return null;</span>
+<span class="nc" id="L197">			return null;</span>
 		}
 
-<span class="nc" id="L188">		double coreSBAVariance = 0.;</span>
+<span class="nc" id="L200">		double coreSBAVariance = 0.;</span>
 
-<span class="nc" id="L190">		java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; bucketAggregateMap = new</span>
+<span class="nc" id="L202">		java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; bucketAggregateMap = new</span>
 			java.util.TreeMap&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt;();
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L194">			bucketSensitivitySettingsMap = riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();</span>
+<span class="nc" id="L206">			bucketSensitivitySettingsMap = riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();</span>
 
-<span class="nc" id="L196">		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =</span>
-<span class="nc" id="L197">			riskMeasureSensitivitySettings.crossBucketCorrelation();</span>
+<span class="nc" id="L208">		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =</span>
+<span class="nc" id="L209">			riskMeasureSensitivitySettings.crossBucketCorrelation();</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.product.BucketSensitivityIR&gt;
-<span class="nc bnc" id="L200" title="All 2 branches missed.">			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L202">			java.lang.String bucketIndex = bucketSensitivityMapEntry.getKey();</span>
+<span class="nc" id="L214">			java.lang.String bucketIndex = bucketSensitivityMapEntry.getKey();</span>
 
-<span class="nc" id="L204">			org.drip.simm.product.BucketSensitivityIR bucketSensitivity =</span>
-<span class="nc" id="L205">				bucketSensitivityMapEntry.getValue();</span>
+<span class="nc" id="L216">			org.drip.simm.product.BucketSensitivityIR bucketSensitivity =</span>
+<span class="nc" id="L217">				bucketSensitivityMapEntry.getValue();</span>
 
-<span class="nc" id="L207">			org.drip.simm.margin.BucketAggregateIR bucketAggregate = bucketSensitivity.aggregate</span>
-<span class="nc" id="L208">				(bucketSensitivitySettingsMap.get (bucketIndex));</span>
+<span class="nc" id="L219">			org.drip.simm.margin.BucketAggregateIR bucketAggregate = bucketSensitivity.aggregate</span>
+<span class="nc" id="L220">				(bucketSensitivitySettingsMap.get (bucketIndex));</span>
 
-<span class="nc bnc" id="L210" title="All 2 branches missed.">			if (null == bucketAggregate)</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">			if (null == bucketAggregate)</span>
 			{
-<span class="nc" id="L212">				return null;</span>
+<span class="nc" id="L224">				return null;</span>
 			}
 
-<span class="nc" id="L215">			bucketAggregateMap.put (</span>
+<span class="nc" id="L227">			bucketAggregateMap.put (</span>
 				&quot;&quot; + bucketIndex,
 				bucketAggregate
 			);
-<span class="nc" id="L219">		}</span>
+<span class="nc" id="L231">		}</span>
 
 		try
 		{
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt;
-<span class="nc bnc" id="L224" title="All 2 branches missed.">				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())</span>
 			{
-<span class="nc" id="L226">				java.lang.String outerKey = bucketAggregateMapOuterEntry.getKey();</span>
+<span class="nc" id="L238">				java.lang.String outerKey = bucketAggregateMapOuterEntry.getKey();</span>
 
-<span class="nc" id="L228">				org.drip.simm.margin.BucketAggregateIR bucketAggregateOuter =</span>
-<span class="nc" id="L229">					bucketAggregateMapOuterEntry.getValue();</span>
+<span class="nc" id="L240">				org.drip.simm.margin.BucketAggregateIR bucketAggregateOuter =</span>
+<span class="nc" id="L241">					bucketAggregateMapOuterEntry.getValue();</span>
 
-<span class="nc" id="L231">				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();</span>
+<span class="nc" id="L243">				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();</span>
 
-<span class="nc" id="L233">				double positionPrincipalComponentCovarianceOuter = PositionPrincipalComponentCovariance (</span>
+<span class="nc" id="L245">				double positionPrincipalComponentCovarianceOuter = PositionPrincipalComponentCovariance (</span>
 					bucketAggregateOuter,
 					marginEstimationSettings
 				);
 
 				for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt;
-<span class="nc bnc" id="L239" title="All 2 branches missed.">					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())</span>
 				{
-<span class="nc" id="L241">					java.lang.String innerKey = bucketAggregateMapInnerEntry.getKey();</span>
+<span class="nc" id="L253">					java.lang.String innerKey = bucketAggregateMapInnerEntry.getKey();</span>
 
-<span class="nc bnc" id="L243" title="All 2 branches missed.">					coreSBAVariance = coreSBAVariance + (outerKey.equalsIgnoreCase (innerKey) ?</span>
-<span class="nc" id="L244">						weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">					coreSBAVariance = coreSBAVariance + (outerKey.equalsIgnoreCase (innerKey) ?</span>
+<span class="nc" id="L256">						weightedSensitivityVarianceOuter : crossBucketCorrelation.entry (</span>
 							outerKey,
 							innerKey
 						) * positionPrincipalComponentCovarianceOuter *
-<span class="nc" id="L248">						PositionPrincipalComponentCovariance (</span>
-<span class="nc" id="L249">							bucketAggregateMapInnerEntry.getValue(),</span>
+<span class="nc" id="L260">						PositionPrincipalComponentCovariance (</span>
+<span class="nc" id="L261">							bucketAggregateMapInnerEntry.getValue(),</span>
 							marginEstimationSettings
 						)
 					);
-<span class="nc" id="L253">				}</span>
-<span class="nc" id="L254">			}</span>
+<span class="nc" id="L265">				}</span>
+<span class="nc" id="L266">			}</span>
 
-<span class="nc" id="L256">			return new org.drip.simm.margin.RiskMeasureAggregateIR (</span>
+<span class="nc" id="L268">			return new org.drip.simm.margin.RiskMeasureAggregateIR (</span>
 				bucketAggregateMap,
 				coreSBAVariance,
 				0.
 			);
 		}
-<span class="nc" id="L262">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L274">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L264">			e.printStackTrace();</span>
+<span class="nc" id="L276">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L267">		return null;</span>
+<span class="nc" id="L279">		return null;</span>
 	}
 
 	/**
@@ -280,136 +292,136 @@ public class RiskMeasureSensitivityIR
 		final org.drip.simm.parameters.RiskMeasureSensitivitySettingsIR riskMeasureSensitivitySettings,
 		final org.drip.simm.foundation.MarginEstimationSettings marginEstimationSettings)
 	{
-<span class="nc bnc" id="L283" title="All 4 branches missed.">		if (null == riskMeasureSensitivitySettings || null == marginEstimationSettings)</span>
+<span class="nc bnc" id="L295" title="All 4 branches missed.">		if (null == riskMeasureSensitivitySettings || null == marginEstimationSettings)</span>
 		{
-<span class="nc" id="L285">			return null;</span>
+<span class="nc" id="L297">			return null;</span>
 		}
 
-<span class="nc" id="L288">		double coreSBAVariance = 0.;</span>
-<span class="nc" id="L289">		double cumulativeRiskFactorSensitivityMarginCore = 0.;</span>
-<span class="nc" id="L290">		double cumulativeRiskFactorSensitivityMarginCorePositive = 0.;</span>
+<span class="nc" id="L300">		double coreSBAVariance = 0.;</span>
+<span class="nc" id="L301">		double cumulativeRiskFactorSensitivityMarginCore = 0.;</span>
+<span class="nc" id="L302">		double cumulativeRiskFactorSensitivityMarginCorePositive = 0.;</span>
 
-<span class="nc" id="L292">		java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; bucketAggregateMap = new</span>
+<span class="nc" id="L304">		java.util.Map&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt; bucketAggregateMap = new</span>
 			java.util.TreeMap&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt;();
 
 		java.util.Map&lt;java.lang.String, org.drip.simm.parameters.BucketSensitivitySettingsIR&gt;
-<span class="nc" id="L296">			bucketSensitivitySettingsMap = riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();</span>
+<span class="nc" id="L308">			bucketSensitivitySettingsMap = riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();</span>
 
-<span class="nc" id="L298">		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =</span>
-<span class="nc" id="L299">			riskMeasureSensitivitySettings.crossBucketCorrelation();</span>
+<span class="nc" id="L310">		org.drip.measure.stochastic.LabelCorrelation crossBucketCorrelation =</span>
+<span class="nc" id="L311">			riskMeasureSensitivitySettings.crossBucketCorrelation();</span>
 
-<span class="nc" id="L301">		org.drip.simm.foundation.CurvatureEstimator curvatureEstimator =</span>
-<span class="nc" id="L302">			marginEstimationSettings.curvatureEstimator();</span>
+<span class="nc" id="L313">		org.drip.simm.foundation.CurvatureEstimator curvatureEstimator =</span>
+<span class="nc" id="L314">			marginEstimationSettings.curvatureEstimator();</span>
 
-<span class="nc" id="L304">		boolean isCorrelatorQuadratric = curvatureEstimator.isCorrelatorQuadratric();</span>
+<span class="nc" id="L316">		boolean isCorrelatorQuadratric = curvatureEstimator.isCorrelatorQuadratric();</span>
 
 		for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.product.BucketSensitivityIR&gt;
-<span class="nc bnc" id="L307" title="All 2 branches missed.">			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">			bucketSensitivityMapEntry : _bucketSensitivityMap.entrySet())</span>
 		{
-<span class="nc" id="L309">			java.lang.String bucketIndex = bucketSensitivityMapEntry.getKey();</span>
+<span class="nc" id="L321">			java.lang.String bucketIndex = bucketSensitivityMapEntry.getKey();</span>
 
-<span class="nc" id="L311">			org.drip.simm.product.BucketSensitivityIR bucketSensitivity =</span>
-<span class="nc" id="L312">				bucketSensitivityMapEntry.getValue();</span>
+<span class="nc" id="L323">			org.drip.simm.product.BucketSensitivityIR bucketSensitivity =</span>
+<span class="nc" id="L324">				bucketSensitivityMapEntry.getValue();</span>
 
-<span class="nc" id="L314">			org.drip.simm.margin.BucketAggregateIR bucketAggregate = bucketSensitivity.aggregate</span>
-<span class="nc" id="L315">				(bucketSensitivitySettingsMap.get (bucketIndex));</span>
+<span class="nc" id="L326">			org.drip.simm.margin.BucketAggregateIR bucketAggregate = bucketSensitivity.aggregate</span>
+<span class="nc" id="L327">				(bucketSensitivitySettingsMap.get (bucketIndex));</span>
 
-<span class="nc bnc" id="L317" title="All 2 branches missed.">			if (null == bucketAggregate)</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">			if (null == bucketAggregate)</span>
 			{
-<span class="nc" id="L319">				return null;</span>
+<span class="nc" id="L331">				return null;</span>
 			}
 
-<span class="nc" id="L322">			double bucketCumulativeRiskFactorSensitivityMargin =</span>
-<span class="nc" id="L323">				bucketAggregate.cumulativeSensitivityMargin();</span>
+<span class="nc" id="L334">			double bucketCumulativeRiskFactorSensitivityMargin =</span>
+<span class="nc" id="L335">				bucketAggregate.cumulativeSensitivityMargin();</span>
 
-<span class="nc" id="L325">			cumulativeRiskFactorSensitivityMarginCore = cumulativeRiskFactorSensitivityMarginCore +</span>
+<span class="nc" id="L337">			cumulativeRiskFactorSensitivityMarginCore = cumulativeRiskFactorSensitivityMarginCore +</span>
 				bucketCumulativeRiskFactorSensitivityMargin;
 
-<span class="nc" id="L328">			cumulativeRiskFactorSensitivityMarginCorePositive =</span>
+<span class="nc" id="L340">			cumulativeRiskFactorSensitivityMarginCorePositive =</span>
 				cumulativeRiskFactorSensitivityMarginCorePositive +
-<span class="nc" id="L330">				java.lang.Math.max (</span>
+<span class="nc" id="L342">				java.lang.Math.max (</span>
 					bucketCumulativeRiskFactorSensitivityMargin,
 					0.
 				);
 
-<span class="nc" id="L335">			bucketAggregateMap.put (</span>
+<span class="nc" id="L347">			bucketAggregateMap.put (</span>
 				bucketIndex,
 				bucketAggregate
 			);
-<span class="nc" id="L339">		}</span>
+<span class="nc" id="L351">		}</span>
 
 		try
 		{
 			for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt;
-<span class="nc bnc" id="L344" title="All 2 branches missed.">				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">				bucketAggregateMapOuterEntry : bucketAggregateMap.entrySet())</span>
 			{
-<span class="nc" id="L346">				java.lang.String outerKey = bucketAggregateMapOuterEntry.getKey();</span>
+<span class="nc" id="L358">				java.lang.String outerKey = bucketAggregateMapOuterEntry.getKey();</span>
 
-<span class="nc" id="L348">				org.drip.simm.margin.BucketAggregateIR bucketAggregateOuter =</span>
-<span class="nc" id="L349">					bucketAggregateMapOuterEntry.getValue();</span>
+<span class="nc" id="L360">				org.drip.simm.margin.BucketAggregateIR bucketAggregateOuter =</span>
+<span class="nc" id="L361">					bucketAggregateMapOuterEntry.getValue();</span>
 
-<span class="nc" id="L351">				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();</span>
+<span class="nc" id="L363">				double weightedSensitivityVarianceOuter = bucketAggregateOuter.sensitivityMarginVariance();</span>
 
-<span class="nc" id="L353">				double positionPrincipalComponentCovarianceOuter = PositionPrincipalComponentCovariance (</span>
+<span class="nc" id="L365">				double positionPrincipalComponentCovarianceOuter = PositionPrincipalComponentCovariance (</span>
 					bucketAggregateOuter,
 					marginEstimationSettings
 				);
 
 				for (java.util.Map.Entry&lt;java.lang.String, org.drip.simm.margin.BucketAggregateIR&gt;
-<span class="nc bnc" id="L359" title="All 2 branches missed.">					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">					bucketAggregateMapInnerEntry : bucketAggregateMap.entrySet())</span>
 				{
-<span class="nc" id="L361">					java.lang.String innerKey = bucketAggregateMapInnerEntry.getKey();</span>
+<span class="nc" id="L373">					java.lang.String innerKey = bucketAggregateMapInnerEntry.getKey();</span>
 
-<span class="nc bnc" id="L363" title="All 2 branches missed.">					if (outerKey.equalsIgnoreCase (innerKey))</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">					if (outerKey.equalsIgnoreCase (innerKey))</span>
 					{
-<span class="nc" id="L365">						coreSBAVariance = coreSBAVariance + weightedSensitivityVarianceOuter;</span>
+<span class="nc" id="L377">						coreSBAVariance = coreSBAVariance + weightedSensitivityVarianceOuter;</span>
 					}
 					else
 					{
-<span class="nc" id="L369">						double correlation = crossBucketCorrelation.entry (</span>
+<span class="nc" id="L381">						double correlation = crossBucketCorrelation.entry (</span>
 							&quot;&quot; + outerKey,
 							&quot;&quot; + innerKey
 						);
 
-<span class="nc bnc" id="L374" title="All 2 branches missed.">						double curvatureCorrelation = isCorrelatorQuadratric ? correlation * correlation</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">						double curvatureCorrelation = isCorrelatorQuadratric ? correlation * correlation</span>
 							: correlation;
 
-<span class="nc" id="L377">						org.drip.simm.margin.BucketAggregateIR bucketAggregateInner =</span>
-<span class="nc" id="L378">							bucketAggregateMapInnerEntry.getValue();</span>
+<span class="nc" id="L389">						org.drip.simm.margin.BucketAggregateIR bucketAggregateInner =</span>
+<span class="nc" id="L390">							bucketAggregateMapInnerEntry.getValue();</span>
 
-<span class="nc" id="L380">						coreSBAVariance = coreSBAVariance + curvatureCorrelation *</span>
+<span class="nc" id="L392">						coreSBAVariance = coreSBAVariance + curvatureCorrelation *</span>
 							positionPrincipalComponentCovarianceOuter *
-<span class="nc" id="L382">							curvatureEstimator.varianceModulator (</span>
+<span class="nc" id="L394">							curvatureEstimator.varianceModulator (</span>
 								outerKey,
 								weightedSensitivityVarianceOuter,
 								innerKey,
-<span class="nc" id="L386">								bucketAggregateInner.sensitivityMarginVariance()</span>
-<span class="nc" id="L387">							) * PositionPrincipalComponentCovariance (</span>
+<span class="nc" id="L398">								bucketAggregateInner.sensitivityMarginVariance()</span>
+<span class="nc" id="L399">							) * PositionPrincipalComponentCovariance (</span>
 								bucketAggregateInner,
 								marginEstimationSettings
 							);
 					}
-<span class="nc" id="L392">				}</span>
-<span class="nc" id="L393">			}</span>
+<span class="nc" id="L404">				}</span>
+<span class="nc" id="L405">			}</span>
 
-<span class="nc" id="L395">			double coreSBAMargin = curvatureEstimator.margin (</span>
+<span class="nc" id="L407">			double coreSBAMargin = curvatureEstimator.margin (</span>
 				cumulativeRiskFactorSensitivityMarginCore,
 				cumulativeRiskFactorSensitivityMarginCorePositive,
 				coreSBAVariance
 			);
 
-<span class="nc" id="L401">			return new org.drip.simm.margin.RiskMeasureAggregateIR (</span>
+<span class="nc" id="L413">			return new org.drip.simm.margin.RiskMeasureAggregateIR (</span>
 				bucketAggregateMap,
 				coreSBAMargin * coreSBAMargin,
 				0.
 			);
 		}
-<span class="nc" id="L407">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L419">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L409">			e.printStackTrace();</span>
+<span class="nc" id="L421">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L412">		return null;</span>
+<span class="nc" id="L424">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -91,10 +103,10 @@ package org.drip.spaces.cover;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover&quot;&gt;Cover&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md&quot;&gt;Vector Spaces Covering Number Estimator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -115,9 +127,9 @@ public class MaureyOperatorCoveringBounds {
 
 	public static final double WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT = 103.;
 
-<span class="nc" id="L118">	private int _iSupremumDimension = -1;</span>
-<span class="nc" id="L119">	private double _dblOperatorNorm = java.lang.Double.NaN;</span>
-<span class="nc" id="L120">	private double _dblMaureyConstant = java.lang.Double.NaN;</span>
+<span class="nc" id="L130">	private int _iSupremumDimension = -1;</span>
+<span class="nc" id="L131">	private double _dblOperatorNorm = java.lang.Double.NaN;</span>
+<span class="nc" id="L132">	private double _dblMaureyConstant = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct an Instance Hilbert To Supremum Identity Map based Maurey Operator Covering Bounds
@@ -133,13 +145,13 @@ public class MaureyOperatorCoveringBounds {
 		final double dblOperatorNorm)
 	{
 		try {
-<span class="nc" id="L136">			return new MaureyOperatorCoveringBounds (HILBERT_SUPREMUM_IDENTITY_CONSTANT,</span>
+<span class="nc" id="L148">			return new MaureyOperatorCoveringBounds (HILBERT_SUPREMUM_IDENTITY_CONSTANT,</span>
 				iSupremumDimension, dblOperatorNorm);
-<span class="nc" id="L138">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L139">			e.printStackTrace();</span>
+<span class="nc" id="L150">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L151">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L142">		return null;</span>
+<span class="nc" id="L154">		return null;</span>
 	}
 
 	/**
@@ -157,13 +169,13 @@ public class MaureyOperatorCoveringBounds {
 		final double dblOperatorNorm)
 	{
 		try {
-<span class="nc" id="L160">			return new MaureyOperatorCoveringBounds (WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT,</span>
+<span class="nc" id="L172">			return new MaureyOperatorCoveringBounds (WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT,</span>
 				iSupremumDimension, dblOperatorNorm);
-<span class="nc" id="L162">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L163">			e.printStackTrace();</span>
+<span class="nc" id="L174">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L175">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L166">		return null;</span>
+<span class="nc" id="L178">		return null;</span>
 	}
 
 	/**
@@ -181,12 +193,12 @@ public class MaureyOperatorCoveringBounds {
 		final int iSupremumDimension,
 		final double dblOperatorNorm)
 		throws java.lang.Exception
-<span class="nc" id="L184">	{</span>
-<span class="nc bnc" id="L185" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 &gt;=</span>
+<span class="nc" id="L196">	{</span>
+<span class="nc bnc" id="L197" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 &gt;=</span>
 			(_iSupremumDimension = iSupremumDimension) || !org.drip.numerical.common.NumberUtil.IsValid
-<span class="nc bnc" id="L187" title="All 2 branches missed.">				(_dblOperatorNorm = dblOperatorNorm))</span>
-<span class="nc" id="L188">			throw new java.lang.Exception (&quot;MaureyOperatorCoveringBounds ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L189">	}</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">				(_dblOperatorNorm = dblOperatorNorm))</span>
+<span class="nc" id="L200">			throw new java.lang.Exception (&quot;MaureyOperatorCoveringBounds ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L201">	}</span>
 
 	/**
 	 * Retrieve the Maurey Constant
@@ -196,7 +208,7 @@ public class MaureyOperatorCoveringBounds {
 
 	public double maureyConstant()
 	{
-<span class="nc" id="L199">		return _dblMaureyConstant;</span>
+<span class="nc" id="L211">		return _dblMaureyConstant;</span>
 	}
 
 	/**
@@ -207,7 +219,7 @@ public class MaureyOperatorCoveringBounds {
 
 	public int supremumDimension()
 	{
-<span class="nc" id="L210">		return _iSupremumDimension;</span>
+<span class="nc" id="L222">		return _iSupremumDimension;</span>
 	}
 
 	/**
@@ -218,7 +230,7 @@ public class MaureyOperatorCoveringBounds {
 
 	public double operatorNorm()
 	{
-<span class="nc" id="L221">		return _dblOperatorNorm;</span>
+<span class="nc" id="L233">		return _dblOperatorNorm;</span>
 	}
 
 	/**
@@ -235,11 +247,11 @@ public class MaureyOperatorCoveringBounds {
 		final int iEntropyNumberIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L238" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
-<span class="nc" id="L239">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
+<span class="nc" id="L251">			throw new java.lang.Exception</span>
 				(&quot;MaureyOperatorCoveringBounds::dyadicEntropyUpperBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L242">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((java.lang.Math.log (1. +</span>
+<span class="nc" id="L254">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((java.lang.Math.log (1. +</span>
 			(((double) _iSupremumDimension) / ((double) iEntropyNumberIndex))) / iEntropyNumberIndex));
 	}
 
@@ -257,13 +269,13 @@ public class MaureyOperatorCoveringBounds {
 		final int iEntropyNumberIndex)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
-<span class="nc" id="L261">			throw new java.lang.Exception</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		if (0 &gt;= iEntropyNumberIndex)</span>
+<span class="nc" id="L273">			throw new java.lang.Exception</span>
 				(&quot;MaureyOperatorCoveringBounds::entropyNumberUpperBound =&gt; Invalid Inputs&quot;);
 
-<span class="nc" id="L264">		double dblLogNPlus1 = 1. + java.lang.Math.log (iEntropyNumberIndex);</span>
+<span class="nc" id="L276">		double dblLogNPlus1 = 1. + java.lang.Math.log (iEntropyNumberIndex);</span>
 
-<span class="nc" id="L266">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((1. + (((double)</span>
+<span class="nc" id="L278">		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((1. + (((double)</span>
 			_iSupremumDimension) / dblLogNPlus1)) / dblLogNPlus1);
 	}
 }

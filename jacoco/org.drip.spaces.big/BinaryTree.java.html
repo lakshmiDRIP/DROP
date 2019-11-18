@@ -6,45 +6,57 @@ package org.drip.spaces.big;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -72,10 +84,10 @@ package org.drip.spaces.big;
  * 
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big&quot;&gt;Big&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md&quot;&gt;Big-data In-place Manipulator&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  * 
@@ -83,11 +95,11 @@ package org.drip.spaces.big;
  */
 
 public class BinaryTree {
-<span class="fc" id="L86">	private int _iCount = 1;</span>
-<span class="fc" id="L87">	private BinaryTree _btParent = null;</span>
-<span class="fc" id="L88">	private BinaryTree _btLeftChild = null;</span>
-<span class="fc" id="L89">	private BinaryTree _btRightChild = null;</span>
-<span class="fc" id="L90">	private double _dblNode = java.lang.Double.NaN;</span>
+<span class="fc" id="L98">	private int _iCount = 1;</span>
+<span class="fc" id="L99">	private BinaryTree _btParent = null;</span>
+<span class="fc" id="L100">	private BinaryTree _btLeftChild = null;</span>
+<span class="fc" id="L101">	private BinaryTree _btRightChild = null;</span>
+<span class="fc" id="L102">	private double _dblNode = java.lang.Double.NaN;</span>
 
 	/**
 	 * BinaryTree Constructor
@@ -102,13 +114,13 @@ public class BinaryTree {
 		final double dblNode,
 		final BinaryTree btParent)
 		throws java.lang.Exception
-<span class="fc" id="L105">	{</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNode = dblNode))</span>
-<span class="nc" id="L107">			throw new java.lang.Exception (&quot;BinaryTree ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="fc" id="L117">	{</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNode = dblNode))</span>
+<span class="nc" id="L119">			throw new java.lang.Exception (&quot;BinaryTree ctr =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L109">		_iCount = 1;</span>
-<span class="fc" id="L110">		_btParent = btParent;</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L121">		_iCount = 1;</span>
+<span class="fc" id="L122">		_btParent = btParent;</span>
+<span class="fc" id="L123">	}</span>
 
 	/**
 	 * Retrieve the BinaryTree Node Value
@@ -118,7 +130,7 @@ public class BinaryTree {
 
 	public double node()
 	{
-<span class="nc" id="L121">		return _dblNode;</span>
+<span class="nc" id="L133">		return _dblNode;</span>
 	}
 
 	/**
@@ -129,7 +141,7 @@ public class BinaryTree {
 
 	public BinaryTree parent()
 	{
-<span class="nc" id="L132">		return _btParent;</span>
+<span class="nc" id="L144">		return _btParent;</span>
 	}
 
 	/**
@@ -140,7 +152,7 @@ public class BinaryTree {
 
 	public BinaryTree leftChild()
 	{
-<span class="nc" id="L143">		return _btLeftChild;</span>
+<span class="nc" id="L155">		return _btLeftChild;</span>
 	}
 
 	/**
@@ -151,7 +163,7 @@ public class BinaryTree {
 
 	public BinaryTree rightChild()
 	{
-<span class="nc" id="L154">		return _btRightChild;</span>
+<span class="nc" id="L166">		return _btRightChild;</span>
 	}
 
 	/**
@@ -162,7 +174,7 @@ public class BinaryTree {
 
 	public int count()
 	{
-<span class="nc" id="L165">		return _iCount;</span>
+<span class="nc" id="L177">		return _iCount;</span>
 	}
 
 	/**
@@ -176,25 +188,25 @@ public class BinaryTree {
 	public BinaryTree insert (
 		final double dblNode)
 	{
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNode)) return null;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNode)) return null;</span>
 
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">		if (_dblNode == dblNode) {</span>
-<span class="nc" id="L182">			++_iCount;</span>
-<span class="nc" id="L183">			return this;</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">		if (_dblNode == dblNode) {</span>
+<span class="nc" id="L194">			++_iCount;</span>
+<span class="nc" id="L195">			return this;</span>
 		}
 
 		try {
-<span class="fc bfc" id="L187" title="All 2 branches covered.">			if (dblNode &lt; _dblNode)</span>
-<span class="fc bfc" id="L188" title="All 2 branches covered.">				return null == _btLeftChild ? _btLeftChild = new BinaryTree (dblNode, this) :</span>
-<span class="fc" id="L189">					_btLeftChild.insert (dblNode);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">			if (dblNode &lt; _dblNode)</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">				return null == _btLeftChild ? _btLeftChild = new BinaryTree (dblNode, this) :</span>
+<span class="fc" id="L201">					_btLeftChild.insert (dblNode);</span>
 
-<span class="fc bfc" id="L191" title="All 2 branches covered.">			return null == _btRightChild ? _btRightChild = new BinaryTree (dblNode, this) :</span>
-<span class="fc" id="L192">				_btRightChild.insert (dblNode);</span>
-<span class="nc" id="L193">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L194">			e.printStackTrace();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">			return null == _btRightChild ? _btRightChild = new BinaryTree (dblNode, this) :</span>
+<span class="fc" id="L204">				_btRightChild.insert (dblNode);</span>
+<span class="nc" id="L205">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L206">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L197">		return null;</span>
+<span class="nc" id="L209">		return null;</span>
 	}
 
 	/**
@@ -205,17 +217,17 @@ public class BinaryTree {
 
 	public BinaryTree leftMostChild()
 	{
-<span class="nc" id="L208">		BinaryTree btParent = this;</span>
+<span class="nc" id="L220">		BinaryTree btParent = this;</span>
 
-<span class="nc" id="L210">		BinaryTree btLeftChild = leftChild();</span>
+<span class="nc" id="L222">		BinaryTree btLeftChild = leftChild();</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		while (null != btLeftChild) {</span>
-<span class="nc" id="L213">			btParent = btLeftChild;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		while (null != btLeftChild) {</span>
+<span class="nc" id="L225">			btParent = btLeftChild;</span>
 
-<span class="nc" id="L215">			btLeftChild = btParent.leftChild();</span>
+<span class="nc" id="L227">			btLeftChild = btParent.leftChild();</span>
 		}
 
-<span class="nc" id="L218">		return btParent;</span>
+<span class="nc" id="L230">		return btParent;</span>
 	}
 
 	/**
@@ -226,17 +238,17 @@ public class BinaryTree {
 
 	public BinaryTree rightMostChild()
 	{
-<span class="nc" id="L229">		BinaryTree btParent = this;</span>
+<span class="nc" id="L241">		BinaryTree btParent = this;</span>
 
-<span class="nc" id="L231">		BinaryTree btRightChild = rightChild();</span>
+<span class="nc" id="L243">		BinaryTree btRightChild = rightChild();</span>
 
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		while (null != btRightChild) {</span>
-<span class="nc" id="L234">			btParent = btRightChild;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		while (null != btRightChild) {</span>
+<span class="nc" id="L246">			btParent = btRightChild;</span>
 
-<span class="nc" id="L236">			btRightChild = btParent.rightChild();</span>
+<span class="nc" id="L248">			btRightChild = btParent.rightChild();</span>
 		}
 
-<span class="nc" id="L239">		return btParent;</span>
+<span class="nc" id="L251">		return btParent;</span>
 	}
 
 	/**
@@ -250,15 +262,15 @@ public class BinaryTree {
 	public boolean ascendingNodeList (
 		final java.util.List&lt;java.lang.Double&gt; lsNode)
 	{
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		if (null == lsNode) return false;</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		if (null == lsNode) return false;</span>
 
-<span class="nc bnc" id="L255" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.ascendingNodeList (lsNode)) return false;</span>
+<span class="nc bnc" id="L267" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.ascendingNodeList (lsNode)) return false;</span>
 
-<span class="nc" id="L257">		lsNode.add (_dblNode);</span>
+<span class="nc" id="L269">		lsNode.add (_dblNode);</span>
 
-<span class="nc bnc" id="L259" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.ascendingNodeList (lsNode)) return false;</span>
+<span class="nc bnc" id="L271" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.ascendingNodeList (lsNode)) return false;</span>
 
-<span class="nc" id="L261">		return true;</span>
+<span class="nc" id="L273">		return true;</span>
 	}
 
 	/**
@@ -269,9 +281,9 @@ public class BinaryTree {
 
 	public java.util.List&lt;java.lang.Double&gt; ascendingNodeList()
 	{
-<span class="nc" id="L272">		java.util.List&lt;java.lang.Double&gt; lsNode = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L284">		java.util.List&lt;java.lang.Double&gt; lsNode = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		return ascendingNodeList (lsNode) ? lsNode : null;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		return ascendingNodeList (lsNode) ? lsNode : null;</span>
 	}
 
 	/**
@@ -290,18 +302,18 @@ public class BinaryTree {
 		final int iUpdateStartIndex)
 		throws java.lang.Exception
 	{
-<span class="pc bpc" id="L293" title="2 of 4 branches missed.">		if (null == adblNode || 0 == adblNode.length)</span>
-<span class="nc" id="L294">			throw new java.lang.Exception (&quot;BinaryTree::ascendingNodeArray =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L305" title="2 of 4 branches missed.">		if (null == adblNode || 0 == adblNode.length)</span>
+<span class="nc" id="L306">			throw new java.lang.Exception (&quot;BinaryTree::ascendingNodeArray =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc bfc" id="L296" title="All 2 branches covered.">		int iIndexToUpdate = null == _btLeftChild ? iUpdateStartIndex : _btLeftChild.ascendingNodeArray</span>
-<span class="fc" id="L297">			(adblNode, iUpdateStartIndex);</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">		int iIndexToUpdate = null == _btLeftChild ? iUpdateStartIndex : _btLeftChild.ascendingNodeArray</span>
+<span class="fc" id="L309">			(adblNode, iUpdateStartIndex);</span>
 
-<span class="pc bpc" id="L299" title="1 of 2 branches missed.">		if (iIndexToUpdate &gt;= adblNode.length)</span>
-<span class="nc" id="L300">			throw new java.lang.Exception (&quot;BinaryTree::ascendingNodeArray =&gt; Invalid Inputs&quot;);</span>
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">		if (iIndexToUpdate &gt;= adblNode.length)</span>
+<span class="nc" id="L312">			throw new java.lang.Exception (&quot;BinaryTree::ascendingNodeArray =&gt; Invalid Inputs&quot;);</span>
 
-<span class="fc" id="L302">		adblNode[iIndexToUpdate++] = _dblNode;</span>
+<span class="fc" id="L314">		adblNode[iIndexToUpdate++] = _dblNode;</span>
 
-<span class="fc bfc" id="L304" title="All 2 branches covered.">		return null == _btRightChild ? iIndexToUpdate : _btRightChild.ascendingNodeArray (adblNode,</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">		return null == _btRightChild ? iIndexToUpdate : _btRightChild.ascendingNodeArray (adblNode,</span>
 			iIndexToUpdate);
 	}
 
@@ -316,15 +328,15 @@ public class BinaryTree {
 	public boolean descendingNodeList (
 		final java.util.List&lt;java.lang.Double&gt; lsNode)
 	{
-<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (null == lsNode) return false;</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (null == lsNode) return false;</span>
 
-<span class="nc bnc" id="L321" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.descendingNodeList (lsNode)) return false;</span>
+<span class="nc bnc" id="L333" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.descendingNodeList (lsNode)) return false;</span>
 
-<span class="nc" id="L323">		lsNode.add (_dblNode);</span>
+<span class="nc" id="L335">		lsNode.add (_dblNode);</span>
 
-<span class="nc bnc" id="L325" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.descendingNodeList (lsNode)) return false;</span>
+<span class="nc bnc" id="L337" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.descendingNodeList (lsNode)) return false;</span>
 
-<span class="nc" id="L327">		return true;</span>
+<span class="nc" id="L339">		return true;</span>
 	}
 
 	/**
@@ -340,19 +352,19 @@ public class BinaryTree {
 		final double[] adblNode,
 		final int iIndexToUpdate)
 	{
-<span class="nc bnc" id="L343" title="All 4 branches missed.">		if (null == adblNode || 0 == adblNode.length) return false;</span>
+<span class="nc bnc" id="L355" title="All 4 branches missed.">		if (null == adblNode || 0 == adblNode.length) return false;</span>
 
-<span class="nc bnc" id="L345" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.descendingNodeArray (adblNode, iIndexToUpdate))</span>
-<span class="nc" id="L346">			return false;</span>
+<span class="nc bnc" id="L357" title="All 4 branches missed.">		if (null != _btLeftChild &amp;&amp; !_btLeftChild.descendingNodeArray (adblNode, iIndexToUpdate))</span>
+<span class="nc" id="L358">			return false;</span>
 
-<span class="nc bnc" id="L348" title="All 2 branches missed.">		if (iIndexToUpdate &gt;= adblNode.length) return false;</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (iIndexToUpdate &gt;= adblNode.length) return false;</span>
 
-<span class="nc" id="L350">		adblNode[iIndexToUpdate] = _dblNode;</span>
+<span class="nc" id="L362">		adblNode[iIndexToUpdate] = _dblNode;</span>
 
-<span class="nc bnc" id="L352" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.descendingNodeArray (adblNode, iIndexToUpdate + 1))</span>
-<span class="nc" id="L353">			return false;</span>
+<span class="nc bnc" id="L364" title="All 4 branches missed.">		if (null != _btRightChild &amp;&amp; !_btRightChild.descendingNodeArray (adblNode, iIndexToUpdate + 1))</span>
+<span class="nc" id="L365">			return false;</span>
 
-<span class="nc" id="L355">		return true;</span>
+<span class="nc" id="L367">		return true;</span>
 	}
 
 	/**
@@ -363,9 +375,9 @@ public class BinaryTree {
 
 	public java.util.List&lt;java.lang.Double&gt; descendingNodeList()
 	{
-<span class="nc" id="L366">		java.util.List&lt;java.lang.Double&gt; lsNode = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
+<span class="nc" id="L378">		java.util.List&lt;java.lang.Double&gt; lsNode = new java.util.ArrayList&lt;java.lang.Double&gt;();</span>
 
-<span class="nc bnc" id="L368" title="All 2 branches missed.">		return descendingNodeList (lsNode) ? lsNode : null;</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		return descendingNodeList (lsNode) ? lsNode : null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

@@ -6,45 +6,57 @@ package org.drip.spaces.functionclass;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -90,10 +102,10 @@ package org.drip.spaces.functionclass;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass&quot;&gt;Function Class&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass/README.md&quot;&gt;Normed Finite Spaces Function Class&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -101,16 +113,16 @@ package org.drip.spaces.functionclass;
  */
 
 public abstract class NormedRxToNormedRxFinite {
-<span class="nc" id="L104">	private double _dblMaureyConstant = java.lang.Double.NaN;</span>
+<span class="nc" id="L116">	private double _dblMaureyConstant = java.lang.Double.NaN;</span>
 
 	protected NormedRxToNormedRxFinite (
 		final double dblMaureyConstant)
 		throws java.lang.Exception
-<span class="nc" id="L109">	{</span>
-<span class="nc bnc" id="L110" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0. &gt;=</span>
+<span class="nc" id="L121">	{</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0. &gt;=</span>
 			_dblMaureyConstant)
-<span class="nc" id="L112">			throw new java.lang.Exception (&quot;NormedRxToNormedRxFinite ctr =&gt; Invalid Inputs&quot;);</span>
-<span class="nc" id="L113">	}</span>
+<span class="nc" id="L124">			throw new java.lang.Exception (&quot;NormedRxToNormedRxFinite ctr =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L125">	}</span>
 
 	/**
 	 * Retrieve the Input Vector Space
@@ -194,7 +206,7 @@ public abstract class NormedRxToNormedRxFinite {
 
 	public double maureyConstant()
 	{
-<span class="nc" id="L197">		return _dblMaureyConstant;</span>
+<span class="nc" id="L209">		return _dblMaureyConstant;</span>
 	}
 
 	/**
@@ -212,32 +224,32 @@ public abstract class NormedRxToNormedRxFinite {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final org.drip.function.definition.R1ToR1 funcR1ToR1FatShatter)
 	{
-<span class="nc bnc" id="L215" title="All 4 branches missed.">		if (null == gvvi || null == funcR1ToR1FatShatter) return null;</span>
+<span class="nc bnc" id="L227" title="All 4 branches missed.">		if (null == gvvi || null == funcR1ToR1FatShatter) return null;</span>
 
-<span class="nc" id="L217">		int iSampleSize = -1;</span>
+<span class="nc" id="L229">		int iSampleSize = -1;</span>
 
-<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (gvvi instanceof org.drip.spaces.instance.ValidatedR1) {</span>
-<span class="nc" id="L220">			double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (gvvi instanceof org.drip.spaces.instance.ValidatedR1) {</span>
+<span class="nc" id="L232">			double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();</span>
 
-<span class="nc bnc" id="L222" title="All 2 branches missed.">			if (null == adblInstance) return null;</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">			if (null == adblInstance) return null;</span>
 
-<span class="nc" id="L224">			iSampleSize = adblInstance.length;</span>
-<span class="nc bnc" id="L225" title="All 2 branches missed.">		} else if (gvvi instanceof org.drip.spaces.instance.ValidatedRd) {</span>
-<span class="nc" id="L226">			double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();</span>
+<span class="nc" id="L236">			iSampleSize = adblInstance.length;</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		} else if (gvvi instanceof org.drip.spaces.instance.ValidatedRd) {</span>
+<span class="nc" id="L238">			double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();</span>
 
-<span class="nc bnc" id="L228" title="All 2 branches missed.">			if (null == aadblInstance) return null;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">			if (null == aadblInstance) return null;</span>
 
-<span class="nc" id="L230">			iSampleSize = aadblInstance.length;</span>
+<span class="nc" id="L242">			iSampleSize = aadblInstance.length;</span>
 		}
 
 		try {
-<span class="nc" id="L234">			return new org.drip.spaces.cover.ScaleSensitiveCoveringBounds (funcR1ToR1FatShatter,</span>
+<span class="nc" id="L246">			return new org.drip.spaces.cover.ScaleSensitiveCoveringBounds (funcR1ToR1FatShatter,</span>
 				iSampleSize);
-<span class="nc" id="L236">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L237">			e.printStackTrace();</span>
+<span class="nc" id="L248">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L249">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L240">		return null;</span>
+<span class="nc" id="L252">		return null;</span>
 	}
 
 	/**
@@ -251,14 +263,14 @@ public abstract class NormedRxToNormedRxFinite {
 	public int outputDimension()
 		throws java.lang.Exception
 	{
-<span class="nc" id="L254">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = outputMetricVectorSpace();</span>
+<span class="nc" id="L266">		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = outputMetricVectorSpace();</span>
 
-<span class="nc bnc" id="L256" title="All 4 branches missed.">		if (!(gmvsOutput instanceof org.drip.spaces.metric.R1Continuous) &amp;&amp; !(gmvsOutput instanceof</span>
+<span class="nc bnc" id="L268" title="All 4 branches missed.">		if (!(gmvsOutput instanceof org.drip.spaces.metric.R1Continuous) &amp;&amp; !(gmvsOutput instanceof</span>
 			org.drip.spaces.metric.RdContinuousBanach))
-<span class="nc" id="L258">			throw new java.lang.Exception (&quot;NormedRxToNormedRxFinite::dimension =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L270">			throw new java.lang.Exception (&quot;NormedRxToNormedRxFinite::dimension =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc bnc" id="L260" title="All 2 branches missed.">		return gmvsOutput instanceof org.drip.spaces.metric.R1Continuous ? 1 :</span>
-<span class="nc" id="L261">			((org.drip.spaces.metric.RdContinuousBanach) gmvsOutput).dimension();</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		return gmvsOutput instanceof org.drip.spaces.metric.R1Continuous ? 1 :</span>
+<span class="nc" id="L273">			((org.drip.spaces.metric.RdContinuousBanach) gmvsOutput).dimension();</span>
 	}
 
 	/**
@@ -271,13 +283,13 @@ public abstract class NormedRxToNormedRxFinite {
 	public org.drip.spaces.cover.MaureyOperatorCoveringBounds populationMetricCoveringBounds()
 	{
 		try {
-<span class="nc" id="L274">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
-<span class="nc" id="L275">				outputDimension(), operatorPopulationMetricNorm());</span>
-<span class="nc" id="L276">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L277">			e.printStackTrace();</span>
+<span class="nc" id="L286">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
+<span class="nc" id="L287">				outputDimension(), operatorPopulationMetricNorm());</span>
+<span class="nc" id="L288">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L289">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L280">		return null;</span>
+<span class="nc" id="L292">		return null;</span>
 	}
 
 	/**
@@ -290,13 +302,13 @@ public abstract class NormedRxToNormedRxFinite {
 	public org.drip.spaces.cover.MaureyOperatorCoveringBounds populationSupremumCoveringBounds()
 	{
 		try {
-<span class="nc" id="L293">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
-<span class="nc" id="L294">				outputDimension(), operatorPopulationSupremumNorm());</span>
-<span class="nc" id="L295">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L296">			e.printStackTrace();</span>
+<span class="nc" id="L305">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
+<span class="nc" id="L306">				outputDimension(), operatorPopulationSupremumNorm());</span>
+<span class="nc" id="L307">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L308">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L299">		return null;</span>
+<span class="nc" id="L311">		return null;</span>
 	}
 
 	/**
@@ -312,13 +324,13 @@ public abstract class NormedRxToNormedRxFinite {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
 		try {
-<span class="nc" id="L315">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
-<span class="nc" id="L316">				outputDimension(), operatorSampleMetricNorm (gvvi));</span>
-<span class="nc" id="L317">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L318">			e.printStackTrace();</span>
+<span class="nc" id="L327">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
+<span class="nc" id="L328">				outputDimension(), operatorSampleMetricNorm (gvvi));</span>
+<span class="nc" id="L329">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L330">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L321">		return null;</span>
+<span class="nc" id="L333">		return null;</span>
 	}
 
 	/**
@@ -334,13 +346,13 @@ public abstract class NormedRxToNormedRxFinite {
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
 		try {
-<span class="nc" id="L337">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
-<span class="nc" id="L338">				outputDimension(), operatorSampleSupremumNorm (gvvi));</span>
-<span class="nc" id="L339">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L340">			e.printStackTrace();</span>
+<span class="nc" id="L349">			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,</span>
+<span class="nc" id="L350">				outputDimension(), operatorSampleSupremumNorm (gvvi));</span>
+<span class="nc" id="L351">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L352">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L343">		return null;</span>
+<span class="nc" id="L355">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

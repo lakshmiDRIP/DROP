@@ -6,42 +6,54 @@ package org.drip.spaces.graph;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.spaces.graph;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph/README.md&quot;&gt;Graph Representation and Traversal Algorithms&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -104,41 +116,41 @@ package org.drip.spaces.graph;
 
 public class DijkstraScheme
 {
-<span class="nc" id="L107">	private org.drip.spaces.graph.Topography _topography = null;</span>
+<span class="nc" id="L119">	private org.drip.spaces.graph.Topography _topography = null;</span>
 
 	private void visitVertex (
 		final org.drip.spaces.graph.ShortestPathVertex currentVertexPeriphery,
 		final org.drip.spaces.graph.ShortestPathFirstWengert spfWengert)
 	{
-<span class="nc" id="L113">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
+<span class="nc" id="L125">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
 
-<span class="nc" id="L115">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap = _topography.connectionMap();</span>
+<span class="nc" id="L127">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; connectionMap = _topography.connectionMap();</span>
 
-<span class="nc" id="L117">		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();</span>
+<span class="nc" id="L129">		double currentWeightFromSource = currentVertexPeriphery.weightFromSource();</span>
 
-<span class="nc" id="L119">		java.lang.String currentVertex = currentVertexPeriphery.current();</span>
+<span class="nc" id="L131">		java.lang.String currentVertex = currentVertexPeriphery.current();</span>
 
-<span class="nc" id="L121">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; egressMap = _topography.vertex</span>
-<span class="nc" id="L122">			(currentVertex).egressMap();</span>
+<span class="nc" id="L133">		java.util.Map&lt;java.lang.String, java.lang.Double&gt; egressMap = _topography.vertex</span>
+<span class="nc" id="L134">			(currentVertex).egressMap();</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; egressEntry : egressMap.entrySet())</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (java.util.Map.Entry&lt;java.lang.String, java.lang.Double&gt; egressEntry : egressMap.entrySet())</span>
 		{
-<span class="nc" id="L126">			java.lang.String egressVertex = egressEntry.getKey();</span>
+<span class="nc" id="L138">			java.lang.String egressVertex = egressEntry.getKey();</span>
 
-<span class="nc" id="L128">			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get</span>
-<span class="nc" id="L129">				(currentVertex + &quot;_&quot; + egressVertex);</span>
+<span class="nc" id="L140">			double weightFromSourceThroughCurrent = currentWeightFromSource + connectionMap.get</span>
+<span class="nc" id="L141">				(currentVertex + &quot;_&quot; + egressVertex);</span>
 
-<span class="nc" id="L131">			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =</span>
-<span class="nc" id="L132">				vertexPeripheryMap.shortestPathVertex (egressVertex);</span>
+<span class="nc" id="L143">			org.drip.spaces.graph.ShortestPathVertex egressVertexPeriphery =</span>
+<span class="nc" id="L144">				vertexPeripheryMap.shortestPathVertex (egressVertex);</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">			if (egressVertexPeriphery.weightFromSource() &gt; weightFromSourceThroughCurrent)</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (egressVertexPeriphery.weightFromSource() &gt; weightFromSourceThroughCurrent)</span>
 			{
-<span class="nc" id="L136">				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);</span>
+<span class="nc" id="L148">				egressVertexPeriphery.setWeightFromSource (weightFromSourceThroughCurrent);</span>
 
-<span class="nc" id="L138">				egressVertexPeriphery.setPreceeding (currentVertex);</span>
+<span class="nc" id="L150">				egressVertexPeriphery.setPreceeding (currentVertex);</span>
 			}
-<span class="nc" id="L140">		}</span>
-<span class="nc" id="L141">	}</span>
+<span class="nc" id="L152">		}</span>
+<span class="nc" id="L153">	}</span>
 
 	/**
 	 * DijkstraScheme Constructor
@@ -151,12 +163,12 @@ public class DijkstraScheme
 	public DijkstraScheme (
 		final org.drip.spaces.graph.Topography topography)
 		throws java.lang.Exception
-<span class="nc" id="L154">	{</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (null == (_topography = topography))</span>
+<span class="nc" id="L166">	{</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		if (null == (_topography = topography))</span>
 		{
-<span class="nc" id="L157">			throw new java.lang.Exception (&quot;DijkstraScheme Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L169">			throw new java.lang.Exception (&quot;DijkstraScheme Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L159">	}</span>
+<span class="nc" id="L171">	}</span>
 
 	/**
 	 * Retrieve the Topography Map
@@ -166,7 +178,7 @@ public class DijkstraScheme
 
 	public org.drip.spaces.graph.Topography topography()
 	{
-<span class="nc" id="L169">		return _topography;</span>
+<span class="nc" id="L181">		return _topography;</span>
 	}
 
 	/**
@@ -180,7 +192,7 @@ public class DijkstraScheme
 	public org.drip.spaces.graph.ShortestPathFirstWengert setup (
 		final java.lang.String source)
 	{
-<span class="nc" id="L183">		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (</span>
+<span class="nc" id="L195">		return org.drip.spaces.graph.ShortestPathFirstWengert.Dijkstra (</span>
 			_topography,
 			source
 		);
@@ -197,29 +209,29 @@ public class DijkstraScheme
 	public org.drip.spaces.graph.ShortestPathFirstWengert spf (
 		final java.lang.String source)
 	{
-<span class="nc" id="L200">		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);</span>
+<span class="nc" id="L212">		org.drip.spaces.graph.ShortestPathFirstWengert spfWengert = setup (source);</span>
 
-<span class="nc bnc" id="L202" title="All 2 branches missed.">		if (null == spfWengert)</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (null == spfWengert)</span>
 		{
-<span class="nc" id="L204">			return null;</span>
+<span class="nc" id="L216">			return null;</span>
 		}
 
-<span class="nc" id="L207">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
+<span class="nc" id="L219">		org.drip.spaces.graph.ShortestPathTree vertexPeripheryMap = spfWengert.vertexPeripheryMap();</span>
 
-<span class="nc" id="L209">		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =</span>
-<span class="nc" id="L210">			vertexPeripheryMap.greedyShortestPathVertex();</span>
+<span class="nc" id="L221">		org.drip.spaces.graph.ShortestPathVertex vertexPeriphery =</span>
+<span class="nc" id="L222">			vertexPeripheryMap.greedyShortestPathVertex();</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		while (null != vertexPeriphery)</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		while (null != vertexPeriphery)</span>
 		{
-<span class="nc" id="L214">			visitVertex (</span>
+<span class="nc" id="L226">			visitVertex (</span>
 				vertexPeriphery,
 				spfWengert
 			);
 
-<span class="nc" id="L219">			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();</span>
+<span class="nc" id="L231">			vertexPeriphery = vertexPeripheryMap.greedyShortestPathVertex();</span>
 		}
 
-<span class="nc" id="L222">		return spfWengert;</span>
+<span class="nc" id="L234">		return spfWengert;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

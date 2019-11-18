@@ -6,42 +6,54 @@ package org.drip.spaces.graph;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.spaces.graph;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph&quot;&gt;Graph&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/graph/README.md&quot;&gt;Graph Representation and Traversal Algorithms&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -104,10 +116,10 @@ package org.drip.spaces.graph;
 
 public class ShortestPathVertex
 {
-<span class="nc" id="L107">	private boolean _visited = false;</span>
-<span class="nc" id="L108">	private java.lang.String _current = &quot;&quot;;</span>
-<span class="nc" id="L109">	private java.lang.String _preceeding = &quot;&quot;;</span>
-<span class="nc" id="L110">	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;</span>
+<span class="nc" id="L119">	private boolean _visited = false;</span>
+<span class="nc" id="L120">	private java.lang.String _current = &quot;&quot;;</span>
+<span class="nc" id="L121">	private java.lang.String _preceeding = &quot;&quot;;</span>
+<span class="nc" id="L122">	private double _weightFromSource = java.lang.Double.POSITIVE_INFINITY;</span>
 
 	/**
 	 * ShortestPathVertex Constructor
@@ -120,12 +132,12 @@ public class ShortestPathVertex
 	public ShortestPathVertex (
 		final java.lang.String current)
 		throws java.lang.Exception
-<span class="nc" id="L123">	{</span>
-<span class="nc bnc" id="L124" title="All 4 branches missed.">		if (null == (_current = current) || _current.isEmpty())</span>
+<span class="nc" id="L135">	{</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		if (null == (_current = current) || _current.isEmpty())</span>
 		{
-<span class="nc" id="L126">			throw new java.lang.Exception (&quot;ShortestPathVertex Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L138">			throw new java.lang.Exception (&quot;ShortestPathVertex Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L128">	}</span>
+<span class="nc" id="L140">	}</span>
 
 	/**
 	 * Retrieve the Current Vertex
@@ -135,7 +147,7 @@ public class ShortestPathVertex
 
 	public java.lang.String current()
 	{
-<span class="nc" id="L138">		return _current;</span>
+<span class="nc" id="L150">		return _current;</span>
 	}
 
 	/**
@@ -146,7 +158,7 @@ public class ShortestPathVertex
 
 	public java.lang.String preceeding()
 	{
-<span class="nc" id="L149">		return _preceeding;</span>
+<span class="nc" id="L161">		return _preceeding;</span>
 	}
 
 	/**
@@ -160,13 +172,13 @@ public class ShortestPathVertex
 	public boolean setPreceeding (
 		final java.lang.String preceeding)
 	{
-<span class="nc bnc" id="L163" title="All 4 branches missed.">		if (null == preceeding || preceeding.isEmpty())</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">		if (null == preceeding || preceeding.isEmpty())</span>
 		{
-<span class="nc" id="L165">			return false;</span>
+<span class="nc" id="L177">			return false;</span>
 		}
 
-<span class="nc" id="L168">		_preceeding = preceeding;</span>
-<span class="nc" id="L169">		return true;</span>
+<span class="nc" id="L180">		_preceeding = preceeding;</span>
+<span class="nc" id="L181">		return true;</span>
 	}
 
 	/**
@@ -177,7 +189,7 @@ public class ShortestPathVertex
 
 	public double weightFromSource()
 	{
-<span class="nc" id="L180">		return _weightFromSource;</span>
+<span class="nc" id="L192">		return _weightFromSource;</span>
 	}
 
 	/**
@@ -191,13 +203,13 @@ public class ShortestPathVertex
 	public boolean setWeightFromSource (
 		final double weightFromSource)
 	{
-<span class="nc bnc" id="L194" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (weightFromSource))</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (weightFromSource))</span>
 		{
-<span class="nc" id="L196">			return false;</span>
+<span class="nc" id="L208">			return false;</span>
 		}
 
-<span class="nc" id="L199">		_weightFromSource = weightFromSource;</span>
-<span class="nc" id="L200">		return true;</span>
+<span class="nc" id="L211">		_weightFromSource = weightFromSource;</span>
+<span class="nc" id="L212">		return true;</span>
 	}
 
 	/**
@@ -208,7 +220,7 @@ public class ShortestPathVertex
 	
 	public boolean visited()
 	{
-<span class="nc" id="L211">		return _visited;</span>
+<span class="nc" id="L223">		return _visited;</span>
 	}
 
 	/**
@@ -222,8 +234,8 @@ public class ShortestPathVertex
 	public boolean setVisited (
 		final boolean visited)
 	{
-<span class="nc" id="L225">		_visited = visited;</span>
-<span class="nc" id="L226">		return true;</span>
+<span class="nc" id="L237">		_visited = visited;</span>
+<span class="nc" id="L238">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

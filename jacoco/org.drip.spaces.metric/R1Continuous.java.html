@@ -6,45 +6,57 @@ package org.drip.spaces.metric;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -81,10 +93,10 @@ package org.drip.spaces.metric;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric&quot;&gt;Metric&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md&quot;&gt;Hilbert/Banach Normed Metric Spaces&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
@@ -93,8 +105,8 @@ package org.drip.spaces.metric;
 
 public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector implements
 	org.drip.spaces.metric.R1Normed {
-<span class="nc" id="L96">	private int _iPNorm = -1;</span>
-<span class="nc" id="L97">	private org.drip.measure.continuous.R1Univariate _distR1 = null;</span>
+<span class="nc" id="L108">	private int _iPNorm = -1;</span>
+<span class="nc" id="L109">	private org.drip.measure.continuous.R1Univariate _distR1 = null;</span>
 
 	/**
 	 * Construct the Standard l^p R^1 Continuous Space Instance
@@ -114,12 +126,12 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final int iPNorm)
 	{
 		try {
-<span class="nc" id="L117">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);</span>
-<span class="nc" id="L118">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L119">			e.printStackTrace();</span>
+<span class="nc" id="L129">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);</span>
+<span class="nc" id="L130">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L131">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L122">		return null;</span>
+<span class="nc" id="L134">		return null;</span>
 	}
 
 	/**
@@ -138,12 +150,12 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final org.drip.measure.continuous.R1Univariate distR1)
 	{
 		try {
-<span class="nc" id="L141">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);</span>
-<span class="nc" id="L142">		} catch (java.lang.Exception e) {</span>
-<span class="nc" id="L143">			e.printStackTrace();</span>
+<span class="nc" id="L153">			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);</span>
+<span class="nc" id="L154">		} catch (java.lang.Exception e) {</span>
+<span class="nc" id="L155">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L146">		return null;</span>
+<span class="nc" id="L158">		return null;</span>
 	}
 
 	/**
@@ -164,93 +176,93 @@ public class R1Continuous extends org.drip.spaces.tensor.R1ContinuousVector impl
 		final int iPNorm)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L167">		super (dblLeftEdge, dblRightEdge);</span>
+<span class="nc" id="L179">		super (dblLeftEdge, dblRightEdge);</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
-<span class="nc" id="L170">			throw new java.lang.Exception (&quot;R1Continuous Constructor: Invalid p-norm&quot;);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (0 &gt; (_iPNorm = iPNorm))</span>
+<span class="nc" id="L182">			throw new java.lang.Exception (&quot;R1Continuous Constructor: Invalid p-norm&quot;);</span>
 
-<span class="nc" id="L172">		_distR1 = distR1;</span>
-<span class="nc" id="L173">	}</span>
+<span class="nc" id="L184">		_distR1 = distR1;</span>
+<span class="nc" id="L185">	}</span>
 
 	@Override public int pNorm()
 	{
-<span class="nc" id="L177">		return _iPNorm;</span>
+<span class="nc" id="L189">		return _iPNorm;</span>
 	}
 
 	@Override public org.drip.measure.continuous.R1Univariate borelSigmaMeasure()
 	{
-<span class="nc" id="L182">		return _distR1;</span>
+<span class="nc" id="L194">		return _distR1;</span>
 	}
 
 	@Override public double sampleMetricNorm (
 		final double dblX)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L189" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
-<span class="nc" id="L190">			throw new java.lang.Exception (&quot;R1Continuous::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">		if (!validateInstance (dblX))</span>
+<span class="nc" id="L202">			throw new java.lang.Exception (&quot;R1Continuous::sampleMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L192">		return java.lang.Math.abs (dblX);</span>
+<span class="nc" id="L204">		return java.lang.Math.abs (dblX);</span>
 	}
 
 	@Override public double populationMode()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L198" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L199">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L211">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L201">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L213">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L206">				return _distR1.density (dblX);</span>
+<span class="nc" id="L218">				return _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L210">		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());</span>
+<span class="nc" id="L222">		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());</span>
 
-<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (null == vopMode)</span>
-<span class="nc" id="L213">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Cannot compute VOP Mode&quot;);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (null == vopMode)</span>
+<span class="nc" id="L225">			throw new java.lang.Exception (&quot;R1Continuous::populationMode =&gt; Cannot compute VOP Mode&quot;);</span>
 
-<span class="nc" id="L215">		return vopMode.variates()[0];</span>
+<span class="nc" id="L227">		return vopMode.variates()[0];</span>
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L221" title="All 2 branches missed.">		if (null == _distR1)</span>
-<span class="nc" id="L222">			throw new java.lang.Exception (&quot;R1Continuous::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (null == _distR1)</span>
+<span class="nc" id="L234">			throw new java.lang.Exception (&quot;R1Continuous::populationMetricNorm =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L224">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
+<span class="nc" id="L236">		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L229">				return sampleMetricNorm (dblX) * _distR1.density (dblX);</span>
+<span class="nc" id="L241">				return sampleMetricNorm (dblX) * _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L233">		return funcR1ToR1.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L245">		return funcR1ToR1.integrate (leftEdge(), rightEdge());</span>
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L240" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
-<span class="nc" id="L241">			throw new java.lang.Exception (&quot;R1Continuous::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);</span>
+<span class="nc bnc" id="L252" title="All 4 branches missed.">		if (null == funcR1ToR1 || null == _distR1)</span>
+<span class="nc" id="L253">			throw new java.lang.Exception (&quot;R1Continuous::borelMeasureSpaceExpectation =&gt; Invalid Inputs&quot;);</span>
 
-<span class="nc" id="L243">		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1</span>
-<span class="nc" id="L244">			(null) {</span>
+<span class="nc" id="L255">		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1</span>
+<span class="nc" id="L256">			(null) {</span>
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-<span class="nc" id="L249">				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);</span>
+<span class="nc" id="L261">				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);</span>
 			}
 		};
 
-<span class="nc" id="L253">		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());</span>
+<span class="nc" id="L265">		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

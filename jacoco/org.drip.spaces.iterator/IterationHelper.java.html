@@ -6,45 +6,57 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -73,17 +85,17 @@ package org.drip.spaces.iterator;
  *
  * &lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md&quot;&gt;Statistical Learning Library&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces&quot;&gt;Spaces&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator&quot;&gt;Iterator&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md&quot;&gt;R&lt;sup&gt;1&lt;/sup&gt; and R&lt;sup&gt;d&lt;/sup&gt; Vector/Tensor Spaces (Validated and/or Normed), and Function Classes&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md&quot;&gt;Iterative/Exhaustive Vector Space Scanners&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  * &lt;br&gt;&lt;br&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L86">public class IterationHelper {</span>
+<span class="nc" id="L98">public class IterationHelper {</span>
 
 	/**
 	 * Scan through the Integer Array looking for a repeating Index
@@ -96,19 +108,19 @@ package org.drip.spaces.iterator;
 	public static final boolean CheckForRepeatingIndex (
 		final int[] ai)
 	{
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">		if (null == ai) return false;</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">		if (null == ai) return false;</span>
 
-<span class="fc" id="L101">		int iCursorLength = ai.length;</span>
+<span class="fc" id="L113">		int iCursorLength = ai.length;</span>
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">		if (1 &gt;= iCursorLength) return false;</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">		if (1 &gt;= iCursorLength) return false;</span>
 
-<span class="fc bfc" id="L105" title="All 2 branches covered.">		for (int i = 0; i &lt; iCursorLength; ++i) {</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">			for (int j = i + 1; j &lt; iCursorLength; ++j) {</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">				if (ai[i] == ai[j]) return true;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">		for (int i = 0; i &lt; iCursorLength; ++i) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			for (int j = i + 1; j &lt; iCursorLength; ++j) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">				if (ai[i] == ai[j]) return true;</span>
 			}
 		}
 
-<span class="fc" id="L111">		return false;</span>
+<span class="fc" id="L123">		return false;</span>
 	}
 
 	/**
@@ -122,18 +134,18 @@ package org.drip.spaces.iterator;
 		final java.lang.String strPrefix,
 		final int[] ai)
 	{
-<span class="nc bnc" id="L125" title="All 2 branches missed.">		if (null == ai) return;</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (null == ai) return;</span>
 
-<span class="nc" id="L127">		int iNumIndex = ai.length;</span>
-<span class="nc" id="L128">		java.lang.String strIndexArray = strPrefix;</span>
+<span class="nc" id="L139">		int iNumIndex = ai.length;</span>
+<span class="nc" id="L140">		java.lang.String strIndexArray = strPrefix;</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (0 &gt;= iNumIndex) return;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">		if (0 &gt;= iNumIndex) return;</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumIndex; ++i)</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">			strIndexArray += (0 == i ? &quot;[&quot; : &quot;,&quot;) + ai[i];</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (int i = 0; i &lt; iNumIndex; ++i)</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">			strIndexArray += (0 == i ? &quot;[&quot; : &quot;,&quot;) + ai[i];</span>
 
-<span class="nc" id="L135">		System.out.println (strIndexArray + &quot;]&quot;);</span>
-<span class="nc" id="L136">	}</span>
+<span class="nc" id="L147">		System.out.println (strIndexArray + &quot;]&quot;);</span>
+<span class="nc" id="L148">	}</span>
 
 	/**
 	 * Compose a String constructed from the specified Array Index
@@ -148,17 +160,17 @@ package org.drip.spaces.iterator;
 		final java.lang.String strMaster,
 		final int[] aiIndex)
 	{
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (null == aiIndex) return null;</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">		if (null == aiIndex) return null;</span>
 
-<span class="fc" id="L153">		int iNumIndex = aiIndex.length;</span>
-<span class="fc" id="L154">		java.lang.String strOffOfIndex = &quot;&quot;;</span>
+<span class="fc" id="L165">		int iNumIndex = aiIndex.length;</span>
+<span class="fc" id="L166">		java.lang.String strOffOfIndex = &quot;&quot;;</span>
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">		if (0 &gt;= iNumIndex) return null;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">		if (0 &gt;= iNumIndex) return null;</span>
 
-<span class="fc bfc" id="L158" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumIndex; ++i)</span>
-<span class="fc" id="L159">			strOffOfIndex += strMaster.charAt (aiIndex[i]);</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">		for (int i = 0; i &lt; iNumIndex; ++i)</span>
+<span class="fc" id="L171">			strOffOfIndex += strMaster.charAt (aiIndex[i]);</span>
 
-<span class="fc" id="L161">		return strOffOfIndex;</span>
+<span class="fc" id="L173">		return strOffOfIndex;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
