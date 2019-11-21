@@ -7,23 +7,23 @@ DROP Asset Backed Borrower Package holds the Asset Backed Loan Borrower Characte
 
 ## Class Components
 
- * [***Delinquent Accounts Last 2 Years***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/DelinquentAccountsLast2Years.java)
+ * [***Delinquent Accounts Last 2 Years***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower/DelinquentAccountsLast2Years.java)
  <i>DelinquentAccountsLast2Years</i> contains the Total Number of Borrower Delinquent Accounts over the Last
  Two Years
 
- * [***DTI ex-Mortgage***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/DTIExMortgage.java)
+ * [***DTI ex-Mortgage***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower/DTIExMortgage.java)
  <i>DTIExMortgage</i> contains the Borrower's current ex-of-mortgage Debt-to-Income Ratio.
 
- * [***Monthly Gross Income***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/MonthlyGrossIncome.java)
+ * [***Monthly Gross Income***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower/MonthlyGrossIncome.java)
  <i>MonthlyGrossIncome</i> contains the Borrower's Monthly Gross Income.
 
- * [***Origination FICO***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/OriginationFICO.java)
+ * [***Origination FICO***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower/OriginationFICO.java)
  <i>OriginationFICO</i> contains the Borrower's FICO Score at a given Loan's Origination.
 
- * [***Revolving Utilization Rate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/RevolvingUtilizationRate.java)
+ * [***Revolving Utilization Rate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower/RevolvingUtilizationRate.java)
  <i>RevolvingUtilizationRate</i> contains the Borrower's Net Revolving Utilization Rate.
 
- * [***Total Accounts***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/borrower/TotalAccounts.java)
+ * [***Total Accounts***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/borrower/TotalAccounts.java)
  <i>TotalAccounts</i> contains the Total Current Number of Accounts for the Borrower.
 
 

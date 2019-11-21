@@ -7,22 +7,22 @@ DROP Asset Backed Loan Package holds the Asset Backed Loan Level Characteristics
 
 ## Class Components
 
- * [***Age***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/Age.java)
+ * [***Age***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/characteristics/Age.java)
  <i>Age</i> contains the current Loan Age - i.e., the Months in Balance of an Asset Backed Loan.
 
- * [***Coupon***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/Coupon.java)
+ * [***Coupon***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/loan/characteristics/Coupon.java)
  <i>Coupon</i> contains the current Loan Annualized Coupon Rate and Frequency.
 
- * [***Inquiries in the Last 6 Months***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/InquiriesLast6Months.java)
+ * [***Inquiries in the Last 6 Months***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip//loan/characteristics/InquiriesLast6Months.java)
  <i>InquiriesLast6Months</i> contains the Total Number of Inquiries for the Loan over the Last 6 Months.
 
- * [***Original Principal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/OriginalPrincipal.java)
+ * [***Original Principal***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip//loan/characteristics/OriginalPrincipal.java)
  <i>OriginalPrincipal</i> contains the Origination Loan Principal.
 
- * [***Term***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/Term.java)
+ * [***Term***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip//loan/characteristics/Term.java)
  <i>Term</i> contains the original Term of the Loan in Months.
 
- * [***Vintage***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/assetbacked/loan/Vintage.java)
+ * [***Vintage***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip//loan/characteristics/Vintage.java)
  <i>Vintage</i> contains the Loan Origination Vintage Details - i.e., the Year/Month of Loan Origination.
 
 
