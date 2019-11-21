@@ -15,7 +15,7 @@ DROP Execution Capture Package contains the Execution Trajectory Transaction Cos
  <i>LinearImpactTrajectoryEstimator</i> estimates the Price/Cost Distribution associated with the Trading
  Trajectory generated using the Linear Market Impact Evolution Parameters.
 
- * [***Linear Impact Uniform Trajectory Estimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/capture/bayesian/LinearImpactUniformTrajectoryEstimator.java)
+ * [***Linear Impact Uniform Trajectory Estimator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/capture/LinearImpactUniformTrajectoryEstimator.java)
  <i>LinearImpactUniformTrajectoryEstimator</i> estimates the Price/Cost Distribution associated with the
  Uniform Trading Trajectory generated using the Linear Market Impact Evolution Parameters.
 

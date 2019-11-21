@@ -15,8 +15,8 @@ DROP JSON Parser Package implements the RFC4627 Compliant JSON Message Parser.
  <i>ContentHandler</i> is an Adaptation of the ContentHandler Interface from the RFC4627 compliant JSON
  Simple (https://code.google.com/p/json-simple/).
 
- * [***TypeConverter***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser/TypeConverter.java)
- <i>TypeConverter</i> transforms the JSON Object to certain Primitive/Simple Data Type Arrays, i.e., double,
+ * [***Converter***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser/Converter.java)
+ <i>Converter</i> transforms the JSON Object to certain Primitive/Simple Data Type Arrays, i.e., double,
  integer, String, or JulianDate Arrays.
 
  * [***JSONParser***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/json/parser/JSONParser.java)

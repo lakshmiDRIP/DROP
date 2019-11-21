@@ -7,14 +7,14 @@ DROP Dynamics SABR Package implements the SABR Based Latent State Evolution.
 
 ## Class Components
 
- * [***ForwardRateUpdate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/ForwardRateUpdate.java)
+ * [***ForwardRateUpdate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/ForwardRateUpdate.java)
  <i>ForwardRateUpdate</i> contains the Increment and Snapshot of the Forward Rate Latent State evolved
  through the SABR Dynamics.
 
- * [***ImpliedBlackVolatility***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/ImpliedBlackVolatility.java)
+ * [***ImpliedBlackVolatility***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/ImpliedBlackVolatility.java)
  <i>ImpliedBlackVolatility</i> contains the Output of the Black Volatility Implication Calculations.
 
- * [***StochasticVolatilityStateEvolver***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/lmm/StochasticVolatilityStateEvolver.java)
+ * [***StochasticVolatilityStateEvolver***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/sabr/StochasticVolatilityStateEvolver.java)
  <i>StochasticVolatilityStateEvolver</i> provides the SABR Stochastic Volatility Evolution Dynamics.
 
 
