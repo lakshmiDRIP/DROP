@@ -6,41 +6,53 @@ package org.drip.specialfunction.bessel;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,10 +104,10 @@ package org.drip.specialfunction.bessel;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md&quot;&gt;Ordered Bessel Function Variant Estimators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -104,7 +116,7 @@ package org.drip.specialfunction.bessel;
 public abstract class ModifiedSecondIntegralEstimator extends
 	org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator
 {
-<span class="nc" id="L107">	private int _quadratureCount = -1;</span>
+<span class="nc" id="L119">	private int _quadratureCount = -1;</span>
 
 	/**
 	 * Construct the Modified Bessel Second Kind Estimator from the Integral Form
@@ -119,46 +131,46 @@ public abstract class ModifiedSecondIntegralEstimator extends
 	{
 		try
 		{
-<span class="nc" id="L122">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
-<span class="nc" id="L123">			{</span>
+<span class="nc" id="L134">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
+<span class="nc" id="L135">			{</span>
 				@Override public double bigK (
 					final double alpha,
 					final double z)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L129" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 					{
-<span class="nc" id="L132">						throw new java.lang.Exception</span>
+<span class="nc" id="L144">						throw new java.lang.Exception</span>
 							(&quot;ModifiedSecondIntegralEstimator::Standard::evaluate =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L136">					return</span>
-<span class="nc" id="L137">					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L148">					return</span>
+<span class="nc" id="L149">					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 						0.,
 						quadratureCount
-<span class="nc" id="L140">					).integrate (</span>
+<span class="nc" id="L152">					).integrate (</span>
 						new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L142">						{</span>
+<span class="nc" id="L154">						{</span>
 							@Override public double evaluate (
 								final double t)
 								throws java.lang.Exception
 							{
-<span class="nc bnc" id="L147" title="All 2 branches missed.">								return java.lang.Double.isInfinite (t) ? 0. :</span>
-<span class="nc" id="L148">									java.lang.Math.exp (-z * java.lang.Math.cosh (t)) *</span>
-<span class="nc" id="L149">										java.lang.Math.cosh (alpha * t);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">								return java.lang.Double.isInfinite (t) ? 0. :</span>
+<span class="nc" id="L160">									java.lang.Math.exp (-z * java.lang.Math.cosh (t)) *</span>
+<span class="nc" id="L161">										java.lang.Math.cosh (alpha * t);</span>
 							}
 						}
 					);
 				}
 			};
 		}
-<span class="nc" id="L156">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L168">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L158">			e.printStackTrace();</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L161">		return null;</span>
+<span class="nc" id="L173">		return null;</span>
 	}
 
 	/**
@@ -174,43 +186,43 @@ public abstract class ModifiedSecondIntegralEstimator extends
 	{
 		try
 		{
-<span class="nc" id="L177">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
-<span class="nc" id="L178">			{</span>
+<span class="nc" id="L189">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
+<span class="nc" id="L190">			{</span>
 				@Override public double bigK (
 					final double alpha,
 					final double z)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L184" title="All 2 branches missed.">					if (0. != alpha ||</span>
-<span class="nc bnc" id="L185" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">					if (0. != alpha ||</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 					{
-<span class="nc" id="L187">						throw new java.lang.Exception</span>
+<span class="nc" id="L199">						throw new java.lang.Exception</span>
 							(&quot;ModifiedSecondIntegralEstimator::ZeroOrder::evaluate =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L191">					return 0.5 * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussHermite (</span>
+<span class="nc" id="L203">					return 0.5 * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussHermite (</span>
 						quadratureCount
-<span class="nc" id="L193">					).integrate (</span>
+<span class="nc" id="L205">					).integrate (</span>
 						new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L195">						{</span>
+<span class="nc" id="L207">						{</span>
 							@Override public double evaluate (
 								final double t)
 								throws java.lang.Exception
 							{
-<span class="nc bnc" id="L200" title="All 2 branches missed.">								return java.lang.Double.isInfinite (t) ? 0. :</span>
-<span class="nc" id="L201">									java.lang.Math.cos (z * t) / java.lang.Math.sqrt (t * t + 1.);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">								return java.lang.Double.isInfinite (t) ? 0. :</span>
+<span class="nc" id="L213">									java.lang.Math.cos (z * t) / java.lang.Math.sqrt (t * t + 1.);</span>
 							}
 						}
 					);
 				}
 			};
 		}
-<span class="nc" id="L208">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L220">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L210">			e.printStackTrace();</span>
+<span class="nc" id="L222">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L213">		return null;</span>
+<span class="nc" id="L225">		return null;</span>
 	}
 
 	/**
@@ -226,40 +238,40 @@ public abstract class ModifiedSecondIntegralEstimator extends
 	{
 		try
 		{
-<span class="nc" id="L229">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
-<span class="nc" id="L230">			{</span>
+<span class="nc" id="L241">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
+<span class="nc" id="L242">			{</span>
 				@Override public double bigK (
 					final double alpha,
 					final double z)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L236" title="All 2 branches missed.">					if (1. / 3. != alpha ||</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">					if (1. / 3. != alpha ||</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 					{
-<span class="nc" id="L239">						throw new java.lang.Exception</span>
+<span class="nc" id="L251">						throw new java.lang.Exception</span>
 							(&quot;ModifiedSecondIntegralEstimator::OneThirdOrder::evaluate =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L243">					return java.lang.Math.sqrt (3.) *</span>
-<span class="nc" id="L244">					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L255">					return java.lang.Math.sqrt (3.) *</span>
+<span class="nc" id="L256">					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 						0.,
 						quadratureCount
-<span class="nc" id="L247">					).integrate (</span>
+<span class="nc" id="L259">					).integrate (</span>
 						new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L249">						{</span>
+<span class="nc" id="L261">						{</span>
 							@Override public double evaluate (
 								final double x)
 								throws java.lang.Exception
 							{
-<span class="nc bnc" id="L254" title="All 2 branches missed.">								if (java.lang.Double.isInfinite (x))</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">								if (java.lang.Double.isInfinite (x))</span>
 								{
-<span class="nc" id="L256">									return 0.;</span>
+<span class="nc" id="L268">									return 0.;</span>
 								}
 
-<span class="nc" id="L259">								double xSquaredOver3 = x * x / 3.;</span>
+<span class="nc" id="L271">								double xSquaredOver3 = x * x / 3.;</span>
 
-<span class="nc" id="L261">								return java.lang.Math.exp (</span>
-<span class="nc" id="L262">									-z * (1. + 4. * xSquaredOver3) * java.lang.Math.sqrt (1. + xSquaredOver3)</span>
+<span class="nc" id="L273">								return java.lang.Math.exp (</span>
+<span class="nc" id="L274">									-z * (1. + 4. * xSquaredOver3) * java.lang.Math.sqrt (1. + xSquaredOver3)</span>
 								);
 							}
 						}
@@ -267,12 +279,12 @@ public abstract class ModifiedSecondIntegralEstimator extends
 				}
 			};
 		}
-<span class="nc" id="L270">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L282">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L272">			e.printStackTrace();</span>
+<span class="nc" id="L284">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L275">		return null;</span>
+<span class="nc" id="L287">		return null;</span>
 	}
 
 	/**
@@ -288,43 +300,43 @@ public abstract class ModifiedSecondIntegralEstimator extends
 	{
 		try
 		{
-<span class="nc" id="L291">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
-<span class="nc" id="L292">			{</span>
+<span class="nc" id="L303">			return new ModifiedSecondIntegralEstimator (quadratureCount)</span>
+<span class="nc" id="L304">			{</span>
 				@Override public double bigK (
 					final double alpha,
 					final double z)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L298" title="All 2 branches missed.">					if (2. / 3. != alpha ||</span>
-<span class="nc bnc" id="L299" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">					if (2. / 3. != alpha ||</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">						!org.drip.numerical.common.NumberUtil.IsValid (z))</span>
 					{
-<span class="nc" id="L301">						throw new java.lang.Exception</span>
+<span class="nc" id="L313">						throw new java.lang.Exception</span>
 							(&quot;ModifiedSecondIntegralEstimator::TwoThirdOrder::evaluate =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L305">					return 1. / java.lang.Math.sqrt (3.) *</span>
-<span class="nc" id="L306">					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L317">					return 1. / java.lang.Math.sqrt (3.) *</span>
+<span class="nc" id="L318">					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 						0.,
 						quadratureCount
-<span class="nc" id="L309">					).integrate (</span>
+<span class="nc" id="L321">					).integrate (</span>
 						new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L311">						{</span>
+<span class="nc" id="L323">						{</span>
 							@Override public double evaluate (
 								final double x)
 								throws java.lang.Exception
 							{
-<span class="nc bnc" id="L316" title="All 2 branches missed.">								if (java.lang.Double.isInfinite (x))</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">								if (java.lang.Double.isInfinite (x))</span>
 								{
-<span class="nc" id="L318">									return 0.;</span>
+<span class="nc" id="L330">									return 0.;</span>
 								}
 
-<span class="nc" id="L321">								double xSquared = x * x;</span>
-<span class="nc" id="L322">								double xSquaredOver3 = xSquared / 3.;</span>
+<span class="nc" id="L333">								double xSquared = x * x;</span>
+<span class="nc" id="L334">								double xSquaredOver3 = xSquared / 3.;</span>
 
-<span class="nc" id="L324">								double sqrt_OnePlusXSquaredOver3_ = java.lang.Math.sqrt (1. + xSquaredOver3);</span>
+<span class="nc" id="L336">								double sqrt_OnePlusXSquaredOver3_ = java.lang.Math.sqrt (1. + xSquaredOver3);</span>
 
-<span class="nc" id="L326">								return (3. + 2. * xSquared) / sqrt_OnePlusXSquaredOver3_ *</span>
-<span class="nc" id="L327">									java.lang.Math.exp (</span>
+<span class="nc" id="L338">								return (3. + 2. * xSquared) / sqrt_OnePlusXSquaredOver3_ *</span>
+<span class="nc" id="L339">									java.lang.Math.exp (</span>
 										-z * (1. + 4. * xSquaredOver3) * sqrt_OnePlusXSquaredOver3_
 									);
 							}
@@ -333,23 +345,23 @@ public abstract class ModifiedSecondIntegralEstimator extends
 				}
 			};
 		}
-<span class="nc" id="L336">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L348">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L338">			e.printStackTrace();</span>
+<span class="nc" id="L350">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L341">		return null;</span>
+<span class="nc" id="L353">		return null;</span>
 	}
 
 	protected ModifiedSecondIntegralEstimator (
 		final int quadratureCount)
 		throws java.lang.Exception
-<span class="nc" id="L347">	{</span>
-<span class="nc bnc" id="L348" title="All 2 branches missed.">		if (0 &gt;= (_quadratureCount = quadratureCount))</span>
+<span class="nc" id="L359">	{</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (0 &gt;= (_quadratureCount = quadratureCount))</span>
 		{
-<span class="nc" id="L350">			throw new java.lang.Exception (&quot;ModifiedSecondIntegralEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L362">			throw new java.lang.Exception (&quot;ModifiedSecondIntegralEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L352">	}</span>
+<span class="nc" id="L364">	}</span>
 
 	/**
 	 * Retrieve the Quadrature Count
@@ -359,7 +371,7 @@ public abstract class ModifiedSecondIntegralEstimator extends
 
 	public int quadratureCount()
 	{
-<span class="nc" id="L362">		return _quadratureCount;</span>
+<span class="nc" id="L374">		return _quadratureCount;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

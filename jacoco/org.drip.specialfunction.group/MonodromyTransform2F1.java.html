@@ -6,41 +6,53 @@ package org.drip.specialfunction.group;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,16 +105,16 @@ package org.drip.specialfunction.group;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md&quot;&gt;Special Function Singularity Solution Group&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L105">public class MonodromyTransform2F1</span>
+<span class="nc" id="L117">public class MonodromyTransform2F1</span>
 {
 
 	/**
@@ -118,45 +130,45 @@ package org.drip.specialfunction.group;
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
 	{
-<span class="nc bnc" id="L121" title="All 4 branches missed.">		if (null == pathExponent1 || null == pathExponent2)</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">		if (null == pathExponent1 || null == pathExponent2)</span>
 		{
-<span class="nc" id="L123">			return null;</span>
+<span class="nc" id="L135">			return null;</span>
 		}
 
-<span class="nc" id="L126">		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];</span>
+<span class="nc" id="L138">		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];</span>
 
-<span class="nc" id="L128">		double theta1 = 2. * java.lang.Math.PI * pathExponent1.alpha();</span>
+<span class="nc" id="L140">		double theta1 = 2. * java.lang.Math.PI * pathExponent1.alpha();</span>
 
-<span class="nc" id="L130">		double theta2 = 2. * java.lang.Math.PI * pathExponent2.alpha();</span>
+<span class="nc" id="L142">		double theta2 = 2. * java.lang.Math.PI * pathExponent2.alpha();</span>
 
 		try
 		{
-<span class="nc" id="L134">			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
-<span class="nc" id="L135">				java.lang.Math.cos (theta1),</span>
-<span class="nc" id="L136">				java.lang.Math.sin (theta1)</span>
+<span class="nc" id="L146">			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L147">				java.lang.Math.cos (theta1),</span>
+<span class="nc" id="L148">				java.lang.Math.sin (theta1)</span>
 			);
 
-<span class="nc" id="L139">			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L151">			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
 				0.,
 				0.
 			);
 
-<span class="nc" id="L144">			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L156">			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
 				0.,
 				0.
 			);
 
-<span class="nc" id="L149">			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
-<span class="nc" id="L150">				java.lang.Math.cos (theta2),</span>
-<span class="nc" id="L151">				java.lang.Math.sin (theta2)</span>
+<span class="nc" id="L161">			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L162">				java.lang.Math.cos (theta2),</span>
+<span class="nc" id="L163">				java.lang.Math.sin (theta2)</span>
 			);
 		}
-<span class="nc" id="L154">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L156">			e.printStackTrace();</span>
-<span class="nc" id="L157">		}</span>
+<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L169">		}</span>
 
-<span class="nc" id="L159">		return g0;</span>
+<span class="nc" id="L171">		return g0;</span>
 	}
 
 	/**
@@ -175,25 +187,25 @@ package org.drip.specialfunction.group;
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L178" title="All 4 branches missed.">		if (null == pathExponent1 || null == pathExponent2)</span>
+<span class="nc bnc" id="L190" title="All 4 branches missed.">		if (null == pathExponent1 || null == pathExponent2)</span>
 		{
-<span class="nc" id="L180">			throw new java.lang.Exception (&quot;MonodromyTransform2F1::G1Mu =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L192">			throw new java.lang.Exception (&quot;MonodromyTransform2F1::G1Mu =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L183">		double beta1 = pathExponent1.beta();</span>
+<span class="nc" id="L195">		double beta1 = pathExponent1.beta();</span>
 
-<span class="nc" id="L185">		double beta2 = pathExponent2.beta();</span>
+<span class="nc" id="L197">		double beta2 = pathExponent2.beta();</span>
 
-<span class="nc" id="L187">		double alpha1 = pathExponent1.alpha();</span>
+<span class="nc" id="L199">		double alpha1 = pathExponent1.alpha();</span>
 
-<span class="nc" id="L189">		double alpha2 = pathExponent2.alpha();</span>
+<span class="nc" id="L201">		double alpha2 = pathExponent2.alpha();</span>
 
-<span class="nc" id="L191">		double gamma2 = pathExponent2.gamma();</span>
+<span class="nc" id="L203">		double gamma2 = pathExponent2.gamma();</span>
 
-<span class="nc" id="L193">		return java.lang.Math.sin (java.lang.Math.PI * (alpha1 + beta2 + gamma2)) *</span>
-<span class="nc" id="L194">			java.lang.Math.sin (java.lang.Math.PI * (alpha2 + beta1 + gamma2)) /</span>
-<span class="nc" id="L195">			java.lang.Math.sin (java.lang.Math.PI * (alpha2 + beta2 + gamma2)) /</span>
-<span class="nc" id="L196">			java.lang.Math.sin (java.lang.Math.PI * (alpha1 + beta1 + gamma2));</span>
+<span class="nc" id="L205">		return java.lang.Math.sin (java.lang.Math.PI * (alpha1 + beta2 + gamma2)) *</span>
+<span class="nc" id="L206">			java.lang.Math.sin (java.lang.Math.PI * (alpha2 + beta1 + gamma2)) /</span>
+<span class="nc" id="L207">			java.lang.Math.sin (java.lang.Math.PI * (alpha2 + beta2 + gamma2)) /</span>
+<span class="nc" id="L208">			java.lang.Math.sin (java.lang.Math.PI * (alpha1 + beta1 + gamma2));</span>
 	}
 
 	/**
@@ -209,55 +221,55 @@ package org.drip.specialfunction.group;
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
 		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
 	{
-<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (null == pathExponent1 || null == pathExponent2)</span>
+<span class="nc bnc" id="L224" title="All 4 branches missed.">		if (null == pathExponent1 || null == pathExponent2)</span>
 		{
-<span class="nc" id="L214">			return null;</span>
+<span class="nc" id="L226">			return null;</span>
 		}
 
-<span class="nc" id="L217">		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];</span>
+<span class="nc" id="L229">		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];</span>
 
-<span class="nc" id="L219">		double theta1 = 2. * java.lang.Math.PI * pathExponent1.beta();</span>
+<span class="nc" id="L231">		double theta1 = 2. * java.lang.Math.PI * pathExponent1.beta();</span>
 
-<span class="nc" id="L221">		double theta2 = 2. * java.lang.Math.PI * pathExponent2.beta();</span>
+<span class="nc" id="L233">		double theta2 = 2. * java.lang.Math.PI * pathExponent2.beta();</span>
 
 		try
 		{
-<span class="nc" id="L225">			double g1Mu = G1Mu (</span>
+<span class="nc" id="L237">			double g1Mu = G1Mu (</span>
 				pathExponent1,
 				pathExponent2
 			);
 
-<span class="nc" id="L230">			double muMinus1 = g1Mu - 1.;</span>
-<span class="nc" id="L231">			double muMinus1Squared = muMinus1 * muMinus1;</span>
+<span class="nc" id="L242">			double muMinus1 = g1Mu - 1.;</span>
+<span class="nc" id="L243">			double muMinus1Squared = muMinus1 * muMinus1;</span>
 
-<span class="nc" id="L233">			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
-<span class="nc" id="L234">				(g1Mu * java.lang.Math.cos (theta1) - java.lang.Math.cos (theta2)) / muMinus1,</span>
-<span class="nc" id="L235">				(g1Mu * java.lang.Math.sin (theta1) - java.lang.Math.sin (theta2)) / muMinus1</span>
+<span class="nc" id="L245">			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L246">				(g1Mu * java.lang.Math.cos (theta1) - java.lang.Math.cos (theta2)) / muMinus1,</span>
+<span class="nc" id="L247">				(g1Mu * java.lang.Math.sin (theta1) - java.lang.Math.sin (theta2)) / muMinus1</span>
 			);
 
-<span class="nc" id="L238">			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
-<span class="nc" id="L239">				java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1),</span>
-<span class="nc" id="L240">				java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)</span>
+<span class="nc" id="L250">			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L251">				java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1),</span>
+<span class="nc" id="L252">				java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)</span>
 			);
 
-<span class="nc" id="L243">			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
-<span class="nc" id="L244">				g1Mu * (java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) /</span>
+<span class="nc" id="L255">			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L256">				g1Mu * (java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) /</span>
 					(muMinus1Squared * muMinus1Squared),
-<span class="nc" id="L246">				g1Mu * (java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) /</span>
+<span class="nc" id="L258">				g1Mu * (java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) /</span>
 					(muMinus1Squared * muMinus1Squared)
 			);
 
-<span class="nc" id="L250">			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
-<span class="nc" id="L251">				(g1Mu * java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) / muMinus1,</span>
-<span class="nc" id="L252">				(g1Mu * java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) / muMinus1</span>
+<span class="nc" id="L262">			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (</span>
+<span class="nc" id="L263">				(g1Mu * java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) / muMinus1,</span>
+<span class="nc" id="L264">				(g1Mu * java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) / muMinus1</span>
 			);
 		}
-<span class="nc" id="L255">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L267">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L257">			e.printStackTrace();</span>
-<span class="nc" id="L258">		}</span>
+<span class="nc" id="L269">			e.printStackTrace();</span>
+<span class="nc" id="L270">		}</span>
 
-<span class="nc" id="L260">		return g0;</span>
+<span class="nc" id="L272">		return g0;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

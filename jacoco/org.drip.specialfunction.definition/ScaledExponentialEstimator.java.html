@@ -6,41 +6,53 @@ package org.drip.specialfunction.definition;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -94,10 +106,10 @@ package org.drip.specialfunction.definition;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Project&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md&quot;&gt;Special Function Ordinary Differential Equations&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md&quot;&gt;Definition of Special Function Estimators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
@@ -105,8 +117,8 @@ package org.drip.specialfunction.definition;
 
 public class ScaledExponentialEstimator extends org.drip.function.definition.R1ToR1
 {
-<span class="nc" id="L108">	private double _exponent = java.lang.Double.NaN;</span>
-<span class="nc" id="L109">	private double _characteristicRelaxationTime = java.lang.Double.NaN;</span>
+<span class="nc" id="L120">	private double _exponent = java.lang.Double.NaN;</span>
+<span class="nc" id="L121">	private double _characteristicRelaxationTime = java.lang.Double.NaN;</span>
 
 	/**
 	 * ScaledExponentialEstimator Constructor
@@ -122,15 +134,15 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 		final double characteristicRelaxationTime)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L125">		super (null);</span>
+<span class="nc" id="L137">		super (null);</span>
 
-<span class="nc bnc" id="L127" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_exponent = exponent) || 0. &gt; _exponent ||</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_characteristicRelaxationTime =</span>
+<span class="nc bnc" id="L139" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_exponent = exponent) || 0. &gt; _exponent ||</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_characteristicRelaxationTime =</span>
 				characteristicRelaxationTime) || 0. &gt; _characteristicRelaxationTime)
 		{
-<span class="nc" id="L131">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L143">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L133">	}</span>
+<span class="nc" id="L145">	}</span>
 
 	/**
 	 * Retrieve the Exponent
@@ -140,7 +152,7 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public double exponent()
 	{
-<span class="nc" id="L143">		return _exponent;</span>
+<span class="nc" id="L155">		return _exponent;</span>
 	}
 
 	/**
@@ -151,20 +163,20 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public double characteristicRelaxationTime()
 	{
-<span class="nc" id="L154">		return _characteristicRelaxationTime;</span>
+<span class="nc" id="L166">		return _characteristicRelaxationTime;</span>
 	}
 
 	@Override public double evaluate (
 		final double t)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L161" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t)</span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t)</span>
 		{
-<span class="nc" id="L163">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L175">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator::evaluate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L166">		return java.lang.Math.exp (</span>
-<span class="nc" id="L167">			-1. * java.lang.Math.pow (</span>
+<span class="nc" id="L178">		return java.lang.Math.exp (</span>
+<span class="nc" id="L179">			-1. * java.lang.Math.pow (</span>
 				t / _characteristicRelaxationTime,
 				_exponent
 			)
@@ -188,25 +200,25 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 			relaxationTimeDistributionEstimator)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L191" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t ||</span>
+<span class="nc bnc" id="L203" title="All 6 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. &gt; t ||</span>
 			null == relaxationTimeDistributionEstimator)
 		{
-<span class="nc" id="L194">			throw new java.lang.Exception</span>
+<span class="nc" id="L206">			throw new java.lang.Exception</span>
 				(&quot;ScaledExponentialEstimator::evaluateUsingDensity =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L198">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L210">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 			0.,
 			100
-<span class="nc" id="L201">		).integrate (</span>
+<span class="nc" id="L213">		).integrate (</span>
 			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L203">			{</span>
+<span class="nc" id="L215">			{</span>
 				@Override public double evaluate (
 					final double u)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L208" title="All 4 branches missed.">					return java.lang.Double.isInfinite (u) || 0. == u ? 0. : java.lang.Math.exp (-t / u) *</span>
-<span class="nc" id="L209">						relaxationTimeDistributionEstimator.relaxationTimeDensity (u);</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">					return java.lang.Double.isInfinite (u) || 0. == u ? 0. : java.lang.Math.exp (-t / u) *</span>
+<span class="nc" id="L221">						relaxationTimeDistributionEstimator.relaxationTimeDensity (u);</span>
 				}
 			}
 		);
@@ -220,7 +232,7 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public boolean isCompressed()
 	{
-<span class="nc bnc" id="L223" title="All 2 branches missed.">		return 1. &lt; _exponent;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">		return 1. &lt; _exponent;</span>
 	}
 
 	/**
@@ -231,7 +243,7 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public boolean isStretched()
 	{
-<span class="nc bnc" id="L234" title="All 2 branches missed.">		return 1. &gt; _exponent;</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">		return 1. &gt; _exponent;</span>
 	}
 
 	/**
@@ -242,7 +254,7 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public boolean isUnscaled()
 	{
-<span class="nc bnc" id="L245" title="All 2 branches missed.">		return 1. == _exponent;</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		return 1. == _exponent;</span>
 	}
 
 	/**
@@ -253,7 +265,7 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public boolean isNormal()
 	{
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		return 2. == _exponent;</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		return 2. == _exponent;</span>
 	}
 
 	/**
@@ -270,14 +282,14 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 		final org.drip.function.definition.R1ToR1 gammaEstimator)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L273" title="All 2 branches missed.">		if (null == gammaEstimator)</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		if (null == gammaEstimator)</span>
 		{
-<span class="nc" id="L275">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator::firstMoment =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L287">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator::firstMoment =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L278">		double inverseExponent = 1. / _exponent;</span>
+<span class="nc" id="L290">		double inverseExponent = 1. / _exponent;</span>
 
-<span class="nc" id="L280">		return _characteristicRelaxationTime * inverseExponent * gammaEstimator.evaluate (inverseExponent);</span>
+<span class="nc" id="L292">		return _characteristicRelaxationTime * inverseExponent * gammaEstimator.evaluate (inverseExponent);</span>
 	}
 
 	/**
@@ -296,18 +308,18 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 		final org.drip.function.definition.R1ToR1 gammaEstimator)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L299" title="All 4 branches missed.">		if (0 &gt; momentOrder ||</span>
+<span class="nc bnc" id="L311" title="All 4 branches missed.">		if (0 &gt; momentOrder ||</span>
 			null == gammaEstimator)
 		{
-<span class="nc" id="L302">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator::higherMoment =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L314">			throw new java.lang.Exception (&quot;ScaledExponentialEstimator::higherMoment =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L305">		double inverseExponent = 1. / _exponent;</span>
+<span class="nc" id="L317">		double inverseExponent = 1. / _exponent;</span>
 
-<span class="nc" id="L307">		return java.lang.Math.pow (</span>
+<span class="nc" id="L319">		return java.lang.Math.pow (</span>
 			_characteristicRelaxationTime,
 			momentOrder
-<span class="nc" id="L310">		) * inverseExponent * gammaEstimator.evaluate (momentOrder * inverseExponent);</span>
+<span class="nc" id="L322">		) * inverseExponent * gammaEstimator.evaluate (momentOrder * inverseExponent);</span>
 	}
 
 	/**
@@ -329,31 +341,31 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 		final org.drip.function.definition.R1ToR1 gammaEstimator)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L332" title="All 6 branches missed.">		if (0 &gt; momentOrder ||</span>
+<span class="nc bnc" id="L344" title="All 6 branches missed.">		if (0 &gt; momentOrder ||</span>
 			null == relaxationTimeDistributionEstimator ||
 			null == gammaEstimator)
 		{
-<span class="nc" id="L336">			throw new java.lang.Exception</span>
+<span class="nc" id="L348">			throw new java.lang.Exception</span>
 				(&quot;ScaledExponentialEstimator::higherMomentUsingDensity =&gt; Invalid Inputs&quot;);
 		}
 
-<span class="nc" id="L340">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L352">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 			0.,
 			100
-<span class="nc" id="L343">		).integrate (</span>
+<span class="nc" id="L355">		).integrate (</span>
 			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L345">			{</span>
+<span class="nc" id="L357">			{</span>
 				@Override public double evaluate (
 					final double t)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L350" title="All 4 branches missed.">					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (</span>
+<span class="nc bnc" id="L362" title="All 4 branches missed.">					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (</span>
 						t,
 						momentOrder
-<span class="nc" id="L353">					) * relaxationTimeDistributionEstimator.relaxationTimeDensity (t);</span>
+<span class="nc" id="L365">					) * relaxationTimeDistributionEstimator.relaxationTimeDensity (t);</span>
 				}
 			}
-<span class="nc" id="L356">		) * gammaEstimator.evaluate (momentOrder + 1.) * java.lang.Math.pow (</span>
+<span class="nc" id="L368">		) * gammaEstimator.evaluate (momentOrder + 1.) * java.lang.Math.pow (</span>
 			_characteristicRelaxationTime,
 			momentOrder
 		);
@@ -367,8 +379,8 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public double logRelaxationFirstMoment()
 	{
-<span class="nc" id="L370">		return (1. - (1. / _exponent)) * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +</span>
-<span class="nc" id="L371">			java.lang.Math.log (_characteristicRelaxationTime);</span>
+<span class="nc" id="L382">		return (1. - (1. / _exponent)) * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +</span>
+<span class="nc" id="L383">			java.lang.Math.log (_characteristicRelaxationTime);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

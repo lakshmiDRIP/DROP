@@ -6,41 +6,53 @@ package org.drip.specialfunction.gamma;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,9 +104,9 @@ package org.drip.specialfunction.gamma;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md&quot;&gt;Analytic/Series/Integral Gamma Estimators&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
@@ -113,8 +125,8 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	public StirlingSeries (
 		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-<span class="nc" id="L116">		super (dc);</span>
-<span class="nc" id="L117">	}</span>
+<span class="nc" id="L128">		super (dc);</span>
+<span class="nc" id="L129">	}</span>
 
 	/**
 	 * Compute the de-Moivre Term
@@ -130,12 +142,12 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L133" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
+<span class="nc bnc" id="L145" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. &gt; x)</span>
 		{
-<span class="nc" id="L135">			throw new java.lang.Exception (&quot;StirlingSeries::deMoivreTerm =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L147">			throw new java.lang.Exception (&quot;StirlingSeries::deMoivreTerm =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L138">		return java.lang.Math.exp (1. - x) * java.lang.Math.pow (</span>
+<span class="nc" id="L150">		return java.lang.Math.exp (1. - x) * java.lang.Math.pow (</span>
 			x - 1.,
 			x - 0.5
 		);
@@ -145,7 +157,7 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 		final double x)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L148">		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);</span>
+<span class="nc" id="L160">		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);</span>
 	}
 
 	@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
@@ -153,22 +165,22 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	{
 		try
 		{
-<span class="nc" id="L156">			double deMoivreTerm = deMoivreTerm (x);</span>
+<span class="nc" id="L168">			double deMoivreTerm = deMoivreTerm (x);</span>
 
-<span class="nc" id="L158">			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;</span>
+<span class="nc" id="L170">			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;</span>
 
-<span class="nc" id="L160">			return new org.drip.numerical.estimation.R1Estimate (</span>
+<span class="nc" id="L172">			return new org.drip.numerical.estimation.R1Estimate (</span>
 				estimate,
 				estimate,
 				java.lang.Math.E * deMoivreTerm
 			);
 		}
-<span class="nc" id="L166">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L178">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L168">			e.printStackTrace();</span>
+<span class="nc" id="L180">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L171">		return null;</span>
+<span class="nc" id="L183">		return null;</span>
 	}
 
 	/**
@@ -182,32 +194,32 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	public org.drip.numerical.estimation.R1Estimate laplaceCorrectionEstimate (
 		final double x)
 	{
-<span class="nc" id="L185">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L197">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L188">		termWeightMap.put (</span>
-<span class="nc" id="L189">			1,</span>
-<span class="nc" id="L190">			1. / 12.</span>
+<span class="nc" id="L200">		termWeightMap.put (</span>
+<span class="nc" id="L201">			1,</span>
+<span class="nc" id="L202">			1. / 12.</span>
 		);
 
 		try
 		{
-<span class="nc" id="L195">			return seriesEstimate (</span>
+<span class="nc" id="L207">			return seriesEstimate (</span>
 				x,
 				termWeightMap,
 				new org.drip.numerical.estimation.R1ToR1Series (
-<span class="nc" id="L199">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
+<span class="nc" id="L211">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
 					true,
 					termWeightMap
 				)
 			);
 		}
-<span class="nc" id="L205">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L217">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L207">			e.printStackTrace();</span>
+<span class="nc" id="L219">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L210">		return null;</span>
+<span class="nc" id="L222">		return null;</span>
 	}
 
 	/**
@@ -221,47 +233,47 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	public org.drip.numerical.estimation.R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-<span class="nc" id="L224">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
+<span class="nc" id="L236">		java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt; termWeightMap = new</span>
 			java.util.TreeMap&lt;java.lang.Integer, java.lang.Double&gt;();
 
-<span class="nc" id="L227">		termWeightMap.put (</span>
-<span class="nc" id="L228">			1,</span>
-<span class="nc" id="L229">			1. / 12.</span>
+<span class="nc" id="L239">		termWeightMap.put (</span>
+<span class="nc" id="L240">			1,</span>
+<span class="nc" id="L241">			1. / 12.</span>
 		);
 
-<span class="nc" id="L232">		termWeightMap.put (</span>
-<span class="nc" id="L233">			2,</span>
-<span class="nc" id="L234">			1. / 288.</span>
+<span class="nc" id="L244">		termWeightMap.put (</span>
+<span class="nc" id="L245">			2,</span>
+<span class="nc" id="L246">			1. / 288.</span>
 		);
 
-<span class="nc" id="L237">		termWeightMap.put (</span>
-<span class="nc" id="L238">			3,</span>
-<span class="nc" id="L239">			-139. / 51840.</span>
+<span class="nc" id="L249">		termWeightMap.put (</span>
+<span class="nc" id="L250">			3,</span>
+<span class="nc" id="L251">			-139. / 51840.</span>
 		);
 
-<span class="nc" id="L242">		termWeightMap.put (</span>
-<span class="nc" id="L243">			4,</span>
-<span class="nc" id="L244">			-571. / 2488320.</span>
+<span class="nc" id="L254">		termWeightMap.put (</span>
+<span class="nc" id="L255">			4,</span>
+<span class="nc" id="L256">			-571. / 2488320.</span>
 		);
 
 		try
 		{
-<span class="nc" id="L249">			return seriesEstimate (</span>
+<span class="nc" id="L261">			return seriesEstimate (</span>
 				x,
 				termWeightMap,
 				new org.drip.numerical.estimation.R1ToR1Series (
-<span class="nc" id="L253">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
+<span class="nc" id="L265">					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),</span>
 					true,
 					termWeightMap
 				)
 			);
 		}
-<span class="nc" id="L259">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L271">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L261">			e.printStackTrace();</span>
+<span class="nc" id="L273">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L264">		return null;</span>
+<span class="nc" id="L276">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

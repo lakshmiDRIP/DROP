@@ -6,41 +6,53 @@ package org.drip.specialfunction.group;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -93,16 +105,16 @@ package org.drip.specialfunction.group;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md&quot;&gt;Special Function Singularity Solution Group&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
  * @author Lakshmi Krishnamurthy
  */
 
-<span class="nc" id="L105">public class RiemannSphereSpanner2F1</span>
+<span class="nc" id="L117">public class RiemannSphereSpanner2F1</span>
 {
 
 	/**
@@ -119,99 +131,99 @@ package org.drip.specialfunction.group;
 			regularHypergeometricEstimator,
 		final double[] connectionCoefficientArray)
 	{
-<span class="nc bnc" id="L122" title="All 4 branches missed.">		if (null == connectionCoefficientArray || 3 != connectionCoefficientArray.length)</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		if (null == connectionCoefficientArray || 3 != connectionCoefficientArray.length)</span>
 		{
-<span class="nc" id="L124">			return null;</span>
+<span class="nc" id="L136">			return null;</span>
 		}
 
 		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-<span class="nc" id="L128">			regularSingularityIndependentSolution2F1 =</span>
+<span class="nc" id="L140">			regularSingularityIndependentSolution2F1 =</span>
 				org.drip.specialfunction.ode.RegularSingularityIndependentSolution2F1.Create
-<span class="nc" id="L130">					(regularHypergeometricEstimator);</span>
+<span class="nc" id="L142">					(regularHypergeometricEstimator);</span>
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (null == regularSingularityIndependentSolution2F1)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">		if (null == regularSingularityIndependentSolution2F1)</span>
 		{
-<span class="nc" id="L134">			return null;</span>
+<span class="nc" id="L146">			return null;</span>
 		}
 
 		java.util.Map&lt;java.lang.Double, org.drip.specialfunction.ode.IndependentLinearSolutionList&gt;
-<span class="nc" id="L138">			linearSolutionFunctionMap = regularSingularityIndependentSolution2F1.linearSolutionFunctionMap();</span>
+<span class="nc" id="L150">			linearSolutionFunctionMap = regularSingularityIndependentSolution2F1.linearSolutionFunctionMap();</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">		if (null == linearSolutionFunctionMap ||</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">			!linearSolutionFunctionMap.containsKey (0.) ||</span>
-<span class="nc bnc" id="L142" title="All 2 branches missed.">			!linearSolutionFunctionMap.containsKey (1.) ||</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">			!linearSolutionFunctionMap.containsKey (java.lang.Double.POSITIVE_INFINITY))</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		if (null == linearSolutionFunctionMap ||</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">			!linearSolutionFunctionMap.containsKey (0.) ||</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">			!linearSolutionFunctionMap.containsKey (1.) ||</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">			!linearSolutionFunctionMap.containsKey (java.lang.Double.POSITIVE_INFINITY))</span>
 		{
-<span class="nc" id="L145">			return null;</span>
+<span class="nc" id="L157">			return null;</span>
 		}
 
-<span class="nc" id="L148">		org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray = new</span>
+<span class="nc" id="L160">		org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray = new</span>
 			org.drip.specialfunction.group.SchwarzTriangleMap[3];
 
 		try
 		{
-<span class="nc" id="L153">			java.util.List&lt;org.drip.function.definition.R1ToR1&gt; solutionFunctionList0 =</span>
-<span class="nc" id="L154">				linearSolutionFunctionMap.get (0.).solutionFunctionList();</span>
+<span class="nc" id="L165">			java.util.List&lt;org.drip.function.definition.R1ToR1&gt; solutionFunctionList0 =</span>
+<span class="nc" id="L166">				linearSolutionFunctionMap.get (0.).solutionFunctionList();</span>
 
-<span class="nc" id="L156">			schwarzTriangleMapArray[0] = new org.drip.specialfunction.group.SchwarzTriangleMap (</span>
+<span class="nc" id="L168">			schwarzTriangleMapArray[0] = new org.drip.specialfunction.group.SchwarzTriangleMap (</span>
 				0.,
-<span class="nc" id="L158">				solutionFunctionList0.get (0),</span>
-<span class="nc" id="L159">				solutionFunctionList0.get (1),</span>
+<span class="nc" id="L170">				solutionFunctionList0.get (0),</span>
+<span class="nc" id="L171">				solutionFunctionList0.get (1),</span>
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L161">				{</span>
+<span class="nc" id="L173">				{</span>
 					@Override public double evaluate (
 						final double z)
 					{
-<span class="nc" id="L165">						return z;</span>
+<span class="nc" id="L177">						return z;</span>
 					}
 				},
 				connectionCoefficientArray[0]
 			);
 
-<span class="nc" id="L171">			java.util.List&lt;org.drip.function.definition.R1ToR1&gt; solutionFunctionList1 =</span>
-<span class="nc" id="L172">				linearSolutionFunctionMap.get (1.).solutionFunctionList();</span>
+<span class="nc" id="L183">			java.util.List&lt;org.drip.function.definition.R1ToR1&gt; solutionFunctionList1 =</span>
+<span class="nc" id="L184">				linearSolutionFunctionMap.get (1.).solutionFunctionList();</span>
 
-<span class="nc" id="L174">			schwarzTriangleMapArray[1] = new org.drip.specialfunction.group.SchwarzTriangleMap (</span>
+<span class="nc" id="L186">			schwarzTriangleMapArray[1] = new org.drip.specialfunction.group.SchwarzTriangleMap (</span>
 				1.,
-<span class="nc" id="L176">				solutionFunctionList1.get (0),</span>
-<span class="nc" id="L177">				solutionFunctionList1.get (1),</span>
+<span class="nc" id="L188">				solutionFunctionList1.get (0),</span>
+<span class="nc" id="L189">				solutionFunctionList1.get (1),</span>
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L179">				{</span>
+<span class="nc" id="L191">				{</span>
 					@Override public double evaluate (
 						final double z)
 					{
-<span class="nc" id="L183">						return 1. - z;</span>
+<span class="nc" id="L195">						return 1. - z;</span>
 					}
 				},
 				connectionCoefficientArray[1]
 			);
 
-<span class="nc" id="L189">			java.util.List&lt;org.drip.function.definition.R1ToR1&gt; solutionFunctionList2 =</span>
-<span class="nc" id="L190">				linearSolutionFunctionMap.get (java.lang.Double.POSITIVE_INFINITY).solutionFunctionList();</span>
+<span class="nc" id="L201">			java.util.List&lt;org.drip.function.definition.R1ToR1&gt; solutionFunctionList2 =</span>
+<span class="nc" id="L202">				linearSolutionFunctionMap.get (java.lang.Double.POSITIVE_INFINITY).solutionFunctionList();</span>
 
-<span class="nc" id="L192">			schwarzTriangleMapArray[2] = new org.drip.specialfunction.group.SchwarzTriangleMap (</span>
+<span class="nc" id="L204">			schwarzTriangleMapArray[2] = new org.drip.specialfunction.group.SchwarzTriangleMap (</span>
 				java.lang.Double.POSITIVE_INFINITY,
-<span class="nc" id="L194">				solutionFunctionList2.get (0),</span>
-<span class="nc" id="L195">				solutionFunctionList2.get (1),</span>
+<span class="nc" id="L206">				solutionFunctionList2.get (0),</span>
+<span class="nc" id="L207">				solutionFunctionList2.get (1),</span>
 				new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L197">				{</span>
+<span class="nc" id="L209">				{</span>
 					@Override public double evaluate (
 						final double z)
 					{
-<span class="nc" id="L201">						return 1. / z;</span>
+<span class="nc" id="L213">						return 1. / z;</span>
 					}
 				},
 				connectionCoefficientArray[2]
 			);
 
-<span class="nc" id="L207">			return new org.drip.specialfunction.group.RiemannSphereSpanner (schwarzTriangleMapArray);</span>
+<span class="nc" id="L219">			return new org.drip.specialfunction.group.RiemannSphereSpanner (schwarzTriangleMapArray);</span>
 		}
-<span class="nc" id="L209">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L221">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L211">			e.printStackTrace();</span>
+<span class="nc" id="L223">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L214">		return null;</span>
+<span class="nc" id="L226">		return null;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

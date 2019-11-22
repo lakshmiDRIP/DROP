@@ -6,41 +6,53 @@ package org.drip.specialfunction.derived;
  */
 
 /*!
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
- *  This file is part of DROP, an open-source library targeting risk, transaction costs, exposure, margin
- *  	calculations, and portfolio construction within and across fixed income, credit, commodity, equity,
- *  	FX, and structured products.
+ *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
+ *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
+ *  	analytics, and portfolio construction analytics within and across fixed income, credit, commodity,
+ *  	equity, FX, and structured products. It also includes auxiliary libraries for algorithm support,
+ *  	numerical analysis, numerical optimization, spline builder, model validation, statistical learning,
+ *  	and computational support.
  *  
  *  	https://lakshmidrip.github.io/DROP/
  *  
- *  DROP is composed of three main modules:
+ *  DROP is composed of three modules:
  *  
- *  - DROP Analytics Core - https://lakshmidrip.github.io/DROP-Analytics-Core/
+ *  - DROP Product Core - https://lakshmidrip.github.io/DROP-Product-Core/
  *  - DROP Portfolio Core - https://lakshmidrip.github.io/DROP-Portfolio-Core/
- *  - DROP Numerical Core - https://lakshmidrip.github.io/DROP-Numerical-Core/
+ *  - DROP Computational Core - https://lakshmidrip.github.io/DROP-Computational-Core/
  * 
- * 	DROP Analytics Core implements libraries for the following:
+ * 	DROP Product Core implements libraries for the following:
  * 	- Fixed Income Analytics
- * 	- Asset Backed Analytics
- * 	- XVA Analytics
- * 	- Exposure and Margin Analytics
+ * 	- Loan Analytics
+ * 	- Transaction Cost Analytics
  * 
  * 	DROP Portfolio Core implements libraries for the following:
  * 	- Asset Allocation Analytics
- * 	- Transaction Cost Analytics
+ *  - Asset Liability Management Analytics
+ * 	- Capital Estimation Analytics
+ * 	- Exposure Analytics
+ * 	- Margin Analytics
+ * 	- XVA Analytics
  * 
- * 	DROP Numerical Core implements libraries for the following:
- * 	- Statistical Learning Library
- * 	- Numerical Optimizer Library
- * 	- Machine Learning Library
- * 	- Spline Builder Library
+ * 	DROP Computational Core implements libraries for the following:
+ * 	- Algorithm Support
+ * 	- Computation Support
+ * 	- Function Analysis
+ *  - Model Validation
+ * 	- Numerical Analysis
+ * 	- Numerical Optimizer
+ * 	- Spline Builder
+ *  - Statistical Learning
  * 
  * 	Documentation for DROP is Spread Over:
  * 
  * 	- Main                     =&gt; https://lakshmidrip.github.io/DROP/
  * 	- Wiki                     =&gt; https://github.com/lakshmiDRIP/DROP/wiki
  * 	- GitHub                   =&gt; https://github.com/lakshmiDRIP/DROP
+ * 	- Repo Layout Taxonomy     =&gt; https://github.com/lakshmiDRIP/DROP/blob/master/Taxonomy.md
  * 	- Javadoc                  =&gt; https://lakshmidrip.github.io/DROP/Javadoc/index.html
  * 	- Technical Specifications =&gt; https://github.com/lakshmiDRIP/DROP/tree/master/Docs/Internal
  * 	- Release Versions         =&gt; https://lakshmidrip.github.io/DROP/version.html
@@ -92,9 +104,9 @@ package org.drip.specialfunction.derived;
  *
  *	&lt;br&gt;&lt;br&gt;
  *  &lt;ul&gt;
- *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md&quot;&gt;Numerical Core Module&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md&quot;&gt;Numerical Optimizer&lt;/a&gt;&lt;/li&gt;
- *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Suite&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Module &lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md&quot;&gt;Computational Core Module&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Library&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md&quot;&gt;Function Analysis Library&lt;/a&gt;&lt;/li&gt;
+ *		&lt;li&gt;&lt;b&gt;Project&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md&quot;&gt;Special Function Implementation Analysis&lt;/a&gt;&lt;/li&gt;
  *		&lt;li&gt;&lt;b&gt;Package&lt;/b&gt; = &lt;a href = &quot;https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md&quot;&gt;Special Functions Derived using Others&lt;/a&gt;&lt;/li&gt;
  *  &lt;/ul&gt;
  *
@@ -103,8 +115,8 @@ package org.drip.specialfunction.derived;
 
 public class StretchedExponentialMoment extends org.drip.function.definition.R1ToR1
 {
-<span class="nc" id="L106">	private double _tau = java.lang.Double.NaN;</span>
-<span class="nc" id="L107">	private double _beta = java.lang.Double.NaN;</span>
+<span class="nc" id="L118">	private double _tau = java.lang.Double.NaN;</span>
+<span class="nc" id="L119">	private double _beta = java.lang.Double.NaN;</span>
 
 	/**
 	 * Construct the Weierstrass Version of the Log of StretchedExponentialMoment Estimator
@@ -121,46 +133,46 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 		final double beta,
 		final int termCount)
 	{
-<span class="nc" id="L124">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierstrassLogGamma =</span>
-<span class="nc" id="L125">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount);</span>
+<span class="nc" id="L136">		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierstrassLogGamma =</span>
+<span class="nc" id="L137">			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount);</span>
 
-<span class="nc bnc" id="L127" title="All 2 branches missed.">		if (null == weierstrassLogGamma)</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (null == weierstrassLogGamma)</span>
 		{
-<span class="nc" id="L129">			return null;</span>
+<span class="nc" id="L141">			return null;</span>
 		}
 
 		try
 		{
-<span class="nc" id="L134">			return new StretchedExponentialMoment (</span>
+<span class="nc" id="L146">			return new StretchedExponentialMoment (</span>
 				null,
 				tau,
 				beta
 			)
-<span class="nc" id="L139">			{</span>
+<span class="nc" id="L151">			{</span>
 				@Override public double evaluate (
 					final double moment)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L144" title="All 4 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. &gt; moment)</span>
+<span class="nc bnc" id="L156" title="All 4 branches missed.">					if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. &gt; moment)</span>
 					{
-<span class="nc" id="L146">						throw new java.lang.Exception</span>
+<span class="nc" id="L158">						throw new java.lang.Exception</span>
 							(&quot;StretchedExponentialMoment::Weierstrass::evaluate =&gt; Invalid Inputs&quot;);
 					}
 
-<span class="nc" id="L150">					return java.lang.Math.exp (</span>
-<span class="nc" id="L151">						moment * java.lang.Math.log (tau) +</span>
-<span class="nc" id="L152">						weierstrassLogGamma.evaluate (moment / beta) -</span>
-<span class="nc" id="L153">						java.lang.Math.log (beta)</span>
+<span class="nc" id="L162">					return java.lang.Math.exp (</span>
+<span class="nc" id="L163">						moment * java.lang.Math.log (tau) +</span>
+<span class="nc" id="L164">						weierstrassLogGamma.evaluate (moment / beta) -</span>
+<span class="nc" id="L165">						java.lang.Math.log (beta)</span>
 					);
 				}
 			};
 		}
-<span class="nc" id="L158">		catch (java.lang.Exception e)</span>
+<span class="nc" id="L170">		catch (java.lang.Exception e)</span>
 		{
-<span class="nc" id="L160">			e.printStackTrace();</span>
+<span class="nc" id="L172">			e.printStackTrace();</span>
 		}
 
-<span class="nc" id="L163">		return null;</span>
+<span class="nc" id="L175">		return null;</span>
 	}
 
 	/**
@@ -179,14 +191,14 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 		final double beta)
 		throws java.lang.Exception
 	{
-<span class="nc" id="L182">		super (dc);</span>
+<span class="nc" id="L194">		super (dc);</span>
 
-<span class="nc bnc" id="L184" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_tau = tau) || 0. &gt;= _tau ||</span>
-<span class="nc bnc" id="L185" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta) || 0. &gt;= _beta)</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (_tau = tau) || 0. &gt;= _tau ||</span>
+<span class="nc bnc" id="L197" title="All 4 branches missed.">			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta) || 0. &gt;= _beta)</span>
 		{
-<span class="nc" id="L187">			throw new java.lang.Exception (&quot;StretchedExponentialMoment Constructor =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L199">			throw new java.lang.Exception (&quot;StretchedExponentialMoment Constructor =&gt; Invalid Inputs&quot;);</span>
 		}
-<span class="nc" id="L189">	}</span>
+<span class="nc" id="L201">	}</span>
 
 	/**
 	 * Retrieve Tau
@@ -196,7 +208,7 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 
 	public double tau()
 	{
-<span class="nc" id="L199">		return _tau;</span>
+<span class="nc" id="L211">		return _tau;</span>
 	}
 
 	/**
@@ -207,35 +219,35 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 
 	public double beta()
 	{
-<span class="nc" id="L210">		return _beta;</span>
+<span class="nc" id="L222">		return _beta;</span>
 	}
 
 	@Override public double evaluate (
 		final double moment)
 		throws java.lang.Exception
 	{
-<span class="nc bnc" id="L217" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. &gt; moment)</span>
+<span class="nc bnc" id="L229" title="All 4 branches missed.">		if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. &gt; moment)</span>
 		{
-<span class="nc" id="L219">			throw new java.lang.Exception (&quot;StretchedExponentialMoment::evaluate =&gt; Invalid Inputs&quot;);</span>
+<span class="nc" id="L231">			throw new java.lang.Exception (&quot;StretchedExponentialMoment::evaluate =&gt; Invalid Inputs&quot;);</span>
 		}
 
-<span class="nc" id="L222">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
+<span class="nc" id="L234">		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (</span>
 			0.,
 			100
-<span class="nc" id="L225">		).integrate (</span>
+<span class="nc" id="L237">		).integrate (</span>
 			new org.drip.function.definition.R1ToR1 (null)
-<span class="nc" id="L227">			{</span>
+<span class="nc" id="L239">			{</span>
 				@Override public double evaluate (
 					final double t)
 					throws java.lang.Exception
 				{
-<span class="nc bnc" id="L232" title="All 4 branches missed.">					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (</span>
+<span class="nc bnc" id="L244" title="All 4 branches missed.">					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (</span>
 						t,
 						moment - 1
-<span class="nc" id="L235">					) * java.lang.Math.exp (</span>
-<span class="nc" id="L236">						-java.lang.Math.pow (</span>
-<span class="nc" id="L237">							t / _tau,</span>
-<span class="nc" id="L238">							_beta</span>
+<span class="nc" id="L247">					) * java.lang.Math.exp (</span>
+<span class="nc" id="L248">						-java.lang.Math.pow (</span>
+<span class="nc" id="L249">							t / _tau,</span>
+<span class="nc" id="L250">							_beta</span>
 						)
 					);
 				}
