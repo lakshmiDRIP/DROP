@@ -102,7 +102,7 @@ DROP Special Function Definition Package sets out the Definition of Special Func
 
  * Koepf, W (1995): Algorithms for m-fold Hyper-geometric Summation <i>Journal of Symbolic Computation</i> <b>20 (4)</b> 399-417
 
- * Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipples Theorem on the Sum of a (_2^3)F(a,b;c;z) <i>Journal of Computational and Applied Mathematics</i> <b>72</b> 293-300
+ * Lavoie, J. L., F. Grondin, and A. K. Rathie (1996): Generalization of Whipple Theorem on the Sum of a (_2^3)F(a,b;c;z) <i>Journal of Computational and Applied Mathematics</i> <b>72</b> 293-300
 
  * National Institute of Standards and Technology (2019): Hyper-geometric Function https://dlmf.nist.gov/15
 
